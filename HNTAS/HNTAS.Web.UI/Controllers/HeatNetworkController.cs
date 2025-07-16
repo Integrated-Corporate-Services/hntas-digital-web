@@ -1,11 +1,15 @@
 ﻿using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.HeatNetwork;
 using Microsoft.AspNetCore.Mvc;
+using HNTAS.Web.UI.Helpers;
+
 
 namespace HNTAS.Web.UI.Controllers
 {
     public class HeatNetworkController : Controller
     {
-        public void showBackButton(string action, string controller) {
+        public void showBackButton(string action, string controller)
+        {
             ViewBag.ShowBackButton = true;
             ViewBag.BackLinkUrl = Url.Action(action, controller);
         }
@@ -32,7 +36,7 @@ namespace HNTAS.Web.UI.Controllers
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
             }
-            
+
             return View("ServesGt10Dwellings", new ServesGt10DwellingsViewModel());
         }
 
@@ -58,7 +62,7 @@ namespace HNTAS.Web.UI.Controllers
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
             }
-            
+
             return View("LocatedInUk", new LocatedInUkViewModel());
         }
 
@@ -84,7 +88,7 @@ namespace HNTAS.Web.UI.Controllers
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
             }
-            
+
             return View("OperatingAHN", new OperatingAHNViewModel());
         }
 
@@ -113,8 +117,31 @@ namespace HNTAS.Web.UI.Controllers
 
             // Eligible: show a message or redirect as needed
             ViewBag.ResultMessage = "You are eligible to register. Please create an account.";
-            ViewBag.ShowCreateAccountButton = true; 
+            ViewBag.ShowCreateAccountButton = true;
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult EnterHNName()
+        {
+            // Utility.ShowBackButton(this, "CompanyConfirm", "Organisation");  point it to Heatwork , EnterWhat33WordsUrl when the page is ready
+            return View(new HeatNetworkNameModel());
+        }
+
+        [HttpPost]
+        public IActionResult EnterHNName(HeatNetworkNameModel model)
+        {
+            // Utility.ShowBackButton(this, "CompanyConfirm", "Organisation");  point it to Heatwork , EnterWhat33WordsUrl when the page is ready
+            //if (string.IsNullOrWhiteSpace(model.hnName))
+            //{
+            //    ModelState.AddModelError("hnName", "Please enter the name of the Heat Network.");
+            //} Add if needed, as required attribute is already in the model
+                if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            SessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, "HeatNetworkName", model);
+            return RedirectToAction("EnterHNName", "HeatNetwork"); // add apropriate navigation
         }
     }
 }
