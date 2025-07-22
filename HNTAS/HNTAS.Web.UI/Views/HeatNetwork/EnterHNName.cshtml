@@ -1,0 +1,52 @@
+﻿@model HNTAS.Web.UI.Models.HeatNetworkNameModel
+@{
+    ViewData["Title"] = "Enter name of your heat network";
+}
+
+@{
+    // List the property names in the order they appear on the form
+    var fieldOrder = new[] { nameof(Model.HeatNetworkName) };
+}
+@* Display the GOV.UK error summary if there are any validation errors *@
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list">
+                @foreach (var field in fieldOrder)
+                {
+                    if (ViewData.ModelState.ContainsKey(field) && ViewData.ModelState[field].Errors.Any())
+                    {
+                        <li>
+                            <a href="#@(Html.GenerateIdFromName(field).ToLowerInvariant())">
+                                @ViewData.ModelState[field].Errors.First().ErrorMessage
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+}
+<div class="govuk-width-container">
+    <form asp-controller="HeatNetwork" asp-action="EnterHNName" method="post" class="govuk-form-group">
+        
+        <div class="govuk-form-group @(ViewData.ModelState["HeatNetworkName"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+            
+            <label class="govuk-label" for="HeatNetworkName">
+                <h1 class="govuk-heading-l">Enter name of the heat network</h1>
+            </label>
+            @if (ViewData.ModelState["HeatNetworkName"]?.Errors.Count > 0)
+            {
+                <span asp-validation-for="HeatNetworkName" class="govuk-error-message"></span>
+            }
+            <input class="govuk-input govuk-input--width-100" asp-for="HeatNetworkName" name="HeatNetworkName" autocomplete="off" />
+
+        </div><br />
+
+        <button type="submit" class="govuk-button" data-module="govuk-button">
+            Continue
+        </button>
+    </form>
+</div>
