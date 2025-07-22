@@ -128,10 +128,9 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
 
-            // Eligible: show a message or redirect as needed
-            ViewBag.ResultMessage = "You are eligible to register. Please create an account.";
-            ViewBag.ShowCreateAccountButton = true; 
-            return View(model);
+            // Redirect as needed
+            return RedirectToAction("Index", "Home");
+            
         }
     }
 }
