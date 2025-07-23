@@ -1,5 +1,6 @@
 ﻿using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.CompaniesHouse;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -7,13 +8,13 @@ namespace HNTAS.Web.UI.Controllers
 {
     public class HeatNetworkController : Controller
     {
-        private const string heatNetworkLocationModelKey = "heatNetworkLocation";
+        //private const string heatNetworkLocationModelKey = "heatNetworkLocation";
 
         [HttpGet]
         public IActionResult EnterHNLocation() 
         {
             Utility.ShowBackButton(this, "Confirmation", "User"); // TODO - correct back page will be added after us-128
-            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, heatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
             return View("EnterHNLocation", heatNetworkLocationModel);
         }
 
@@ -51,7 +52,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
 
-            SessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, heatNetworkLocationModelKey, model);
+            SessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey, model);
 
             return RedirectToAction("EnterHNName");
         }
@@ -81,7 +82,17 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             SessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, "HeatNetworkName", model);
-            return RedirectToAction("EnterHNName", "HeatNetwork"); // TODO - add apropriate navigation
+            return RedirectToAction("Confirmation"); // TODO - add apropriate navigation
+        }
+
+        [HttpGet]
+        public IActionResult Confirmation()
+        {
+            //var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            //ViewBag.companyName = organisationModel?.CompanyDetails?.Title ?? ""; grab from user model, will find org name and contact details
+            ViewBag.contactName = "John";
+            ViewBag.unhid = "HDJ2123F";
+            return View("Confirmation");
         }
     }
 }
