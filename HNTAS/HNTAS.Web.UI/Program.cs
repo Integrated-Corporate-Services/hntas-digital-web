@@ -45,12 +45,13 @@ builder.Services.AddSingleton(new JsonSerializerOptions
 
     PropertyNameCaseInsensitive = true, // Common setting for JSON deserialization
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Common setting for JSON serialization
-    Converters = { 
+    Converters = {
         new UserJsonConverter(),
         new OrgDetailsJsonConverter(),
         new OrgRegisteredAddressJsonConverter(),
         new InitialUserRegistrationRequestJsonConverter(),
-        new UserRoleJsonConverter()
+        new UserRoleJsonConverter(),
+        new UserResponseJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -61,6 +62,7 @@ builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 

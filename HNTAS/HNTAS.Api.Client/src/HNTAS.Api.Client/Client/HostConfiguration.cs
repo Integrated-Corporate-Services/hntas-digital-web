@@ -55,6 +55,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ProblemDetailsJsonConverter());
             _jsonOptions.Converters.Add(new UpdateOrgDetailsAndRolesRequestJsonConverter());
             _jsonOptions.Converters.Add(new UserJsonConverter());
+            _jsonOptions.Converters.Add(new UserResponseJsonConverter());
             _jsonOptions.Converters.Add(new UserRoleJsonConverter());
             _jsonOptions.Converters.Add(new UserRoleNullableJsonConverter());
             _jsonOptions.Converters.Add(new UserStatusJsonConverter());

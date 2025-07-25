@@ -1,9 +1,9 @@
-﻿using HNTAS.Api.Client.Api;
-using HNTAS.Api.Client.Model;
+﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.User;
+using HNTAS.Web.UI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,13 +14,13 @@ namespace HNTAS.Web.UI.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private readonly IUsersApi _usersApi;
+        private readonly IUserService _userService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(IUsersApi usersApi, ILogger<UserController> logger)
+        public UserController(IUserService userService, ILogger<UserController> logger)
         {
-            _usersApi = usersApi;
             _logger = logger;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -226,7 +226,7 @@ namespace HNTAS.Web.UI.Controllers
             try
             {
 
-                var apiResponse = await _usersApi.ApiUsersIdOrgDetailsPatchAsync(userId, new UpdateOrgDetailsAndRolesRequest(new OrgDetails2(
+                var OrgId = await _userService.UpdateUserOrganisation(userId, new UpdateOrgDetailsAndRolesRequest(new OrgDetails2(
                     orgType: organisationModel.SelectedOrganisationTypeText,
                     companiesHouseNumber: organisationModel.CompanyNumber,
                     orgName: company?.Title,
@@ -240,33 +240,8 @@ namespace HNTAS.Web.UI.Controllers
                     mobileNumber: userModel?.ContactDetails?.MobileNumber,
                     jobTitle: userModel?.ContactDetails?.JobTitle), UserRole.RegulatoryContact));
 
-                if (apiResponse.IsOk) // Checks for HTTP 200-299 status codes
-                {
-                    User user = apiResponse.Ok();
-                    if (user != null && user.OrgDetails != null)
-                    {
-                        TempData["Confirmation_Organisation_Id"] = user.OrgDetails.OrgId;
-                        _logger.LogInformation("Successfully updated OrgDetails for user {UserId}. Retrieved OrgId: {OrgId}", userId, user.OrgDetails.OrgId);
-                    }
-                    else
-                    {
-                        _logger.LogWarning("API Patch for OrgDetails for user {UserId} was successful but returned null User or OrgDetails object.", userId);
-                        // Even if IsOk, if the payload is unexpectedly null, treat it as an application error
-                        ModelState.AddModelError(string.Empty, "The operation completed, but confirmation details are missing. Please contact support.");
-                        ViewBag.ShowBackButton = false;
-                        return View("CheckAnswers", viewModel);
-                    }
-                }
-                else
-                {
-                    string errorMessage = "An error occurred while saving your details. Please try again.";
-                   
-                    _logger.LogError("API Patch for OrgDetails for user {UserId} failed with status code {StatusCode}.", userId, apiResponse.StatusCode);
-
-                    ModelState.AddModelError(string.Empty, errorMessage);
-                    ViewBag.ShowBackButton = false;
-                    return View("CheckAnswers", viewModel);
-                }
+                TempData["Confirmation_Organisation_Id"] = OrgId;
+                _logger.LogInformation("Successfully updated OrgDetails for user {UserId}. Retrieved OrgId: {OrgId}", userId, OrgId);
             }
             catch (Exception ex)
             {
@@ -288,7 +263,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var companyName = TempData["Confirmation_CompanyName"] as string;
             var emailAddress = TempData["Confirmation_EmailAddress"] as string;
-            var orgId = $"ORG{TempData["Confirmation_Organisation_Id"] as int?:D7}";
+            var orgId = TempData["Confirmation_Organisation_Id"] as string;
 
 
             if (string.IsNullOrEmpty(companyName) || string.IsNullOrEmpty(emailAddress) || string.IsNullOrEmpty(orgId))
@@ -305,6 +280,39 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.ShowBackButton = false;
 
             return View("Confirmation");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUsers()
+        {
+            try
+            {
+                var userId = SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey);
+
+                var user = await _userService.GetUserById(userId);
+
+                var viewModel = new ManageUsersModel
+                {
+                    OrganisationName = user.OrganisationName,
+                    Users = new List<UserDisplayModel> { new UserDisplayModel
+                    {
+                        Id = user.Id,
+                        EmailAddress = user.EmailAddress,
+                        Name = user.FullName,
+                        Roles = user.Roles.Select(r => r.ToString()).ToList(),
+                        Status = user.Status.ToString()
+                    } }
+                };
+
+                return View("ManageUsers", viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while trying to manage users.");
+                TempData["ErrorMessage"] = "An unexpected error occurred. Please try again later.";
+                return View("ManageUsers");
+            }
         }
     }
 }
