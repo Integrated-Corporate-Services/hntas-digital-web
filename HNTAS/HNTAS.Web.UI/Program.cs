@@ -1,10 +1,14 @@
 using GovUk.OneLogin.AspNetCore;
+using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Client;
+using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Routing;
 using HNTAS.Web.UI.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,10 +33,36 @@ builder.Configuration.AddJsonFile(
     optional: true,
     reloadOnChange: true);
 
+var coreApiBaseUrl = builder.Configuration.GetValue<string>("ApiClients:CoreApiBaseUrl");
+
+// It's crucial to validate that the configuration value was actually found
+if (string.IsNullOrEmpty(coreApiBaseUrl))
+    throw new InvalidOperationException("The 'ApiClients:CoreApiBaseUrl' is not configured in appsettings.json. Please ensure it exists and has a value.");
 
 // Register CompaniesHouseService with HttpClientFactory
+builder.Services.AddSingleton(new JsonSerializerOptions
+{
+
+    PropertyNameCaseInsensitive = true, // Common setting for JSON deserialization
+    PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Common setting for JSON serialization
+    Converters = { 
+        new UserJsonConverter(),
+        new OrgDetailsJsonConverter(),
+        new OrgRegisteredAddressJsonConverter(),
+        new InitialUserRegistrationRequestJsonConverter(),
+        new UserRoleJsonConverter()
+    }
+});
+builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
+builder.Services.AddSingleton<UsersApiEvents>();
+builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
-builder.Services.AddSingleton<GovUkNotifyService>();
 
 //Configure onelogin settings
 builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
