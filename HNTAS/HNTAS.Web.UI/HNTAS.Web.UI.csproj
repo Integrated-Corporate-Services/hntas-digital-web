@@ -33,4 +33,8 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HNTAS.Api.Client\src\HNTAS.Api.Client\HNTAS.Api.Client.csproj" />
+  </ItemGroup>
+
 </Project>

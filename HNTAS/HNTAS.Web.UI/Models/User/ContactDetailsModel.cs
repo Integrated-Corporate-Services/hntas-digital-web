@@ -5,9 +5,9 @@ namespace HNTAS.Web.UI.Models
     public enum PreferredContactType
     {
         [Display(Name = "Landline")]
-        Landline,
+        Landline = 0,
         [Display(Name = "Mobile")]
-        Mobile
+        Mobile = 1
     }
 
     public class ContactDetailsModel 
