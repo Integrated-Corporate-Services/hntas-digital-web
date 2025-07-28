@@ -8,5 +8,6 @@ namespace HNTAS.Web.UI.Services
         Task<UserResponse?> GetUserByOneLoginId(string oneLoginId);
         Task<string?> CreateUser(InitialUserRegistrationRequest request);
         Task<string?> UpdateUserOrganisation(string id, UpdateOrgDetailsAndRolesRequest request);
+        Task UpdateUserHeatNetworkId(string id, string heatNetworkId);
     }
 }

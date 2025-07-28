@@ -63,6 +63,8 @@ namespace HNTAS.Web.UI.Helpers
         {
             ClearFromSession(context, SessionKeys.UserCreation_SessionKey);
             ClearFromSession(context, SessionKeys.OrganisationCreation_SessionKey);
+            ClearFromSession(context, SessionKeys.HeatNetworkLocationModelKey);
+            ClearFromSession(context, SessionKeys.HeatNetworkNameModelKey);
             context.Session.Remove(SessionKeys.IsCheckAnswerFlowKey);
         }
 

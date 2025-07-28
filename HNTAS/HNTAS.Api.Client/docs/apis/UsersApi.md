@@ -6,6 +6,7 @@ All URIs are relative to *https://localhost:7117*
 |--------|--------------|-------------|
 | [**ApiUsersGet**](UsersApi.md#apiusersget) | **GET** /api/Users |  |
 | [**ApiUsersIdDelete**](UsersApi.md#apiusersiddelete) | **DELETE** /api/Users/{id} |  |
+| [**ApiUsersIdHeatnetworkHeatNetworkIdPatch**](UsersApi.md#apiusersidheatnetworkheatnetworkidpatch) | **PATCH** /api/Users/{id}/heatnetwork/{heatNetworkId} |  |
 | [**ApiUsersIdOrgDetailsPatch**](UsersApi.md#apiusersidorgdetailspatch) | **PATCH** /api/Users/{id}/org-details |  |
 | [**ApiUsersInitialEntryPost**](UsersApi.md#apiusersinitialentrypost) | **POST** /api/Users/initial-entry |  |
 | [**GetUserById**](UsersApi.md#getuserbyid) | **GET** /api/Users/{id} |  |
@@ -54,6 +55,43 @@ No authorization required
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | **id** | **string** |  |  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **204** | No Content |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersidheatnetworkheatnetworkidpatch"></a>
+# **ApiUsersIdHeatnetworkHeatNetworkIdPatch**
+> void ApiUsersIdHeatnetworkHeatNetworkIdPatch (string id, string heatNetworkId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **id** | **string** |  |  |
+| **heatNetworkId** | **string** |  |  |
 
 ### Return type
 

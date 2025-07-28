@@ -9,6 +9,88 @@ tags:
 - name: Users
 - name: Welcome
 paths:
+  /api/HeatNetworks:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetwork"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetwork"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetwork"
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - HeatNetworks
+  /api/HeatNetworks/hnIds:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: hnIdsString
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetwork"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetwork"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetwork"
+                type: array
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - HeatNetworks
   /api/HeatNetworks/add-heat-network:
     post:
       requestBody:
@@ -306,6 +388,44 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/{id}/heatnetwork/{heatNetworkId}:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: heatNetworkId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
         "404":
           content:
             text/plain:
@@ -752,6 +872,9 @@ components:
           id: id
           companinesHouseNumber: companinesHouseNumber
         id: id
+        hnIds:
+        - hnIds
+        - hnIds
         status: status
       properties:
         id:
@@ -764,6 +887,11 @@ components:
         organisation:
           $ref: "#/components/schemas/Organisation"
         roles:
+          items:
+            type: string
+          nullable: true
+          type: array
+        hnIds:
           items:
             type: string
           nullable: true

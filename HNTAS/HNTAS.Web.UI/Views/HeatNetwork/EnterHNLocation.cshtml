@@ -9,12 +9,12 @@
 <div class="govuk-width-container">
     <form asp-controller="HeatNetwork" asp-action="EnterHNLocation" method="post" class="govuk-form-group">
         @Html.AntiForgeryToken()
-        <h1 class="govuk-heading-l">Enter your address (no postcode)</h1>
+        <h1 class="govuk-heading-l">Enter your address (What3words)</h1>
 
         @await Html.PartialAsync("_ErrorSummary", fieldOrder)
 
         <div class="govuk-form-group @(ViewData.ModelState["HeatNetworkLocation"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
-            <p class="govuk-body">To provide the exact location of your heat network, please go to <strong> https://what3words.com/</strong> and enter your geo coordinates there. It will generate a unique url. Please copy that and paste it here.</p>
+            <p class="govuk-body">To provide the exact location of your heat network, please go to <strong> <a class="govuk-link" href="https://what3words.com/" target="_blank">https://what3words.com/</a> </strong> and enter your geo coordinates there. It will generate a unique url. Please copy that and paste it here.</p>
             <label class="govuk-label" for="Address">
                 Enter the url
             </label>
@@ -27,7 +27,7 @@
         </div><br />
 
         <button type="submit" class="govuk-button" data-module="govuk-button">
-            Submit
+            Continue
         </button>
     </form>
 </div>

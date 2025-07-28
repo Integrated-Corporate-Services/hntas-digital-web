@@ -111,5 +111,25 @@ namespace HNTAS.Web.UI.Services
             }
         }
 
+        public async Task UpdateUserHeatNetworkId(string id, string heatNetworkId)
+        {
+            _logger.LogInformation("Updating user heat network for ID: {UserId} heat network : {hnId}", id, heatNetworkId);
+            try
+            {
+               var responce = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
+
+                if (responce.IsNoContent)
+                {
+                    _logger.LogInformation("User heat network ID updated successfully for user ID: {userId}", id);
+                    return;
+                }
+                throw new Exception($"Failed to update user heat network ID with status code: {responce.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating user heat network ID for user ID: {userId}", id);
+                throw;
+            }
+        }
     }
 }
