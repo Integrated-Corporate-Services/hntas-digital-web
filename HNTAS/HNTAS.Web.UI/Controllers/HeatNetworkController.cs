@@ -74,7 +74,8 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnterHNName()
         {
             Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
-            return View(new HeatNetworkNameModel());
+            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            return View(heatNetworkLocationModel);
         }
 
         [HttpPost]
@@ -94,7 +95,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            SessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, "HeatNetworkName", model);
+            SessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey, model);
             return RedirectToAction("CheckYourAnswers");
         }
 
@@ -142,7 +143,9 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     var hnmodel = response.Created();
                     TempData["Confirmation_HN_Id"] = hnmodel.HnId;
-                    _logger.LogInformation("Heat network created successfully with ID: {Id}", hnmodel.HnId);
+
+                    await _userService.UpdateUserHeatNetworkId(SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey), hnmodel.HnId);
+                    _logger.LogInformation("Heat network created successfully with ID: {Id}", hnmodel.Id);
                 }
             }
             catch(Exception ex)

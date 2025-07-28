@@ -62,7 +62,7 @@ public class HomeController : Controller
             {
                 //Todo: Handle existing user case, e.g., redirect to dashboard or profile update
                 SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey, existingUserResponse.Id);
-                return RedirectToAction("ManageUsers", "User");
+                return RedirectToAction("UserAccount", "Dashboard");
             }
         }
         catch (Exception ex)

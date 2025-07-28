@@ -305,6 +305,9 @@ namespace HNTAS.Web.UI.Controllers
                     } }
                 };
 
+                ViewBag.ShowBackButton = true;
+                ViewBag.BackLinkUrl = Url.Action("UserAccount", "Dashboard");
+
                 return View("ManageUsers", viewModel);
             }
             catch (Exception ex)
