@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HNTAS.Web.UI.Helpers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -7,7 +8,8 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult UserAccount()
         {
-
+            // access API to retrieve org name, all the heat networks registered
+            //var organisationName = SessionHelper.GetFromSession<>
             return View();
         }
     }
