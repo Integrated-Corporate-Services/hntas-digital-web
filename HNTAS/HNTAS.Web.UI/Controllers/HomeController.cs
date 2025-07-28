@@ -54,6 +54,10 @@ public class HomeController : Controller
 
                 SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey, id);
             }
+            else if (existingUserResponse?.Organisation == null)
+            {
+                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey, existingUserResponse?.Id);
+            }
             else
             {
                 //Todo: Handle existing user case, e.g., redirect to dashboard or profile update

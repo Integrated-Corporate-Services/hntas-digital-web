@@ -51,7 +51,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new OrgRegisteredAddressJsonConverter(),
         new InitialUserRegistrationRequestJsonConverter(),
         new UserRoleJsonConverter(),
-        new UserResponseJsonConverter()
+        new UserResponseJsonConverter(),
+        new OrganisationJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

@@ -11,6 +11,7 @@ docs/models/NullableOfUserStatus.md
 docs/models/OrgDetails.md
 docs/models/OrgDetails2.md
 docs/models/OrgRegisteredAddress.md
+docs/models/Organisation.md
 docs/models/PreferredContactType.md
 docs/models/ProblemDetails.md
 docs/models/UpdateOrgDetailsAndRolesRequest.md
@@ -54,6 +55,7 @@ src/HNTAS.Api.Client/Model/NullableOfUserStatus.cs
 src/HNTAS.Api.Client/Model/OrgDetails.cs
 src/HNTAS.Api.Client/Model/OrgDetails2.cs
 src/HNTAS.Api.Client/Model/OrgRegisteredAddress.cs
+src/HNTAS.Api.Client/Model/Organisation.cs
 src/HNTAS.Api.Client/Model/PreferredContactType.cs
 src/HNTAS.Api.Client/Model/ProblemDetails.cs
 src/HNTAS.Api.Client/Model/UpdateOrgDetailsAndRolesRequest.cs

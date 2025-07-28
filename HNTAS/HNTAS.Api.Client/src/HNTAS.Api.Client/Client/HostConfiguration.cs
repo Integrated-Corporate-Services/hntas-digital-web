@@ -50,6 +50,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new OrgDetailsJsonConverter());
             _jsonOptions.Converters.Add(new OrgDetails2JsonConverter());
             _jsonOptions.Converters.Add(new OrgRegisteredAddressJsonConverter());
+            _jsonOptions.Converters.Add(new OrganisationJsonConverter());
             _jsonOptions.Converters.Add(new PreferredContactTypeJsonConverter());
             _jsonOptions.Converters.Add(new PreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ProblemDetailsJsonConverter());

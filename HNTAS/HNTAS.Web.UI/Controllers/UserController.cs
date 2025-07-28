@@ -294,7 +294,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 var viewModel = new ManageUsersModel
                 {
-                    OrganisationName = user.OrganisationName,
+                    OrganisationName = user.Organisation?.Name,
                     Users = new List<UserDisplayModel> { new UserDisplayModel
                     {
                         Id = user.Id,

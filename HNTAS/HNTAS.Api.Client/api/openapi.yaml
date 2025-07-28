@@ -334,6 +334,20 @@ components:
       - null
       nullable: true
       type: string
+    Organisation:
+      example:
+        name: name
+        id: id
+        companinesHouseNumber: companinesHouseNumber
+      nullable: true
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        companinesHouseNumber:
+          type: string
+      type: object
     OrgDetails:
       example:
         orgType: orgType
@@ -646,11 +660,14 @@ components:
     UserResponse:
       example:
         emailAddress: emailAddress
-        organisationName: organisationName
         roles:
         - roles
         - roles
         fullName: fullName
+        organisation:
+          name: name
+          id: id
+          companinesHouseNumber: companinesHouseNumber
         id: id
         status: status
       properties:
@@ -659,12 +676,14 @@ components:
         emailAddress:
           type: string
         fullName:
+          nullable: true
           type: string
-        organisationName:
-          type: string
+        organisation:
+          $ref: "#/components/schemas/Organisation"
         roles:
           items:
             type: string
+          nullable: true
           type: array
         status:
           type: string
