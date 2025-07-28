@@ -11,7 +11,7 @@ outputDir: out
 
 # https://openapi-generator.tech/docs/generators/csharp
 additionalProperties:
-  packageGuid: '{BF33A89E-0541-4ABE-91E8-DCDEBC857397}'
+  packageGuid: '{CA0002E4-B835-46AA-96EB-60B253620C74}'
 
 # https://openapi-generator.tech/docs/integrations/#github-integration
 # gitHost:
@@ -56,7 +56,7 @@ namespace YourProject
             var host = CreateHostBuilder(args).Build();
             var api = host.Services.GetRequiredService<IUsersApi>();
             IApiUsersGetApiResponse apiResponse = await api.ApiUsersGetAsync("todo");
-            List<User>? model = apiResponse.Ok();
+            List<UserResponse>? model = apiResponse.Ok();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
