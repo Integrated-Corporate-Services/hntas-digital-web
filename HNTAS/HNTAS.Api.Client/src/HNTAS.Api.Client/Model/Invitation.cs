@@ -59,7 +59,7 @@ namespace HNTAS.Api.Client.Model
         /// Gets or Sets Id
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; set; } 
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or Sets FirstName
