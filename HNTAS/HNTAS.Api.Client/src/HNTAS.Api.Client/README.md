@@ -54,9 +54,9 @@ namespace YourProject
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            var api = host.Services.GetRequiredService<IUsersApi>();
-            IApiUsersGetApiResponse apiResponse = await api.ApiUsersGetAsync("todo");
-            List<User>? model = apiResponse.Ok();
+            var api = host.Services.GetRequiredService<IHeatNetworksApi>();
+            IApiHeatNetworksAddHeatNetworkPostApiResponse apiResponse = await api.ApiHeatNetworksAddHeatNetworkPostAsync("todo");
+            HeatNetwork? model = apiResponse.Ok();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)

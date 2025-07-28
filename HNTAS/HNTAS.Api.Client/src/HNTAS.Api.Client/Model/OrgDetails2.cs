@@ -46,7 +46,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="mobileNumber">mobileNumber</param>
         /// <param name="jobTitle">jobTitle</param>
         [JsonConstructor]
-        public OrgDetails2(string orgType, string companiesHouseNumber, string orgName, string firstName, string lastName, PreferredContactType preferredContactType, OrgRegisteredAddress orgRegisteredAddress, Option<int?> orgId = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, string? jobTitle = default)
+        public OrgDetails2(string orgType, string companiesHouseNumber, string orgName, string firstName, string lastName, PreferredContactType preferredContactType, OrgRegisteredAddress orgRegisteredAddress, Option<string?> orgId = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, string? jobTitle = default)
         {
             OrgType = orgType;
             CompaniesHouseNumber = companiesHouseNumber;
@@ -112,13 +112,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<int?> OrgIdOption { get; private set; }
+        public Option<string?> OrgIdOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets OrgId
         /// </summary>
         [JsonPropertyName("orgId")]
-        public int? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
+        public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of LandlineNumber
@@ -293,7 +293,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> lastName = default;
             Option<PreferredContactType?> preferredContactType = default;
             Option<OrgRegisteredAddress?> orgRegisteredAddress = default;
-            Option<int?> orgId = default;
+            Option<string?> orgId = default;
             Option<string?> landlineNumber = default;
             Option<string?> contactNumberExtension = default;
             Option<string?> mobileNumber = default;
@@ -338,7 +338,7 @@ namespace HNTAS.Api.Client.Model
                             orgRegisteredAddress = new Option<OrgRegisteredAddress?>(JsonSerializer.Deserialize<OrgRegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "orgId":
-                            orgId = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            orgId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "landlineNumber":
                             landlineNumber = new Option<string?>(utf8JsonReader.GetString());
@@ -465,7 +465,7 @@ namespace HNTAS.Api.Client.Model
             JsonSerializer.Serialize(writer, orgDetails2.OrgRegisteredAddress, jsonSerializerOptions);
             if (orgDetails2.OrgIdOption.IsSet)
                 if (orgDetails2.OrgIdOption.Value != null)
-                    writer.WriteNumber("orgId", orgDetails2.OrgIdOption.Value!.Value);
+                    writer.WriteString("orgId", orgDetails2.OrgId);
                 else
                     writer.WriteNull("orgId");
 

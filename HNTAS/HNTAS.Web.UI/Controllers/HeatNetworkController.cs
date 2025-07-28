@@ -1,5 +1,8 @@
-﻿using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -7,13 +10,24 @@ namespace HNTAS.Web.UI.Controllers
 {
     public class HeatNetworkController : Controller
     {
-        private const string heatNetworkLocationModelKey = "heatNetworkLocation";
+
+        private readonly ILogger<HeatNetworkController> _logger;
+        private readonly IHeatNetworksApi _heatNetworksApi;
+        private readonly IUserService _userService;
+
+        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworksApi heatNetworksApi, IUserService userService)
+        {
+            _logger = logger;
+            _heatNetworksApi = heatNetworksApi;
+            _userService = userService;
+        }
+
 
         [HttpGet]
         public IActionResult EnterHNLocation() 
         {
-            Utility.ShowBackButton(this, "Confirmation", "User"); // TODO - correct back page will be added after us-128
-            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, heatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            Utility.ShowBackButton(this, "Confirmation", "User");
+            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
             return View("EnterHNLocation", heatNetworkLocationModel);
         }
 
@@ -21,7 +35,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
         {
-            Utility.ShowBackButton(this, "Confirmation", "User"); // TODO - correct back page will be added after us-128
+            Utility.ShowBackButton(this, "Confirmation", "User");
 
             if (string.IsNullOrWhiteSpace(model.HeatNetworkLocation))
             {
@@ -51,7 +65,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
 
-            SessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, heatNetworkLocationModelKey, model);
+            SessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey, model);
 
             return RedirectToAction("EnterHNName");
         }
@@ -81,7 +95,77 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             SessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, "HeatNetworkName", model);
-            return RedirectToAction("EnterHNName", "HeatNetwork"); // TODO - add apropriate navigation
+            return RedirectToAction("CheckYourAnswers");
+        }
+
+        [HttpGet]
+        public IActionResult CheckYourAnswers()
+        {
+            ViewBag.ShowBackButton = false;
+
+            var checkAnswersModel = new CheckYourAnswersHeatNetworkModel
+            {
+                HeatNetworkNameModel = SessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey),
+                HeatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey),
+                ConfirmedDeclaration = false
+            };
+
+            return View(checkAnswersModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitAnswers(CheckYourAnswersHeatNetworkModel viewModel)
+        {
+            
+            viewModel.HeatNetworkNameModel = SessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey);
+            viewModel.HeatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey);
+
+            ModelState.Remove(nameof(viewModel.HeatNetworkNameModel));
+            ModelState.Remove(nameof(viewModel.HeatNetworkLocationModel));
+
+            if (!ModelState.IsValid)
+            {
+                return View("CheckYourAnswers", viewModel);
+            }
+
+            try { 
+                var model = new HeatNetwork
+                {
+                  Name = viewModel.HeatNetworkNameModel.HeatNetworkName,
+                  Location = viewModel.HeatNetworkLocationModel.HeatNetworkLocation,
+                };
+
+                var response = await _heatNetworksApi.ApiHeatNetworksAddHeatNetworkPostAsync(model);
+
+                if (response.IsCreated)
+                {
+                    var hnmodel = response.Created();
+                    TempData["Confirmation_HN_Id"] = hnmodel.HnId;
+                    _logger.LogInformation("Heat network created successfully with ID: {Id}", hnmodel.HnId);
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error submitting heat network answers.");
+                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
+                return View("CheckYourAnswers", viewModel);
+            }
+            SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+            SessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
+
+            return RedirectToAction("Confirmation", "HeatNetwork");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Confirmation()
+        {
+            var userResponse = await _userService.GetUserById(SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey));
+
+            ViewBag.CompanyName = userResponse.Organisation?.Name;
+            ViewBag.ContactName = userResponse.FullName;
+            ViewBag.HNId = TempData["Confirmation_HN_Id"] as string;
+            return View("Confirmation");
         }
     }
 }

@@ -10,6 +10,113 @@
     }
   ],
   "paths": {
+    "/api/HeatNetworks/add-heat-network": {
+      "post": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HeatNetwork"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HeatNetwork"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetwork"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetwork"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetwork"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetwork"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetwork"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetwork"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/Users": {
       "get": {
         "tags": [
@@ -23,7 +130,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/UserResponse"
                   }
                 }
               },
@@ -31,7 +138,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/UserResponse"
                   }
                 }
               },
@@ -39,7 +146,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/UserResponse"
                   }
                 }
               }
@@ -75,17 +182,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/UserResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/UserResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/UserResponse"
                 }
               }
             }
@@ -159,6 +266,69 @@
         }
       }
     },
+    "/api/Users/onelogin/{oneLoginId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "GetUserByOneLoginId",
+        "parameters": [
+          {
+            "name": "oneLoginId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/Users/initial-entry": {
       "post": {
         "tags": [
@@ -185,37 +355,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "string"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "string"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "string"
                 }
               }
             }
@@ -382,6 +532,25 @@
   },
   "components": {
     "schemas": {
+      "HeatNetwork": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "hn_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "InitialUserRegistrationRequest": {
         "required": [
           "oneLoginId",
@@ -451,6 +620,21 @@
         ],
         "nullable": true
       },
+      "Organisation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "companinesHouseNumber": {
+            "type": "string"
+          }
+        },
+        "nullable": true
+      },
       "OrgDetails": {
         "required": [
           "orgType",
@@ -465,8 +649,7 @@
         "type": "object",
         "properties": {
           "orgId": {
-            "type": "integer",
-            "format": "int32",
+            "type": "string",
             "nullable": true
           },
           "orgType": {
@@ -531,8 +714,7 @@
         "type": "object",
         "properties": {
           "orgId": {
-            "type": "integer",
-            "format": "int32",
+            "type": "string",
             "nullable": true
           },
           "orgType": {
@@ -702,6 +884,34 @@
           }
         }
       },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "emailAddress": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "organisation": {
+            "$ref": "#/components/schemas/Organisation"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
       "UserRole": {
         "enum": [
           "RegulatoryContact",
@@ -721,6 +931,9 @@
     }
   },
   "tags": [
+    {
+      "name": "HeatNetworks"
+    },
     {
       "name": "Users"
     },

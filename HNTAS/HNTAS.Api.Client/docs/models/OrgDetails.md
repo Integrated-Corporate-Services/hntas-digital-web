@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **LastName** | **string** |  | 
 **PreferredContactType** | **PreferredContactType** |  | 
 **OrgRegisteredAddress** | [**OrgRegisteredAddress**](OrgRegisteredAddress.md) |  | 
-**OrgId** | **int** |  | [optional] 
+**OrgId** | **string** |  | [optional] 
 **LandlineNumber** | **string** |  | [optional] 
 **ContactNumberExtension** | **string** |  | [optional] 
 **MobileNumber** | **string** |  | [optional] 
