@@ -10,6 +10,7 @@ namespace HNTAS.Web.UI.Helpers
         public static class SessionKeys
         {
             public const string UserCreation_SessionKey = "UserModelDataKey";
+            public const string UserModel_Id_SessionKey = "UserModelIdDataKey";
             public const string OrganisationCreation_SessionKey = "OrganisationModelDataKey";
 
             // Session key for the boolean flow state

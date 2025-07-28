@@ -1,0 +1,705 @@
+openapi: 3.0.1
+info:
+  title: HNTAS.Core.Api | HNTAS.Core.Api
+  version: 1.0.0
+servers:
+- url: https://localhost:7117/
+tags:
+- name: Users
+- name: Welcome
+paths:
+  /api/Users:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+    get:
+      operationId: GetUserById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/onelogin/{oneLoginId}:
+    get:
+      operationId: GetUserByOneLoginId
+      parameters:
+      - explode: false
+        in: path
+        name: oneLoginId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/initial-entry:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InitialUserRegistrationRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/InitialUserRegistrationRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+            text/json:
+              schema:
+                type: string
+          description: Created
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "409":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Conflict
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/{id}/org-details:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateOrgDetailsAndRolesRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateOrgDetailsAndRolesRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/User"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Welcome:
+    get:
+      description: This endpoint returns a simple welcome string to confirm the API
+        is running.
+      responses:
+        "200":
+          description: OK
+      summary: Get Welcome Message
+      tags:
+      - Welcome
+components:
+  schemas:
+    InitialUserRegistrationRequest:
+      example:
+        oneLoginId: oneLoginId
+        emailId: emailId
+        status: Active
+      properties:
+        oneLoginId:
+          type: string
+        emailId:
+          type: string
+        status:
+          $ref: "#/components/schemas/UserStatus"
+      required:
+      - emailId
+      - oneLoginId
+      - status
+      type: object
+    Invitation:
+      example:
+        firstName: firstName
+        lastName: lastName
+        permissions:
+        - permissions
+        - permissions
+        id: id
+        invitedEmail: invitedEmail
+        invitedAt: 2000-01-23T04:56:07.000+00:00
+        status: status
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        permissions:
+          items:
+            type: string
+          type: array
+        invitedEmail:
+          type: string
+        invitedAt:
+          format: date-time
+          type: string
+        status:
+          type: string
+      required:
+      - firstName
+      - id
+      - invitedAt
+      - invitedEmail
+      - lastName
+      - permissions
+      - status
+      type: object
+    NullableOfUserStatus:
+      enum:
+      - Active
+      - InActive
+      - InvitationSent
+      - InvitationAccepted
+      - InvitationDeclined
+      - null
+      nullable: true
+      type: string
+    Organisation:
+      example:
+        name: name
+        id: id
+        companinesHouseNumber: companinesHouseNumber
+      nullable: true
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        companinesHouseNumber:
+          type: string
+      type: object
+    OrgDetails:
+      example:
+        orgType: orgType
+        firstName: firstName
+        lastName: lastName
+        orgName: orgName
+        preferredContactType: Landline
+        mobileNumber: mobileNumber
+        jobTitle: jobTitle
+        landlineNumber: landlineNumber
+        companiesHouseNumber: companiesHouseNumber
+        orgId: orgId
+        contactNumberExtension: contactNumberExtension
+        orgRegisteredAddress:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+      nullable: true
+      properties:
+        orgId:
+          nullable: true
+          type: string
+        orgType:
+          type: string
+        companiesHouseNumber:
+          type: string
+        orgName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        preferredContactType:
+          $ref: "#/components/schemas/PreferredContactType"
+        landlineNumber:
+          maxLength: 20
+          nullable: true
+          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
+            s-]?\\d{1,9}$"
+          type: string
+        contactNumberExtension:
+          maxLength: 10
+          nullable: true
+          pattern: ^\d*$
+          type: string
+        mobileNumber:
+          maxLength: 13
+          nullable: true
+          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
+            s-]?\\d{1,9}$"
+          type: string
+        jobTitle:
+          maxLength: 100
+          nullable: true
+          pattern: "^[a-zA-Z ]+$"
+          type: string
+        orgRegisteredAddress:
+          $ref: "#/components/schemas/OrgRegisteredAddress"
+      required:
+      - companiesHouseNumber
+      - firstName
+      - jobTitle
+      - lastName
+      - orgName
+      - orgRegisteredAddress
+      - orgType
+      - preferredContactType
+      type: object
+    OrgDetails2:
+      example:
+        orgType: orgType
+        firstName: firstName
+        lastName: lastName
+        orgName: orgName
+        preferredContactType: Landline
+        mobileNumber: mobileNumber
+        jobTitle: jobTitle
+        landlineNumber: landlineNumber
+        companiesHouseNumber: companiesHouseNumber
+        orgId: orgId
+        contactNumberExtension: contactNumberExtension
+        orgRegisteredAddress:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+      properties:
+        orgId:
+          nullable: true
+          type: string
+        orgType:
+          type: string
+        companiesHouseNumber:
+          type: string
+        orgName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        preferredContactType:
+          $ref: "#/components/schemas/PreferredContactType"
+        landlineNumber:
+          maxLength: 20
+          nullable: true
+          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
+            s-]?\\d{1,9}$"
+          type: string
+        contactNumberExtension:
+          maxLength: 10
+          nullable: true
+          pattern: ^\d*$
+          type: string
+        mobileNumber:
+          maxLength: 13
+          nullable: true
+          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
+            s-]?\\d{1,9}$"
+          type: string
+        jobTitle:
+          maxLength: 100
+          nullable: true
+          pattern: "^[a-zA-Z ]+$"
+          type: string
+        orgRegisteredAddress:
+          $ref: "#/components/schemas/OrgRegisteredAddress"
+      required:
+      - companiesHouseNumber
+      - firstName
+      - jobTitle
+      - lastName
+      - orgName
+      - orgRegisteredAddress
+      - orgType
+      - preferredContactType
+      type: object
+    OrgRegisteredAddress:
+      example:
+        country: country
+        town: town
+        county: county
+        postcode: postcode
+        addressLine1: addressLine1
+        addressLine2: addressLine2
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          nullable: true
+          type: string
+        town:
+          nullable: true
+          type: string
+        county:
+          nullable: true
+          type: string
+        postcode:
+          type: string
+        country:
+          nullable: true
+          type: string
+      required:
+      - addressLine1
+      - postcode
+      type: object
+    PreferredContactType:
+      enum:
+      - Landline
+      - Mobile
+      type: string
+    ProblemDetails:
+      example:
+        instance: instance
+        detail: detail
+        type: type
+        title: title
+        status: 0
+      properties:
+        type:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        detail:
+          nullable: true
+          type: string
+        instance:
+          nullable: true
+          type: string
+      type: object
+    UpdateOrgDetailsAndRolesRequest:
+      example:
+        orgDetails:
+          orgType: orgType
+          firstName: firstName
+          lastName: lastName
+          orgName: orgName
+          preferredContactType: Landline
+          mobileNumber: mobileNumber
+          jobTitle: jobTitle
+          landlineNumber: landlineNumber
+          companiesHouseNumber: companiesHouseNumber
+          orgId: orgId
+          contactNumberExtension: contactNumberExtension
+          orgRegisteredAddress:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+        role: RegulatoryContact
+      properties:
+        orgDetails:
+          $ref: "#/components/schemas/OrgDetails2"
+        role:
+          $ref: "#/components/schemas/UserRole"
+      required:
+      - orgDetails
+      - role
+      type: object
+    User:
+      example:
+        orgDetails:
+          orgType: orgType
+          firstName: firstName
+          lastName: lastName
+          orgName: orgName
+          preferredContactType: Landline
+          mobileNumber: mobileNumber
+          jobTitle: jobTitle
+          landlineNumber: landlineNumber
+          companiesHouseNumber: companiesHouseNumber
+          orgId: orgId
+          contactNumberExtension: contactNumberExtension
+          orgRegisteredAddress:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+        invitations:
+        - firstName: firstName
+          lastName: lastName
+          permissions:
+          - permissions
+          - permissions
+          id: id
+          invitedEmail: invitedEmail
+          invitedAt: 2000-01-23T04:56:07.000+00:00
+          status: status
+        - firstName: firstName
+          lastName: lastName
+          permissions:
+          - permissions
+          - permissions
+          id: id
+          invitedEmail: invitedEmail
+          invitedAt: 2000-01-23T04:56:07.000+00:00
+          status: status
+        roles:
+        - RegulatoryContact
+        - RegulatoryContact
+        oneLoginId: oneLoginId
+        emailId: emailId
+        id: id
+        hnIds:
+        - hnIds
+        - hnIds
+        status: Active
+      properties:
+        id:
+          nullable: true
+          type: string
+        oneLoginId:
+          type: string
+        orgDetails:
+          $ref: "#/components/schemas/OrgDetails"
+        emailId:
+          type: string
+        hnIds:
+          items:
+            type: string
+          nullable: true
+          type: array
+        roles:
+          items:
+            $ref: "#/components/schemas/UserRole"
+          nullable: true
+          type: array
+        status:
+          $ref: "#/components/schemas/NullableOfUserStatus"
+        invitations:
+          items:
+            $ref: "#/components/schemas/Invitation"
+          nullable: true
+          type: array
+      type: object
+    UserResponse:
+      example:
+        emailAddress: emailAddress
+        roles:
+        - roles
+        - roles
+        fullName: fullName
+        organisation:
+          name: name
+          id: id
+          companinesHouseNumber: companinesHouseNumber
+        id: id
+        status: status
+      properties:
+        id:
+          type: string
+        emailAddress:
+          type: string
+        fullName:
+          nullable: true
+          type: string
+        organisation:
+          $ref: "#/components/schemas/Organisation"
+        roles:
+          items:
+            type: string
+          nullable: true
+          type: array
+        status:
+          type: string
+      type: object
+    UserRole:
+      enum:
+      - RegulatoryContact
+      - ThirdParty
+      - Contributor
+      type: string
+    UserStatus:
+      enum:
+      - Active
+      - InActive
+      - InvitationSent
+      - InvitationAccepted
+      - InvitationDeclined
+      type: string
+
