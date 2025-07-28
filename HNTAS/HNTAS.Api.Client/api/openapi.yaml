@@ -16,17 +16,17 @@ paths:
             text/plain:
               schema:
                 items:
-                  $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/UserResponse"
                 type: array
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/UserResponse"
                 type: array
             text/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/UserResponse"
                 type: array
           description: OK
         "500":
@@ -79,13 +79,53 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/UserResponse"
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/UserResponse"
             text/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/UserResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/onelogin/{oneLoginId}:
+    get:
+      operationId: GetUserByOneLoginId
+      parameters:
+      - explode: false
+        in: path
+        name: oneLoginId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
           description: OK
         "404":
           content:
@@ -119,26 +159,14 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/User"
+                type: string
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                type: string
             text/json:
               schema:
-                $ref: "#/components/schemas/User"
+                type: string
           description: Created
-        "200":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/User"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/User"
-          description: OK
         "400":
           content:
             text/plain:
@@ -306,6 +334,20 @@ components:
       - null
       nullable: true
       type: string
+    Organisation:
+      example:
+        name: name
+        id: id
+        companinesHouseNumber: companinesHouseNumber
+      nullable: true
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        companinesHouseNumber:
+          type: string
+      type: object
     OrgDetails:
       example:
         orgType: orgType
@@ -317,7 +359,7 @@ components:
         jobTitle: jobTitle
         landlineNumber: landlineNumber
         companiesHouseNumber: companiesHouseNumber
-        orgId: 0
+        orgId: orgId
         contactNumberExtension: contactNumberExtension
         orgRegisteredAddress:
           country: country
@@ -329,9 +371,8 @@ components:
       nullable: true
       properties:
         orgId:
-          format: int32
           nullable: true
-          type: integer
+          type: string
         orgType:
           type: string
         companiesHouseNumber:
@@ -389,7 +430,7 @@ components:
         jobTitle: jobTitle
         landlineNumber: landlineNumber
         companiesHouseNumber: companiesHouseNumber
-        orgId: 0
+        orgId: orgId
         contactNumberExtension: contactNumberExtension
         orgRegisteredAddress:
           country: country
@@ -400,9 +441,8 @@ components:
           addressLine2: addressLine2
       properties:
         orgId:
-          format: int32
           nullable: true
-          type: integer
+          type: string
         orgType:
           type: string
         companiesHouseNumber:
@@ -520,7 +560,7 @@ components:
           jobTitle: jobTitle
           landlineNumber: landlineNumber
           companiesHouseNumber: companiesHouseNumber
-          orgId: 0
+          orgId: orgId
           contactNumberExtension: contactNumberExtension
           orgRegisteredAddress:
             country: country
@@ -551,7 +591,7 @@ components:
           jobTitle: jobTitle
           landlineNumber: landlineNumber
           companiesHouseNumber: companiesHouseNumber
-          orgId: 0
+          orgId: orgId
           contactNumberExtension: contactNumberExtension
           orgRegisteredAddress:
             country: country
@@ -616,6 +656,37 @@ components:
             $ref: "#/components/schemas/Invitation"
           nullable: true
           type: array
+      type: object
+    UserResponse:
+      example:
+        emailAddress: emailAddress
+        roles:
+        - roles
+        - roles
+        fullName: fullName
+        organisation:
+          name: name
+          id: id
+          companinesHouseNumber: companinesHouseNumber
+        id: id
+        status: status
+      properties:
+        id:
+          type: string
+        emailAddress:
+          type: string
+        fullName:
+          nullable: true
+          type: string
+        organisation:
+          $ref: "#/components/schemas/Organisation"
+        roles:
+          items:
+            type: string
+          nullable: true
+          type: array
+        status:
+          type: string
       type: object
     UserRole:
       enum:

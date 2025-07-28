@@ -1,6 +1,7 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,12 +10,12 @@ namespace HNTAS.Web.UI.Controllers;
 public class HomeController : Controller
 {
 
-    private readonly IUsersApi _usersApi;
+    private readonly IUserService _iUserService;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(IUsersApi usersApi, ILogger<HomeController> logger)
+    public HomeController(IUserService iUserService, ILogger<HomeController> logger)
     {
-        _usersApi = usersApi;
+        _iUserService = iUserService;
         _logger = logger;
     }
 
@@ -31,31 +32,38 @@ public class HomeController : Controller
             return View();
         }
 
-        var registration = new InitialUserRegistrationRequest(emailId: email, oneLoginId: oneLoginId, status: UserStatus.Active );
+        try {
 
-        try
-        {
-            _logger.LogInformation("Submitting initial user entry. Email: {Email}, ID: {Id}", email, oneLoginId);
-
-            var response = await _usersApi.ApiUsersInitialEntryPostOrDefaultAsync(registration);
-
-            if (!response.IsSuccessStatusCode)
+            // Check if user already exists in the system
+            var existingUserResponse = await _iUserService.GetUserByOneLoginId(oneLoginId);
+            if (existingUserResponse == null)
             {
-                _logger.LogError("API call failed. Status: {Status}", response.StatusCode);
-                TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
-                return View();
+                //Create new user entry if not found
+                var registration = new InitialUserRegistrationRequest(emailId: email, oneLoginId: oneLoginId, status: UserStatus.Active);
+
+                _logger.LogInformation("Submitting initial user entry. Email: {Email}, ID: {Id}", email, oneLoginId);
+
+                var id = await _iUserService.CreateUser(registration);
+
+                if (string.IsNullOrWhiteSpace(id))
+                {
+                    _logger.LogError("API returned no valid user object.");
+                    TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
+                    return View();
+                }
+
+                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey, id);
             }
-
-            var apiUser = response.IsCreated ? response.Created() : response.IsOk ? response.Ok() : null;
-
-            if (string.IsNullOrWhiteSpace(apiUser?.Id))
+            else if (existingUserResponse?.Organisation == null)
             {
-                _logger.LogError("API returned no valid user object.");
-                TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
-                return View();
+                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey, existingUserResponse?.Id);
             }
-
-            SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey, apiUser.Id);
+            else
+            {
+                //Todo: Handle existing user case, e.g., redirect to dashboard or profile update
+                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey, existingUserResponse.Id);
+                return RedirectToAction("ManageUsers", "User");
+            }
         }
         catch (Exception ex)
         {

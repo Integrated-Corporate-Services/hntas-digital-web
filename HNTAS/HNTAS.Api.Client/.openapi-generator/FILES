@@ -11,10 +11,12 @@ docs/models/NullableOfUserStatus.md
 docs/models/OrgDetails.md
 docs/models/OrgDetails2.md
 docs/models/OrgRegisteredAddress.md
+docs/models/Organisation.md
 docs/models/PreferredContactType.md
 docs/models/ProblemDetails.md
 docs/models/UpdateOrgDetailsAndRolesRequest.md
 docs/models/User.md
+docs/models/UserResponse.md
 docs/models/UserRole.md
 docs/models/UserStatus.md
 docs/scripts/git_push.ps1
@@ -53,10 +55,12 @@ src/HNTAS.Api.Client/Model/NullableOfUserStatus.cs
 src/HNTAS.Api.Client/Model/OrgDetails.cs
 src/HNTAS.Api.Client/Model/OrgDetails2.cs
 src/HNTAS.Api.Client/Model/OrgRegisteredAddress.cs
+src/HNTAS.Api.Client/Model/Organisation.cs
 src/HNTAS.Api.Client/Model/PreferredContactType.cs
 src/HNTAS.Api.Client/Model/ProblemDetails.cs
 src/HNTAS.Api.Client/Model/UpdateOrgDetailsAndRolesRequest.cs
 src/HNTAS.Api.Client/Model/User.cs
+src/HNTAS.Api.Client/Model/UserResponse.cs
 src/HNTAS.Api.Client/Model/UserRole.cs
 src/HNTAS.Api.Client/Model/UserStatus.cs
 src/HNTAS.Api.Client/README.md

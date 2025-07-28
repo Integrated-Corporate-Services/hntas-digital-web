@@ -9,10 +9,11 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersIdOrgDetailsPatch**](UsersApi.md#apiusersidorgdetailspatch) | **PATCH** /api/Users/{id}/org-details |  |
 | [**ApiUsersInitialEntryPost**](UsersApi.md#apiusersinitialentrypost) | **POST** /api/Users/initial-entry |  |
 | [**GetUserById**](UsersApi.md#getuserbyid) | **GET** /api/Users/{id} |  |
+| [**GetUserByOneLoginId**](UsersApi.md#getuserbyoneloginid) | **GET** /api/Users/onelogin/{oneLoginId} |  |
 
 <a id="apiusersget"></a>
 # **ApiUsersGet**
-> List&lt;User&gt; ApiUsersGet ()
+> List&lt;UserResponse&gt; ApiUsersGet ()
 
 
 
@@ -21,7 +22,7 @@ All URIs are relative to *https://localhost:7117*
 This endpoint does not need any parameter.
 ### Return type
 
-[**List&lt;User&gt;**](User.md)
+[**List&lt;UserResponse&gt;**](UserResponse.md)
 
 ### Authorization
 
@@ -117,7 +118,7 @@ No authorization required
 
 <a id="apiusersinitialentrypost"></a>
 # **ApiUsersInitialEntryPost**
-> User ApiUsersInitialEntryPost (InitialUserRegistrationRequest initialUserRegistrationRequest)
+> string ApiUsersInitialEntryPost (InitialUserRegistrationRequest initialUserRegistrationRequest)
 
 
 
@@ -130,7 +131,7 @@ No authorization required
 
 ### Return type
 
-[**User**](User.md)
+**string**
 
 ### Authorization
 
@@ -146,7 +147,6 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Created |  -  |
-| **200** | OK |  -  |
 | **400** | Bad Request |  -  |
 | **409** | Conflict |  -  |
 | **500** | Internal Server Error |  -  |
@@ -155,7 +155,7 @@ No authorization required
 
 <a id="getuserbyid"></a>
 # **GetUserById**
-> User GetUserById (string id)
+> UserResponse GetUserById (string id)
 
 
 
@@ -168,7 +168,43 @@ No authorization required
 
 ### Return type
 
-[**User**](User.md)
+[**UserResponse**](UserResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="getuserbyoneloginid"></a>
+# **GetUserByOneLoginId**
+> UserResponse GetUserByOneLoginId (string oneLoginId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **oneLoginId** | **string** |  |  |
+
+### Return type
+
+[**UserResponse**](UserResponse.md)
 
 ### Authorization
 
