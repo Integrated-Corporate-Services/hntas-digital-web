@@ -66,6 +66,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithAClientTest()
         {
+            var heatNetworksApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
+            Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
             var usersApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
 
@@ -79,6 +82,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithoutAClientTest()
         {
+            var heatNetworksApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
+            Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
             var usersApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
 
@@ -92,6 +98,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithAClientTest()
         {
+            var heatNetworksApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
+            Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+            
             var usersApi = _hostUsingAddWithAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
             
@@ -105,6 +114,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithoutAClientTest()
         {
+            var heatNetworksApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
+            Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
             var usersApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
 

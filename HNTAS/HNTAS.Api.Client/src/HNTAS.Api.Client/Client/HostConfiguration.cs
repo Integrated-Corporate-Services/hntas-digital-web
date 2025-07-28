@@ -43,6 +43,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new DateTimeNullableJsonConverter());
             _jsonOptions.Converters.Add(new DateOnlyJsonConverter());
             _jsonOptions.Converters.Add(new DateOnlyNullableJsonConverter());
+            _jsonOptions.Converters.Add(new HeatNetworkJsonConverter());
             _jsonOptions.Converters.Add(new InitialUserRegistrationRequestJsonConverter());
             _jsonOptions.Converters.Add(new InvitationJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfUserStatusJsonConverter());
@@ -64,6 +65,7 @@ namespace HNTAS.Api.Client.Client
             JsonSerializerOptionsProvider jsonSerializerOptionsProvider = new(_jsonOptions);
             _services.AddSingleton(jsonSerializerOptionsProvider);
             _services.AddSingleton<IApiFactory, ApiFactory>();
+            _services.AddSingleton<HeatNetworksApiEvents>();
             _services.AddSingleton<UsersApiEvents>();
             _services.AddSingleton<WelcomeApiEvents>();
         }
@@ -83,6 +85,7 @@ namespace HNTAS.Api.Client.Client
 
             List<IHttpClientBuilder> builders = new List<IHttpClientBuilder>();
 
+            builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
             builders.Add(_services.AddHttpClient<IUsersApi, UsersApi>(client));
             builders.Add(_services.AddHttpClient<IWelcomeApi, WelcomeApi>(client));
             
