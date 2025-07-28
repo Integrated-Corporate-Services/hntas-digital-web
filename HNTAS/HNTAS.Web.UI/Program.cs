@@ -52,12 +52,21 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new InitialUserRegistrationRequestJsonConverter(),
         new UserRoleJsonConverter(),
         new UserResponseJsonConverter(),
-        new OrganisationJsonConverter()
+        new OrganisationJsonConverter(),
+        new HeatNetworkJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
 builder.Services.AddSingleton<UsersApiEvents>();
 builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
+builder.Services.AddSingleton<HeatNetworksApiEvents>();
+builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");

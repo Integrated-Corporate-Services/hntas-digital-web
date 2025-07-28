@@ -1,5 +1,8 @@
-﻿using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -7,6 +10,18 @@ namespace HNTAS.Web.UI.Controllers
 {
     public class HeatNetworkController : Controller
     {
+
+        private readonly ILogger<HeatNetworkController> _logger;
+        private readonly IHeatNetworksApi _heatNetworksApi;
+        private readonly IUserService _userService;
+
+        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworksApi heatNetworksApi, IUserService userService)
+        {
+            _logger = logger;
+            _heatNetworksApi = heatNetworksApi;
+            _userService = userService;
+        }
+
 
         [HttpGet]
         public IActionResult EnterHNLocation() 
@@ -113,7 +128,29 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View("CheckYourAnswers", viewModel);
             }
-                       
+
+            try { 
+                var model = new HeatNetwork
+                {
+                  Name = viewModel.HeatNetworkNameModel.HeatNetworkName,
+                  Location = viewModel.HeatNetworkLocationModel.HeatNetworkLocation,
+                };
+
+                var response = await _heatNetworksApi.ApiHeatNetworksAddHeatNetworkPostAsync(model);
+
+                if (response.IsCreated)
+                {
+                    var hnmodel = response.Created();
+                    TempData["Confirmation_HN_Id"] = hnmodel.HnId;
+                    _logger.LogInformation("Heat network created successfully with ID: {Id}", hnmodel.HnId);
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error submitting heat network answers.");
+                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
+                return View("CheckYourAnswers", viewModel);
+            }
             SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
             SessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
 
@@ -121,12 +158,13 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Confirmation()
+        public async Task<IActionResult> Confirmation()
         {
-            //var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
-            //ViewBag.companyName = organisationModel?.CompanyDetails?.Title ?? ""; grab from user model, will find org name and contact details
-            ViewBag.contactName = "John";
-            ViewBag.unhid = "HDJ2123F";
+            var userResponse = await _userService.GetUserById(SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey));
+
+            ViewBag.CompanyName = userResponse.Organisation?.Name;
+            ViewBag.ContactName = userResponse.FullName;
+            ViewBag.HNId = TempData["Confirmation_HN_Id"] as string;
             return View("Confirmation");
         }
     }
