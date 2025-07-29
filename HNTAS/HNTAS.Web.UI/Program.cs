@@ -148,11 +148,11 @@ app.UseSession();
 
 app.UseAuthorization();
 
-app.MapGet("/", () => Results.Redirect("/dashboard/user-account"));
+app.MapGet("/", () => Results.Redirect("/heat-network-eligibility/running-ahn"));
 
 app.MapControllerRoute(
     name: "default",
     pattern: "[controller]/[action]/{id?}",
-    defaults: new { controller = "Dashboard", action = "UserAccount" });
+    defaults: new { controller = "HeatNetworkEligibility", action = "RunningAHN" });
 
 app.Run();
