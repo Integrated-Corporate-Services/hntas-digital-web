@@ -14,7 +14,7 @@
         @await Html.PartialAsync("_ErrorSummary", fieldOrder)
 
         <div class="govuk-form-group @(ViewData.ModelState["HeatNetworkLocation"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
-            <p class="govuk-body">To provide the exact location of your heat network, please go to <strong> <a class="govuk-link" href="https://what3words.com/" target="_blank">https://what3words.com/</a> </strong> and enter your geo coordinates there. It will generate a unique url. Please copy that and paste it here.</p>
+            <p class="govuk-body">To provide the exact location of your heat network, please go to <a class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener" href="https://what3words.com/" target="_blank">https://what3words.com/</a> and enter your geo coordinates there. It will generate a unique url. Please copy that and paste it here.</p>
             <label class="govuk-label" for="Address">
                 Enter the url
             </label>

@@ -26,7 +26,13 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult EnterHNLocation() 
         {
-            Utility.ShowBackButton(this, "Confirmation", "User");
+            string previousUrl = Request.Headers["Referer"].ToString();
+           
+            if (previousUrl.Contains("dashboard"))
+            {
+                Utility.ShowBackButton(this, "UserAccount", "Dashboard");
+            }
+           
             var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
             return View("EnterHNLocation", heatNetworkLocationModel);
         }
@@ -35,7 +41,12 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
         {
-            Utility.ShowBackButton(this, "Confirmation", "User");
+            string previousUrl = Request.Headers["Referer"].ToString();
+
+            if (previousUrl.Contains("dashboard"))
+            {
+                Utility.ShowBackButton(this, "UserAccount", "Dashboard");
+            }
 
             if (string.IsNullOrWhiteSpace(model.HeatNetworkLocation))
             {
