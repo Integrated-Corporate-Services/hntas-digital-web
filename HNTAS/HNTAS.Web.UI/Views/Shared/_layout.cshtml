@@ -84,7 +84,7 @@
                 <div class="@(!showBackButton ? "govuk-!-padding-top-3" : "")">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a asp-controller="Account" asp-action="SignOut" class="govuk-link govuk-!-margin-right-0">Sign out</a>
+                        <a asp-controller="Account" asp-action="SignOut" class="govuk-link govuk-link--no-visited-state govuk-!-margin-right-0">Sign out</a>
                     }
                 </div>
             </div>

@@ -1,4 +1,5 @@
-﻿using HNTAS.Web.UI.Filters;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.User;
@@ -6,17 +7,20 @@ using HNTAS.Web.UI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using PreferredContactType = HNTAS.Web.UI.Models.PreferredContactType;
 
 namespace HNTAS.Web.UI.Controllers
 {
     [Authorize]
     public class UserController : Controller
     {
-        private readonly GovUkNotifyService _govUkNotifyService;
+        private readonly IUserService _userService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(GovUkNotifyService govUkNotifyService)
+        public UserController(IUserService userService, ILogger<UserController> logger)
         {
-            _govUkNotifyService = govUkNotifyService;
+            _logger = logger;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -206,17 +210,46 @@ namespace HNTAS.Web.UI.Controllers
             TempData["Confirmation_CompanyName"] = company?.Title;
             TempData["Confirmation_EmailAddress"] = emailAddress;
 
-            await _govUkNotifyService.SendEmailAsync(
-                emailAddress,
-                "297e670f-d6c8-49f2-b0d7-abe77256318a",
-                new Dictionary<string, dynamic>
-                {
-                    { "orgName", company?.Title },
-                    { "orgId", "AC0000001" },
-                    { "fullName", $"{StringFormatter.ToTitleCaseSingleWord(userModel?.ContactDetails.FirstName)} {StringFormatter.ToTitleCaseSingleWord(userModel?.ContactDetails.LastName)}" },
-                    { "address", StringFormatter.FormatAddress(company?.RegisteredOfficeAddress) }
-                }
-            );
+            var userId = SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey);
+
+            var regAddress = new OrgRegisteredAddress(
+                addressLine1 : company?.RegisteredOfficeAddress?.AddressLine1,
+                addressLine2: company?.RegisteredOfficeAddress?.AddressLine2,
+                town: company?.RegisteredOfficeAddress?.Locality,
+                postcode: company?.RegisteredOfficeAddress?.PostalCode,
+                country: company?.RegisteredOfficeAddress?.Country);
+
+            var preferredContactType = userModel?.ContactDetails?.PreferredContactType == PreferredContactType.Landline ? HNTAS.Api.Client.Model.PreferredContactType.Landline : HNTAS.Api.Client.Model.PreferredContactType.Mobile;
+
+            
+
+            try
+            {
+
+                var OrgId = await _userService.UpdateUserOrganisation(userId, new UpdateOrgDetailsAndRolesRequest(new OrgDetails2(
+                    orgType: organisationModel.SelectedOrganisationTypeText,
+                    companiesHouseNumber: organisationModel.CompanyNumber,
+                    orgName: company?.Title,
+                    firstName: userModel?.ContactDetails?.FirstName,
+                    lastName: userModel?.ContactDetails?.LastName,
+                    preferredContactType: preferredContactType,//(HNTAS.Api.Client.Model.PreferredContactType)(int)userModel?.ContactDetails?.PreferredContactType,
+                    orgRegisteredAddress: regAddress,
+                    orgId: null,
+                    landlineNumber: userModel?.ContactDetails?.LandlineNumber,
+                    contactNumberExtension: userModel?.ContactDetails?.ContactNumberExtension,
+                    mobileNumber: userModel?.ContactDetails?.MobileNumber,
+                    jobTitle: userModel?.ContactDetails?.JobTitle), UserRole.RegulatoryContact));
+
+                TempData["Confirmation_Organisation_Id"] = OrgId;
+                _logger.LogInformation("Successfully updated OrgDetails for user {UserId}. Retrieved OrgId: {OrgId}", userId, OrgId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "SubmitAnswers: An unexpected error occurred during API call for user {UserId}.", userId);
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again or contact support.");
+                ViewBag.ShowBackButton = false;
+                return View("CheckAnswers", viewModel);
+            }
 
             SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
             SessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
@@ -230,9 +263,10 @@ namespace HNTAS.Web.UI.Controllers
 
             var companyName = TempData["Confirmation_CompanyName"] as string;
             var emailAddress = TempData["Confirmation_EmailAddress"] as string;
+            var orgId = TempData["Confirmation_Organisation_Id"] as string;
 
 
-            if (string.IsNullOrEmpty(companyName) || string.IsNullOrEmpty(emailAddress))
+            if (string.IsNullOrEmpty(companyName) || string.IsNullOrEmpty(emailAddress) || string.IsNullOrEmpty(orgId))
             {
                 // Ensure any lingering session data is cleared before redirecting for a clean start.
                 SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
@@ -241,10 +275,47 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.CompanyName = companyName;
             ViewBag.EmailAddress = emailAddress;
+            ViewBag.OrganisationId = orgId; 
 
             ViewBag.ShowBackButton = false;
 
             return View("Confirmation");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUsers()
+        {
+            try
+            {
+                var userId = SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey);
+
+                var user = await _userService.GetUserById(userId);
+
+                var viewModel = new ManageUsersModel
+                {
+                    OrganisationName = user.Organisation?.Name,
+                    Users = new List<UserDisplayModel> { new UserDisplayModel
+                    {
+                        Id = user.Id,
+                        EmailAddress = user.EmailAddress,
+                        Name = user.FullName,
+                        Roles = user.Roles.Select(r => r.ToString()).ToList(),
+                        Status = user.Status.ToString()
+                    } }
+                };
+
+                ViewBag.ShowBackButton = true;
+                ViewBag.BackLinkUrl = Url.Action("UserAccount", "Dashboard");
+
+                return View("ManageUsers", viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while trying to manage users.");
+                TempData["ErrorMessage"] = "An unexpected error occurred. Please try again later.";
+                return View("ManageUsers");
+            }
         }
     }
 }
