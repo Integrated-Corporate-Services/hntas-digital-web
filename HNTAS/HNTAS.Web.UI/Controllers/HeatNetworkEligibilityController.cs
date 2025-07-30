@@ -32,7 +32,7 @@ namespace HNTAS.Web.UI.Controllers
 
             SessionHelper.SaveToSession<RunningAHNViewModel>(HttpContext, runningAHNModelKey, model);
 
-            if (model.IsRunningHeatNetwork == false)
+            if (model.IsRunningHeatNetwork == "No")
             {
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
@@ -62,7 +62,7 @@ namespace HNTAS.Web.UI.Controllers
 
             SessionHelper.SaveToSession<ServesGt10DwellingsViewModel>(HttpContext, servesGt10DwellingsModelKey, model);
 
-            if (model.ServesMoreThan10Dwellings == false)
+            if (model.ServesMoreThan10Dwellings == "No")
             {
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
@@ -92,7 +92,7 @@ namespace HNTAS.Web.UI.Controllers
 
             SessionHelper.SaveToSession<LocatedInUkViewModel>(HttpContext, locatedInUkModelKey, model);
 
-            if (model.IsInUK == false)
+            if (model.IsInUK == "No")
             {
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
@@ -122,7 +122,7 @@ namespace HNTAS.Web.UI.Controllers
 
             SessionHelper.SaveToSession<OperatingAHNViewModel>(HttpContext, operatingAHNModelKey, model);
 
-            if (model.IsExistingOrPlanned == false)
+            if (model.IsExistingOrPlanned == "No")
             {
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
