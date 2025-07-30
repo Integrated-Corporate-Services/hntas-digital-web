@@ -100,7 +100,7 @@ builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.Authenticatio
                 SecurityAlgorithms.RsaSha256);
         }
 
-        options.VectorsOfTrust = ["Cl"];
+        options.VectorsOfTrust = ["Cl.Cm"];
     });
 
 builder.Services.AddSession(options =>
