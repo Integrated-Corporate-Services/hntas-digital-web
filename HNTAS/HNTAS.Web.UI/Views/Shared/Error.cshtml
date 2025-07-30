@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Service Error";
+    var errorMessage = TempData["ErrorMessage"] as string ?? "Sorry, something went wrong.";
+}
+
+<div class="govuk-width-container">
+    <h1 class="govuk-heading-xl">Sorry, there’s a problem</h1>
+    <p class="govuk-body">
+        @errorMessage
+    </p>
+    <p class="govuk-body">
+        <a href="/" class="govuk-link">Go back to the homepage</a>
+    </p>
+</div>
