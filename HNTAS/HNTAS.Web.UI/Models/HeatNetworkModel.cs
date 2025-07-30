@@ -15,4 +15,15 @@ namespace HNTAS.Web.UI.Models
         public string HeatNetworkLocation { get; set; }
     }
 
+    public class CheckYourAnswersHeatNetworkModel
+    {
+        public HeatNetworkNameModel HeatNetworkNameModel { get; set; }
+        public HeatNetworkLocationModel HeatNetworkLocationModel { get; set; }
+
+        // The ConfirmedDeclaration property, now part of this specific ViewModel
+        [Display(Name = "I confirm that")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "You must confirm the declaration to proceed.")]
+        public bool ConfirmedDeclaration { get; set; }
+    }
+
 }

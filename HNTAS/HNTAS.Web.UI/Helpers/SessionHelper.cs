@@ -15,6 +15,8 @@ namespace HNTAS.Web.UI.Helpers
 
             // Session key for the boolean flow state
             public const string IsCheckAnswerFlowKey = "IsCheckAnswerFlow";
+            public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
+            public const string HeatNetworkNameModelKey = "HeatNetworkName";
         }
 
         #endregion
@@ -61,6 +63,8 @@ namespace HNTAS.Web.UI.Helpers
         {
             ClearFromSession(context, SessionKeys.UserCreation_SessionKey);
             ClearFromSession(context, SessionKeys.OrganisationCreation_SessionKey);
+            ClearFromSession(context, SessionKeys.HeatNetworkLocationModelKey);
+            ClearFromSession(context, SessionKeys.HeatNetworkNameModelKey);
             context.Session.Remove(SessionKeys.IsCheckAnswerFlowKey);
         }
 
