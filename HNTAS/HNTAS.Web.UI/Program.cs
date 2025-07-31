@@ -28,6 +28,10 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 
+Console.WriteLine("*********************in UI**************");
+Console.WriteLine("Environment: " + builder.Environment.EnvironmentName);
+Console.WriteLine("from env variable: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+
 var coreApiBaseUrl = builder.Configuration.GetValue<string>("ApiClients:CoreApiBaseUrl");
 
 // It's crucial to validate that the configuration value was actually found
