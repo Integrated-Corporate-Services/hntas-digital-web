@@ -1,6 +1,7 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -85,5 +86,33 @@ public class HomeController : Controller
     public IActionResult StartPage()
     {
         return View();
+    }
+
+    [HttpGet]
+    public IActionResult WhatDoYouWantToDo()
+    {
+        this.ShowBackButton("StartPage", "Home");
+        return View(new WhatDoYouWantToDoViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult WhatDoYouWantToDo(WhatDoYouWantToDoViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        switch (model.UserPathToday)
+        {
+            case "registerNewHN":
+                return RedirectToAction("RunningAHN", "HeatNetworkEligibility");
+            case "updateExistingHN":
+                return RedirectToAction("Index", "Home");
+            default:
+                ModelState.AddModelError(nameof(model.UserPathToday), "Invalid selection. Please try again.");
+                return View();
+        }
     }
 }

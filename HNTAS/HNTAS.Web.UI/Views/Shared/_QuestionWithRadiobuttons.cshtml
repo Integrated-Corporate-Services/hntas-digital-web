@@ -1,13 +1,20 @@
 ﻿@using HNTAS.Web.UI.Models
 @model QuestionWithRadiobuttonsModel
 
-<form asp-controller="HeatNetworkEligibility" asp-action="@Model.Action" method="post" novalidate>
+@{
+    bool hasError (string qid)
+    {
+        return ViewData.ModelState.ContainsKey(qid) && ViewData.ModelState[qid].Errors.Any(); 
+    }
+}
+
+<form asp-controller="@Model.Controller" asp-action="@Model.Action" method="post" novalidate>
     @Html.AntiForgeryToken()
     @await Html.PartialAsync("_ErrorSummary", Model.FieldOrder)
     @foreach (Question q in Model.Questions)
     {
-        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(q.QId) && ViewData.ModelState[q.QId].Errors.Any() ? "govuk-form-group--error" : "")">
-            <fieldset class="govuk-fieldset" aria-describedby="is-in-uk-hint @(ViewData.ModelState.ContainsKey(q.QId) && ViewData.ModelState[q.QId].Errors.Any() ? $"{q.QId}-error" : "")">
+        <div class="govuk-form-group @(hasError(q.QId) ? "govuk-form-group--error" : "")">
+            <fieldset class="govuk-fieldset" id="@q.QId" aria-describedby="@q.QId-hint @(hasError(q.QId) ? $"{q.QId}-error" : "")">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                     <h1 class="govuk-fieldset__heading">@q.QText</h1>
                 </legend>
@@ -34,8 +41,8 @@
                     @foreach (Option option in q.Options)
                     {
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="@option.OptId" name="@q.QId" type="radio" value="@option.OptValue" aria-describedby="@q.QId-hint" @(q.SeletedOption == option.OptValue ? "checked" : "")>
-                            <label class="govuk-label govuk-radios__label" for="@option.OptId">@option.OptValue</label>
+                            <input class="govuk-radios__input" id="@option.OptId" name="@q.QId" type="radio" value="@option.OptId" aria-describedby="@q.QId-hint" @(q.SeletedOption == option.OptText ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="@option.OptId">@option.OptText</label>
                             @if (!string.IsNullOrEmpty(option.OptHintText))
                             {
                                 <div id="@q.QId-item-hint" class="govuk-hint govuk-radios__hint">

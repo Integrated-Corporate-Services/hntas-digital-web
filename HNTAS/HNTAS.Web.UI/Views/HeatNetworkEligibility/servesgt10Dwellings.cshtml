@@ -6,6 +6,7 @@
     var fieldOrder = new[] { nameof(Model.ServesMoreThan10Dwellings) };
     var pageData = new QuestionWithRadiobuttonsModel
     {
+        Controller = "HeatNetworkEligibility",
         Action = "ServesGt10Dwellings",
         FieldOrder = fieldOrder,
         Questions = new List<Question>
@@ -18,8 +19,8 @@
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = "dwellingsYes", OptValue = "Yes", OptHintText = null },
-                    new Option { OptId = "dwellingsNo", OptValue = "No", OptHintText = null }
+                    new Option { OptId = "dwellingsYes", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = "dwellingsNo", OptText = "No", OptHintText = null }
                 },
                 SeletedOption = Model.ServesMoreThan10Dwellings
             }

@@ -6,6 +6,7 @@
     var fieldOrder = new[] { nameof(Model.IsExistingOrPlanned) };
     var pageData = new QuestionWithRadiobuttonsModel
     {
+        Controller = "HeatNetworkEligibility",
         Action = "OperatingAHN",
         FieldOrder = fieldOrder,
         Questions = new List<Question>
@@ -18,8 +19,8 @@
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = "existingYes", OptValue = "Yes", OptHintText = null },
-                    new Option { OptId = "existingNo", OptValue = "No", OptHintText = null }
+                    new Option { OptId = "existingYes", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = "existingNo", OptText = "No", OptHintText = null }
                 },
                 SeletedOption = Model.IsExistingOrPlanned
             }
