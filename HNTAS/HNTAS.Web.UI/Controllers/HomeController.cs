@@ -92,7 +92,8 @@ public class HomeController : Controller
     public IActionResult WhatDoYouWantToDo()
     {
         this.ShowBackButton("StartPage", "Home");
-        return View(new WhatDoYouWantToDoViewModel());
+        var model = SessionHelper.GetFromSession<WhatDoYouWantToDoViewModel>(HttpContext, SessionHelper.SessionKeys.WhatDoYouWantToDoViewModelKey) ?? new WhatDoYouWantToDoViewModel();
+        return View(model);
     }
 
     [HttpPost]
@@ -107,8 +108,10 @@ public class HomeController : Controller
         switch (model.UserPathToday)
         {
             case "registerNewHN":
+                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.WhatDoYouWantToDoViewModelKey, model);
                 return RedirectToAction("RunningAHN", "HeatNetworkEligibility");
             case "updateExistingHN":
+                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.WhatDoYouWantToDoViewModelKey, model);
                 return RedirectToAction("Index", "Home");
             default:
                 ModelState.AddModelError(nameof(model.UserPathToday), "Invalid selection. Please try again.");
