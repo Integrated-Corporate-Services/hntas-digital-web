@@ -1,43 +1,32 @@
-﻿@model HNTAS.Web.UI.Models.ServesGt10DwellingsViewModel
+﻿@using HNTAS.Web.UI.Models
+@model ServesGt10DwellingsViewModel
 
 @{
     ViewData["Title"] = "Check your eligibility to register a heat network";
     var fieldOrder = new[] { nameof(Model.ServesMoreThan10Dwellings) };
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Action = "ServesGt10Dwellings",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = nameof(Model.ServesMoreThan10Dwellings),
+                QText = "Does the heat network serve more than 10 dwellings?",
+                QDescText = null,
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = "dwellingsYes", OptValue = "Yes", OptHintText = null },
+                    new Option { OptId = "dwellingsNo", OptValue = "No", OptHintText = null }
+                },
+                SeletedOption = Model.ServesMoreThan10Dwellings
+            }
+        }
+    };
 }
 
 <div class="govuk-width-container">
-    <form asp-controller="HeatNetworkEligibility" asp-action="ServesGt10Dwellings" method="post" novalidate>
-        @Html.AntiForgeryToken()
-        @await Html.PartialAsync("_ErrorSummary", fieldOrder)
-        <div class="govuk-form-group" @(ViewData.ModelState["ServesMoreThan10Dwellings"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")>
-            <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                    <h1 class="govuk-fieldset__heading">Does the heat network serve more than 10 dwellings?</h1>
-                </legend>
-                @if (ViewData.ModelState["ServesMoreThan10Dwellings"]?.Errors.Count > 0)
-                {
-                    <span class="govuk-error-message">
-                        @ViewData.ModelState["ServesMoreThan10Dwellings"].Errors[0].ErrorMessage
-                    </span>
-                }
-                <div class="govuk-radios">
-                    <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="dwellingsYes" name="ServesMoreThan10Dwellings" type="radio" value="true" checked="@Model.ServesMoreThan10Dwellings" />
-                        <label class="govuk-label govuk-radios__label" for="dwellingsYes">Yes</label>
-                    </div>
-                    <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="dwellingsNo" name="ServesMoreThan10Dwellings" type="radio" value="false" checked="@(!Model.ServesMoreThan10Dwellings)" />
-                        <label class="govuk-label govuk-radios__label" for="dwellingsNo">No</label>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-
-        <button class="govuk-button" type="submit">Continue</button>
-    </form>
-
-    @if (!string.IsNullOrEmpty(ViewBag.ResultMessage as string))
-    {
-        <div class="govuk-inset-text">@ViewBag.ResultMessage</div>
-    }
+    @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
 </div>
