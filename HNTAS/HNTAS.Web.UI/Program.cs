@@ -27,15 +27,10 @@ builder.Services.AddControllersWithViews(options =>
     options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
 });
 
+
 Console.WriteLine("*********************in UI**************");
 Console.WriteLine("Environment: " + builder.Environment.EnvironmentName);
 Console.WriteLine("from env variable: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
-
-// Dynamically load appsettings.{ENVIRONMENT}.json if it exists
-builder.Configuration.AddJsonFile(
-    $"appsettings.{builder.Environment.EnvironmentName}.json",
-    optional: true,
-    reloadOnChange: true);
 
 var coreApiBaseUrl = builder.Configuration.GetValue<string>("ApiClients:CoreApiBaseUrl");
 
