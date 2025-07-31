@@ -38,20 +38,22 @@
                           aria-describedby="regulatory-contact-hint @(ViewData.ModelState.ContainsKey(nameof(Model.ifRPisRC)) && ViewData.ModelState[nameof(Model.ifRPisRC)].Errors.Any() ? "regulatory-contact-error" : "")">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
-                            Are you @Model.OrganisationName regulatory contact for heat networks?
+                            Are you the regulatory contact for @Model.OrganisationName?
                         </h1>
                     </legend>
 
-                    <p class="govuk-body">This is typically your organisation's most senior member of staff with responsibility for heat networks.</p>
+                    <p class="govuk-body">
+                        This is usually your organisation's most senior staff member responsible for heat networks.
+                    </p>
 
-                    <p class="govuk-body">As regulatory contact, you'll:</p>
+                    <p class="govuk-body">As the regulatory contact, you'll:</p>
                     <ul class="govuk-list govuk-list--bullet">
-                        <li>be HNTAS main point of contact for any regulatory and compliance matters in relation to your organisation’s heat networks</li>
-                        <li>have full access to all features in HNTAS digital heat networks service, for example managing users and submitting heat network information</li>
-                        <li>be initially responsible for inviting other users into the account and setting their permissions, so they can help your organisation fulfil its regulatory duties</li>
+                        <li>be the main point of contact for any regulatory or compliance matters</li>
+                        <li>have full access to the HNTAS digital service, including managing users and submitting heat network information</li>
+                        <li>be responsible for inviting other users and setting their permissions</li>
                     </ul>
 
-                    <p class="govuk-body">You can change the regulatory contact in the future, if you need to.</p>
+                    <p class="govuk-body">You can change the regulatory contact later if needed.</p>
 
                     <div class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         <h2 class="govuk-fieldset__heading">Are you the regulatory contact?</h2>

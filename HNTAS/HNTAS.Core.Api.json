@@ -248,6 +248,18 @@
         }
       }
     },
+    "/api/Test/test-documentdb-connection": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Users": {
       "get": {
         "tags": [
@@ -701,6 +713,48 @@
         }
       }
     },
+    "/api/Users/organisation/exists/{companiesHouseNumber}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "companiesHouseNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/Welcome": {
       "get": {
         "tags": [
@@ -1126,6 +1180,9 @@
   "tags": [
     {
       "name": "HeatNetworks"
+    },
+    {
+      "name": "Test"
     },
     {
       "name": "Users"

@@ -4,9 +4,11 @@ using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.CompaniesHouse;
 using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services;
+using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -14,10 +16,14 @@ namespace HNTAS.Web.UI.Controllers
     public class OrganisationController : Controller
     {
         private readonly ICompaniesHouseService _companiesHouseService;
+        private readonly ILogger<OrganisationController> _logger;
+        private readonly IUserService _userService;
 
-        public OrganisationController(ICompaniesHouseService companiesHouseService)
+        public OrganisationController(ICompaniesHouseService companiesHouseService, ILogger<OrganisationController> logger, IUserService userService)
         {
             _companiesHouseService = companiesHouseService;
+            _logger = logger;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -57,10 +63,19 @@ namespace HNTAS.Web.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                model.SelectedOrganisationTypeText = GetOrganisationTypeOptions()
+                string? selectedOrganisationTypeText = GetOrganisationTypeOptions()
                     .FirstOrDefault(item => item.Value == model.SelectedOrganisationType)?.Text;
 
-                if (model.SelectedOrganisationType == OrganisationType.Other.ToString())
+                if(selectedOrganisationTypeText == null)
+                {
+                    ModelState.AddModelError(nameof(model.SelectedOrganisationType), "Please select a valid organisation type.");
+                    model.OrganisationTypes = GetOrganisationTypeOptions();
+                    return View("Type", model);
+                }
+
+                model.SelectedOrganisationTypeText = selectedOrganisationTypeText;
+
+                if (model.SelectedOrganisationType == OrganisationType.OtherUkOrganisation.ToString() || model.SelectedOrganisationType == OrganisationType.OverseasOrganisation.ToString())
                 {
                     ModelState.AddModelError(nameof(model.SelectedOrganisationType), "Not applicable for this scope");
                     model.OrganisationTypes = GetOrganisationTypeOptions();
@@ -164,7 +179,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [EnsureSessionForOrganisationFlowOnPost]
-        public IActionResult ConfirmAndContinue()
+        public async Task<IActionResult> ConfirmAndContinue()
         {
             var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
 
@@ -177,6 +192,12 @@ namespace HNTAS.Web.UI.Controllers
 
             //Set empty contact details to ensure they pass the EnsureSessionForOrganisationFlowOnPost action filter validation 
             //on user controller actions
+            bool? alreadyExists = await _userService.IsOrganisationHasRpUser(organisationModel?.CompanyNumber);
+            if(alreadyExists.HasValue && alreadyExists.Value)
+            { 
+                return RedirectToAction("AlreadyRegistered");
+            }
+
             var existingUserModel = SessionHelper.GetFromSession<UserModel>(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey);
 
             if(existingUserModel == null)
@@ -188,12 +209,20 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("ConfirmRPIsRC", "User");
         }
 
+        public IActionResult AlreadyRegistered()
+        {
+            ViewBag.ShowBackButton = true;
+            ViewBag.BackLinkUrl = Url.Action("CompanyConfirm", "Organisation");
+            return View();
+        }
+
         private List<SelectListItem> GetOrganisationTypeOptions()
         {
             return new List<SelectListItem>
             {
                 new SelectListItem { Value = OrganisationType.UkCompaniesHouse.ToString(), Text = "UK company registered with Companies House" },
-                new SelectListItem { Value = OrganisationType.Other.ToString(), Text = "Other" }
+                new SelectListItem { Value = OrganisationType.OtherUkOrganisation.ToString(), Text = "Other UK organisation" },
+                new SelectListItem { Value = OrganisationType.OverseasOrganisation.ToString(), Text = "Overseas organisation" }
             };
         }
     }

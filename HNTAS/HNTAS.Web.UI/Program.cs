@@ -4,6 +4,7 @@ using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Routing;
 using HNTAS.Web.UI.Services;
+using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
@@ -152,11 +153,11 @@ app.UseSession();
 
 app.UseAuthorization();
 
-app.MapGet("/", () => Results.Redirect("/heat-network-eligibility/running-ahn"));
+app.MapGet("/", () => Results.Redirect("/home/index"));
 
 app.MapControllerRoute(
     name: "default",
     pattern: "[controller]/[action]/{id?}",
-    defaults: new { controller = "HeatNetworkEligibility", action = "RunningAHN" });
+    defaults: new { controller = "Home", action = "Index" });
 
 app.Run();

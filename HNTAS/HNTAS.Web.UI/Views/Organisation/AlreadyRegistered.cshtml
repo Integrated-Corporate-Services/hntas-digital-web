@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Company already registered";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">
+                This company is already registered with the service
+            </h1>
+
+            <p class="govuk-body">
+                A company with the same name is already registered with the Heat Network Technical Assurance Scheme (HNTAS).
+            </p>
+
+            <h2 class="govuk-heading-m">What to do next</h2>
+
+            <p class="govuk-body">You should:</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>check the company name and number, then try again</li>
+                <li>contact someone at your organisation who manages your HNTAS account</li>
+            </ul>
+
+            <a class="govuk-button" data-module="govuk-button" asp-action="CompanyConfirm" asp-controller="Organisation">
+                Check again
+            </a>
+        </div>
+    </div>
+</div>

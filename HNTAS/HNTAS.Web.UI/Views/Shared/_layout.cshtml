@@ -90,7 +90,9 @@
             </div>
         </div>
 
-        <main class="govuk-main-wrapper app-main-class" id="main-content">
+        <partial name="_ErrorMessagePartial" />
+
+        <main class="govuk-main-wrapper app-main-class" id="main-content">   
             @RenderBody()
         </main>
     </div>

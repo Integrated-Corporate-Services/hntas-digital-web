@@ -3,7 +3,7 @@ using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.User;
-using HNTAS.Web.UI.Services;
+using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -91,6 +91,14 @@ namespace HNTAS.Web.UI.Controllers
                 return RedirectToAction("ContactDetails");
             }
             return RedirectToAction("Guidance", "Guidance");
+        }
+
+        public IActionResult CannotContinue()
+        {
+            // This action is used to handle cases where the user cannot continue with the flow.
+            // It can be used to display a message or redirect to a different page.
+            ViewBag.ShowBackButton = false;
+            return View("CannotContinue");
         }
 
         [HttpGet]

@@ -6,6 +6,7 @@ servers:
 - url: https://localhost:7117/
 tags:
 - name: HeatNetworks
+- name: Test
 - name: Users
 - name: Welcome
 paths:
@@ -155,6 +156,13 @@ paths:
           description: Internal Server Error
       tags:
       - HeatNetworks
+  /api/Test/test-documentdb-connection:
+    get:
+      responses:
+        "200":
+          description: OK
+      tags:
+      - Test
   /api/Users:
     get:
       responses:
@@ -438,6 +446,33 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/organisation/exists/{companiesHouseNumber}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: companiesHouseNumber
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
+          description: OK
         "500":
           description: Internal Server Error
       tags:
