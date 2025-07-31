@@ -90,7 +90,16 @@ namespace HNTAS.Web.UI.Controllers
 
                 return RedirectToAction("ContactDetails");
             }
-            return RedirectToAction("Guidance", "Guidance");
+            return RedirectToAction("CannotContinue", "User");
+        }
+
+        [EnsureSessionForOrganisationFlowOnGet]
+        public IActionResult CannotContinue()
+        {
+            ViewBag.ShowBackButton = true;
+            ViewBag.BackLinkUrl = Url.Action("ConfirmRPIsRC", "User");
+            ViewBag.OrganisationName = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey)?.CompanyDetails?.Title;
+            return View("CannotContinue");
         }
 
         public IActionResult CannotContinue()

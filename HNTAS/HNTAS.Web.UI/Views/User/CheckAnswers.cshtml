@@ -34,7 +34,7 @@
 
 <div class="govuk-width-container">
     <main class="govuk-main-wrapper" id="main-content" role="main">
-        <h1 class="govuk-heading-l">Check your answers</h1>
+        <h1 class="govuk-heading-l">Check your answers before submitting</h1>
 
         @if (!ViewData.ModelState.IsValid)
         {
@@ -162,16 +162,14 @@
                             <label class="govuk-label govuk-checkboxes__label" for="confirmDeclaration">
                                 I confirm that:
                             </label>
-                            <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-5 govuk-!-margin-top-2 govuk-!-font-size-16">
-                                <li>I have due authority to enable my organisation for the heat network service</li>
-                                <li>I have read and understood the digital form and the guidance for it, currently published on the GOV.UK website</li>
-                                <li>to the best of my knowledge and belief, all the details provided in this digital form are true and complete</li>
-                                <li>I understand that knowingly or recklessly making a false, incomplete or misleading statement in support of this request may lead to service access being revoked</li>
-                            </ul>
                         </div>
                     </div>
                 </fieldset>
             </div>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>I have read and understood the digital form and guidance currently published on <a href="#" class="govuk-link">GOV.UK</a></li>
+            </ul>
 
             <button type="submit" class="govuk-button" data-module="govuk-button">
                 Accept and send
