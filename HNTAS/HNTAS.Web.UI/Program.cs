@@ -29,6 +29,7 @@ builder.Services.AddControllersWithViews(options =>
 
 Console.WriteLine("*********************in UI**************");
 Console.WriteLine("Environment: " + builder.Environment.EnvironmentName);
+Console.WriteLine("from env variable: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
 
 // Dynamically load appsettings.{ENVIRONMENT}.json if it exists
 builder.Configuration.AddJsonFile(
