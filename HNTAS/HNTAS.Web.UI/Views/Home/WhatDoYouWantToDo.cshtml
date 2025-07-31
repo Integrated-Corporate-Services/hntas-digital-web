@@ -1,0 +1,35 @@
+﻿@using HNTAS.Web.UI.Models
+@model HNTAS.Web.UI.Models.WhatDoYouWantToDoViewModel
+
+@{
+    ViewData["Title"] = "What do you want to do today";
+    var fieldOrder = new[] { nameof(Model.UserPathToday) };
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "Home",
+        Action = "WhatDoYouWantToDo",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = nameof(Model.UserPathToday),
+                QText = "What do you want to do today?",
+                QDescText = "Choose an option so we can take you to the right part of the service.",
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = "registerNewHN", OptText = "Register a new organisation and heat network", OptHintText = "You'll answer a few questions to check if you're eligible." },
+                    new Option { OptId = "updateExistingHN", OptText = "Add or update a heat network under an existing organisation", OptHintText = "You'll need to sign in or create an account to continue." },
+                },
+                SeletedOption = Model.UserPathToday
+            }
+        }
+    };
+
+}
+
+<div class="govuk-width-container">
+    @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+</div>
+

@@ -16,6 +16,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult RunningAHN()
         {
+            this.ShowBackButton("WhatDoYouWantToDo", "Home");
             var runningAHNViewModel = SessionHelper.GetFromSession<RunningAHNViewModel>(HttpContext, runningAHNModelKey) ?? new RunningAHNViewModel();
             return View(runningAHNViewModel);
         }
@@ -24,6 +25,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult RunningAHN(RunningAHNViewModel model)
         {
+            this.ShowBackButton("WhatDoYouWantToDo", "Home");
 
             if (!ModelState.IsValid)
             {
@@ -32,7 +34,7 @@ namespace HNTAS.Web.UI.Controllers
 
             SessionHelper.SaveToSession<RunningAHNViewModel>(HttpContext, runningAHNModelKey, model);
 
-            if (model.IsRunningHeatNetwork == false)
+            if (model.IsRunningHeatNetwork == "ukNo")
             {
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
@@ -62,7 +64,7 @@ namespace HNTAS.Web.UI.Controllers
 
             SessionHelper.SaveToSession<ServesGt10DwellingsViewModel>(HttpContext, servesGt10DwellingsModelKey, model);
 
-            if (model.ServesMoreThan10Dwellings == false)
+            if (model.ServesMoreThan10Dwellings == "ukNo")
             {
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
@@ -92,7 +94,7 @@ namespace HNTAS.Web.UI.Controllers
 
             SessionHelper.SaveToSession<LocatedInUkViewModel>(HttpContext, locatedInUkModelKey, model);
 
-            if (model.IsInUK == false)
+            if (model.IsInUK == "ukNo")
             {
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
@@ -122,7 +124,7 @@ namespace HNTAS.Web.UI.Controllers
 
             SessionHelper.SaveToSession<OperatingAHNViewModel>(HttpContext, operatingAHNModelKey, model);
 
-            if (model.IsExistingOrPlanned == false)
+            if (model.IsExistingOrPlanned == "ukNo")
             {
                 ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
                 return View(model);
