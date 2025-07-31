@@ -113,6 +113,10 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddHttpClient<AddressLookupService>();
 
+//Aws Logging
+builder.Logging.AddAWSProvider(builder.Configuration.GetAWSLoggingConfigSection());
+builder.Logging.SetMinimumLevel(LogLevel.Information);
+
 var app = builder.Build();
 
 
