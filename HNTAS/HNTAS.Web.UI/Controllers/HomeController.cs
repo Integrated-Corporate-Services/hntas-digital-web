@@ -80,4 +80,10 @@ public class HomeController : Controller
         var errorMessage = TempData["ErrorMessage"] as string ?? "An unexpected error occurred. Please try again later.";
         return View("Error", model: errorMessage);
     }
+
+    [HttpGet]
+    public IActionResult StartPage()
+    {
+        return View();
+    }
 }
