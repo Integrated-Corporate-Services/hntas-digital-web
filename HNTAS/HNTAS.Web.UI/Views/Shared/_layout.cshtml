@@ -49,12 +49,25 @@
                 </a>
             </div>
             <div class="govuk-header__content">
-                <a href="#" class="govuk-header__link govuk-header__service-name">
+                <a class="govuk-header__link govuk-header__service-name" asp-action="Index" asp-controller="Home">
                     Heat network technical assurance scheme
                 </a>
-           
+                <div class="container govuk-!-margin-bottom-3" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="left-section">
+                    </div>
+
+                    <div class="connect-section">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="govuk-header__signout">
+                                <a class="govuk-header__link" asp-action="SignOut" asp-controller="Account">
+                                    Sign out
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
-        </div>
     </header>
     <div class="govuk-width-container app-width-container">
         <div class="govuk-phase-banner">
@@ -68,29 +81,19 @@
             </p>
         </div>
 
-        <div class="govuk-grid-row govuk-!-margin-bottom-3">
-            <div class="govuk-grid-column-full" style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    @{
-                        bool showBackButton = ViewBag.ShowBackButton ?? false; // Your condition
-                        string backLinkUrl = ViewBag.BackLinkUrl; // Your URL
+        @{
+            bool showBackButton = ViewBag.ShowBackButton ?? false; // Your condition
+            string backLinkUrl = ViewBag.BackLinkUrl; // Your URL
 
-                        if (showBackButton)
-                        {
-                            <a href="@backLinkUrl" class="govuk-back-link">Back</a>
-                        }
-                    }
-                </div>
-                <div class="@(!showBackButton ? "govuk-!-padding-top-3" : "")">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <a asp-controller="Account" asp-action="SignOut" class="govuk-link govuk-link--no-visited-state govuk-!-margin-right-0">Sign out</a>
-                    }
-                </div>
-            </div>
-        </div>
+            if (showBackButton)
+            {
+                <a href="@backLinkUrl" class="govuk-back-link">Back</a>
+            }
+        }
 
-        <main class="govuk-main-wrapper app-main-class" id="main-content">
+        <partial name="_ErrorMessagePartial" />
+
+        <main class="govuk-main-wrapper app-main-class" id="main-content">   
             @RenderBody()
         </main>
     </div>

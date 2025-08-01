@@ -1,7 +1,7 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
-using HNTAS.Web.UI.Services;
+using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,8 +30,16 @@ namespace HNTAS.Web.UI.Controllers
             {
                 _logger.LogError("User not found in session or API.");
                 TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later.";
-                return View();
+                return View(new DashboardModel());
             }
+
+            if(user.Organisation == null)
+            {
+                _logger.LogError("User organisation is null.");
+                TempData["ErrorMessage"] = "Your account is not associated with any organisation. Please contact support.";
+                return View(new DashboardModel());
+            }
+
 
             var heatNetworks = new List<HeatNetworkModel>();
 

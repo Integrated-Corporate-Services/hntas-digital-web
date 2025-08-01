@@ -1,41 +1,24 @@
-﻿@if (TempData["ErrorMessage"] != null)
-{
-    // this is to handle any error messages passed from the EnsureSessionForOrganisationFlowOnPostAttribute regarding session timeouts
-    <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
-        <h2 class="govuk-error-summary__title" id="error-summary-title">
-            There is a problem
-        </h2>
-        <div class="govuk-error-summary__body">
-            <p>@TempData["ErrorMessage"]</p>
-        </div>
-    </div>
-}
-
+﻿
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">Your options</h1>
+        <h1 class="govuk-heading-l">Register your organisation</h1>
 
-        <p class="govuk-body">You now have 3 options.</p>
+        <p class="govuk-body">
+            You need to register your organisation before you can register a heat network.
+        </p>
 
-        <ol class="govuk-list app-options-list">
-            <li>
-                <h2 class="govuk-heading-m">1. Set up a new organisation to use the heat network service</h2>
-                <p class="govuk-body">If you are your organisation's regulatory contact for heat networks, you can continue and enable it for the heat network service.</p>
-                <p class="govuk-body app-help-link"><a class="govuk-link" href="#">&#9658; Help with 'regulatory contact'</a></p>
-                <div class="app-button-wrapper">
-                    <a asp-controller="Organisation" role="button" asp-action="Start" data-module="govuk-button" draggable="false" class="govuk-button">Continue</a>
-                </div>
-            </li>
+        <p class="govuk-body">
+            To do this, you'll need:
+        </p>
 
-            <li>
-                <h2 class="govuk-heading-m">2. Access an organisation that's already set up to use the heat network service</h2>
-                <p class="govuk-body">You cannot do this now. First, you'll need to ask your organisation's regulatory contact for heat networks to invite you.</p>
-            </li>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>a Companies House number or a valid business address</li>
+            <li>your name, email address and role</li>
+        </ul>
 
-            <li>
-                <h2 class="govuk-heading-m">3. Close your browser and log off</h2>
-                <p class="govuk-body">If you were invited to join the service and rejected the invitation, it's likely you've nothing more to do. You can leave the service.</p>
-            </li>
-        </ol>
+        <div class="app-button-wrapper">
+            <a asp-controller="Organisation" role="button" asp-action="Start" data-module="govuk-button" draggable="false" class="govuk-button">Register your organisation</a>
+        </div>
+      
     </div>
 </div>
