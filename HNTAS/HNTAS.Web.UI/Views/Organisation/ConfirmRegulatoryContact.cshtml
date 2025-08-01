@@ -30,12 +30,12 @@
             </div>
         }
 
-        <form asp-controller="User" asp-action="ConfirmRPisRC" method="post" novalidate>
+        <form asp-controller="Organisation" asp-action="ConfirmRegulatoryContact" method="post">
             @Html.AntiForgeryToken()
 
-            <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.ifRPisRC)) && ViewData.ModelState[nameof(Model.ifRPisRC)].Errors.Any() ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.IsRegulatoryContact)) && ViewData.ModelState[nameof(Model.IsRegulatoryContact)].Errors.Any() ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset"
-                          aria-describedby="regulatory-contact-hint @(ViewData.ModelState.ContainsKey(nameof(Model.ifRPisRC)) && ViewData.ModelState[nameof(Model.ifRPisRC)].Errors.Any() ? "regulatory-contact-error" : "")">
+                          aria-describedby="regulatory-contact-hint @(ViewData.ModelState.ContainsKey(nameof(Model.IsRegulatoryContact)) && ViewData.ModelState[nameof(Model.IsRegulatoryContact)].Errors.Any() ? "regulatory-contact-error" : "")">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             Are you the regulatory contact for @Model.OrganisationName?
@@ -59,25 +59,25 @@
                         <h2 class="govuk-fieldset__heading">Are you the regulatory contact?</h2>
                     </div>
 
-                    @if (ViewData.ModelState.ContainsKey(nameof(Model.ifRPisRC)) && ViewData.ModelState[nameof(Model.ifRPisRC)].Errors.Any())
+                    @if (ViewData.ModelState.ContainsKey(nameof(Model.IsRegulatoryContact)) && ViewData.ModelState[nameof(Model.IsRegulatoryContact)].Errors.Any())
                     {
                         <p id="regulatory-contact-error" class="govuk-error-message">
-                            <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ifRPisRC)
+                            <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.IsRegulatoryContact)
                         </p>
                     }
 
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
 
-                            <input class="govuk-radios__input" id="ifRC" name="ifRPisRC" type="radio" value="true"
-                                   @(Model.ifRPisRC == true ? "checked" : "")>
+                            <input class="govuk-radios__input" id="ifRC" name="IsRegulatoryContact" type="radio" value="true"
+                                   @(Model.IsRegulatoryContact == true ? "checked" : "")>
                             <label class="govuk-label govuk-radios__label" for="ifRC">
                                 Yes
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="isNotRC" name="ifRPisRC" type="radio" value="false"
-                                   @(Model.ifRPisRC == false ? "checked" : "")>
+                            <input class="govuk-radios__input" id="isNotRC" name="IsRegulatoryContact" type="radio" value="false"
+                                   @(Model.IsRegulatoryContact == false ? "checked" : "")>
                             <label class="govuk-label govuk-radios__label" for="isNotRC">
                                 No
                             </label>

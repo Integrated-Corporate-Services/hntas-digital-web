@@ -1,6 +1,6 @@
 ﻿@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.User
-@model CheckAnswersModel
+@model CheckYourAnswersModel
 
 @{
     ViewData["Title"] = "Check your answers";
@@ -59,7 +59,7 @@
             </div>
         }
 
-        <form asp-controller="User" asp-action="SubmitAnswers" method="post" novalidate>
+        <form asp-controller="Organisation" asp-action="SubmitAnswers" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             <h2 class="govuk-heading-m">Organisation details</h2>
@@ -68,14 +68,14 @@
                     <dt class="govuk-summary-list__key">Organisation type</dt>
                     <dd class="govuk-summary-list__value">@organisationModel?.SelectedOrganisationTypeText</dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("Type", "Organisation")">Change<span class="govuk-visually-hidden"> organisation type</span></a>
+                        <a class="govuk-link" href="@Url.Action("Type")">Change<span class="govuk-visually-hidden"> organisation type</span></a>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Company number</dt>
                     <dd class="govuk-summary-list__value">@organisationModel?.CompanyNumber</dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("CompanyNumber", "Organisation")">Change<span class="govuk-visually-hidden"> company number</span></a>
+                        <a class="govuk-link" href="@Url.Action("CompanyNumber")">Change<span class="govuk-visually-hidden"> company number</span></a>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -108,34 +108,39 @@
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Are you the regulatory contact?</dt>
-                    <dd class="govuk-summary-list__value">@(userModel?.ifRPisRC == true ? "Yes" : "No")</dd>
+                    <dd class="govuk-summary-list__value">
+                        @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
+                        </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="@Url.Action("ConfirmRegulatoryContact")">Change<span class="govuk-visually-hidden"> regulatory contact</span></a>
+                    </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">First name</dt>
                     <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.FirstName</dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("ContactDetails", "User")">Change<span class="govuk-visually-hidden"> first name</span></a>
+                        <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> first name</span></a>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Last name</dt>
                     <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.LastName</dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("ContactDetails", "User")">Change<span class="govuk-visually-hidden"> last name</span></a>
+                        <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> last name</span></a>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Preferred contact number for work</dt>
                     <dd class="govuk-summary-list__value">@displayContactNumber</dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("ContactDetails", "User")">Change<span class="govuk-visually-hidden"> preferred contact number for work</span></a>
+                        <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> preferred contact number for work</span></a>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Job title</dt>
                     <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.JobTitle</dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("ContactDetails", "User")">Change<span class="govuk-visually-hidden"> job title</span></a>
+                        <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> job title</span></a>
                     </dd>
                 </div>
             </dl>
