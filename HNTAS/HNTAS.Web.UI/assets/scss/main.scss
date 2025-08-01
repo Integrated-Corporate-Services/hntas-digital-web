@@ -2,3 +2,38 @@
 $govuk-assets-path: '/assets/'; // This points to where compiled assets will be in your wwwroot
 
 @import "../../node_modules/govuk-frontend/dist/govuk/all";
+
+
+
+.dashboard-card {
+    padding: 20px;
+    margin-bottom: 20px;
+    height: 100%;
+    background: #f3f2f1;
+    position: relative;
+}
+
+.dashboard-card--disabled {
+    opacity: 0.6; /* Makes the card appear faded */
+    pointer-events: none; /* Disables all clicks and interactions on the card */
+}
+
+.dashboard-card__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+    z-index: 10;
+    display: none; /* Hidden by default */
+}
+
+.dashboard-card--disabled .dashboard-card__overlay {
+    display: block; /* Show the overlay when the card is disabled */
+}
+
+.dashboard-card__title {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
