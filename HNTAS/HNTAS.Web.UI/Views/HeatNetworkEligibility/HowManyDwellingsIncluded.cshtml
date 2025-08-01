@@ -1,0 +1,33 @@
+﻿@using HNTAS.Web.UI.Models
+@model HowManyDwellingsIncludedViewModel
+
+@{
+    ViewData["Title"] = "Check your eligibility to register a heat network";
+    var fieldOrder = new[] { nameof(Model.NumberOfDwellings) };
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "HeatNetworkEligibility",
+        Action = "HowManyDwellingsIncluded",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = nameof(Model.NumberOfDwellings),
+                QText = "How many dwellings are included in the heat network?",
+                QDescText = "This includes houses, flats or units connected to the same heat network.",
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = "<10", OptText = "Fewer than 10", OptHintText = null },
+                    new Option { OptId = ">10", OptText = "10 or more", OptHintText = null }
+                },
+                SeletedOption = Model.NumberOfDwellings
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+</div>

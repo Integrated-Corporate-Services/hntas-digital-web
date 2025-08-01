@@ -1,29 +1,29 @@
 ﻿@using HNTAS.Web.UI.Models
-@model ServesGt10DwellingsViewModel
+@model HasElementBeenRegisteredViewModel
 
 @{
     ViewData["Title"] = "Check your eligibility to register a heat network";
-    var fieldOrder = new[] { nameof(Model.ServesMoreThan10Dwellings) };
+    var fieldOrder = new[] { nameof(Model.HasElementBeenRegistered) };
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "HeatNetworkEligibility",
-        Action = "ServesGt10Dwellings",
+        Action = "HasElementBeenRegistered",
         FieldOrder = fieldOrder,
         Questions = new List<Question>
         {
             new Question
             {
-                QId = nameof(Model.ServesMoreThan10Dwellings),
-                QText = "Does the heat network serve more than 10 dwellings?",
+                QId = nameof(Model.HasElementBeenRegistered),
+                QText = "Has element been registered & entry point evidence been provided?",
                 QDescText = null,
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = "dwellingsYes", OptText = "Yes", OptHintText = null },
-                    new Option { OptId = "dwellingsNo", OptText = "No", OptHintText = null }
+                    new Option { OptId = "yes", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = "no", OptText = "No", OptHintText = null }
                 },
-                SeletedOption = Model.ServesMoreThan10Dwellings
-            }
+                SeletedOption = Model.HasElementBeenRegistered
+            },
         }
     };
 }

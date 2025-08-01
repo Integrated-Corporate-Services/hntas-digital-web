@@ -1,0 +1,36 @@
+﻿@using HNTAS.Web.UI.Models
+@model WhereIsTheHeatNetworkViewModel
+
+@{
+    ViewData["Title"] = "Check your eligibility to register a heat network";
+    var fieldOrder = new[] { nameof(Model.PartOfTheUK)};
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "HeatNetworkEligibility",
+        Action = "WhereIsTheHeatNetwork",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = nameof(Model.PartOfTheUK),
+                QText = "Where is the heat network located?",
+                QDescText = "We'll use this to check if the new regulations apply to your heat network.",
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = "england", OptText = "England", OptHintText = null },
+                    new Option { OptId = "scotland", OptText = "Scotland", OptHintText = null },
+                    new Option { OptId = "wales", OptText = "Wales", OptHintText = null },
+                    new Option { OptId = "ni", OptText = "Northern Ireland", OptHintText = null }
+                },
+                SeletedOption = Model.PartOfTheUK
+            },
+        }
+    };
+
+}
+
+<div class="govuk-width-container">
+    @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+</div>

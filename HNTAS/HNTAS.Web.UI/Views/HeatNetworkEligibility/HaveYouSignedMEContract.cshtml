@@ -1,29 +1,29 @@
 ﻿@using HNTAS.Web.UI.Models
-@model RunningAHNViewModel
+@model HaveYouSignedMEContractViewModel
 
 @{
     ViewData["Title"] = "Check your eligibility to register a heat network";
-    var fieldOrder = new[] { nameof(Model.IsRunningHeatNetwork) };
+    var fieldOrder = new[] { nameof(Model.HaveYouSignedMEContract) };
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "HeatNetworkEligibility",
-        Action = "RunningAHN",
+        Action = "HaveYouSignedMEContract",
         FieldOrder = fieldOrder,
         Questions = new List<Question>
         {
             new Question
             {
-                QId = nameof(Model.IsRunningHeatNetwork),
-                QText = "Are you running a heat network?",
+                QId = nameof(Model.HaveYouSignedMEContract),
+                QText = "Have you signed the mechanical and electrical (M&E) constrcution contract?",
                 QDescText = null,
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = "runningYes", OptText = "Yes", OptHintText = null },
-                    new Option { OptId = "runningNo", OptText = "No", OptHintText = null }
+                    new Option { OptId = "yes", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = "no", OptText = "No", OptHintText = null }
                 },
-                SeletedOption = Model.IsRunningHeatNetwork
-            }
+                SeletedOption = Model.HaveYouSignedMEContract
+            },
         }
     };
 }

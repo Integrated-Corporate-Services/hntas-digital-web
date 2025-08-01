@@ -1,0 +1,33 @@
+﻿@using HNTAS.Web.UI.Models
+@model IsHNCurrentlyOperatingViewModel
+
+@{
+    ViewData["Title"] = "Check your eligibility to register a heat network";
+    var fieldOrder = new[] { nameof(Model.IsCurrentlyOperating) };
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "HeatNetworkEligibility",
+        Action = "IsHNCurrentlyOperating",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = nameof(Model.IsCurrentlyOperating),
+                QText = "Is your heat network currently operating?",
+                QDescText = null,
+                QHintText = "This means it's supplying heating, cooling or hot water to consumers.",
+                Options = new List<Option>
+                {
+                    new Option { OptId = "yes", OptText = "Yes - it's already supplying heat, cooling or hot water", OptHintText = "Existing element" },
+                    new Option { OptId = "no", OptText = "No - it hasn't started supplying yet", OptHintText = null }
+                },
+                SeletedOption = Model.IsCurrentlyOperating
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+</div>
