@@ -20,8 +20,8 @@
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = "@elementId", OptValue = "registerNewHN", OptText = "Register a new organisation and heat network", OptHintText = "You'll answer a few questions to check if you're eligible." },
-                    new Option { OptId = "@elementId-2", OptValue = "updateExistingHN", OptText = "Add or update a heat network under an existing organisation", OptHintText = "You'll need to sign in or create an account to continue." },
+                    new Option { OptId = $"{elementId}", OptValue = "registerNewHN", OptText = "Register a new organisation and heat network", OptHintText = "You'll answer a few questions to check if you're eligible." },
+                    new Option { OptId = $"{elementId}-2", OptValue = "updateExistingHN", OptText = "Add or update a heat network under an existing organisation", OptHintText = "You'll need to sign in or create an account to continue." },
                 },
                 SeletedOption = Model.UserPathToday
             }

@@ -20,10 +20,10 @@
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = "@elementId", OptValue = "england", OptText = "England", OptHintText = null },
-                    new Option { OptId = "@elementId-2", OptValue = "scotland", OptText = "Scotland", OptHintText = null },
-                    new Option { OptId = "@elementId-3", OptValue = "wales", OptText = "Wales", OptHintText = null },
-                    new Option { OptId = "@elementId-4", OptValue = "ni", OptText = "Northern Ireland", OptHintText = null }
+                    new Option { OptId = $"{elementId}", OptValue = "england", OptText = "England", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = "scotland", OptText = "Scotland", OptHintText = null },
+                    new Option { OptId = $"{elementId}-3", OptValue = "wales", OptText = "Wales", OptHintText = null },
+                    new Option { OptId = $"{elementId}-4", OptValue = "ni", OptText = "Northern Ireland", OptHintText = null }
                 },
                 SeletedOption = Model.PartOfTheUK
             },
