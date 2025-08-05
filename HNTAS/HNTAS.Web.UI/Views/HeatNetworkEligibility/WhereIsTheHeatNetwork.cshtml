@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Check your eligibility to register a heat network";
     var fieldOrder = new[] { nameof(Model.PartOfTheUK)};
+    var elementId = Html.GenerateIdFromName(nameof(Model.PartOfTheUK)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "HeatNetworkEligibility",
@@ -13,16 +14,16 @@
         {
             new Question
             {
-                QId = nameof(Model.PartOfTheUK),
+                QId = elementId,
                 QText = "Where is the heat network located?",
                 QDescText = "We'll use this to check if the new regulations apply to your heat network.",
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = "england", OptText = "England", OptHintText = null },
-                    new Option { OptId = "scotland", OptText = "Scotland", OptHintText = null },
-                    new Option { OptId = "wales", OptText = "Wales", OptHintText = null },
-                    new Option { OptId = "ni", OptText = "Northern Ireland", OptHintText = null }
+                    new Option { OptId = "@elementId", OptValue = "england", OptText = "England", OptHintText = null },
+                    new Option { OptId = "@elementId-2", OptValue = "scotland", OptText = "Scotland", OptHintText = null },
+                    new Option { OptId = "@elementId-3", OptValue = "wales", OptText = "Wales", OptHintText = null },
+                    new Option { OptId = "@elementId-4", OptValue = "ni", OptText = "Northern Ireland", OptHintText = null }
                 },
                 SeletedOption = Model.PartOfTheUK
             },
@@ -32,5 +33,9 @@
 }
 
 <div class="govuk-width-container">
-    @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
 </div>

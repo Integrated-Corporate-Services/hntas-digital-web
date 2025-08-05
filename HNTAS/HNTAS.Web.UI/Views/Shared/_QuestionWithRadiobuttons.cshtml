@@ -32,16 +32,16 @@
 
                 @if (ViewData.ModelState.ContainsKey(q.QId) && ViewData.ModelState[q.QId].Errors.Any())
                 {
-                    <span id="is-in-uk-error" class="govuk-error-message">
+                    <p id="@q.QId-error" class="govuk-error-message">
                         <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[q.QId].Errors[0].ErrorMessage
-                    </span>
+                    </p>
                 }
 
                 <div class="govuk-radios" data-module="govuk-radios">
                     @foreach (Option option in q.Options)
                     {
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="@option.OptId" name="@q.QId" type="radio" value="@option.OptId" aria-describedby="@q.QId-hint" @(q.SeletedOption == option.OptText ? "checked" : "")>
+                            <input class="govuk-radios__input" id="@option.OptId" name="@q.QId" type="radio" value="@option.OptValue" aria-describedby="@q.QId-hint" @(q.SeletedOption == option.OptValue ? "checked" : "")>
                             <label class="govuk-label govuk-radios__label" for="@option.OptId">@option.OptText</label>
                             @if (!string.IsNullOrEmpty(option.OptHintText))
                             {

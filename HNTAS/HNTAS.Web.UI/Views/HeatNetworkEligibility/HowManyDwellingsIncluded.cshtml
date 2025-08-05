@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Check your eligibility to register a heat network";
     var fieldOrder = new[] { nameof(Model.NumberOfDwellings) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.NumberOfDwellings)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "HeatNetworkEligibility",
@@ -13,14 +14,14 @@
         {
             new Question
             {
-                QId = nameof(Model.NumberOfDwellings),
+                QId = elementId,
                 QText = "How many dwellings are included in the heat network?",
                 QDescText = "This includes houses, flats or units connected to the same heat network.",
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = "<10", OptText = "Fewer than 10", OptHintText = null },
-                    new Option { OptId = ">10", OptText = "10 or more", OptHintText = null }
+                    new Option { OptId = "@elementId", OptValue = "<10", OptText = "Fewer than 10", OptHintText = null },
+                    new Option { OptId = "@elementId-2", OptValue = ">10", OptText = "10 or more", OptHintText = null }
                 },
                 SeletedOption = Model.NumberOfDwellings
             },
@@ -29,5 +30,9 @@
 }
 
 <div class="govuk-width-container">
-    @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
 </div>

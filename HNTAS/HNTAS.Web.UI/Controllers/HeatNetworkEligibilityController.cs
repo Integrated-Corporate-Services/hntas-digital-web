@@ -11,9 +11,6 @@ namespace HNTAS.Web.UI.Controllers
         private const string whereIsTheHeatNetworkModelKey = "whereIsTheHeatNetwork";
         private const string howManyDwellingsIncludedModelKey = "howManyDwellingsIncluded";
         private const string isHNCurrentlyOperatingModelKey = "isHNCurrentlyOperating";
-        private const string doesElementExistModelKey = "doesElementExist";
-        private const string hasElementBeenRegisteredModelKey = "hasElementBeenRegistered";
-        private const string hasPlanningApplicationBeenSubmittedModelKey = "hasPlanningApplicationBeenSubmitted";
         private const string haveYouSignedMEContractModelKey = "haveYouSignedMEContract";
 
         #endregion
@@ -50,14 +47,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult CheckYourAnswers()
-        {
-            this.ShowBackButton("DoesElementExist", "HeatNetworkEligibility");
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Confirmation()
+        public IActionResult YouAreEligible()
         {
             return View();
         }
@@ -157,100 +147,7 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("HNNotOperationalYet", "HeatNetworkEligibility");
                 case "no":
                     SessionHelper.SaveToSession<IsHNCurrentlyOperatingViewModel>(HttpContext, isHNCurrentlyOperatingModelKey, model);
-                    return RedirectToAction("DoesElementExist", "HeatNetworkEligibility");
-                default:
-                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
-                    return View(model);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult DoesElementExist()
-        {
-            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
-            var model = SessionHelper.GetFromSession<DoesElementExistViewModel>(HttpContext, doesElementExistModelKey) ?? new DoesElementExistViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DoesElementExist(DoesElementExistViewModel model)
-        {
-            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            switch(model.DoesElementExist)
-            {
-                case "yes":
-                    SessionHelper.SaveToSession<DoesElementExistViewModel>(HttpContext, doesElementExistModelKey, model);
-                    return RedirectToAction("HasElementBeenRegistered", "HeatNetworkEligibility");
-                case "no":
-                    SessionHelper.SaveToSession<DoesElementExistViewModel>(HttpContext, doesElementExistModelKey, model);
-                    return RedirectToAction("CheckYourAnswers", "HeatNetworkEligibility");
-                default:
-                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
-                    return View(model);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult HasElementBeenRegistered()
-        {
-            this.ShowBackButton("DoesElementExist", "HeatNetworkEligibility");
-            var model = SessionHelper.GetFromSession<HasElementBeenRegisteredViewModel>(HttpContext, hasElementBeenRegisteredModelKey) ?? new HasElementBeenRegisteredViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult HasElementBeenRegistered(HasElementBeenRegisteredViewModel model)
-        {
-            this.ShowBackButton("DoesElementExist", "HeatNetworkEligibility");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            switch(model.HasElementBeenRegistered)
-            {
-                case "yes":
-                    SessionHelper.SaveToSession<HasElementBeenRegisteredViewModel>(HttpContext, hasElementBeenRegisteredModelKey, model);
-                    return RedirectToAction("HasPlanningApplicationBeenSubmitted", "HeatNetworkEligibility");
-                case "no":
-                    SessionHelper.SaveToSession<HasElementBeenRegisteredViewModel>(HttpContext, hasElementBeenRegisteredModelKey, model);
-                    return RedirectToAction("CheckYourAnswers", "HeatNetworkEligibility");
-                default:
-                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
-                    return View(model);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult HasPlanningApplicationBeenSubmitted()
-        {
-            this.ShowBackButton("HasElementBeenRegistered", "HeatNetworkEligibility");
-            var model = SessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedViewModel>(HttpContext, hasPlanningApplicationBeenSubmittedModelKey) ?? new HasPlanningApplicationBeenSubmittedViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult HasPlanningApplicationBeenSubmitted(HasPlanningApplicationBeenSubmittedViewModel model)
-        {
-            this.ShowBackButton("HasElementBeenRegistered", "HeatNetworkEligibility");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            switch(model.HasPlanningApplicationBeenSubmitted)
-            {
-                case "yes":
-                    SessionHelper.SaveToSession<HasPlanningApplicationBeenSubmittedViewModel>(HttpContext, hasPlanningApplicationBeenSubmittedModelKey, model);
                     return RedirectToAction("HaveYouSignedMEContract", "HeatNetworkEligibility");
-                case "no":
-                    SessionHelper.SaveToSession<HasPlanningApplicationBeenSubmittedViewModel>(HttpContext, hasPlanningApplicationBeenSubmittedModelKey, model);
-                    return RedirectToAction("CheckYourAnswers", "HeatNetworkEligibility");
                 default:
                     ModelState.AddModelError(string.Empty, "Please select a valid option.");
                     return View(model);
@@ -260,7 +157,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult HaveYouSignedMEContract()
         {
-            this.ShowBackButton("HasPlanningApplicationBeenSubmitted", "HeatNetworkEligibility");
+            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
             var model = SessionHelper.GetFromSession<HaveYouSignedMEContractViewModel>(HttpContext, haveYouSignedMEContractModelKey) ?? new HaveYouSignedMEContractViewModel();
             return View(model);
         }
@@ -269,25 +166,25 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult HaveYouSignedMEContract(HaveYouSignedMEContractViewModel model)
         {
-            this.ShowBackButton("HasPlanningApplicationBeenSubmitted", "HeatNetworkEligibility");
+            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            switch(model.HaveYouSignedMEContract)
+            switch (model.HaveYouSignedMEContract)
             {
                 case "yes":
                     SessionHelper.SaveToSession<HaveYouSignedMEContractViewModel>(HttpContext, haveYouSignedMEContractModelKey, model);
                     return RedirectToAction("MEContractIsSigned", "HeatNetworkEligibility");
                 case "no":
                     SessionHelper.SaveToSession<HaveYouSignedMEContractViewModel>(HttpContext, haveYouSignedMEContractModelKey, model);
-                    return RedirectToAction("CheckYourAnswers", "HeatNetworkEligibility");
+                    return RedirectToAction("YouAreEligible", "HeatNetworkEligibility");
                 default:
                     ModelState.AddModelError(string.Empty, "Please select a valid option.");
                     return View(model);
             }
         }
-
+     
         #endregion
     }
 }

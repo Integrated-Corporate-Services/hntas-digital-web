@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "What do you want to do today";
     var fieldOrder = new[] { nameof(Model.UserPathToday) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.UserPathToday)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "Home",
@@ -13,14 +14,14 @@
         {
             new Question
             {
-                QId = nameof(Model.UserPathToday),
+                QId = elementId,
                 QText = "What do you want to do today?",
                 QDescText = "Choose an option so we can take you to the right part of the service.",
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = "registerNewHN", OptText = "Register a new organisation and heat network", OptHintText = "You'll answer a few questions to check if you're eligible." },
-                    new Option { OptId = "updateExistingHN", OptText = "Add or update a heat network under an existing organisation", OptHintText = "You'll need to sign in or create an account to continue." },
+                    new Option { OptId = "@elementId", OptValue = "registerNewHN", OptText = "Register a new organisation and heat network", OptHintText = "You'll answer a few questions to check if you're eligible." },
+                    new Option { OptId = "@elementId-2", OptValue = "updateExistingHN", OptText = "Add or update a heat network under an existing organisation", OptHintText = "You'll need to sign in or create an account to continue." },
                 },
                 SeletedOption = Model.UserPathToday
             }

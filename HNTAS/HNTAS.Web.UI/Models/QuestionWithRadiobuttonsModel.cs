@@ -7,6 +7,8 @@ namespace HNTAS.Web.UI.Models
         [Required]
         public string OptId { get; set; }
         [Required]
+        public string OptValue { get; set; }
+        [Required]
         public string OptText { get; set; }
         public string? OptHintText { get; set; }
     }
