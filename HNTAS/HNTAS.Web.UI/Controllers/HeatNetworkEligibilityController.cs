@@ -6,131 +6,185 @@ namespace HNTAS.Web.UI.Controllers
 {
     public class HeatNetworkEligibilityController : Controller
     {
-        private const string runningAHNModelKey = "runningAHN";
-        private const string servesGt10DwellingsModelKey = "servesGt10Dwellings";
-        private const string locatedInUkModelKey = "locatedInUk";
-        private const string operatingAHNModelKey = "operatingAHN";
+        #region Model Keys
 
+        private const string whereIsTheHeatNetworkModelKey = "whereIsTheHeatNetwork";
+        private const string howManyDwellingsIncludedModelKey = "howManyDwellingsIncluded";
+        private const string isHNCurrentlyOperatingModelKey = "isHNCurrentlyOperating";
+        private const string haveYouSignedMEContractModelKey = "haveYouSignedMEContract";
+
+        #endregion
+
+        #region Response Pages
 
 
         [HttpGet]
-        public IActionResult RunningAHN()
+        public IActionResult LocatedInNorthernIreland()
         {
-            var runningAHNViewModel = SessionHelper.GetFromSession<RunningAHNViewModel>(HttpContext, runningAHNModelKey) ?? new RunningAHNViewModel();
-            return View(runningAHNViewModel);
+            this.ShowBackButton("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult FewerThan10Dwellings()
+        {
+            this.ShowBackButton("HowManyDwellingsIncluded", "HeatNetworkEligibility");
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult HNNotOperationalYet()
+        {
+            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult MEContractIsSigned()
+        {
+            this.ShowBackButton("HaveYouSignedMEContract", "HeatNetworkEligibility");
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult YouAreEligible()
+        {
+            return View();
+        }
+
+
+        #endregion
+
+        #region User Input pages
+
+        [HttpGet]
+        public IActionResult WhereIsTheHeatNetwork()
+        {
+            this.ShowBackButton("WhatDoYouWantToDo", "Home");
+            var model = SessionHelper.GetFromSession<WhereIsTheHeatNetworkViewModel>(HttpContext, whereIsTheHeatNetworkModelKey) ?? new WhereIsTheHeatNetworkViewModel();
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RunningAHN(RunningAHNViewModel model)
+        public IActionResult WhereIsTheHeatNetwork(WhereIsTheHeatNetworkViewModel model)
         {
-
+            this.ShowBackButton("WhatDoYouWantToDo", "Home");
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            SessionHelper.SaveToSession<RunningAHNViewModel>(HttpContext, runningAHNModelKey, model);
-
-            if (model.IsRunningHeatNetwork == false)
+            switch(model.PartOfTheUK)
             {
-                ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
-                return View(model);
+                case "england":
+                case "scotland":
+                case "wales":
+                    SessionHelper.SaveToSession<WhereIsTheHeatNetworkViewModel>(HttpContext, whereIsTheHeatNetworkModelKey, model);
+                    return RedirectToAction("HowManyDwellingsIncluded", "HeatNetworkEligibility");
+                case "ni":
+                    SessionHelper.SaveToSession<WhereIsTheHeatNetworkViewModel>(HttpContext, whereIsTheHeatNetworkModelKey, model);
+                    return RedirectToAction("LocatedInNorthernIreland", "HeatNetworkEligibility");
+                default:
+                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
+                    return View(model);
             }
             
-            return RedirectToAction("ServesGt10Dwellings");
         }
 
         [HttpGet]
-        public IActionResult ServesGt10Dwellings()
+        public IActionResult HowManyDwellingsIncluded()
         {
-            this.ShowBackButton("RunningAHN", "HeatNetworkEligibility");
-            var servesGt10DwellingsViewModel = SessionHelper.GetFromSession<ServesGt10DwellingsViewModel>(HttpContext, servesGt10DwellingsModelKey) ?? new ServesGt10DwellingsViewModel();
-            return View(servesGt10DwellingsViewModel);
+            this.ShowBackButton("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
+            var model = SessionHelper.GetFromSession<HowManyDwellingsIncludedViewModel>(HttpContext, howManyDwellingsIncludedModelKey) ?? new HowManyDwellingsIncludedViewModel();
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ServesGt10Dwellings(ServesGt10DwellingsViewModel model)
+        public IActionResult HowManyDwellingsIncluded(HowManyDwellingsIncludedViewModel model)
         {
-            this.ShowBackButton("RunningAHN", "HeatNetworkEligibility");
-
+            this.ShowBackButton("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            SessionHelper.SaveToSession<ServesGt10DwellingsViewModel>(HttpContext, servesGt10DwellingsModelKey, model);
-
-            if (model.ServesMoreThan10Dwellings == false)
+            switch(model.NumberOfDwellings)
             {
-                ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
-                return View(model);
+                case ">10":
+                    SessionHelper.SaveToSession<HowManyDwellingsIncludedViewModel>(HttpContext, howManyDwellingsIncludedModelKey, model);
+                    return RedirectToAction("IsHNCurrentlyOperating", "HeatNetworkEligibility");
+                case "<10":
+                    SessionHelper.SaveToSession<HowManyDwellingsIncludedViewModel>(HttpContext, howManyDwellingsIncludedModelKey, model);
+                    return RedirectToAction("FewerThan10Dwellings", "HeatNetworkEligibility");
+                default:
+                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
+                    return View(model);
             }
-            
-            return RedirectToAction("LocatedInUk");
         }
 
         [HttpGet]
-        public IActionResult LocatedInUk()
+        public IActionResult IsHNCurrentlyOperating()
         {
-            this.ShowBackButton("ServesGt10Dwellings", "HeatNetworkEligibility");
-            var locatedInUkViewModel = SessionHelper.GetFromSession<LocatedInUkViewModel>(HttpContext, locatedInUkModelKey) ?? new LocatedInUkViewModel();
-            return View(locatedInUkViewModel);
+            this.ShowBackButton("HowManyDwellingsIncluded", "HeatNetworkEligibility");
+            var model = SessionHelper.GetFromSession<IsHNCurrentlyOperatingViewModel>(HttpContext, isHNCurrentlyOperatingModelKey) ?? new IsHNCurrentlyOperatingViewModel();
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult LocatedInUk(LocatedInUkViewModel model)
+        public IActionResult IsHNCurrentlyOperating(IsHNCurrentlyOperatingViewModel model)
         {
-            this.ShowBackButton("ServesGt10Dwellings", "HeatNetworkEligibility");
-
+            this.ShowBackButton("HowManyDwellingsIncluded", "HeatNetworkEligibility");
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            SessionHelper.SaveToSession<LocatedInUkViewModel>(HttpContext, locatedInUkModelKey, model);
-
-            if (model.IsInUK == false)
+            switch(model.IsCurrentlyOperating)
             {
-                ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
-                return View(model);
+                case "yes":
+                    SessionHelper.SaveToSession<IsHNCurrentlyOperatingViewModel>(HttpContext, isHNCurrentlyOperatingModelKey, model);
+                    return RedirectToAction("HNNotOperationalYet", "HeatNetworkEligibility");
+                case "no":
+                    SessionHelper.SaveToSession<IsHNCurrentlyOperatingViewModel>(HttpContext, isHNCurrentlyOperatingModelKey, model);
+                    return RedirectToAction("HaveYouSignedMEContract", "HeatNetworkEligibility");
+                default:
+                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
+                    return View(model);
             }
-            
-            return RedirectToAction("OperatingAHN");
         }
 
         [HttpGet]
-        public IActionResult OperatingAHN()
+        public IActionResult HaveYouSignedMEContract()
         {
-            this.ShowBackButton("LocatedInUk", "HeatNetworkEligibility");
-            var operatingAHNViewModel = SessionHelper.GetFromSession<OperatingAHNViewModel>(HttpContext, operatingAHNModelKey) ?? new OperatingAHNViewModel();
-            return View(operatingAHNViewModel);
+            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
+            var model = SessionHelper.GetFromSession<HaveYouSignedMEContractViewModel>(HttpContext, haveYouSignedMEContractModelKey) ?? new HaveYouSignedMEContractViewModel();
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult OperatingAHN(OperatingAHNViewModel model)
+        public IActionResult HaveYouSignedMEContract(HaveYouSignedMEContractViewModel model)
         {
-            this.ShowBackButton("LocatedInUk", "HeatNetworkEligibility");
-
+            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            SessionHelper.SaveToSession<OperatingAHNViewModel>(HttpContext, operatingAHNModelKey, model);
-
-            if (model.IsExistingOrPlanned == false)
+            switch (model.HaveYouSignedMEContract)
             {
-                ViewBag.ResultMessage = "You do not need to register your heat network to HNTAS.";
-                return View(model);
+                case "yes":
+                    SessionHelper.SaveToSession<HaveYouSignedMEContractViewModel>(HttpContext, haveYouSignedMEContractModelKey, model);
+                    return RedirectToAction("MEContractIsSigned", "HeatNetworkEligibility");
+                case "no":
+                    SessionHelper.SaveToSession<HaveYouSignedMEContractViewModel>(HttpContext, haveYouSignedMEContractModelKey, model);
+                    return RedirectToAction("YouAreEligible", "HeatNetworkEligibility");
+                default:
+                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
+                    return View(model);
             }
-
-            // Redirect as needed
-            return RedirectToAction("Index", "Home");
-            
         }
+     
+        #endregion
     }
 }

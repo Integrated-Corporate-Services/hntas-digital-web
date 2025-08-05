@@ -175,11 +175,11 @@ app.UseSession();
 
 app.UseAuthorization();
 
-app.MapGet("/", () => Results.Redirect("/home/index"));
+app.MapGet("/", () => Results.Redirect("/home/start-page"));
 
 app.MapControllerRoute(
     name: "default",
     pattern: "[controller]/[action]/{id?}",
-    defaults: new { controller = "Home", action = "Index" });
+    defaults: new { controller = "Home", action = "StartPage" });
 
 app.Run();

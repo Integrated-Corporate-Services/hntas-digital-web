@@ -15,8 +15,11 @@ namespace HNTAS.Web.UI.Helpers
 
             // Session key for the boolean flow state
             public const string IsCheckAnswerFlowKey = "IsCheckAnswerFlow";
+
+            // Session keys for specific models
             public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
             public const string HeatNetworkNameModelKey = "HeatNetworkName";
+            public const string WhatDoYouWantToDoViewModelKey = "WhatDoYouWantToDoViewModel";
         }
 
         #endregion
