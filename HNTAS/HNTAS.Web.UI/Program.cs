@@ -120,7 +120,28 @@ builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 var app = builder.Build();
 
+//This is to check if the application is in maintenance mode
 
+var maintenanceMode = Environment.GetEnvironmentVariable("MAINTENANCE_MODE");
+if (!string.IsNullOrEmpty(maintenanceMode) && maintenanceMode.Equals("true", StringComparison.OrdinalIgnoreCase))
+{
+    app.Use(async (context, next) =>
+    {
+        // Allow access to the maintenance page and static assets
+        var path = context.Request.Path.Value;
+        if (path != null && (path.Equals("/maintenance.html", StringComparison.OrdinalIgnoreCase) ||
+                             path.StartsWith("/assets") ||
+                             path.StartsWith("/css") ||
+                             path.StartsWith("/js")))
+        {
+            await next();
+        }
+        else
+        {
+            context.Response.Redirect("/maintenance.html");
+        }
+    });
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
