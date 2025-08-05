@@ -66,6 +66,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton(jsonSerializerOptionsProvider);
             _services.AddSingleton<IApiFactory, ApiFactory>();
             _services.AddSingleton<HeatNetworksApiEvents>();
+            _services.AddSingleton<TestApiEvents>();
             _services.AddSingleton<UsersApiEvents>();
             _services.AddSingleton<WelcomeApiEvents>();
         }
@@ -86,6 +87,7 @@ namespace HNTAS.Api.Client.Client
             List<IHttpClientBuilder> builders = new List<IHttpClientBuilder>();
 
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
+            builders.Add(_services.AddHttpClient<ITestApi, TestApi>(client));
             builders.Add(_services.AddHttpClient<IUsersApi, UsersApi>(client));
             builders.Add(_services.AddHttpClient<IWelcomeApi, WelcomeApi>(client));
             

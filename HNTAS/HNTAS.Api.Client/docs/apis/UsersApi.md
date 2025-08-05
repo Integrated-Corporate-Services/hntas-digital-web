@@ -9,6 +9,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersIdHeatnetworkHeatNetworkIdPatch**](UsersApi.md#apiusersidheatnetworkheatnetworkidpatch) | **PATCH** /api/Users/{id}/heatnetwork/{heatNetworkId} |  |
 | [**ApiUsersIdOrgDetailsPatch**](UsersApi.md#apiusersidorgdetailspatch) | **PATCH** /api/Users/{id}/org-details |  |
 | [**ApiUsersInitialEntryPost**](UsersApi.md#apiusersinitialentrypost) | **POST** /api/Users/initial-entry |  |
+| [**ApiUsersOrganisationExistsCompaniesHouseNumberGet**](UsersApi.md#apiusersorganisationexistscompanieshousenumberget) | **GET** /api/Users/organisation/exists/{companiesHouseNumber} |  |
 | [**GetUserById**](UsersApi.md#getuserbyid) | **GET** /api/Users/{id} |  |
 | [**GetUserByOneLoginId**](UsersApi.md#getuserbyoneloginid) | **GET** /api/Users/onelogin/{oneLoginId} |  |
 
@@ -187,6 +188,41 @@ No authorization required
 | **201** | Created |  -  |
 | **400** | Bad Request |  -  |
 | **409** | Conflict |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersorganisationexistscompanieshousenumberget"></a>
+# **ApiUsersOrganisationExistsCompaniesHouseNumberGet**
+> bool ApiUsersOrganisationExistsCompaniesHouseNumberGet (string companiesHouseNumber)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **companiesHouseNumber** | **string** |  |  |
+
+### Return type
+
+**bool**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
 | **500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)

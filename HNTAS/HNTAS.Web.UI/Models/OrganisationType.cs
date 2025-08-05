@@ -4,7 +4,6 @@
     {
         None = 0, // Default or unselected state
         UkCompaniesHouse,
-        Other,
         OtherUkOrganisation,
         OverseasOrganisation
     }
