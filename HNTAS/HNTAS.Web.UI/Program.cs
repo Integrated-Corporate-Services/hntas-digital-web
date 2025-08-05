@@ -120,6 +120,18 @@ builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 var app = builder.Build();
 
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+
 //This is to check if the application is in maintenance mode
 
 var maintenanceMode = Environment.GetEnvironmentVariable("MAINTENANCE_MODE");
@@ -142,17 +154,6 @@ if (!string.IsNullOrEmpty(maintenanceMode) && maintenanceMode.Equals("true", Str
         }
     });
 }
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
 
 try
 {
