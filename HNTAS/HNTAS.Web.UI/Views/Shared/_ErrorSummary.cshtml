@@ -13,7 +13,7 @@
                     foreach (var error in modelState.Errors)
                     {
                         <li>
-                            <a href="#@modelStateKey">@error.ErrorMessage</a>
+                            <a href="#@modelStateKey.ToString().ToLowerInvariant()">@error.ErrorMessage</a>
                         </li>
                     }
                 }

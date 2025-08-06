@@ -72,7 +72,7 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     ModelState.AddModelError(nameof(model.SelectedOrganisationType), "Please select a valid organisation type.");
                     model.OrganisationTypes = GetOrganisationTypeOptions();
-                    return View("Type", model);
+                    return View("OrganisationType", model);
                 }
 
                 model.SelectedOrganisationTypeText = selectedOrganisationTypeText;
@@ -88,7 +88,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             model.OrganisationTypes = GetOrganisationTypeOptions();
-            return View("Type", model);
+            return View("OrganisationType", model);
         }
 
         [HttpGet]
@@ -98,7 +98,7 @@ namespace HNTAS.Web.UI.Controllers
             var model = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
 
             ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("Type");
+            ViewBag.BackLinkUrl = Url.Action("OrganisationType");
 
             return View("CompanyNumber", model);
         }
@@ -330,6 +330,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ViewBag.ShowBackButton = true;
                 ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
+                TempData["ErrorSummary"] = "CustomErrorSummary";
 
                 return View("ContactDetails", contactDetails);
             }

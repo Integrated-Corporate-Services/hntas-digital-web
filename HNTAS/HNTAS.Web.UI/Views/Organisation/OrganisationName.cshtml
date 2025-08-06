@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "What is your organisation's name?";
+    var organisationNameId = Html.LowercaseIdFor(m => m.OrganisationName);
 }
 
 <form asp-controller="Organisation" asp-action="SaveOrganisationName" method="post" novalidate>
@@ -13,23 +14,11 @@
                 What is your organisation's name?
             </label>
         </h1>
-        @if (ViewData.ModelState.ContainsKey("OrganisationName") && ViewData.ModelState["OrganisationName"]?.Errors.Count > 0)
-        {
-            <span id="OrganisationName-error" class="govuk-error-message">
-                <span class="govuk-visually-hidden">Error:</span>
-                @ViewData.ModelState["OrganisationName"]?.Errors[0].ErrorMessage
-            </span>
-        }
+        <span asp-validation-for="OrganisationName" class="govuk-error-message"></span>
         <div id="organisation-name-hint" class="govuk-hint">
             Use the full legal name that appears on official documents, such as Companies House or government forms.
         </div>
-        <input class="govuk-input govuk-!-width-two-thirds @(ViewData.ModelState.ContainsKey("OrganisationName") && ViewData.ModelState["OrganisationName"]?.Errors.Count > 0 ? "govuk-input--error" : "")"
-               id="OrganisationName"
-               name="OrganisationName"
-               type="text"
-               aria-describedby="organisation-name-hint"
-               autocomplete="organization"
-               value="@Model.OrganisationName" />
+        <input class="govuk-input govuk-!-width-two-thirds" id="@organisationNameId" name="@organisationNameId" asp-for="OrganisationName" autocomplete="off" />
     </div>
 
     <button type="submit" class="govuk-button" data-module="govuk-button">
