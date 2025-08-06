@@ -1,0 +1,33 @@
+﻿@using HNTAS.Web.UI.Models
+@model DoesElementExistViewModel
+
+@{
+    ViewData["Title"] = "Check your eligibility to register a heat network";
+    var fieldOrder = new[] { nameof(Model.DoesElementExist) };
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "HeatNetworkEligibility",
+        Action = "DoesElementExist",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = nameof(Model.DoesElementExist),
+                QText = "Does this part of your heat network already exist?",
+                QDescText = null,
+                QHintText = "This refers to whether the element exists physically or is still in the design phase.",
+                Options = new List<Option>
+                {
+                    new Option { OptId = "yes", OptText = "Yes - the element exists physically", OptHintText = null },
+                    new Option { OptId = "no", OptText = "No - the element is still in the design phase", OptHintText = null }
+                },
+                SeletedOption = Model.DoesElementExist
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+</div>
