@@ -1,0 +1,88 @@
+﻿@using HNTAS.Web.UI.Models.CompaniesHouse
+@model RegisteredOfficeAddressModel
+
+<form asp-controller="Organisation" asp-action="SaveOrganisationAddress" method="post" novalidate>
+    @Html.AntiForgeryToken()
+    <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading">
+                What is your organisation's address?
+            </h1>
+        </legend>
+        <div id="organisation-name-hint" class="govuk-hint">
+            Enter the address used for official correspondence, such as government or legal documents.
+        </div>
+        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.AddressLine1)) ? "govuk-form-group--error" : "")">
+            <label class="govuk-label" for="AddressLine1">
+               Street address
+            </label>
+            @if (ViewData.ModelState.ContainsKey(nameof(Model.AddressLine1)))
+            {
+                <span id="AddressLine1-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.AddressLine1)]?.Errors[0].ErrorMessage
+                </span>
+            }
+            <input class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.AddressLine1)) ? "govuk-input--error" : "")"
+                   id="AddressLine1"
+                   name="AddressLine1"
+                   type="text"
+                   autocomplete="address-line1"
+                   value="@Model.AddressLine1" />
+        </div>
+
+        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.Locality)) ? "govuk-form-group--error" : "")">
+            <label class="govuk-label" for="AddressTown">
+                Town or city
+            </label>
+            @if (ViewData.ModelState.ContainsKey(nameof(Model.Locality)))
+            {
+                <span id="AddressTown-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.Locality)]?.Errors[0].ErrorMessage
+                </span>
+            }
+            <input class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.Locality)) ? "govuk-input--error" : "")"
+                   id="AddressTown"
+                   name="AddressTown"
+                   type="text"
+                   autocomplete="address-level2"
+                   value="@Model.Locality" />
+        </div>
+
+   
+
+        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.PostalCode)) ? "govuk-form-group--error" : "")">
+            <label class="govuk-label" for="PostalCode">
+                Postal code or zip code
+            </label>
+            @if (ViewData.ModelState.ContainsKey(nameof(Model.PostalCode)))
+            {
+                <span id="Postcode-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.PostalCode)]?.Errors[0].ErrorMessage
+                </span>
+            }
+            <input class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.PostalCode)) ? "govuk-input--error" : "")"
+                   id="PostalCode"
+                   name="PostalCode"
+                   type="text"
+                   autocomplete="postal-code"
+                   value="@Model.PostalCode" />
+        </div>
+
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="Country">
+                Country
+            </label>
+            <input class="govuk-input"
+                   id="Country"
+                   name="Country"
+                   type="text"
+                   autocomplete="address-level1"
+                   value="@Model.Country" />
+        </div>
+
+    
+        <button type="submit" class="govuk-button" data-module="govuk-button">
+            Continue
+        </button>
+    </fieldset>
+</form>

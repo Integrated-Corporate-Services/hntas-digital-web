@@ -48,15 +48,15 @@ namespace HNTAS.Web.UI.Services.Core
             {
                 var userResponse = await _usersApi.GetUserByOneLoginIdAsync(oneLoginId);
 
-                if(userResponse.IsOk)
+                if (userResponse.IsOk)
                 {
                     return userResponse.Ok();
                 }
-                else if(userResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                else if (userResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     return null;
                 }
-                
+
                 throw new Exception($"Failed to retrieve user with status code: {userResponse.StatusCode}");
             }
             catch (Exception ex)
@@ -116,7 +116,7 @@ namespace HNTAS.Web.UI.Services.Core
             _logger.LogInformation("Updating user heat network for ID: {UserId} heat network : {hnId}", id, heatNetworkId);
             try
             {
-               var responce = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
+                var responce = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
 
                 if (responce.IsNoContent)
                 {
@@ -132,12 +132,12 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<bool?> IsOrganisationHasRpUser(string companiesHouseNumber)
+        public async Task<bool?> IsOrganisationExists(string companiesHouseNumber)
         {
-           _logger.LogInformation("Checking if organisation with Companies House number {CompaniesHouseNumber} has RP user", companiesHouseNumber);
+            _logger.LogInformation("Checking if organisation with Companies House number {CompaniesHouseNumber} has RP user", companiesHouseNumber);
             try
             {
-                var response = await _usersApi.ApiUsersOrganisationExistsCompaniesHouseNumberGetAsync(companiesHouseNumber);
+                var response = await _usersApi.ApiUsersOrganisationExistsGetAsync(companiesHouseNumber);
                 if (response.IsOk)
                 {
                     return response.Ok();

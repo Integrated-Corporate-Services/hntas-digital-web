@@ -33,11 +33,11 @@ namespace HNTAS.Web.UI.Controllers
         {
             SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
             SessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
-            return RedirectToAction("Type");
+            return RedirectToAction("OrganisationType");
         }
 
         [HttpGet]
-        public IActionResult Type()
+        public IActionResult OrganisationType()
         {
             var model = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey) ?? new OrganisationModel();
             model.OrganisationTypes = GetOrganisationTypeOptions();
@@ -59,7 +59,7 @@ namespace HNTAS.Web.UI.Controllers
                 model.CompanyNumber = orgModel.CompanyNumber;
                 model.CompanyDetails = orgModel.CompanyDetails;
             }
-        
+
             ModelState.Remove(nameof(model.CompanyNumber));
             ModelState.Remove(nameof(model.CompanyDetails));
 
@@ -68,7 +68,7 @@ namespace HNTAS.Web.UI.Controllers
                 string? selectedOrganisationTypeText = GetOrganisationTypeOptions()
                     .FirstOrDefault(item => item.Value == model.SelectedOrganisationType)?.Text;
 
-                if(selectedOrganisationTypeText == null)
+                if (selectedOrganisationTypeText == null)
                 {
                     ModelState.AddModelError(nameof(model.SelectedOrganisationType), "Please select a valid organisation type.");
                     model.OrganisationTypes = GetOrganisationTypeOptions();
@@ -77,14 +77,12 @@ namespace HNTAS.Web.UI.Controllers
 
                 model.SelectedOrganisationTypeText = selectedOrganisationTypeText;
 
-                if (model.SelectedOrganisationType == OrganisationType.OtherUkOrganisation.ToString() || model.SelectedOrganisationType == OrganisationType.OverseasOrganisation.ToString())
-                {
-                    ModelState.AddModelError(nameof(model.SelectedOrganisationType), "Not applicable for this scope");
-                    model.OrganisationTypes = GetOrganisationTypeOptions();
-                    return View("Type", model);
-                }
-
                 SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey, model);
+
+                if (model.SelectedOrganisationType == Models.OrganisationType.OtherUkOrganisation.ToString() || model.SelectedOrganisationType == Models.OrganisationType.OverseasOrganisation.ToString())
+                {
+                    return RedirectToAction("OrganisationName");
+                }
 
                 return RedirectToAction("CompanyNumber");
             }
@@ -160,7 +158,9 @@ namespace HNTAS.Web.UI.Controllers
                 return RedirectToAction("CompanyNumber");
 
             ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("CompanyNumber");
+            string backPageUrl = !string.IsNullOrEmpty(organisationModel.CompanyNumber) ? Url.Action("CompanyNumber") : Url.Action("OrganisationAddress");
+
+            ViewBag.BackLinkUrl = ViewBag.ChangeUrl = backPageUrl;
 
             return View("CompanyConfirm", organisationModel.CompanyDetails);
         }
@@ -177,15 +177,18 @@ namespace HNTAS.Web.UI.Controllers
 
             //Set empty contact details to ensure they pass the EnsureSessionForOrganisationFlowOnPost action filter validation 
             //on user controller actions
-            bool? alreadyExists = await _userService.IsOrganisationHasRpUser(organisationModel?.CompanyNumber);
-            if(alreadyExists.HasValue && alreadyExists.Value)
-            { 
-                return RedirectToAction("AlreadyRegistered");
+            if (!string.IsNullOrEmpty(organisationModel?.CompanyNumber))
+            {
+                bool? alreadyExists = await _userService.IsOrganisationExists(organisationModel?.CompanyNumber);
+                if (alreadyExists.HasValue && alreadyExists.Value)
+                {
+                    return RedirectToAction("AlreadyRegistered");
+                }
             }
 
             var existingUserModel = SessionHelper.GetFromSession<UserModel>(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey);
 
-            if(existingUserModel == null)
+            if (existingUserModel == null)
             {
                 existingUserModel = new UserModel();
                 SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey, existingUserModel);
@@ -201,7 +204,7 @@ namespace HNTAS.Web.UI.Controllers
             return View();
         }
 
-        
+
         [HttpGet]
         [EnsureSessionForOrganisationFlowOnGet]
         public IActionResult ConfirmRegulatoryContact()
@@ -235,7 +238,7 @@ namespace HNTAS.Web.UI.Controllers
                 model.OrganisationName = orgModel?.CompanyDetails?.Title ?? string.Empty;
 
                 ViewBag.ShowBackButton = true;
-                ViewBag.BackLinkUrl =  Url.Action("CompanyConfirm");
+                ViewBag.BackLinkUrl = Url.Action("CompanyConfirm");
 
                 return View(model);
             }
@@ -394,14 +397,14 @@ namespace HNTAS.Web.UI.Controllers
                 country: company?.RegisteredOfficeAddress?.Country);
 
             var preferredContactType = userModel?.ContactDetails?.PreferredContactType == PreferredContactType.Landline ? HNTAS.Api.Client.Model.PreferredContactType.Landline : HNTAS.Api.Client.Model.PreferredContactType.Mobile;
-
+            var orgType = (Api.Client.Model.OrganisationType)Enum.Parse(typeof(Models.OrganisationType), organisationModel.SelectedOrganisationType);
 
 
             try
             {
 
                 var OrgId = await _userService.UpdateUserOrganisation(userId, new UpdateOrgDetailsAndRolesRequest(new OrgDetails2(
-                    orgType: organisationModel.SelectedOrganisationTypeText,
+                    orgType: orgType,
                     companiesHouseNumber: organisationModel.CompanyNumber,
                     orgName: company?.Title,
                     firstName: userModel?.ContactDetails?.FirstName,
@@ -456,14 +459,89 @@ namespace HNTAS.Web.UI.Controllers
             return View("Confirmation");
         }
 
-        private List<SelectListItem> GetOrganisationTypeOptions()
+        [HttpGet]
+        [EnsureSessionForOrganisationFlowOnGet]
+        public IActionResult OrganisationName()
         {
-            return new List<SelectListItem>
+            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var model = new OtherOrganisationNameModel();
+            if (organisationModel.SelectedOrganisationType == Models.OrganisationType.OtherUkOrganisation.ToString() ||
+                organisationModel.SelectedOrganisationType == Models.OrganisationType.OverseasOrganisation.ToString())
             {
-                new SelectListItem { Value = OrganisationType.UkCompaniesHouse.ToString(), Text = "UK company registered with Companies House" },
-                new SelectListItem { Value = OrganisationType.OtherUkOrganisation.ToString(), Text = "Other UK organisation" },
-                new SelectListItem { Value = OrganisationType.OverseasOrganisation.ToString(), Text = "Overseas organisation" }
-            };
+                model.OrganisationName = organisationModel.CompanyDetails?.Title;
+            }
+            return View("OrganisationName", model);
+        }
+
+        [HttpPost]
+        [EnsureSessionForOrganisationFlowOnPost]
+        public IActionResult SaveOrganisationName(OtherOrganisationNameModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("OrganisationName", model);
+            }
+
+            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            if (organisationModel?.CompanyDetails == null)
+            {
+                organisationModel.CompanyDetails = new CompanyDetailsModel
+                {
+                    Title = model.OrganisationName
+                };
+            }
+            else
+            {
+                organisationModel.CompanyDetails.Title = model.OrganisationName;
+            }
+
+            SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey, organisationModel);
+
+            return RedirectToAction("OrganisationAddress");
+        }
+
+        [HttpGet]
+        public IActionResult OrganisationAddress()
+        {
+            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var model = new RegisteredOfficeAddressModel();
+
+            if (organisationModel.SelectedOrganisationType == Models.OrganisationType.OtherUkOrganisation.ToString() ||
+                organisationModel.SelectedOrganisationType == Models.OrganisationType.OverseasOrganisation.ToString())
+            {
+                model = organisationModel.CompanyDetails?.RegisteredOfficeAddress ?? model;
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View("OrganisationAddress", model);
+        }
+
+        [HttpPost]
+        public IActionResult SaveOrganisationAddress(RegisteredOfficeAddressModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("OrganisationAddress", model);
+            }
+
+            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            organisationModel.CompanyDetails.RegisteredOfficeAddress = model;
+
+            SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey, organisationModel);
+
+            return RedirectToAction("CompanyConfirm");
+        }
+
+        private static List<SelectListItem> GetOrganisationTypeOptions()
+        {
+            return
+            [
+                new SelectListItem { Value = Models.OrganisationType.UkCompaniesHouse.ToString(), Text = "UK company registered with Companies House" },
+                new SelectListItem { Value = Models.OrganisationType.OtherUkOrganisation.ToString(), Text = "Other UK organisation" },
+                new SelectListItem { Value = Models.OrganisationType.OverseasOrganisation.ToString(), Text = "Overseas organisation" }
+            ];
         }
     }
 }

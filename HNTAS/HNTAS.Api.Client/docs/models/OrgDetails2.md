@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**OrgType** | **string** |  | 
-**CompaniesHouseNumber** | **string** |  | 
+**OrgType** | **OrganisationType** |  | 
 **OrgName** | **string** |  | 
 **FirstName** | **string** |  | 
 **LastName** | **string** |  | 
 **PreferredContactType** | **PreferredContactType** |  | 
 **OrgRegisteredAddress** | [**OrgRegisteredAddress**](OrgRegisteredAddress.md) |  | 
 **OrgId** | **string** |  | [optional] 
+**CompaniesHouseNumber** | **string** |  | [optional] 
 **LandlineNumber** | **string** |  | [optional] 
 **ContactNumberExtension** | **string** |  | [optional] 
 **MobileNumber** | **string** |  | [optional] 

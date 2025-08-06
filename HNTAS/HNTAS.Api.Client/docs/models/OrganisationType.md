@@ -1,13 +1,9 @@
-# HNTAS.Api.Client.Model.Organisation
+# HNTAS.Api.Client.Model.OrganisationType
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | [optional] 
-**Name** | **string** |  | [optional] 
-**CompaninesHouseNumber** | **string** |  | [optional] 
-**Type** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

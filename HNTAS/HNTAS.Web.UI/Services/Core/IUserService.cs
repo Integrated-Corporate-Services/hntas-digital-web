@@ -14,6 +14,6 @@ namespace HNTAS.Web.UI.Services.Core
 
         Task UpdateUserHeatNetworkId(string id, string heatNetworkId);
 
-        Task<bool?> IsOrganisationHasRpUser(string companiesHouseNumber);
+        Task<bool?> IsOrganisationExists(string companiesHouseNumber);
     }
 }

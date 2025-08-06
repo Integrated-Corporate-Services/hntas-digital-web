@@ -7,7 +7,7 @@
     // List the property names in the order they appear on the form
     var fieldOrder = new[] { nameof(Model.HeatNetworkName) };
 }
-@* Display the GOV.UK error summary if there are any validation errors *@
+@*
 @if (!ViewData.ModelState.IsValid)
 {
     <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1">
@@ -28,7 +28,8 @@
             </ul>
         </div>
     </div>
-}
+} *@
+
 <div class="govuk-width-container">
     <form asp-controller="HeatNetwork" asp-action="EnterHNName" method="post" class="govuk-form-group">
         

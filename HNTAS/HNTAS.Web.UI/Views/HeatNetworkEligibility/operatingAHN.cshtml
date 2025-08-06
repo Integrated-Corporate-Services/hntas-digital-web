@@ -8,7 +8,7 @@
 <div class="govuk-width-container">
     <form asp-controller="HeatNetworkEligibility" asp-action="operatingAHN" method="post" novalidate>
         @Html.AntiForgeryToken()
-        @await Html.PartialAsync("_ErrorSummary", fieldOrder)
+        @* @await Html.PartialAsync("_ErrorSummary", fieldOrder) *@
 
         <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("IsExistingOrPlanned") && ViewData.ModelState["IsExistingOrPlanned"].Errors.Any() ? "govuk-form-group--error" : "")">
             <fieldset class="govuk-fieldset" aria-describedby="is-existing-or-planned-hint @(ViewData.ModelState.ContainsKey("IsExistingOrPlanned") && ViewData.ModelState["IsExistingOrPlanned"].Errors.Any() ? "is-existing-or-planned-error" : "")">

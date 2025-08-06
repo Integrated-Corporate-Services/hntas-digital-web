@@ -7,7 +7,7 @@
 <div class="govuk-width-container">
     <form asp-controller="HeatNetworkEligibility" asp-action="LocatedInUk" method="post" novalidate>
         @Html.AntiForgeryToken()
-        @await Html.PartialAsync("_ErrorSummary", fieldOrder)
+        @* @await Html.PartialAsync("_ErrorSummary", fieldOrder) *@
 
         <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("IsInUK") && ViewData.ModelState["IsInUK"].Errors.Any() ? "govuk-form-group--error" : "")">
             <fieldset class="govuk-fieldset" aria-describedby="is-in-uk-hint @(ViewData.ModelState.ContainsKey("IsInUK") && ViewData.ModelState["IsInUK"].Errors.Any() ? "is-in-uk-error" : "")">
