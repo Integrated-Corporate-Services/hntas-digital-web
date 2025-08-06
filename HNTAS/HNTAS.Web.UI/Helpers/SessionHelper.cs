@@ -17,9 +17,14 @@ namespace HNTAS.Web.UI.Helpers
             public const string IsCheckAnswerFlowKey = "IsCheckAnswerFlow";
 
             // Session keys for specific models
-            public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
-            public const string HeatNetworkNameModelKey = "HeatNetworkName";
             public const string WhatDoYouWantToDoViewModelKey = "WhatDoYouWantToDoViewModel";
+            public const string WhereIsTheHeatNetworkModelKey = "whereIsTheHeatNetwork";
+            public const string HowManyDwellingsIncludedModelKey = "howManyDwellingsIncluded";
+            public const string IsHNCurrentlyOperatingModelKey = "isHNCurrentlyOperating";
+            public const string HaveYouSignedMEContractModelKey = "haveYouSignedMEContract";
+
+            public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
+            public const string HeatNetworkNameModelKey = "HeatNetworkName";            
         }
 
         #endregion
@@ -64,10 +69,18 @@ namespace HNTAS.Web.UI.Helpers
         // You might still want a general ClearAllFlowRelatedSessionData if starting completely fresh
         public static void ClearAllFlowRelatedSessionData(HttpContext context)
         {
+            ClearFromSession(context, SessionKeys.WhatDoYouWantToDoViewModelKey);
+            ClearFromSession(context, SessionKeys.WhereIsTheHeatNetworkModelKey);
+            ClearFromSession(context, SessionKeys.HowManyDwellingsIncludedModelKey);
+            ClearFromSession(context, SessionKeys.IsHNCurrentlyOperatingModelKey);
+            ClearFromSession(context, SessionKeys.HaveYouSignedMEContractModelKey);
+
             ClearFromSession(context, SessionKeys.UserCreation_SessionKey);
             ClearFromSession(context, SessionKeys.OrganisationCreation_SessionKey);
+                        
             ClearFromSession(context, SessionKeys.HeatNetworkLocationModelKey);
             ClearFromSession(context, SessionKeys.HeatNetworkNameModelKey);
+
             context.Session.Remove(SessionKeys.IsCheckAnswerFlowKey);
         }
 
