@@ -5,22 +5,21 @@
     ViewData["Title"] = "Manage users"; // This sets the title that might be used in the _Layout.cshtml
 }
 
-<div class="govuk-grid-row">
+ <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        <hgroup class="govuk-!-margin-bottom-4">
-            <p class="govuk-body-l govuk-!-margin-top-4 govuk-!-margin-bottom-6">@Model.OrganisationName</p>
-             <h1 class="govuk-heading-xl">Manage users</h1>
-        </hgroup>
+        <h1 class="govuk-heading-l">
+            <span class="govuk-caption-xl">@Model.OrganisationName</span>
+            Manage users
+        </h1>
 
-        <h2 class="govuk-heading-l">Users</h2>
-
+        <h2 class="govuk-heading-m">Users</h2>
         <table class="govuk-table">
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
                     <th scope="col" class="govuk-table__header">Name</th>
                     <th scope="col" class="govuk-table__header">Email address</th>
                     <th scope="col" class="govuk-table__header">Status</th>
-                    <th scope="col" class="govuk-table__header"></th> @* For the View link *@
+                    <th scope="col" class="govuk-table__header"></th>
                 </tr>
             </thead>
             <tbody class="govuk-table__body">
@@ -31,7 +30,7 @@
                             @user.Name
                             @if (user.Roles != null && user.Roles.Any())
                             {
-                               <br /> <span class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1">(@string.Join(", ", user.Roles))</span>
+                                <br /> <span class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1">(@string.Join(", ", user.Roles))</span>
                             }
                         </td>
                         <td class="govuk-table__cell">@user.EmailAddress</td>
@@ -44,15 +43,11 @@
                             <a class="govuk-link govuk-link--no-visited-state" href="">View</a>
                         </td>
                     </tr>
-                }
+            }
             </tbody>
         </table>
-
-        <p class="govuk-!-margin-top-6">
             <a href="#" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
-                Add new user
-            </a>
-        </p>
-
+            Add new user
+        </a>
     </div>
 </div>

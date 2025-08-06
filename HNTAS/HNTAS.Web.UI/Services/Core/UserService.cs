@@ -1,7 +1,7 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 
-namespace HNTAS.Web.UI.Services
+namespace HNTAS.Web.UI.Services.Core
 {
     public class UserService : IUserService
     {
@@ -128,6 +128,25 @@ namespace HNTAS.Web.UI.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating user heat network ID for user ID: {userId}", id);
+                throw;
+            }
+        }
+
+        public async Task<bool?> IsOrganisationHasRpUser(string companiesHouseNumber)
+        {
+           _logger.LogInformation("Checking if organisation with Companies House number {CompaniesHouseNumber} has RP user", companiesHouseNumber);
+            try
+            {
+                var response = await _usersApi.ApiUsersOrganisationExistsCompaniesHouseNumberGetAsync(companiesHouseNumber);
+                if (response.IsOk)
+                {
+                    return response.Ok();
+                }
+                throw new Exception($"Failed to check organisation with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking if organisation has RP user for Companies House number: {CompaniesHouseNumber}", companiesHouseNumber);
                 throw;
             }
         }

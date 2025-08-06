@@ -159,6 +159,29 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="companiesHouseNumber"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>&gt;</returns>
+        Task<IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse> ApiUsersOrganisationExistsCompaniesHouseNumberGetAsync(string companiesHouseNumber, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="companiesHouseNumber"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>?&gt;</returns>
+        Task<IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse?> ApiUsersOrganisationExistsCompaniesHouseNumberGetOrDefaultAsync(string companiesHouseNumber, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IGetUserByIdApiResponse"/>&gt;</returns>
@@ -326,6 +349,24 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>
+    /// </summary>
+    public interface IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<bool?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IGetUserByIdApiResponse"/>
     /// </summary>
     public interface IGetUserByIdApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.UserResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
@@ -476,6 +517,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiUsersInitialEntryPost(Exception exception)
         {
             OnErrorApiUsersInitialEntryPost?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiUsersOrganisationExistsCompaniesHouseNumberGet;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet;
+
+        internal void ExecuteOnApiUsersOrganisationExistsCompaniesHouseNumberGet(UsersApi.ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse apiResponse)
+        {
+            OnApiUsersOrganisationExistsCompaniesHouseNumberGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet(Exception exception)
+        {
+            OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -1865,6 +1926,234 @@ namespace HNTAS.Api.Client.Api
                 } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)409);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiUsersOrganisationExistsCompaniesHouseNumberGet(ref string companiesHouseNumber);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="companiesHouseNumber"></param>
+        /// <returns></returns>
+        private void ValidateApiUsersOrganisationExistsCompaniesHouseNumberGet(string companiesHouseNumber)
+        {
+            if (companiesHouseNumber == null)
+                throw new ArgumentNullException(nameof(companiesHouseNumber));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="companiesHouseNumber"></param>
+        private void AfterApiUsersOrganisationExistsCompaniesHouseNumberGetDefaultImplementation(IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse apiResponseLocalVar, string companiesHouseNumber)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiUsersOrganisationExistsCompaniesHouseNumberGet(ref suppressDefaultLog, apiResponseLocalVar, companiesHouseNumber);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="companiesHouseNumber"></param>
+        partial void AfterApiUsersOrganisationExistsCompaniesHouseNumberGet(ref bool suppressDefaultLog, IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse apiResponseLocalVar, string companiesHouseNumber);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="companiesHouseNumber"></param>
+        private void OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string companiesHouseNumber)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, companiesHouseNumber);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="companiesHouseNumber"></param>
+        partial void OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string companiesHouseNumber);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="companiesHouseNumber"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse?> ApiUsersOrganisationExistsCompaniesHouseNumberGetOrDefaultAsync(string companiesHouseNumber, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiUsersOrganisationExistsCompaniesHouseNumberGetAsync(companiesHouseNumber, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="companiesHouseNumber"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse> ApiUsersOrganisationExistsCompaniesHouseNumberGetAsync(string companiesHouseNumber, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiUsersOrganisationExistsCompaniesHouseNumberGet(companiesHouseNumber);
+
+                FormatApiUsersOrganisationExistsCompaniesHouseNumberGet(ref companiesHouseNumber);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Users/organisation/exists/{companiesHouseNumber}"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/organisation/exists/{companiesHouseNumber}");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BcompaniesHouseNumber%7D", Uri.EscapeDataString(companiesHouseNumber.ToString()));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse>();
+
+                        ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/organisation/exists/{companiesHouseNumber}", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiUsersOrganisationExistsCompaniesHouseNumberGetDefaultImplementation(apiResponseLocalVar, companiesHouseNumber);
+
+                        Events.ExecuteOnApiUsersOrganisationExistsCompaniesHouseNumberGet(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGetDefaultImplementation(e, "/api/Users/organisation/exists/{companiesHouseNumber}", uriBuilderLocalVar.Path, companiesHouseNumber);
+                Events.ExecuteOnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>
+        /// </summary>
+        public partial class ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse(ILogger<ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<bool>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out bool? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
 
                 return result != null;

@@ -1,7 +1,7 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
-using HNTAS.Web.UI.Services;
+using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,49 +24,53 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> UserAccount()
         {
-            // access API to retrieve org name, all the heat networks registered
-            //var organisationName = SessionHelper.GetFromSession<>
-
             var user = await _userService.GetUserById(SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey));
-            var heatNetworksResponse = await _heatNetworksApi.ApiHeatNetworksHnIdsGetAsync(string.Join(",", user?.HnIds));
 
             if (user == null)
             {
                 _logger.LogError("User not found in session or API.");
                 TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later.";
-                return View();
+                return View(new DashboardModel());
             }
+
+            if(user.Organisation == null)
+            {
+                _logger.LogError("User organisation is null.");
+                TempData["ErrorMessage"] = "Your account is not associated with any organisation. Please contact support.";
+                return View(new DashboardModel());
+            }
+
 
             var heatNetworks = new List<HeatNetworkModel>();
 
-            if (heatNetworksResponse.IsOk)
+            if (user.HnIds != null && user.HnIds.Count > 0)
             {
-              
-                var heatNetworksData = heatNetworksResponse.Ok();
+                var heatNetworksResponse = await _heatNetworksApi.ApiHeatNetworksHnIdsGetAsync(string.Join(",", user?.HnIds));
 
-
-                foreach (var network in heatNetworksData)
+                if (heatNetworksResponse.IsOk)
                 {
-                    heatNetworks.Add(new HeatNetworkModel
+                    var heatNetworksData = heatNetworksResponse.Ok();
+
+                    foreach (var network in heatNetworksData)
                     {
-                        Name = network.Name,
-                        OrganisationName = user.Organisation?.Name,
-                        Status = "Active"
-                    });
+                        heatNetworks.Add(new HeatNetworkModel
+                        {
+                            Name = network.Name,
+                            OrganisationName = user.Organisation?.Name,
+                            Status = "Active"
+                        });
+                    }
                 }
-
-                var dashboardModel = new DashboardModel
-                {
-                    OrganisationName = user.Organisation?.Name,
-                    HeatNetworks = heatNetworks // This should be populated with actual data from the API
-                };
-
-                return View(dashboardModel);
             }
 
-           _logger.LogError("Failed to retrieve heat networks from API. Status code: {StatusCode}", heatNetworksResponse.StatusCode);
-            TempData["ErrorMessage"] = "Unable to retrieve heat networks. Please try again later.";
-            return View();
+            var dashboardModel = new DashboardModel
+            {
+                OrganisationName = user?.Organisation?.Name,
+                HeatNetworks = heatNetworks // This should be populated with actual data from the API
+            };
+
+            return View(dashboardModel);
+
         }
     }
 }
