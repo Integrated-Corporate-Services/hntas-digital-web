@@ -68,6 +68,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </header>
     <div class="govuk-width-container app-width-container">
         <div class="govuk-phase-banner">
@@ -92,8 +93,12 @@
         }
 
         <partial name="_ErrorMessagePartial" />
-
-        <main class="govuk-main-wrapper app-main-class" id="main-content">   
+      
+        <main class="govuk-main-wrapper app-main-class" id="main-content">
+            @if (string.IsNullOrEmpty(TempData["ErrorSummary"] as string))
+            {
+                <partial name="_ErrorSummary" />
+            }
             @RenderBody()
         </main>
     </div>

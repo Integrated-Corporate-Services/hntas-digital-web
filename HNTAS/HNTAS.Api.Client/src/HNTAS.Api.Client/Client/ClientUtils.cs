@@ -113,6 +113,8 @@ namespace HNTAS.Api.Client.Client
                     : "false";
             if (obj is NullableOfUserStatus nullableOfUserStatus)
                 return NullableOfUserStatusValueConverter.ToJsonValue(nullableOfUserStatus);
+            if (obj is OrganisationType organisationType)
+                return OrganisationTypeValueConverter.ToJsonValue(organisationType);
             if (obj is PreferredContactType preferredContactType)
                 return PreferredContactTypeValueConverter.ToJsonValue(preferredContactType);
             if (obj is UserRole userRole)

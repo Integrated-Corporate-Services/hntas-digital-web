@@ -159,10 +159,10 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="companiesHouseNumber"></param>
+        /// <param name="companiesHouseNumber"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>&gt;</returns>
-        Task<IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse> ApiUsersOrganisationExistsCompaniesHouseNumberGetAsync(string companiesHouseNumber, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsGetApiResponse"/>&gt;</returns>
+        Task<IApiUsersOrganisationExistsGetApiResponse> ApiUsersOrganisationExistsGetAsync(Option<string> companiesHouseNumber = default, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -170,10 +170,10 @@ namespace HNTAS.Api.Client.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <param name="companiesHouseNumber"></param>
+        /// <param name="companiesHouseNumber"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>?&gt;</returns>
-        Task<IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse?> ApiUsersOrganisationExistsCompaniesHouseNumberGetOrDefaultAsync(string companiesHouseNumber, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsGetApiResponse"/>?&gt;</returns>
+        Task<IApiUsersOrganisationExistsGetApiResponse?> ApiUsersOrganisationExistsGetOrDefaultAsync(Option<string> companiesHouseNumber = default, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -349,15 +349,21 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
-    /// The <see cref="IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>
+    /// The <see cref="IApiUsersOrganisationExistsGetApiResponse"/>
     /// </summary>
-    public interface IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<bool?>
+    public interface IApiUsersOrganisationExistsGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<bool?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
         /// </summary>
         /// <returns></returns>
         bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
 
         /// <summary>
         /// Returns true if the response is 500 InternalServerError
@@ -522,21 +528,21 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The event raised after the server response
         /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiUsersOrganisationExistsCompaniesHouseNumberGet;
+        public event EventHandler<ApiResponseEventArgs>? OnApiUsersOrganisationExistsGet;
 
         /// <summary>
         /// The event raised after an error querying the server
         /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet;
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiUsersOrganisationExistsGet;
 
-        internal void ExecuteOnApiUsersOrganisationExistsCompaniesHouseNumberGet(UsersApi.ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse apiResponse)
+        internal void ExecuteOnApiUsersOrganisationExistsGet(UsersApi.ApiUsersOrganisationExistsGetApiResponse apiResponse)
         {
-            OnApiUsersOrganisationExistsCompaniesHouseNumberGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+            OnApiUsersOrganisationExistsGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
         }
 
-        internal void ExecuteOnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet(Exception exception)
+        internal void ExecuteOnErrorApiUsersOrganisationExistsGet(Exception exception)
         {
-            OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet?.Invoke(this, new ExceptionEventArgs(exception));
+            OnErrorApiUsersOrganisationExistsGet?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -1948,16 +1954,16 @@ namespace HNTAS.Api.Client.Api
             partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
-        partial void FormatApiUsersOrganisationExistsCompaniesHouseNumberGet(ref string companiesHouseNumber);
+        partial void FormatApiUsersOrganisationExistsGet(ref Option<string> companiesHouseNumber);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
         /// <param name="companiesHouseNumber"></param>
         /// <returns></returns>
-        private void ValidateApiUsersOrganisationExistsCompaniesHouseNumberGet(string companiesHouseNumber)
+        private void ValidateApiUsersOrganisationExistsGet(Option<string> companiesHouseNumber)
         {
-            if (companiesHouseNumber == null)
+            if (companiesHouseNumber.IsSet && companiesHouseNumber.Value == null)
                 throw new ArgumentNullException(nameof(companiesHouseNumber));
         }
 
@@ -1966,10 +1972,10 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="companiesHouseNumber"></param>
-        private void AfterApiUsersOrganisationExistsCompaniesHouseNumberGetDefaultImplementation(IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse apiResponseLocalVar, string companiesHouseNumber)
+        private void AfterApiUsersOrganisationExistsGetDefaultImplementation(IApiUsersOrganisationExistsGetApiResponse apiResponseLocalVar, Option<string> companiesHouseNumber)
         {
             bool suppressDefaultLog = false;
-            AfterApiUsersOrganisationExistsCompaniesHouseNumberGet(ref suppressDefaultLog, apiResponseLocalVar, companiesHouseNumber);
+            AfterApiUsersOrganisationExistsGet(ref suppressDefaultLog, apiResponseLocalVar, companiesHouseNumber);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -1980,7 +1986,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="companiesHouseNumber"></param>
-        partial void AfterApiUsersOrganisationExistsCompaniesHouseNumberGet(ref bool suppressDefaultLog, IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse apiResponseLocalVar, string companiesHouseNumber);
+        partial void AfterApiUsersOrganisationExistsGet(ref bool suppressDefaultLog, IApiUsersOrganisationExistsGetApiResponse apiResponseLocalVar, Option<string> companiesHouseNumber);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -1989,10 +1995,10 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="companiesHouseNumber"></param>
-        private void OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string companiesHouseNumber)
+        private void OnErrorApiUsersOrganisationExistsGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> companiesHouseNumber)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, companiesHouseNumber);
+            OnErrorApiUsersOrganisationExistsGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, companiesHouseNumber);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -2005,19 +2011,19 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="companiesHouseNumber"></param>
-        partial void OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string companiesHouseNumber);
+        partial void OnErrorApiUsersOrganisationExistsGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> companiesHouseNumber);
 
         /// <summary>
         ///  
         /// </summary>
-        /// <param name="companiesHouseNumber"></param>
+        /// <param name="companiesHouseNumber"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>&gt;</returns>
-        public async Task<IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse?> ApiUsersOrganisationExistsCompaniesHouseNumberGetOrDefaultAsync(string companiesHouseNumber, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersOrganisationExistsGetApiResponse?> ApiUsersOrganisationExistsGetOrDefaultAsync(Option<string> companiesHouseNumber = default, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiUsersOrganisationExistsCompaniesHouseNumberGetAsync(companiesHouseNumber, cancellationToken).ConfigureAwait(false);
+                return await ApiUsersOrganisationExistsGetAsync(companiesHouseNumber, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -2029,18 +2035,18 @@ namespace HNTAS.Api.Client.Api
         ///  
         /// </summary>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="companiesHouseNumber"></param>
+        /// <param name="companiesHouseNumber"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>&gt;</returns>
-        public async Task<IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse> ApiUsersOrganisationExistsCompaniesHouseNumberGetAsync(string companiesHouseNumber, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersOrganisationExistsGetApiResponse> ApiUsersOrganisationExistsGetAsync(Option<string> companiesHouseNumber = default, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiUsersOrganisationExistsCompaniesHouseNumberGet(companiesHouseNumber);
+                ValidateApiUsersOrganisationExistsGet(companiesHouseNumber);
 
-                FormatApiUsersOrganisationExistsCompaniesHouseNumberGet(ref companiesHouseNumber);
+                FormatApiUsersOrganisationExistsGet(ref companiesHouseNumber);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -2048,9 +2054,15 @@ namespace HNTAS.Api.Client.Api
                     uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
                     uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
                     uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
-                        ? "/api/Users/organisation/exists/{companiesHouseNumber}"
-                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/organisation/exists/{companiesHouseNumber}");
-                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BcompaniesHouseNumber%7D", Uri.EscapeDataString(companiesHouseNumber.ToString()));
+                        ? "/api/Users/organisation/exists"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/organisation/exists");
+
+                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    if (companiesHouseNumber.IsSet)
+                        parseQueryStringLocalVar["companiesHouseNumber"] = ClientUtils.ParameterToString(companiesHouseNumber.Value);
+
+                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
 
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
@@ -2073,13 +2085,13 @@ namespace HNTAS.Api.Client.Api
                     {
                         string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-                        ILogger<ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse>();
+                        ILogger<ApiUsersOrganisationExistsGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersOrganisationExistsGetApiResponse>();
 
-                        ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/organisation/exists/{companiesHouseNumber}", requestedAtLocalVar, _jsonSerializerOptions);
+                        ApiUsersOrganisationExistsGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/organisation/exists", requestedAtLocalVar, _jsonSerializerOptions);
 
-                        AfterApiUsersOrganisationExistsCompaniesHouseNumberGetDefaultImplementation(apiResponseLocalVar, companiesHouseNumber);
+                        AfterApiUsersOrganisationExistsGetDefaultImplementation(apiResponseLocalVar, companiesHouseNumber);
 
-                        Events.ExecuteOnApiUsersOrganisationExistsCompaniesHouseNumberGet(apiResponseLocalVar);
+                        Events.ExecuteOnApiUsersOrganisationExistsGet(apiResponseLocalVar);
 
                         return apiResponseLocalVar;
                     }
@@ -2087,24 +2099,24 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiUsersOrganisationExistsCompaniesHouseNumberGetDefaultImplementation(e, "/api/Users/organisation/exists/{companiesHouseNumber}", uriBuilderLocalVar.Path, companiesHouseNumber);
-                Events.ExecuteOnErrorApiUsersOrganisationExistsCompaniesHouseNumberGet(e);
+                OnErrorApiUsersOrganisationExistsGetDefaultImplementation(e, "/api/Users/organisation/exists", uriBuilderLocalVar.Path, companiesHouseNumber);
+                Events.ExecuteOnErrorApiUsersOrganisationExistsGet(e);
                 throw;
             }
         }
 
         /// <summary>
-        /// The <see cref="ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>
+        /// The <see cref="ApiUsersOrganisationExistsGetApiResponse"/>
         /// </summary>
-        public partial class ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse
+        public partial class ApiUsersOrganisationExistsGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiUsersOrganisationExistsGetApiResponse
         {
             /// <summary>
             /// The logger
             /// </summary>
-            public ILogger<ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse> Logger { get; }
+            public ILogger<ApiUsersOrganisationExistsGetApiResponse> Logger { get; }
 
             /// <summary>
-            /// The <see cref="ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse"/>
+            /// The <see cref="ApiUsersOrganisationExistsGetApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -2113,7 +2125,7 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse(ILogger<ApiUsersOrganisationExistsCompaniesHouseNumberGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public ApiUsersOrganisationExistsGetApiResponse(ILogger<ApiUsersOrganisationExistsGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -2154,6 +2166,44 @@ namespace HNTAS.Api.Client.Api
                 } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
 
                 return result != null;

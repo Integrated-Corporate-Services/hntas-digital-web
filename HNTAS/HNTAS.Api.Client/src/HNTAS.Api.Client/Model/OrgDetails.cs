@@ -34,28 +34,28 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="OrgDetails" /> class.
         /// </summary>
         /// <param name="orgType">orgType</param>
-        /// <param name="companiesHouseNumber">companiesHouseNumber</param>
         /// <param name="orgName">orgName</param>
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
         /// <param name="preferredContactType">preferredContactType</param>
         /// <param name="orgRegisteredAddress">orgRegisteredAddress</param>
         /// <param name="orgId">orgId</param>
+        /// <param name="companiesHouseNumber">companiesHouseNumber</param>
         /// <param name="landlineNumber">landlineNumber</param>
         /// <param name="contactNumberExtension">contactNumberExtension</param>
         /// <param name="mobileNumber">mobileNumber</param>
         /// <param name="jobTitle">jobTitle</param>
         [JsonConstructor]
-        public OrgDetails(string orgType, string companiesHouseNumber, string orgName, string firstName, string lastName, PreferredContactType preferredContactType, OrgRegisteredAddress orgRegisteredAddress, Option<string?> orgId = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, string? jobTitle = default)
+        public OrgDetails(OrganisationType orgType, string orgName, string firstName, string lastName, PreferredContactType preferredContactType, OrgRegisteredAddress orgRegisteredAddress, Option<string?> orgId = default, Option<string?> companiesHouseNumber = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, string? jobTitle = default)
         {
             OrgType = orgType;
-            CompaniesHouseNumber = companiesHouseNumber;
             OrgName = orgName;
             FirstName = firstName;
             LastName = lastName;
             PreferredContactType = preferredContactType;
             OrgRegisteredAddress = orgRegisteredAddress;
             OrgIdOption = orgId;
+            CompaniesHouseNumberOption = companiesHouseNumber;
             LandlineNumberOption = landlineNumber;
             ContactNumberExtensionOption = contactNumberExtension;
             MobileNumberOption = mobileNumber;
@@ -66,22 +66,16 @@ namespace HNTAS.Api.Client.Model
         partial void OnCreated();
 
         /// <summary>
+        /// Gets or Sets OrgType
+        /// </summary>
+        [JsonPropertyName("orgType")]
+        public OrganisationType OrgType { get; set; }
+
+        /// <summary>
         /// Gets or Sets PreferredContactType
         /// </summary>
         [JsonPropertyName("preferredContactType")]
         public PreferredContactType PreferredContactType { get; set; }
-
-        /// <summary>
-        /// Gets or Sets OrgType
-        /// </summary>
-        [JsonPropertyName("orgType")]
-        public string OrgType { get; set; }
-
-        /// <summary>
-        /// Gets or Sets CompaniesHouseNumber
-        /// </summary>
-        [JsonPropertyName("companiesHouseNumber")]
-        public string CompaniesHouseNumber { get; set; }
 
         /// <summary>
         /// Gets or Sets OrgName
@@ -119,6 +113,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("orgId")]
         public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of CompaniesHouseNumber
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> CompaniesHouseNumberOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets CompaniesHouseNumber
+        /// </summary>
+        [JsonPropertyName("companiesHouseNumber")]
+        public string? CompaniesHouseNumber { get { return this.CompaniesHouseNumberOption; } set { this.CompaniesHouseNumberOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of LandlineNumber
@@ -174,13 +181,13 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class OrgDetails {\n");
             sb.Append("  OrgType: ").Append(OrgType).Append("\n");
-            sb.Append("  CompaniesHouseNumber: ").Append(CompaniesHouseNumber).Append("\n");
             sb.Append("  OrgName: ").Append(OrgName).Append("\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
             sb.Append("  PreferredContactType: ").Append(PreferredContactType).Append("\n");
             sb.Append("  OrgRegisteredAddress: ").Append(OrgRegisteredAddress).Append("\n");
             sb.Append("  OrgId: ").Append(OrgId).Append("\n");
+            sb.Append("  CompaniesHouseNumber: ").Append(CompaniesHouseNumber).Append("\n");
             sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
             sb.Append("  ContactNumberExtension: ").Append(ContactNumberExtension).Append("\n");
             sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
@@ -286,14 +293,14 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> orgType = default;
-            Option<string?> companiesHouseNumber = default;
+            Option<OrganisationType?> orgType = default;
             Option<string?> orgName = default;
             Option<string?> firstName = default;
             Option<string?> lastName = default;
             Option<PreferredContactType?> preferredContactType = default;
             Option<OrgRegisteredAddress?> orgRegisteredAddress = default;
             Option<string?> orgId = default;
+            Option<string?> companiesHouseNumber = default;
             Option<string?> landlineNumber = default;
             Option<string?> contactNumberExtension = default;
             Option<string?> mobileNumber = default;
@@ -315,10 +322,9 @@ namespace HNTAS.Api.Client.Model
                     switch (localVarJsonPropertyName)
                     {
                         case "orgType":
-                            orgType = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "companiesHouseNumber":
-                            companiesHouseNumber = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? orgTypeRawValue = utf8JsonReader.GetString();
+                            if (orgTypeRawValue != null)
+                                orgType = new Option<OrganisationType?>(OrganisationTypeValueConverter.FromStringOrDefault(orgTypeRawValue));
                             break;
                         case "orgName":
                             orgName = new Option<string?>(utf8JsonReader.GetString()!);
@@ -339,6 +345,9 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "orgId":
                             orgId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "companiesHouseNumber":
+                            companiesHouseNumber = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "landlineNumber":
                             landlineNumber = new Option<string?>(utf8JsonReader.GetString());
@@ -361,9 +370,6 @@ namespace HNTAS.Api.Client.Model
             if (!orgType.IsSet)
                 throw new ArgumentException("Property is required for class OrgDetails.", nameof(orgType));
 
-            if (!companiesHouseNumber.IsSet)
-                throw new ArgumentException("Property is required for class OrgDetails.", nameof(companiesHouseNumber));
-
             if (!orgName.IsSet)
                 throw new ArgumentException("Property is required for class OrgDetails.", nameof(orgName));
 
@@ -385,9 +391,6 @@ namespace HNTAS.Api.Client.Model
             if (orgType.IsSet && orgType.Value == null)
                 throw new ArgumentNullException(nameof(orgType), "Property is not nullable for class OrgDetails.");
 
-            if (companiesHouseNumber.IsSet && companiesHouseNumber.Value == null)
-                throw new ArgumentNullException(nameof(companiesHouseNumber), "Property is not nullable for class OrgDetails.");
-
             if (orgName.IsSet && orgName.Value == null)
                 throw new ArgumentNullException(nameof(orgName), "Property is not nullable for class OrgDetails.");
 
@@ -403,7 +406,7 @@ namespace HNTAS.Api.Client.Model
             if (orgRegisteredAddress.IsSet && orgRegisteredAddress.Value == null)
                 throw new ArgumentNullException(nameof(orgRegisteredAddress), "Property is not nullable for class OrgDetails.");
 
-            return new OrgDetails(orgType.Value!, companiesHouseNumber.Value!, orgName.Value!, firstName.Value!, lastName.Value!, preferredContactType.Value!.Value!, orgRegisteredAddress.Value!, orgId, landlineNumber, contactNumberExtension, mobileNumber, jobTitle.Value!);
+            return new OrgDetails(orgType.Value!.Value!, orgName.Value!, firstName.Value!, lastName.Value!, preferredContactType.Value!.Value!, orgRegisteredAddress.Value!, orgId, companiesHouseNumber, landlineNumber, contactNumberExtension, mobileNumber, jobTitle.Value!);
         }
 
         /// <summary>
@@ -430,12 +433,6 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, OrgDetails orgDetails, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (orgDetails.OrgType == null)
-                throw new ArgumentNullException(nameof(orgDetails.OrgType), "Property is required for class OrgDetails.");
-
-            if (orgDetails.CompaniesHouseNumber == null)
-                throw new ArgumentNullException(nameof(orgDetails.CompaniesHouseNumber), "Property is required for class OrgDetails.");
-
             if (orgDetails.OrgName == null)
                 throw new ArgumentNullException(nameof(orgDetails.OrgName), "Property is required for class OrgDetails.");
 
@@ -448,9 +445,8 @@ namespace HNTAS.Api.Client.Model
             if (orgDetails.OrgRegisteredAddress == null)
                 throw new ArgumentNullException(nameof(orgDetails.OrgRegisteredAddress), "Property is required for class OrgDetails.");
 
-            writer.WriteString("orgType", orgDetails.OrgType);
-
-            writer.WriteString("companiesHouseNumber", orgDetails.CompaniesHouseNumber);
+            var orgTypeRawValue = OrganisationTypeValueConverter.ToJsonValue(orgDetails.OrgType);
+            writer.WriteString("orgType", orgTypeRawValue);
 
             writer.WriteString("orgName", orgDetails.OrgName);
 
@@ -468,6 +464,12 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("orgId", orgDetails.OrgId);
                 else
                     writer.WriteNull("orgId");
+
+            if (orgDetails.CompaniesHouseNumberOption.IsSet)
+                if (orgDetails.CompaniesHouseNumberOption.Value != null)
+                    writer.WriteString("companiesHouseNumber", orgDetails.CompaniesHouseNumber);
+                else
+                    writer.WriteNull("companiesHouseNumber");
 
             if (orgDetails.LandlineNumberOption.IsSet)
                 if (orgDetails.LandlineNumberOption.Value != null)
