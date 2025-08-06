@@ -84,6 +84,7 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult StartPage()
     {
+        SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
         return View();
     }
 

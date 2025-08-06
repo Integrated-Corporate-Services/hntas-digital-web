@@ -14,7 +14,7 @@
     @foreach (Question q in Model.Questions)
     {
         <div class="govuk-form-group @(hasError(q.QId) ? "govuk-form-group--error" : "")">
-            <fieldset class="govuk-fieldset" id="@q.QId" aria-describedby="@q.QId-hint @(hasError(q.QId) ? $"{q.QId}-error" : "")">
+            <fieldset class="govuk-fieldset" aria-describedby="@q.QId-hint @(hasError(q.QId) ? $"{q.QId}-error" : "")">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                     <h1 class="govuk-fieldset__heading">@q.QText</h1>
                 </legend>
