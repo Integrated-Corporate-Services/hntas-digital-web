@@ -48,13 +48,14 @@ namespace HNTAS.Web.UI.Controllers
                 Utility.ShowBackButton(this, "UserAccount", "Dashboard");
             }
 
-            if (string.IsNullOrWhiteSpace(model.HeatNetworkLocation))
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(nameof(model.HeatNetworkLocation), "Please enter the url.");
+                return View(model);
             }
-            else if (!model.HeatNetworkLocation.Contains("https://what3words.com/"))
+            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.Contains("https://what3words.com/"))
             {
                 ModelState.AddModelError(nameof(model.HeatNetworkLocation), "Invalid url. Please enter the correct url.");
+                return View(model);
             }
             else
             {
@@ -71,10 +72,7 @@ namespace HNTAS.Web.UI.Controllers
                 }
             }
             
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            
 
             SessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey, model);
 
@@ -93,19 +91,17 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnterHNName(HeatNetworkNameModel model)
         {
             Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
-            
-            if(string.IsNullOrWhiteSpace(model.HeatNetworkName))
-            {
-                ModelState.AddModelError(nameof(model.HeatNetworkName), "Please enter the name of the Heat Network.");
-            }
-            else if (model.HeatNetworkName.Length > 100)
-            {
-                ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name cannot exceed 100 characters.");
-            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
+            {
+                ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name cannot exceed 100 characters.");
+                return View(model);
+            }
+            
             SessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey, model);
             return RedirectToAction("CheckYourAnswers");
         }
