@@ -36,12 +36,14 @@ namespace HNTAS.Api.Client.Model
         /// <param name="id">id</param>
         /// <param name="name">name</param>
         /// <param name="companinesHouseNumber">companinesHouseNumber</param>
+        /// <param name="type">type</param>
         [JsonConstructor]
-        public Organisation(Option<string?> id = default, Option<string?> name = default, Option<string?> companinesHouseNumber = default)
+        public Organisation(Option<string?> id = default, Option<string?> name = default, Option<string?> companinesHouseNumber = default, Option<string?> type = default)
         {
             IdOption = id;
             NameOption = name;
             CompaninesHouseNumberOption = companinesHouseNumber;
+            TypeOption = type;
             OnCreated();
         }
 
@@ -87,6 +89,19 @@ namespace HNTAS.Api.Client.Model
         public string? CompaninesHouseNumber { get { return this.CompaninesHouseNumberOption; } set { this.CompaninesHouseNumberOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Type
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> TypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Type
+        /// </summary>
+        [JsonPropertyName("type")]
+        public string? Type { get { return this.TypeOption; } set { this.TypeOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -97,6 +112,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  CompaninesHouseNumber: ").Append(CompaninesHouseNumber).Append("\n");
+            sb.Append("  Type: ").Append(Type).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -137,6 +153,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> id = default;
             Option<string?> name = default;
             Option<string?> companinesHouseNumber = default;
+            Option<string?> type = default;
 
             while (utf8JsonReader.Read())
             {
@@ -160,7 +177,10 @@ namespace HNTAS.Api.Client.Model
                             name = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "companinesHouseNumber":
-                            companinesHouseNumber = new Option<string?>(utf8JsonReader.GetString()!);
+                            companinesHouseNumber = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "type":
+                            type = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         default:
                             break;
@@ -174,10 +194,10 @@ namespace HNTAS.Api.Client.Model
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class Organisation.");
 
-            if (companinesHouseNumber.IsSet && companinesHouseNumber.Value == null)
-                throw new ArgumentNullException(nameof(companinesHouseNumber), "Property is not nullable for class Organisation.");
+            if (type.IsSet && type.Value == null)
+                throw new ArgumentNullException(nameof(type), "Property is not nullable for class Organisation.");
 
-            return new Organisation(id, name, companinesHouseNumber);
+            return new Organisation(id, name, companinesHouseNumber, type);
         }
 
         /// <summary>
@@ -210,8 +230,8 @@ namespace HNTAS.Api.Client.Model
             if (organisation.NameOption.IsSet && organisation.Name == null)
                 throw new ArgumentNullException(nameof(organisation.Name), "Property is required for class Organisation.");
 
-            if (organisation.CompaninesHouseNumberOption.IsSet && organisation.CompaninesHouseNumber == null)
-                throw new ArgumentNullException(nameof(organisation.CompaninesHouseNumber), "Property is required for class Organisation.");
+            if (organisation.TypeOption.IsSet && organisation.Type == null)
+                throw new ArgumentNullException(nameof(organisation.Type), "Property is required for class Organisation.");
 
             if (organisation.IdOption.IsSet)
                 writer.WriteString("id", organisation.Id);
@@ -220,7 +240,13 @@ namespace HNTAS.Api.Client.Model
                 writer.WriteString("name", organisation.Name);
 
             if (organisation.CompaninesHouseNumberOption.IsSet)
-                writer.WriteString("companinesHouseNumber", organisation.CompaninesHouseNumber);
+                if (organisation.CompaninesHouseNumberOption.Value != null)
+                    writer.WriteString("companinesHouseNumber", organisation.CompaninesHouseNumber);
+                else
+                    writer.WriteNull("companinesHouseNumber");
+
+            if (organisation.TypeOption.IsSet)
+                writer.WriteString("type", organisation.Type);
         }
     }
 }
