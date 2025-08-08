@@ -1,20 +1,21 @@
-﻿@model HNTAS.Web.UI.Models.HeatNetworkNameModel
+@model HNTAS.Web.UI.Models.HeatNetworkNameModel
 @{
     ViewData["Title"] = "Enter name of your heat network";
-    var heatNetworkNameId = Html.LowercaseIdFor(m => m.HeatNetworkName);
 }
 
 <div class="govuk-width-container">
-    <form asp-controller="HeatNetwork" asp-action="EnterHNName" method="post" novalidate>
 
-        <div class="govuk-form-group">
-            <label class="govuk-label" for="@heatNetworkNameId">
+    <form asp-controller="HeatNetwork" asp-action="EnterHNName" method="post" novalidate>
+        <div class="govuk-form-group @(ViewData.ModelState["HeatNetworkName"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+            <label class="govuk-label" for="heatnetworkname">
                 <h1 class="govuk-heading-l">Enter name of the heat network</h1>
             </label>
-            <span asp-validation-for="HeatNetworkName" class="govuk-error-message"></span>
-            <input class="govuk-input govuk-!-width-two-thirds" id="@heatNetworkNameId" name="@heatNetworkNameId" asp-for="HeatNetworkName" autocomplete="off" />
+            @if (ViewData.ModelState["HeatNetworkName"]?.Errors.Count > 0)
+            {
+                <span asp-validation-for="HeatNetworkName" class="govuk-error-message"></span>
+            }
+            <input class="govuk-input govuk-!-width-two-thirds" id="heatnetworkname" name="heatnetworkname" asp-for="HeatNetworkName" autocomplete="off" />
         </div>
-
         <button type="submit" class="govuk-button" data-module="govuk-button">
             Continue
         </button>
