@@ -6,6 +6,8 @@
     {
         return ViewData.ModelState.ContainsKey(qid) && ViewData.ModelState[qid].Errors.Any(); 
     }
+
+    
 }
 
 <form asp-controller="@Model.Controller" asp-action="@Model.Action" method="post" novalidate>
@@ -14,7 +16,7 @@
     @foreach (Question q in Model.Questions)
     {
         <div class="govuk-form-group @(hasError(q.QId) ? "govuk-form-group--error" : "")">
-            <fieldset class="govuk-fieldset" aria-describedby="@q.QId-hint @(hasError(q.QId) ? $"{q.QId}-error" : "")">
+            <fieldset class="govuk-fieldset" aria-describedby="@(q.QHintText != null ? $"{q.QId}-hint " : "")@(hasError(q.QId) ? $"{q.QId}-error" : "")">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                     <h1 class="govuk-fieldset__heading">@q.QText</h1>
                 </legend>
@@ -24,7 +26,7 @@
                 }
                 @if (!string.IsNullOrEmpty(q.QHintText))
                 {
-                    <div id="@q.QId-question-hint" class="govuk-hint">
+                    <div id="@q.QId-hint" class="govuk-hint">
                         @q.QHintText
                     </div>
                 }
@@ -41,11 +43,13 @@
                     @foreach (Option option in q.Options)
                     {
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="@option.OptId" name="@q.QId" type="radio" value="@option.OptValue" aria-describedby="@q.QId-hint" @(q.SeletedOption == option.OptValue ? "checked" : "")>
+                            <input class="govuk-radios__input" id="@option.OptId" name="@q.QId" type="radio" value="@option.OptValue"
+                                   aria-describedby="@(option.OptHintText != null ? $"{q.QId}-item-hint" : "")"
+                                   @(q.SeletedOption == option.OptValue ? "checked" : "")>
                             <label class="govuk-label govuk-radios__label" for="@option.OptId">@option.OptText</label>
                             @if (!string.IsNullOrEmpty(option.OptHintText))
                             {
-                                <div id="@q.QId-item-hint" class="govuk-hint govuk-radios__hint">
+                                <div id="@(q.QId)-item-hint" class="govuk-hint govuk-radios__hint">
                                     @option.OptHintText
                                 </div>
                             }
