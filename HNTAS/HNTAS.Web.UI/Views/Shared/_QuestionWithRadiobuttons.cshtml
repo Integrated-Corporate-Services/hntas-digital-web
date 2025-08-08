@@ -12,7 +12,6 @@
 
 <form asp-controller="@Model.Controller" asp-action="@Model.Action" method="post" novalidate>
     @Html.AntiForgeryToken()
-    @await Html.PartialAsync("_ErrorSummary", Model.FieldOrder)
     @foreach (Question q in Model.Questions)
     {
         <div class="govuk-form-group @(hasError(q.QId) ? "govuk-form-group--error" : "")">

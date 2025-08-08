@@ -713,7 +713,7 @@
         }
       }
     },
-    "/api/Users/organisation/exists/{companiesHouseNumber}": {
+    "/api/Users/organisation/exists": {
       "get": {
         "tags": [
           "Users"
@@ -721,8 +721,7 @@
         "parameters": [
           {
             "name": "companiesHouseNumber",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -745,6 +744,26 @@
               "text/json": {
                 "schema": {
                   "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -870,15 +889,25 @@
             "type": "string"
           },
           "companinesHouseNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
             "type": "string"
           }
         },
         "nullable": true
       },
+      "OrganisationType": {
+        "enum": [
+          "UkCompaniesHouse",
+          "OtherUkOrganisation",
+          "OverseasOrganisation"
+        ]
+      },
       "OrgDetails": {
         "required": [
           "orgType",
-          "companiesHouseNumber",
           "orgName",
           "firstName",
           "lastName",
@@ -893,10 +922,11 @@
             "nullable": true
           },
           "orgType": {
-            "type": "string"
+            "$ref": "#/components/schemas/OrganisationType"
           },
           "companiesHouseNumber": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "orgName": {
             "type": "string"
@@ -943,7 +973,6 @@
       "OrgDetails2": {
         "required": [
           "orgType",
-          "companiesHouseNumber",
           "orgName",
           "firstName",
           "lastName",
@@ -958,10 +987,11 @@
             "nullable": true
           },
           "orgType": {
-            "type": "string"
+            "$ref": "#/components/schemas/OrganisationType"
           },
           "companiesHouseNumber": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "orgName": {
             "type": "string"

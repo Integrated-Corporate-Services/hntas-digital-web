@@ -9,7 +9,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersIdHeatnetworkHeatNetworkIdPatch**](UsersApi.md#apiusersidheatnetworkheatnetworkidpatch) | **PATCH** /api/Users/{id}/heatnetwork/{heatNetworkId} |  |
 | [**ApiUsersIdOrgDetailsPatch**](UsersApi.md#apiusersidorgdetailspatch) | **PATCH** /api/Users/{id}/org-details |  |
 | [**ApiUsersInitialEntryPost**](UsersApi.md#apiusersinitialentrypost) | **POST** /api/Users/initial-entry |  |
-| [**ApiUsersOrganisationExistsCompaniesHouseNumberGet**](UsersApi.md#apiusersorganisationexistscompanieshousenumberget) | **GET** /api/Users/organisation/exists/{companiesHouseNumber} |  |
+| [**ApiUsersOrganisationExistsGet**](UsersApi.md#apiusersorganisationexistsget) | **GET** /api/Users/organisation/exists |  |
 | [**GetUserById**](UsersApi.md#getuserbyid) | **GET** /api/Users/{id} |  |
 | [**GetUserByOneLoginId**](UsersApi.md#getuserbyoneloginid) | **GET** /api/Users/onelogin/{oneLoginId} |  |
 
@@ -192,9 +192,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="apiusersorganisationexistscompanieshousenumberget"></a>
-# **ApiUsersOrganisationExistsCompaniesHouseNumberGet**
-> bool ApiUsersOrganisationExistsCompaniesHouseNumberGet (string companiesHouseNumber)
+<a id="apiusersorganisationexistsget"></a>
+# **ApiUsersOrganisationExistsGet**
+> bool ApiUsersOrganisationExistsGet (string companiesHouseNumber = null)
 
 
 
@@ -203,7 +203,7 @@ No authorization required
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **companiesHouseNumber** | **string** |  |  |
+| **companiesHouseNumber** | **string** |  | [optional]  |
 
 ### Return type
 
@@ -223,6 +223,7 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
+| **400** | Bad Request |  -  |
 | **500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)

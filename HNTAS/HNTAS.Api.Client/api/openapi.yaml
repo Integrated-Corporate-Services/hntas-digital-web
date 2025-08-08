@@ -450,16 +450,16 @@ paths:
           description: Internal Server Error
       tags:
       - Users
-  /api/Users/organisation/exists/{companiesHouseNumber}:
+  /api/Users/organisation/exists:
     get:
       parameters:
-      - explode: false
-        in: path
+      - explode: true
+        in: query
         name: companiesHouseNumber
-        required: true
+        required: false
         schema:
           type: string
-        style: simple
+        style: form
       responses:
         "200":
           content:
@@ -473,6 +473,18 @@ paths:
               schema:
                 type: boolean
           description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
         "500":
           description: Internal Server Error
       tags:
@@ -577,6 +589,7 @@ components:
         name: name
         id: id
         companinesHouseNumber: companinesHouseNumber
+        type: type
       nullable: true
       properties:
         id:
@@ -584,11 +597,20 @@ components:
         name:
           type: string
         companinesHouseNumber:
+          nullable: true
+          type: string
+        type:
           type: string
       type: object
+    OrganisationType:
+      enum:
+      - UkCompaniesHouse
+      - OtherUkOrganisation
+      - OverseasOrganisation
+      type: string
     OrgDetails:
       example:
-        orgType: orgType
+        orgType: UkCompaniesHouse
         firstName: firstName
         lastName: lastName
         orgName: orgName
@@ -612,8 +634,9 @@ components:
           nullable: true
           type: string
         orgType:
-          type: string
+          $ref: "#/components/schemas/OrganisationType"
         companiesHouseNumber:
+          nullable: true
           type: string
         orgName:
           type: string
@@ -648,7 +671,6 @@ components:
         orgRegisteredAddress:
           $ref: "#/components/schemas/OrgRegisteredAddress"
       required:
-      - companiesHouseNumber
       - firstName
       - jobTitle
       - lastName
@@ -659,7 +681,7 @@ components:
       type: object
     OrgDetails2:
       example:
-        orgType: orgType
+        orgType: UkCompaniesHouse
         firstName: firstName
         lastName: lastName
         orgName: orgName
@@ -682,8 +704,9 @@ components:
           nullable: true
           type: string
         orgType:
-          type: string
+          $ref: "#/components/schemas/OrganisationType"
         companiesHouseNumber:
+          nullable: true
           type: string
         orgName:
           type: string
@@ -718,7 +741,6 @@ components:
         orgRegisteredAddress:
           $ref: "#/components/schemas/OrgRegisteredAddress"
       required:
-      - companiesHouseNumber
       - firstName
       - jobTitle
       - lastName
@@ -789,7 +811,7 @@ components:
     UpdateOrgDetailsAndRolesRequest:
       example:
         orgDetails:
-          orgType: orgType
+          orgType: UkCompaniesHouse
           firstName: firstName
           lastName: lastName
           orgName: orgName
@@ -820,7 +842,7 @@ components:
     User:
       example:
         orgDetails:
-          orgType: orgType
+          orgType: UkCompaniesHouse
           firstName: firstName
           lastName: lastName
           orgName: orgName
@@ -906,6 +928,7 @@ components:
           name: name
           id: id
           companinesHouseNumber: companinesHouseNumber
+          type: type
         id: id
         hnIds:
         - hnIds

@@ -16,7 +16,7 @@
         <h1 class="govuk-heading-l">Check your answers</h1>
         <form asp-controller="HeatNetwork" asp-action="SubmitAnswers" method="post" novalidate>
             @Html.AntiForgeryToken()
-            @await Html.PartialAsync("_ErrorSummary", fieldOrder)
+            @* @await Html.PartialAsync("_ErrorSummary", fieldOrder) *@
             <h2 class="govuk-heading-m">Heat Network details</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
