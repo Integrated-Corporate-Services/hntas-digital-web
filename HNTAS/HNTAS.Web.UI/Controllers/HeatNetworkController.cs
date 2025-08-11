@@ -42,14 +42,14 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
         {
             string previousUrl = Request.Headers["Referer"].ToString();
-
-            if (previousUrl.Contains("dashboard"))
-            {
-                this.ShowBackButton("UserAccount", "Dashboard");
-            }
+            
 
             if (!ModelState.IsValid)
             {
+                if (previousUrl.Contains("dashboard"))
+                {
+                    this.ShowBackButton("UserAccount", "Dashboard");
+                }
                 return View(model);
             }
             else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.Contains("https://what3words.com/"))
@@ -90,8 +90,6 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         public IActionResult EnterHNName(HeatNetworkNameModel model)
         {
-            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
-
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("EnterHNLocation", "HeatNetwork");
