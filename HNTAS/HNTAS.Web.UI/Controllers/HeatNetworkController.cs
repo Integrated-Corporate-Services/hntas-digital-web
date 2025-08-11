@@ -30,7 +30,7 @@ namespace HNTAS.Web.UI.Controllers
            
             if (previousUrl.Contains("dashboard"))
             {
-                Utility.ShowBackButton(this, "UserAccount", "Dashboard");
+                this.ShowBackButton("UserAccount", "Dashboard");
             }
            
             var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
@@ -45,7 +45,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (previousUrl.Contains("dashboard"))
             {
-                Utility.ShowBackButton(this, "UserAccount", "Dashboard");
+                this.ShowBackButton("UserAccount", "Dashboard");
             }
 
             if (!ModelState.IsValid)
@@ -82,7 +82,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult EnterHNName()
         {
-            Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
+            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
             var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
             return View(heatNetworkLocationModel);
         }
@@ -90,11 +90,11 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         public IActionResult EnterHNName(HeatNetworkNameModel model)
         {
-            Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
+            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
 
             if (!ModelState.IsValid)
             {
-                Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
+                this.ShowBackButton("EnterHNLocation", "HeatNetwork");
                 return View(model);
             }
             else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
