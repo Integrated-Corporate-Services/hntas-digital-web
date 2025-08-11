@@ -2,6 +2,7 @@ using GovUk.OneLogin.AspNetCore;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Routing;
 using HNTAS.Web.UI.Services;
@@ -74,6 +75,8 @@ builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
 });
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
+builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnGetAttribute>();
+builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
