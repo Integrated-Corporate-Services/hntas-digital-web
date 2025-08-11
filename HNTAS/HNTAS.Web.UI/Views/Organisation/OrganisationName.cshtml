@@ -10,7 +10,7 @@
     @Html.AntiForgeryToken()
     <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("OrganisationName") && ViewData.ModelState["OrganisationName"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
         <h1 class="govuk-label-wrapper">
-            <label class="govuk-label govuk-label--l" for="OrganisationName">
+            <label class="govuk-label govuk-label--l" for="@organisationNameId">
                 What is your organisation's name?
             </label>
         </h1>
