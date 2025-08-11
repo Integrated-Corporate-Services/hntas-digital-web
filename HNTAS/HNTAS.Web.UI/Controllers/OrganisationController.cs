@@ -471,6 +471,9 @@ namespace HNTAS.Web.UI.Controllers
             {
                 model.OrganisationName = organisationModel.CompanyDetails?.Title;
             }
+            ViewBag.ShowBackButton = true;
+            ViewBag.BackLinkUrl = Url.Action("OrganisationType");
+
             return View("OrganisationName", model);
         }
 
@@ -480,6 +483,9 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.ShowBackButton = true;
+                ViewBag.BackLinkUrl = Url.Action("OrganisationType");
+
                 return View("OrganisationName", model);
             }
 
@@ -516,6 +522,10 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+
+            ViewBag.ShowBackButton = true;
+            ViewBag.BackLinkUrl = Url.Action("OrganisationName");
+
             return View("OrganisationAddress", model);
         }
 
@@ -524,6 +534,9 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.ShowBackButton = true;
+                ViewBag.BackLinkUrl = Url.Action("OrganisationName");
+
                 return View("OrganisationAddress", model);
             }
 

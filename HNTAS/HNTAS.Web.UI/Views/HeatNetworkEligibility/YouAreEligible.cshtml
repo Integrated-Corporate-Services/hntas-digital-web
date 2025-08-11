@@ -15,9 +15,9 @@
                 <li>Point 3</li>
             </ul>
             <div class="app-button-wrapper">
-                <a asp-controller="Home" role="button" asp-action="Index" data-module="govuk-button" draggable="false" class="govuk-button">
+                <button class="govuk-button" type="button" data-module="govuk-button" draggable="false" onclick="location.href='@Url.Action("Index", "Home")'">
                     Continue
-                </a>
+                </button>
             </div>
         </div>    
     </div>
