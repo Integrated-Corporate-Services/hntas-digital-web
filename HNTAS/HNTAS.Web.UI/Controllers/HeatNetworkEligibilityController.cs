@@ -64,6 +64,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("WhatDoYouWantToDo", "Home");
             if (!ModelState.IsValid)
             {
+                this.ShowBackButton("WhatDoYouWantToDo", "Home");
                 return View(model);
             }
 
@@ -99,6 +100,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
             if (!ModelState.IsValid)
             {
+                this.ShowBackButton("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
                 return View(model);
             }
             switch(model.NumberOfDwellings)
@@ -130,6 +132,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("HowManyDwellingsIncluded", "HeatNetworkEligibility");
             if (!ModelState.IsValid)
             {
+                this.ShowBackButton("HowManyDwellingsIncluded", "HeatNetworkEligibility");
                 return View(model);
             }
             switch(model.IsCurrentlyOperating)
@@ -161,6 +164,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
             if (!ModelState.IsValid)
             {
+                this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
                 return View(model);
             }
             switch (model.HaveYouSignedMEContract)

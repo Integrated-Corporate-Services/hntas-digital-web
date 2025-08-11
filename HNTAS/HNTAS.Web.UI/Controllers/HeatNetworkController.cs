@@ -94,6 +94,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (!ModelState.IsValid)
             {
+                Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
                 return View(model);
             }
             else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
