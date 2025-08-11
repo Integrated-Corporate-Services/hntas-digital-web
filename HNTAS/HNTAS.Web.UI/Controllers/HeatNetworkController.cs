@@ -30,7 +30,7 @@ namespace HNTAS.Web.UI.Controllers
            
             if (previousUrl.Contains("dashboard"))
             {
-                Utility.ShowBackButton(this, "UserAccount", "Dashboard");
+                this.ShowBackButton("UserAccount", "Dashboard");
             }
            
             var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
@@ -42,14 +42,14 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
         {
             string previousUrl = Request.Headers["Referer"].ToString();
-
-            if (previousUrl.Contains("dashboard"))
-            {
-                Utility.ShowBackButton(this, "UserAccount", "Dashboard");
-            }
+            
 
             if (!ModelState.IsValid)
             {
+                if (previousUrl.Contains("dashboard"))
+                {
+                    this.ShowBackButton("UserAccount", "Dashboard");
+                }
                 return View(model);
             }
             else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.Contains("https://what3words.com/"))
@@ -82,7 +82,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult EnterHNName()
         {
-            Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
+            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
             var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
             return View(heatNetworkLocationModel);
         }
@@ -90,10 +90,9 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         public IActionResult EnterHNName(HeatNetworkNameModel model)
         {
-            Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
-
             if (!ModelState.IsValid)
             {
+                this.ShowBackButton("EnterHNLocation", "HeatNetwork");
                 return View(model);
             }
             else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
