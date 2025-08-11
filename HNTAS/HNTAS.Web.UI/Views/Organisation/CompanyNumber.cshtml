@@ -4,23 +4,22 @@
     var companyNumberId = Html.LowercaseIdFor(m => m.CompanyNumber);
 }
 
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <form asp-controller="Organisation" asp-action="CompanyNumber" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.CompanyNumber)) && ViewData.ModelState[nameof(Model.CompanyNumber)].Errors.Any() ? "govuk-form-group--error" : "")">
-                <label class="govuk-label govuk-label--l" for="company-number">
+                <label class="govuk-label govuk-label--l" for="@companyNumberId">
                     What is the company number?
                 </label>
                 <div id="company-number-hint" class="govuk-hint">
                     You can find this in the <a href="https://find-and-update.company-information.service.gov.uk/" target="_blank" rel="noreferrer noopener" class="govuk-link govuk-link--no-visited-state">Companies House register (opens in new tab)</a>.
-                    <br/>
+                    <br />
                     <br />
                     <span>For example, 08811254 or SC012345</span>
                 </div>
-              
+
 
                 @if (ViewData.ModelState.ContainsKey(nameof(Model.CompanyNumber)) && ViewData.ModelState[nameof(Model.CompanyNumber)].Errors.Any())
                 {
@@ -31,14 +30,13 @@
 
                 <input class="govuk-input govuk-input--width-10" id="@companyNumberId" name="@companyNumberId" type="text"
                        autocomplete="organization-id" spellcheck="false"
-                       aria-describedby="company-number-hint @(ViewData.ModelState.ContainsKey(nameof(Model.CompanyNumber)) && ViewData.ModelState[nameof(Model.CompanyNumber)].Errors.Any() ? "company-number-error" : "")"
-                       value="@Model.CompanyNumber"> 
+                       aria-describedby="@(ViewData.ModelState.ContainsKey(nameof(Model.CompanyNumber)) && ViewData.ModelState[nameof(Model.CompanyNumber)].Errors.Any() ? "company-number-hint company-number-error" : "company-number-hint")"
+                       value="@Model.CompanyNumber">
             </div>
 
             <button type="submit" class="govuk-button" data-module="govuk-button">
                 Continue
             </button>
         </form>
-
     </div>
 </div>
