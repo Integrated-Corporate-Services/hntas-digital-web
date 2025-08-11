@@ -2,6 +2,7 @@ using GovUk.OneLogin.AspNetCore;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Routing;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
@@ -72,6 +73,7 @@ builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();

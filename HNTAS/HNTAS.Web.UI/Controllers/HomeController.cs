@@ -12,11 +12,13 @@ public class HomeController : Controller
 
     private readonly IUserService _iUserService;
     private readonly ILogger<HomeController> _logger;
+    private readonly ISessionHelper _sessionHelper;
 
-    public HomeController(IUserService iUserService, ILogger<HomeController> logger)
+    public HomeController(IUserService iUserService, ILogger<HomeController> logger, ISessionHelper sessionHelper)
     {
         _iUserService = iUserService;
         _logger = logger;
+        _sessionHelper = sessionHelper;
     }
 
     [Authorize]
@@ -32,38 +34,36 @@ public class HomeController : Controller
             return View();
         }
 
-        try {
+        try
+        {
+            var existingUser = await _iUserService.GetUserByOneLoginId(oneLoginId);
 
-            // Check if user already exists in the system
-            var existingUserResponse = await _iUserService.GetUserByOneLoginId(oneLoginId);
-            if (existingUserResponse == null)
+            if (existingUser == null)
             {
-                //Create new user entry if not found
-                var registration = new InitialUserRegistrationRequest(emailId: email, oneLoginId: oneLoginId, status: UserStatus.Active);
-
+                var registration = new InitialUserRegistrationRequest(oneLoginId: oneLoginId, emailId: email, status: UserStatus.Active);
                 _logger.LogInformation("Submitting initial user entry. Email: {Email}, ID: {Id}", email, oneLoginId);
 
-                var id = await _iUserService.CreateUser(registration);
+                var newUserId = await _iUserService.CreateUser(registration);
 
-                if (string.IsNullOrWhiteSpace(id))
+                if (string.IsNullOrWhiteSpace(newUserId))
                 {
                     _logger.LogError("API returned no valid user object.");
                     TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
                     return View();
                 }
 
-                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey, id);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, newUserId);
+                return View();
             }
-            else if (existingUserResponse?.Organisation == null)
+
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
+
+            if (existingUser.Organisation != null)
             {
-                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey, existingUserResponse?.Id);
-            }
-            else
-            {
-                //Todo: Handle existing user case, e.g., redirect to dashboard or profile update
-                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey, existingUserResponse.Id);
                 return RedirectToAction("UserAccount", "Dashboard");
             }
+
+            return View();
         }
         catch (Exception ex)
         {
@@ -71,8 +71,6 @@ public class HomeController : Controller
             TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
             return View();
         }
-
-        return View();
     }
 
     public IActionResult Error()
@@ -84,7 +82,7 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult StartPage()
     {
-        SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+        _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
         return View();
     }
 
@@ -92,7 +90,7 @@ public class HomeController : Controller
     public IActionResult WhatDoYouWantToDo()
     {
         this.ShowBackButton("StartPage", "Home");
-        var model = SessionHelper.GetFromSession<WhatDoYouWantToDoViewModel>(HttpContext, SessionHelper.SessionKeys.WhatDoYouWantToDoViewModelKey) ?? new WhatDoYouWantToDoViewModel();
+        var model = _sessionHelper.GetFromSession<WhatDoYouWantToDoViewModel>(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey) ?? new WhatDoYouWantToDoViewModel();
         return View(model);
     }
 
@@ -108,10 +106,10 @@ public class HomeController : Controller
         switch (model.UserPathToday)
         {
             case "registerNewHN":
-                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.WhatDoYouWantToDoViewModelKey, model);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey, model);
                 return RedirectToAction("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
             case "updateExistingHN":
-                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.WhatDoYouWantToDoViewModelKey, model);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey, model);
                 return RedirectToAction("Index", "Home");
             default:
                 ModelState.AddModelError(nameof(model.UserPathToday), "Invalid selection. Please try again.");

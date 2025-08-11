@@ -14,26 +14,28 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ILogger<HeatNetworkController> _logger;
         private readonly IHeatNetworksApi _heatNetworksApi;
         private readonly IUserService _userService;
+        private readonly ISessionHelper _sessionHelper;
 
-        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworksApi heatNetworksApi, IUserService userService)
+        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworksApi heatNetworksApi, IUserService userService, ISessionHelper sessionHelper)
         {
             _logger = logger;
             _heatNetworksApi = heatNetworksApi;
             _userService = userService;
+            _sessionHelper = sessionHelper;
         }
 
 
         [HttpGet]
-        public IActionResult EnterHNLocation() 
+        public IActionResult EnterHNLocation()
         {
             string previousUrl = Request.Headers["Referer"].ToString();
-           
+
             if (previousUrl.Contains("dashboard"))
             {
                 Utility.ShowBackButton(this, "UserAccount", "Dashboard");
             }
-           
-            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
             return View("EnterHNLocation", heatNetworkLocationModel);
         }
 
@@ -71,10 +73,10 @@ namespace HNTAS.Web.UI.Controllers
                     ModelState.AddModelError(nameof(model.HeatNetworkLocation), "Invalid url. Please enter the correct url.");
                 }
             }
-            
-            
 
-            SessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey, model);
+
+
+            _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
 
             return RedirectToAction("EnterHNName");
         }
@@ -83,7 +85,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnterHNName()
         {
             Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
-            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
             return View(heatNetworkLocationModel);
         }
 
@@ -101,8 +103,8 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name cannot exceed 100 characters.");
                 return View(model);
             }
-            
-            SessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey, model);
+
+            _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
             return RedirectToAction("CheckYourAnswers");
         }
 
@@ -113,8 +115,8 @@ namespace HNTAS.Web.UI.Controllers
 
             var checkAnswersModel = new CheckYourAnswersHeatNetworkModel
             {
-                HeatNetworkNameModel = SessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey),
-                HeatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey),
+                HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey),
+                HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey),
                 ConfirmedDeclaration = false
             };
 
@@ -125,9 +127,9 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitAnswers(CheckYourAnswersHeatNetworkModel viewModel)
         {
-            
-            viewModel.HeatNetworkNameModel = SessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey);
-            viewModel.HeatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey);
+
+            viewModel.HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey);
+            viewModel.HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
 
             ModelState.Remove(nameof(viewModel.HeatNetworkNameModel));
             ModelState.Remove(nameof(viewModel.HeatNetworkLocationModel));
@@ -137,11 +139,12 @@ namespace HNTAS.Web.UI.Controllers
                 return View("CheckYourAnswers", viewModel);
             }
 
-            try { 
+            try
+            {
                 var model = new HeatNetwork
                 {
-                  Name = viewModel.HeatNetworkNameModel.HeatNetworkName,
-                  Location = viewModel.HeatNetworkLocationModel.HeatNetworkLocation,
+                    Name = viewModel.HeatNetworkNameModel.HeatNetworkName,
+                    Location = viewModel.HeatNetworkLocationModel.HeatNetworkLocation,
                 };
 
                 var response = await _heatNetworksApi.ApiHeatNetworksAddHeatNetworkPostAsync(model);
@@ -151,18 +154,18 @@ namespace HNTAS.Web.UI.Controllers
                     var hnmodel = response.Created();
                     TempData["Confirmation_HN_Id"] = hnmodel.HnId;
 
-                    await _userService.UpdateUserHeatNetworkId(SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey), hnmodel.HnId);
+                    await _userService.UpdateUserHeatNetworkId(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey), hnmodel.HnId);
                     _logger.LogInformation("Heat network created successfully with ID: {Id}", hnmodel.Id);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Error submitting heat network answers.");
                 TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
                 return View("CheckYourAnswers", viewModel);
             }
-            SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
-            SessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
+            _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+            _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
 
             return RedirectToAction("Confirmation", "HeatNetwork");
         }
@@ -170,7 +173,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Confirmation()
         {
-            var userResponse = await _userService.GetUserById(SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey));
+            var userResponse = await _userService.GetUserById(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
 
             ViewBag.CompanyName = userResponse.Organisation?.Name;
             ViewBag.ContactName = userResponse.FullName;
