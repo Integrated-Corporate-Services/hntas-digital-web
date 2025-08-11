@@ -22,7 +22,7 @@
                 <span asp-validation-for="HeatNetworkLocation" class="govuk-error-message"></span>
             }
 
-            <input class="govuk-input govuk-!-width-two-thirds" id="@heatNetworkLocationId" name="@heatNetworkLocationId" value="@Model.HeatNetworkLocation" autocomplete="off" />
+            <input class="govuk-input govuk-!-width-two-thirds" id="@heatNetworkLocationId" name="@heatNetworkLocationId" asp-for="HeatNetworkLocation" autocomplete="off" />
         </div>
         <br />
 
