@@ -1,9 +1,11 @@
 ﻿using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -60,6 +62,66 @@ namespace HNTAS.Web.UI.Tests.Contollers
 
             _sessionHelperMock.Verify(x => x.ClearAllFlowRelatedSessionData(httpContext), Times.Once);
             _sessionHelperMock.Verify(x => x.SetIsCheckAnswerFlow(httpContext, false), Times.Once);
+        }
+
+        [Fact]
+        public void OrganisationType_ReturnsView_WithExpectedModelAndViewBag()
+        {
+            var controller = CreateController();
+            var httpContext = controller.ControllerContext.HttpContext;
+
+            var expectedModel = new OrganisationModel
+            {
+                OrganisationTypes = new List<SelectListItem>(),
+                SelectedOrganisationType = "UkCompaniesHouse"
+            };
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<OrganisationModel>(httpContext, SessionKeys.OrganisationCreation_SessionKey))
+                .Returns(expectedModel);
+
+            _sessionHelperMock
+                .Setup(x => x.GetIsCheckAnswerFlow(httpContext))
+                .Returns(false);
+
+            var result = controller.OrganisationType();
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<OrganisationModel>(viewResult.Model);
+
+            Assert.Equal(expectedModel.SelectedOrganisationType, model.SelectedOrganisationType);
+            Assert.NotNull(model.OrganisationTypes);
+            Assert.True(controller.ViewBag.ShowBackButton);
+        }
+
+        [Fact]
+        public void Type_InvalidModel_ReturnsViewWithModel()
+        {
+            var controller = CreateController();
+            controller.ModelState.AddModelError("SelectedOrganisationType", "Required");
+
+            var model = new OrganisationModel();
+            var result = controller.Type(model);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal("OrganisationType", viewResult.ViewName);
+            Assert.IsType<OrganisationModel>(viewResult.Model);
+        }
+
+        [Fact]
+        public void Type_ValidModel_RedirectsToCompanyNumberOrOrganisationName()
+        {
+            var controller = CreateController();
+            var model = new OrganisationModel
+            {
+                SelectedOrganisationType = "UkCompaniesHouse"
+            };
+            controller.ModelState.Clear();
+
+            var result = controller.Type(model);
+
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.True(redirect.ActionName == "CompanyNumber" || redirect.ActionName == "OrganisationName");
         }
     }
 }
