@@ -6,7 +6,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <form asp-controller="Organisation" asp-action="Type" method="post" novalidate>
+        <form asp-controller="Organisation" asp-action="OrganisationType" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedOrganisationType)) && ViewData.ModelState[nameof(Model.SelectedOrganisationType)].Errors.Any() ? "govuk-form-group--error" : "")">
