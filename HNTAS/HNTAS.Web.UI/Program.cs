@@ -4,6 +4,7 @@ using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Routing;
 using HNTAS.Web.UI.Services;
+using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
@@ -112,8 +113,11 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddHttpClient<AddressLookupService>();
 
-var app = builder.Build();
+//Aws Logging
+builder.Logging.AddAWSProvider(builder.Configuration.GetAWSLoggingConfigSection());
+builder.Logging.SetMinimumLevel(LogLevel.Information);
 
+var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
@@ -126,6 +130,29 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+
+//This is to check if the application is in maintenance mode
+
+var maintenanceMode = Environment.GetEnvironmentVariable("MAINTENANCE_MODE");
+if (!string.IsNullOrEmpty(maintenanceMode) && maintenanceMode.Equals("true", StringComparison.OrdinalIgnoreCase))
+{
+    app.Use(async (context, next) =>
+    {
+        // Allow access to the maintenance page and static assets
+        var path = context.Request.Path.Value;
+        if (path != null && (path.Equals("/maintenance.html", StringComparison.OrdinalIgnoreCase) ||
+                             path.StartsWith("/assets") ||
+                             path.StartsWith("/css") ||
+                             path.StartsWith("/js")))
+        {
+            await next();
+        }
+        else
+        {
+            context.Response.Redirect("/maintenance.html");
+        }
+    });
+}
 
 try
 {
@@ -147,11 +174,11 @@ app.UseSession();
 
 app.UseAuthorization();
 
-app.MapGet("/", () => Results.Redirect("/heat-network-eligibility/running-ahn"));
+app.MapGet("/", () => Results.Redirect("/home/start-page"));
 
 app.MapControllerRoute(
     name: "default",
     pattern: "[controller]/[action]/{id?}",
-    defaults: new { controller = "HeatNetworkEligibility", action = "RunningAHN" });
+    defaults: new { controller = "Home", action = "StartPage" });
 
 app.Run();

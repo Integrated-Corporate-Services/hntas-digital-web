@@ -16,7 +16,7 @@
         <h1 class="govuk-heading-l">Check your answers</h1>
         <form asp-controller="HeatNetwork" asp-action="SubmitAnswers" method="post" novalidate>
             @Html.AntiForgeryToken()
-            @await Html.PartialAsync("_ErrorSummary", fieldOrder)
+            @* @await Html.PartialAsync("_ErrorSummary", fieldOrder) *@
             <h2 class="govuk-heading-m">Heat Network details</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
@@ -50,11 +50,11 @@
                     <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                         <div class="govuk-checkboxes__item">
                             <input class="govuk-checkboxes__input"
-                                   id="@(Html.GenerateIdFromName("ConfirmedDeclaration").ToLowerInvariant())"
+                                   id="@(Html.GenerateIdFromName("ConfirmDeclaration").ToLowerInvariant())"
                                    asp-for="ConfirmedDeclaration"
                                    type="checkbox"
                                    value="true">
-                            <label class="govuk-label govuk-checkboxes__label" for="confirmDeclaration">
+                            <label class="govuk-label govuk-checkboxes__label" for="confirmdeclaration">
                                 I confirm that:
                             </label>
                             <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-5 govuk-!-margin-top-2 govuk-!-font-size-16">

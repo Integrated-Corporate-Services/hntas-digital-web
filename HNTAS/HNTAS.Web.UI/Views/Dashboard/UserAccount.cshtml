@@ -7,93 +7,98 @@
 }
 
 <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" id="main-content" role="main">
 
-       
-        <div>
-            <div><span class="govuk-hint">Your organisation</span></div>
-            <div><span class="govuk-heading-l">@Model.OrganisationName</span></div>
+    <div><span class="govuk-hint">Your organisation</span></div>
+    <h1 class="govuk-heading-l">@Model.OrganisationName</h1>
 
-            <p>
-                <a class="govuk-link govuk-link--no-visited-state" href="#">Switch to a different organisation</a>
-            </p>
-           
-            <div style="display:flex; margin-top: 40px">
-                <div style="background: #f3f2f1; padding: 1rem; border-radius: 2px; width: 250px;">
-                    <div class="govuk-body" style="font-weight: 500; color: #1d70b8; margin-bottom: 0.5rem;">
-                       
-                        <a class="govuk-link govuk-link--no-visited-state" href="#">  Organisation details </a>
-                        </div>
-                    <div class="govuk-body">View or change your organisation's details</div>
-                </div>
-                <div style="background: #f3f2f1; padding: 1rem; border-radius: 2px; width: 250px;margin-left:2rem;">
-                    <div class="govuk-body" style="font-weight: 500; color: #1d70b8; margin-bottom: 0.5rem;">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="User"> Manage User </a>
-                        </div>
-                    <p class="govuk-body">Register a heat network to activate manage users.</p>
-                </div>
+    <p>
+        <a class="govuk-link govuk-link--no-visited-state" href="#">Switch to a different organisation</a>
+    </p>
+
+    <div class="govuk-grid-row" style="display: flex; align-items: stretch;">
+        <div class="govuk-grid-column-one-third">
+            <div class="dashboard-card">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a href="#" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
+                </h3>
+                <p class="govuk-body-s">View or change your organisation's details.</p>
+                <span class="govuk-tag govuk-tag--green">Submitted</span>
             </div>
         </div>
 
+        <div class="govuk-grid-column-one-third">
+            @{
+                var disabled = Model.HeatNetworks?.Any() ?? false ? "" : "dashboard-card--disabled";
+            }
+            <div class="dashboard-card @disabled">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="User"> Manage user</a>
+                </h3>
+                <p class="govuk-body-s">Register a heat network to activate manage users.</p>
 
-        @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
-        {
-            <h2 class="govuk-heading-m" style="margin-top: 2rem;">My heat network list</h2>
-            <table class="govuk-table">
-                <thead class="govuk-table__head">
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+    @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
+    {
+        <h2 class="govuk-heading-m" style="margin-top: 2rem;">My heat network list</h2>
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__header" scope="col">Heat network name</th>
+                    <th class="govuk-table__header" scope="col">Organisation</th>
+                    <th class="govuk-table__header" scope="col">Status</th>
+                    <th class="govuk-table__header" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                @foreach (var heatNetwork in Model.HeatNetworks)
+                {
                     <tr class="govuk-table__row">
-                        <th class="govuk-table__header" scope="col">Heat network name</th>
-                        <th class="govuk-table__header" scope="col">Organisation</th>
-                        <th class="govuk-table__header" scope="col">Status</th>
-                        <th class="govuk-table__header" scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                    @foreach (var heatNetwork in Model.HeatNetworks)
-                    {
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">@heatNetwork.Name</td>
-                            <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
-                            <td class="govuk-table__cell">
-                                @{
-                                    // You can add logic here to dynamically apply classes based on status
-                                    var statusClass = "";
-                                    switch (heatNetwork.Status.ToLower())
-                                    {
-                                        case "active":
-                                            statusClass = "govuk-tag--green";
-                                            break;
-                                        case "pending":
-                                            statusClass = "govuk-tag--yellow";
-                                            break;
-                                        case "inactive":
-                                            statusClass = "govuk-tag--red";
-                                            break;
-                                        default:
-                                            statusClass = "govuk-tag--grey"; // Default for unknown status
-                                            break;
-                                    }
+                        <td class="govuk-table__cell">@heatNetwork.Name</td>
+                        <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
+                        <td class="govuk-table__cell">
+                            @{
+                                // You can add logic here to dynamically apply classes based on status
+                                var statusClass = "";
+                                switch (heatNetwork.Status.ToLower())
+                                {
+                                    case "active":
+                                        statusClass = "govuk-tag--green";
+                                        break;
+                                    case "pending":
+                                        statusClass = "govuk-tag--yellow";
+                                        break;
+                                    case "inactive":
+                                        statusClass = "govuk-tag--red";
+                                        break;
+                                    default:
+                                        statusClass = "govuk-tag--grey"; // Default for unknown status
+                                        break;
                                 }
-                                <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
-                            </td>
-                            <td class="govuk-table__cell">
-                                <a class="govuk-link govuk-link--no-visited-state" href="#">View/Edit</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <h2 class="govuk-heading-m" style="margin-top: 2rem;">Heat Networks</h2>
-            <p class="govuk-body">To comply with all of heat network's regulations you must register all of @Model.OrganisationName's heat networks.</p>
-        }
+                            }
+                            <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
+                        </td>
+                        <td class="govuk-table__cell">
+                            <a class="govuk-link govuk-link--no-visited-state" href="#">View/Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h2 class="govuk-heading-m" style="margin-top: 2rem;">Heat Networks</h2>
+        <p class="govuk-body">To comply with all of heat network's regulations you must register all of @Model.OrganisationName's heat networks.</p>
+    }
 
-        <p class="govuk-!-margin-top-6">
-            <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-controller="HeatNetwork" asp-action="EnterHNLocation">
-                Add a new heat network
-            </a>
-        </p>
-    </main>
+    <p class="govuk-!-margin-top-6">
+        <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-controller="HeatNetwork" asp-action="EnterHNLocation">
+            Add a new heat network
+        </a>
+    </p>
 </div>

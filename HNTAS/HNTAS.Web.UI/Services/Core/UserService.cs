@@ -1,7 +1,7 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 
-namespace HNTAS.Web.UI.Services
+namespace HNTAS.Web.UI.Services.Core
 {
     public class UserService : IUserService
     {
@@ -48,15 +48,15 @@ namespace HNTAS.Web.UI.Services
             {
                 var userResponse = await _usersApi.GetUserByOneLoginIdAsync(oneLoginId);
 
-                if(userResponse.IsOk)
+                if (userResponse.IsOk)
                 {
                     return userResponse.Ok();
                 }
-                else if(userResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                else if (userResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     return null;
                 }
-                
+
                 throw new Exception($"Failed to retrieve user with status code: {userResponse.StatusCode}");
             }
             catch (Exception ex)
@@ -116,7 +116,7 @@ namespace HNTAS.Web.UI.Services
             _logger.LogInformation("Updating user heat network for ID: {UserId} heat network : {hnId}", id, heatNetworkId);
             try
             {
-               var responce = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
+                var responce = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
 
                 if (responce.IsNoContent)
                 {
@@ -128,6 +128,25 @@ namespace HNTAS.Web.UI.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating user heat network ID for user ID: {userId}", id);
+                throw;
+            }
+        }
+
+        public async Task<bool?> IsOrganisationExists(string companiesHouseNumber)
+        {
+            _logger.LogInformation("Checking if organisation with Companies House number {CompaniesHouseNumber} has RP user", companiesHouseNumber);
+            try
+            {
+                var response = await _usersApi.ApiUsersOrganisationExistsGetAsync(companiesHouseNumber);
+                if (response.IsOk)
+                {
+                    return response.Ok();
+                }
+                throw new Exception($"Failed to check organisation with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking if organisation has RP user for Companies House number: {CompaniesHouseNumber}", companiesHouseNumber);
                 throw;
             }
         }
