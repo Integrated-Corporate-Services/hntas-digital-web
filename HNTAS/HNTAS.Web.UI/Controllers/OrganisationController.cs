@@ -51,7 +51,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Type(OrganisationModel model)
+        public IActionResult OrganisationType(OrganisationModel model)
         {
             var orgModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
             if (orgModel != null)
@@ -65,6 +65,15 @@ namespace HNTAS.Web.UI.Controllers
 
             if (ModelState.IsValid)
             {
+                if (!string.IsNullOrEmpty(orgModel?.SelectedOrganisationType) && orgModel.SelectedOrganisationType != model.SelectedOrganisationType)
+                {
+                    //reset model when the SelectedOrganisationType changed
+                    model = new OrganisationModel()
+                    {
+                        SelectedOrganisationType = model.SelectedOrganisationType
+                    };
+                }
+
                 string? selectedOrganisationTypeText = GetOrganisationTypeOptions()
                     .FirstOrDefault(item => item.Value == model.SelectedOrganisationType)?.Text;
 
@@ -143,7 +152,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("Type");
+            ViewBag.BackLinkUrl = Url.Action("OrganisationType");
 
             return View("CompanyNumber", orgModel);
         }
