@@ -13,18 +13,20 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ILogger<DashboardController> _logger;
         private readonly IUserService _userService;
         private readonly IHeatNetworksApi _heatNetworksApi;
+        private readonly ISessionHelper _sessionHelper;
 
-        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworksApi heatNetworksApi)
+        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworksApi heatNetworksApi, ISessionHelper sessionHelper)
         {
             _logger = logger;
             _userService = userService;
             _heatNetworksApi = heatNetworksApi;
+            _sessionHelper = sessionHelper;
         }
 
         [HttpGet]
         public async Task<IActionResult> UserAccount()
         {
-            var user = await _userService.GetUserById(SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey));
+            var user = await _userService.GetUserById(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
 
             if (user == null)
             {
@@ -33,7 +35,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View(new DashboardModel());
             }
 
-            if(user.Organisation == null)
+            if (user.Organisation == null)
             {
                 _logger.LogError("User organisation is null.");
                 TempData["ErrorMessage"] = "Your account is not associated with any organisation. Please contact support.";
