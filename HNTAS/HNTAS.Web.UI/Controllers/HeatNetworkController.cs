@@ -26,10 +26,37 @@ namespace HNTAS.Web.UI.Controllers
 
 
         [HttpGet]
-        public IActionResult EnterHNLocation()
+        public IActionResult EnterHNName()
         {
             this.ShowBackButton("UserAccount", "Dashboard");
-            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            return View(heatNetworkLocationModel);
+        }
+
+        [HttpPost]
+        public IActionResult EnterHNName(HeatNetworkNameModel model)
+        {
+            this.ShowBackButton("UserAccount", "Dashboard");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
+            {
+                ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name cannot exceed 100 characters.");
+                return View(model);
+            }
+
+            _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
+            return RedirectToAction("EnterHNLocation");
+        }
+
+
+        [HttpGet]
+        public IActionResult EnterHNLocation()
+        {
+            this.ShowBackButton("EnterHNName", "HeatNetwork");
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
             return View("EnterHNLocation", heatNetworkLocationModel);
         }
 
@@ -37,8 +64,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
         {
-            this.ShowBackButton("UserAccount", "Dashboard");
-
+            this.ShowBackButton("EnterHNName", "HeatNetwork");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -63,38 +89,11 @@ namespace HNTAS.Web.UI.Controllers
                 }
             }
 
-
-
             _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
-
-            return RedirectToAction("EnterHNName");
-        }
-
-        [HttpGet]
-        public IActionResult EnterHNName()
-        {
-            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
-            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
-            return View(heatNetworkLocationModel);
-        }
-
-        [HttpPost]
-        public IActionResult EnterHNName(HeatNetworkNameModel model)
-        {
-            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
-            {
-                ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name cannot exceed 100 characters.");
-                return View(model);
-            }
-
-            _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
             return RedirectToAction("CheckYourAnswers");
         }
+
+        
 
         [HttpGet]
         public IActionResult CheckYourAnswers()

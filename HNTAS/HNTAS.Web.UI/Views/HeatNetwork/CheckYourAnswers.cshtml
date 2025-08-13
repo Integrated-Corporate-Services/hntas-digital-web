@@ -20,17 +20,17 @@
             <h2 class="govuk-heading-m">Heat Network details</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Heat Network Location</dt>
-                    <dd class="govuk-summary-list__value">@heatNetworkLocationModel?.HeatNetworkLocation</dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("EnterHNLocation", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNLocation</span></a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Heat Network Name</dt>
                     <dd class="govuk-summary-list__value">@heatNetworkNameModel?.HeatNetworkName</dd>
                     <dd class="govuk-summary-list__actions">
                         <a class="govuk-link" href="@Url.Action("EnterHNName", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Heat Network Location</dt>
+                    <dd class="govuk-summary-list__value">@heatNetworkLocationModel?.HeatNetworkLocation</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="@Url.Action("EnterHNLocation", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNLocation</span></a>
                     </dd>
                 </div>
             </dl>
