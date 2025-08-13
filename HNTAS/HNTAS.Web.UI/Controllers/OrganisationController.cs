@@ -53,7 +53,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Type(OrganisationModel model)
+        public IActionResult OrganisationType(OrganisationModel model)
         {
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             if (orgModel != null)
@@ -154,7 +154,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("Type");
+            ViewBag.BackLinkUrl = Url.Action("OrganisationType");
 
             return View("CompanyNumber", orgModel);
         }
