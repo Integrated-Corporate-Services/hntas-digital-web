@@ -44,7 +44,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
         {
             string previousUrl = Request.Headers["Referer"].ToString();
-            
+
 
             if (!ModelState.IsValid)
             {
@@ -54,7 +54,7 @@ namespace HNTAS.Web.UI.Controllers
                 }
                 return View(model);
             }
-            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.Contains("https://what3words.com/"))
+            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.StartsWith("https://what3words.com/"))
             {
                 ModelState.AddModelError(nameof(model.HeatNetworkLocation), "Invalid url. Please enter the correct url.");
                 return View(model);
@@ -85,7 +85,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnterHNName()
         {
             this.ShowBackButton("EnterHNLocation", "HeatNetwork");
-            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
             return View(heatNetworkLocationModel);
         }
 
