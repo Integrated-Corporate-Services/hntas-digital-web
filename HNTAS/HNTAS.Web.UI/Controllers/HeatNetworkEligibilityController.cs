@@ -72,7 +72,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("WhatDoYouWantToDo", "Home");
             if (!ModelState.IsValid)
             {
-                return View(model);
+                 return View(model);
             }
 
             switch (model.PartOfTheUK)
@@ -107,7 +107,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
             if (!ModelState.IsValid)
             {
-                return View(model);
+                    return View(model);
             }
             switch (model.NumberOfDwellings)
             {

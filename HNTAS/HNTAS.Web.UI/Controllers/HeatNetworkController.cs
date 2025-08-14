@@ -28,14 +28,8 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult EnterHNLocation()
         {
-            string previousUrl = Request.Headers["Referer"].ToString();
-
-            if (previousUrl.Contains("dashboard"))
-            {
-                Utility.ShowBackButton(this, "UserAccount", "Dashboard");
-            }
-
-            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            this.ShowBackButton("UserAccount", "Dashboard");
+            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
             return View("EnterHNLocation", heatNetworkLocationModel);
         }
 
@@ -43,18 +37,13 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
         {
-            string previousUrl = Request.Headers["Referer"].ToString();
-
-            if (previousUrl.Contains("dashboard"))
-            {
-                Utility.ShowBackButton(this, "UserAccount", "Dashboard");
-            }
+            this.ShowBackButton("UserAccount", "Dashboard");
 
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.Contains("https://what3words.com/"))
+            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.StartsWith("https://what3words.com/"))
             {
                 ModelState.AddModelError(nameof(model.HeatNetworkLocation), "Invalid url. Please enter the correct url.");
                 return View(model);
@@ -84,7 +73,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult EnterHNName()
         {
-            Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
+            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
             return View(heatNetworkLocationModel);
         }
@@ -92,8 +81,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         public IActionResult EnterHNName(HeatNetworkNameModel model)
         {
-            Utility.ShowBackButton(this, "EnterHNLocation", "HeatNetwork");
-
+            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
             if (!ModelState.IsValid)
             {
                 return View(model);
