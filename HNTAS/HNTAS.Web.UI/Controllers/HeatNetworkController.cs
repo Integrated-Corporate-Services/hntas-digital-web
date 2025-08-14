@@ -80,9 +80,10 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         public IActionResult EnterHNName(HeatNetworkNameModel model)
         {
-            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
+
             if (!ModelState.IsValid)
             {
+                this.ShowBackButton("EnterHNLocation", "HeatNetwork");
                 return View(model);
             }
             else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
