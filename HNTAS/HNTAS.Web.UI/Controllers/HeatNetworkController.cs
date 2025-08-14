@@ -37,10 +37,9 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
         {
-            this.ShowBackButton("UserAccount", "Dashboard");
-
             if (!ModelState.IsValid)
             {
+                this.ShowBackButton("UserAccount", "Dashboard");
                 return View(model);
             }
             else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.StartsWith("https://what3words.com/"))
