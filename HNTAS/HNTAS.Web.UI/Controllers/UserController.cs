@@ -11,11 +11,13 @@ namespace HNTAS.Web.UI.Controllers
     {
         private readonly IUserService _userService;
         private readonly ILogger<UserController> _logger;
+        private readonly ISessionHelper _sessionHelper;
 
-        public UserController(IUserService userService, ILogger<UserController> logger)
+        public UserController(IUserService userService, ILogger<UserController> logger, ISessionHelper sessionHelper)
         {
             _logger = logger;
             _userService = userService;
+            _sessionHelper = sessionHelper;
         }
 
         [HttpGet]
@@ -23,7 +25,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             try
             {
-                var userId = SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey);
+                var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
                 var user = await _userService.GetUserById(userId);
 
