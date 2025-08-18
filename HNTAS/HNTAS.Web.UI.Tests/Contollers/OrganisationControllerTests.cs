@@ -101,7 +101,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             controller.ModelState.AddModelError("SelectedOrganisationType", "Required");
 
             var model = new OrganisationModel();
-            var result = controller.Type(model);
+            var result = controller.OrganisationType(model);
 
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal("OrganisationType", viewResult.ViewName);
@@ -118,7 +118,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             };
             controller.ModelState.Clear();
 
-            var result = controller.Type(model);
+            var result = controller.OrganisationType(model);
 
             var redirect = Assert.IsType<RedirectToActionResult>(result);
             Assert.True(redirect.ActionName == "CompanyNumber" || redirect.ActionName == "OrganisationName");

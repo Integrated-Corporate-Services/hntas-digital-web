@@ -29,7 +29,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnterHNLocation()
         {
             this.ShowBackButton("UserAccount", "Dashboard");
-            var heatNetworkLocationModel = SessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionHelper.SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
             return View("EnterHNLocation", heatNetworkLocationModel);
         }
 
