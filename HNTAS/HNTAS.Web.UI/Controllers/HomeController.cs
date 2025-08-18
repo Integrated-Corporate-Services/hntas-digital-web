@@ -98,9 +98,9 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult WhatDoYouWantToDo(WhatDoYouWantToDoViewModel model)
     {
-        this.ShowBackButton("StartPage", "Home");
         if (!ModelState.IsValid)
         {
+            this.ShowBackButton("StartPage", "Home");
             return View(model);
         }
 
