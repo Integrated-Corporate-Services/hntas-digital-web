@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "User has successfully added";
+}
+
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <div class="govuk-panel govuk-panel--confirmation">
+                    <h1 class="govuk-panel__title">
+                        @ViewData["Title"]
+                    </h1>
+                </div>
+
+                <p class="govuk-body">
+                    You’ve added @ViewData["FullName"] to the @ViewData["HeatNetwork"] heat network service for @ViewData["CompanyName"].
+                </p>
+
+                <p class="govuk-body">
+                    We’ve let them know via email.
+                </p>
+
+                <div class="govuk-button-group">
+                    <a asp-action="ManageUsers" asp-controller="UserManagement"  role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                        Go to manage users section
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>

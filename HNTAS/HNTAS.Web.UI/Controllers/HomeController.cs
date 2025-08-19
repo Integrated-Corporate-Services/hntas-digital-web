@@ -60,6 +60,8 @@ public class HomeController : Controller
 
             if (existingUser.Organisation != null)
             {
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, existingUser.Organisation.Name);
+
                 return RedirectToAction("UserAccount", "Dashboard");
             }
 

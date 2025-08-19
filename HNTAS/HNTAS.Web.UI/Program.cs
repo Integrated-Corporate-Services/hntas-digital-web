@@ -7,6 +7,11 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Routing;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
+using HNTAS.Web.UI.Workflows;
+using HNTAS.Web.UI.Workflows.Enums;
+using HNTAS.Web.UI.Workflows.Models.Data;
+using HNTAS.Web.UI.Workflows.Services;
+using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
@@ -30,6 +35,7 @@ builder.Services.AddControllersWithViews(options =>
     options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
 });
 
+builder.Services.AddHttpContextAccessor();
 
 Console.WriteLine("*********************in UI**************");
 Console.WriteLine("Environment: " + builder.Environment.EnvironmentName);
@@ -75,8 +81,15 @@ builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
 });
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
+
+builder.Services.AddScoped<IWorkflowManager, WorkflowManager>();
+// Since it's a generic filter, you can register a specific type for each workflow
+builder.Services.AddScoped<WorkflowValidationFilter<AddNewContributorWorkflowModel, ContributorWorkflowStep>>();
+builder.Services.AddScoped<IRedirectResolver<AddNewContributorWorkflowModel, ContributorWorkflowStep>, NewContributorRedirectResolver>();
+
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnGetAttribute>();
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
@@ -178,7 +191,6 @@ app.UseRouting();
 app.UseSession();
 
 app.UseAuthorization();
-
 app.MapGet("/", () => Results.Redirect("/home/start-page"));
 
 app.MapControllerRoute(

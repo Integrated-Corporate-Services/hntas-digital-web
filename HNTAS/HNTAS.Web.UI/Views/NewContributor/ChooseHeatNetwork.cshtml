@@ -1,0 +1,55 @@
+﻿@using HNTAS.Web.UI.Models.HeatNetwork
+@model HeatNetworkInformationModel
+
+@{
+    ViewData["Title"] = "Heat network information";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">
+            <span class="govuk-caption-l">Manage users for @ViewBag.OrganisationName</span>
+            @ViewData["Title"]
+        </h1>
+
+        <form asp-action="SaveChosenHeatNetwork" asp-controller="NewContributor" method="post" novalidate>
+            @Html.AntiForgeryToken()
+            <div class="govuk-form-group @(Html.ValidationMessageFor(m => m.SelectedHeatNetworkId) != null ? "govuk-form-group--error" : "")">
+
+                @if (ViewData.ModelState.GetValidationState("SelectedHeatNetworkId") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                {
+                    <p id="SelectedHeatNetworkId-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.SelectedHeatNetworkId)
+                    </p>
+                }
+
+                <fieldset class="govuk-fieldset" aria-describedby="@(Html.ValidationMessageFor(m => m.SelectedHeatNetworkId) != null ? "SelectedHeatNetworkId-error heat-network-hint" : "heat-network-hint")">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        Choose the heat network
+                    </legend>
+
+                    <div id="heat-network-hint" class="govuk-hint">
+                        Added user will be contributing for this heat network
+                    </div>
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        @foreach (var item in Model.HeatNetworks)
+                        {
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="heat-network-@item.Value" name="SelectedHeatNetworkId" type="radio" value="@item.Value" @(Model.SelectedHeatNetworkId == item.Value ? "checked" : "")>
+                                <label class="govuk-label govuk-radios__label" for="heat-network-@item.Value">
+                                    @item.Text
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>
+

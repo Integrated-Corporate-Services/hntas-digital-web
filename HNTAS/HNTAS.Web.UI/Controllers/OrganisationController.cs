@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
-using PreferredContactType = HNTAS.Web.UI.Models.PreferredContactType;
+using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -90,7 +90,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, model);
 
-                if (model.SelectedOrganisationType == Models.OrganisationType.OtherUkOrganisation.ToString() || model.SelectedOrganisationType == Models.OrganisationType.OverseasOrganisation.ToString())
+                if (model.SelectedOrganisationType == Models.Enums.OrganisationType.OtherUkOrganisation.ToString() || model.SelectedOrganisationType == Models.Enums.OrganisationType.OverseasOrganisation.ToString())
                 {
                     return RedirectToAction("OrganisationName");
                 }
@@ -303,7 +303,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
-        public IActionResult SaveContactDetails(ContactDetailsModel contactDetails)
+        public IActionResult SaveContactDetails(OrganisationContactDetailsModel contactDetails)
         {
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
@@ -409,7 +409,7 @@ namespace HNTAS.Web.UI.Controllers
                 country: company?.RegisteredOfficeAddress?.Country);
 
             var preferredContactType = userModel?.ContactDetails?.PreferredContactType == PreferredContactType.Landline ? HNTAS.Api.Client.Model.PreferredContactType.Landline : HNTAS.Api.Client.Model.PreferredContactType.Mobile;
-            var orgType = (Api.Client.Model.OrganisationType)Enum.Parse(typeof(Models.OrganisationType), organisationModel.SelectedOrganisationType);
+            var orgType = (Api.Client.Model.OrganisationType)Enum.Parse(typeof(Models.Enums.OrganisationType), organisationModel.SelectedOrganisationType);
 
 
             try
@@ -477,8 +477,8 @@ namespace HNTAS.Web.UI.Controllers
         {
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var model = new OtherOrganisationNameModel();
-            if (organisationModel.SelectedOrganisationType == Models.OrganisationType.OtherUkOrganisation.ToString() ||
-                organisationModel.SelectedOrganisationType == Models.OrganisationType.OverseasOrganisation.ToString())
+            if (organisationModel.SelectedOrganisationType == Models.Enums.OrganisationType.OtherUkOrganisation.ToString() ||
+                organisationModel.SelectedOrganisationType == Models.Enums.OrganisationType.OverseasOrganisation.ToString())
             {
                 model.OrganisationName = organisationModel.CompanyDetails?.Title;
             }
@@ -524,8 +524,8 @@ namespace HNTAS.Web.UI.Controllers
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var model = new ManualOfficeAddressModel();
 
-            if (organisationModel.SelectedOrganisationType == Models.OrganisationType.OtherUkOrganisation.ToString() ||
-                organisationModel.SelectedOrganisationType == Models.OrganisationType.OverseasOrganisation.ToString())
+            if (organisationModel.SelectedOrganisationType == Models.Enums.OrganisationType.OtherUkOrganisation.ToString() ||
+                organisationModel.SelectedOrganisationType == Models.Enums.OrganisationType.OverseasOrganisation.ToString())
             {
                 if (organisationModel.CompanyDetails?.RegisteredOfficeAddress is RegisteredOfficeAddressModel address)
                 {
@@ -573,9 +573,9 @@ namespace HNTAS.Web.UI.Controllers
         {
             return
             [
-                new SelectListItem { Value = Models.OrganisationType.UkCompaniesHouse.ToString(), Text = "UK company registered with Companies House" },
-                new SelectListItem { Value = Models.OrganisationType.OtherUkOrganisation.ToString(), Text = "Other UK organisation" },
-                new SelectListItem { Value = Models.OrganisationType.OverseasOrganisation.ToString(), Text = "Overseas organisation" }
+                new SelectListItem { Value = Models.Enums.OrganisationType.UkCompaniesHouse.ToString(), Text = "UK company registered with Companies House" },
+                new SelectListItem { Value = Models.Enums.OrganisationType.OtherUkOrganisation.ToString(), Text = "Other UK organisation" },
+                new SelectListItem { Value = Models.Enums.OrganisationType.OverseasOrganisation.ToString(), Text = "Overseas organisation" }
             ];
         }
     }

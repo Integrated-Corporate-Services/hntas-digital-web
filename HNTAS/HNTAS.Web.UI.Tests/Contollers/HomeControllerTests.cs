@@ -154,5 +154,13 @@ public class HomeControllerTests
                 SessionKeys.UserModel_Id_SessionKey,
                 "user-123"),
             Times.Once);
+
+        // Verify organisation details were saved
+        _sessionHelperMock.Verify(x =>
+            x.SaveToSession<string>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.OrganisationName,
+                userResponse.Organisation.Name),
+            Times.Once);
     }
 }

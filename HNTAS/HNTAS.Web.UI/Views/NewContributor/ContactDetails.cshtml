@@ -1,19 +1,17 @@
 ﻿@using HNTAS.Web.UI.Models.User
 @using HNTAS.Web.UI.Models.Enums
-@model OrganisationContactDetailsModel
+@model ContributorContactDetailsModel
 
 @{
-    ViewData["Title"] = "Your details";
+    ViewData["Title"] = "Contact Information";
 
     // Pre-calculate common ModelState checks for cleaner markup
-    bool hasEmailAddressErrors = ViewData.ModelState.ContainsKey(nameof(Model.EmailAddress)) && ViewData.ModelState[nameof(Model.EmailAddress)].Errors.Any();
     bool hasFirstNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.FirstName)) && ViewData.ModelState[nameof(Model.FirstName)].Errors.Any();
     bool hasLastNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.LastName)) && ViewData.ModelState[nameof(Model.LastName)].Errors.Any();
     bool hasPreferredContactTypeErrors = ViewData.ModelState.ContainsKey(nameof(Model.PreferredContactType)) && ViewData.ModelState[nameof(Model.PreferredContactType)].Errors.Any();
     bool hasLandlineNumberErrors = ViewData.ModelState.ContainsKey(nameof(Model.LandlineNumber)) && ViewData.ModelState[nameof(Model.LandlineNumber)].Errors.Any();
     bool hasContactNumberExtensionErrors = ViewData.ModelState.ContainsKey(nameof(Model.ContactNumberExtension)) && ViewData.ModelState[nameof(Model.ContactNumberExtension)].Errors.Any();
     bool hasMobileNumberErrors = ViewData.ModelState.ContainsKey(nameof(Model.MobileNumber)) && ViewData.ModelState[nameof(Model.MobileNumber)].Errors.Any();
-    bool hasJobTitleErrors = ViewData.ModelState.ContainsKey(nameof(Model.JobTitle)) && ViewData.ModelState[nameof(Model.JobTitle)].Errors.Any();
 
     // Determine if the entire preferred contact number section should show an error state
     bool hasAnyContactNumberSectionError = hasPreferredContactTypeErrors ||
@@ -42,12 +40,7 @@
                             {
                                 string targetId = fieldName; // Default: link to the input's ID (which is usually the fieldName)
 
-                                // Special cases for linking in the error summary
-                                if (fieldName == nameof(Model.EmailAddress))
-                                {
-                                    targetId = "EmailAddressDisplay"; // Link to the display span for EmailAddress
-                                }
-                                else if (fieldName == nameof(Model.PreferredContactType))
+                                if (fieldName == nameof(Model.PreferredContactType))
                                 {
                                     targetId = "PreferredContactType-Landline"; // Link to the first radio button in the group
                                 }
@@ -61,26 +54,13 @@
                 </div>
             </div>
         }
+        <h1 class="govuk-heading-l">
+            <span class="govuk-caption-l">Manage users for @ViewBag.OrganisationName</span>
+            @ViewData["Title"]
+        </h1>
 
-        <h1 class="govuk-heading-l">Your details</h1>
-
-        <form asp-controller="Organisation" asp-action="SaveContactDetails" method="post" novalidate>
+        <form asp-controller="NewContributor" asp-action="SaveContactDetails" method="post" novalidate>
             @Html.AntiForgeryToken()
-
-            @* Email address - DISPLAY ONLY FIELD *@
-            <div class="govuk-form-group @(hasEmailAddressErrors ? "govuk-form-group--error" : "")">
-                <label class="govuk-label" for="EmailAddressDisplay">
-                    Email address
-                </label>
-                @if (hasEmailAddressErrors)
-                {
-                    <p id="EmailAddress-error" class="govuk-error-message">
-                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.EmailAddress)
-                    </p>
-                }
-                <span class="govuk-body" id="EmailAddressDisplay">@Model.EmailAddress</span>
-                <input type="hidden" asp-for="EmailAddress" />
-            </div>
 
             @* First name input *@
             <div class="govuk-form-group @(hasFirstNameErrors ? "govuk-form-group--error" : "")">
@@ -118,10 +98,10 @@
             <div class="govuk-form-group @(hasAnyContactNumberSectionError ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset" aria-describedby="contact-number-hint @(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                        Preferred contact number for work
+                        What is their work contact number?
                     </legend>
                     <div id="contact-number-hint" class="govuk-hint">
-                        HNTAS will only use this if we need to contact you about your organisation's heat networks. For international numbers, include the country code.
+                        HNTAS will only use this if we need to contact them about your organisation's heat networks. For international numbers, include the country code.
                     </div>
 
                     @* Error for PreferredContactType radio buttons *@
@@ -201,22 +181,6 @@
                         </div>
                     </div>
                 </fieldset>
-            </div>
-
-            @* Job title input *@
-            <div class="govuk-form-group @(hasJobTitleErrors ? "govuk-form-group--error" : "")">
-                <label class="govuk-label" for="JobTitle">
-                    Job title
-                </label>
-                @if (hasJobTitleErrors)
-                {
-                    <p id="JobTitle-error" class="govuk-error-message">
-                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.JobTitle)
-                    </p>
-                }
-                <input class="govuk-input govuk-!-width-two-thirds" id="JobTitle" name="JobTitle" type="text" spellcheck="false"
-                       asp-for="JobTitle"
-                       aria-describedby="@(hasJobTitleErrors ? "JobTitle-error" : "")">
             </div>
 
             @* Continue button *@
