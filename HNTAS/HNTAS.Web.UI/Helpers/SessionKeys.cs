@@ -18,5 +18,7 @@
 
         public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
+
+        public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";
     }
 }

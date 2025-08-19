@@ -86,7 +86,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession<WhereIsTheHeatNetworkViewModel>(HttpContext, SessionKeys.WhereIsTheHeatNetworkModelKey, model);
                     return RedirectToAction("LocatedInNorthernIreland", "HeatNetworkEligibility");
                 default:
-                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.PartOfTheUK), "Please select a valid option.");
                     return View(model);
             }
 
@@ -118,7 +118,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession<HowManyDwellingsIncludedViewModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey, model);
                     return RedirectToAction("FewerThan10Dwellings", "HeatNetworkEligibility");
                 default:
-                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.NumberOfDwellings), "Please select a valid option.");
                     return View(model);
             }
         }
@@ -149,7 +149,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession<IsHNCurrentlyOperatingViewModel>(HttpContext, SessionKeys.IsHNCurrentlyOperatingModelKey, model);
                     return RedirectToAction("HaveYouSignedMEContract", "HeatNetworkEligibility");
                 default:
-                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.IsCurrentlyOperating), "Please select a valid option.");
                     return View(model);
             }
         }
@@ -180,7 +180,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession<HaveYouSignedMEContractViewModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model);
                     return RedirectToAction("YouAreEligible", "HeatNetworkEligibility");
                 default:
-                    ModelState.AddModelError(string.Empty, "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.HaveYouSignedMEContract), "Please select a valid option.");
                     return View(model);
             }
         }
