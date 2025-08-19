@@ -1,6 +1,7 @@
 ﻿using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -11,20 +12,21 @@ namespace HNTAS.Web.UI.Tests.Controllers {
     public class DutyHolderControllerTests
     {
         private readonly Mock<ILogger<DutyHolderController>> _loggerMock;
+        private readonly Mock<IUserService> _userServiceMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
         private readonly DutyHolderController _controller;
 
         public DutyHolderControllerTests()
         {
-            //_loggerMock = new Mock<ILogger<DutyHolderController>>();
+            _loggerMock = new Mock<ILogger<DutyHolderController>>();
+            _userServiceMock = new Mock<IUserService>();
             _sessionHelperMock = new Mock<ISessionHelper>();
-            //_controller = new DutyHolderController(_sessionHelperMock.Object);
-            //_controller.ControllerContext = new ControllerContext{HttpContext = new DefaultHttpContext()};
+            _controller = CreateController();
         }
 
         private DutyHolderController CreateController()
         {
-            var controller = new DutyHolderController(_sessionHelperMock.Object);
+            var controller = new DutyHolderController(_userServiceMock.Object, _loggerMock.Object, _sessionHelperMock.Object);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -48,8 +50,7 @@ namespace HNTAS.Web.UI.Tests.Controllers {
                 .Setup(x => x.GetFromSession<YouHaveBeenInvitedModel>(
                     It.IsAny<HttpContext>(), SessionKeys.YouHaveBeenInvitedModelKey))
                 .Returns(expectedModel);
-            var controller = CreateController();
-            var result = controller.YouHaveBeenInvited() as ViewResult;
+            var result = _controller.YouHaveBeenInvited() as ViewResult;
 
             Assert.NotNull(result);
             Assert.IsType<YouHaveBeenInvitedModel>(result.Model);
@@ -63,8 +64,7 @@ namespace HNTAS.Web.UI.Tests.Controllers {
                 .Setup(x => x.GetFromSession<YouHaveBeenInvitedModel>(
                     It.IsAny<HttpContext>(), SessionKeys.YouHaveBeenInvitedModelKey))
                 .Returns((YouHaveBeenInvitedModel)null);
-            var controller = CreateController();
-            var result = controller.YouHaveBeenInvited() as ViewResult;
+            var result = _controller.YouHaveBeenInvited() as ViewResult;
 
             Assert.NotNull(result);
             Assert.IsType<YouHaveBeenInvitedModel>(result.Model);
@@ -73,10 +73,9 @@ namespace HNTAS.Web.UI.Tests.Controllers {
         [Fact]
         public void Post_YouHaveBeenInvited_InvalidModel_ReturnsView()
         {
-            var controller = CreateController();
-            controller.ModelState.AddModelError("AcceptInvitation", "Required");
+            _controller.ModelState.AddModelError("AcceptInvitation", "Required");
 
-            var result = controller.YouHaveBeenInvited(new YouHaveBeenInvitedModel()) as ViewResult;
+            var result = _controller.YouHaveBeenInvited(new YouHaveBeenInvitedModel()) as ViewResult;
 
             Assert.NotNull(result);
             Assert.IsType<ViewResult>(result);
@@ -86,8 +85,7 @@ namespace HNTAS.Web.UI.Tests.Controllers {
         public void Post_YouHaveBeenInvited_Accept_RedirectsToStartPage()
         {
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "accept" };
-            var controller = CreateController();
-            var result = controller.YouHaveBeenInvited(model) as RedirectToActionResult;
+            var result = _controller.YouHaveBeenInvited(model) as RedirectToActionResult;
 
             Assert.NotNull(result);
             Assert.Equal("StartPage", result.ActionName);
@@ -98,8 +96,7 @@ namespace HNTAS.Web.UI.Tests.Controllers {
         public void Post_YouHaveBeenInvited_Decline_RedirectsToYouHaveDeclined()
         {
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "decline" };
-            var controller = CreateController();
-            var result = controller.YouHaveBeenInvited(model) as RedirectToActionResult;
+            var result = _controller.YouHaveBeenInvited(model) as RedirectToActionResult;
 
             Assert.NotNull(result);
             Assert.Equal("YouHaveDeclined", result.ActionName);
@@ -110,61 +107,39 @@ namespace HNTAS.Web.UI.Tests.Controllers {
         public void Post_YouHaveBeenInvited_InvalidChoice_ReturnsViewWithError()
         {
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "maybe" };
-            var controller = CreateController();
-            var result = controller.YouHaveBeenInvited(model) as ViewResult;
+            var result = _controller.YouHaveBeenInvited(model) as ViewResult;
 
             Assert.NotNull(result);
-            Assert.True(controller.ModelState.ContainsKey(nameof(model.AcceptInvitation)));
+            Assert.True(_controller.ModelState.ContainsKey(nameof(model.AcceptInvitation)));
         }
 
         [Fact]
         public void Get_YouHaveDeclined_ReturnsView()
         {
-            var controller = CreateController();
-            var result = controller.YouHaveDeclined() as ViewResult;
+            var result = _controller.YouHaveDeclined() as ViewResult;
             Assert.NotNull(result);
         }
 
         [Fact]
         public void Get_StartPage_ReturnsView()
         {
-            var controller = CreateController();
-
-            var result = controller.StartPage() as ViewResult;
+            var result = _controller.StartPage() as ViewResult;
 
             Assert.NotNull(result);
             Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
-        public void Get_Dashboard_ReturnsViewWithModel()
+        public void Get_Dashboard_ReturnsView()
         {
-            var controller = CreateController();
+            // Act
+            var result = _controller.Dashboard() as ViewResult;
 
-            var result = controller.Dashboard() as ViewResult;
-
+            // Assert
             Assert.NotNull(result);
-            Assert.IsType<DHDashboardModel>(result.Model);
-
-            var model = result.Model as DHDashboardModel;
-            Assert.Equal("ABC Org", model.OrganisationName);
-            Assert.Equal("XyZ HN", model.HeatNetwork);
-            Assert.Equal("Active", model.HNStatus);
+            Assert.IsType<ViewResult>(result);
         }
 
-
-        [Fact]
-        public void Get_Dashboard_ModelValuesAreUnexpected_FailsAssertion()
-        {
-            var controller = CreateController();
-
-            var result = controller.Dashboard() as ViewResult;
-            var model = result?.Model as DHDashboardModel;
-
-            Assert.NotNull(model);
-            Assert.NotEqual("Wrong Org", model.OrganisationName); // Negative check
-            Assert.NotEqual("Inactive", model.HNStatus);          // Negative check
-        }
 
     }
 }

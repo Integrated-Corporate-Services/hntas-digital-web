@@ -1,7 +1,16 @@
-﻿@model HNTAS.Web.UI.Models.DHDashboardModel
+﻿@using HNTAS.Web.UI.Models
+@model DHDashboardModel
 
 @{
     ViewData["Title"] = "Duty Holder Dashboard";
+
+    var model = new DHDashboardModel
+    {
+        OrganisationName = "ABC Org",
+        HeatNetwork = "XyZ HN",
+        HNStatus = "Active"
+    };
+
 }
 
 <div class="govuk-width-container">
@@ -31,7 +40,7 @@
 
     <br />
     <br />
-    @if (Model.HeatNetwork != null)
+    @if (model.HeatNetwork != null)
     {
         <h2 class="govuk-heading-m" style="margin-top: 2rem;">My heat network list</h2>
         <table class="govuk-table">
@@ -45,13 +54,13 @@
             </thead>
             <tbody class="govuk-table__body">
                 <tr class="govuk-table__row">
-                    <td class="govuk-table__cell">@Model.HeatNetwork</td>
-                    <td class="govuk-table__cell">@Model.OrganisationName</td>
+                    <td class="govuk-table__cell">model.HeatNetwork</td>
+                    <td class="govuk-table__cell">model.OrganisationName</td>
                     <td class="govuk-table__cell">
                         @{
                             // You can add logic here to dynamically apply classes based on status
                             var statusClass = "";
-                            switch (Model?.HNStatus.ToLower())
+                            switch (model?.HNStatus.ToLower())
                             {
                                 case "active":
                                     statusClass = "govuk-tag--green";
@@ -67,7 +76,7 @@
                                     break;
                             }
                         }
-                        <span class="govuk-tag @statusClass">@Model.HNStatus</span>
+                        <span class="govuk-tag @statusClass">model.HNStatus</span>
                     </td>
                     <td class="govuk-table__cell">
                         <a class="govuk-link govuk-link--no-visited-state" href="#">View/Edit</a>
@@ -79,7 +88,7 @@
     else
     {
         <h2 class="govuk-heading-m" style="margin-top: 2rem;">Heat Networks</h2>
-        <p class="govuk-body">To comply with all of heat network's regulations you must register all of @Model.OrganisationName's heat networks.</p>
+        <p class="govuk-body">To comply with all of heat network's regulations you must register all of model.OrganisationName's heat networks.</p>
     }
 
 </div>
