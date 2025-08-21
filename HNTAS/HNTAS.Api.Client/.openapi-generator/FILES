@@ -7,9 +7,12 @@ docs/apis/HeatNetworksApi.md
 docs/apis/TestApi.md
 docs/apis/UsersApi.md
 docs/apis/WelcomeApi.md
+docs/models/ContributorRole.md
+docs/models/EnumItemResponse.md
 docs/models/HeatNetwork.md
 docs/models/InitialUserRegistrationRequest.md
 docs/models/Invitation.md
+docs/models/InvitationStatus.md
 docs/models/NullableOfUserStatus.md
 docs/models/OrgDetails.md
 docs/models/OrgDetails2.md
@@ -18,6 +21,7 @@ docs/models/Organisation.md
 docs/models/OrganisationType.md
 docs/models/PreferredContactType.md
 docs/models/ProblemDetails.md
+docs/models/UpdateInvitationRequest.md
 docs/models/UpdateOrgDetailsAndRolesRequest.md
 docs/models/User.md
 docs/models/UserResponse.md
@@ -55,9 +59,12 @@ src/HNTAS.Api.Client/Extensions/IHostBuilderExtensions.cs
 src/HNTAS.Api.Client/Extensions/IHttpClientBuilderExtensions.cs
 src/HNTAS.Api.Client/Extensions/IServiceCollectionExtensions.cs
 src/HNTAS.Api.Client/HNTAS.Api.Client.csproj
+src/HNTAS.Api.Client/Model/ContributorRole.cs
+src/HNTAS.Api.Client/Model/EnumItemResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetwork.cs
 src/HNTAS.Api.Client/Model/InitialUserRegistrationRequest.cs
 src/HNTAS.Api.Client/Model/Invitation.cs
+src/HNTAS.Api.Client/Model/InvitationStatus.cs
 src/HNTAS.Api.Client/Model/NullableOfUserStatus.cs
 src/HNTAS.Api.Client/Model/OrgDetails.cs
 src/HNTAS.Api.Client/Model/OrgDetails2.cs
@@ -66,6 +73,7 @@ src/HNTAS.Api.Client/Model/Organisation.cs
 src/HNTAS.Api.Client/Model/OrganisationType.cs
 src/HNTAS.Api.Client/Model/PreferredContactType.cs
 src/HNTAS.Api.Client/Model/ProblemDetails.cs
+src/HNTAS.Api.Client/Model/UpdateInvitationRequest.cs
 src/HNTAS.Api.Client/Model/UpdateOrgDetailsAndRolesRequest.cs
 src/HNTAS.Api.Client/Model/User.cs
 src/HNTAS.Api.Client/Model/UserResponse.cs

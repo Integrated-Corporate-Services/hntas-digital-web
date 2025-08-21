@@ -26,6 +26,7 @@ public class HomeController : Controller
     {
         var email = User.FindFirstValue("email");
         var oneLoginId = User.FindFirstValue("sub");
+        var state = Request.Query["state"].ToString();
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
         {

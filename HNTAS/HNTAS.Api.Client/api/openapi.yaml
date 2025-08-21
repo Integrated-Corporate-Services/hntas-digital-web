@@ -412,6 +412,69 @@ paths:
           description: Internal Server Error
       tags:
       - Users
+  /api/Users/{id}/Invitation:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateInvitationRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateInvitationRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/contributor-roles:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+          description: OK
+      tags:
+      - Users
   /api/Users/{id}/heatnetwork/{heatNetworkId}:
     patch:
       parameters:
@@ -501,6 +564,26 @@ paths:
       - Welcome
 components:
   schemas:
+    ContributorRole:
+      enum:
+      - DesignatedDesigner
+      - DesignatedContractor
+      - DesignatedOperator
+      type: string
+    EnumItemResponse:
+      example:
+        name: name
+        description: description
+        value: 0
+      properties:
+        value:
+          format: int32
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+      type: object
     HeatNetwork:
       example:
         hn_id: hn_id
@@ -538,15 +621,25 @@ components:
       type: object
     Invitation:
       example:
-        firstName: firstName
         lastName: lastName
+        invitedRoles:
+        - DesignatedDesigner
+        - DesignatedDesigner
+        preferredContactType: null
+        mobileNumber: mobileNumber
+        landlineNumber: landlineNumber
+        contactNumberExtension: contactNumberExtension
+        invitedHnId: invitedHnId
+        invitedEmail: invitedEmail
+        firstName: firstName
         permissions:
         - permissions
         - permissions
+        rejectedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        invitedEmail: invitedEmail
         invitedAt: 2000-01-23T04:56:07.000+00:00
-        status: status
+        acceptedAt: 2000-01-23T04:56:07.000+00:00
+        status: Invited
       properties:
         id:
           type: string
@@ -554,26 +647,68 @@ components:
           type: string
         lastName:
           type: string
+        preferredContactType:
+          $ref: "#/components/schemas/PreferredContactType"
+        landlineNumber:
+          maxLength: 20
+          nullable: true
+          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
+            s-]?\\d{1,9}$"
+          type: string
+        contactNumberExtension:
+          maxLength: 10
+          nullable: true
+          pattern: ^\d*$
+          type: string
+        mobileNumber:
+          maxLength: 13
+          nullable: true
+          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
+            s-]?\\d{1,9}$"
+          type: string
         permissions:
           items:
             type: string
+          nullable: true
           type: array
+        invitedRoles:
+          items:
+            $ref: "#/components/schemas/ContributorRole"
+          type: array
+        invitedHnId:
+          type: string
         invitedEmail:
           type: string
         invitedAt:
           format: date-time
           type: string
-        status:
+        acceptedAt:
+          format: date-time
+          nullable: true
           type: string
+        rejectedAt:
+          format: date-time
+          nullable: true
+          type: string
+        status:
+          $ref: "#/components/schemas/InvitationStatus"
       required:
       - firstName
       - id
       - invitedAt
       - invitedEmail
+      - invitedHnId
+      - invitedRoles
       - lastName
-      - permissions
+      - preferredContactType
       - status
       type: object
+    InvitationStatus:
+      enum:
+      - Invited
+      - Accepted
+      - Rejected
+      type: string
     NullableOfUserStatus:
       enum:
       - Active
@@ -808,6 +943,64 @@ components:
           nullable: true
           type: string
       type: object
+    UpdateInvitationRequest:
+      example:
+        firstName: firstName
+        lastName: lastName
+        hnId: hnId
+        emailAddress: emailAddress
+        contributorRoles:
+        - DesignatedDesigner
+        - DesignatedDesigner
+        preferredContactType: Landline
+        mobileNumber: mobileNumber
+        landlineNumber: landlineNumber
+        contactNumberExtension: contactNumberExtension
+        status: Invited
+      properties:
+        emailAddress:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        preferredContactType:
+          $ref: "#/components/schemas/PreferredContactType"
+        landlineNumber:
+          maxLength: 20
+          nullable: true
+          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
+            s-]?\\d{1,9}$"
+          type: string
+        mobileNumber:
+          maxLength: 13
+          nullable: true
+          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
+            s-]?\\d{1,9}$"
+          type: string
+        contactNumberExtension:
+          maxLength: 10
+          nullable: true
+          pattern: ^\d*$
+          type: string
+        hnId:
+          type: string
+        contributorRoles:
+          items:
+            $ref: "#/components/schemas/ContributorRole"
+          minItems: 1
+          type: array
+        status:
+          $ref: "#/components/schemas/InvitationStatus"
+      required:
+      - contributorRoles
+      - emailAddress
+      - firstName
+      - hnId
+      - lastName
+      - preferredContactType
+      - status
+      type: object
     UpdateOrgDetailsAndRolesRequest:
       example:
         orgDetails:
@@ -861,24 +1054,44 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
         invitations:
-        - firstName: firstName
-          lastName: lastName
+        - lastName: lastName
+          invitedRoles:
+          - DesignatedDesigner
+          - DesignatedDesigner
+          preferredContactType: null
+          mobileNumber: mobileNumber
+          landlineNumber: landlineNumber
+          contactNumberExtension: contactNumberExtension
+          invitedHnId: invitedHnId
+          invitedEmail: invitedEmail
+          firstName: firstName
           permissions:
           - permissions
           - permissions
+          rejectedAt: 2000-01-23T04:56:07.000+00:00
           id: id
-          invitedEmail: invitedEmail
           invitedAt: 2000-01-23T04:56:07.000+00:00
-          status: status
-        - firstName: firstName
-          lastName: lastName
+          acceptedAt: 2000-01-23T04:56:07.000+00:00
+          status: Invited
+        - lastName: lastName
+          invitedRoles:
+          - DesignatedDesigner
+          - DesignatedDesigner
+          preferredContactType: null
+          mobileNumber: mobileNumber
+          landlineNumber: landlineNumber
+          contactNumberExtension: contactNumberExtension
+          invitedHnId: invitedHnId
+          invitedEmail: invitedEmail
+          firstName: firstName
           permissions:
           - permissions
           - permissions
+          rejectedAt: 2000-01-23T04:56:07.000+00:00
           id: id
-          invitedEmail: invitedEmail
           invitedAt: 2000-01-23T04:56:07.000+00:00
-          status: status
+          acceptedAt: 2000-01-23T04:56:07.000+00:00
+          status: Invited
         roles:
         - RegulatoryContact
         - RegulatoryContact

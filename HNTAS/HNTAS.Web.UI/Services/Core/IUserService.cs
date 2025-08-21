@@ -6,6 +6,8 @@ namespace HNTAS.Web.UI.Services.Core
     {
         Task<UserResponse?> GetUserById(string id);
 
+        Task<List<HeatNetwork>?> GetUserHeatNetworks(string id);
+
         Task<UserResponse?> GetUserByOneLoginId(string oneLoginId);
 
         Task<string?> CreateUser(InitialUserRegistrationRequest request);
@@ -15,5 +17,10 @@ namespace HNTAS.Web.UI.Services.Core
         Task UpdateUserHeatNetworkId(string id, string heatNetworkId);
 
         Task<bool?> IsOrganisationExists(string companiesHouseNumber);
+
+        Task<List<EnumItemResponse>> GetContributorRolesAsync();
+
+        Task UpdateInvitedUserAsync(string id, UpdateInvitationRequest invitationRequest);
+
     }
 }

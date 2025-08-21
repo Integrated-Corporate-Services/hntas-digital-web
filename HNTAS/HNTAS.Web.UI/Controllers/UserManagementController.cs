@@ -68,6 +68,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult AddContributor()
         {
             var viewModel = new AddContributorModel();
+            this.ShowBackButton("UserAccount", "Dashboard");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             return View(viewModel);
         }

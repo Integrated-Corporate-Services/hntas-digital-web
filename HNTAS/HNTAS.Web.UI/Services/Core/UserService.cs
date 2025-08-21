@@ -6,12 +6,14 @@ namespace HNTAS.Web.UI.Services.Core
     public class UserService : IUserService
     {
         private readonly IUsersApi _usersApi;
+        private readonly IHeatNetworksApi _heatNetworksApi;
         private readonly ILogger<UserService> _logger;
 
-        public UserService(IUsersApi usersApi, ILogger<UserService> logger)
+        public UserService(IUsersApi usersApi, ILogger<UserService> logger, IHeatNetworksApi heatNetworksApi)
         {
             _usersApi = usersApi;
             _logger = logger;
+            _heatNetworksApi = heatNetworksApi;
         }
 
         public async Task<UserResponse?> GetUserById(string id)
@@ -150,5 +152,83 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
         }
+
+        public async Task<List<HeatNetwork>?> GetUserHeatNetworks(string id)
+        {
+            var user = await GetUserById(id);
+            if (user?.HnIds == null || !user.HnIds.Any())
+            {
+                _logger.LogInformation("User with ID {UserId} has no heat networks assigned.", id);
+                return null;
+            }
+            _logger.LogInformation("User with ID {UserId} has heat networks assigned: {HeatNetworkIds}", id, string.Join(", ", user.HnIds));
+
+            try
+            {
+                var heatNetworkResponse = await _heatNetworksApi.ApiHeatNetworksHnIdsGetAsync(string.Join(",", user?.HnIds));
+                if (heatNetworkResponse.IsOk)
+                {
+                    return heatNetworkResponse.Ok();
+                }
+                throw new Exception($"Failed to retrieve heat network with status code: {heatNetworkResponse.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving heat networks for user ID: {UserId}", id);
+                throw;
+            }
+        }
+
+        public async Task<List<EnumItemResponse>> GetContributorRolesAsync()
+        {
+            var response = await _usersApi.ApiUsersContributorRolesGetAsync();
+
+            if (response.IsOk)
+            {
+                return response.Ok();
+            }
+            else
+            {
+                _logger.LogError("Failed to retrieve contributor roles with status code: {StatusCode}", response.StatusCode);
+                throw new Exception($"Failed to retrieve contributor roles with status code: {response.StatusCode}");
+            }
+
+        }
+
+        public async Task UpdateInvitedUserAsync(string id, UpdateInvitationRequest invitationRequest)
+        {
+            _logger.LogInformation("Updating invited user with ID: {UserId}", id);
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                _logger.LogError("User ID is null or empty");
+                throw new ArgumentNullException(nameof(id), "User ID cannot be null or empty");
+            }
+            if (invitationRequest == null)
+            {
+                _logger.LogError("Invitation request is null for user ID: {UserId}", id);
+                throw new ArgumentNullException(nameof(invitationRequest), "Invitation request cannot be null");
+            }
+
+            try
+            {
+                var response = await _usersApi.ApiUsersIdInvitationPatchAsync(id, invitationRequest);
+
+                if (response.IsNoContent)
+                {
+                    _logger.LogInformation("Invited user with ID: {UserId} updated successfully", id);
+                    return;
+                }
+                throw new Exception($"Failed to update Invited user with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating invited user with ID: {UserId}", id);
+                throw;
+            }
+
+
+        }
     }
 }
+
+

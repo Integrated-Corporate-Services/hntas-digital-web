@@ -61,7 +61,10 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new UserRoleJsonConverter(),
         new UserResponseJsonConverter(),
         new OrganisationJsonConverter(),
-        new HeatNetworkJsonConverter()
+        new HeatNetworkJsonConverter(),
+        new EnumItemResponseJsonConverter(),
+        new InvitationJsonConverter(),
+        new ContributorRoleJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -109,7 +112,22 @@ builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.Authenticatio
         options.Scope.Add("email");
         options.Scope.Add("phone");
         // options.Scope.Add("profile"); // If your service needs name, birthdate, etc.
+        // Assign individual event handlers
+        options.Events.OnRedirectToIdentityProvider = context =>
+        {
+            var customState = "workflow-step-3"; // or generate dynamically
+            context.ProtocolMessage.State = customState;
 
+            return Task.CompletedTask;
+        };
+
+        // You can assign other events similarly
+        options.Events.OnTokenValidated = context =>
+        {
+            var state = context.ProtocolMessage.State;
+            // Use or validate the state here
+            return Task.CompletedTask;
+        };
         using (var rsa = RSA.Create())
         {
             rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));

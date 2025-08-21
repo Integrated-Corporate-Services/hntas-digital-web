@@ -1,62 +1,77 @@
-﻿@using HNTAS.Web.UI.Models.Review
+﻿@using HNTAS.Web.UI.Models.Enums
+@using HNTAS.Web.UI.Models.Review
+@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Workflows.Models.Data
+@model AddNewContributorWorkflowModel
+
 @{
     ViewData["Title"] = "Check your answers";
 
-    // Build the data structure for the partial view
-    var reviewModel = new ReviewSummaryModel();
-
-    // Section 1: Personal details
-    var personalDetailsSection = new ReviewSection
+    string GetDisplayContactNumber()
     {
-        Heading = "Personal details",
-        Items = new List<ReviewItem>
-        {
-            new ReviewItem { Key = "First name", Value = "John", ChangeLink = "#", ChangeLinkText = "Change" },
-            new ReviewItem { Key = "Last name", Value = "Smith", ChangeLink = "#", ChangeLinkText = "Change" }
-        }
-    };
-    reviewModel.Sections.Add(personalDetailsSection);
+        var contact = Model.ContributorContactDetailsModel;
+        if (contact == null) return "Not provided";
 
-    // Section 2: Contact details
-    var contactDetailsSection = new ReviewSection
-    {
-        Heading = "Contact details",
-        Items = new List<ReviewItem>
+        return contact.PreferredContactType switch
         {
-            new ReviewItem { Key = "Email address", Value = "john.smith@test.com", ChangeLink = "#", ChangeLinkText = "Change" },
-            new ReviewItem { Key = "Phone number", Value = "07776794301", ChangeLink = "#", ChangeLinkText = "Change" }
-        }
-    };
-    reviewModel.Sections.Add(contactDetailsSection);
+            PreferredContactType.Landline => string.IsNullOrWhiteSpace(contact.ContactNumberExtension)
+                ? contact.LandlineNumber
+                : $"{contact.LandlineNumber} ext {contact.ContactNumberExtension}",
+            PreferredContactType.Mobile => contact.MobileNumber,
+            _ => "Not provided"
+        } ?? "Not provided";
+    }
 
-    // Section 3: Permissions
-    var permissionsSection = new ReviewSection
+    List<ReviewSection> BuildReviewSections()
     {
-        Heading = "Permissions",
-        Items = new List<ReviewItem>
+        return new List<ReviewSection>
         {
-            new ReviewItem { Key = "Permission 1", Value = "-- pending --", ChangeLink = "#", ChangeLinkText = "Change" },
-            new ReviewItem { Key = "Permission 2", Value = "-- pending --", ChangeLink = "#", ChangeLinkText = "Change" },
-            new ReviewItem { Key = "Permission 3", Value = "-- pending --", ChangeLink = "#", ChangeLinkText = "Change" }
-        }
+            new ReviewSection
+            {
+                Heading = "Personal details",
+                Items = new List<ReviewItem>
+                {
+                    new ReviewItem { Key = "First name", Value = Model.ContributorContactDetailsModel?.FirstName, ChangeLink = Url.Action("ContactDetails"), ChangeLinkText = "Change" },
+                    new ReviewItem { Key = "Last name", Value = Model.ContributorContactDetailsModel?.LastName, ChangeLink = Url.Action("ContactDetails"), ChangeLinkText = "Change" }
+                }
+            },
+            new ReviewSection
+            {
+                Heading = "Contact details",
+                Items = new List<ReviewItem>
+                {
+                    new ReviewItem { Key = "Email address", Value = Model.AddUserEmailAddressModel?.EmailAddress, ChangeLink = Url.Action("AddEmailAddress"), ChangeLinkText = "Change" },
+                    new ReviewItem { Key = "Phone number", Value = GetDisplayContactNumber(), ChangeLink = Url.Action("ContactDetails"), ChangeLinkText = "Change" }
+                }
+            },
+            new ReviewSection
+            {
+                Heading = "Heat network information",
+                Items = new List<ReviewItem>
+                {
+                    new ReviewItem { Key = "Heat network", Value = Model.HeatNetworkInformationModel?.SelectedHeatNetworkName, ChangeLink = Url.Action("ChooseHeatNetwork"), ChangeLinkText = "Change" },
+                    new ReviewItem { Key = "Role assigned", Value = Model.SelectRoleModel?.SelectedRoleName, ChangeLink = Url.Action("ChooseRole"), ChangeLinkText = "Change" }
+                }
+            }
+        };
+    }
+
+    var reviewModel = new ReviewSummaryModel
+    {
+        Sections = BuildReviewSections()
     };
-    reviewModel.Sections.Add(permissionsSection);
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
 
-        <h1 class="govuk-heading-l">
-            @ViewData["Title"]
-        </h1>
-
-        <partial name="_CheckYourAnswersPartial" model="reviewModel" />
+        <partial name="Components/_CheckYourAnswersPartial" model="reviewModel" />
 
         <form asp-action="SubmitAnswers" asp-controller="NewContributor" method="post">
             <button type="submit" class="govuk-button" data-module="govuk-button">
                 Submit details
             </button>
         </form>
-
     </div>
 </div>

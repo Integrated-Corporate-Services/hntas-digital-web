@@ -8,6 +8,8 @@ namespace HNTAS.Web.UI.Models
         [Required(ErrorMessage = "Choose the role.")]
         public string SelectedRoleId { get; set; } = null!;
 
+        public string? SelectedRoleName { get; set; }
+
         public List<SelectListItem> Roles { get; set; } = [];
     }
 }

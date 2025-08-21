@@ -43,9 +43,14 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new DateTimeNullableJsonConverter());
             _jsonOptions.Converters.Add(new DateOnlyJsonConverter());
             _jsonOptions.Converters.Add(new DateOnlyNullableJsonConverter());
+            _jsonOptions.Converters.Add(new ContributorRoleJsonConverter());
+            _jsonOptions.Converters.Add(new ContributorRoleNullableJsonConverter());
+            _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkJsonConverter());
             _jsonOptions.Converters.Add(new InitialUserRegistrationRequestJsonConverter());
             _jsonOptions.Converters.Add(new InvitationJsonConverter());
+            _jsonOptions.Converters.Add(new InvitationStatusJsonConverter());
+            _jsonOptions.Converters.Add(new InvitationStatusNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfUserStatusJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfUserStatusNullableJsonConverter());
             _jsonOptions.Converters.Add(new OrgDetailsJsonConverter());
@@ -57,6 +62,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new PreferredContactTypeJsonConverter());
             _jsonOptions.Converters.Add(new PreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ProblemDetailsJsonConverter());
+            _jsonOptions.Converters.Add(new UpdateInvitationRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateOrgDetailsAndRolesRequestJsonConverter());
             _jsonOptions.Converters.Add(new UserJsonConverter());
             _jsonOptions.Converters.Add(new UserResponseJsonConverter());

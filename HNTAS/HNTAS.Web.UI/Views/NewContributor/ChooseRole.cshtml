@@ -1,10 +1,15 @@
 ﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.Components
 @model SelectRoleModel
 
 @{
     ViewData["Title"] = "Choose the user's role";
+    var fieldName = nameof(Model.SelectedRoleId);
+    var fieldId = Html.LowercaseIdFor(m => m.SelectedRoleId);
+    var hasErrors = ViewData.ModelState.TryGetValue(fieldName, out var entry) && entry.Errors.Any();
+    var errorId = $"{fieldId}-error";
+    var ariaDescribedBy = hasErrors ? errorId : null;
 }
-
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -15,31 +20,28 @@
         </h1>
 
         <form asp-action="SaveChosenRole" asp-controller="NewContributor" method="post" novalidate>
-            <div class="govuk-form-group @(Html.ValidationMessageFor(m => m.SelectedRoleId) != null ? "govuk-form-group--error" : "")">
-
-                @if (ViewData.ModelState.GetValidationState("SelectedRoleId") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                {
-                    <p id="SelectedRoleId-error" class="govuk-error-message">
-                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.SelectedRoleId)
-                    </p>
-                }
-
-                <fieldset class="govuk-fieldset" aria-describedby="@(Html.ValidationMessageFor(m => m.SelectedRoleId) != null ? "SelectedRoleId-error" : "")">
+            <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="@ariaDescribedBy">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Choose the role
                     </legend>
 
-                    <div class="govuk-radios" data-module="govuk-radios">
-                        @foreach (var role in Model.Roles)
-                        {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="role-@role.Value" name="SelectedRoleId" type="radio" value="@role.Value" @(Model.SelectedRoleId == role.Value ? "checked" : "")>
-                                <label class="govuk-label govuk-radios__label" for="role-@role.Value">
-                                    @role.Text
-                                </label>
-                            </div>
-                        }
-                    </div>
+                    @if (hasErrors)
+                    {
+                        <p id="@errorId" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @Html.ValidationMessageFor(m => m.SelectedRoleId)
+                        </p>
+                    }
+
+
+                    @await Html.PartialAsync("Components/_GovUkRadioList", new GovUkRadioListModel
+                    {
+                        FieldId = Html.LowercaseIdFor(m => m.SelectedRoleId),
+                        FieldName = nameof(Model.SelectedRoleId),
+                        SelectedValue = Model.SelectedRoleId,
+                        Items = Model.Roles
+                    })
                 </fieldset>
             </div>
 

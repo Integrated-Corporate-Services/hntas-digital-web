@@ -1,9 +1,17 @@
-﻿@using HNTAS.Web.UI.Models.HeatNetwork
+﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Models.HeatNetwork
 @model HeatNetworkInformationModel
 
 @{
     ViewData["Title"] = "Heat network information";
+    var selectedHeatNetworkId = Html.LowercaseIdFor(m => m.SelectedHeatNetworkId);
+    var hasErrors = ViewData.ModelState.TryGetValue(nameof(Model.SelectedHeatNetworkId), out var entry) && entry.Errors.Any();
+    var errorId = $"{selectedHeatNetworkId}-error";
+    var hintId = $"{selectedHeatNetworkId}-hint";
+    var ariaDescribedBy = hasErrors ? $"{errorId} {hintId}" : hintId;
 }
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -14,35 +22,32 @@
 
         <form asp-action="SaveChosenHeatNetwork" asp-controller="NewContributor" method="post" novalidate>
             @Html.AntiForgeryToken()
-            <div class="govuk-form-group @(Html.ValidationMessageFor(m => m.SelectedHeatNetworkId) != null ? "govuk-form-group--error" : "")">
 
-                @if (ViewData.ModelState.GetValidationState("SelectedHeatNetworkId") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                {
-                    <p id="SelectedHeatNetworkId-error" class="govuk-error-message">
-                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.SelectedHeatNetworkId)
-                    </p>
-                }
-
-                <fieldset class="govuk-fieldset" aria-describedby="@(Html.ValidationMessageFor(m => m.SelectedHeatNetworkId) != null ? "SelectedHeatNetworkId-error heat-network-hint" : "heat-network-hint")">
+            <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="@ariaDescribedBy">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Choose the heat network
                     </legend>
 
-                    <div id="heat-network-hint" class="govuk-hint">
+                    <div id="@hintId" class="govuk-hint">
                         Added user will be contributing for this heat network
                     </div>
 
-                    <div class="govuk-radios" data-module="govuk-radios">
-                        @foreach (var item in Model.HeatNetworks)
-                        {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="heat-network-@item.Value" name="SelectedHeatNetworkId" type="radio" value="@item.Value" @(Model.SelectedHeatNetworkId == item.Value ? "checked" : "")>
-                                <label class="govuk-label govuk-radios__label" for="heat-network-@item.Value">
-                                    @item.Text
-                                </label>
-                            </div>
-                        }
-                    </div>
+                    @if (hasErrors)
+                    {
+                        <p id="@errorId" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @Html.ValidationMessageFor(m => m.SelectedHeatNetworkId)
+                        </p>
+                    }
+
+                    @await Html.PartialAsync("Components/_GovUkRadioList",new GovUkRadioListModel
+                    {
+                        FieldId = Html.LowercaseIdFor(m => m.SelectedHeatNetworkId),
+                        FieldName = nameof(Model.SelectedHeatNetworkId),
+                        SelectedValue = Model.SelectedHeatNetworkId,
+                        Items = Model.HeatNetworks
+                    })
                 </fieldset>
             </div>
 
@@ -52,4 +57,3 @@
         </form>
     </div>
 </div>
-

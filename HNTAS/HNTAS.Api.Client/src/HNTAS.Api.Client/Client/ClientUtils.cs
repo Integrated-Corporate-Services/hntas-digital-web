@@ -111,6 +111,10 @@ namespace HNTAS.Api.Client.Client
                 return boolean
                     ? "true"
                     : "false";
+            if (obj is ContributorRole contributorRole)
+                return ContributorRoleValueConverter.ToJsonValue(contributorRole);
+            if (obj is InvitationStatus invitationStatus)
+                return InvitationStatusValueConverter.ToJsonValue(invitationStatus);
             if (obj is NullableOfUserStatus nullableOfUserStatus)
                 return NullableOfUserStatusValueConverter.ToJsonValue(nullableOfUserStatus);
             if (obj is OrganisationType organisationType)
