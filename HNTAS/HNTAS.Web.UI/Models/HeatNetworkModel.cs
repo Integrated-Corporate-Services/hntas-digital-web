@@ -15,6 +15,12 @@ namespace HNTAS.Web.UI.Models
         public string HeatNetworkLocation { get; set; }
     }
 
+    public class HeatNetworkPhaseModel
+    {
+        [Required(ErrorMessage = "Please select the heat network phase.")]
+        public string HeatNetworkPhase { get; set; }
+    }
+
     public class CheckYourAnswersHeatNetworkModel
     {
         public HeatNetworkNameModel HeatNetworkNameModel { get; set; }

@@ -29,8 +29,8 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnterHNName()
         {
             this.ShowBackButton("UserAccount", "Dashboard");
-            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
-            return View(heatNetworkLocationModel);
+            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            return View(heatNetworkNameModel);
         }
 
         [HttpPost]
@@ -57,6 +57,8 @@ namespace HNTAS.Web.UI.Controllers
         {
             this.ShowBackButton("EnterHNName", "HeatNetwork");
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            ViewBag.HNName = heatNetworkNameModel.HeatNetworkName;
             return View("EnterHNLocation", heatNetworkLocationModel);
         }
 
@@ -90,10 +92,55 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
-            return RedirectToAction("CheckYourAnswers");
+            return RedirectToAction("EnterHNPhase");
         }
 
-        
+        [HttpGet]
+        public IActionResult EnterHNPhase()
+        {
+            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
+            var heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey) ?? new HeatNetworkPhaseModel();
+            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            ViewBag.HNName = heatNetworkNameModel.HeatNetworkName;
+            return View("EnterHNPhase", heatNetworkPhaseModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EnterHNPhase(HeatNetworkPhaseModel model)
+        {
+            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else if (string.IsNullOrWhiteSpace(model.HeatNetworkPhase))
+            {
+                ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
+                return View(model);
+            }
+            else
+            {
+                _sessionHelper.SaveToSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model);
+                switch (model.HeatNetworkPhase)
+                {
+                    case "design":
+                    case "construction":
+                    case "operation":
+                        return RedirectToAction("HNInOperation");
+                    default:
+                        ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
+                        return View(model);
+                }
+            }
+        }
+
+        [HttpGet]
+        public IActionResult HNInOperation()
+        {
+            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
+            return View();
+        }
 
         [HttpGet]
         public IActionResult CheckYourAnswers()
@@ -165,6 +212,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.CompanyName = userResponse.Organisation?.Name;
             ViewBag.ContactName = userResponse.FullName;
             ViewBag.HNId = TempData["Confirmation_HN_Id"] as string;
+            ViewBag.HNName = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey)?.HeatNetworkName;
             return View("Confirmation");
         }
     }
