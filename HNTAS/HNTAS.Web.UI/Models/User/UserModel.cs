@@ -10,6 +10,6 @@ namespace HNTAS.Web.UI.Models.User
         // Add this property if you want the organisation name to be dynamic
         public string OrganisationName { get; set; } = string.Empty;
 
-        public ContactDetailsModel ContactDetails { get; set; } = new ContactDetailsModel();
+        public OrganisationContactDetailsModel ContactDetails { get; set; } = new OrganisationContactDetailsModel();
     }
 }

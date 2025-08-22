@@ -43,22 +43,30 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new DateTimeNullableJsonConverter());
             _jsonOptions.Converters.Add(new DateOnlyJsonConverter());
             _jsonOptions.Converters.Add(new DateOnlyNullableJsonConverter());
+            _jsonOptions.Converters.Add(new ContributorRoleJsonConverter());
+            _jsonOptions.Converters.Add(new ContributorRoleNullableJsonConverter());
+            _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkJsonConverter());
+            _jsonOptions.Converters.Add(new HeatNetworkResponseJsonConverter());
             _jsonOptions.Converters.Add(new InitialUserRegistrationRequestJsonConverter());
-            _jsonOptions.Converters.Add(new InvitationJsonConverter());
-            _jsonOptions.Converters.Add(new NullableOfUserStatusJsonConverter());
-            _jsonOptions.Converters.Add(new NullableOfUserStatusNullableJsonConverter());
-            _jsonOptions.Converters.Add(new OrgDetailsJsonConverter());
-            _jsonOptions.Converters.Add(new OrgDetails2JsonConverter());
-            _jsonOptions.Converters.Add(new OrgRegisteredAddressJsonConverter());
-            _jsonOptions.Converters.Add(new OrganisationJsonConverter());
+            _jsonOptions.Converters.Add(new InvitationStatusJsonConverter());
+            _jsonOptions.Converters.Add(new InvitationStatusNullableJsonConverter());
+            _jsonOptions.Converters.Add(new InvitedUserResponseJsonConverter());
+            _jsonOptions.Converters.Add(new ManagedUserResponseJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfPreferredContactTypeJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfPreferredContactTypeNullableJsonConverter());
+            _jsonOptions.Converters.Add(new OrganisationRequestJsonConverter());
+            _jsonOptions.Converters.Add(new OrganisationResponseJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationTypeJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new PreferredContactTypeJsonConverter());
             _jsonOptions.Converters.Add(new PreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ProblemDetailsJsonConverter());
-            _jsonOptions.Converters.Add(new UpdateOrgDetailsAndRolesRequestJsonConverter());
+            _jsonOptions.Converters.Add(new RegisteredAddressJsonConverter());
+            _jsonOptions.Converters.Add(new UpdateInvitationRequestJsonConverter());
+            _jsonOptions.Converters.Add(new UpdateUserOrganisationRequestJsonConverter());
             _jsonOptions.Converters.Add(new UserJsonConverter());
+            _jsonOptions.Converters.Add(new UserDetailsResponseJsonConverter());
             _jsonOptions.Converters.Add(new UserResponseJsonConverter());
             _jsonOptions.Converters.Add(new UserRoleJsonConverter());
             _jsonOptions.Converters.Add(new UserRoleNullableJsonConverter());
@@ -68,9 +76,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton(jsonSerializerOptionsProvider);
             _services.AddSingleton<IApiFactory, ApiFactory>();
             _services.AddSingleton<HeatNetworksApiEvents>();
-            _services.AddSingleton<TestApiEvents>();
             _services.AddSingleton<UsersApiEvents>();
-            _services.AddSingleton<WelcomeApiEvents>();
         }
 
         /// <summary>
@@ -89,9 +95,7 @@ namespace HNTAS.Api.Client.Client
             List<IHttpClientBuilder> builders = new List<IHttpClientBuilder>();
 
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
-            builders.Add(_services.AddHttpClient<ITestApi, TestApi>(client));
             builders.Add(_services.AddHttpClient<IUsersApi, UsersApi>(client));
-            builders.Add(_services.AddHttpClient<IWelcomeApi, WelcomeApi>(client));
             
             if (builder != null)
                 foreach (IHttpClientBuilder instance in builders)
