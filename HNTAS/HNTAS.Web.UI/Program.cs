@@ -161,6 +161,7 @@ builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 var app = builder.Build();
 
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

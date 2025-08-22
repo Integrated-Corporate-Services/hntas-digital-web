@@ -73,10 +73,14 @@ public class HomeController : Controller
         }
     }
 
-    public IActionResult Error()
+    public IActionResult Error(int code)
     {
-        var errorMessage = TempData["ErrorMessage"] as string ?? "An unexpected error occurred. Please try again later.";
-        return View("Error", model: errorMessage);
+        if (code == 404)
+            return View("NotFound");
+        else if (code == 500)
+            return View("Error");
+
+        return View("Error");
     }
 
     [HttpGet]
