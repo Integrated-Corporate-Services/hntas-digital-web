@@ -28,8 +28,9 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult FewerThan10Dwellings()
         {
-            this.ShowBackButton("HowManyDwellingsIncluded", "HeatNetworkEligibility");
-            return View();
+            throw new Exception("Testing 500 error");
+            //this.ShowBackButton("HowManyDwellingsIncluded", "HeatNetworkEligibility");
+            //return View();
         }
 
         [HttpGet]

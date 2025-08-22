@@ -1,4 +1,5 @@
 ﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.Enums
 @using HNTAS.Web.UI.Models.User
 @model CheckYourAnswersModel
 
@@ -47,7 +48,7 @@
                     <dt class="govuk-summary-list__key">Organisation type</dt>
                     <dd class="govuk-summary-list__value">@organisationModel?.SelectedOrganisationTypeText</dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("Type")">Change<span class="govuk-visually-hidden"> organisation type</span></a>
+                        <a class="govuk-link" href="@Url.Action("OrganisationType")">Change<span class="govuk-visually-hidden"> organisation type</span></a>
                     </dd>
                 </div>
 

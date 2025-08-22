@@ -248,18 +248,6 @@
         }
       }
     },
-    "/api/Test/test-documentdb-connection": {
-      "get": {
-        "tags": [
-          "Test"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Users": {
       "get": {
         "tags": [
@@ -291,6 +279,47 @@
                   "items": {
                     "$ref": "#/components/schemas/UserResponse"
                   }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/Users/user-details-by-id": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetailsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetailsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetailsResponse"
                 }
               }
             }
@@ -580,12 +609,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateOrgDetailsAndRolesRequest"
+                "$ref": "#/components/schemas/UpdateUserOrganisationRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateOrgDetailsAndRolesRequest"
+                "$ref": "#/components/schemas/UpdateUserOrganisationRequest"
               }
             }
           },
@@ -654,6 +683,106 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/Users/{id}/Invitation": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 24,
+              "minLength": 24,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInvitationRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInvitationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/Users/contributor-roles": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumItemResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumItemResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumItemResponse"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -774,16 +903,40 @@
         }
       }
     },
-    "/api/Welcome": {
+    "/api/Users/managed-users": {
       "get": {
         "tags": [
-          "Welcome"
+          "Users"
         ],
-        "summary": "Get Welcome Message",
-        "description": "This endpoint returns a simple welcome string to confirm the API is running.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagedUserResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -791,6 +944,28 @@
   },
   "components": {
     "schemas": {
+      "ContributorRole": {
+        "enum": [
+          "DesignatedDesigner",
+          "DesignatedContractor",
+          "DesignatedOperator"
+        ]
+      },
+      "EnumItemResponse": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
       "HeatNetwork": {
         "type": "object",
         "properties": {
@@ -798,7 +973,7 @@
             "type": "string",
             "nullable": true
           },
-          "hn_id": {
+          "hnId": {
             "type": "string",
             "nullable": true
           },
@@ -806,6 +981,20 @@
             "type": "string"
           },
           "name": {
+            "type": "string"
+          }
+        }
+      },
+      "HeatNetworkResponse": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "location": {
             "type": "string"
           }
         }
@@ -829,19 +1018,20 @@
           }
         }
       },
-      "Invitation": {
-        "required": [
-          "id",
-          "firstName",
-          "lastName",
-          "permissions",
-          "invitedEmail",
-          "invitedAt",
-          "status"
-        ],
+      "InvitationStatus": {
+        "enum": [
+          "Invited",
+          "Accepted",
+          "Rejected"
+        ]
+      },
+      "InvitedUserResponse": {
         "type": "object",
         "properties": {
           "id": {
+            "type": "string"
+          },
+          "email": {
             "type": "string"
           },
           "firstName": {
@@ -850,50 +1040,104 @@
           "lastName": {
             "type": "string"
           },
-          "permissions": {
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "roles": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "invitedEmail": {
+          "status": {
             "type": "string"
           },
           "invitedAt": {
             "type": "string",
             "format": "date-time"
           },
-          "status": {
-            "type": "string"
+          "acceptedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "rejectedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },
-      "NullableOfUserStatus": {
+      "ManagedUserResponse": {
+        "type": "object",
+        "properties": {
+          "responsibleUser": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "registeredUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserResponse"
+            }
+          },
+          "invitedUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvitedUserResponse"
+            }
+          }
+        }
+      },
+      "NullableOfPreferredContactType": {
         "enum": [
-          "Active",
-          "InActive",
-          "InvitationSent",
-          "InvitationAccepted",
-          "InvitationDeclined",
+          "Landline",
+          "Mobile",
           null
         ],
         "nullable": true
       },
-      "Organisation": {
+      "OrganisationRequest": {
+        "required": [
+          "name",
+          "type",
+          "registeredAddress"
+        ],
         "type": "object",
         "properties": {
-          "id": {
+          "name": {
+            "type": "string"
+          },
+          "companiesHouseNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/OrganisationType"
+          },
+          "registeredAddress": {
+            "$ref": "#/components/schemas/RegisteredAddress"
+          }
+        }
+      },
+      "OrganisationResponse": {
+        "type": "object",
+        "properties": {
+          "orgId": {
             "type": "string"
           },
           "name": {
             "type": "string"
           },
-          "companinesHouseNumber": {
+          "companiesHouseNumber": {
             "type": "string",
             "nullable": true
           },
           "type": {
             "type": "string"
+          },
+          "registeredAddress": {
+            "$ref": "#/components/schemas/RegisteredAddress"
           }
         },
         "nullable": true
@@ -904,166 +1148,6 @@
           "OtherUkOrganisation",
           "OverseasOrganisation"
         ]
-      },
-      "OrgDetails": {
-        "required": [
-          "orgType",
-          "orgName",
-          "firstName",
-          "lastName",
-          "preferredContactType",
-          "jobTitle",
-          "orgRegisteredAddress"
-        ],
-        "type": "object",
-        "properties": {
-          "orgId": {
-            "type": "string",
-            "nullable": true
-          },
-          "orgType": {
-            "$ref": "#/components/schemas/OrganisationType"
-          },
-          "companiesHouseNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "orgName": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "preferredContactType": {
-            "$ref": "#/components/schemas/PreferredContactType"
-          },
-          "landlineNumber": {
-            "maxLength": 20,
-            "pattern": "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\s-]?\\d{1,9}$",
-            "type": "string",
-            "nullable": true
-          },
-          "contactNumberExtension": {
-            "maxLength": 10,
-            "pattern": "^\\d*$",
-            "type": "string",
-            "nullable": true
-          },
-          "mobileNumber": {
-            "maxLength": 13,
-            "pattern": "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\s-]?\\d{1,9}$",
-            "type": "string",
-            "nullable": true
-          },
-          "jobTitle": {
-            "maxLength": 100,
-            "pattern": "^[a-zA-Z ]+$",
-            "type": "string",
-            "nullable": true
-          },
-          "orgRegisteredAddress": {
-            "$ref": "#/components/schemas/OrgRegisteredAddress"
-          }
-        },
-        "nullable": true
-      },
-      "OrgDetails2": {
-        "required": [
-          "orgType",
-          "orgName",
-          "firstName",
-          "lastName",
-          "preferredContactType",
-          "jobTitle",
-          "orgRegisteredAddress"
-        ],
-        "type": "object",
-        "properties": {
-          "orgId": {
-            "type": "string",
-            "nullable": true
-          },
-          "orgType": {
-            "$ref": "#/components/schemas/OrganisationType"
-          },
-          "companiesHouseNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "orgName": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "preferredContactType": {
-            "$ref": "#/components/schemas/PreferredContactType"
-          },
-          "landlineNumber": {
-            "maxLength": 20,
-            "pattern": "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\s-]?\\d{1,9}$",
-            "type": "string",
-            "nullable": true
-          },
-          "contactNumberExtension": {
-            "maxLength": 10,
-            "pattern": "^\\d*$",
-            "type": "string",
-            "nullable": true
-          },
-          "mobileNumber": {
-            "maxLength": 13,
-            "pattern": "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\s-]?\\d{1,9}$",
-            "type": "string",
-            "nullable": true
-          },
-          "jobTitle": {
-            "maxLength": 100,
-            "pattern": "^[a-zA-Z ]+$",
-            "type": "string",
-            "nullable": true
-          },
-          "orgRegisteredAddress": {
-            "$ref": "#/components/schemas/OrgRegisteredAddress"
-          }
-        }
-      },
-      "OrgRegisteredAddress": {
-        "required": [
-          "addressLine1",
-          "postcode"
-        ],
-        "type": "object",
-        "properties": {
-          "addressLine1": {
-            "type": "string"
-          },
-          "addressLine2": {
-            "type": "string",
-            "nullable": true
-          },
-          "town": {
-            "type": "string",
-            "nullable": true
-          },
-          "county": {
-            "type": "string",
-            "nullable": true
-          },
-          "postcode": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string",
-            "nullable": true
-          }
-        }
       },
       "PreferredContactType": {
         "enum": [
@@ -1097,18 +1181,134 @@
           }
         }
       },
-      "UpdateOrgDetailsAndRolesRequest": {
+      "RegisteredAddress": {
         "required": [
-          "orgDetails",
-          "role"
+          "addressLine1",
+          "postcode"
         ],
         "type": "object",
         "properties": {
-          "orgDetails": {
-            "$ref": "#/components/schemas/OrgDetails2"
+          "addressLine1": {
+            "type": "string"
+          },
+          "addressLine2": {
+            "type": "string",
+            "nullable": true
+          },
+          "town": {
+            "type": "string",
+            "nullable": true
+          },
+          "county": {
+            "type": "string",
+            "nullable": true
+          },
+          "postcode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateInvitationRequest": {
+        "required": [
+          "emailAddress",
+          "firstName",
+          "lastName",
+          "preferredContactType",
+          "hnId",
+          "contributorRoles",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "emailAddress": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "preferredContactType": {
+            "$ref": "#/components/schemas/PreferredContactType"
+          },
+          "landlineNumber": {
+            "maxLength": 20,
+            "pattern": "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\s-]?\\d{1,9}$",
+            "type": "string",
+            "nullable": true
+          },
+          "mobileNumber": {
+            "maxLength": 13,
+            "pattern": "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\s-]?\\d{1,9}$",
+            "type": "string",
+            "nullable": true
+          },
+          "contactNumberExtension": {
+            "maxLength": 10,
+            "pattern": "^\\d*$",
+            "type": "string",
+            "nullable": true
+          },
+          "hnId": {
+            "type": "string"
+          },
+          "contributorRoles": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContributorRole"
+            }
+          },
+          "status": {
+            "$ref": "#/components/schemas/InvitationStatus"
+          }
+        }
+      },
+      "UpdateUserOrganisationRequest": {
+        "required": [
+          "firstName",
+          "lastName",
+          "preferredContactType",
+          "jobTitle",
+          "role",
+          "organisation"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "preferredContactType": {
+            "$ref": "#/components/schemas/PreferredContactType"
+          },
+          "landlineNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactNumberExtension": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobileNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "jobTitle": {
+            "type": "string"
           },
           "role": {
             "$ref": "#/components/schemas/UserRole"
+          },
+          "organisation": {
+            "$ref": "#/components/schemas/OrganisationRequest"
           }
         }
       },
@@ -1122,11 +1322,35 @@
           "oneLoginId": {
             "type": "string"
           },
-          "orgDetails": {
-            "$ref": "#/components/schemas/OrgDetails"
+          "orgId": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "jobTitle": {
+            "type": "string",
+            "nullable": true
           },
           "emailId": {
             "type": "string"
+          },
+          "preferredContactType": {
+            "$ref": "#/components/schemas/NullableOfPreferredContactType"
+          },
+          "landlineNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobileNumber": {
+            "type": "string",
+            "nullable": true
           },
           "hnIds": {
             "type": "array",
@@ -1143,12 +1367,67 @@
             "nullable": true
           },
           "status": {
-            "$ref": "#/components/schemas/NullableOfUserStatus"
+            "$ref": "#/components/schemas/UserStatus"
+          }
+        }
+      },
+      "UserDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
           },
-          "invitations": {
+          "oneLoginId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailId": {
+            "type": "string"
+          },
+          "jobTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "preferredContactType": {
+            "type": "string",
+            "nullable": true
+          },
+          "landlineNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobileNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string"
+          },
+          "roles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Invitation"
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "organisation": {
+            "$ref": "#/components/schemas/OrganisationResponse"
+          },
+          "heatNetworks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HeatNetworkResponse"
             },
             "nullable": true
           }
@@ -1160,15 +1439,42 @@
           "id": {
             "type": "string"
           },
-          "emailAddress": {
+          "oneLoginId": {
             "type": "string"
+          },
+          "emailId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
           },
           "fullName": {
             "type": "string",
             "nullable": true
           },
-          "organisation": {
-            "$ref": "#/components/schemas/Organisation"
+          "jobTitle": {
+            "type": "string"
+          },
+          "preferredContactType": {
+            "type": "string",
+            "nullable": true
+          },
+          "landlineNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobileNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "orgId": {
+            "type": "string",
+            "nullable": true
           },
           "roles": {
             "type": "array",
@@ -1177,15 +1483,15 @@
             },
             "nullable": true
           },
+          "status": {
+            "type": "string"
+          },
           "hnIds": {
             "type": "array",
             "items": {
               "type": "string"
             },
             "nullable": true
-          },
-          "status": {
-            "type": "string"
           }
         }
       },
@@ -1212,13 +1518,7 @@
       "name": "HeatNetworks"
     },
     {
-      "name": "Test"
-    },
-    {
       "name": "Users"
-    },
-    {
-      "name": "Welcome"
     }
   ]
 }

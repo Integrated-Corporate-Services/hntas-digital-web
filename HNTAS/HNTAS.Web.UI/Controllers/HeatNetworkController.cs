@@ -161,7 +161,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Confirmation()
         {
-            var userResponse = await _userService.GetUserById(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+            var userResponse = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
 
             ViewBag.CompanyName = userResponse.Organisation?.Name;
             ViewBag.ContactName = userResponse.FullName;

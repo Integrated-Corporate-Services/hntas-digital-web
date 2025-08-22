@@ -26,7 +26,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> UserAccount()
         {
-            var user = await _userService.GetUserById(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+            var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
 
             if (user == null)
             {
@@ -41,27 +41,23 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = "Your account is not associated with any organisation. Please contact support.";
                 return View(new DashboardModel());
             }
-
+            else
+            {
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
+            }
 
             var heatNetworks = new List<HeatNetworkModel>();
 
-            if (user.HnIds != null && user.HnIds.Count > 0)
+            if (user.HeatNetworks != null && user.HeatNetworks?.Count > 0)
             {
-                var heatNetworksResponse = await _heatNetworksApi.ApiHeatNetworksHnIdsGetAsync(string.Join(",", user?.HnIds));
-
-                if (heatNetworksResponse.IsOk)
+                foreach (var network in user.HeatNetworks)
                 {
-                    var heatNetworksData = heatNetworksResponse.Ok();
-
-                    foreach (var network in heatNetworksData)
+                    heatNetworks.Add(new HeatNetworkModel
                     {
-                        heatNetworks.Add(new HeatNetworkModel
-                        {
-                            Name = network.Name,
-                            OrganisationName = user.Organisation?.Name,
-                            Status = "Active"
-                        });
-                    }
+                        Name = network.Name,
+                        OrganisationName = user.Organisation?.Name,
+                        Status = "Active"
+                    });
                 }
             }
 

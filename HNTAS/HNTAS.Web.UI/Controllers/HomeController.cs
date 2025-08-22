@@ -9,7 +9,6 @@ using System.Security.Claims;
 namespace HNTAS.Web.UI.Controllers;
 public class HomeController : Controller
 {
-
     private readonly IUserService _iUserService;
     private readonly ILogger<HomeController> _logger;
     private readonly ISessionHelper _sessionHelper;
@@ -26,6 +25,7 @@ public class HomeController : Controller
     {
         var email = User.FindFirstValue("email");
         var oneLoginId = User.FindFirstValue("sub");
+        var state = Request.Query["state"].ToString();
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
         {
@@ -58,7 +58,7 @@ public class HomeController : Controller
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
 
-            if (existingUser.Organisation != null)
+            if (existingUser.OrgId != null)
             {
                 return RedirectToAction("UserAccount", "Dashboard");
             }
@@ -73,10 +73,14 @@ public class HomeController : Controller
         }
     }
 
-    public IActionResult Error()
+    public IActionResult Error(int code)
     {
-        var errorMessage = TempData["ErrorMessage"] as string ?? "An unexpected error occurred. Please try again later.";
-        return View("Error", model: errorMessage);
+        if (code == 404)
+            return View("NotFound");
+        else if (code == 500)
+            return View("Error");
+
+        return View("Error");
     }
 
     [HttpGet]
