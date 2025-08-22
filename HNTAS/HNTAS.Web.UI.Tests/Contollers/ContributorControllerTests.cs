@@ -9,24 +9,24 @@ using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace HNTAS.Web.UI.Tests.Controllers {
-    public class DutyHolderControllerTests
+    public class ContributorControllerTests
     {
-        private readonly Mock<ILogger<DutyHolderController>> _loggerMock;
+        private readonly Mock<ILogger<ContributorController>> _loggerMock;
         private readonly Mock<IUserService> _userServiceMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
-        private readonly DutyHolderController _controller;
+        private readonly ContributorController _controller;
 
-        public DutyHolderControllerTests()
+        public ContributorControllerTests()
         {
-            _loggerMock = new Mock<ILogger<DutyHolderController>>();
+            _loggerMock = new Mock<ILogger<ContributorController>>();
             _userServiceMock = new Mock<IUserService>();
             _sessionHelperMock = new Mock<ISessionHelper>();
             _controller = CreateController();
         }
 
-        private DutyHolderController CreateController()
+        private ContributorController CreateController()
         {
-            var controller = new DutyHolderController(_userServiceMock.Object, _loggerMock.Object, _sessionHelperMock.Object);
+            var controller = new ContributorController(_userServiceMock.Object, _loggerMock.Object, _sessionHelperMock.Object);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -89,7 +89,7 @@ namespace HNTAS.Web.UI.Tests.Controllers {
 
             Assert.NotNull(result);
             Assert.Equal("StartPage", result.ActionName);
-            Assert.Equal("DutyHolder", result.ControllerName);
+            Assert.Equal("Contributor", result.ControllerName);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace HNTAS.Web.UI.Tests.Controllers {
 
             Assert.NotNull(result);
             Assert.Equal("YouHaveDeclined", result.ActionName);
-            Assert.Equal("DutyHolder", result.ControllerName);
+            Assert.Equal("Contributor", result.ControllerName);
         }
 
         [Fact]

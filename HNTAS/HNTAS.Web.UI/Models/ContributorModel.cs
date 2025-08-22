@@ -7,7 +7,7 @@ namespace HNTAS.Web.UI.Models
         [Required(ErrorMessage = "Please select an option.")]
         public string AcceptInvitation { get; set; }
     }
-    public class DHDashboardModel
+    public class ContributorDashboardModel
     {
         [Required(ErrorMessage = "Details for the duty holder is missing.")]
         public string OrganisationName { get; set; }

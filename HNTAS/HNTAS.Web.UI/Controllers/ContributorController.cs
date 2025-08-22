@@ -9,12 +9,12 @@ using System.Security.Claims;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    public class DutyHolderController : Controller
+    public class ContributorController : Controller
     {
         private readonly IUserService _iUserService;
-        private readonly ILogger<DutyHolderController> _logger;
+        private readonly ILogger<ContributorController> _logger;
         private readonly ISessionHelper _sessionHelper;
-        public DutyHolderController(IUserService iUserService, ILogger<DutyHolderController> logger, ISessionHelper sessionHelper)
+        public ContributorController(IUserService iUserService, ILogger<ContributorController> logger, ISessionHelper sessionHelper)
         {
             _iUserService = iUserService;
             _logger = logger;
@@ -25,7 +25,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult YouHaveDeclined()
         {
-            this.ShowBackButton("YouHaveBeenInvited", "DutyHolder");
+            this.ShowBackButton("YouHaveBeenInvited", "Contributor");
             return View();
         }
 
@@ -50,9 +50,9 @@ namespace HNTAS.Web.UI.Controllers
             }
             switch (model.AcceptInvitation) {
                 case "accept":
-                    return RedirectToAction("StartPage", "DutyHolder");
+                    return RedirectToAction("StartPage", "Contributor");
                 case "decline":
-                    return RedirectToAction("YouHaveDeclined", "DutyHolder");
+                    return RedirectToAction("YouHaveDeclined", "Contributor");
                 default:
                     ModelState.AddModelError(nameof(model.AcceptInvitation), "Please select a valid option.");
                     return View(model);
@@ -63,7 +63,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpGet]
         public IActionResult StartPage() {
-            this.ShowBackButton("YouHaveBeenInvited", "DutyHolder");
+            this.ShowBackButton("YouHaveBeenInvited", "Contributor");
             return View();
         }
 
@@ -107,7 +107,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 if (existingUser.Organisation != null)
                 {
-                    return RedirectToAction("Dashboard", "DutyHolder");
+                    return RedirectToAction("Dashboard", "Contributor");
                 }
 
                 return View();
@@ -123,7 +123,14 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult Dashboard()
         {
-            return View();
+            // TODO - hardcoded for now, will be linked to model once we receive value from email invitaion story
+            var model = new ContributorDashboardModel
+            {
+                OrganisationName = "ABC Org",
+                HeatNetwork = "XyZ HN",
+                HNStatus = "Active"
+            };
+            return View(model);
         }
 
         #endregion
