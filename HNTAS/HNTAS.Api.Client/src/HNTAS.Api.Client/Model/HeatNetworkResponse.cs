@@ -26,41 +26,26 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// HeatNetwork
+    /// HeatNetworkResponse
     /// </summary>
-    public partial class HeatNetwork : IValidatableObject
+    public partial class HeatNetworkResponse : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HeatNetwork" /> class.
+        /// Initializes a new instance of the <see cref="HeatNetworkResponse" /> class.
         /// </summary>
-        /// <param name="id">id</param>
         /// <param name="hnId">hnId</param>
-        /// <param name="location">location</param>
         /// <param name="name">name</param>
+        /// <param name="location">location</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> location = default, Option<string?> name = default)
+        public HeatNetworkResponse(Option<string?> hnId = default, Option<string?> name = default, Option<string?> location = default)
         {
-            IdOption = id;
             HnIdOption = hnId;
-            LocationOption = location;
             NameOption = name;
+            LocationOption = location;
             OnCreated();
         }
 
         partial void OnCreated();
-
-        /// <summary>
-        /// Used to track the state of Id
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> IdOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Id
-        /// </summary>
-        [JsonPropertyName("id")]
-        public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of HnId
@@ -76,19 +61,6 @@ namespace HNTAS.Api.Client.Model
         public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Location
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> LocationOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Location
-        /// </summary>
-        [JsonPropertyName("location")]
-        public string? Location { get { return this.LocationOption; } set { this.LocationOption = new(value); } }
-
-        /// <summary>
         /// Used to track the state of Name
         /// </summary>
         [JsonIgnore]
@@ -102,17 +74,29 @@ namespace HNTAS.Api.Client.Model
         public string? Name { get { return this.NameOption; } set { this.NameOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Location
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> LocationOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Location
+        /// </summary>
+        [JsonPropertyName("location")]
+        public string? Location { get { return this.LocationOption; } set { this.LocationOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class HeatNetwork {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("class HeatNetworkResponse {\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
-            sb.Append("  Location: ").Append(Location).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  Location: ").Append(Location).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -129,19 +113,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="HeatNetwork" />
+    /// A Json converter for type <see cref="HeatNetworkResponse" />
     /// </summary>
-    public class HeatNetworkJsonConverter : JsonConverter<HeatNetwork>
+    public class HeatNetworkResponseJsonConverter : JsonConverter<HeatNetworkResponse>
     {
         /// <summary>
-        /// Deserializes json to <see cref="HeatNetwork" />
+        /// Deserializes json to <see cref="HeatNetworkResponse" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override HeatNetwork Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override HeatNetworkResponse Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -150,10 +134,9 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> id = default;
             Option<string?> hnId = default;
-            Option<string?> location = default;
             Option<string?> name = default;
+            Option<string?> location = default;
 
             while (utf8JsonReader.Read())
             {
@@ -170,17 +153,14 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "id":
-                            id = new Option<string?>(utf8JsonReader.GetString());
-                            break;
                         case "hnId":
-                            hnId = new Option<string?>(utf8JsonReader.GetString());
-                            break;
-                        case "location":
-                            location = new Option<string?>(utf8JsonReader.GetString()!);
+                            hnId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "name":
                             name = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "location":
+                            location = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         default:
                             break;
@@ -188,62 +168,59 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (location.IsSet && location.Value == null)
-                throw new ArgumentNullException(nameof(location), "Property is not nullable for class HeatNetwork.");
+            if (hnId.IsSet && hnId.Value == null)
+                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class HeatNetworkResponse.");
 
             if (name.IsSet && name.Value == null)
-                throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetwork.");
+                throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetworkResponse.");
 
-            return new HeatNetwork(id, hnId, location, name);
+            if (location.IsSet && location.Value == null)
+                throw new ArgumentNullException(nameof(location), "Property is not nullable for class HeatNetworkResponse.");
+
+            return new HeatNetworkResponse(hnId, name, location);
         }
 
         /// <summary>
-        /// Serializes a <see cref="HeatNetwork" />
+        /// Serializes a <see cref="HeatNetworkResponse" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="heatNetwork"></param>
+        /// <param name="heatNetworkResponse"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, HeatNetwork heatNetwork, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, HeatNetworkResponse heatNetworkResponse, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, heatNetwork, jsonSerializerOptions);
+            WriteProperties(writer, heatNetworkResponse, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="HeatNetwork" />
+        /// Serializes the properties of <see cref="HeatNetworkResponse" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="heatNetwork"></param>
+        /// <param name="heatNetworkResponse"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, HeatNetwork heatNetwork, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, HeatNetworkResponse heatNetworkResponse, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (heatNetwork.LocationOption.IsSet && heatNetwork.Location == null)
-                throw new ArgumentNullException(nameof(heatNetwork.Location), "Property is required for class HeatNetwork.");
+            if (heatNetworkResponse.HnIdOption.IsSet && heatNetworkResponse.HnId == null)
+                throw new ArgumentNullException(nameof(heatNetworkResponse.HnId), "Property is required for class HeatNetworkResponse.");
 
-            if (heatNetwork.NameOption.IsSet && heatNetwork.Name == null)
-                throw new ArgumentNullException(nameof(heatNetwork.Name), "Property is required for class HeatNetwork.");
+            if (heatNetworkResponse.NameOption.IsSet && heatNetworkResponse.Name == null)
+                throw new ArgumentNullException(nameof(heatNetworkResponse.Name), "Property is required for class HeatNetworkResponse.");
 
-            if (heatNetwork.IdOption.IsSet)
-                if (heatNetwork.IdOption.Value != null)
-                    writer.WriteString("id", heatNetwork.Id);
-                else
-                    writer.WriteNull("id");
+            if (heatNetworkResponse.LocationOption.IsSet && heatNetworkResponse.Location == null)
+                throw new ArgumentNullException(nameof(heatNetworkResponse.Location), "Property is required for class HeatNetworkResponse.");
 
-            if (heatNetwork.HnIdOption.IsSet)
-                if (heatNetwork.HnIdOption.Value != null)
-                    writer.WriteString("hnId", heatNetwork.HnId);
-                else
-                    writer.WriteNull("hnId");
+            if (heatNetworkResponse.HnIdOption.IsSet)
+                writer.WriteString("hnId", heatNetworkResponse.HnId);
 
-            if (heatNetwork.LocationOption.IsSet)
-                writer.WriteString("location", heatNetwork.Location);
+            if (heatNetworkResponse.NameOption.IsSet)
+                writer.WriteString("name", heatNetworkResponse.Name);
 
-            if (heatNetwork.NameOption.IsSet)
-                writer.WriteString("name", heatNetwork.Name);
+            if (heatNetworkResponse.LocationOption.IsSet)
+                writer.WriteString("location", heatNetworkResponse.Location);
         }
     }
 }

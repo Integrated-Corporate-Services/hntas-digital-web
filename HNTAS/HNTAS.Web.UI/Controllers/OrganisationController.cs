@@ -401,7 +401,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            var regAddress = new OrgRegisteredAddress(
+            var regAddress = new RegisteredAddress(
                 addressLine1: company?.RegisteredOfficeAddress?.AddressLine1,
                 addressLine2: company?.RegisteredOfficeAddress?.AddressLine2,
                 town: company?.RegisteredOfficeAddress?.Locality,
@@ -415,19 +415,25 @@ namespace HNTAS.Web.UI.Controllers
             try
             {
 
-                var OrgId = await _userService.UpdateUserOrganisation(userId, new UpdateOrgDetailsAndRolesRequest(new OrgDetails2(
-                    orgType: orgType,
-                    companiesHouseNumber: organisationModel.CompanyNumber,
-                    orgName: company?.Title,
+                var updateModel = new UpdateUserOrganisationRequest(
                     firstName: userModel?.ContactDetails?.FirstName,
                     lastName: userModel?.ContactDetails?.LastName,
-                    preferredContactType: preferredContactType,//(HNTAS.Api.Client.Model.PreferredContactType)(int)userModel?.ContactDetails?.PreferredContactType,
-                    orgRegisteredAddress: regAddress,
-                    orgId: null,
-                    landlineNumber: userModel?.ContactDetails?.LandlineNumber,
-                    contactNumberExtension: userModel?.ContactDetails?.ContactNumberExtension,
-                    mobileNumber: userModel?.ContactDetails?.MobileNumber,
-                    jobTitle: userModel?.ContactDetails?.JobTitle), UserRole.RegulatoryContact));
+                    preferredContactType: preferredContactType,
+                    jobTitle: userModel?.ContactDetails?.JobTitle,
+                    role: UserRole.RegulatoryContact,
+                    organisation: new OrganisationRequest
+                    (
+                        name: company?.Title,
+                        type: orgType,
+                        companiesHouseNumber: organisationModel.CompanyNumber,
+                        registeredAddress: regAddress
+                    ),
+                    landlineNumber: userModel.ContactDetails.LandlineNumber,
+                    contactNumberExtension: userModel.ContactDetails.ContactNumberExtension,
+                    mobileNumber: userModel.ContactDetails.MobileNumber);
+
+
+                var OrgId = await _userService.UpdateUserOrganisation(userId, updateModel);
 
                 TempData["Confirmation_Organisation_Id"] = OrgId;
                 _logger.LogInformation("Successfully updated OrgDetails for user {UserId}. Retrieved OrgId: {OrgId}", userId, OrgId);

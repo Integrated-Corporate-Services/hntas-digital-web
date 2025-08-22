@@ -115,8 +115,8 @@ namespace HNTAS.Api.Client.Client
                 return ContributorRoleValueConverter.ToJsonValue(contributorRole);
             if (obj is InvitationStatus invitationStatus)
                 return InvitationStatusValueConverter.ToJsonValue(invitationStatus);
-            if (obj is NullableOfUserStatus nullableOfUserStatus)
-                return NullableOfUserStatusValueConverter.ToJsonValue(nullableOfUserStatus);
+            if (obj is NullableOfPreferredContactType nullableOfPreferredContactType)
+                return NullableOfPreferredContactTypeValueConverter.ToJsonValue(nullableOfPreferredContactType);
             if (obj is OrganisationType organisationType)
                 return OrganisationTypeValueConverter.ToJsonValue(organisationType);
             if (obj is PreferredContactType preferredContactType)

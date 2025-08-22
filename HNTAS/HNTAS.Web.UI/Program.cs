@@ -64,7 +64,13 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new HeatNetworkJsonConverter(),
         new EnumItemResponseJsonConverter(),
         new InvitationJsonConverter(),
-        new ContributorRoleJsonConverter()
+        new ContributorRoleJsonConverter(),
+        new UserDetailsResponseJsonConverter(),
+        new OrganisationResponseJsonConverter(),
+        new HeatNetworkResponseJsonConverter(),
+        new RegisteredAddressJsonConverter(),
+        new ManagedUserResponseJsonConverter(),
+        new InvitedUserResponseJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

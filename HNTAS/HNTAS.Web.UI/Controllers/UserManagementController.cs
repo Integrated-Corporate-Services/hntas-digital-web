@@ -35,19 +35,59 @@ namespace HNTAS.Web.UI.Controllers
             {
                 var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-                var user = await _userService.GetUserById(userId);
+                var user = await _userService.GetManagedUsers(userId);
+
+                var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+
+
+                var displayUsers = new List<UserDisplayModel>();
+
+                if (user.ResponsibleUser != null)
+                {
+                    displayUsers.Add(new UserDisplayModel
+                    {
+                        Id = user.ResponsibleUser.Id,
+                        EmailAddress = user.ResponsibleUser.EmailId,
+                        Name = user.ResponsibleUser.FullName,
+                        Roles = user.ResponsibleUser.Roles.Select(r => r.ToString()).ToList(),
+                        Status = user.ResponsibleUser.Status.ToString()
+                    });
+                }
+
+                if (user.RegisteredUsers != null && user.RegisteredUsers.Count > 0)
+                {
+                    foreach (var contributor in user.RegisteredUsers)
+                    {
+                        displayUsers.Add(new UserDisplayModel
+                        {
+                            Id = contributor.Id,
+                            EmailAddress = contributor.EmailId,
+                            Name = contributor.FullName,
+                            Roles = contributor.Roles.Select(r => r.ToString()).ToList(),
+                            Status = contributor.Status.ToString()
+                        });
+                    }
+                }
+
+                if (user.InvitedUsers != null && user.InvitedUsers.Count > 0)
+                {
+                    foreach (var invited in user.InvitedUsers)
+                    {
+                        displayUsers.Add(new UserDisplayModel
+                        {
+                            Id = invited.Id,
+                            EmailAddress = invited.Email,
+                            Name = invited.FullName,
+                            Roles = invited.Roles.Select(r => r.ToString()).ToList(),
+                            Status = invited.Status.ToString()
+                        });
+                    }
+                }
 
                 var viewModel = new ManageUsersModel
                 {
-                    OrganisationName = user.Organisation?.Name,
-                    Users = new List<UserDisplayModel> { new UserDisplayModel
-                    {
-                        Id = user.Id,
-                        EmailAddress = user.EmailAddress,
-                        Name = user.FullName,
-                        Roles = user.Roles.Select(r => r.ToString()).ToList(),
-                        Status = user.Status.ToString()
-                    } }
+                    OrganisationName = organisationName,
+                    Users = displayUsers
                 };
 
                 ViewBag.ShowBackButton = true;

@@ -26,44 +26,44 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// UserResponse
+    /// UserDetailsResponse
     /// </summary>
-    public partial class UserResponse : IValidatableObject
+    public partial class UserDetailsResponse : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserResponse" /> class.
+        /// Initializes a new instance of the <see cref="UserDetailsResponse" /> class.
         /// </summary>
         /// <param name="id">id</param>
         /// <param name="oneLoginId">oneLoginId</param>
-        /// <param name="emailId">emailId</param>
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
         /// <param name="fullName">fullName</param>
+        /// <param name="emailId">emailId</param>
         /// <param name="jobTitle">jobTitle</param>
         /// <param name="preferredContactType">preferredContactType</param>
         /// <param name="landlineNumber">landlineNumber</param>
         /// <param name="mobileNumber">mobileNumber</param>
-        /// <param name="orgId">orgId</param>
-        /// <param name="roles">roles</param>
         /// <param name="status">status</param>
-        /// <param name="hnIds">hnIds</param>
+        /// <param name="roles">roles</param>
+        /// <param name="organisation">organisation</param>
+        /// <param name="heatNetworks">heatNetworks</param>
         [JsonConstructor]
-        public UserResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<string?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> orgId = default, Option<List<string>?> roles = default, Option<string?> status = default, Option<List<string>?> hnIds = default)
+        public UserDetailsResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> emailId = default, Option<string?> jobTitle = default, Option<string?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> status = default, Option<List<string>?> roles = default, Option<OrganisationResponse?> organisation = default, Option<List<HeatNetworkResponse>?> heatNetworks = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
-            EmailIdOption = emailId;
             FirstNameOption = firstName;
             LastNameOption = lastName;
             FullNameOption = fullName;
+            EmailIdOption = emailId;
             JobTitleOption = jobTitle;
             PreferredContactTypeOption = preferredContactType;
             LandlineNumberOption = landlineNumber;
             MobileNumberOption = mobileNumber;
-            OrgIdOption = orgId;
-            RolesOption = roles;
             StatusOption = status;
-            HnIdsOption = hnIds;
+            RolesOption = roles;
+            OrganisationOption = organisation;
+            HeatNetworksOption = heatNetworks;
             OnCreated();
         }
 
@@ -94,19 +94,6 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("oneLoginId")]
         public string? OneLoginId { get { return this.OneLoginIdOption; } set { this.OneLoginIdOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of EmailId
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> EmailIdOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets EmailId
-        /// </summary>
-        [JsonPropertyName("emailId")]
-        public string? EmailId { get { return this.EmailIdOption; } set { this.EmailIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of FirstName
@@ -146,6 +133,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("fullName")]
         public string? FullName { get { return this.FullNameOption; } set { this.FullNameOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of EmailId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> EmailIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets EmailId
+        /// </summary>
+        [JsonPropertyName("emailId")]
+        public string? EmailId { get { return this.EmailIdOption; } set { this.EmailIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of JobTitle
@@ -200,17 +200,17 @@ namespace HNTAS.Api.Client.Model
         public string? MobileNumber { get { return this.MobileNumberOption; } set { this.MobileNumberOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of OrgId
+        /// Used to track the state of Status
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> OrgIdOption { get; private set; }
+        public Option<string?> StatusOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets OrgId
+        /// Gets or Sets Status
         /// </summary>
-        [JsonPropertyName("orgId")]
-        public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
+        [JsonPropertyName("status")]
+        public string? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Roles
@@ -226,30 +226,30 @@ namespace HNTAS.Api.Client.Model
         public List<string>? Roles { get { return this.RolesOption; } set { this.RolesOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Status
+        /// Used to track the state of Organisation
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> StatusOption { get; private set; }
+        public Option<OrganisationResponse?> OrganisationOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Status
+        /// Gets or Sets Organisation
         /// </summary>
-        [JsonPropertyName("status")]
-        public string? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+        [JsonPropertyName("organisation")]
+        public OrganisationResponse? Organisation { get { return this.OrganisationOption; } set { this.OrganisationOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of HnIds
+        /// Used to track the state of HeatNetworks
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<string>?> HnIdsOption { get; private set; }
+        public Option<List<HeatNetworkResponse>?> HeatNetworksOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets HnIds
+        /// Gets or Sets HeatNetworks
         /// </summary>
-        [JsonPropertyName("hnIds")]
-        public List<string>? HnIds { get { return this.HnIdsOption; } set { this.HnIdsOption = new(value); } }
+        [JsonPropertyName("heatNetworks")]
+        public List<HeatNetworkResponse>? HeatNetworks { get { return this.HeatNetworksOption; } set { this.HeatNetworksOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -258,21 +258,21 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class UserResponse {\n");
+            sb.Append("class UserDetailsResponse {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  OneLoginId: ").Append(OneLoginId).Append("\n");
-            sb.Append("  EmailId: ").Append(EmailId).Append("\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
             sb.Append("  FullName: ").Append(FullName).Append("\n");
+            sb.Append("  EmailId: ").Append(EmailId).Append("\n");
             sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
             sb.Append("  PreferredContactType: ").Append(PreferredContactType).Append("\n");
             sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
             sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
-            sb.Append("  OrgId: ").Append(OrgId).Append("\n");
-            sb.Append("  Roles: ").Append(Roles).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
-            sb.Append("  HnIds: ").Append(HnIds).Append("\n");
+            sb.Append("  Roles: ").Append(Roles).Append("\n");
+            sb.Append("  Organisation: ").Append(Organisation).Append("\n");
+            sb.Append("  HeatNetworks: ").Append(HeatNetworks).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -289,19 +289,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="UserResponse" />
+    /// A Json converter for type <see cref="UserDetailsResponse" />
     /// </summary>
-    public class UserResponseJsonConverter : JsonConverter<UserResponse>
+    public class UserDetailsResponseJsonConverter : JsonConverter<UserDetailsResponse>
     {
         /// <summary>
-        /// Deserializes json to <see cref="UserResponse" />
+        /// Deserializes json to <see cref="UserDetailsResponse" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override UserResponse Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override UserDetailsResponse Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -312,18 +312,18 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> id = default;
             Option<string?> oneLoginId = default;
-            Option<string?> emailId = default;
             Option<string?> firstName = default;
             Option<string?> lastName = default;
             Option<string?> fullName = default;
+            Option<string?> emailId = default;
             Option<string?> jobTitle = default;
             Option<string?> preferredContactType = default;
             Option<string?> landlineNumber = default;
             Option<string?> mobileNumber = default;
-            Option<string?> orgId = default;
-            Option<List<string>?> roles = default;
             Option<string?> status = default;
-            Option<List<string>?> hnIds = default;
+            Option<List<string>?> roles = default;
+            Option<OrganisationResponse?> organisation = default;
+            Option<List<HeatNetworkResponse>?> heatNetworks = default;
 
             while (utf8JsonReader.Read())
             {
@@ -346,9 +346,6 @@ namespace HNTAS.Api.Client.Model
                         case "oneLoginId":
                             oneLoginId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "emailId":
-                            emailId = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
                         case "firstName":
                             firstName = new Option<string?>(utf8JsonReader.GetString());
                             break;
@@ -358,8 +355,11 @@ namespace HNTAS.Api.Client.Model
                         case "fullName":
                             fullName = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "emailId":
+                            emailId = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         case "jobTitle":
-                            jobTitle = new Option<string?>(utf8JsonReader.GetString()!);
+                            jobTitle = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "preferredContactType":
                             preferredContactType = new Option<string?>(utf8JsonReader.GetString());
@@ -370,17 +370,17 @@ namespace HNTAS.Api.Client.Model
                         case "mobileNumber":
                             mobileNumber = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "orgId":
-                            orgId = new Option<string?>(utf8JsonReader.GetString());
+                        case "status":
+                            status = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "roles":
                             roles = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
-                        case "status":
-                            status = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "organisation":
+                            organisation = new Option<OrganisationResponse?>(JsonSerializer.Deserialize<OrganisationResponse>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
-                        case "hnIds":
-                            hnIds = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions));
+                        case "heatNetworks":
+                            heatNetworks = new Option<List<HeatNetworkResponse>?>(JsonSerializer.Deserialize<List<HeatNetworkResponse>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -389,135 +389,134 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (id.IsSet && id.Value == null)
-                throw new ArgumentNullException(nameof(id), "Property is not nullable for class UserResponse.");
+                throw new ArgumentNullException(nameof(id), "Property is not nullable for class UserDetailsResponse.");
 
             if (oneLoginId.IsSet && oneLoginId.Value == null)
-                throw new ArgumentNullException(nameof(oneLoginId), "Property is not nullable for class UserResponse.");
+                throw new ArgumentNullException(nameof(oneLoginId), "Property is not nullable for class UserDetailsResponse.");
 
             if (emailId.IsSet && emailId.Value == null)
-                throw new ArgumentNullException(nameof(emailId), "Property is not nullable for class UserResponse.");
-
-            if (jobTitle.IsSet && jobTitle.Value == null)
-                throw new ArgumentNullException(nameof(jobTitle), "Property is not nullable for class UserResponse.");
+                throw new ArgumentNullException(nameof(emailId), "Property is not nullable for class UserDetailsResponse.");
 
             if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class UserResponse.");
+                throw new ArgumentNullException(nameof(status), "Property is not nullable for class UserDetailsResponse.");
 
-            return new UserResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, mobileNumber, orgId, roles, status, hnIds);
+            return new UserDetailsResponse(id, oneLoginId, firstName, lastName, fullName, emailId, jobTitle, preferredContactType, landlineNumber, mobileNumber, status, roles, organisation, heatNetworks);
         }
 
         /// <summary>
-        /// Serializes a <see cref="UserResponse" />
+        /// Serializes a <see cref="UserDetailsResponse" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="userResponse"></param>
+        /// <param name="userDetailsResponse"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, UserResponse userResponse, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, UserDetailsResponse userDetailsResponse, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, userResponse, jsonSerializerOptions);
+            WriteProperties(writer, userDetailsResponse, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="UserResponse" />
+        /// Serializes the properties of <see cref="UserDetailsResponse" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="userResponse"></param>
+        /// <param name="userDetailsResponse"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, UserResponse userResponse, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, UserDetailsResponse userDetailsResponse, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (userResponse.IdOption.IsSet && userResponse.Id == null)
-                throw new ArgumentNullException(nameof(userResponse.Id), "Property is required for class UserResponse.");
+            if (userDetailsResponse.IdOption.IsSet && userDetailsResponse.Id == null)
+                throw new ArgumentNullException(nameof(userDetailsResponse.Id), "Property is required for class UserDetailsResponse.");
 
-            if (userResponse.OneLoginIdOption.IsSet && userResponse.OneLoginId == null)
-                throw new ArgumentNullException(nameof(userResponse.OneLoginId), "Property is required for class UserResponse.");
+            if (userDetailsResponse.OneLoginIdOption.IsSet && userDetailsResponse.OneLoginId == null)
+                throw new ArgumentNullException(nameof(userDetailsResponse.OneLoginId), "Property is required for class UserDetailsResponse.");
 
-            if (userResponse.EmailIdOption.IsSet && userResponse.EmailId == null)
-                throw new ArgumentNullException(nameof(userResponse.EmailId), "Property is required for class UserResponse.");
+            if (userDetailsResponse.EmailIdOption.IsSet && userDetailsResponse.EmailId == null)
+                throw new ArgumentNullException(nameof(userDetailsResponse.EmailId), "Property is required for class UserDetailsResponse.");
 
-            if (userResponse.JobTitleOption.IsSet && userResponse.JobTitle == null)
-                throw new ArgumentNullException(nameof(userResponse.JobTitle), "Property is required for class UserResponse.");
+            if (userDetailsResponse.StatusOption.IsSet && userDetailsResponse.Status == null)
+                throw new ArgumentNullException(nameof(userDetailsResponse.Status), "Property is required for class UserDetailsResponse.");
 
-            if (userResponse.StatusOption.IsSet && userResponse.Status == null)
-                throw new ArgumentNullException(nameof(userResponse.Status), "Property is required for class UserResponse.");
+            if (userDetailsResponse.IdOption.IsSet)
+                writer.WriteString("id", userDetailsResponse.Id);
 
-            if (userResponse.IdOption.IsSet)
-                writer.WriteString("id", userResponse.Id);
+            if (userDetailsResponse.OneLoginIdOption.IsSet)
+                writer.WriteString("oneLoginId", userDetailsResponse.OneLoginId);
 
-            if (userResponse.OneLoginIdOption.IsSet)
-                writer.WriteString("oneLoginId", userResponse.OneLoginId);
-
-            if (userResponse.EmailIdOption.IsSet)
-                writer.WriteString("emailId", userResponse.EmailId);
-
-            if (userResponse.FirstNameOption.IsSet)
-                if (userResponse.FirstNameOption.Value != null)
-                    writer.WriteString("firstName", userResponse.FirstName);
+            if (userDetailsResponse.FirstNameOption.IsSet)
+                if (userDetailsResponse.FirstNameOption.Value != null)
+                    writer.WriteString("firstName", userDetailsResponse.FirstName);
                 else
                     writer.WriteNull("firstName");
 
-            if (userResponse.LastNameOption.IsSet)
-                if (userResponse.LastNameOption.Value != null)
-                    writer.WriteString("lastName", userResponse.LastName);
+            if (userDetailsResponse.LastNameOption.IsSet)
+                if (userDetailsResponse.LastNameOption.Value != null)
+                    writer.WriteString("lastName", userDetailsResponse.LastName);
                 else
                     writer.WriteNull("lastName");
 
-            if (userResponse.FullNameOption.IsSet)
-                if (userResponse.FullNameOption.Value != null)
-                    writer.WriteString("fullName", userResponse.FullName);
+            if (userDetailsResponse.FullNameOption.IsSet)
+                if (userDetailsResponse.FullNameOption.Value != null)
+                    writer.WriteString("fullName", userDetailsResponse.FullName);
                 else
                     writer.WriteNull("fullName");
 
-            if (userResponse.JobTitleOption.IsSet)
-                writer.WriteString("jobTitle", userResponse.JobTitle);
+            if (userDetailsResponse.EmailIdOption.IsSet)
+                writer.WriteString("emailId", userDetailsResponse.EmailId);
 
-            if (userResponse.PreferredContactTypeOption.IsSet)
-                if (userResponse.PreferredContactTypeOption.Value != null)
-                    writer.WriteString("preferredContactType", userResponse.PreferredContactType);
+            if (userDetailsResponse.JobTitleOption.IsSet)
+                if (userDetailsResponse.JobTitleOption.Value != null)
+                    writer.WriteString("jobTitle", userDetailsResponse.JobTitle);
+                else
+                    writer.WriteNull("jobTitle");
+
+            if (userDetailsResponse.PreferredContactTypeOption.IsSet)
+                if (userDetailsResponse.PreferredContactTypeOption.Value != null)
+                    writer.WriteString("preferredContactType", userDetailsResponse.PreferredContactType);
                 else
                     writer.WriteNull("preferredContactType");
 
-            if (userResponse.LandlineNumberOption.IsSet)
-                if (userResponse.LandlineNumberOption.Value != null)
-                    writer.WriteString("landlineNumber", userResponse.LandlineNumber);
+            if (userDetailsResponse.LandlineNumberOption.IsSet)
+                if (userDetailsResponse.LandlineNumberOption.Value != null)
+                    writer.WriteString("landlineNumber", userDetailsResponse.LandlineNumber);
                 else
                     writer.WriteNull("landlineNumber");
 
-            if (userResponse.MobileNumberOption.IsSet)
-                if (userResponse.MobileNumberOption.Value != null)
-                    writer.WriteString("mobileNumber", userResponse.MobileNumber);
+            if (userDetailsResponse.MobileNumberOption.IsSet)
+                if (userDetailsResponse.MobileNumberOption.Value != null)
+                    writer.WriteString("mobileNumber", userDetailsResponse.MobileNumber);
                 else
                     writer.WriteNull("mobileNumber");
 
-            if (userResponse.OrgIdOption.IsSet)
-                if (userResponse.OrgIdOption.Value != null)
-                    writer.WriteString("orgId", userResponse.OrgId);
-                else
-                    writer.WriteNull("orgId");
+            if (userDetailsResponse.StatusOption.IsSet)
+                writer.WriteString("status", userDetailsResponse.Status);
 
-            if (userResponse.RolesOption.IsSet)
-                if (userResponse.RolesOption.Value != null)
+            if (userDetailsResponse.RolesOption.IsSet)
+                if (userDetailsResponse.RolesOption.Value != null)
                 {
                     writer.WritePropertyName("roles");
-                    JsonSerializer.Serialize(writer, userResponse.Roles, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, userDetailsResponse.Roles, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("roles");
-            if (userResponse.StatusOption.IsSet)
-                writer.WriteString("status", userResponse.Status);
-
-            if (userResponse.HnIdsOption.IsSet)
-                if (userResponse.HnIdsOption.Value != null)
+            if (userDetailsResponse.OrganisationOption.IsSet)
+                if (userDetailsResponse.OrganisationOption.Value != null)
                 {
-                    writer.WritePropertyName("hnIds");
-                    JsonSerializer.Serialize(writer, userResponse.HnIds, jsonSerializerOptions);
+                    writer.WritePropertyName("organisation");
+                    JsonSerializer.Serialize(writer, userDetailsResponse.Organisation, jsonSerializerOptions);
                 }
                 else
-                    writer.WriteNull("hnIds");
+                    writer.WriteNull("organisation");
+            if (userDetailsResponse.HeatNetworksOption.IsSet)
+                if (userDetailsResponse.HeatNetworksOption.Value != null)
+                {
+                    writer.WritePropertyName("heatNetworks");
+                    JsonSerializer.Serialize(writer, userDetailsResponse.HeatNetworks, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("heatNetworks");
         }
     }
 }

@@ -92,7 +92,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<string?> UpdateUserOrganisation(string id, UpdateOrgDetailsAndRolesRequest request)
+        public async Task<string?> UpdateUserOrganisation(string id, UpdateUserOrganisationRequest request)
         {
             _logger.LogInformation("Updating user organisation for ID: {UserId}", id);
             try
@@ -101,7 +101,7 @@ namespace HNTAS.Web.UI.Services.Core
 
                 if (response.IsOk)
                 {
-                    return response.Ok()?.OrgDetails?.OrgId;
+                    return response.Ok()?.OrgId;
                 }
 
                 throw new Exception($"Failed to create user with status code: {response.StatusCode}");
@@ -227,6 +227,57 @@ namespace HNTAS.Web.UI.Services.Core
             }
 
 
+        }
+
+
+        public async Task<UserDetailsResponse> GetUserDetails(string userId)
+        {
+
+            _logger.LogInformation("Getting user details for user ID: {UserId}", userId);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                _logger.LogError("User ID is null or empty");
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty");
+            }
+
+            try
+            {
+                var user = await _usersApi.ApiUsersUserDetailsByIdGetAsync(userId);
+                if (user.IsOk)
+                {
+                    return user.Ok();
+                }
+                throw new Exception($"Failed to get user details with status code: {user.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting user details for user ID: {UserId}", userId);
+                throw;
+            }
+        }
+
+        public async Task<ManagedUserResponse> GetManagedUsers(string userId)
+        {
+            _logger.LogInformation("Getting managed users for user ID: {UserId}", userId);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                _logger.LogError("User ID is null or empty");
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty");
+            }
+            try
+            {
+                var users = await _usersApi.ApiUsersManagedUsersGetAsync(userId);
+                if (users.IsOk)
+                {
+                    return users.Ok();
+                }
+                throw new Exception($"Failed to get managed users with status code: {users.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting managed users for user ID: {UserId}", userId);
+                throw;
+            }
         }
     }
 }

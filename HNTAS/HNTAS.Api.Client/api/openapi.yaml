@@ -6,9 +6,7 @@ servers:
 - url: https://localhost:7117/
 tags:
 - name: HeatNetworks
-- name: Test
 - name: Users
-- name: Welcome
 paths:
   /api/HeatNetworks:
     get:
@@ -156,13 +154,6 @@ paths:
           description: Internal Server Error
       tags:
       - HeatNetworks
-  /api/Test/test-documentdb-connection:
-    get:
-      responses:
-        "200":
-          description: OK
-      tags:
-      - Test
   /api/Users:
     get:
       responses:
@@ -183,6 +174,33 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserResponse"
                 type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/user-details-by-id:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/UserDetailsResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDetailsResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/UserDetailsResponse"
           description: OK
         "500":
           description: Internal Server Error
@@ -366,10 +384,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateOrgDetailsAndRolesRequest"
+              $ref: "#/components/schemas/UpdateUserOrganisationRequest"
           application/*+json:
             schema:
-              $ref: "#/components/schemas/UpdateOrgDetailsAndRolesRequest"
+              $ref: "#/components/schemas/UpdateUserOrganisationRequest"
         required: true
       responses:
         "200":
@@ -552,16 +570,31 @@ paths:
           description: Internal Server Error
       tags:
       - Users
-  /api/Welcome:
+  /api/Users/managed-users:
     get:
-      description: This endpoint returns a simple welcome string to confirm the API
-        is running.
+      parameters:
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ManagedUserResponse"
           description: OK
-      summary: Get Welcome Message
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
       tags:
-      - Welcome
+      - Users
 components:
   schemas:
     ContributorRole:
@@ -586,7 +619,7 @@ components:
       type: object
     HeatNetwork:
       example:
-        hn_id: hn_id
+        hnId: hnId
         name: name
         location: location
         id: id
@@ -594,12 +627,25 @@ components:
         id:
           nullable: true
           type: string
-        hn_id:
+        hnId:
           nullable: true
           type: string
         location:
           type: string
         name:
+          type: string
+      type: object
+    HeatNetworkResponse:
+      example:
+        hnId: hnId
+        name: name
+        location: location
+      properties:
+        hnId:
+          type: string
+        name:
+          type: string
+        location:
           type: string
       type: object
     InitialUserRegistrationRequest:
@@ -619,65 +665,43 @@ components:
       - oneLoginId
       - status
       type: object
-    Invitation:
+    InvitationStatus:
+      enum:
+      - Invited
+      - Accepted
+      - Rejected
+      type: string
+    InvitedUserResponse:
       example:
-        lastName: lastName
-        invitedRoles:
-        - DesignatedDesigner
-        - DesignatedDesigner
-        preferredContactType: null
-        mobileNumber: mobileNumber
-        landlineNumber: landlineNumber
-        contactNumberExtension: contactNumberExtension
-        invitedHnId: invitedHnId
-        invitedEmail: invitedEmail
         firstName: firstName
-        permissions:
-        - permissions
-        - permissions
+        lastName: lastName
         rejectedAt: 2000-01-23T04:56:07.000+00:00
+        roles:
+        - roles
+        - roles
+        fullName: fullName
         id: id
+        email: email
+        status: status
         invitedAt: 2000-01-23T04:56:07.000+00:00
         acceptedAt: 2000-01-23T04:56:07.000+00:00
-        status: Invited
       properties:
         id:
+          type: string
+        email:
           type: string
         firstName:
           type: string
         lastName:
           type: string
-        preferredContactType:
-          $ref: "#/components/schemas/PreferredContactType"
-        landlineNumber:
-          maxLength: 20
+        fullName:
           nullable: true
-          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
-            s-]?\\d{1,9}$"
           type: string
-        contactNumberExtension:
-          maxLength: 10
-          nullable: true
-          pattern: ^\d*$
-          type: string
-        mobileNumber:
-          maxLength: 13
-          nullable: true
-          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
-            s-]?\\d{1,9}$"
-          type: string
-        permissions:
+        roles:
           items:
             type: string
-          nullable: true
           type: array
-        invitedRoles:
-          items:
-            $ref: "#/components/schemas/ContributorRole"
-          type: array
-        invitedHnId:
-          type: string
-        invitedEmail:
+        status:
           type: string
         invitedAt:
           format: date-time
@@ -690,52 +714,162 @@ components:
           format: date-time
           nullable: true
           type: string
-        status:
-          $ref: "#/components/schemas/InvitationStatus"
-      required:
-      - firstName
-      - id
-      - invitedAt
-      - invitedEmail
-      - invitedHnId
-      - invitedRoles
-      - lastName
-      - preferredContactType
-      - status
       type: object
-    InvitationStatus:
+    ManagedUserResponse:
+      example:
+        responsibleUser:
+          lastName: lastName
+          preferredContactType: preferredContactType
+          mobileNumber: mobileNumber
+          jobTitle: jobTitle
+          roles:
+          - roles
+          - roles
+          oneLoginId: oneLoginId
+          fullName: fullName
+          emailId: emailId
+          landlineNumber: landlineNumber
+          orgId: orgId
+          firstName: firstName
+          id: id
+          hnIds:
+          - hnIds
+          - hnIds
+          status: status
+        registeredUsers:
+        - lastName: lastName
+          preferredContactType: preferredContactType
+          mobileNumber: mobileNumber
+          jobTitle: jobTitle
+          roles:
+          - roles
+          - roles
+          oneLoginId: oneLoginId
+          fullName: fullName
+          emailId: emailId
+          landlineNumber: landlineNumber
+          orgId: orgId
+          firstName: firstName
+          id: id
+          hnIds:
+          - hnIds
+          - hnIds
+          status: status
+        - lastName: lastName
+          preferredContactType: preferredContactType
+          mobileNumber: mobileNumber
+          jobTitle: jobTitle
+          roles:
+          - roles
+          - roles
+          oneLoginId: oneLoginId
+          fullName: fullName
+          emailId: emailId
+          landlineNumber: landlineNumber
+          orgId: orgId
+          firstName: firstName
+          id: id
+          hnIds:
+          - hnIds
+          - hnIds
+          status: status
+        invitedUsers:
+        - firstName: firstName
+          lastName: lastName
+          rejectedAt: 2000-01-23T04:56:07.000+00:00
+          roles:
+          - roles
+          - roles
+          fullName: fullName
+          id: id
+          email: email
+          status: status
+          invitedAt: 2000-01-23T04:56:07.000+00:00
+          acceptedAt: 2000-01-23T04:56:07.000+00:00
+        - firstName: firstName
+          lastName: lastName
+          rejectedAt: 2000-01-23T04:56:07.000+00:00
+          roles:
+          - roles
+          - roles
+          fullName: fullName
+          id: id
+          email: email
+          status: status
+          invitedAt: 2000-01-23T04:56:07.000+00:00
+          acceptedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        responsibleUser:
+          $ref: "#/components/schemas/UserResponse"
+        registeredUsers:
+          items:
+            $ref: "#/components/schemas/UserResponse"
+          type: array
+        invitedUsers:
+          items:
+            $ref: "#/components/schemas/InvitedUserResponse"
+          type: array
+      type: object
+    NullableOfPreferredContactType:
       enum:
-      - Invited
-      - Accepted
-      - Rejected
-      type: string
-    NullableOfUserStatus:
-      enum:
-      - Active
-      - InActive
-      - InvitationSent
-      - InvitationAccepted
-      - InvitationDeclined
+      - Landline
+      - Mobile
       - null
       nullable: true
       type: string
-    Organisation:
+    OrganisationRequest:
       example:
+        registeredAddress:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
         name: name
-        id: id
-        companinesHouseNumber: companinesHouseNumber
+        type: UkCompaniesHouse
+        companiesHouseNumber: companiesHouseNumber
+      properties:
+        name:
+          type: string
+        companiesHouseNumber:
+          nullable: true
+          type: string
+        type:
+          $ref: "#/components/schemas/OrganisationType"
+        registeredAddress:
+          $ref: "#/components/schemas/RegisteredAddress"
+      required:
+      - name
+      - registeredAddress
+      - type
+      type: object
+    OrganisationResponse:
+      example:
+        registeredAddress:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        name: name
         type: type
+        companiesHouseNumber: companiesHouseNumber
+        orgId: orgId
       nullable: true
       properties:
-        id:
+        orgId:
           type: string
         name:
           type: string
-        companinesHouseNumber:
+        companiesHouseNumber:
           nullable: true
           type: string
         type:
           type: string
+        registeredAddress:
+          $ref: "#/components/schemas/RegisteredAddress"
       type: object
     OrganisationType:
       enum:
@@ -743,176 +877,6 @@ components:
       - OtherUkOrganisation
       - OverseasOrganisation
       type: string
-    OrgDetails:
-      example:
-        orgType: UkCompaniesHouse
-        firstName: firstName
-        lastName: lastName
-        orgName: orgName
-        preferredContactType: Landline
-        mobileNumber: mobileNumber
-        jobTitle: jobTitle
-        landlineNumber: landlineNumber
-        companiesHouseNumber: companiesHouseNumber
-        orgId: orgId
-        contactNumberExtension: contactNumberExtension
-        orgRegisteredAddress:
-          country: country
-          town: town
-          county: county
-          postcode: postcode
-          addressLine1: addressLine1
-          addressLine2: addressLine2
-      nullable: true
-      properties:
-        orgId:
-          nullable: true
-          type: string
-        orgType:
-          $ref: "#/components/schemas/OrganisationType"
-        companiesHouseNumber:
-          nullable: true
-          type: string
-        orgName:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        preferredContactType:
-          $ref: "#/components/schemas/PreferredContactType"
-        landlineNumber:
-          maxLength: 20
-          nullable: true
-          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
-            s-]?\\d{1,9}$"
-          type: string
-        contactNumberExtension:
-          maxLength: 10
-          nullable: true
-          pattern: ^\d*$
-          type: string
-        mobileNumber:
-          maxLength: 13
-          nullable: true
-          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
-            s-]?\\d{1,9}$"
-          type: string
-        jobTitle:
-          maxLength: 100
-          nullable: true
-          pattern: "^[a-zA-Z ]+$"
-          type: string
-        orgRegisteredAddress:
-          $ref: "#/components/schemas/OrgRegisteredAddress"
-      required:
-      - firstName
-      - jobTitle
-      - lastName
-      - orgName
-      - orgRegisteredAddress
-      - orgType
-      - preferredContactType
-      type: object
-    OrgDetails2:
-      example:
-        orgType: UkCompaniesHouse
-        firstName: firstName
-        lastName: lastName
-        orgName: orgName
-        preferredContactType: Landline
-        mobileNumber: mobileNumber
-        jobTitle: jobTitle
-        landlineNumber: landlineNumber
-        companiesHouseNumber: companiesHouseNumber
-        orgId: orgId
-        contactNumberExtension: contactNumberExtension
-        orgRegisteredAddress:
-          country: country
-          town: town
-          county: county
-          postcode: postcode
-          addressLine1: addressLine1
-          addressLine2: addressLine2
-      properties:
-        orgId:
-          nullable: true
-          type: string
-        orgType:
-          $ref: "#/components/schemas/OrganisationType"
-        companiesHouseNumber:
-          nullable: true
-          type: string
-        orgName:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        preferredContactType:
-          $ref: "#/components/schemas/PreferredContactType"
-        landlineNumber:
-          maxLength: 20
-          nullable: true
-          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
-            s-]?\\d{1,9}$"
-          type: string
-        contactNumberExtension:
-          maxLength: 10
-          nullable: true
-          pattern: ^\d*$
-          type: string
-        mobileNumber:
-          maxLength: 13
-          nullable: true
-          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
-            s-]?\\d{1,9}$"
-          type: string
-        jobTitle:
-          maxLength: 100
-          nullable: true
-          pattern: "^[a-zA-Z ]+$"
-          type: string
-        orgRegisteredAddress:
-          $ref: "#/components/schemas/OrgRegisteredAddress"
-      required:
-      - firstName
-      - jobTitle
-      - lastName
-      - orgName
-      - orgRegisteredAddress
-      - orgType
-      - preferredContactType
-      type: object
-    OrgRegisteredAddress:
-      example:
-        country: country
-        town: town
-        county: county
-        postcode: postcode
-        addressLine1: addressLine1
-        addressLine2: addressLine2
-      properties:
-        addressLine1:
-          type: string
-        addressLine2:
-          nullable: true
-          type: string
-        town:
-          nullable: true
-          type: string
-        county:
-          nullable: true
-          type: string
-        postcode:
-          type: string
-        country:
-          nullable: true
-          type: string
-      required:
-      - addressLine1
-      - postcode
-      type: object
     PreferredContactType:
       enum:
       - Landline
@@ -942,6 +906,35 @@ components:
         instance:
           nullable: true
           type: string
+      type: object
+    RegisteredAddress:
+      example:
+        country: country
+        town: town
+        county: county
+        postcode: postcode
+        addressLine1: addressLine1
+        addressLine2: addressLine2
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          nullable: true
+          type: string
+        town:
+          nullable: true
+          type: string
+        county:
+          nullable: true
+          type: string
+        postcode:
+          type: string
+        country:
+          nullable: true
+          type: string
+      required:
+      - addressLine1
+      - postcode
       type: object
     UpdateInvitationRequest:
       example:
@@ -1001,102 +994,71 @@ components:
       - preferredContactType
       - status
       type: object
-    UpdateOrgDetailsAndRolesRequest:
+    UpdateUserOrganisationRequest:
       example:
-        orgDetails:
-          orgType: UkCompaniesHouse
-          firstName: firstName
-          lastName: lastName
-          orgName: orgName
-          preferredContactType: Landline
-          mobileNumber: mobileNumber
-          jobTitle: jobTitle
-          landlineNumber: landlineNumber
-          companiesHouseNumber: companiesHouseNumber
-          orgId: orgId
-          contactNumberExtension: contactNumberExtension
-          orgRegisteredAddress:
+        firstName: firstName
+        lastName: lastName
+        role: RegulatoryContact
+        preferredContactType: Landline
+        mobileNumber: mobileNumber
+        jobTitle: jobTitle
+        organisation:
+          registeredAddress:
             country: country
             town: town
             county: county
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
-        role: RegulatoryContact
+          name: name
+          type: UkCompaniesHouse
+          companiesHouseNumber: companiesHouseNumber
+        landlineNumber: landlineNumber
+        contactNumberExtension: contactNumberExtension
       properties:
-        orgDetails:
-          $ref: "#/components/schemas/OrgDetails2"
+        firstName:
+          type: string
+        lastName:
+          type: string
+        preferredContactType:
+          $ref: "#/components/schemas/PreferredContactType"
+        landlineNumber:
+          nullable: true
+          type: string
+        contactNumberExtension:
+          nullable: true
+          type: string
+        mobileNumber:
+          nullable: true
+          type: string
+        jobTitle:
+          type: string
         role:
           $ref: "#/components/schemas/UserRole"
+        organisation:
+          $ref: "#/components/schemas/OrganisationRequest"
       required:
-      - orgDetails
+      - firstName
+      - jobTitle
+      - lastName
+      - organisation
+      - preferredContactType
       - role
       type: object
     User:
       example:
-        orgDetails:
-          orgType: UkCompaniesHouse
-          firstName: firstName
-          lastName: lastName
-          orgName: orgName
-          preferredContactType: Landline
-          mobileNumber: mobileNumber
-          jobTitle: jobTitle
-          landlineNumber: landlineNumber
-          companiesHouseNumber: companiesHouseNumber
-          orgId: orgId
-          contactNumberExtension: contactNumberExtension
-          orgRegisteredAddress:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
-        invitations:
-        - lastName: lastName
-          invitedRoles:
-          - DesignatedDesigner
-          - DesignatedDesigner
-          preferredContactType: null
-          mobileNumber: mobileNumber
-          landlineNumber: landlineNumber
-          contactNumberExtension: contactNumberExtension
-          invitedHnId: invitedHnId
-          invitedEmail: invitedEmail
-          firstName: firstName
-          permissions:
-          - permissions
-          - permissions
-          rejectedAt: 2000-01-23T04:56:07.000+00:00
-          id: id
-          invitedAt: 2000-01-23T04:56:07.000+00:00
-          acceptedAt: 2000-01-23T04:56:07.000+00:00
-          status: Invited
-        - lastName: lastName
-          invitedRoles:
-          - DesignatedDesigner
-          - DesignatedDesigner
-          preferredContactType: null
-          mobileNumber: mobileNumber
-          landlineNumber: landlineNumber
-          contactNumberExtension: contactNumberExtension
-          invitedHnId: invitedHnId
-          invitedEmail: invitedEmail
-          firstName: firstName
-          permissions:
-          - permissions
-          - permissions
-          rejectedAt: 2000-01-23T04:56:07.000+00:00
-          id: id
-          invitedAt: 2000-01-23T04:56:07.000+00:00
-          acceptedAt: 2000-01-23T04:56:07.000+00:00
-          status: Invited
+        lastName: lastName
+        preferredContactType: Landline
+        mobileNumber: mobileNumber
+        jobTitle: jobTitle
         roles:
         - RegulatoryContact
         - RegulatoryContact
         oneLoginId: oneLoginId
         emailId: emailId
+        landlineNumber: landlineNumber
+        orgId: orgId
+        firstName: firstName
         id: id
         hnIds:
         - hnIds
@@ -1108,9 +1070,27 @@ components:
           type: string
         oneLoginId:
           type: string
-        orgDetails:
-          $ref: "#/components/schemas/OrgDetails"
+        orgId:
+          nullable: true
+          type: string
+        firstName:
+          nullable: true
+          type: string
+        lastName:
+          nullable: true
+          type: string
+        jobTitle:
+          nullable: true
+          type: string
         emailId:
+          type: string
+        preferredContactType:
+          $ref: "#/components/schemas/NullableOfPreferredContactType"
+        landlineNumber:
+          nullable: true
+          type: string
+        mobileNumber:
+          nullable: true
           type: string
         hnIds:
           items:
@@ -1123,25 +1103,101 @@ components:
           nullable: true
           type: array
         status:
-          $ref: "#/components/schemas/NullableOfUserStatus"
-        invitations:
+          $ref: "#/components/schemas/UserStatus"
+      type: object
+    UserDetailsResponse:
+      example:
+        lastName: lastName
+        preferredContactType: preferredContactType
+        mobileNumber: mobileNumber
+        jobTitle: jobTitle
+        roles:
+        - roles
+        - roles
+        oneLoginId: oneLoginId
+        fullName: fullName
+        organisation:
+          registeredAddress:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          name: name
+          type: type
+          companiesHouseNumber: companiesHouseNumber
+          orgId: orgId
+        emailId: emailId
+        landlineNumber: landlineNumber
+        firstName: firstName
+        heatNetworks:
+        - hnId: hnId
+          name: name
+          location: location
+        - hnId: hnId
+          name: name
+          location: location
+        id: id
+        status: status
+      properties:
+        id:
+          type: string
+        oneLoginId:
+          type: string
+        firstName:
+          nullable: true
+          type: string
+        lastName:
+          nullable: true
+          type: string
+        fullName:
+          nullable: true
+          type: string
+        emailId:
+          type: string
+        jobTitle:
+          nullable: true
+          type: string
+        preferredContactType:
+          nullable: true
+          type: string
+        landlineNumber:
+          nullable: true
+          type: string
+        mobileNumber:
+          nullable: true
+          type: string
+        status:
+          type: string
+        roles:
           items:
-            $ref: "#/components/schemas/Invitation"
+            type: string
+          nullable: true
+          type: array
+        organisation:
+          $ref: "#/components/schemas/OrganisationResponse"
+        heatNetworks:
+          items:
+            $ref: "#/components/schemas/HeatNetworkResponse"
           nullable: true
           type: array
       type: object
     UserResponse:
       example:
-        emailAddress: emailAddress
+        lastName: lastName
+        preferredContactType: preferredContactType
+        mobileNumber: mobileNumber
+        jobTitle: jobTitle
         roles:
         - roles
         - roles
+        oneLoginId: oneLoginId
         fullName: fullName
-        organisation:
-          name: name
-          id: id
-          companinesHouseNumber: companinesHouseNumber
-          type: type
+        emailId: emailId
+        landlineNumber: landlineNumber
+        orgId: orgId
+        firstName: firstName
         id: id
         hnIds:
         - hnIds
@@ -1150,25 +1206,45 @@ components:
       properties:
         id:
           type: string
-        emailAddress:
+        oneLoginId:
+          type: string
+        emailId:
+          type: string
+        firstName:
+          nullable: true
+          type: string
+        lastName:
+          nullable: true
           type: string
         fullName:
           nullable: true
           type: string
-        organisation:
-          $ref: "#/components/schemas/Organisation"
-        roles:
-          items:
-            type: string
+        jobTitle:
+          type: string
+        preferredContactType:
           nullable: true
-          type: array
-        hnIds:
+          type: string
+        landlineNumber:
+          nullable: true
+          type: string
+        mobileNumber:
+          nullable: true
+          type: string
+        orgId:
+          nullable: true
+          type: string
+        roles:
           items:
             type: string
           nullable: true
           type: array
         status:
           type: string
+        hnIds:
+          items:
+            type: string
+          nullable: true
+          type: array
       type: object
     UserRole:
       enum:

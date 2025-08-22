@@ -12,7 +12,7 @@ namespace HNTAS.Web.UI.Services.Core
 
         Task<string?> CreateUser(InitialUserRegistrationRequest request);
 
-        Task<string?> UpdateUserOrganisation(string id, UpdateOrgDetailsAndRolesRequest request);
+        Task<string?> UpdateUserOrganisation(string id, UpdateUserOrganisationRequest request);
 
         Task UpdateUserHeatNetworkId(string id, string heatNetworkId);
 
@@ -22,5 +22,9 @@ namespace HNTAS.Web.UI.Services.Core
 
         Task UpdateInvitedUserAsync(string id, UpdateInvitationRequest invitationRequest);
 
+
+        Task<UserDetailsResponse> GetUserDetails(string userId);
+
+        Task<ManagedUserResponse> GetManagedUsers(string userId);
     }
 }

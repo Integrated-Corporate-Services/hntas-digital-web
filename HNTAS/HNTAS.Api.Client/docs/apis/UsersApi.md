@@ -11,7 +11,9 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersIdInvitationPatch**](UsersApi.md#apiusersidinvitationpatch) | **PATCH** /api/Users/{id}/Invitation |  |
 | [**ApiUsersIdOrgDetailsPatch**](UsersApi.md#apiusersidorgdetailspatch) | **PATCH** /api/Users/{id}/org-details |  |
 | [**ApiUsersInitialEntryPost**](UsersApi.md#apiusersinitialentrypost) | **POST** /api/Users/initial-entry |  |
+| [**ApiUsersManagedUsersGet**](UsersApi.md#apiusersmanagedusersget) | **GET** /api/Users/managed-users |  |
 | [**ApiUsersOrganisationExistsGet**](UsersApi.md#apiusersorganisationexistsget) | **GET** /api/Users/organisation/exists |  |
+| [**ApiUsersUserDetailsByIdGet**](UsersApi.md#apiusersuserdetailsbyidget) | **GET** /api/Users/user-details-by-id |  |
 | [**GetUserById**](UsersApi.md#getuserbyid) | **GET** /api/Users/{id} |  |
 | [**GetUserByOneLoginId**](UsersApi.md#getuserbyoneloginid) | **GET** /api/Users/onelogin/{oneLoginId} |  |
 
@@ -188,7 +190,7 @@ No authorization required
 
 <a id="apiusersidorgdetailspatch"></a>
 # **ApiUsersIdOrgDetailsPatch**
-> User ApiUsersIdOrgDetailsPatch (string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest)
+> User ApiUsersIdOrgDetailsPatch (string id, UpdateUserOrganisationRequest updateUserOrganisationRequest)
 
 
 
@@ -198,7 +200,7 @@ No authorization required
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | **id** | **string** |  |  |
-| **updateOrgDetailsAndRolesRequest** | [**UpdateOrgDetailsAndRolesRequest**](UpdateOrgDetailsAndRolesRequest.md) |  |  |
+| **updateUserOrganisationRequest** | [**UpdateUserOrganisationRequest**](UpdateUserOrganisationRequest.md) |  |  |
 
 ### Return type
 
@@ -261,6 +263,41 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
+<a id="apiusersmanagedusersget"></a>
+# **ApiUsersManagedUsersGet**
+> ManagedUserResponse ApiUsersManagedUsersGet (string userId = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **userId** | **string** |  | [optional]  |
+
+### Return type
+
+[**ManagedUserResponse**](ManagedUserResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
 <a id="apiusersorganisationexistsget"></a>
 # **ApiUsersOrganisationExistsGet**
 > bool ApiUsersOrganisationExistsGet (string companiesHouseNumber = null)
@@ -293,6 +330,41 @@ No authorization required
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
 | **400** | Bad Request |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersuserdetailsbyidget"></a>
+# **ApiUsersUserDetailsByIdGet**
+> UserDetailsResponse ApiUsersUserDetailsByIdGet (string id = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **id** | **string** |  | [optional]  |
+
+### Return type
+
+[**UserDetailsResponse**](UserDetailsResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
 | **500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)

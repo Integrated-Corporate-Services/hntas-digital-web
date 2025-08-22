@@ -9,7 +9,6 @@ using System.Security.Claims;
 namespace HNTAS.Web.UI.Controllers;
 public class HomeController : Controller
 {
-
     private readonly IUserService _iUserService;
     private readonly ILogger<HomeController> _logger;
     private readonly ISessionHelper _sessionHelper;
@@ -59,10 +58,8 @@ public class HomeController : Controller
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
 
-            if (existingUser.Organisation != null)
+            if (existingUser.OrgId != null)
             {
-                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, existingUser.Organisation.Name);
-
                 return RedirectToAction("UserAccount", "Dashboard");
             }
 
