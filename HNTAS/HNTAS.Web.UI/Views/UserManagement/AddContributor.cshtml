@@ -1,0 +1,55 @@
+﻿@using HNTAS.Web.UI.Models.Enums
+@model HNTAS.Web.UI.Models.AddContributorModel
+@{
+    ViewData["Title"] = "How do you want to add a contributor?";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-l">Manage users for @ViewBag.OrganisationName</span>
+
+        <form method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="govuk-form-group @(ViewData.ModelState["SelectedUserType"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+
+                <fieldset class="govuk-fieldset" aria-describedby="@(ViewData.ModelState["SelectedUserType"]?.Errors.Count > 0 ? "SelectedUserTypeError" : "")">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+
+                            @ViewData["Title"]
+                        </h1>
+                    </legend>
+
+                    @if (ViewData.ModelState.GetValidationState("SelectedUserType") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                    {
+                        <p id="SelectedUserTypeError" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @Html.ValidationMessageFor(m => m.SelectedUserType)
+                        </p>
+                    }
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            @* Use a consistent ID for the input, which the label's "for" attribute will match *@
+                            @Html.RadioButtonFor(m => m.SelectedUserType, UserType.NewUser, new { @class = "govuk-radios__input", id = "SelectedUserType" })
+                            <label class="govuk-label govuk-radios__label" for="SelectedUserType">
+                                Add a new user
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.SelectedUserType, UserType.ExistingUser, new { @class = "govuk-radios__input", id = "SelectedUserType-0" })
+                            <label class="govuk-label govuk-radios__label" for="SelectedUserType-0">
+                                Choose from existing list
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>

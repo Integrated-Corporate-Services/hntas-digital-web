@@ -7,6 +7,11 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Routing;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
+using HNTAS.Web.UI.Workflows;
+using HNTAS.Web.UI.Workflows.Enums;
+using HNTAS.Web.UI.Workflows.Models.Data;
+using HNTAS.Web.UI.Workflows.Services;
+using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
@@ -30,6 +35,7 @@ builder.Services.AddControllersWithViews(options =>
     options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
 });
 
+builder.Services.AddHttpContextAccessor();
 
 Console.WriteLine("*********************in UI**************");
 Console.WriteLine("Environment: " + builder.Environment.EnvironmentName);
@@ -55,7 +61,16 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new UserRoleJsonConverter(),
         new UserResponseJsonConverter(),
         new OrganisationJsonConverter(),
-        new HeatNetworkJsonConverter()
+        new HeatNetworkJsonConverter(),
+        new EnumItemResponseJsonConverter(),
+        new InvitationJsonConverter(),
+        new ContributorRoleJsonConverter(),
+        new UserDetailsResponseJsonConverter(),
+        new OrganisationResponseJsonConverter(),
+        new HeatNetworkResponseJsonConverter(),
+        new RegisteredAddressJsonConverter(),
+        new ManagedUserResponseJsonConverter(),
+        new InvitedUserResponseJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -75,8 +90,15 @@ builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
 });
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
+
+builder.Services.AddScoped<IWorkflowManager, WorkflowManager>();
+// Since it's a generic filter, you can register a specific type for each workflow
+builder.Services.AddScoped<WorkflowValidationFilter<AddNewContributorWorkflowModel, ContributorWorkflowStep>>();
+builder.Services.AddScoped<IRedirectResolver<AddNewContributorWorkflowModel, ContributorWorkflowStep>, NewContributorRedirectResolver>();
+
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnGetAttribute>();
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
@@ -96,7 +118,22 @@ builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.Authenticatio
         options.Scope.Add("email");
         options.Scope.Add("phone");
         // options.Scope.Add("profile"); // If your service needs name, birthdate, etc.
+        // Assign individual event handlers
+        options.Events.OnRedirectToIdentityProvider = context =>
+        {
+            var customState = "workflow-step-3"; // or generate dynamically
+            context.ProtocolMessage.State = customState;
 
+            return Task.CompletedTask;
+        };
+
+        // You can assign other events similarly
+        options.Events.OnTokenValidated = context =>
+        {
+            var state = context.ProtocolMessage.State;
+            // Use or validate the state here
+            return Task.CompletedTask;
+        };
         using (var rsa = RSA.Create())
         {
             rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
@@ -179,7 +216,6 @@ app.UseRouting();
 app.UseSession();
 
 app.UseAuthorization();
-
 app.MapGet("/", () => Results.Redirect("/home/start-page"));
 
 app.MapControllerRoute(
