@@ -1,6 +1,7 @@
 ﻿using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,25 +9,31 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace HNTAS.Web.UI.Tests.Controllers {
+namespace HNTAS.Web.UI.Tests.Controllers
+{
     public class ContributorControllerTests
     {
         private readonly Mock<ILogger<ContributorController>> _loggerMock;
+        private readonly Mock<IInvitationService> _invitationServiceMock;
         private readonly Mock<IUserService> _userServiceMock;
+        private readonly Mock<IInvitationTokenService> _invitationTokenService;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
+
         private readonly ContributorController _controller;
 
         public ContributorControllerTests()
         {
             _loggerMock = new Mock<ILogger<ContributorController>>();
+            _invitationServiceMock = new Mock<IInvitationService>();
             _userServiceMock = new Mock<IUserService>();
+            _invitationTokenService = new Mock<IInvitationTokenService>();
             _sessionHelperMock = new Mock<ISessionHelper>();
             _controller = CreateController();
         }
 
         private ContributorController CreateController()
         {
-            var controller = new ContributorController(_userServiceMock.Object, _loggerMock.Object, _sessionHelperMock.Object);
+            var controller = new ContributorController(_userServiceMock.Object, _invitationServiceMock.Object, _loggerMock.Object, _sessionHelperMock.Object, _invitationTokenService.Object);
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -43,14 +50,14 @@ namespace HNTAS.Web.UI.Tests.Controllers {
 
 
         [Fact]
-        public void Get_YouHaveBeenInvited_WithSessionData_ReturnsViewWithModel()
+        public async Task Get_YouHaveBeenInvited_WithSessionData_ReturnsViewWithModel()
         {
             var expectedModel = new YouHaveBeenInvitedModel { AcceptInvitation = "accept" };
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<YouHaveBeenInvitedModel>(
                     It.IsAny<HttpContext>(), SessionKeys.YouHaveBeenInvitedModelKey))
                 .Returns(expectedModel);
-            var result = _controller.YouHaveBeenInvited() as ViewResult;
+            var result = await _controller.YouHaveBeenInvited() as ViewResult;
 
             Assert.NotNull(result);
             Assert.IsType<YouHaveBeenInvitedModel>(result.Model);
@@ -58,13 +65,13 @@ namespace HNTAS.Web.UI.Tests.Controllers {
         }
 
         [Fact]
-        public void Get_YouHaveBeenInvited_WithoutSessionData_ReturnsViewWithNewModel()
+        public async Task Get_YouHaveBeenInvited_WithoutSessionData_ReturnsViewWithNewModel()
         {
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<YouHaveBeenInvitedModel>(
                     It.IsAny<HttpContext>(), SessionKeys.YouHaveBeenInvitedModelKey))
                 .Returns((YouHaveBeenInvitedModel)null);
-            var result = _controller.YouHaveBeenInvited() as ViewResult;
+            var result = await _controller.YouHaveBeenInvited() as ViewResult;
 
             Assert.NotNull(result);
             Assert.IsType<YouHaveBeenInvitedModel>(result.Model);

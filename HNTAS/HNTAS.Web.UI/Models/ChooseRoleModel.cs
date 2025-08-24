@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
 {
-    public class SelectRoleModel
+    public class ChooseRoleModel
     {
         [Required(ErrorMessage = "Choose the role.")]
         public string SelectedRoleId { get; set; } = null!;

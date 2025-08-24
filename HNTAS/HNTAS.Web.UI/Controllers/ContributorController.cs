@@ -1,10 +1,10 @@
 ﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.NetworkInformation;
 using System.Security.Claims;
 
 namespace HNTAS.Web.UI.Controllers
@@ -12,13 +12,22 @@ namespace HNTAS.Web.UI.Controllers
     public class ContributorController : Controller
     {
         private readonly IUserService _iUserService;
+        private readonly IInvitationService _invitationService;
         private readonly ILogger<ContributorController> _logger;
         private readonly ISessionHelper _sessionHelper;
-        public ContributorController(IUserService iUserService, ILogger<ContributorController> logger, ISessionHelper sessionHelper)
+        private readonly IInvitationTokenService _invitationTokenService;
+
+        public ContributorController(IUserService iUserService,
+            IInvitationService invitationService,
+            ILogger<ContributorController> logger,
+            ISessionHelper sessionHelper,
+            IInvitationTokenService invitationTokenService)
         {
             _iUserService = iUserService;
             _logger = logger;
             _sessionHelper = sessionHelper;
+            _invitationTokenService = invitationTokenService;
+            _invitationService = invitationService;
         }
 
         #region No action Pages
@@ -34,8 +43,42 @@ namespace HNTAS.Web.UI.Controllers
         #region User input Pages
 
         [HttpGet]
-        public IActionResult YouHaveBeenInvited()
+        public async Task<IActionResult> YouHaveBeenInvited()
         {
+            //get token from query string
+            var token = HttpContext.Request.Query["token"].ToString();
+            //decrypt token to get email
+            if (!string.IsNullOrWhiteSpace(token))
+            {
+                var (invitationId, invitationEmail) = _invitationTokenService.DecryptToken(token);
+                if (invitationId == null || invitationEmail == null)
+                    return BadRequest("Invalid or expired token");
+
+                //check if invitation exists
+                var invitation = await _invitationService.GetInvitationByIdAsync(invitationId);
+
+                if (invitation == null)
+                {
+                    _logger.LogError("No invitation found for ID: {InvitationId}", invitationId);
+                    return BadRequest("Invalid invitation details.");
+                }
+
+                var inviterUser = await _iUserService.GetUserDetails(invitation.InviterUserId);
+
+                if (inviterUser == null || inviterUser.Organisation == null)
+                {
+                    _logger.LogError("Inviter user not found or has no organisation. InviterUserId: {InviterUserId}", invitation.InviterUserId);
+                    return BadRequest("Invalid invitation details.");
+                }
+
+                TempData["OrgName"] = inviterUser.Organisation.Name;
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedTokenEmail, invitationEmail);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitationId, invitation.Id);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedInviterUserId, invitation.InviterUserId);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedInviterUserOrgId, inviterUser.Organisation.OrgId);
+            }
+
+
             var model = _sessionHelper.GetFromSession<YouHaveBeenInvitedModel>(HttpContext, SessionKeys.YouHaveBeenInvitedModelKey) ?? new YouHaveBeenInvitedModel();
             return View(model);
         }
@@ -46,11 +89,12 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(model);
             }
-            switch (model.AcceptInvitation) {
+            switch (model.AcceptInvitation)
+            {
                 case "accept":
-                    return RedirectToAction("StartPage", "Contributor");
+                    return RedirectToAction("StartPage", "Home");
                 case "decline":
                     return RedirectToAction("YouHaveDeclined", "Contributor");
                 default:
@@ -62,7 +106,8 @@ namespace HNTAS.Web.UI.Controllers
 
 
         [HttpGet]
-        public IActionResult StartPage() {
+        public IActionResult StartPage()
+        {
             this.ShowBackButton("YouHaveBeenInvited", "Contributor");
             return View();
         }
@@ -105,7 +150,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
 
-                if (existingUser.Organisation != null)
+                if (existingUser.OrgId != null)
                 {
                     return RedirectToAction("Dashboard", "Contributor");
                 }

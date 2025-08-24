@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **HnId** | **string** |  | 
 **ContributorRoles** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | 
 **Status** | **InvitationStatus** |  | 
+**Token** | **string** |  | 
 **LandlineNumber** | **string** |  | [optional] 
 **MobileNumber** | **string** |  | [optional] 
 **ContactNumberExtension** | **string** |  | [optional] 

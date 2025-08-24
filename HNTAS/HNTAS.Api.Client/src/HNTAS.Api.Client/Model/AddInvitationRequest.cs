@@ -26,12 +26,12 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// UpdateInvitationRequest
+    /// AddInvitationRequest
     /// </summary>
-    public partial class UpdateInvitationRequest : IValidatableObject
+    public partial class AddInvitationRequest : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateInvitationRequest" /> class.
+        /// Initializes a new instance of the <see cref="AddInvitationRequest" /> class.
         /// </summary>
         /// <param name="emailAddress">emailAddress</param>
         /// <param name="firstName">firstName</param>
@@ -44,7 +44,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="mobileNumber">mobileNumber</param>
         /// <param name="contactNumberExtension">contactNumberExtension</param>
         [JsonConstructor]
-        public UpdateInvitationRequest(string emailAddress, string firstName, string lastName, PreferredContactType preferredContactType, string hnId, List<ContributorRole> contributorRoles, InvitationStatus status, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default)
+        public AddInvitationRequest(string emailAddress, string firstName, string lastName, PreferredContactType preferredContactType, string hnId, List<ContributorRole> contributorRoles, InvitationStatus status, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default)
         {
             EmailAddress = emailAddress;
             FirstName = firstName;
@@ -149,7 +149,7 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class UpdateInvitationRequest {\n");
+            sb.Append("class AddInvitationRequest {\n");
             sb.Append("  EmailAddress: ").Append(EmailAddress).Append("\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
@@ -224,19 +224,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="UpdateInvitationRequest" />
+    /// A Json converter for type <see cref="AddInvitationRequest" />
     /// </summary>
-    public class UpdateInvitationRequestJsonConverter : JsonConverter<UpdateInvitationRequest>
+    public class AddInvitationRequestJsonConverter : JsonConverter<AddInvitationRequest>
     {
         /// <summary>
-        /// Deserializes json to <see cref="UpdateInvitationRequest" />
+        /// Deserializes json to <see cref="AddInvitationRequest" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override UpdateInvitationRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override AddInvitationRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -312,120 +312,120 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (!emailAddress.IsSet)
-                throw new ArgumentException("Property is required for class UpdateInvitationRequest.", nameof(emailAddress));
+                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(emailAddress));
 
             if (!firstName.IsSet)
-                throw new ArgumentException("Property is required for class UpdateInvitationRequest.", nameof(firstName));
+                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(firstName));
 
             if (!lastName.IsSet)
-                throw new ArgumentException("Property is required for class UpdateInvitationRequest.", nameof(lastName));
+                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(lastName));
 
             if (!preferredContactType.IsSet)
-                throw new ArgumentException("Property is required for class UpdateInvitationRequest.", nameof(preferredContactType));
+                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(preferredContactType));
 
             if (!hnId.IsSet)
-                throw new ArgumentException("Property is required for class UpdateInvitationRequest.", nameof(hnId));
+                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(hnId));
 
             if (!contributorRoles.IsSet)
-                throw new ArgumentException("Property is required for class UpdateInvitationRequest.", nameof(contributorRoles));
+                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(contributorRoles));
 
             if (!status.IsSet)
-                throw new ArgumentException("Property is required for class UpdateInvitationRequest.", nameof(status));
+                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(status));
 
             if (emailAddress.IsSet && emailAddress.Value == null)
-                throw new ArgumentNullException(nameof(emailAddress), "Property is not nullable for class UpdateInvitationRequest.");
+                throw new ArgumentNullException(nameof(emailAddress), "Property is not nullable for class AddInvitationRequest.");
 
             if (firstName.IsSet && firstName.Value == null)
-                throw new ArgumentNullException(nameof(firstName), "Property is not nullable for class UpdateInvitationRequest.");
+                throw new ArgumentNullException(nameof(firstName), "Property is not nullable for class AddInvitationRequest.");
 
             if (lastName.IsSet && lastName.Value == null)
-                throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class UpdateInvitationRequest.");
+                throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class AddInvitationRequest.");
 
             if (preferredContactType.IsSet && preferredContactType.Value == null)
-                throw new ArgumentNullException(nameof(preferredContactType), "Property is not nullable for class UpdateInvitationRequest.");
+                throw new ArgumentNullException(nameof(preferredContactType), "Property is not nullable for class AddInvitationRequest.");
 
             if (hnId.IsSet && hnId.Value == null)
-                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class UpdateInvitationRequest.");
+                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class AddInvitationRequest.");
 
             if (contributorRoles.IsSet && contributorRoles.Value == null)
-                throw new ArgumentNullException(nameof(contributorRoles), "Property is not nullable for class UpdateInvitationRequest.");
+                throw new ArgumentNullException(nameof(contributorRoles), "Property is not nullable for class AddInvitationRequest.");
 
             if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class UpdateInvitationRequest.");
+                throw new ArgumentNullException(nameof(status), "Property is not nullable for class AddInvitationRequest.");
 
-            return new UpdateInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, preferredContactType.Value!.Value!, hnId.Value!, contributorRoles.Value!, status.Value!.Value!, landlineNumber, mobileNumber, contactNumberExtension);
+            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, preferredContactType.Value!.Value!, hnId.Value!, contributorRoles.Value!, status.Value!.Value!, landlineNumber, mobileNumber, contactNumberExtension);
         }
 
         /// <summary>
-        /// Serializes a <see cref="UpdateInvitationRequest" />
+        /// Serializes a <see cref="AddInvitationRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="updateInvitationRequest"></param>
+        /// <param name="addInvitationRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, UpdateInvitationRequest updateInvitationRequest, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, AddInvitationRequest addInvitationRequest, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, updateInvitationRequest, jsonSerializerOptions);
+            WriteProperties(writer, addInvitationRequest, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="UpdateInvitationRequest" />
+        /// Serializes the properties of <see cref="AddInvitationRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="updateInvitationRequest"></param>
+        /// <param name="addInvitationRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, UpdateInvitationRequest updateInvitationRequest, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, AddInvitationRequest addInvitationRequest, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (updateInvitationRequest.EmailAddress == null)
-                throw new ArgumentNullException(nameof(updateInvitationRequest.EmailAddress), "Property is required for class UpdateInvitationRequest.");
+            if (addInvitationRequest.EmailAddress == null)
+                throw new ArgumentNullException(nameof(addInvitationRequest.EmailAddress), "Property is required for class AddInvitationRequest.");
 
-            if (updateInvitationRequest.FirstName == null)
-                throw new ArgumentNullException(nameof(updateInvitationRequest.FirstName), "Property is required for class UpdateInvitationRequest.");
+            if (addInvitationRequest.FirstName == null)
+                throw new ArgumentNullException(nameof(addInvitationRequest.FirstName), "Property is required for class AddInvitationRequest.");
 
-            if (updateInvitationRequest.LastName == null)
-                throw new ArgumentNullException(nameof(updateInvitationRequest.LastName), "Property is required for class UpdateInvitationRequest.");
+            if (addInvitationRequest.LastName == null)
+                throw new ArgumentNullException(nameof(addInvitationRequest.LastName), "Property is required for class AddInvitationRequest.");
 
-            if (updateInvitationRequest.HnId == null)
-                throw new ArgumentNullException(nameof(updateInvitationRequest.HnId), "Property is required for class UpdateInvitationRequest.");
+            if (addInvitationRequest.HnId == null)
+                throw new ArgumentNullException(nameof(addInvitationRequest.HnId), "Property is required for class AddInvitationRequest.");
 
-            if (updateInvitationRequest.ContributorRoles == null)
-                throw new ArgumentNullException(nameof(updateInvitationRequest.ContributorRoles), "Property is required for class UpdateInvitationRequest.");
+            if (addInvitationRequest.ContributorRoles == null)
+                throw new ArgumentNullException(nameof(addInvitationRequest.ContributorRoles), "Property is required for class AddInvitationRequest.");
 
-            writer.WriteString("emailAddress", updateInvitationRequest.EmailAddress);
+            writer.WriteString("emailAddress", addInvitationRequest.EmailAddress);
 
-            writer.WriteString("firstName", updateInvitationRequest.FirstName);
+            writer.WriteString("firstName", addInvitationRequest.FirstName);
 
-            writer.WriteString("lastName", updateInvitationRequest.LastName);
+            writer.WriteString("lastName", addInvitationRequest.LastName);
 
-            var preferredContactTypeRawValue = PreferredContactTypeValueConverter.ToJsonValue(updateInvitationRequest.PreferredContactType);
+            var preferredContactTypeRawValue = PreferredContactTypeValueConverter.ToJsonValue(addInvitationRequest.PreferredContactType);
             writer.WriteString("preferredContactType", preferredContactTypeRawValue);
 
-            writer.WriteString("hnId", updateInvitationRequest.HnId);
+            writer.WriteString("hnId", addInvitationRequest.HnId);
 
             writer.WritePropertyName("contributorRoles");
-            JsonSerializer.Serialize(writer, updateInvitationRequest.ContributorRoles, jsonSerializerOptions);
-            var statusRawValue = InvitationStatusValueConverter.ToJsonValue(updateInvitationRequest.Status);
+            JsonSerializer.Serialize(writer, addInvitationRequest.ContributorRoles, jsonSerializerOptions);
+            var statusRawValue = InvitationStatusValueConverter.ToJsonValue(addInvitationRequest.Status);
             writer.WriteString("status", statusRawValue);
 
-            if (updateInvitationRequest.LandlineNumberOption.IsSet)
-                if (updateInvitationRequest.LandlineNumberOption.Value != null)
-                    writer.WriteString("landlineNumber", updateInvitationRequest.LandlineNumber);
+            if (addInvitationRequest.LandlineNumberOption.IsSet)
+                if (addInvitationRequest.LandlineNumberOption.Value != null)
+                    writer.WriteString("landlineNumber", addInvitationRequest.LandlineNumber);
                 else
                     writer.WriteNull("landlineNumber");
 
-            if (updateInvitationRequest.MobileNumberOption.IsSet)
-                if (updateInvitationRequest.MobileNumberOption.Value != null)
-                    writer.WriteString("mobileNumber", updateInvitationRequest.MobileNumber);
+            if (addInvitationRequest.MobileNumberOption.IsSet)
+                if (addInvitationRequest.MobileNumberOption.Value != null)
+                    writer.WriteString("mobileNumber", addInvitationRequest.MobileNumber);
                 else
                     writer.WriteNull("mobileNumber");
 
-            if (updateInvitationRequest.ContactNumberExtensionOption.IsSet)
-                if (updateInvitationRequest.ContactNumberExtensionOption.Value != null)
-                    writer.WriteString("contactNumberExtension", updateInvitationRequest.ContactNumberExtension);
+            if (addInvitationRequest.ContactNumberExtensionOption.IsSet)
+                if (addInvitationRequest.ContactNumberExtensionOption.Value != null)
+                    writer.WriteString("contactNumberExtension", addInvitationRequest.ContactNumberExtension);
                 else
                     writer.WriteNull("contactNumberExtension");
         }

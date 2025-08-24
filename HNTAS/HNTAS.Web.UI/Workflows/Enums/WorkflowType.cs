@@ -2,6 +2,7 @@
 {
     public enum WorkflowType
     {
-        AddNewContributor
+        AddNewContributor,
+        AddExistingContributor,
     }
 }

@@ -34,7 +34,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _controller = new NewContributorController(
                 _mockLogger.Object,
                 _mockWorkflowManager.Object,
-                _mockSessionHelper.Object, null, null);
+                _mockSessionHelper.Object, null, null, null, null);
 
             // Assign the mocked HttpContext to the controller
             _controller.ControllerContext = new ControllerContext()

@@ -13,13 +13,17 @@ using HNTAS.Web.UI.Workflows.Models.Data;
 using HNTAS.Web.UI.Workflows.Services;
 using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDataProtection()
+    .SetApplicationName("HNTAS.Web.UI");
 
 // Configure RouteOptions for lowercase URLs
 builder.Services.Configure<RouteOptions>(options =>
@@ -55,7 +59,6 @@ builder.Services.AddSingleton(new JsonSerializerOptions
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Common setting for JSON serialization
     Converters = {
         new UserJsonConverter(),
-        new OrgDetailsJsonConverter(),
         new OrgRegisteredAddressJsonConverter(),
         new InitialUserRegistrationRequestJsonConverter(),
         new UserRoleJsonConverter(),
@@ -70,10 +73,12 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new HeatNetworkResponseJsonConverter(),
         new RegisteredAddressJsonConverter(),
         new ManagedUserResponseJsonConverter(),
-        new InvitedUserResponseJsonConverter()
+        new InvitedUserResponseJsonConverter(),
+        new HnRoleMappingJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
+
 builder.Services.AddSingleton<UsersApiEvents>();
 builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
 {
@@ -89,19 +94,32 @@ builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddSingleton<InvitationsApiEvents>();
+builder.Services.AddHttpClient<InvitationsApi, InvitationsApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
 builder.Services.AddScoped<IWorkflowManager, WorkflowManager>();
 // Since it's a generic filter, you can register a specific type for each workflow
 builder.Services.AddScoped<WorkflowValidationFilter<AddNewContributorWorkflowModel, ContributorWorkflowStep>>();
+builder.Services.AddScoped<WorkflowValidationFilter<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>>();
 builder.Services.AddScoped<IRedirectResolver<AddNewContributorWorkflowModel, ContributorWorkflowStep>, NewContributorRedirectResolver>();
+builder.Services.AddScoped<IRedirectResolver<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>, ExistingContributorRedirectResolver>();
 
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnGetAttribute>();
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IInvitationService, InvitationService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
+
+builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
 
 //Configure onelogin settings
 builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
@@ -121,8 +139,19 @@ builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.Authenticatio
         // Assign individual event handlers
         options.Events.OnRedirectToIdentityProvider = context =>
         {
-            var customState = "workflow-step-3"; // or generate dynamically
-            context.ProtocolMessage.State = customState;
+            var invitedEmail = context.HttpContext.Session.GetString(SessionKeys.InvitedTokenEmail)?.Trim('"');
+            var invitationId = context.HttpContext.Session.GetString(SessionKeys.InvitationId)?.Trim('"');
+            var inviterUserId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserId)?.Trim('"');
+            var inviterOrgId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserOrgId)?.Trim('"');
+
+            if (!string.IsNullOrWhiteSpace(invitedEmail) &&
+                !string.IsNullOrWhiteSpace(invitationId) &&
+                !string.IsNullOrWhiteSpace(inviterUserId) &&
+                !string.IsNullOrWhiteSpace(inviterOrgId))
+            {
+                var customState = $"{invitedEmail}|{invitationId}|{inviterUserId}|{inviterOrgId}";
+                context.ProtocolMessage.State = customState;
+            }
 
             return Task.CompletedTask;
         };
@@ -131,7 +160,22 @@ builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.Authenticatio
         options.Events.OnTokenValidated = context =>
         {
             var state = context.ProtocolMessage.State;
-            // Use or validate the state here
+            var parts = state?.Split('|');
+
+            if (parts?.Length == 4)
+            {
+                var invitedEmail = parts[0];
+                var invitationId = parts[1];
+                var inviterUserId = parts[2];
+                var inviterOrgId = parts[3];
+
+                var identity = (ClaimsIdentity)context.Principal.Identity!;
+                identity.AddClaim(new Claim("hntas.invitedEmail", invitedEmail));
+                identity.AddClaim(new Claim("hntas.invitationId", invitationId));
+                identity.AddClaim(new Claim("hntas.inviterUserId", inviterUserId));
+                identity.AddClaim(new Claim("hntas.inviterOrgId", inviterOrgId));
+            }
+
             return Task.CompletedTask;
         };
         using (var rsa = RSA.Create())
@@ -215,7 +259,9 @@ app.UseRouting();
 
 app.UseSession();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapGet("/", () => Results.Redirect("/home/start-page"));
 
 app.MapControllerRoute(

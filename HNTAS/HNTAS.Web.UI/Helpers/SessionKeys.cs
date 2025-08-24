@@ -22,5 +22,10 @@
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
 
         public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";
+
+        public const string InvitedTokenEmail = "InvitedTokenEmailKey";
+        public const string InvitationId = "InvitationIdKey";
+        public const string InvitedInviterUserId = "InvitedInviterUserIdKey";
+        public const string InvitedInviterUserOrgId = "InvitedInviterUserOrgIdKey";
     }
 }
