@@ -132,9 +132,12 @@
         <p class="govuk-body">To comply with all of heat network's regulations you must register all of @Model.OrganisationName's heat networks.</p>
     }
 
-    <p class="govuk-!-margin-top-6">
-        <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-controller="HeatNetwork" asp-action="EnterHNName">
-            Add a new heat network
-        </a>
-    </p>
+    @if (ViewBag.IsRegulatoryContact)
+    {
+        <p class="govuk-!-margin-top-6">
+            <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-controller="HeatNetwork" asp-action="EnterHNName">
+                Add a new heat network
+            </a>
+        </p>
+    }
 </div>

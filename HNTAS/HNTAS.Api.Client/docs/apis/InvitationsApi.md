@@ -6,6 +6,7 @@ All URIs are relative to *https://localhost:7117*
 |--------|--------------|-------------|
 | [**ApiInvitationsIdAddUserInvitationPost**](InvitationsApi.md#apiinvitationsidadduserinvitationpost) | **POST** /api/Invitations/{id}/add-user-invitation |  |
 | [**ApiInvitationsIdGet**](InvitationsApi.md#apiinvitationsidget) | **GET** /api/Invitations/{id} |  |
+| [**ApiInvitationsInvitationIdRejectPost**](InvitationsApi.md#apiinvitationsinvitationidrejectpost) | **POST** /api/Invitations/{invitationId}/Reject |  |
 | [**ApiInvitationsInvitationIdSendEmailPost**](InvitationsApi.md#apiinvitationsinvitationidsendemailpost) | **POST** /api/Invitations/{invitationId}/send-email |  |
 
 <a id="apiinvitationsidadduserinvitationpost"></a>
@@ -79,6 +80,42 @@ No authorization required
 | **200** | OK |  -  |
 | **404** | Not Found |  -  |
 | **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiinvitationsinvitationidrejectpost"></a>
+# **ApiInvitationsInvitationIdRejectPost**
+> void ApiInvitationsInvitationIdRejectPost (string invitationId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **invitationId** | **string** |  |  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **204** | No Content |  -  |
+| **404** | Not Found |  -  |
+| **400** | Bad Request |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

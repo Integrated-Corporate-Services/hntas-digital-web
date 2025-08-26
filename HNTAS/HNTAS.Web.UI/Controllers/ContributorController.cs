@@ -34,7 +34,6 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult YouHaveDeclined()
         {
-            this.ShowBackButton("YouHaveBeenInvited", "Contributor");
             return View();
         }
 
@@ -87,19 +86,44 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult YouHaveBeenInvited(YouHaveBeenInvitedModel model)
+        public async Task<IActionResult> YouHaveBeenInvitedAsync(YouHaveBeenInvitedModel model)
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("Invalid model state in invitation response.");
                 return View(model);
             }
-            switch (model.AcceptInvitation)
+
+            var invitationId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.InvitationId);
+            if (string.IsNullOrWhiteSpace(invitationId))
+            {
+                _logger.LogWarning("Invitation ID is missing from session during invitation response.");
+                TempData["ErrorMessage"] = "Your session has expired or is invalid. Please use the invitation link from your email.";
+                return View(model);
+            }
+
+            switch (model.AcceptInvitation?.ToLowerInvariant())
             {
                 case "accept":
                     return RedirectToAction("StartPage", "Home");
                 case "decline":
-                    return RedirectToAction("YouHaveDeclined", "Contributor");
+                    try
+                    {
+                        await _invitationService.RejectInvitationAsync(invitationId);
+                        _logger.LogInformation("Invitation ID {InvitationId} declined.", invitationId);
+                        //clear session
+                        _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+                        return RedirectToAction("YouHaveDeclined", "Contributor");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error while rejecting invitation ID: {InvitationId}", invitationId);
+                        TempData["ErrorMessage"] = "An error occurred while declining the invitation. Please try again later.";
+                        return View(model);
+                    }
+
                 default:
+                    _logger.LogWarning("Invalid invitation response option: {Option}", model.AcceptInvitation);
                     ModelState.AddModelError(nameof(model.AcceptInvitation), "Please select a valid option.");
                     return View(model);
             }
