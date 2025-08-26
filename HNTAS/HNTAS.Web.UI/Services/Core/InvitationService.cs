@@ -96,7 +96,25 @@ namespace HNTAS.Web.UI.Services.Core
                 _logger.LogError(ex, "Error sending invitation email for invitation ID: {InvitationId}", invitationId);
                 throw;
             }
+        }
 
+        public async Task RejectInvitationAsync(string invitationId)
+        {
+            try
+            {
+                var response = await _invitationsApi.ApiInvitationsInvitationIdRejectPostOrDefaultAsync(invitationId);
+                if (response != null && response.IsNoContent)
+                {
+                    _logger.LogInformation("Successfully rejected invitation ID: {InvitationId}", invitationId);
+                    return;
+                }
+                throw new Exception($"Failed to send invitation email with status code: {response?.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An exception occurred while rejecting invitation ID: {InvitationId}", invitationId);
+                throw;
+            }
         }
     }
 }

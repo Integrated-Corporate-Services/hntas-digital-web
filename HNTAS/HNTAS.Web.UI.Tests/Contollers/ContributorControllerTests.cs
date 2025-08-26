@@ -82,7 +82,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             _controller.ModelState.AddModelError("AcceptInvitation", "Required");
 
-            var result = _controller.YouHaveBeenInvited(new YouHaveBeenInvitedModel()) as ViewResult;
+            var result = _controller.YouHaveBeenInvitedAsync(new YouHaveBeenInvitedModel()) as ViewResult;
 
             Assert.NotNull(result);
             Assert.IsType<ViewResult>(result);
@@ -92,7 +92,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void Post_YouHaveBeenInvited_Accept_RedirectsToStartPage()
         {
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "accept" };
-            var result = _controller.YouHaveBeenInvited(model) as RedirectToActionResult;
+            var result = _controller.YouHaveBeenInvitedAsync(model) as RedirectToActionResult;
 
             Assert.NotNull(result);
             Assert.Equal("StartPage", result.ActionName);
@@ -103,7 +103,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void Post_YouHaveBeenInvited_Decline_RedirectsToYouHaveDeclined()
         {
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "decline" };
-            var result = _controller.YouHaveBeenInvited(model) as RedirectToActionResult;
+            var result = _controller.YouHaveBeenInvitedAsync(model) as RedirectToActionResult;
 
             Assert.NotNull(result);
             Assert.Equal("YouHaveDeclined", result.ActionName);
@@ -114,7 +114,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void Post_YouHaveBeenInvited_InvalidChoice_ReturnsViewWithError()
         {
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "maybe" };
-            var result = _controller.YouHaveBeenInvited(model) as ViewResult;
+            var result = _controller.YouHaveBeenInvitedAsync(model) as ViewResult;
 
             Assert.NotNull(result);
             Assert.True(_controller.ModelState.ContainsKey(nameof(model.AcceptInvitation)));

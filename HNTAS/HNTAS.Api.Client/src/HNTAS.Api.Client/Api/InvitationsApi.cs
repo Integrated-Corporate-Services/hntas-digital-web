@@ -91,6 +91,29 @@ namespace HNTAS.Api.Client.Api
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="invitationId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiInvitationsInvitationIdRejectPostApiResponse"/>&gt;</returns>
+        Task<IApiInvitationsInvitationIdRejectPostApiResponse> ApiInvitationsInvitationIdRejectPostAsync(string invitationId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="invitationId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiInvitationsInvitationIdRejectPostApiResponse"/>?&gt;</returns>
+        Task<IApiInvitationsInvitationIdRejectPostApiResponse?> ApiInvitationsInvitationIdRejectPostOrDefaultAsync(string invitationId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="invitationId"></param>
         /// <param name="sendInvitationEmailRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiInvitationsInvitationIdSendEmailPostApiResponse"/>&gt;</returns>
@@ -164,6 +187,30 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiInvitationsInvitationIdRejectPostApiResponse"/>
+    /// </summary>
+    public interface IApiInvitationsInvitationIdRejectPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 204 NoContent
+        /// </summary>
+        /// <returns></returns>
+        bool IsNoContent { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IApiInvitationsInvitationIdSendEmailPostApiResponse"/>
     /// </summary>
     public interface IApiInvitationsInvitationIdSendEmailPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
@@ -230,6 +277,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiInvitationsIdGet(Exception exception)
         {
             OnErrorApiInvitationsIdGet?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiInvitationsInvitationIdRejectPost;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiInvitationsInvitationIdRejectPost;
+
+        internal void ExecuteOnApiInvitationsInvitationIdRejectPost(InvitationsApi.ApiInvitationsInvitationIdRejectPostApiResponse apiResponse)
+        {
+            OnApiInvitationsInvitationIdRejectPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiInvitationsInvitationIdRejectPost(Exception exception)
+        {
+            OnErrorApiInvitationsInvitationIdRejectPost?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -875,6 +942,272 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <returns></returns>
             public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiInvitationsInvitationIdRejectPost(ref string invitationId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="invitationId"></param>
+        /// <returns></returns>
+        private void ValidateApiInvitationsInvitationIdRejectPost(string invitationId)
+        {
+            if (invitationId == null)
+                throw new ArgumentNullException(nameof(invitationId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="invitationId"></param>
+        private void AfterApiInvitationsInvitationIdRejectPostDefaultImplementation(IApiInvitationsInvitationIdRejectPostApiResponse apiResponseLocalVar, string invitationId)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiInvitationsInvitationIdRejectPost(ref suppressDefaultLog, apiResponseLocalVar, invitationId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="invitationId"></param>
+        partial void AfterApiInvitationsInvitationIdRejectPost(ref bool suppressDefaultLog, IApiInvitationsInvitationIdRejectPostApiResponse apiResponseLocalVar, string invitationId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="invitationId"></param>
+        private void OnErrorApiInvitationsInvitationIdRejectPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string invitationId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiInvitationsInvitationIdRejectPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, invitationId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="invitationId"></param>
+        partial void OnErrorApiInvitationsInvitationIdRejectPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string invitationId);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="invitationId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiInvitationsInvitationIdRejectPostApiResponse"/>&gt;</returns>
+        public async Task<IApiInvitationsInvitationIdRejectPostApiResponse?> ApiInvitationsInvitationIdRejectPostOrDefaultAsync(string invitationId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiInvitationsInvitationIdRejectPostAsync(invitationId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="invitationId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiInvitationsInvitationIdRejectPostApiResponse"/>&gt;</returns>
+        public async Task<IApiInvitationsInvitationIdRejectPostApiResponse> ApiInvitationsInvitationIdRejectPostAsync(string invitationId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiInvitationsInvitationIdRejectPost(invitationId);
+
+                FormatApiInvitationsInvitationIdRejectPost(ref invitationId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Invitations/{invitationId}/Reject"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Invitations/{invitationId}/Reject");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BinvitationId%7D", Uri.EscapeDataString(invitationId.ToString()));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiInvitationsInvitationIdRejectPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiInvitationsInvitationIdRejectPostApiResponse>();
+
+                        ApiInvitationsInvitationIdRejectPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Invitations/{invitationId}/Reject", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiInvitationsInvitationIdRejectPostDefaultImplementation(apiResponseLocalVar, invitationId);
+
+                        Events.ExecuteOnApiInvitationsInvitationIdRejectPost(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiInvitationsInvitationIdRejectPostDefaultImplementation(e, "/api/Invitations/{invitationId}/Reject", uriBuilderLocalVar.Path, invitationId);
+                Events.ExecuteOnErrorApiInvitationsInvitationIdRejectPost(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiInvitationsInvitationIdRejectPostApiResponse"/>
+        /// </summary>
+        public partial class ApiInvitationsInvitationIdRejectPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiInvitationsInvitationIdRejectPostApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiInvitationsInvitationIdRejectPostApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiInvitationsInvitationIdRejectPostApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiInvitationsInvitationIdRejectPostApiResponse(ILogger<ApiInvitationsInvitationIdRejectPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 204 NoContent
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNoContent => 204 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {
