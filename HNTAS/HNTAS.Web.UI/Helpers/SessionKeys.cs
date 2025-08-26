@@ -18,9 +18,11 @@
         public const string IsHNCurrentlyOperatingModelKey = "isHNCurrentlyOperating";
         public const string HaveYouSignedMEContractModelKey = "haveYouSignedMEContract";
 
-        public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
-
-        public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";
+        public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
+        public const string HeatNetworkPhaseModelKey = "HeatNetworkPhase";
+        public const string HasElementBeenRegisteredModelKey = "HasElementBeenRegistered";
+        public const string HasPlanningApplicationBeenSubmittedModelKey = "HasPlanningApplicationBeenSubmitted";
+        public const string PathwayModelKey = "Pathway";
     }
 }
