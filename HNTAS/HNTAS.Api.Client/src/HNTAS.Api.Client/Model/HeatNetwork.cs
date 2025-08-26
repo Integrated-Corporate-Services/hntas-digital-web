@@ -72,7 +72,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets HnId
         /// </summary>
-        [JsonPropertyName("hn_id")]
+        [JsonPropertyName("hnId")]
         public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace HNTAS.Api.Client.Model
                         case "id":
                             id = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "hn_id":
+                        case "hnId":
                             hnId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "location":
@@ -235,9 +235,9 @@ namespace HNTAS.Api.Client.Model
 
             if (heatNetwork.HnIdOption.IsSet)
                 if (heatNetwork.HnIdOption.Value != null)
-                    writer.WriteString("hn_id", heatNetwork.HnId);
+                    writer.WriteString("hnId", heatNetwork.HnId);
                 else
-                    writer.WriteNull("hn_id");
+                    writer.WriteNull("hnId");
 
             if (heatNetwork.LocationOption.IsSet)
                 writer.WriteString("location", heatNetwork.Location);

@@ -32,9 +32,18 @@
             }
             <div class="dashboard-card @disabled">
                 <h3 class="dashboard-card__title govuk-heading-s">
-                    <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="User"> Manage user</a>
+                    <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="UserManagement"> Manage user</a>
                 </h3>
                 <p class="govuk-body-s">Register a heat network to activate manage users.</p>
+
+            </div>
+        </div>
+        <div class="govuk-grid-column-one-third">
+            <div class="dashboard-card @disabled">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a class="govuk-link govuk-link--no-visited-state" asp-action="AddContributor" asp-controller="UserManagement"> Contributors</a>
+                </h3>
+                <p class="govuk-body-s">You can add or view contributors to your heat network.</p>
 
             </div>
         </div>

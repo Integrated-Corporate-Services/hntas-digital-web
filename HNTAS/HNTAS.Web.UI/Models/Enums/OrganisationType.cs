@@ -1,4 +1,4 @@
-﻿namespace HNTAS.Web.UI.Models
+﻿namespace HNTAS.Web.UI.Models.Enums
 {
     public enum OrganisationType
     {
