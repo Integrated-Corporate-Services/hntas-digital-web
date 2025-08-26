@@ -4,6 +4,7 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Model.Tree;
 
 
 namespace HNTAS.Web.UI.Controllers
@@ -26,10 +27,39 @@ namespace HNTAS.Web.UI.Controllers
 
 
         [HttpGet]
-        public IActionResult EnterHNLocation()
+        public IActionResult EnterHNName()
         {
             this.ShowBackButton("UserAccount", "Dashboard");
+            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            return View(heatNetworkNameModel);
+        }
+
+        [HttpPost]
+        public IActionResult EnterHNName(HeatNetworkNameModel model)
+        {
+            this.ShowBackButton("UserAccount", "Dashboard");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
+            {
+                ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name cannot exceed 100 characters.");
+                return View(model);
+            }
+
+            _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
+            return RedirectToAction("EnterHNLocation");
+        }
+
+
+        [HttpGet]
+        public IActionResult EnterHNLocation()
+        {
+            this.ShowBackButton("EnterHNName", "HeatNetwork");
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            ViewBag.HNName = heatNetworkNameModel.HeatNetworkName;
             return View("EnterHNLocation", heatNetworkLocationModel);
         }
 
@@ -37,9 +67,9 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
         {
+            this.ShowBackButton("EnterHNName", "HeatNetwork");
             if (!ModelState.IsValid)
             {
-                this.ShowBackButton("UserAccount", "Dashboard");
                 return View(model);
             }
             else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.StartsWith("https://what3words.com/"))
@@ -62,38 +92,141 @@ namespace HNTAS.Web.UI.Controllers
                 }
             }
 
-
-
             _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
-
-            return RedirectToAction("EnterHNName");
+            return RedirectToAction("EnterHNPhase");
         }
 
         [HttpGet]
-        public IActionResult EnterHNName()
+        public IActionResult EnterHNPhase()
         {
             this.ShowBackButton("EnterHNLocation", "HeatNetwork");
-            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
-            return View(heatNetworkLocationModel);
+            var heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey) ?? new HeatNetworkPhaseModel();
+            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            ViewBag.HNName = heatNetworkNameModel.HeatNetworkName;
+            return View("EnterHNPhase", heatNetworkPhaseModel);
         }
 
         [HttpPost]
-        public IActionResult EnterHNName(HeatNetworkNameModel model)
+        [ValidateAntiForgeryToken]
+        public IActionResult EnterHNPhase(HeatNetworkPhaseModel model)
         {
-
+            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
             if (!ModelState.IsValid)
             {
-                this.ShowBackButton("EnterHNLocation", "HeatNetwork");
                 return View(model);
             }
-            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
+            else if (string.IsNullOrWhiteSpace(model.HeatNetworkPhase))
             {
-                ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name cannot exceed 100 characters.");
+                ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
                 return View(model);
             }
+            else
+            {
+                _sessionHelper.SaveToSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model);
+                switch (model.HeatNetworkPhase)
+                {
+                    case "design":
+                        // store pathway as 1, navigate to cya
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });                        
+                        return RedirectToAction("CheckYourAnswers");
+                    case "construction":
+                        return RedirectToAction("HasElementBeenRegistered");
+                    case "operation":
+                        return RedirectToAction("HNInOperation");
+                    default:
+                        ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
+                        return View(model);
+                }
+            }
+        }
 
-            _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
-            return RedirectToAction("CheckYourAnswers");
+        [HttpGet]
+        public IActionResult HasElementBeenRegistered()
+        {
+            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
+            var model = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? new HasElementBeenRegisteredModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult HasElementBeenRegistered(HasElementBeenRegisteredModel model)
+        {
+            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else if (string.IsNullOrWhiteSpace(model.HasElementBeenRegistered))
+            {
+                ModelState.AddModelError(nameof(model.HasElementBeenRegistered), "Please select an option.");
+                return View(model);
+            }
+            else
+            {
+                _sessionHelper.SaveToSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey, model);
+                switch(model.HasElementBeenRegistered)
+                {
+                    case "yes":
+                        return RedirectToAction("HasPlanningApplicationBeenSubmitted");
+                    case "no":
+                        // store pathway as 1, navigate to cya
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
+                        return RedirectToAction("CheckYourAnswers");
+                    default:
+                        ModelState.AddModelError(nameof(model.HasElementBeenRegistered), "Please select an option.");
+                        return View(model);
+                }
+            }
+        }
+
+        [HttpGet]
+        public IActionResult HasPlanningApplicationBeenSubmitted()
+        {
+            this.ShowBackButton("HasElementBeenRegistered", "HeatNetwork");
+            var model = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? new HasPlanningApplicationBeenSubmittedModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult HasPlanningApplicationBeenSubmitted(HasPlanningApplicationBeenSubmittedModel model)
+        {
+            this.ShowBackButton("HasElementBeenRegistered", "HeatNetwork");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else if (string.IsNullOrWhiteSpace(model.HasPlanningApplicationBeenSubmitted))
+            {
+                ModelState.AddModelError(nameof(model.HasPlanningApplicationBeenSubmitted), "Please select an option.");
+                return View(model);
+            }
+            else
+            {
+                _sessionHelper.SaveToSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey, model);
+                switch (model.HasPlanningApplicationBeenSubmitted)
+                {
+                    case "yes":
+                        //store pathway as 3, navigate to cya
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "3" });
+                        return RedirectToAction("CheckYourAnswers");
+                    case "no":
+                        // store pathway as 1, navigate to cya
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
+                        return RedirectToAction("CheckYourAnswers");
+                    default:
+                        ModelState.AddModelError(nameof(model.HasPlanningApplicationBeenSubmitted), "Please select an option.");
+                        return View(model);
+                }
+            }
+        }
+
+        [HttpGet]
+        public IActionResult HNInOperation()
+        {
+            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
+            return View();
         }
 
         [HttpGet]
@@ -105,8 +238,13 @@ namespace HNTAS.Web.UI.Controllers
             {
                 HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey),
                 HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey),
+                HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey),
+                HasElementBeenRegisteredModel = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? null,
+                HasPlanningApplicationBeenSubmittedModel = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? null,
+                PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey) ?? new PathwayModel(){ Pathway = "1"},
                 ConfirmedDeclaration = false
             };
+
 
             return View(checkAnswersModel);
         }
@@ -118,6 +256,7 @@ namespace HNTAS.Web.UI.Controllers
 
             viewModel.HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey);
             viewModel.HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
+            viewModel.PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey);
 
             ModelState.Remove(nameof(viewModel.HeatNetworkNameModel));
             ModelState.Remove(nameof(viewModel.HeatNetworkLocationModel));
@@ -166,6 +305,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.CompanyName = userResponse.Organisation?.Name;
             ViewBag.ContactName = userResponse.FullName;
             ViewBag.HNId = TempData["Confirmation_HN_Id"] as string;
+            ViewBag.HNName = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey)?.HeatNetworkName;
             return View("Confirmation");
         }
     }

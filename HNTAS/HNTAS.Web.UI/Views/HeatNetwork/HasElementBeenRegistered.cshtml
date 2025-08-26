@@ -1,26 +1,27 @@
 ﻿@using HNTAS.Web.UI.Models
-@model HasElementBeenRegisteredViewModel
+@model HasElementBeenRegisteredModel
 
 @{
-    ViewData["Title"] = "Check your eligibility to register a heat network";
+    ViewData["Title"] = "Has this element been registered?";
     var fieldOrder = new[] { nameof(Model.HasElementBeenRegistered) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.HasElementBeenRegistered)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
     {
-        Controller = "HeatNetworkEligibility",
+        Controller = "HeatNetwork",
         Action = "HasElementBeenRegistered",
         FieldOrder = fieldOrder,
         Questions = new List<Question>
         {
             new Question
             {
-                QId = nameof(Model.HasElementBeenRegistered),
+                QId = elementId,
                 QText = "Has element been registered & entry point evidence been provided?",
                 QDescText = null,
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = "yes", OptText = "Yes", OptHintText = null },
-                    new Option { OptId = "no", OptText = "No", OptHintText = null }
+                    new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = null }
                 },
                 SeletedOption = Model.HasElementBeenRegistered
             },
@@ -29,5 +30,9 @@
 }
 
 <div class="govuk-width-container">
-    @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
 </div>
