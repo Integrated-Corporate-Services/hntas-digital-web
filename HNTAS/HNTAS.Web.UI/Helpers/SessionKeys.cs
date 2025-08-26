@@ -19,5 +19,8 @@
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
         public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
         public const string HeatNetworkPhaseModelKey = "HeatNetworkPhase";
+        public const string HasElementBeenRegisteredModelKey = "HasElementBeenRegistered";
+        public const string HasPlanningApplicationBeenSubmittedModelKey = "HasPlanningApplicationBeenSubmitted";
+        public const string PathwayModelKey = "Pathway";
     }
 }

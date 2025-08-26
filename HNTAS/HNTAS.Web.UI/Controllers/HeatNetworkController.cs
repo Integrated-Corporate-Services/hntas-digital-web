@@ -4,6 +4,7 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Model.Tree;
 
 
 namespace HNTAS.Web.UI.Controllers
@@ -125,11 +126,97 @@ namespace HNTAS.Web.UI.Controllers
                 switch (model.HeatNetworkPhase)
                 {
                     case "design":
+                        // store pathway as 1, navigate to cya
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });                        
+                        return RedirectToAction("CheckYourAnswers");
                     case "construction":
+                        return RedirectToAction("HasElementBeenRegistered");
                     case "operation":
                         return RedirectToAction("HNInOperation");
                     default:
                         ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
+                        return View(model);
+                }
+            }
+        }
+
+        [HttpGet]
+        public IActionResult HasElementBeenRegistered()
+        {
+            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
+            var model = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? new HasElementBeenRegisteredModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult HasElementBeenRegistered(HasElementBeenRegisteredModel model)
+        {
+            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else if (string.IsNullOrWhiteSpace(model.HasElementBeenRegistered))
+            {
+                ModelState.AddModelError(nameof(model.HasElementBeenRegistered), "Please select an option.");
+                return View(model);
+            }
+            else
+            {
+                _sessionHelper.SaveToSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey, model);
+                switch(model.HasElementBeenRegistered)
+                {
+                    case "yes":
+                        return RedirectToAction("HasPlanningApplicationBeenSubmitted");
+                    case "no":
+                        // store pathway as 1, navigate to cya
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
+                        return RedirectToAction("CheckYourAnswers");
+                    default:
+                        ModelState.AddModelError(nameof(model.HasElementBeenRegistered), "Please select an option.");
+                        return View(model);
+                }
+            }
+        }
+
+        [HttpGet]
+        public IActionResult HasPlanningApplicationBeenSubmitted()
+        {
+            this.ShowBackButton("HasElementBeenRegistered", "HeatNetwork");
+            var model = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? new HasPlanningApplicationBeenSubmittedModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult HasPlanningApplicationBeenSubmitted(HasPlanningApplicationBeenSubmittedModel model)
+        {
+            this.ShowBackButton("HasElementBeenRegistered", "HeatNetwork");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else if (string.IsNullOrWhiteSpace(model.HasPlanningApplicationBeenSubmitted))
+            {
+                ModelState.AddModelError(nameof(model.HasPlanningApplicationBeenSubmitted), "Please select an option.");
+                return View(model);
+            }
+            else
+            {
+                _sessionHelper.SaveToSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey, model);
+                switch (model.HasPlanningApplicationBeenSubmitted)
+                {
+                    case "yes":
+                        //store pathway as 3, navigate to cya
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "3" });
+                        return RedirectToAction("CheckYourAnswers");
+                    case "no":
+                        // store pathway as 1, navigate to cya
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
+                        return RedirectToAction("CheckYourAnswers");
+                    default:
+                        ModelState.AddModelError(nameof(model.HasPlanningApplicationBeenSubmitted), "Please select an option.");
                         return View(model);
                 }
             }
@@ -151,8 +238,13 @@ namespace HNTAS.Web.UI.Controllers
             {
                 HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey),
                 HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey),
+                HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey),
+                HasElementBeenRegisteredModel = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? null,
+                HasPlanningApplicationBeenSubmittedModel = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? null,
+                PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey) ?? new PathwayModel(){ Pathway = "1"},
                 ConfirmedDeclaration = false
             };
+
 
             return View(checkAnswersModel);
         }
@@ -164,6 +256,7 @@ namespace HNTAS.Web.UI.Controllers
 
             viewModel.HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey);
             viewModel.HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
+            viewModel.PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey);
 
             ModelState.Remove(nameof(viewModel.HeatNetworkNameModel));
             ModelState.Remove(nameof(viewModel.HeatNetworkLocationModel));
