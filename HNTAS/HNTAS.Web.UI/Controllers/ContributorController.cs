@@ -77,8 +77,10 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedInviterUserId, invitation.InviterUserId);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedInviterUserOrgId, inviterUser.Organisation.OrgId);
             }
-
-
+            else
+            {
+                TempData["ErrorMessage"] = "The invitation token is missing from your request. Please use the link provided in the invitation email to proceed.";
+            }
             var model = _sessionHelper.GetFromSession<YouHaveBeenInvitedModel>(HttpContext, SessionKeys.YouHaveBeenInvitedModelKey) ?? new YouHaveBeenInvitedModel();
             return View(model);
         }

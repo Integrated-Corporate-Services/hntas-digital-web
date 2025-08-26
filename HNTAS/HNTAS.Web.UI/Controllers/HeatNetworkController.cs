@@ -4,7 +4,6 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Elfie.Model.Tree;
 
 
 namespace HNTAS.Web.UI.Controllers
@@ -127,7 +126,7 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     case "design":
                         // store pathway as 1, navigate to cya
-                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });                        
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
                         return RedirectToAction("CheckYourAnswers");
                     case "construction":
                         return RedirectToAction("HasElementBeenRegistered");
@@ -165,7 +164,7 @@ namespace HNTAS.Web.UI.Controllers
             else
             {
                 _sessionHelper.SaveToSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey, model);
-                switch(model.HasElementBeenRegistered)
+                switch (model.HasElementBeenRegistered)
                 {
                     case "yes":
                         return RedirectToAction("HasPlanningApplicationBeenSubmitted");
@@ -241,7 +240,7 @@ namespace HNTAS.Web.UI.Controllers
                 HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey),
                 HasElementBeenRegisteredModel = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? null,
                 HasPlanningApplicationBeenSubmittedModel = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? null,
-                PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey) ?? new PathwayModel(){ Pathway = "1"},
+                PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey) ?? new PathwayModel() { Pathway = "1" },
                 ConfirmedDeclaration = false
             };
 
@@ -260,6 +259,8 @@ namespace HNTAS.Web.UI.Controllers
 
             ModelState.Remove(nameof(viewModel.HeatNetworkNameModel));
             ModelState.Remove(nameof(viewModel.HeatNetworkLocationModel));
+            ModelState.Remove(nameof(viewModel.PathwayModel));
+            ModelState.Remove(nameof(viewModel.HeatNetworkPhaseModel));
 
             if (!ModelState.IsValid)
             {
