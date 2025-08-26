@@ -26,36 +26,50 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// UpdateOrgDetailsAndRolesRequest
+    /// HnRoleMapping
     /// </summary>
-    public partial class UpdateOrgDetailsAndRolesRequest : IValidatableObject
+    public partial class HnRoleMapping : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateOrgDetailsAndRolesRequest" /> class.
+        /// Initializes a new instance of the <see cref="HnRoleMapping" /> class.
         /// </summary>
-        /// <param name="orgDetails">orgDetails</param>
+        /// <param name="hnId">hnId</param>
         /// <param name="role">role</param>
         [JsonConstructor]
-        public UpdateOrgDetailsAndRolesRequest(OrgDetails2 orgDetails, UserRole role)
+        public HnRoleMapping(Option<string?> hnId = default, Option<ContributorRole?> role = default)
         {
-            OrgDetails = orgDetails;
-            Role = role;
+            HnIdOption = hnId;
+            RoleOption = role;
             OnCreated();
         }
 
         partial void OnCreated();
 
         /// <summary>
+        /// Used to track the state of Role
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<ContributorRole?> RoleOption { get; private set; }
+
+        /// <summary>
         /// Gets or Sets Role
         /// </summary>
         [JsonPropertyName("role")]
-        public UserRole Role { get; set; }
+        public ContributorRole? Role { get { return this.RoleOption; } set { this.RoleOption = new(value); } }
 
         /// <summary>
-        /// Gets or Sets OrgDetails
+        /// Used to track the state of HnId
         /// </summary>
-        [JsonPropertyName("orgDetails")]
-        public OrgDetails2 OrgDetails { get; set; }
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> HnIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HnId
+        /// </summary>
+        [JsonPropertyName("hnId")]
+        public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -64,8 +78,8 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class UpdateOrgDetailsAndRolesRequest {\n");
-            sb.Append("  OrgDetails: ").Append(OrgDetails).Append("\n");
+            sb.Append("class HnRoleMapping {\n");
+            sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  Role: ").Append(Role).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -83,19 +97,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="UpdateOrgDetailsAndRolesRequest" />
+    /// A Json converter for type <see cref="HnRoleMapping" />
     /// </summary>
-    public class UpdateOrgDetailsAndRolesRequestJsonConverter : JsonConverter<UpdateOrgDetailsAndRolesRequest>
+    public class HnRoleMappingJsonConverter : JsonConverter<HnRoleMapping>
     {
         /// <summary>
-        /// Deserializes json to <see cref="UpdateOrgDetailsAndRolesRequest" />
+        /// Deserializes json to <see cref="HnRoleMapping" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override UpdateOrgDetailsAndRolesRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override HnRoleMapping Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -104,8 +118,8 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<OrgDetails2?> orgDetails = default;
-            Option<UserRole?> role = default;
+            Option<string?> hnId = default;
+            Option<ContributorRole?> role = default;
 
             while (utf8JsonReader.Read())
             {
@@ -122,13 +136,13 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "orgDetails":
-                            orgDetails = new Option<OrgDetails2?>(JsonSerializer.Deserialize<OrgDetails2>(ref utf8JsonReader, jsonSerializerOptions)!);
+                        case "hnId":
+                            hnId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "role":
                             string? roleRawValue = utf8JsonReader.GetString();
                             if (roleRawValue != null)
-                                role = new Option<UserRole?>(UserRoleValueConverter.FromStringOrDefault(roleRawValue));
+                                role = new Option<ContributorRole?>(ContributorRoleValueConverter.FromStringOrDefault(roleRawValue));
                             break;
                         default:
                             break;
@@ -136,52 +150,50 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (!orgDetails.IsSet)
-                throw new ArgumentException("Property is required for class UpdateOrgDetailsAndRolesRequest.", nameof(orgDetails));
-
-            if (!role.IsSet)
-                throw new ArgumentException("Property is required for class UpdateOrgDetailsAndRolesRequest.", nameof(role));
-
-            if (orgDetails.IsSet && orgDetails.Value == null)
-                throw new ArgumentNullException(nameof(orgDetails), "Property is not nullable for class UpdateOrgDetailsAndRolesRequest.");
+            if (hnId.IsSet && hnId.Value == null)
+                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class HnRoleMapping.");
 
             if (role.IsSet && role.Value == null)
-                throw new ArgumentNullException(nameof(role), "Property is not nullable for class UpdateOrgDetailsAndRolesRequest.");
+                throw new ArgumentNullException(nameof(role), "Property is not nullable for class HnRoleMapping.");
 
-            return new UpdateOrgDetailsAndRolesRequest(orgDetails.Value!, role.Value!.Value!);
+            return new HnRoleMapping(hnId, role);
         }
 
         /// <summary>
-        /// Serializes a <see cref="UpdateOrgDetailsAndRolesRequest" />
+        /// Serializes a <see cref="HnRoleMapping" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
+        /// <param name="hnRoleMapping"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, HnRoleMapping hnRoleMapping, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, updateOrgDetailsAndRolesRequest, jsonSerializerOptions);
+            WriteProperties(writer, hnRoleMapping, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="UpdateOrgDetailsAndRolesRequest" />
+        /// Serializes the properties of <see cref="HnRoleMapping" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
+        /// <param name="hnRoleMapping"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, HnRoleMapping hnRoleMapping, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (updateOrgDetailsAndRolesRequest.OrgDetails == null)
-                throw new ArgumentNullException(nameof(updateOrgDetailsAndRolesRequest.OrgDetails), "Property is required for class UpdateOrgDetailsAndRolesRequest.");
+            if (hnRoleMapping.HnIdOption.IsSet && hnRoleMapping.HnId == null)
+                throw new ArgumentNullException(nameof(hnRoleMapping.HnId), "Property is required for class HnRoleMapping.");
 
-            writer.WritePropertyName("orgDetails");
-            JsonSerializer.Serialize(writer, updateOrgDetailsAndRolesRequest.OrgDetails, jsonSerializerOptions);
-            var roleRawValue = UserRoleValueConverter.ToJsonValue(updateOrgDetailsAndRolesRequest.Role);
-            writer.WriteString("role", roleRawValue);
+            if (hnRoleMapping.HnIdOption.IsSet)
+                writer.WriteString("hnId", hnRoleMapping.HnId);
+
+            if (hnRoleMapping.RoleOption.IsSet)
+            {
+                var roleRawValue = ContributorRoleValueConverter.ToJsonValue(hnRoleMapping.Role!.Value);
+                writer.WriteString("role", roleRawValue);
+            }
         }
     }
 }

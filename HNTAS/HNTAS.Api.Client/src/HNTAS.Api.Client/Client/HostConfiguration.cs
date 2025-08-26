@@ -43,14 +43,17 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new DateTimeNullableJsonConverter());
             _jsonOptions.Converters.Add(new DateOnlyJsonConverter());
             _jsonOptions.Converters.Add(new DateOnlyNullableJsonConverter());
+            _jsonOptions.Converters.Add(new AddInvitationRequestJsonConverter());
             _jsonOptions.Converters.Add(new ContributorRoleJsonConverter());
             _jsonOptions.Converters.Add(new ContributorRoleNullableJsonConverter());
             _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkResponseJsonConverter());
+            _jsonOptions.Converters.Add(new HnRoleMappingJsonConverter());
             _jsonOptions.Converters.Add(new InitialUserRegistrationRequestJsonConverter());
             _jsonOptions.Converters.Add(new InvitationStatusJsonConverter());
             _jsonOptions.Converters.Add(new InvitationStatusNullableJsonConverter());
+            _jsonOptions.Converters.Add(new InvitedUserRequestJsonConverter());
             _jsonOptions.Converters.Add(new InvitedUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new ManagedUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfPreferredContactTypeJsonConverter());
@@ -63,7 +66,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new PreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ProblemDetailsJsonConverter());
             _jsonOptions.Converters.Add(new RegisteredAddressJsonConverter());
-            _jsonOptions.Converters.Add(new UpdateInvitationRequestJsonConverter());
+            _jsonOptions.Converters.Add(new SendInvitationEmailRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateUserOrganisationRequestJsonConverter());
             _jsonOptions.Converters.Add(new UserJsonConverter());
             _jsonOptions.Converters.Add(new UserDetailsResponseJsonConverter());
@@ -76,6 +79,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton(jsonSerializerOptionsProvider);
             _services.AddSingleton<IApiFactory, ApiFactory>();
             _services.AddSingleton<HeatNetworksApiEvents>();
+            _services.AddSingleton<InvitationsApiEvents>();
             _services.AddSingleton<UsersApiEvents>();
         }
 
@@ -95,6 +99,7 @@ namespace HNTAS.Api.Client.Client
             List<IHttpClientBuilder> builders = new List<IHttpClientBuilder>();
 
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
+            builders.Add(_services.AddHttpClient<IInvitationsApi, InvitationsApi>(client));
             builders.Add(_services.AddHttpClient<IUsersApi, UsersApi>(client));
             
             if (builder != null)

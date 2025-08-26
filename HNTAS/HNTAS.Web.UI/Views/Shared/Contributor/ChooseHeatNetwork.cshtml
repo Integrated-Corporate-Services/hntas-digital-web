@@ -1,7 +1,7 @@
 ﻿@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.Components
 @using HNTAS.Web.UI.Models.HeatNetwork
-@model HeatNetworkInformationModel
+@model ChooseHeatNetworkModel
 
 @{
     ViewData["Title"] = "Heat network information";
@@ -20,7 +20,7 @@
             @ViewData["Title"]
         </h1>
 
-        <form asp-action="SaveChosenHeatNetwork" asp-controller="NewContributor" method="post" novalidate>
+        <form asp-action="@ViewBag.FormAction" asp-controller="@ViewBag.FormController" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")">

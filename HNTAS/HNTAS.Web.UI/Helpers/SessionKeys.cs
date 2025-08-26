@@ -24,5 +24,13 @@
         public const string HasElementBeenRegisteredModelKey = "HasElementBeenRegistered";
         public const string HasPlanningApplicationBeenSubmittedModelKey = "HasPlanningApplicationBeenSubmitted";
         public const string PathwayModelKey = "Pathway";
+
+        public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";
+
+        public const string InvitedTokenEmail = "InvitedTokenEmailKey";
+        public const string InvitationId = "InvitationIdKey";
+        public const string InvitedInviterUserId = "InvitedInviterUserIdKey";
+        public const string InvitedInviterUserOrgId = "InvitedInviterUserOrgIdKey";
+
     }
 }

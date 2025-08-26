@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models.HeatNetwork
 {
-    public class HeatNetworkInformationModel
+    public class ChooseHeatNetworkModel
     {
         [Required(ErrorMessage = "Choose the heat network.")]
         public string SelectedHeatNetworkId { get; set; } = null!;

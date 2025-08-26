@@ -19,12 +19,15 @@ namespace HNTAS.Web.UI.Services.Core
         Task<bool?> IsOrganisationExists(string companiesHouseNumber);
 
         Task<List<EnumItemResponse>> GetContributorRolesAsync();
-
-        Task UpdateInvitedUserAsync(string id, UpdateInvitationRequest invitationRequest);
+        Task<List<EnumItemResponse>> GetUserRolesAsync();
 
 
         Task<UserDetailsResponse> GetUserDetails(string userId);
 
         Task<ManagedUserResponse> GetManagedUsers(string userId);
+
+        Task<string?> AcceptUserInvitation(InvitedUserRequest userRequest);
+
+        Task<List<UserResponse>> GetRegisteredUsersAsync(string rpUserId);
     }
 }

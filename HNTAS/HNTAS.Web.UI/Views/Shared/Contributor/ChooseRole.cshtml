@@ -1,6 +1,6 @@
 ﻿@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.Components
-@model SelectRoleModel
+@model ChooseRoleModel
 
 @{
     ViewData["Title"] = "Choose the user's role";
@@ -19,7 +19,7 @@
             @ViewData["Title"]
         </h1>
 
-        <form asp-action="SaveChosenRole" asp-controller="NewContributor" method="post" novalidate>
+        <form asp-action="@ViewBag.FormAction" asp-controller="@ViewBag.FormController" method="post" novalidate>
             <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset" aria-describedby="@ariaDescribedBy">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">

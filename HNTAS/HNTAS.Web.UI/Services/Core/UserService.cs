@@ -118,14 +118,14 @@ namespace HNTAS.Web.UI.Services.Core
             _logger.LogInformation("Updating user heat network for ID: {UserId} heat network : {hnId}", id, heatNetworkId);
             try
             {
-                var responce = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
+                var response = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
 
-                if (responce.IsNoContent)
+                if (response.IsNoContent)
                 {
                     _logger.LogInformation("User heat network ID updated successfully for user ID: {userId}", id);
                     return;
                 }
-                throw new Exception($"Failed to update user heat network ID with status code: {responce.StatusCode}");
+                throw new Exception($"Failed to update user heat network ID with status code: {response.StatusCode}");
             }
             catch (Exception ex)
             {
@@ -195,38 +195,19 @@ namespace HNTAS.Web.UI.Services.Core
 
         }
 
-        public async Task UpdateInvitedUserAsync(string id, UpdateInvitationRequest invitationRequest)
+        public async Task<List<EnumItemResponse>> GetUserRolesAsync()
         {
-            _logger.LogInformation("Updating invited user with ID: {UserId}", id);
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                _logger.LogError("User ID is null or empty");
-                throw new ArgumentNullException(nameof(id), "User ID cannot be null or empty");
-            }
-            if (invitationRequest == null)
-            {
-                _logger.LogError("Invitation request is null for user ID: {UserId}", id);
-                throw new ArgumentNullException(nameof(invitationRequest), "Invitation request cannot be null");
-            }
+            var response = await _usersApi.ApiUsersUserRolesGetAsync();
 
-            try
+            if (response.IsOk)
             {
-                var response = await _usersApi.ApiUsersIdInvitationPatchAsync(id, invitationRequest);
-
-                if (response.IsNoContent)
-                {
-                    _logger.LogInformation("Invited user with ID: {UserId} updated successfully", id);
-                    return;
-                }
-                throw new Exception($"Failed to update Invited user with status code: {response.StatusCode}");
+                return response.Ok();
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex, "Error updating invited user with ID: {UserId}", id);
-                throw;
+                _logger.LogError("Failed to retrieve contributor roles with status code: {StatusCode}", response.StatusCode);
+                throw new Exception($"Failed to retrieve contributor roles with status code: {response.StatusCode}");
             }
-
-
         }
 
 
@@ -278,6 +259,46 @@ namespace HNTAS.Web.UI.Services.Core
                 _logger.LogError(ex, "Error getting managed users for user ID: {UserId}", userId);
                 throw;
             }
+        }
+
+        public async Task<string?> AcceptUserInvitation(InvitedUserRequest userRequest)
+        {
+            _logger.LogInformation("Accepting user invitation for email: {Email}", userRequest.InvitedEmail);
+
+            try
+            {
+                var response = await _usersApi.ApiUsersAcceptInvitationPatchOrDefaultAsync(userRequest);
+                if (response.IsOk)
+                {
+                    _logger.LogInformation("User invitation accepted for email: {Email}", userRequest.InvitedEmail);
+                    return response.Ok();
+                }
+                if (response.IsCreated)
+                {
+                    _logger.LogInformation("User invitation accepted for email: {Email}", userRequest.InvitedEmail);
+                    return response.Created();
+                }
+                throw new Exception($"Failed to update user heat network ID with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error accepting user invitation for email: {Email}", userRequest.InvitedEmail);
+                throw;
+            }
+
+        }
+
+        public async Task<List<UserResponse>> GetRegisteredUsersAsync(string rpUserId)
+        {
+            var users = await _usersApi.ApiUsersRegisteredUsersGetAsync(rpUserId);
+            if (users.IsOk)
+            {
+                return users.Ok();
+            }
+
+            _logger.LogError("Failed to retrieve registered users with status code: {StatusCode}", users.StatusCode);
+            throw new Exception($"Failed to retrieve registered users with status code: {users.StatusCode}");
+
         }
     }
 }
