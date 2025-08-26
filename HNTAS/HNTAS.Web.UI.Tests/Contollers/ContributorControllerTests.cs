@@ -78,21 +78,21 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void Post_YouHaveBeenInvited_InvalidModel_ReturnsView()
+        public async Task Post_YouHaveBeenInvited_InvalidModel_ReturnsView()
         {
             _controller.ModelState.AddModelError("AcceptInvitation", "Required");
 
-            var result = _controller.YouHaveBeenInvitedAsync(new YouHaveBeenInvitedModel()) as ViewResult;
+            var result = await _controller.YouHaveBeenInvitedAsync(new YouHaveBeenInvitedModel()) as ViewResult;
 
             Assert.NotNull(result);
             Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
-        public void Post_YouHaveBeenInvited_Accept_RedirectsToStartPage()
+        public async Task Post_YouHaveBeenInvited_Accept_RedirectsToStartPageAsync()
         {
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "accept" };
-            var result = _controller.YouHaveBeenInvitedAsync(model) as RedirectToActionResult;
+            var result = (await _controller.YouHaveBeenInvitedAsync(model)) as RedirectToActionResult;
 
             Assert.NotNull(result);
             Assert.Equal("StartPage", result.ActionName);
@@ -100,10 +100,10 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void Post_YouHaveBeenInvited_Decline_RedirectsToYouHaveDeclined()
+        public async Task Post_YouHaveBeenInvited_Decline_RedirectsToYouHaveDeclinedAsync()
         {
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "decline" };
-            var result = _controller.YouHaveBeenInvitedAsync(model) as RedirectToActionResult;
+            var result = await _controller.YouHaveBeenInvitedAsync(model) as RedirectToActionResult;
 
             Assert.NotNull(result);
             Assert.Equal("YouHaveDeclined", result.ActionName);
@@ -111,10 +111,10 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void Post_YouHaveBeenInvited_InvalidChoice_ReturnsViewWithError()
+        public async Task Post_YouHaveBeenInvited_InvalidChoice_ReturnsViewWithError()
         {
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "maybe" };
-            var result = _controller.YouHaveBeenInvitedAsync(model) as ViewResult;
+            var result = await _controller.YouHaveBeenInvitedAsync(model) as ViewResult;
 
             Assert.NotNull(result);
             Assert.True(_controller.ModelState.ContainsKey(nameof(model.AcceptInvitation)));
