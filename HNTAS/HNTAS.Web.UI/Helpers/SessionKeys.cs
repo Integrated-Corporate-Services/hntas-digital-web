@@ -20,6 +20,10 @@
 
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
         public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
+        public const string HeatNetworkPhaseModelKey = "HeatNetworkPhase";
+        public const string HasElementBeenRegisteredModelKey = "HasElementBeenRegistered";
+        public const string HasPlanningApplicationBeenSubmittedModelKey = "HasPlanningApplicationBeenSubmitted";
+        public const string PathwayModelKey = "Pathway";
 
         public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";
 
@@ -27,9 +31,6 @@
         public const string InvitationId = "InvitationIdKey";
         public const string InvitedInviterUserId = "InvitedInviterUserIdKey";
         public const string InvitedInviterUserOrgId = "InvitedInviterUserOrgIdKey";
-        public const string HeatNetworkPhaseModelKey = "HeatNetworkPhase";
-        public const string HasElementBeenRegisteredModelKey = "HasElementBeenRegistered";
-        public const string HasPlanningApplicationBeenSubmittedModelKey = "HasPlanningApplicationBeenSubmitted";
-        public const string PathwayModelKey = "Pathway";
+
     }
 }
