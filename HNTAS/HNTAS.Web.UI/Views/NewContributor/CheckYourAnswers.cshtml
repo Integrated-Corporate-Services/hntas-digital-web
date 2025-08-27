@@ -49,8 +49,8 @@
                 Heading = "Heat network information",
                 Items = new List<ReviewItem>
                 {
-                    new ReviewItem { Key = "Heat network", Value = Model.HeatNetworkInformationModel?.SelectedHeatNetworkName, ChangeLink = Url.Action("ChooseHeatNetwork"), ChangeLinkText = "Change" },
-                    new ReviewItem { Key = "Role assigned", Value = Model.SelectRoleModel?.SelectedRoleName, ChangeLink = Url.Action("ChooseRole"), ChangeLinkText = "Change" }
+                    new ReviewItem { Key = "Heat network", Value = Model.ChooseHeatNetworkModel?.SelectedHeatNetworkName, ChangeLink = Url.Action("ChooseHeatNetwork"), ChangeLinkText = "Change" },
+                    new ReviewItem { Key = "Role assigned", Value = Model.ChooseRoleModel?.SelectedRoleName, ChangeLink = Url.Action("ChooseRole"), ChangeLinkText = "Change" }
                 }
             }
         };

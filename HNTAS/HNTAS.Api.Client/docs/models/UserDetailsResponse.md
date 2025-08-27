@@ -11,11 +11,11 @@ Name | Type | Description | Notes
 **FullName** | **string** |  | [optional] 
 **EmailId** | **string** |  | [optional] 
 **JobTitle** | **string** |  | [optional] 
-**PreferredContactType** | **string** |  | [optional] 
+**PreferredContactType** | **NullableOfPreferredContactType** |  | [optional] 
 **LandlineNumber** | **string** |  | [optional] 
 **MobileNumber** | **string** |  | [optional] 
 **Status** | **string** |  | [optional] 
-**Roles** | **List&lt;string&gt;** |  | [optional] 
+**Roles** | [**List&lt;UserRole&gt;**](UserRole.md) |  | [optional] 
 **Organisation** | [**OrganisationResponse**](OrganisationResponse.md) |  | [optional] 
 **HeatNetworks** | [**List&lt;HeatNetworkResponse&gt;**](HeatNetworkResponse.md) |  | [optional] 
 

@@ -51,24 +51,72 @@ namespace HNTAS.Web.UI.Tests.Controllers
             return controller;
         }
 
-        
+        [Fact]
+        public void EnterHNName_Get_ReturnsViewWithModelFromSession()
+        {
+            // Arrange
+            var controller = CreateController();
+            var model = new HeatNetworkNameModel { HeatNetworkName = "mock-hnname" };
+            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(It.IsAny<HttpContext>(), It.IsAny<string>())).Returns(model);
+            var urlHelperMock = new Mock<IUrlHelper>();
+            urlHelperMock
+                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
+                    ctx.Action == "UserAccount" && ctx.Controller == "Dashboard")))
+                .Returns("Dashboard/UserAccount");
+            controller.Url = urlHelperMock.Object;
+
+            // Act
+            var result = controller.EnterHNName();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.True(controller.ViewBag.ShowBackButton);
+            Assert.Equal(model, viewResult.Model);
+            Assert.Equal("Dashboard/UserAccount", controller.ViewBag.BackLinkUrl);
+        }
+
+        [Fact]
+        public void EnterHNName_Post_ValidUrl_RedirectsToEnterHNLocation()
+        {
+            // Arrange
+            var controller = CreateController();
+            var model = new HeatNetworkNameModel { HeatNetworkName = "mock-hnname" };
+            var urlHelperMock = new Mock<IUrlHelper>();
+            urlHelperMock
+                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
+                    ctx.Action == "EnterHNLocation" && ctx.Controller == "HeatNetwork")))
+                .Returns("HeatNetwork/EnterHNLocation");
+            controller.Url = urlHelperMock.Object;
+            // Act
+            var result = controller.EnterHNName(model);
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkNameModel>(controller.HttpContext, It.IsAny<string>(), model), Times.Once);
+            Assert.Equal("EnterHNLocation", redirectResult.ActionName);
+        }
 
         [Fact]
         public void EnterHNLocation_Get_ReturnsViewWithModelFromSession()
         {
+            // Arrange
             var controller = CreateController();
             var model = new HeatNetworkLocationModel { HeatNetworkLocation = "https://what3words.com/word1.word2.word3" };
             _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkLocationModel>(It.IsAny<HttpContext>(), It.IsAny<string>())).Returns(model);
 
-            var httpContext = new DefaultHttpContext();
-            httpContext.Request.Headers["Referer"] = "https://localhost/dashboard";
-            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+            var urlHelperMock = new Mock<IUrlHelper>();
+            urlHelperMock
+                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
+                    ctx.Action == "EnterHNName" && ctx.Controller == "HeatNetwork")))
+                .Returns("HeatNetwork/EnterHNName");
+            controller.Url = urlHelperMock.Object;
 
+            // Act
             var result = controller.EnterHNLocation();
 
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-
+            Assert.Equal("HeatNetwork/EnterHNName", controller.ViewBag.BackLinkUrl);
         }
 
         [Fact]
@@ -78,10 +126,12 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var controller = CreateController();
 
             var model = new HeatNetworkLocationModel { HeatNetworkLocation = "https://invalid.com/word.word.word" };
-
-            var httpContext = new DefaultHttpContext();
-            httpContext.Request.Headers["Referer"] = "https://localhost/dashboard";
-            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+            var urlHelperMock = new Mock<IUrlHelper>();
+            urlHelperMock
+                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
+                    ctx.Action == "EnterHNName" && ctx.Controller == "HeatNetwork")))
+                .Returns("HeatNetwork/EnterHNName");
+            controller.Url = urlHelperMock.Object;         
 
             // Act
             var result = controller.EnterHNLocation(model);
@@ -94,48 +144,29 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void EnterHNLocation_Post_ValidUrl_RedirectsToEnterHNName()
+        public void EnterHNLocation_Post_ValidUrl_RedirectsToCheckYourAnswers()
         {
             // Arrange
             var controller = CreateController();
 
             var model = new HeatNetworkLocationModel { HeatNetworkLocation = "https://what3words.com/word1.word2.word3" };
-
-            var httpContext = new DefaultHttpContext();
-            httpContext.Request.Headers["Referer"] = "https://localhost/dashboard";
-            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
-
+            var urlHelperMock = new Mock<IUrlHelper>();
+            urlHelperMock
+                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
+                    ctx.Action == "EnterHNName" && ctx.Controller == "HeatNetwork")))
+                .Returns("HeatNetwork/EnterHNName");
+            controller.Url = urlHelperMock.Object;
+            
             // Act
             var result = controller.EnterHNLocation(model);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("EnterHNName", redirectResult.ActionName);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(httpContext, It.IsAny<string>(), model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(controller.HttpContext, It.IsAny<string>(), model), Times.Once);
+            Assert.Equal("CheckYourAnswers", redirectResult.ActionName);
+            
         }
-
-
-        [Fact]
-        public void EnterHNName_Get_ReturnsViewWithModelFromSession()
-        {
-            // Arrange
-            var controller = CreateController();
-            var httpContext = new DefaultHttpContext();
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNLocation" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNLocation");
-            controller.Url = urlHelperMock.Object;
-
-            // Act
-            var result = controller.EnterHNName();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.True(controller.ViewBag.ShowBackButton);
-            Assert.Equal("HeatNetwork/EnterHNLocation", controller.ViewBag.BackLinkUrl);
-        }
+        
 
         [Fact]
         public void CheckYourAnswers_ReturnsViewWithPopulatedModel()

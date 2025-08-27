@@ -46,6 +46,8 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
             }
 
+            ViewBag.IsRegulatoryContact = user.Roles?.Contains(Api.Client.Model.UserRole.RegulatoryContact);
+
             var heatNetworks = new List<HeatNetworkModel>();
 
             if (user.HeatNetworks != null && user.HeatNetworks?.Count > 0)

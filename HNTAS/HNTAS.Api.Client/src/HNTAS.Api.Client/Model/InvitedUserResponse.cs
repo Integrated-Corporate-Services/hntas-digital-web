@@ -34,23 +34,27 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="InvitedUserResponse" /> class.
         /// </summary>
         /// <param name="id">id</param>
+        /// <param name="inviterUserId">inviterUserId</param>
         /// <param name="email">email</param>
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
         /// <param name="fullName">fullName</param>
+        /// <param name="invitedHnId">invitedHnId</param>
         /// <param name="roles">roles</param>
         /// <param name="status">status</param>
         /// <param name="invitedAt">invitedAt</param>
         /// <param name="acceptedAt">acceptedAt</param>
         /// <param name="rejectedAt">rejectedAt</param>
         [JsonConstructor]
-        public InvitedUserResponse(Option<string?> id = default, Option<string?> email = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<List<string>?> roles = default, Option<string?> status = default, Option<DateTimeOffset?> invitedAt = default, Option<DateTimeOffset?> acceptedAt = default, Option<DateTimeOffset?> rejectedAt = default)
+        public InvitedUserResponse(Option<string?> id = default, Option<string?> inviterUserId = default, Option<string?> email = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> invitedHnId = default, Option<List<ContributorRole>?> roles = default, Option<InvitationStatus?> status = default, Option<DateTimeOffset?> invitedAt = default, Option<DateTimeOffset?> acceptedAt = default, Option<DateTimeOffset?> rejectedAt = default)
         {
             IdOption = id;
+            InviterUserIdOption = inviterUserId;
             EmailOption = email;
             FirstNameOption = firstName;
             LastNameOption = lastName;
             FullNameOption = fullName;
+            InvitedHnIdOption = invitedHnId;
             RolesOption = roles;
             StatusOption = status;
             InvitedAtOption = invitedAt;
@@ -60,6 +64,19 @@ namespace HNTAS.Api.Client.Model
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Used to track the state of Status
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<InvitationStatus?> StatusOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Status
+        /// </summary>
+        [JsonPropertyName("status")]
+        public InvitationStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Id
@@ -73,6 +90,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("id")]
         public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of InviterUserId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> InviterUserIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets InviterUserId
+        /// </summary>
+        [JsonPropertyName("inviterUserId")]
+        public string? InviterUserId { get { return this.InviterUserIdOption; } set { this.InviterUserIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Email
@@ -127,30 +157,30 @@ namespace HNTAS.Api.Client.Model
         public string? FullName { get { return this.FullNameOption; } set { this.FullNameOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of InvitedHnId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> InvitedHnIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets InvitedHnId
+        /// </summary>
+        [JsonPropertyName("invitedHnId")]
+        public string? InvitedHnId { get { return this.InvitedHnIdOption; } set { this.InvitedHnIdOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of Roles
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<string>?> RolesOption { get; private set; }
+        public Option<List<ContributorRole>?> RolesOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Roles
         /// </summary>
         [JsonPropertyName("roles")]
-        public List<string>? Roles { get { return this.RolesOption; } set { this.RolesOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of Status
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> StatusOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Status
-        /// </summary>
-        [JsonPropertyName("status")]
-        public string? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+        public List<ContributorRole>? Roles { get { return this.RolesOption; } set { this.RolesOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of InvitedAt
@@ -200,10 +230,12 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class InvitedUserResponse {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  InviterUserId: ").Append(InviterUserId).Append("\n");
             sb.Append("  Email: ").Append(Email).Append("\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
             sb.Append("  FullName: ").Append(FullName).Append("\n");
+            sb.Append("  InvitedHnId: ").Append(InvitedHnId).Append("\n");
             sb.Append("  Roles: ").Append(Roles).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  InvitedAt: ").Append(InvitedAt).Append("\n");
@@ -262,12 +294,14 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> id = default;
+            Option<string?> inviterUserId = default;
             Option<string?> email = default;
             Option<string?> firstName = default;
             Option<string?> lastName = default;
             Option<string?> fullName = default;
-            Option<List<string>?> roles = default;
-            Option<string?> status = default;
+            Option<string?> invitedHnId = default;
+            Option<List<ContributorRole>?> roles = default;
+            Option<InvitationStatus?> status = default;
             Option<DateTimeOffset?> invitedAt = default;
             Option<DateTimeOffset?> acceptedAt = default;
             Option<DateTimeOffset?> rejectedAt = default;
@@ -290,6 +324,9 @@ namespace HNTAS.Api.Client.Model
                         case "id":
                             id = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "inviterUserId":
+                            inviterUserId = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         case "email":
                             email = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
@@ -302,11 +339,16 @@ namespace HNTAS.Api.Client.Model
                         case "fullName":
                             fullName = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "invitedHnId":
+                            invitedHnId = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         case "roles":
-                            roles = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            roles = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "status":
-                            status = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? statusRawValue = utf8JsonReader.GetString();
+                            if (statusRawValue != null)
+                                status = new Option<InvitationStatus?>(InvitationStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
                         case "invitedAt":
                             invitedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
@@ -326,6 +368,9 @@ namespace HNTAS.Api.Client.Model
             if (id.IsSet && id.Value == null)
                 throw new ArgumentNullException(nameof(id), "Property is not nullable for class InvitedUserResponse.");
 
+            if (inviterUserId.IsSet && inviterUserId.Value == null)
+                throw new ArgumentNullException(nameof(inviterUserId), "Property is not nullable for class InvitedUserResponse.");
+
             if (email.IsSet && email.Value == null)
                 throw new ArgumentNullException(nameof(email), "Property is not nullable for class InvitedUserResponse.");
 
@@ -334,6 +379,9 @@ namespace HNTAS.Api.Client.Model
 
             if (lastName.IsSet && lastName.Value == null)
                 throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class InvitedUserResponse.");
+
+            if (invitedHnId.IsSet && invitedHnId.Value == null)
+                throw new ArgumentNullException(nameof(invitedHnId), "Property is not nullable for class InvitedUserResponse.");
 
             if (roles.IsSet && roles.Value == null)
                 throw new ArgumentNullException(nameof(roles), "Property is not nullable for class InvitedUserResponse.");
@@ -344,7 +392,7 @@ namespace HNTAS.Api.Client.Model
             if (invitedAt.IsSet && invitedAt.Value == null)
                 throw new ArgumentNullException(nameof(invitedAt), "Property is not nullable for class InvitedUserResponse.");
 
-            return new InvitedUserResponse(id, email, firstName, lastName, fullName, roles, status, invitedAt, acceptedAt, rejectedAt);
+            return new InvitedUserResponse(id, inviterUserId, email, firstName, lastName, fullName, invitedHnId, roles, status, invitedAt, acceptedAt, rejectedAt);
         }
 
         /// <summary>
@@ -374,6 +422,9 @@ namespace HNTAS.Api.Client.Model
             if (invitedUserResponse.IdOption.IsSet && invitedUserResponse.Id == null)
                 throw new ArgumentNullException(nameof(invitedUserResponse.Id), "Property is required for class InvitedUserResponse.");
 
+            if (invitedUserResponse.InviterUserIdOption.IsSet && invitedUserResponse.InviterUserId == null)
+                throw new ArgumentNullException(nameof(invitedUserResponse.InviterUserId), "Property is required for class InvitedUserResponse.");
+
             if (invitedUserResponse.EmailOption.IsSet && invitedUserResponse.Email == null)
                 throw new ArgumentNullException(nameof(invitedUserResponse.Email), "Property is required for class InvitedUserResponse.");
 
@@ -383,6 +434,9 @@ namespace HNTAS.Api.Client.Model
             if (invitedUserResponse.LastNameOption.IsSet && invitedUserResponse.LastName == null)
                 throw new ArgumentNullException(nameof(invitedUserResponse.LastName), "Property is required for class InvitedUserResponse.");
 
+            if (invitedUserResponse.InvitedHnIdOption.IsSet && invitedUserResponse.InvitedHnId == null)
+                throw new ArgumentNullException(nameof(invitedUserResponse.InvitedHnId), "Property is required for class InvitedUserResponse.");
+
             if (invitedUserResponse.RolesOption.IsSet && invitedUserResponse.Roles == null)
                 throw new ArgumentNullException(nameof(invitedUserResponse.Roles), "Property is required for class InvitedUserResponse.");
 
@@ -391,6 +445,9 @@ namespace HNTAS.Api.Client.Model
 
             if (invitedUserResponse.IdOption.IsSet)
                 writer.WriteString("id", invitedUserResponse.Id);
+
+            if (invitedUserResponse.InviterUserIdOption.IsSet)
+                writer.WriteString("inviterUserId", invitedUserResponse.InviterUserId);
 
             if (invitedUserResponse.EmailOption.IsSet)
                 writer.WriteString("email", invitedUserResponse.Email);
@@ -407,14 +464,19 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("fullName");
 
+            if (invitedUserResponse.InvitedHnIdOption.IsSet)
+                writer.WriteString("invitedHnId", invitedUserResponse.InvitedHnId);
+
             if (invitedUserResponse.RolesOption.IsSet)
             {
                 writer.WritePropertyName("roles");
                 JsonSerializer.Serialize(writer, invitedUserResponse.Roles, jsonSerializerOptions);
             }
             if (invitedUserResponse.StatusOption.IsSet)
-                writer.WriteString("status", invitedUserResponse.Status);
-
+            {
+                var statusRawValue = InvitationStatusValueConverter.ToJsonValue(invitedUserResponse.Status!.Value);
+                writer.WriteString("status", statusRawValue);
+            }
             if (invitedUserResponse.InvitedAtOption.IsSet)
                 writer.WriteString("invitedAt", invitedUserResponse.InvitedAtOption.Value!.Value.ToString(InvitedAtFormat));
 

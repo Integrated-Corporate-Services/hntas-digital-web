@@ -9,15 +9,12 @@ namespace HNTAS.Web.UI.Workflows.Models.Data
     {
         public AddUserEmailAddressModel? AddUserEmailAddressModel { get; set; }
         public ContributorContactDetailsModel? ContributorContactDetailsModel { get; set; }
-        public HeatNetworkInformationModel? HeatNetworkInformationModel { get; set; }
-        public SelectRoleModel? SelectRoleModel { get; set; }
+        public ChooseHeatNetworkModel? ChooseHeatNetworkModel { get; set; }
+        public ChooseRoleModel? ChooseRoleModel { get; set; }
 
         public HashSet<ContributorWorkflowStep> CompletedSteps { get; set; } = new();
 
         public ContributorWorkflowStep CurrentStep { get; set; }
-
-        public bool IsEmailStepValid() =>
-            AddUserEmailAddressModel is { EmailAddress: var email } && !string.IsNullOrWhiteSpace(email);
 
         public void AdvanceToStep(ContributorWorkflowStep nextStep)
         {
@@ -29,18 +26,18 @@ namespace HNTAS.Web.UI.Workflows.Models.Data
             CompletedSteps.Add(nextStep);
         }
 
-        public object? GetStepData(ContributorWorkflowStep step) => step switch
-        {
-            ContributorWorkflowStep.AddEmailAddress => AddUserEmailAddressModel,
-            ContributorWorkflowStep.ContactDetails => ContributorContactDetailsModel,
-            ContributorWorkflowStep.ChooseHeatNetwork => HeatNetworkInformationModel,
-            ContributorWorkflowStep.ChooseRole => SelectRoleModel,
-            _ => null
-        };
+        //public object? GetStepData(ContributorWorkflowStep step) => step switch
+        //{
+        //    ContributorWorkflowStep.AddEmailAddress => AddUserEmailAddressModel,
+        //    ContributorWorkflowStep.ContactDetails => ContributorContactDetailsModel,
+        //    ContributorWorkflowStep.ChooseHeatNetwork => ChooseHeatNetworkModel,
+        //    ContributorWorkflowStep.ChooseRole => ChooseRoleModel,
+        //    _ => null
+        //};
 
         void IWorkflowModel<ContributorWorkflowStep>.AdvanceToStep(ContributorWorkflowStep nextStep) => AdvanceToStep(nextStep);
 
-        object? IWorkflowModel<ContributorWorkflowStep>.GetStepData(ContributorWorkflowStep step) => GetStepData(step);
+        // object? IWorkflowModel<ContributorWorkflowStep>.GetStepData(ContributorWorkflowStep step) => GetStepData(step);
     }
 
 
