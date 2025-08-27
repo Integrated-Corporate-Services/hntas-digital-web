@@ -14,12 +14,14 @@ public class HomeControllerTests
     private readonly Mock<IUserService> _userServiceMock;
     private readonly Mock<ILogger<HomeController>> _loggerMock;
     private readonly Mock<ISessionHelper> _sessionHelperMock;
+    private readonly Mock<IInvitationService> _invitationServiceMock;
 
     public HomeControllerTests()
     {
         _userServiceMock = new Mock<IUserService>();
         _loggerMock = new Mock<ILogger<HomeController>>();
         _sessionHelperMock = new Mock<ISessionHelper>();
+        _invitationServiceMock = new Mock<IInvitationService>();
     }
 
     private HomeController CreateController(ClaimsPrincipal user = null)
@@ -27,7 +29,8 @@ public class HomeControllerTests
         var controller = new HomeController(
             _userServiceMock.Object,
             _loggerMock.Object,
-            _sessionHelperMock.Object
+            _sessionHelperMock.Object,
+            _invitationServiceMock.Object
         );
 
         var httpContext = new DefaultHttpContext();

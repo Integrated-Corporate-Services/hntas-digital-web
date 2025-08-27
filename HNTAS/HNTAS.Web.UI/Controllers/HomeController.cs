@@ -12,12 +12,17 @@ public class HomeController : Controller
     private readonly IUserService _iUserService;
     private readonly ILogger<HomeController> _logger;
     private readonly ISessionHelper _sessionHelper;
+    private readonly IInvitationService _invitationService;
 
-    public HomeController(IUserService iUserService, ILogger<HomeController> logger, ISessionHelper sessionHelper)
+    public HomeController(IUserService iUserService,
+        ILogger<HomeController> logger,
+        ISessionHelper sessionHelper,
+        IInvitationService invitationService)
     {
         _iUserService = iUserService;
         _logger = logger;
         _sessionHelper = sessionHelper;
+        _invitationService = invitationService;
     }
 
     [Authorize]
@@ -25,19 +30,79 @@ public class HomeController : Controller
     {
         var email = User.FindFirstValue("email");
         var oneLoginId = User.FindFirstValue("sub");
-        var state = Request.Query["state"].ToString();
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
         {
             _logger.LogError("Missing claims. Email: '{Email}', ID: '{Id}'", email, oneLoginId);
             TempData["ErrorMessage"] = "Unable to retrieve essential user info. Please try again.";
-            return View();
+            return BadRequest();
+        }
+
+        //check for invitation flow
+        var invitedEmail = User.FindFirst("hntas.invitedEmail")?.Value;
+        var invitationId = User.FindFirst("hntas.invitationId")?.Value;
+
+        if (!string.IsNullOrEmpty(invitedEmail) && !string.Equals(email, invitedEmail, StringComparison.OrdinalIgnoreCase))
+        {
+            _logger.LogError("Authenticated email does not match invited email. Authenticated: '{AuthenticatedEmail}', Invited: '{InvitedEmail}'", email, invitedEmail);
+            return BadRequest();
         }
 
         try
         {
+
+            // If invitationId is present, we are in an invitation flow
+            if (!string.IsNullOrEmpty(invitationId))
+            {
+
+                var inviterUserId = User.FindFirst("hntas.inviterUserId")?.Value;
+                var inviterOrgId = User.FindFirst("hntas.inviterOrgId")?.Value;
+
+                if (string.IsNullOrEmpty(invitedEmail) || string.IsNullOrEmpty(inviterUserId) || string.IsNullOrEmpty(inviterOrgId))
+                {
+                    _logger.LogError("Invitation flow data incomplete. InvitedEmail: '{InvitedEmail}' , InviterUserId: '{inviterUserId}', InviterOrgId: '{inviterOrgId}'",
+                        invitedEmail, inviterUserId, inviterOrgId);
+
+                    TempData["ErrorMessage"] = "We couldn't process your invitation due to missing information. Please try the link again or contact support if the issue persists.";
+                    return BadRequest();
+                }
+
+                //check invitation is already accepted
+                var invitation = await _invitationService.GetInvitationByIdAsync(invitationId);
+
+                if (invitation == null)
+                {
+                    _logger.LogInformation("Invitation not found for invitationId : {invitationId}", invitationId);
+                    return BadRequest();
+                }
+
+                if (invitation.Status == InvitationStatus.Invited)
+                {
+                    var userId = await _iUserService.AcceptUserInvitation(new InvitedUserRequest(
+                        invitedEmail: invitedEmail,
+                        invitationId: invitationId,
+                        oneLoginId: oneLoginId,
+                        inviterOrgId: inviterOrgId));
+
+                    if (string.IsNullOrWhiteSpace(userId))
+                    {
+                        _logger.LogError("API returned no valid user object after accepting invitation.");
+                        return BadRequest();
+                    }
+
+                    _logger.LogInformation($"Invitation updated successfully for the invitationId: {invitationId}, invitedEmail : {invitedEmail}");
+
+                    _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, userId);
+
+                    return RedirectToAction("UserAccount", "Dashboard");
+                }
+
+
+            }
+
             var existingUser = await _iUserService.GetUserByOneLoginId(oneLoginId);
 
+            // Standard registration flow for non-invited users
             if (existingUser == null)
             {
                 var registration = new InitialUserRegistrationRequest(oneLoginId: oneLoginId, emailId: email, status: UserStatus.Active);
@@ -49,27 +114,31 @@ public class HomeController : Controller
                 {
                     _logger.LogError("API returned no valid user object.");
                     TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
-                    return View();
+                    return BadRequest();
                 }
 
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, newUserId);
+
                 return View();
             }
-
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
-
-            if (existingUser.OrgId != null)
+            // Existing user flow
+            else if (existingUser != null)
             {
-                return RedirectToAction("UserAccount", "Dashboard");
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
+
+                if (existingUser.OrgId != null)
+                {
+                    return RedirectToAction("UserAccount", "Dashboard");
+                }
             }
 
-            return View();
+            return RedirectToAction("UserAccount", "Dashboard");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Exception during initial user registration for {Email}", email);
             TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
-            return View();
+            return BadRequest();
         }
     }
 
@@ -86,7 +155,18 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult StartPage()
     {
-        _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+        var invitedEmail = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.InvitedTokenEmail);
+
+        if (!string.IsNullOrEmpty(invitedEmail))
+        {
+            this.ShowBackButton("YouHaveBeenInvited", "Contributor");
+            ViewBag.NavigateUrl = Url.Action("Index", "Home");
+        }
+        else
+        {
+            ViewBag.NavigateUrl = Url.Action("WhatDoYouWantToDo");
+        }
+
         return View();
     }
 
@@ -102,6 +182,7 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult WhatDoYouWantToDo(WhatDoYouWantToDoViewModel model)
     {
+        this.ShowBackButton("StartPage", "Home");
         if (!ModelState.IsValid)
         {
             this.ShowBackButton("StartPage", "Home");

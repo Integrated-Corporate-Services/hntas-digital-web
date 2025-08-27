@@ -39,7 +39,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="type">type</param>
         /// <param name="registeredAddress">registeredAddress</param>
         [JsonConstructor]
-        public OrganisationResponse(Option<string?> orgId = default, Option<string?> name = default, Option<string?> companiesHouseNumber = default, Option<string?> type = default, Option<RegisteredAddress?> registeredAddress = default)
+        public OrganisationResponse(Option<string?> orgId = default, Option<string?> name = default, Option<string?> companiesHouseNumber = default, Option<OrganisationType?> type = default, Option<RegisteredAddress?> registeredAddress = default)
         {
             OrgIdOption = orgId;
             NameOption = name;
@@ -50,6 +50,19 @@ namespace HNTAS.Api.Client.Model
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Used to track the state of Type
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<OrganisationType?> TypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Type
+        /// </summary>
+        [JsonPropertyName("type")]
+        public OrganisationType? Type { get { return this.TypeOption; } set { this.TypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of OrgId
@@ -89,19 +102,6 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("companiesHouseNumber")]
         public string? CompaniesHouseNumber { get { return this.CompaniesHouseNumberOption; } set { this.CompaniesHouseNumberOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of Type
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> TypeOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Type
-        /// </summary>
-        [JsonPropertyName("type")]
-        public string? Type { get { return this.TypeOption; } set { this.TypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of RegisteredAddress
@@ -169,7 +169,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> orgId = default;
             Option<string?> name = default;
             Option<string?> companiesHouseNumber = default;
-            Option<string?> type = default;
+            Option<OrganisationType?> type = default;
             Option<RegisteredAddress?> registeredAddress = default;
 
             while (utf8JsonReader.Read())
@@ -197,7 +197,9 @@ namespace HNTAS.Api.Client.Model
                             companiesHouseNumber = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "type":
-                            type = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? typeRawValue = utf8JsonReader.GetString();
+                            if (typeRawValue != null)
+                                type = new Option<OrganisationType?>(OrganisationTypeValueConverter.FromStringOrDefault(typeRawValue));
                             break;
                         case "registeredAddress":
                             registeredAddress = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions)!);
@@ -253,9 +255,6 @@ namespace HNTAS.Api.Client.Model
             if (organisationResponse.NameOption.IsSet && organisationResponse.Name == null)
                 throw new ArgumentNullException(nameof(organisationResponse.Name), "Property is required for class OrganisationResponse.");
 
-            if (organisationResponse.TypeOption.IsSet && organisationResponse.Type == null)
-                throw new ArgumentNullException(nameof(organisationResponse.Type), "Property is required for class OrganisationResponse.");
-
             if (organisationResponse.RegisteredAddressOption.IsSet && organisationResponse.RegisteredAddress == null)
                 throw new ArgumentNullException(nameof(organisationResponse.RegisteredAddress), "Property is required for class OrganisationResponse.");
 
@@ -272,8 +271,10 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("companiesHouseNumber");
 
             if (organisationResponse.TypeOption.IsSet)
-                writer.WriteString("type", organisationResponse.Type);
-
+            {
+                var typeRawValue = OrganisationTypeValueConverter.ToJsonValue(organisationResponse.Type!.Value);
+                writer.WriteString("type", typeRawValue);
+            }
             if (organisationResponse.RegisteredAddressOption.IsSet)
             {
                 writer.WritePropertyName("registeredAddress");

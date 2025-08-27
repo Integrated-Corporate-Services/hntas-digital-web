@@ -5,12 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** |  | [optional] 
+**InviterUserId** | **string** |  | [optional] 
 **Email** | **string** |  | [optional] 
 **FirstName** | **string** |  | [optional] 
 **LastName** | **string** |  | [optional] 
 **FullName** | **string** |  | [optional] 
-**Roles** | **List&lt;string&gt;** |  | [optional] 
-**Status** | **string** |  | [optional] 
+**InvitedHnId** | **string** |  | [optional] 
+**Roles** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | [optional] 
+**Status** | **InvitationStatus** |  | [optional] 
 **InvitedAt** | **DateTimeOffset** |  | [optional] 
 **AcceptedAt** | **DateTimeOffset** |  | [optional] 
 **RejectedAt** | **DateTimeOffset** |  | [optional] 

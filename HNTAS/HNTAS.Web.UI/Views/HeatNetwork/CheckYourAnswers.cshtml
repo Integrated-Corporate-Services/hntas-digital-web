@@ -3,8 +3,12 @@
 
 @{
     ViewData["Title"] = "Check your answers";
-    var heatNetworkNameModel = Model.HeatNetworkNameModel;
-    var heatNetworkLocationModel = Model.HeatNetworkLocationModel;
+    var heatNetworkName = Model.HeatNetworkNameModel.HeatNetworkName;
+    var heatNetworkLocation = Model.HeatNetworkLocationModel.HeatNetworkLocation;
+    var heatNetworkPhase = Model.HeatNetworkPhaseModel.HeatNetworkPhase;
+    var hasElementBeenRegistered = Model.HasElementBeenRegisteredModel?.HasElementBeenRegistered;
+    var hasPlanningApplicationBeenSubmitted = Model.HasPlanningApplicationBeenSubmittedModel?.HasPlanningApplicationBeenSubmitted;
+    var pathway = Model.PathwayModel.Pathway;
     bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) &&
                                 ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
     var fieldOrder = new[] { nameof(Model.ConfirmedDeclaration) };
@@ -20,21 +24,66 @@
             <h2 class="govuk-heading-m">Heat Network details</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Heat Network Location</dt>
-                    <dd class="govuk-summary-list__value">@heatNetworkLocationModel?.HeatNetworkLocation</dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("EnterHNLocation", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNLocation</span></a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Heat Network Name</dt>
-                    <dd class="govuk-summary-list__value">@heatNetworkNameModel?.HeatNetworkName</dd>
+                    <dd class="govuk-summary-list__value">@heatNetworkName</dd>
                     <dd class="govuk-summary-list__actions">
                         <a class="govuk-link" href="@Url.Action("EnterHNName", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNName</span></a>
                     </dd>
                 </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Heat Network Location</dt>
+                    <dd class="govuk-summary-list__value">@heatNetworkLocation</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="@Url.Action("EnterHNLocation", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNLocation</span></a>
+                    </dd>
+                </div>
             </dl>
+            <h2 class="govuk-heading-m">Heat Network pathway (new build stage @pathway - 7)</h2>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Feasibility or design phase</dt>
+                    <dd class="govuk-summary-list__value">@(heatNetworkPhase == "design" ? "Yes" : "No")</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="@Url.Action("EnterHNPhase", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                    </dd>
+                </div>
+            </dl>
+            
+            @if(heatNetworkPhase == "construction")
+            {
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Construction phase</dt>
+                        <dd class="govuk-summary-list__value">Yes</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href=" @Url.Action("EnterHNPhase", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                        </dd>
+                    </div>
+                </dl>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Element registered and evidence provided</dt>
+                        <dd class="govuk-summary-list__value">@(hasElementBeenRegistered == "yes" ? "Yes" : "No")</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href=" @Url.Action("HasElementBeenRegistered", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                        </dd>
+                    </div>
+                </dl>
+                @if (!(hasPlanningApplicationBeenSubmitted == null))
+                {
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Planning application submitted</dt>
+                            <dd class="govuk-summary-list__value">@(hasPlanningApplicationBeenSubmitted == "yes" ? "Yes" : "No")</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href=" @Url.Action("HasPlanningApplicationBeenSubmitted", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                            </dd>
+                        </div>
+                    </dl>
+                }
+            }
 
+        
             <h2 class="govuk-heading-m">Declaration</h2>
             <div class="govuk-form-group @(hasDeclarationErrors ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset" aria-describedby="@(hasDeclarationErrors ? "confirmDeclaration-error" : "")">

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HNTAS.Web.UI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
 {
@@ -15,10 +16,37 @@ namespace HNTAS.Web.UI.Models
         public string HeatNetworkLocation { get; set; }
     }
 
+    public class HeatNetworkPhaseModel
+    {
+        [Required(ErrorMessage = "Please select the heat network phase.")]
+        public string HeatNetworkPhase { get; set; }
+    }
+
+    public class HasElementBeenRegisteredModel
+    {
+        [Required(ErrorMessage = "Please select an option.")]
+        public string? HasElementBeenRegistered { get; set; }
+    }
+
+    public class HasPlanningApplicationBeenSubmittedModel
+    {
+        [Required(ErrorMessage = "Please select an option.")]
+        public string? HasPlanningApplicationBeenSubmitted { get; set; }
+    }
+
+    public class PathwayModel
+    {
+        public string Pathway { get; set; }
+    }
+
     public class CheckYourAnswersHeatNetworkModel
     {
         public HeatNetworkNameModel HeatNetworkNameModel { get; set; }
         public HeatNetworkLocationModel HeatNetworkLocationModel { get; set; }
+        public HeatNetworkPhaseModel HeatNetworkPhaseModel { get; set; }
+        public HasElementBeenRegisteredModel? HasElementBeenRegisteredModel { get; set; }
+        public HasPlanningApplicationBeenSubmittedModel? HasPlanningApplicationBeenSubmittedModel { get; set; }
+        public PathwayModel PathwayModel { get; set; }
 
         // The ConfirmedDeclaration property, now part of this specific ViewModel
         [Display(Name = "I confirm that")]

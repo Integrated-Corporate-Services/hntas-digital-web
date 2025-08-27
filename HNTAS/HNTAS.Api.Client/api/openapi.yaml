@@ -6,6 +6,7 @@ servers:
 - url: https://localhost:7117/
 tags:
 - name: HeatNetworks
+- name: Invitations
 - name: Users
 paths:
   /api/HeatNetworks:
@@ -154,6 +155,186 @@ paths:
           description: Internal Server Error
       tags:
       - HeatNetworks
+  /api/Invitations/{id}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/InvitedUserResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvitedUserResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/InvitedUserResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Invitations
+  /api/Invitations/{id}/add-user-invitation:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddInvitationRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/AddInvitationRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+            text/json:
+              schema:
+                type: string
+          description: Created
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Invitations
+  /api/Invitations/{invitationId}/send-email:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: invitationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendInvitationEmailRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/SendInvitationEmailRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Invitations
+  /api/Invitations/{invitationId}/Reject:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: invitationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+      tags:
+      - Invitations
   /api/Users:
     get:
       responses:
@@ -430,30 +611,54 @@ paths:
           description: Internal Server Error
       tags:
       - Users
-  /api/Users/{id}/Invitation:
+  /api/Users/accept-invitation:
     patch:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          maxLength: 24
-          minLength: 24
-          type: string
-        style: simple
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateInvitationRequest"
+              $ref: "#/components/schemas/InvitedUserRequest"
           application/*+json:
             schema:
-              $ref: "#/components/schemas/UpdateInvitationRequest"
+              $ref: "#/components/schemas/InvitedUserRequest"
         required: true
       responses:
-        "204":
-          description: No Content
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+            text/json:
+              schema:
+                type: string
+          description: OK
+        "201":
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+            text/json:
+              schema:
+                type: string
+          description: Created
+        "409":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Conflict
         "404":
           content:
             text/plain:
@@ -471,6 +676,29 @@ paths:
       tags:
       - Users
   /api/Users/contributor-roles:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+          description: OK
+      tags:
+      - Users
+  /api/Users/user-roles:
     get:
       responses:
         "200":
@@ -595,8 +823,93 @@ paths:
           description: Not Found
       tags:
       - Users
+  /api/Users/registered-users:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Users
 components:
   schemas:
+    AddInvitationRequest:
+      example:
+        firstName: firstName
+        lastName: lastName
+        hnId: hnId
+        emailAddress: emailAddress
+        contributorRoles:
+        - DesignatedDesigner
+        - DesignatedDesigner
+        preferredContactType: Landline
+        mobileNumber: mobileNumber
+        landlineNumber: landlineNumber
+        contactNumberExtension: contactNumberExtension
+        status: Invited
+      properties:
+        emailAddress:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        preferredContactType:
+          $ref: "#/components/schemas/PreferredContactType"
+        landlineNumber:
+          maxLength: 20
+          nullable: true
+          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
+            s-]?\\d{1,9}$"
+          type: string
+        mobileNumber:
+          maxLength: 13
+          nullable: true
+          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
+            s-]?\\d{1,9}$"
+          type: string
+        contactNumberExtension:
+          maxLength: 10
+          nullable: true
+          pattern: ^\d*$
+          type: string
+        hnId:
+          type: string
+        contributorRoles:
+          items:
+            $ref: "#/components/schemas/ContributorRole"
+          minItems: 1
+          type: array
+        status:
+          $ref: "#/components/schemas/InvitationStatus"
+      required:
+      - contributorRoles
+      - emailAddress
+      - firstName
+      - hnId
+      - lastName
+      - preferredContactType
+      - status
+      type: object
     ContributorRole:
       enum:
       - DesignatedDesigner
@@ -648,6 +961,29 @@ components:
         location:
           type: string
       type: object
+    HnRoleMapping:
+      example:
+        hnId: hnId
+        role: DesignatedDesigner
+      properties:
+        hnId:
+          type: string
+        role:
+          $ref: "#/components/schemas/ContributorRole"
+      type: object
+    HeatNetworkResponse:
+      example:
+        hnId: hnId
+        name: name
+        location: location
+      properties:
+        hnId:
+          type: string
+        name:
+          type: string
+        location:
+          type: string
+      type: object
     InitialUserRegistrationRequest:
       example:
         oneLoginId: oneLoginId
@@ -671,22 +1007,47 @@ components:
       - Accepted
       - Rejected
       type: string
+    InvitedUserRequest:
+      example:
+        inviterOrgId: inviterOrgId
+        oneLoginId: oneLoginId
+        invitationId: invitationId
+        invitedEmail: invitedEmail
+      properties:
+        invitedEmail:
+          type: string
+        invitationId:
+          type: string
+        oneLoginId:
+          type: string
+        inviterOrgId:
+          type: string
+      required:
+      - invitationId
+      - invitedEmail
+      - inviterOrgId
+      - oneLoginId
+      type: object
     InvitedUserResponse:
       example:
         firstName: firstName
         lastName: lastName
+        inviterUserId: inviterUserId
         rejectedAt: 2000-01-23T04:56:07.000+00:00
         roles:
-        - roles
-        - roles
+        - DesignatedDesigner
+        - DesignatedDesigner
         fullName: fullName
         id: id
         email: email
-        status: status
+        invitedHnId: invitedHnId
+        status: Invited
         invitedAt: 2000-01-23T04:56:07.000+00:00
         acceptedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         id:
+          type: string
+        inviterUserId:
           type: string
         email:
           type: string
@@ -697,14 +1058,20 @@ components:
         fullName:
           nullable: true
           type: string
+        invitedHnId:
+          type: string
         roles:
           items:
-            type: string
+            $ref: "#/components/schemas/ContributorRole"
           type: array
         status:
-          type: string
+          $ref: "#/components/schemas/InvitationStatus"
         invitedAt:
           format: date-time
+          type: string
+        acceptedAt:
+          format: date-time
+          nullable: true
           type: string
         acceptedAt:
           format: date-time
@@ -719,83 +1086,105 @@ components:
       example:
         responsibleUser:
           lastName: lastName
-          preferredContactType: preferredContactType
+          hnRoleMappings:
+          - hnId: hnId
+            role: DesignatedDesigner
+          - hnId: hnId
+            role: DesignatedDesigner
+          preferredContactType: Landline
           mobileNumber: mobileNumber
           jobTitle: jobTitle
           roles:
-          - roles
-          - roles
+          - RegulatoryContact
+          - RegulatoryContact
           oneLoginId: oneLoginId
           fullName: fullName
           emailId: emailId
           landlineNumber: landlineNumber
+          contactNumberExtension: contactNumberExtension
           orgId: orgId
           firstName: firstName
           id: id
           hnIds:
           - hnIds
           - hnIds
-          status: status
+          status: Active
         registeredUsers:
         - lastName: lastName
-          preferredContactType: preferredContactType
+          hnRoleMappings:
+          - hnId: hnId
+            role: DesignatedDesigner
+          - hnId: hnId
+            role: DesignatedDesigner
+          preferredContactType: Landline
           mobileNumber: mobileNumber
           jobTitle: jobTitle
           roles:
-          - roles
-          - roles
+          - RegulatoryContact
+          - RegulatoryContact
           oneLoginId: oneLoginId
           fullName: fullName
           emailId: emailId
           landlineNumber: landlineNumber
+          contactNumberExtension: contactNumberExtension
           orgId: orgId
           firstName: firstName
           id: id
           hnIds:
           - hnIds
           - hnIds
-          status: status
+          status: Active
         - lastName: lastName
-          preferredContactType: preferredContactType
+          hnRoleMappings:
+          - hnId: hnId
+            role: DesignatedDesigner
+          - hnId: hnId
+            role: DesignatedDesigner
+          preferredContactType: Landline
           mobileNumber: mobileNumber
           jobTitle: jobTitle
           roles:
-          - roles
-          - roles
+          - RegulatoryContact
+          - RegulatoryContact
           oneLoginId: oneLoginId
           fullName: fullName
           emailId: emailId
           landlineNumber: landlineNumber
+          contactNumberExtension: contactNumberExtension
           orgId: orgId
           firstName: firstName
           id: id
           hnIds:
           - hnIds
           - hnIds
-          status: status
+          status: Active
         invitedUsers:
         - firstName: firstName
           lastName: lastName
+          inviterUserId: inviterUserId
           rejectedAt: 2000-01-23T04:56:07.000+00:00
           roles:
-          - roles
-          - roles
+          - DesignatedDesigner
+          - DesignatedDesigner
           fullName: fullName
           id: id
           email: email
-          status: status
+          invitedHnId: invitedHnId
+          status: Invited
           invitedAt: 2000-01-23T04:56:07.000+00:00
           acceptedAt: 2000-01-23T04:56:07.000+00:00
         - firstName: firstName
           lastName: lastName
+          inviterUserId: inviterUserId
           rejectedAt: 2000-01-23T04:56:07.000+00:00
           roles:
-          - roles
-          - roles
+          - DesignatedDesigner
+          - DesignatedDesigner
           fullName: fullName
           id: id
           email: email
-          status: status
+          invitedHnId: invitedHnId
+          status: Invited
           invitedAt: 2000-01-23T04:56:07.000+00:00
           acceptedAt: 2000-01-23T04:56:07.000+00:00
       properties:
@@ -854,7 +1243,7 @@ components:
           addressLine1: addressLine1
           addressLine2: addressLine2
         name: name
-        type: type
+        type: UkCompaniesHouse
         companiesHouseNumber: companiesHouseNumber
         orgId: orgId
       nullable: true
@@ -867,7 +1256,7 @@ components:
           nullable: true
           type: string
         type:
-          type: string
+          $ref: "#/components/schemas/OrganisationType"
         registeredAddress:
           $ref: "#/components/schemas/RegisteredAddress"
       type: object
@@ -909,90 +1298,53 @@ components:
       type: object
     RegisteredAddress:
       example:
-        country: country
-        town: town
-        county: county
-        postcode: postcode
-        addressLine1: addressLine1
-        addressLine2: addressLine2
+        lastName: lastName
+        preferredContactType: Landline
+        mobileNumber: mobileNumber
+        jobTitle: jobTitle
+        roles:
+        - RegulatoryContact
+        - RegulatoryContact
+        oneLoginId: oneLoginId
+        emailId: emailId
+        landlineNumber: landlineNumber
+        orgId: orgId
+        firstName: firstName
+        id: id
+        hnIds:
+        - hnIds
+        - hnIds
+        status: Active
       properties:
-        addressLine1:
-          type: string
-        addressLine2:
+        id:
           nullable: true
           type: string
-        town:
+        oneLoginId:
+          type: string
+        orgId:
           nullable: true
           type: string
-        county:
+        firstName:
           nullable: true
           type: string
-        postcode:
+        lastName:
+          nullable: true
           type: string
-        country:
+        jobTitle:
           nullable: true
           type: string
       required:
       - addressLine1
       - postcode
       type: object
-    UpdateInvitationRequest:
+    SendInvitationEmailRequest:
       example:
-        firstName: firstName
-        lastName: lastName
-        hnId: hnId
-        emailAddress: emailAddress
-        contributorRoles:
-        - DesignatedDesigner
-        - DesignatedDesigner
-        preferredContactType: Landline
-        mobileNumber: mobileNumber
-        landlineNumber: landlineNumber
-        contactNumberExtension: contactNumberExtension
-        status: Invited
+        token: token
       properties:
-        emailAddress:
+        token:
           type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        preferredContactType:
-          $ref: "#/components/schemas/PreferredContactType"
-        landlineNumber:
-          maxLength: 20
-          nullable: true
-          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
-            s-]?\\d{1,9}$"
-          type: string
-        mobileNumber:
-          maxLength: 13
-          nullable: true
-          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
-            s-]?\\d{1,9}$"
-          type: string
-        contactNumberExtension:
-          maxLength: 10
-          nullable: true
-          pattern: ^\d*$
-          type: string
-        hnId:
-          type: string
-        contributorRoles:
-          items:
-            $ref: "#/components/schemas/ContributorRole"
-          minItems: 1
-          type: array
-        status:
-          $ref: "#/components/schemas/InvitationStatus"
       required:
-      - contributorRoles
-      - emailAddress
-      - firstName
-      - hnId
-      - lastName
-      - preferredContactType
-      - status
+      - token
       type: object
     UpdateUserOrganisationRequest:
       example:
@@ -1048,6 +1400,11 @@ components:
     User:
       example:
         lastName: lastName
+        hnRoleMappings:
+        - hnId: hnId
+          role: DesignatedDesigner
+        - hnId: hnId
+          role: DesignatedDesigner
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
@@ -1058,6 +1415,7 @@ components:
         emailId: emailId
         landlineNumber: landlineNumber
         orgId: orgId
+        contactNumberExtension: contactNumberExtension
         firstName: firstName
         id: id
         hnIds:
@@ -1066,9 +1424,17 @@ components:
         status: Active
       properties:
         id:
-          nullable: true
           type: string
         oneLoginId:
+          type: string
+        firstName:
+          nullable: true
+          type: string
+        lastName:
+          nullable: true
+          type: string
+        fullName:
+          nullable: true
           type: string
         orgId:
           nullable: true
@@ -1092,15 +1458,20 @@ components:
         mobileNumber:
           nullable: true
           type: string
+        contactNumberExtension:
+          nullable: true
+          type: string
         hnIds:
           items:
             type: string
-          nullable: true
           type: array
         roles:
           items:
             $ref: "#/components/schemas/UserRole"
-          nullable: true
+          type: array
+        hnRoleMappings:
+          items:
+            $ref: "#/components/schemas/HnRoleMapping"
           type: array
         status:
           $ref: "#/components/schemas/UserStatus"
@@ -1108,12 +1479,12 @@ components:
     UserDetailsResponse:
       example:
         lastName: lastName
-        preferredContactType: preferredContactType
+        preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
         roles:
-        - roles
-        - roles
+        - RegulatoryContact
+        - RegulatoryContact
         oneLoginId: oneLoginId
         fullName: fullName
         organisation:
@@ -1125,7 +1496,7 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           name: name
-          type: type
+          type: UkCompaniesHouse
           companiesHouseNumber: companiesHouseNumber
           orgId: orgId
         emailId: emailId
@@ -1160,8 +1531,7 @@ components:
           nullable: true
           type: string
         preferredContactType:
-          nullable: true
-          type: string
+          $ref: "#/components/schemas/NullableOfPreferredContactType"
         landlineNumber:
           nullable: true
           type: string
@@ -1186,23 +1556,29 @@ components:
     UserResponse:
       example:
         lastName: lastName
-        preferredContactType: preferredContactType
+        hnRoleMappings:
+        - hnId: hnId
+          role: DesignatedDesigner
+        - hnId: hnId
+          role: DesignatedDesigner
+        preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
         roles:
-        - roles
-        - roles
+        - RegulatoryContact
+        - RegulatoryContact
         oneLoginId: oneLoginId
         fullName: fullName
         emailId: emailId
         landlineNumber: landlineNumber
+        contactNumberExtension: contactNumberExtension
         orgId: orgId
         firstName: firstName
         id: id
         hnIds:
         - hnIds
         - hnIds
-        status: status
+        status: Active
       properties:
         id:
           type: string
@@ -1220,14 +1596,17 @@ components:
           nullable: true
           type: string
         jobTitle:
-          type: string
-        preferredContactType:
           nullable: true
           type: string
+        preferredContactType:
+          $ref: "#/components/schemas/NullableOfPreferredContactType"
         landlineNumber:
           nullable: true
           type: string
         mobileNumber:
+          nullable: true
+          type: string
+        contactNumberExtension:
           nullable: true
           type: string
         orgId:
@@ -1235,21 +1614,22 @@ components:
           type: string
         roles:
           items:
-            type: string
-          nullable: true
+            $ref: "#/components/schemas/UserRole"
           type: array
         status:
-          type: string
+          $ref: "#/components/schemas/UserStatus"
         hnIds:
           items:
             type: string
-          nullable: true
+          type: array
+        hnRoleMappings:
+          items:
+            $ref: "#/components/schemas/HnRoleMapping"
           type: array
       type: object
     UserRole:
       enum:
       - RegulatoryContact
-      - ThirdParty
       - Contributor
       type: string
     UserStatus:

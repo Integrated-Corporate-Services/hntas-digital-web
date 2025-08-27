@@ -4,6 +4,6 @@
     {
         TStep CurrentStep { get; set; }
         void AdvanceToStep(TStep nextStep);
-        object? GetStepData(TStep step);
+        //object? GetStepData(TStep step);
     }
 }

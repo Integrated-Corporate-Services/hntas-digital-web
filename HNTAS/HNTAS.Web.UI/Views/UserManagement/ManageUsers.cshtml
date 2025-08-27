@@ -1,4 +1,5 @@
 ﻿@using System.Collections.Generic;
+@using HNTAS.Web.UI.Helpers
 @model HNTAS.Web.UI.Models.User.ManageUsersModel
 
 @{
@@ -35,7 +36,7 @@
                         </td>
                         <td class="govuk-table__cell">@user.EmailAddress</td>
                         <td class="govuk-table__cell">
-                            <strong class="govuk-tag @(user.Status == "Active" ? "govuk-tag--green" : "govuk-tag--grey")">
+                           <strong class="govuk-tag @GovUkTagHelper.GetTagClass(user.Status)">
                                 @user.Status
                             </strong>
                         </td>
@@ -46,8 +47,8 @@
             }
             </tbody>
         </table>
-            <a href="#" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+           @*  <a href="#" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
             Add new user
-        </a>
+        </a> *@
     </div>
 </div>

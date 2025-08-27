@@ -36,9 +36,10 @@ namespace HNTAS.Web.UI.Controllers
                 var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
                 var user = await _userService.GetManagedUsers(userId);
+                var contributorRoles = await _userService.GetContributorRolesAsync();
+                var userRoles = await _userService.GetUserRolesAsync();
 
                 var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-
 
                 var displayUsers = new List<UserDisplayModel>();
 
@@ -49,7 +50,7 @@ namespace HNTAS.Web.UI.Controllers
                         Id = user.ResponsibleUser.Id,
                         EmailAddress = user.ResponsibleUser.EmailId,
                         Name = user.ResponsibleUser.FullName,
-                        Roles = user.ResponsibleUser.Roles.Select(r => r.ToString()).ToList(),
+                        Roles = user.ResponsibleUser.Roles.Select(r => userRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
                         Status = user.ResponsibleUser.Status.ToString()
                     });
                 }
@@ -63,7 +64,7 @@ namespace HNTAS.Web.UI.Controllers
                             Id = contributor.Id,
                             EmailAddress = contributor.EmailId,
                             Name = contributor.FullName,
-                            Roles = contributor.Roles.Select(r => r.ToString()).ToList(),
+                            Roles = contributor.Roles.Select(r => userRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
                             Status = contributor.Status.ToString()
                         });
                     }
@@ -78,7 +79,7 @@ namespace HNTAS.Web.UI.Controllers
                             Id = invited.Id,
                             EmailAddress = invited.Email,
                             Name = invited.FullName,
-                            Roles = invited.Roles.Select(r => r.ToString()).ToList(),
+                            Roles = invited.Roles.Select(r => contributorRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
                             Status = invited.Status.ToString()
                         });
                     }
@@ -134,13 +135,13 @@ namespace HNTAS.Web.UI.Controllers
                 }
                 else if (viewModel.SelectedUserType == UserType.ExistingUser)
                 {
-                    // Logic for choosing from an existing list
-                    // For example: return RedirectToAction("ChooseFromExisting");
+                    _workflowManager.StartWorkflow<AddExistingContributorWorkflowModel>(WorkflowType.AddExistingContributor, ExistingContributorWorkflowStep.ChooseUser);
+                    _logger.LogInformation("Created new workflow state for {WorkflowType}", WorkflowType.AddExistingContributor);
+                    return RedirectToAction("ChooseUser", "ExistingContributor");
                 }
             }
 
-            ViewBag.OrganisationName = "Test Company Ltd";
-
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             return View(viewModel);
         }
     }
