@@ -27,21 +27,5 @@ namespace HNTAS.Web.UI.Models
         public string? DoesElementExist { get; set; }
     }
 
-    public class  HasElementBeenRegisteredViewModel
-    {
-        [Required(ErrorMessage = "Please select an option.")]
-        public string? HasElementBeenRegistered { get; set; }
-    }
-
-    public class HasPlanningApplicationBeenSubmittedViewModel
-    {
-        [Required(ErrorMessage = "Please select an option.")]
-        public string? HasPlanningApplicationBeenSubmitted { get; set; }
-    }
-
-    public class  HaveYouSignedMEContractViewModel
-    {
-        [Required(ErrorMessage = "Please select an option.")]
-        public string? HaveYouSignedMEContract { get; set; }
-    }
+    
 }

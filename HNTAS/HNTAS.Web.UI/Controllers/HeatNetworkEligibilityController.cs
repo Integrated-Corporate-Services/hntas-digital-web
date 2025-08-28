@@ -41,13 +41,6 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult MEContractIsSigned()
-        {
-            this.ShowBackButton("HaveYouSignedMEContract", "HeatNetworkEligibility");
-            return View();
-        }
-
-        [HttpGet]
         public IActionResult YouAreEligible()
         {
             return View();
@@ -148,44 +141,13 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("HNNotOperationalYet", "HeatNetworkEligibility");
                 case "no":
                     _sessionHelper.SaveToSession<IsHNCurrentlyOperatingViewModel>(HttpContext, SessionKeys.IsHNCurrentlyOperatingModelKey, model);
-                    return RedirectToAction("HaveYouSignedMEContract", "HeatNetworkEligibility");
+                    return RedirectToAction("YouAreEligible", "HeatNetworkEligibility");
                 default:
                     ModelState.AddModelError(nameof(model.IsCurrentlyOperating), "Please select a valid option.");
                     return View(model);
             }
         }
-
-        [HttpGet]
-        public IActionResult HaveYouSignedMEContract()
-        {
-            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
-            var model = _sessionHelper.GetFromSession<HaveYouSignedMEContractViewModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? new HaveYouSignedMEContractViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult HaveYouSignedMEContract(HaveYouSignedMEContractViewModel model)
-        {
-            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            switch (model.HaveYouSignedMEContract)
-            {
-                case "yes":
-                    _sessionHelper.SaveToSession<HaveYouSignedMEContractViewModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model);
-                    return RedirectToAction("MEContractIsSigned", "HeatNetworkEligibility");
-                case "no":
-                    _sessionHelper.SaveToSession<HaveYouSignedMEContractViewModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model);
-                    return RedirectToAction("YouAreEligible", "HeatNetworkEligibility");
-                default:
-                    ModelState.AddModelError(nameof(model.HaveYouSignedMEContract), "Please select a valid option.");
-                    return View(model);
-            }
-        }
-
+                
         #endregion
     }
 }

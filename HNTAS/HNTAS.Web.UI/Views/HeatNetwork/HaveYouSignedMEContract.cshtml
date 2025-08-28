@@ -1,5 +1,5 @@
 ﻿@using HNTAS.Web.UI.Models
-@model HaveYouSignedMEContractViewModel
+@model HaveYouSignedMEContractModel
 
 @{
     ViewData["Title"] = "Check your eligibility to register a heat network";
@@ -7,7 +7,7 @@
     var elementId = Html.GenerateIdFromName(nameof(Model.HaveYouSignedMEContract)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
     {
-        Controller = "HeatNetworkEligibility",
+        Controller = "HeatNetwork",
         Action = "HaveYouSignedMEContract",
         FieldOrder = fieldOrder,
         Questions = new List<Question>
