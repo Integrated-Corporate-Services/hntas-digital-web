@@ -117,6 +117,8 @@ builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 
+builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
+
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
