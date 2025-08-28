@@ -2,9 +2,9 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ main, DHB-210-content-changes ]
+    branches: [ main, test, staging, dev ]
   pull_request:
-    branches: [ main, DHB-210-content-changes ]
+    branches: [ main, test, staging, dev ]
   schedule:
     - cron: '0 0 * * 0'
 
