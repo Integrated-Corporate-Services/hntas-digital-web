@@ -1,0 +1,47 @@
+﻿@using HNTAS.Web.UI.Models.Soa
+@model ThermalSubstationViewModel
+
+@{
+    ViewData["Title"] = "Thermal substation";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <span class="govuk-caption-xl">List of elements</span>
+            <h1 class="govuk-heading-xl">
+                Thermal substation
+            </h1>
+
+            <form method="post">
+                <div class="govuk-form-group">
+                    <h2 class="govuk-heading-m">Thermal sub station location 1</h2>
+                    <p class="govuk-body">
+                        Enter the 3 words that represent your heat network's primary energy centre location. You can find this using <a href="https://what3words.com/" class="govuk-link" target="_blank" rel="noopener noreferrer">what 3 words</a> (opens in a new tab).
+                    </p>
+                    <label class="govuk-label" for="primary-location">
+                        Enter your 3 words here
+                    </label>
+                    <input class="govuk-input govuk-!-width-one-half" id="primary-location" name="PrimaryThermalSubstationLocation" type="text" value="@Model.PrimaryThermalSubstationLocation">
+                </div>
+
+                <div class="govuk-form-group">
+                    <h2 class="govuk-heading-m">Thermal sub station location 2</h2>
+                    <p class="govuk-body">
+                        Enter the 3 words that represent your heat network's primary energy centre location. You can find this using <a href="https://what3words.com/" class="govuk-link" target="_blank" rel="noopener noreferrer">what 3 words</a> (opens in a new tab).
+                    </p>
+                    <label class="govuk-label" for="additional-location">
+                        Enter your 3 words here
+                    </label>
+                    <input class="govuk-input govuk-!-width-one-half" id="additional-location" name="AdditionalThermalSubstationLocation" type="text">
+                </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>

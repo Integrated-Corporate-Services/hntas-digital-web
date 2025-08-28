@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "What connection types does your network have?";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <span class="govuk-caption-xl">Statement of applicability (SOA)</span>
+            <h1 class="govuk-heading-xl">
+                What connection types does your network have?
+            </h1>
+
+            <p class="govuk-body">Select all that apply</p>
+
+            <form asp-action="SubmitNetworkConnectionType" method="post">
+                <div class="govuk-form-group">
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="child-connection" name="connectionTypes" type="checkbox" value="Child">
+                            <label class="govuk-label govuk-checkboxes__label" for="child-connection">
+                                Child connections <span class="govuk-!-font-weight-regular">(Are you supplying any other networks)</span>
+                            </label>
+                            <div id="child-connection-item-hint" class="govuk-hint govuk-checkboxes__hint">
+                                Are you supplying any other district HN?
+                            </div>
+                        </div>
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="communal-connection" name="connectionTypes" type="checkbox" value="Communal">
+                            <label class="govuk-label govuk-checkboxes__label" for="communal-connection">
+                                Communal heat network connection
+                            </label>
+                            <div id="communal-connection-item-hint" class="govuk-hint govuk-checkboxes__hint">
+                                Are you supplying residential communally heated blocks
+                            </div>
+                        </div>
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="commercial-connection" name="connectionTypes" type="checkbox" value="Commercial">
+                            <label class="govuk-label govuk-checkboxes__label" for="commercial-connection">
+                                Commercial connection <span class="govuk-!-font-weight-regular">(hotel, office)</span>
+                            </label>
+                            <div id="commercial-connection-item-hint" class="govuk-hint govuk-checkboxes__hint">
+                                Are you supplying any other large public/commercial buildings (office, hotel, retail)
+                            </div>
+                        </div>
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="parent-connection" name="connectionTypes" type="checkbox" value="Parent">
+                            <label class="govuk-label govuk-checkboxes__label" for="parent-connection">
+                                Parent connection <span class="govuk-!-font-weight-regular">(Are you being supplied by another network)</span>
+                            </label>
+                            <div id="parent-connection-item-hint" class="govuk-hint govuk-checkboxes__hint">
+                                Are you being supplied by a district HN
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>

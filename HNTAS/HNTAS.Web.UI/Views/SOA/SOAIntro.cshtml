@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Introduction to Statement of Applicability (SOA)";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Introduction to Statement of Applicability (SOA)</h1>
+
+            <p class="govuk-body">
+                We need to know how your heat network is set up so we can give it the right Heat Network ID (HNID).
+            </p>
+
+            <p class="govuk-body">
+                In HNTAS, each network is treated separately based on its parts.
+            </p>
+
+            <p class="govuk-body">A heat network has:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>one energy centre (unless it's a closed loop)</li>
+                <li>one distribution network</li>
+            </ul>
+
+            <p class="govuk-body">
+                You must register each of the following as a separate heat network (HNID):
+            </p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>any additional energy centres</li>
+                <li>any additional distribution networks (considered extensions)</li>
+                <li>any communal networks in your development</li>
+            </ul>
+
+            <form asp-action="SubmitSOAIntro" method="post">
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+        </div>
+
+        <div class="govuk-grid-column-one-third">
+            <aside class="govuk-related-items">
+                <hr class="govuk-blue-bar" />
+                <h2 class="govuk-heading-m">Related content</h2>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li><a class="govuk-link" href="#">Link 1</a></li>
+                </ul>
+            </aside>
+        </div>
+    </div>
+</div>

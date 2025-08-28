@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewData["Title"] = "What is your heat network type?";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <span class="govuk-caption-xl">Statement of applicability (SOA)</span>
+            <h1 class="govuk-heading-xl">
+                What is your heat network type?
+            </h1>
+
+            <form asp-action="SubmitHeatNetworkType" method="post">
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-visually-hidden">
+                            <h2 class="govuk-fieldset__heading">
+                                What is your heat network type?
+                            </h2>
+                        </legend>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="type-1" name="heatNetworkType" type="radio" value="CSDH" data-aria-controls="conditional-CSDH">
+                                <label class="govuk-label govuk-radios__label" for="type-1">
+                                    City-scale district heating network (CSDH)
+                                </label>
+                                <div id="type-1-item-hint" class="govuk-hint govuk-radios__hint">
+                                    Connects multiple residential or commercial buildings, constructed independently with third parties connecting to it.
+                                </div>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="type-2" name="heatNetworkType" type="radio" value="DLDH" data-aria-controls="conditional-DLDH">
+                                <label class="govuk-label govuk-radios__label" for="type-2">
+                                    Development led district heating network (DLDH)
+                                </label>
+                                <div id="type-2-item-hint" class="govuk-hint govuk-radios__hint">
+                                    Connects multiple residential or commercial buildings, constructed simultaneously with the wider building works.
+                                </div>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="type-3" name="heatNetworkType" type="radio" value="LD" data-aria-controls="conditional-LD">
+                                <label class="govuk-label govuk-radios__label" for="type-3">
+                                    Large communal heat network (c.300 consumers) (LD)
+                                </label>
+                                <div id="type-3-item-hint" class="govuk-hint govuk-radios__hint">
+                                    Connects residential consumers, within one development, serving consumers across multiple buildings within the development.
+                                </div>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="type-4" name="heatNetworkType" type="radio" value="MC" data-aria-controls="conditional-MC">
+                                <label class="govuk-label govuk-radios__label" for="type-4">
+                                    Medium communal heat network (c.100 consumers) (MC)
+                                </label>
+                                <div id="type-4-item-hint" class="govuk-hint govuk-radios__hint">
+                                    Connects residential consumers, within one development, serving consumers across multiple buildings within the development.
+                                </div>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="type-5" name="heatNetworkType" type="radio" value="SC" data-aria-controls="conditional-SC">
+                                <label class="govuk-label govuk-radios__label" for="type-5">
+                                    Small communal heat network (c. 50 consumers) (SC)
+                                </label>
+                                <div id="type-5-item-hint" class="govuk-hint govuk-radios__hint">
+                                    Connects residential consumers, within one development, serving consumers within one building.
+                                </div>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="type-6" name="heatNetworkType" type="radio" value="Other" data-aria-controls="conditional-other">
+                                <label class="govuk-label govuk-radios__label" for="type-6">
+                                    Other
+                                </label>
+                            </div>
+                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-other">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" for="other-text">
+                                        Type of network
+                                    </label>
+                                    <input class="govuk-input govuk-!-width-one-half" id="other-text" name="otherText" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+        </div>
+        <div class="govuk-grid-column-one-third">
+            <div class="app-related-items">
+                <h2 class="govuk-heading-m">
+                    Related content
+                </h2>
+                <nav role="navigation" aria-labelledby="related-content-section">
+                    <ul class="govuk-list govuk-!-font-size-16">
+                        <li>
+                            <a class="govuk-link" href="#">
+                                Heat network types
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

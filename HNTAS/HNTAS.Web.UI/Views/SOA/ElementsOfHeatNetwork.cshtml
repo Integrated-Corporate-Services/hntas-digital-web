@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewData["Title"] = "Which elements are part of your heat network?";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="dashboard-card">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a href="@Url.Action("DefineSOA")" class="govuk-link govuk-link--no-visited-state">Part of define your overall SOA</a>
+                </h3>
+                <p class="govuk-body-s">Choose your elements</p>
+            </div>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <span class="govuk-caption-xl">SOA selection</span>
+            <h1 class="govuk-heading-xl">
+                Which elements are part of your heat network?
+            </h1>
+
+            <p class="govuk-body">Select all the elements you’ll need to provide Statement of Assurance (SOA) details for.</p>
+
+            <form asp-action="SubmitElementsOfHeatNetwork" method="post">
+                <div class="govuk-form-group">
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="element-1" name="elements" type="checkbox" value="EnergyCentres" checked="checked" data-aria-controls="conditional-energy-centres">
+                            <label class="govuk-label govuk-checkboxes__label" for="element-1">
+                                Energy centres
+                            </label>
+                            <div id="element-1-item-hint" class="govuk-hint govuk-checkboxes__hint">
+                                Number of energy centres. Only 1 allowed per heat network unless part of a closed loop
+                            </div>
+                        </div>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-energy-centres">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="energy-centres-count">
+                                    Number of energy centres
+                                </label>
+                                <input class="govuk-input govuk-!-width-one-quarter" id="energy-centres-count" name="energyCentresCount" type="text">
+                            </div>
+                        </div>
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="element-2" name="elements" type="checkbox" value="DistributionNetwork" checked="checked" data-aria-controls="conditional-distribution-network">
+                            <label class="govuk-label govuk-checkboxes__label" for="element-2">
+                                Distribution network
+                            </label>
+                            <div id="element-2-item-hint" class="govuk-hint govuk-checkboxes__hint">
+                                Number of distribution network. Only 1 allowed per heat network
+                            </div>
+                        </div>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-distribution-network">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="distribution-network-count">
+                                    Number of distribution network
+                                </label>
+                                <input class="govuk-input govuk-!-width-one-quarter" id="distribution-network-count" name="distributionNetworkCount" type="text">
+                            </div>
+                        </div>
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="element-3" name="elements" type="checkbox" value="ThermalSubStation" checked="checked" data-aria-controls="conditional-thermal-sub-station">
+                            <label class="govuk-label govuk-checkboxes__label" for="element-3">
+                                Thermal sub station
+                            </label>
+                        </div>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-thermal-sub-station">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="thermal-sub-station-count">
+                                    Number of thermal sub station
+                                </label>
+                                <input class="govuk-input govuk-!-width-one-quarter" id="thermal-sub-station-count" name="thermalSubStationCount" type="text">
+                            </div>
+                        </div>
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="element-4" name="elements" type="checkbox" value="CommunalDistributionNetwork" checked="checked" data-aria-controls="conditional-communal-distribution-network">
+                            <label class="govuk-label govuk-checkboxes__label" for="element-4">
+                                Communal distribution network
+                            </label>
+                        </div>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-communal-distribution-network">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="communal-distribution-network-count">
+                                    Number of communal distribution network
+                                </label>
+                                <input class="govuk-input govuk-!-width-one-quarter" id="communal-distribution-network-count" name="communalDistributionNetworkCount" type="text">
+                            </div>
+                        </div>
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="element-5" name="elements" type="checkbox" value="ConsumerConnections" checked="checked" data-aria-controls="conditional-consumer-connections">
+                            <label class="govuk-label govuk-checkboxes__label" for="element-5">
+                                Consumer connections
+                            </label>
+                        </div>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-consumer-connections">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="consumer-connections-count">
+                                    Number of consumer connections
+                                </label>
+                                <input class="govuk-input govuk-!-width-one-quarter" id="consumer-connections-count" name="consumerConnectionsCount" type="text">
+                            </div>
+                        </div>
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="element-6" name="elements" type="checkbox" value="ConsumerHeatSystems" checked="checked" data-aria-controls="conditional-consumer-heat-systems">
+                            <label class="govuk-label govuk-checkboxes__label" for="element-6">
+                                Consumer heat systems
+                            </label>
+                        </div>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-consumer-heat-systems">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="consumer-heat-systems-count">
+                                    Number of consumer heat systems
+                                </label>
+                                <input class="govuk-input govuk-!-width-one-quarter" id="consumer-heat-systems-count" name="consumerHeatSystemsCount" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>

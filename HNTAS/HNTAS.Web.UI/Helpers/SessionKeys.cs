@@ -18,6 +18,7 @@
         public const string IsHNCurrentlyOperatingModelKey = "isHNCurrentlyOperating";
         public const string HaveYouSignedMEContractModelKey = "haveYouSignedMEContract";
 
+        public const string HnId = "HnIdkey";
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
         public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
         public const string HeatNetworkPhaseModelKey = "HeatNetworkPhase";

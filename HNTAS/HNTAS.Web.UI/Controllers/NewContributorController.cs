@@ -349,12 +349,12 @@ namespace HNTAS.Web.UI.Controllers
             // Retrieve the data from TempData.
             var fullName = TempData["FullName"] as string;
             var heatNetwork = TempData["HeatNetwork"] as string;
-            var companyName = TempData["CompanyName"] as string;
+            var organisationName = TempData["OrganisationName"] as string;
 
             // You can use a ViewBag or ViewData to pass the data to the view.
             ViewData["FullName"] = fullName;
             ViewData["HeatNetwork"] = heatNetwork;
-            ViewData["CompanyName"] = companyName;
+            ViewData["OrganisationName"] = organisationName;
 
             return View("Contributor/Confirmation");
         }

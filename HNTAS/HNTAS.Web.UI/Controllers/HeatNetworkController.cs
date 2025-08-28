@@ -2,6 +2,7 @@
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -309,5 +310,41 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HNName = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey)?.HeatNetworkName;
             return View("Confirmation");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details([FromQuery] string hnid)
+        {
+            this.ShowBackButton("HeatNetworks", "UserManagement");
+            // get user details
+            var response = await _heatNetworksApi.ApiHeatNetworksHnIdGetAsync(hnid?.ToUpper());
+
+            if (response.IsOk)
+            {
+                var responseModel = response.Ok();
+
+                var model = new HNDetailsViewModel
+                {
+                    Name = responseModel?.Name,
+                    LocationUrl = responseModel?.Location,
+                    OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName),
+                    PathWay = "",
+                    UHNID = responseModel?.HnId
+                };
+
+                return View(model);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult SubmitDetails(HNDetailsViewModel model)
+        {
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
+            return RedirectToAction("SOAIntro", "SOA");
+        }
+
     }
 }
