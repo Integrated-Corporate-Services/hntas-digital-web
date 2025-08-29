@@ -1,4 +1,5 @@
 ﻿using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services.Core;

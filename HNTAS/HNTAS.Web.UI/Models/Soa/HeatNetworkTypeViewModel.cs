@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HNTAS.Web.UI.Models.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models.Soa
 {
@@ -11,13 +12,5 @@ namespace HNTAS.Web.UI.Models.Soa
         public string? SelectedHNType { get; set; }
 
         public string? OtherNetworkDescription { get; set; }
-    }
-
-    public class SelectItemOption
-    {
-        public string Value { get; set; } = null!;
-        public string Text { get; set; } = null!;
-        public string? Hint { get; set; }
-        public bool IsSelected { get; set; } = false;
     }
 }
