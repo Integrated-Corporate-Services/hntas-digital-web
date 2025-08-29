@@ -1,29 +1,29 @@
 ﻿@using HNTAS.Web.UI.Models
-@model HowManyDwellingsIncludedModel
+@model IsHNLocatedInEnglandScotlandWalesModel
 
 @{
     ViewData["Title"] = "Check your eligibility to register a heat network";
-    var fieldOrder = new[] { nameof(Model.HowManyDwellingsIncluded) };
-    var elementId = Html.GenerateIdFromName(nameof(Model.HowManyDwellingsIncluded)).ToLowerInvariant();
+    var fieldOrder = new[] { nameof(Model.IsHNLocatedInEnglandScotlandWales) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.IsHNLocatedInEnglandScotlandWales)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "HeatNetworkEligibility",
-        Action = "HowManyDwellingsIncluded",
+        Action = "IsHNLocatedInEnglandScotlandWales",
         FieldOrder = fieldOrder,
         Questions = new List<Question>
         {
             new Question
             {
                 QId = elementId,
-                QText = "Do any of your new heat networks have 10 or more dwellings?",
-                QDescText = "This includes houses, flats or units connected to the same heat network.",
+                QText = "Are any of your new heat networks in England, Scotland or Wales?",
+                QDescText = "Heat networks in <strong>Northern Ireland</strong> are exempt from HNTAS, so you do not need to use this service.",
                 QHintText = null,
                 Options = new List<Option>
                 {
                     new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
                     new Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = null }
                 },
-                SeletedOption = Model.HowManyDwellingsIncluded
+                SeletedOption = Model.IsHNLocatedInEnglandScotlandWales
             },
         }
     };
