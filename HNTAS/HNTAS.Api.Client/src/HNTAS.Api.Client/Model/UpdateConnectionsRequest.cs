@@ -34,11 +34,13 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="UpdateConnectionsRequest" /> class.
         /// </summary>
         /// <param name="hnId">hnId</param>
+        /// <param name="updatedBy">updatedBy</param>
         /// <param name="connectionTypes">connectionTypes</param>
         [JsonConstructor]
-        public UpdateConnectionsRequest(string hnId, List<ConnectionType> connectionTypes)
+        public UpdateConnectionsRequest(string hnId, string updatedBy, List<ConnectionType> connectionTypes)
         {
             HnId = hnId;
+            UpdatedBy = updatedBy;
             ConnectionTypes = connectionTypes;
             OnCreated();
         }
@@ -50,6 +52,12 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("hnId")]
         public string HnId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UpdatedBy
+        /// </summary>
+        [JsonPropertyName("updatedBy")]
+        public string UpdatedBy { get; set; }
 
         /// <summary>
         /// Gets or Sets ConnectionTypes
@@ -66,6 +74,7 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class UpdateConnectionsRequest {\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
+            sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
             sb.Append("  ConnectionTypes: ").Append(ConnectionTypes).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -105,6 +114,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> hnId = default;
+            Option<string?> updatedBy = default;
             Option<List<ConnectionType>?> connectionTypes = default;
 
             while (utf8JsonReader.Read())
@@ -125,6 +135,9 @@ namespace HNTAS.Api.Client.Model
                         case "hnId":
                             hnId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "updatedBy":
+                            updatedBy = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         case "connectionTypes":
                             connectionTypes = new Option<List<ConnectionType>?>(JsonSerializer.Deserialize<List<ConnectionType>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
@@ -137,16 +150,22 @@ namespace HNTAS.Api.Client.Model
             if (!hnId.IsSet)
                 throw new ArgumentException("Property is required for class UpdateConnectionsRequest.", nameof(hnId));
 
+            if (!updatedBy.IsSet)
+                throw new ArgumentException("Property is required for class UpdateConnectionsRequest.", nameof(updatedBy));
+
             if (!connectionTypes.IsSet)
                 throw new ArgumentException("Property is required for class UpdateConnectionsRequest.", nameof(connectionTypes));
 
             if (hnId.IsSet && hnId.Value == null)
                 throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class UpdateConnectionsRequest.");
 
+            if (updatedBy.IsSet && updatedBy.Value == null)
+                throw new ArgumentNullException(nameof(updatedBy), "Property is not nullable for class UpdateConnectionsRequest.");
+
             if (connectionTypes.IsSet && connectionTypes.Value == null)
                 throw new ArgumentNullException(nameof(connectionTypes), "Property is not nullable for class UpdateConnectionsRequest.");
 
-            return new UpdateConnectionsRequest(hnId.Value!, connectionTypes.Value!);
+            return new UpdateConnectionsRequest(hnId.Value!, updatedBy.Value!, connectionTypes.Value!);
         }
 
         /// <summary>
@@ -176,10 +195,15 @@ namespace HNTAS.Api.Client.Model
             if (updateConnectionsRequest.HnId == null)
                 throw new ArgumentNullException(nameof(updateConnectionsRequest.HnId), "Property is required for class UpdateConnectionsRequest.");
 
+            if (updateConnectionsRequest.UpdatedBy == null)
+                throw new ArgumentNullException(nameof(updateConnectionsRequest.UpdatedBy), "Property is required for class UpdateConnectionsRequest.");
+
             if (updateConnectionsRequest.ConnectionTypes == null)
                 throw new ArgumentNullException(nameof(updateConnectionsRequest.ConnectionTypes), "Property is required for class UpdateConnectionsRequest.");
 
             writer.WriteString("hnId", updateConnectionsRequest.HnId);
+
+            writer.WriteString("updatedBy", updateConnectionsRequest.UpdatedBy);
 
             writer.WritePropertyName("connectionTypes");
             JsonSerializer.Serialize(writer, updateConnectionsRequest.ConnectionTypes, jsonSerializerOptions);

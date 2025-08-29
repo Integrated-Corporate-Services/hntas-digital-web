@@ -1,12 +1,11 @@
-# HNTAS.Api.Client.Model.UpdateConnectionsRequest
+# HNTAS.Api.Client.Model.HeatNetworkElement
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**HnId** | **string** |  | 
-**UpdatedBy** | **string** |  | 
-**ConnectionTypes** | [**List&lt;ConnectionType&gt;**](ConnectionType.md) |  | 
+**Name** | **HeatNetworkElementType** |  | [optional] 
+**Quantity** | **int** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

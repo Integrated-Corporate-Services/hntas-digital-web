@@ -7,6 +7,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiSoaProjectConnectionsPatch**](SoaProjectApi.md#apisoaprojectconnectionspatch) | **PATCH** /api/SoaProject/connections |  |
 | [**ApiSoaProjectCreatePost**](SoaProjectApi.md#apisoaprojectcreatepost) | **POST** /api/SoaProject/create |  |
 | [**ApiSoaProjectHeatNetworkHnIdGet**](SoaProjectApi.md#apisoaprojectheatnetworkhnidget) | **GET** /api/SoaProject/heat-network/{hnId} |  |
+| [**ApiSoaProjectNetworkElementsPatch**](SoaProjectApi.md#apisoaprojectnetworkelementspatch) | **PATCH** /api/SoaProject/network-elements |  |
 | [**ApiSoaProjectNetworkTypePatch**](SoaProjectApi.md#apisoaprojectnetworktypepatch) | **PATCH** /api/SoaProject/network-type |  |
 | [**ApiSoaProjectProjectIdGet**](SoaProjectApi.md#apisoaprojectprojectidget) | **GET** /api/SoaProject/{projectId} |  |
 
@@ -48,7 +49,7 @@ No authorization required
 
 <a id="apisoaprojectcreatepost"></a>
 # **ApiSoaProjectCreatePost**
-> SoaProject ApiSoaProjectCreatePost (string hnId = null)
+> SoaProject ApiSoaProjectCreatePost (string hnId = null, string createdBy = null)
 
 
 
@@ -58,6 +59,7 @@ No authorization required
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | **hnId** | **string** |  | [optional]  |
+| **createdBy** | **string** |  | [optional]  |
 
 ### Return type
 
@@ -116,9 +118,47 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
+<a id="apisoaprojectnetworkelementspatch"></a>
+# **ApiSoaProjectNetworkElementsPatch**
+> void ApiSoaProjectNetworkElementsPatch (List<HeatNetworkElement> heatNetworkElement, string hnId = null, string updatedBy = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **heatNetworkElement** | [**List&lt;HeatNetworkElement&gt;**](HeatNetworkElement.md) |  |  |
+| **hnId** | **string** |  | [optional]  |
+| **updatedBy** | **string** |  | [optional]  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
 <a id="apisoaprojectnetworktypepatch"></a>
 # **ApiSoaProjectNetworkTypePatch**
-> void ApiSoaProjectNetworkTypePatch (NetworkTypeSelection2 networkTypeSelection2, string hnId = null)
+> void ApiSoaProjectNetworkTypePatch (NetworkTypeSelection2 networkTypeSelection2, string hnId = null, string updatedBy = null)
 
 
 
@@ -129,6 +169,7 @@ No authorization required
 |------|------|-------------|-------|
 | **networkTypeSelection2** | [**NetworkTypeSelection2**](NetworkTypeSelection2.md) |  |  |
 | **hnId** | **string** |  | [optional]  |
+| **updatedBy** | **string** |  | [optional]  |
 
 ### Return type
 

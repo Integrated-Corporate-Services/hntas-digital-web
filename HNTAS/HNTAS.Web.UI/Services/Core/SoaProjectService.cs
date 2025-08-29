@@ -50,28 +50,29 @@ namespace HNTAS.Web.UI.Services.Core
             throw new Exception($"Failed to fetch SoaProject with status code: {response.StatusCode}");
         }
 
-        public async Task<SoaProject> CreateAsync(string hnId)
+        public async Task<SoaProject> CreateAsync(string hnId, string createdBy)
         {
-            _logger.LogInformation("Creating new SOA project for Heat Network ID: {HeatNetworkId}", hnId);
+            _logger.LogInformation("Creating new SOA project for Heat Network ID: {HeatNetworkId} by {CreatedBy}", hnId, createdBy);
 
-            var response = await _soaProjectApi.ApiSoaProjectCreatePostAsync(hnId);
+            var response = await _soaProjectApi.ApiSoaProjectCreatePostAsync(hnId, createdBy);
 
             if (response.IsCreated)
             {
                 var createdProject = response.Created();
-                _logger.LogInformation("SOA project created successfully with ID: {ProjectId}", createdProject.Id);
+                _logger.LogInformation("SOA project created successfully with ID: {ProjectId} for Heat Network ID: {HeatNetworkId} by {CreatedBy}", createdProject.Id, hnId, createdBy);
                 return createdProject;
             }
 
-            _logger.LogError("Failed to create SOA project. Status code: {StatusCode}, Heat Network ID: {HeatNetworkId}", response.StatusCode, hnId);
-            throw new Exception($"Failed to fetch SoaProject with status code: {response.StatusCode}");
+            _logger.LogError("Failed to create SOA project. Status code: {StatusCode}, Heat Network ID: {HeatNetworkId}, CreatedBy: {CreatedBy}", response.StatusCode, hnId, createdBy);
+            throw new Exception($"Failed to create SoaProject for HN ID '{hnId}' by '{createdBy}' — status code: {response.StatusCode}");
         }
 
-        public async Task UpdateNetworkTypeAsync(string hnId, NetworkTypeSelection2 networkTypeSelection)
+
+        public async Task UpdateNetworkTypeAsync(string hnId, string updatedBy, NetworkTypeSelection2 networkTypeSelection)
         {
             _logger.LogInformation("Updating network type for project ID: {ProjectId} to {NetworkType}", hnId, networkTypeSelection.Type);
 
-            var response = await _soaProjectApi.ApiSoaProjectNetworkTypePatchAsync(networkTypeSelection, hnId);
+            var response = await _soaProjectApi.ApiSoaProjectNetworkTypePatchAsync(networkTypeSelection, hnId, updatedBy);
 
             if (response.IsOk)
             {
@@ -83,11 +84,11 @@ namespace HNTAS.Web.UI.Services.Core
             throw new Exception($"Failed to update SoaProject with status code: {response.StatusCode}");
         }
 
-        public async Task UpdateConnectionsAsync(string hnId, List<ConnectionType> connectionTypes)
+        public async Task UpdateConnectionsAsync(string hnId, string updatedBy, List<ConnectionType> connectionTypes)
         {
             _logger.LogInformation("Updating connection types for project ID: {ProjectId} with values: {ConnectionTypes}", hnId, string.Join(", ", connectionTypes));
 
-            var request = new UpdateConnectionsRequest(hnId, connectionTypes);
+            var request = new UpdateConnectionsRequest(hnId, updatedBy, connectionTypes);
             var response = await _soaProjectApi.ApiSoaProjectConnectionsPatchAsync(request);
 
             if (response.IsOk)
@@ -99,5 +100,31 @@ namespace HNTAS.Web.UI.Services.Core
             _logger.LogError("Failed to update connection types. Status code: {StatusCode}, Project ID: {ProjectId}", response.StatusCode, hnId);
             throw new Exception($"Failed to update SoaProject with status code: {response.StatusCode}");
         }
+
+        public async Task UpdateNetworkElements(string hnId, string updatedBy, List<HeatNetworkElement> networkElements)
+        {
+            _logger.LogInformation("Updating network elements for Heat Network ID: {HnId} by {UpdatedBy}. Element count: {ElementCount}", hnId, updatedBy, networkElements?.Count ?? 0);
+
+            try
+            {
+                var response = await _soaProjectApi.ApiSoaProjectNetworkElementsPatchAsync(networkElements, hnId, updatedBy);
+
+                if (response.IsOk)
+                {
+                    _logger.LogInformation("Network elements updated successfully for Heat Network ID: {HnId} by {UpdatedBy}", hnId, updatedBy);
+                }
+                else
+                {
+                    _logger.LogWarning("Network element update returned non-OK status. Status code: {StatusCode}, HN ID: {HnId}, UpdatedBy: {UpdatedBy}", response.StatusCode, hnId, updatedBy);
+                    throw new Exception($"Update failed with status code: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception occurred while updating network elements for Heat Network ID: {HnId} by {UpdatedBy}", hnId, updatedBy);
+                throw;
+            }
+        }
+
     }
 }

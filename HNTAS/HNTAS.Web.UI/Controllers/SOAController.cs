@@ -1,4 +1,5 @@
-﻿using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.Soa;
@@ -31,21 +32,28 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> SubmitSOAIntroAsync()
         {
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            if (hnId == null)
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+
+            if (hnId == null || userId == null)
             {
                 return BadRequest();
             }
             var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
-            soaProject ??= await _soaProjectService.CreateAsync(hnId);
+            soaProject ??= await _soaProjectService.CreateAsync(hnId, userId);
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SoaProjectId, soaProject.Id);
             return RedirectToAction("HeatNetworkType");
         }
 
         [HttpGet]
-        public IActionResult HeatNetworkType()
+        public async Task<IActionResult> HeatNetworkTypeAsync()
         {
             this.ShowBackButton("SOAIntro");
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
+            //convert soaProject to HeatNetworkTypeViewModel
+
             var model = new HeatNetworkTypeViewModel
             {
                 HeatNetworkTypes = GetHeatNetworkTypeOptions()
@@ -53,47 +61,10 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        private List<SelectItemOption> GetHeatNetworkTypeOptions()
-        {
-            var heatNetworkOptions = new List<SelectItemOption>
-            {
-                new() {
-                    Value = ApiHeatNetworkType.CityScaleDistrictHeatingNetwork.ToString(),
-                    Text = "City-scale district heating network (CSDH)",
-                    Hint = "Connects multiple buildings independently, with third-party connections."
-                },
-                new() {
-                    Value = ApiHeatNetworkType.DevelopmentLedDistrictHeatingNetwork.ToString(),
-                    Text = "Development led district heating network (DLDH)",
-                    Hint = "Constructed simultaneously with wider building works."
-                },
-                new() {
-                    Value = ApiHeatNetworkType.LargeCommunalHeatNetwork.ToString(),
-                    Text = "Large communal heat network (c.300 consumers)",
-                    Hint = "Serves multiple buildings within one development."
-                },
-                new() {
-                    Value = ApiHeatNetworkType.MediumCommunalHeatNetwork.ToString(),
-                    Text = "Medium communal heat network (c.100 consumers)",
-                    Hint = "Serves multiple buildings within one development."
-                },
-                new() {
-                    Value = ApiHeatNetworkType.SmallCommunalHeatNetwork.ToString(),
-                    Text = "Small communal heat network (c.50 consumers)",
-                    Hint = "Serves consumers within a single building."
-                },
-                new() {
-                    Value = ApiHeatNetworkType.Other.ToString(),
-                    Text = "Other"
-                }
-            };
-            return heatNetworkOptions;
-        }
-
         [HttpPost]
         public async Task<IActionResult> SubmitHeatNetworkTypeAsync(HeatNetworkTypeViewModel model)
         {
-            if (model.SelectedHNType == "Other" && string.IsNullOrWhiteSpace(model.OtherNetworkDescription))
+            if (model.SelectedHNType == ApiHeatNetworkType.Other && string.IsNullOrWhiteSpace(model.OtherNetworkDescription))
             {
                 ModelState.AddModelError(nameof(model.OtherNetworkDescription), "Please describe your network type.");
             }
@@ -106,9 +77,9 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            ApiHeatNetworkType hnype = (ApiHeatNetworkType)Enum.Parse(typeof(ApiHeatNetworkType), model.SelectedHNType);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            await _soaProjectService.UpdateNetworkTypeAsync(hnId, new Api.Client.Model.NetworkTypeSelection2(type: hnype, otherNetworkDescription: model.OtherNetworkDescription));
+            await _soaProjectService.UpdateNetworkTypeAsync(hnId, userId, new NetworkTypeSelection2(type: model.SelectedHNType, otherNetworkDescription: model.OtherNetworkDescription));
 
             return RedirectToAction("NetworkConnectionType");
         }
@@ -117,12 +88,28 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult NetworkConnectionType()
         {
             this.ShowBackButton("HeatNetworkType");
-            return View();
+
+            var model = new NetworkConnectionTypeViewModel
+            {
+                ConnectionTypes = GetConnectionTypeOptions()
+            };
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult SubmitNetworkConnectionType()
+        public async Task<IActionResult> SubmitNetworkConnectionTypeAsync(NetworkConnectionTypeViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                this.ShowBackButton("HeatNetworkType");
+                model.ConnectionTypes = GetConnectionTypeOptions();
+                return View("NetworkConnectionType", model);
+            }
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+
+            await _soaProjectService.UpdateConnectionsAsync(hnId, userId, model.SelectedConnections);
             return RedirectToAction("HeatNetworkSOADetails");
         }
 
@@ -142,12 +129,36 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult SelectElements()
         {
             this.ShowBackButton("HeatNetworkSOADetails");
-            return View();
+            var model = new HeatNetworkElementViewModel()
+            {
+                ElementOptions = GetElementOptions()
+            };
+
+            return View(model);
+        }
+
+
+        private List<HeatNetworkElementOption> GetElementOptions()
+        {
+            return new List<HeatNetworkElementOption>
+            {
+                new() { Id = HeatNetworkElementType.EnergyCentres.ToString(), Label = "Energy centres", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
+                new() { Id = HeatNetworkElementType.DistributionNetwork.ToString(), Label = "Distribution network", Hint = "Only 1 allowed per heat network." },
+                new() { Id = HeatNetworkElementType.ThermalSubStation.ToString(), Label = "Thermal sub station", Hint = "Number of thermal sub stations." },
+                new() { Id = HeatNetworkElementType.CommunalDistributionNetwork.ToString(), Label = "Communal distribution network", Hint = "Number of communal distribution networks." },
+                new() { Id = HeatNetworkElementType.ConsumerConnections.ToString(), Label = "Consumer connections", Hint = "Number of consumer connections." },
+                new() { Id = HeatNetworkElementType.ConsumerHeatSystems.ToString(), Label = "Consumer heat systems", Hint = "Number of consumer heat systems." }
+            };
         }
 
         [HttpPost]
-        public IActionResult SubmitSelectedElements()
+        public IActionResult SubmitSelectedElements(HeatNetworkElementViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                model.ElementOptions = GetElementOptions();
+                return View("SelectElements", model);
+            }
             return RedirectToAction("InitialSoa");
         }
 
@@ -288,6 +299,73 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             return View(model);
+        }
+
+
+        private List<SelectItemOption> GetHeatNetworkTypeOptions()
+        {
+            var heatNetworkOptions = new List<SelectItemOption>
+            {
+                new() {
+                    Value = ApiHeatNetworkType.CityScaleDistrictHeatingNetwork.ToString(),
+                    Text = "City-scale district heating network (CSDH)",
+                    Hint = "Connects multiple buildings independently, with third-party connections."
+                },
+                new() {
+                    Value = ApiHeatNetworkType.DevelopmentLedDistrictHeatingNetwork.ToString(),
+                    Text = "Development led district heating network (DLDH)",
+                    Hint = "Constructed simultaneously with wider building works."
+                },
+                new() {
+                    Value = ApiHeatNetworkType.LargeCommunalHeatNetwork.ToString(),
+                    Text = "Large communal heat network (c.300 consumers)",
+                    Hint = "Serves multiple buildings within one development."
+                },
+                new() {
+                    Value = ApiHeatNetworkType.MediumCommunalHeatNetwork.ToString(),
+                    Text = "Medium communal heat network (c.100 consumers)",
+                    Hint = "Serves multiple buildings within one development."
+                },
+                new() {
+                    Value = ApiHeatNetworkType.SmallCommunalHeatNetwork.ToString(),
+                    Text = "Small communal heat network (c.50 consumers)",
+                    Hint = "Serves consumers within a single building."
+                },
+                new() {
+                    Value = ApiHeatNetworkType.Other.ToString(),
+                    Text = "Other"
+                }
+            };
+            return heatNetworkOptions;
+        }
+
+
+        private List<SelectItemOption> GetConnectionTypeOptions()
+        {
+            var companyTypeOptions = new List<SelectItemOption>
+            {
+                new() {
+                    Value = ConnectionType.ChildConnections.ToString(),
+                    Text = "Child connections (Are you supplying any other networks)",
+                    Hint = "Are you supplying any other district HN?"
+                },
+                new() {
+                    Value = ConnectionType.CommunalHeatNetworkConnection.ToString(),
+                    Text = "Communal heat network connection",
+                    Hint = "Are you supplying residential communally heated blocks"
+                },
+                new() {
+                    Value = ConnectionType.CommercialConnection.ToString(),
+                    Text = "Commercial connection (hotel, office)",
+                    Hint = "Are you supplying any other large public/commercial buildings (office, hotel, retail)"
+                },
+                new() {
+                    Value = ConnectionType.ParentConnection.ToString(),
+                    Text = "Parent connection (Are you being supplied by another network)",
+                    Hint = "Are you being supplied by a district HN"
+                }
+            };
+            return companyTypeOptions;
         }
 
     }

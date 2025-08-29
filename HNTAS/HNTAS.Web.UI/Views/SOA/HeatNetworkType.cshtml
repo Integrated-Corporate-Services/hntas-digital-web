@@ -1,4 +1,5 @@
-﻿@using HNTAS.Web.UI.Models.Soa
+﻿@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Models.Soa
 @model HeatNetworkTypeViewModel
 
 @{
@@ -10,79 +11,40 @@
         <form asp-controller="SOA" asp-action="SubmitHeatNetworkType" method="post" novalidate>
             @Html.AntiForgeryToken()
             <span class="govuk-caption-xl">Statement of applicability (SOA)</span>
-            <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedHNType)) && ViewData.ModelState[nameof(Model.SelectedHNType)].Errors.Any() ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group @(Html.HasError(nameof(Model.SelectedHNType)) ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset"
-                          aria-describedby="@(ViewData.ModelState.ContainsKey(nameof(Model.SelectedHNType)) && ViewData.ModelState[nameof(Model.SelectedHNType)].Errors.Any() ? "heat-network-type-error" : "")">
+                          aria-describedby="@(Html.HasError(nameof(Model.SelectedHNType)) ? "heat-network-type-error" : "")">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             What is your heat network type?
                         </h1>
                     </legend>
 
-                    @if (ViewData.ModelState.ContainsKey(nameof(Model.SelectedHNType)) && ViewData.ModelState[nameof(Model.SelectedHNType)].Errors.Any())
+                    @if (Html.HasError(nameof(Model.SelectedHNType)))
                     {
                         <p id="heat-network-type-error" class="govuk-error-message">
                             <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.SelectedHNType)
                         </p>
                     }
 
-                    <div class="govuk-radios" data-module="govuk-radios">
-                        @{
-                            int itemsRendered = 0;
-                        }
-                        @foreach (var item in Model.HeatNetworkTypes)
-                        {
-                            var itemId = $"SelectedHNType_{itemsRendered}".ToLowerInvariant();
-                            var hintId = !string.IsNullOrWhiteSpace(item.Hint) ? $"heat-network-type-hint-{itemsRendered}" : "";
+                    @await Html.PartialAsync("Components/_GovUkRadioList", new GovUkRadioListModel
+                    {
+                        FieldId = Html.LowercaseIdFor(m => m.SelectedHNType),
+                        FieldName = nameof(Model.SelectedHNType),
+                        SelectedValue = Model.SelectedHNType?.ToString(),
+                        Items = Model.HeatNetworkTypes
+                    })
 
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input"
-                                       id="@itemId"
-                                       name="SelectedHNType"
-                                       type="radio"
-                                       value="@item.Value"
-                                       aria-describedby="@(string.IsNullOrWhiteSpace(hintId) ? null : hintId)"
-                                       @(Model.SelectedHNType == item.Value ? "checked" : "") />
-                                <label class="govuk-label govuk-radios__label" for="@itemId">
-                                    @item.Text
-                                </label>
-                                @if (!string.IsNullOrWhiteSpace(item.Hint))
-                                {
-                                    <div id="@hintId" class="govuk-hint govuk-radios__hint">
-                                        @item.Hint
-                                    </div>
-                                }
-                            </div>
-
-                            itemsRendered++;
-
-                            @* @if (itemsRendered == 5)
-                            {
-                                <div class="govuk-radios__divider">or</div>
-                            } *@
-                        }
-                        <div id="other-network-description-group" class="govuk-radios__conditional govuk-radios__conditional--hidden">
-                            <div class="govuk-form-group">
-                                <label class="govuk-label govuk-body-s" for="otherText">
-                                    Type of network
-                                </label>
-                                <input class="govuk-input" id="OtherNetworkDescription" name="OtherNetworkDescription" type="text" placeholder="Free text" value="@Model.OtherNetworkDescription">
-                            </div>
+                    <div id="other-network-description-group" class="govuk-radios__conditional govuk-radios__conditional--hidden">
+                        <div class="govuk-form-group">
+                            <label class="govuk-label govuk-body-s" for="otherText">
+                                Type of network
+                            </label>
+                            <input class="govuk-input" id="OtherNetworkDescription" name="OtherNetworkDescription" type="text" placeholder="Free text" value="@Model.OtherNetworkDescription">
                         </div>
                     </div>
                 </fieldset>
             </div>
-
-           
-           @*  <div id="other-network-description-group" class="govuk-form-group" style="@(Model.SelectedHNType == "Other" ? "" : "display: none;")">
-                <label class="govuk-label" for="OtherNetworkDescription">
-                    Describe your network type
-                </label>
-                <textarea class="govuk-textarea"
-                        id="OtherNetworkDescription"
-                        name="OtherNetworkDescription"
-                        rows="4">@Model.OtherNetworkDescription</textarea>
-            </div> *@
 
             <button type="submit" class="govuk-button" data-module="govuk-button">
                 Continue

@@ -6,8 +6,9 @@ namespace HNTAS.Web.UI.Services.Core
     {
         Task<SoaProject> GetAsync(string projectId);
         Task<SoaProject> GetByHnIdAsync(string hnId);
-        Task<SoaProject> CreateAsync(string hnId);
-        Task UpdateNetworkTypeAsync(string hnId, NetworkTypeSelection2 networkTypeSelection);
-        Task UpdateConnectionsAsync(string hnId, List<ConnectionType> connectionTypes);
+        Task<SoaProject> CreateAsync(string hnId, string createdBy);
+        Task UpdateNetworkTypeAsync(string hnId, string updatedBy, NetworkTypeSelection2 networkTypeSelection);
+        Task UpdateConnectionsAsync(string hnId, string updatedBy, List<ConnectionType> connectionTypes);
+        Task UpdateNetworkElements(string hnId, string updatedBy, List<HeatNetworkElement> networkElements);
     }
 }

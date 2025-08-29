@@ -37,16 +37,20 @@ namespace HNTAS.Api.Client.Model
         /// <param name="hnId">hnId</param>
         /// <param name="status">status</param>
         /// <param name="createdAt">createdAt</param>
+        /// <param name="createdBy">createdBy</param>
         /// <param name="updatedAt">updatedAt</param>
+        /// <param name="updatedBy">updatedBy</param>
         /// <param name="journeyData">journeyData</param>
         [JsonConstructor]
-        public SoaProject(Option<string?> id = default, Option<string?> hnId = default, Option<SoaProjectStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<DateTimeOffset?> updatedAt = default, Option<SoaJourneyData?> journeyData = default)
+        public SoaProject(Option<string?> id = default, Option<string?> hnId = default, Option<SoaProjectStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default, Option<SoaJourneyData?> journeyData = default)
         {
             IdOption = id;
             HnIdOption = hnId;
             StatusOption = status;
             CreatedAtOption = createdAt;
+            CreatedByOption = createdBy;
             UpdatedAtOption = updatedAt;
+            UpdatedByOption = updatedBy;
             JourneyDataOption = journeyData;
             OnCreated();
         }
@@ -106,6 +110,19 @@ namespace HNTAS.Api.Client.Model
         public DateTimeOffset? CreatedAt { get { return this.CreatedAtOption; } set { this.CreatedAtOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of CreatedBy
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> CreatedByOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets CreatedBy
+        /// </summary>
+        [JsonPropertyName("createdBy")]
+        public string? CreatedBy { get { return this.CreatedByOption; } set { this.CreatedByOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of UpdatedAt
         /// </summary>
         [JsonIgnore]
@@ -117,6 +134,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("updatedAt")]
         public DateTimeOffset? UpdatedAt { get { return this.UpdatedAtOption; } set { this.UpdatedAtOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of UpdatedBy
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> UpdatedByOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets UpdatedBy
+        /// </summary>
+        [JsonPropertyName("updatedBy")]
+        public string? UpdatedBy { get { return this.UpdatedByOption; } set { this.UpdatedByOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of JourneyData
@@ -143,7 +173,9 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
+            sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
+            sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
             sb.Append("  JourneyData: ").Append(JourneyData).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -196,7 +228,9 @@ namespace HNTAS.Api.Client.Model
             Option<string?> hnId = default;
             Option<SoaProjectStatus?> status = default;
             Option<DateTimeOffset?> createdAt = default;
+            Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
+            Option<string?> updatedBy = default;
             Option<SoaJourneyData?> journeyData = default;
 
             while (utf8JsonReader.Read())
@@ -228,8 +262,14 @@ namespace HNTAS.Api.Client.Model
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "createdBy":
+                            createdBy = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         case "updatedAt":
-                            updatedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
+                            updatedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "updatedBy":
+                            updatedBy = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "journeyData":
                             journeyData = new Option<SoaJourneyData?>(JsonSerializer.Deserialize<SoaJourneyData>(ref utf8JsonReader, jsonSerializerOptions));
@@ -252,10 +292,10 @@ namespace HNTAS.Api.Client.Model
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class SoaProject.");
 
-            if (updatedAt.IsSet && updatedAt.Value == null)
-                throw new ArgumentNullException(nameof(updatedAt), "Property is not nullable for class SoaProject.");
+            if (createdBy.IsSet && createdBy.Value == null)
+                throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class SoaProject.");
 
-            return new SoaProject(id, hnId, status, createdAt, updatedAt, journeyData);
+            return new SoaProject(id, hnId, status, createdAt, createdBy, updatedAt, updatedBy, journeyData);
         }
 
         /// <summary>
@@ -288,6 +328,9 @@ namespace HNTAS.Api.Client.Model
             if (soaProject.HnIdOption.IsSet && soaProject.HnId == null)
                 throw new ArgumentNullException(nameof(soaProject.HnId), "Property is required for class SoaProject.");
 
+            if (soaProject.CreatedByOption.IsSet && soaProject.CreatedBy == null)
+                throw new ArgumentNullException(nameof(soaProject.CreatedBy), "Property is required for class SoaProject.");
+
             if (soaProject.IdOption.IsSet)
                 writer.WriteString("id", soaProject.Id);
 
@@ -302,8 +345,20 @@ namespace HNTAS.Api.Client.Model
             if (soaProject.CreatedAtOption.IsSet)
                 writer.WriteString("createdAt", soaProject.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
 
+            if (soaProject.CreatedByOption.IsSet)
+                writer.WriteString("createdBy", soaProject.CreatedBy);
+
             if (soaProject.UpdatedAtOption.IsSet)
-                writer.WriteString("updatedAt", soaProject.UpdatedAtOption.Value!.Value.ToString(UpdatedAtFormat));
+                if (soaProject.UpdatedAtOption.Value != null)
+                    writer.WriteString("updatedAt", soaProject.UpdatedAtOption.Value!.Value.ToString(UpdatedAtFormat));
+                else
+                    writer.WriteNull("updatedAt");
+
+            if (soaProject.UpdatedByOption.IsSet)
+                if (soaProject.UpdatedByOption.Value != null)
+                    writer.WriteString("updatedBy", soaProject.UpdatedBy);
+                else
+                    writer.WriteNull("updatedBy");
 
             if (soaProject.JourneyDataOption.IsSet)
                 if (soaProject.JourneyDataOption.Value != null)

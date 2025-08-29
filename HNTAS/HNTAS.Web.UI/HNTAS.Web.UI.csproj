@@ -11,6 +11,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\DutyHolder\**" />
+    <Compile Remove="UnitTests\**" />
+    <Content Remove="Models\DutyHolder\**" />
+    <Content Remove="UnitTests\**" />
+    <EmbeddedResource Remove="Models\DutyHolder\**" />
+    <EmbeddedResource Remove="UnitTests\**" />
+    <None Remove="Models\DutyHolder\**" />
+    <None Remove="UnitTests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AWS.Logger.AspNetCore" Version="4.0.0" />
     <PackageReference Include="Base36" Version="1.0.0" />
     <PackageReference Include="GovUk.OneLogin.AspNetCore" Version="0.4.0" />
@@ -30,8 +41,6 @@
     <Folder Include="assets\js\shared\" />
     <Folder Include="assets\scss\shared\" />
     <Folder Include="assets\scss\views\" />
-    <Folder Include="Models\DutyHolder\" />
-    <Folder Include="UnitTests\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

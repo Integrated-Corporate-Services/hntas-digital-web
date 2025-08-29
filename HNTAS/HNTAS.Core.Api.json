@@ -745,6 +745,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "createdBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -875,6 +882,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "updatedBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -892,6 +906,103 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/NetworkTypeSelection2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SoaProject/network-elements": {
+      "patch": {
+        "tags": [
+          "SoaProject"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updatedBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HeatNetworkElement"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HeatNetworkElement"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HeatNetworkElement"
+                }
               }
             }
           },
@@ -1870,6 +1981,28 @@
           }
         }
       },
+      "HeatNetworkElement": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/HeatNetworkElementType"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "HeatNetworkElementType": {
+        "enum": [
+          "EnergyCentres",
+          "DistributionNetwork",
+          "ThermalSubStation",
+          "CommunalDistributionNetwork",
+          "ConsumerConnections",
+          "ConsumerHeatSystems"
+        ]
+      },
       "HeatNetworkResponse": {
         "type": "object",
         "properties": {
@@ -2195,6 +2328,12 @@
               "$ref": "#/components/schemas/ConnectionType"
             },
             "nullable": true
+          },
+          "heatNetworkElements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HeatNetworkElement"
+            }
           }
         },
         "nullable": true
@@ -2215,9 +2354,17 @@
             "type": "string",
             "format": "date-time"
           },
+          "createdBy": {
+            "type": "string"
+          },
           "updatedAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
           },
           "journeyData": {
             "$ref": "#/components/schemas/SoaJourneyData"
@@ -2234,11 +2381,15 @@
       "UpdateConnectionsRequest": {
         "required": [
           "hnId",
+          "updatedBy",
           "connectionTypes"
         ],
         "type": "object",
         "properties": {
           "hnId": {
+            "type": "string"
+          },
+          "updatedBy": {
             "type": "string"
           },
           "connectionTypes": {

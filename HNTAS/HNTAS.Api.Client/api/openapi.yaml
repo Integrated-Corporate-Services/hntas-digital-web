@@ -471,6 +471,13 @@ paths:
         schema:
           type: string
         style: form
+      - explode: true
+        in: query
+        name: createdBy
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "201":
           content:
@@ -551,6 +558,13 @@ paths:
         schema:
           type: string
         style: form
+      - explode: true
+        in: query
+        name: updatedBy
+        required: false
+        schema:
+          type: string
+        style: form
       requestBody:
         content:
           application/json:
@@ -562,6 +576,70 @@ paths:
           application/*+json:
             schema:
               $ref: "#/components/schemas/NetworkTypeSelection2"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SoaProject
+  /api/SoaProject/network-elements:
+    patch:
+      parameters:
+      - explode: true
+        in: query
+        name: hnId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: updatedBy
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/HeatNetworkElement"
+              type: array
+          text/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/HeatNetworkElement"
+              type: array
+          application/*+json:
+            schema:
+              items:
+                $ref: "#/components/schemas/HeatNetworkElement"
+              type: array
         required: true
       responses:
         "200":
@@ -1212,6 +1290,26 @@ components:
         name:
           type: string
       type: object
+    HeatNetworkElement:
+      example:
+        quantity: 0
+        name: EnergyCentres
+      properties:
+        name:
+          $ref: "#/components/schemas/HeatNetworkElementType"
+        quantity:
+          format: int32
+          type: integer
+      type: object
+    HeatNetworkElementType:
+      enum:
+      - EnergyCentres
+      - DistributionNetwork
+      - ThermalSubStation
+      - CommunalDistributionNetwork
+      - ConsumerConnections
+      - ConsumerHeatSystems
+      type: string
     HeatNetworkResponse:
       example:
         hnId: hnId
@@ -1615,6 +1713,11 @@ components:
       type: object
     SoaJourneyData:
       example:
+        heatNetworkElements:
+        - quantity: 0
+          name: EnergyCentres
+        - quantity: 0
+          name: EnergyCentres
         networkType:
           otherNetworkDescription: otherNetworkDescription
           type: CityScaleDistrictHeatingNetwork
@@ -1630,13 +1733,24 @@ components:
             $ref: "#/components/schemas/ConnectionType"
           nullable: true
           type: array
+        heatNetworkElements:
+          items:
+            $ref: "#/components/schemas/HeatNetworkElement"
+          type: array
       type: object
     SoaProject:
       example:
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
         id: id
         journeyData:
+          heatNetworkElements:
+          - quantity: 0
+            name: EnergyCentres
+          - quantity: 0
+            name: EnergyCentres
           networkType:
             otherNetworkDescription: otherNetworkDescription
             type: CityScaleDistrictHeatingNetwork
@@ -1655,8 +1769,14 @@ components:
         createdAt:
           format: date-time
           type: string
+        createdBy:
+          type: string
         updatedAt:
           format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
           type: string
         journeyData:
           $ref: "#/components/schemas/SoaJourneyData"
@@ -1670,11 +1790,14 @@ components:
     UpdateConnectionsRequest:
       example:
         hnId: hnId
+        updatedBy: updatedBy
         connectionTypes:
         - ChildConnections
         - ChildConnections
       properties:
         hnId:
+          type: string
+        updatedBy:
           type: string
         connectionTypes:
           items:
@@ -1684,6 +1807,7 @@ components:
       required:
       - connectionTypes
       - hnId
+      - updatedBy
       type: object
     UpdateUserOrganisationRequest:
       example:
