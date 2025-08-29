@@ -1,0 +1,89 @@
+﻿@using HNTAS.Web.UI.Models.Soa
+@model StepByStepGuideModel
+@{
+    ViewData["Title"] = "Initial SOA - add details for selected elements";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-xl">SOA selection</span>
+            <h1 class="govuk-heading-xl">
+                Initial SOA - add details for selected elements
+            </h1>
+
+            <div class="govuk-inset-text">
+                <p>You may need to provide these details for the selected elements</p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>location of energy centres</li>
+                    <li>location of distribution network</li>
+                    <li>number of sub station with their location</li>
+                    <li>consumer connection details</li>
+                    <li>consumer heat system details</li>
+                </ul>
+                <a href="@Url.Action("ElementList")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </a>
+            </div>
+
+            <h2 class="govuk-heading-m">Your selected elements</h2>
+
+            <div class="govuk-!-margin-bottom-6">
+                <span class="govuk-hint">List of elements</span>
+                <a class="govuk-link" href="#">Update</a>
+            </div>
+
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Element 1
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        Energy Centre (2)
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Element 2
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        Thermal sub station (2)
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Element 3
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        Communal distribution network (1)
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Element 4
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        Consumer connections (10)
+                    </dd>
+                </div>
+            </dl>
+
+        </div>
+
+        <div class="govuk-grid-column-one-third">
+            <div class="app-related-items">
+                <h2 class="govuk-heading-m">
+                    Part of
+                </h2>
+                <nav role="navigation" aria-labelledby="related-content-section">
+                    <ul class="govuk-list govuk-!-font-size-16">
+                        <li>
+                            <a class="govuk-link" href="#">Define overall SOA</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            @await Html.PartialAsync("Soa/_StepByStepGuide", Model.Steps)
+        </div>
+    </div>
+</div>

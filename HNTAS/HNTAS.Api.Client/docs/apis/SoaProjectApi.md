@@ -1,0 +1,190 @@
+# HNTAS.Api.Client.Api.SoaProjectApi
+
+All URIs are relative to *https://localhost:7117*
+
+| Method | HTTP request | Description |
+|--------|--------------|-------------|
+| [**ApiSoaProjectConnectionsPatch**](SoaProjectApi.md#apisoaprojectconnectionspatch) | **PATCH** /api/SoaProject/connections |  |
+| [**ApiSoaProjectCreatePost**](SoaProjectApi.md#apisoaprojectcreatepost) | **POST** /api/SoaProject/create |  |
+| [**ApiSoaProjectHeatNetworkHnIdGet**](SoaProjectApi.md#apisoaprojectheatnetworkhnidget) | **GET** /api/SoaProject/heat-network/{hnId} |  |
+| [**ApiSoaProjectNetworkTypePatch**](SoaProjectApi.md#apisoaprojectnetworktypepatch) | **PATCH** /api/SoaProject/network-type |  |
+| [**ApiSoaProjectProjectIdGet**](SoaProjectApi.md#apisoaprojectprojectidget) | **GET** /api/SoaProject/{projectId} |  |
+
+<a id="apisoaprojectconnectionspatch"></a>
+# **ApiSoaProjectConnectionsPatch**
+> void ApiSoaProjectConnectionsPatch (UpdateConnectionsRequest updateConnectionsRequest)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **updateConnectionsRequest** | [**UpdateConnectionsRequest**](UpdateConnectionsRequest.md) |  |  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apisoaprojectcreatepost"></a>
+# **ApiSoaProjectCreatePost**
+> SoaProject ApiSoaProjectCreatePost (string hnId = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **hnId** | **string** |  | [optional]  |
+
+### Return type
+
+[**SoaProject**](SoaProject.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | Created |  -  |
+| **400** | Bad Request |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apisoaprojectheatnetworkhnidget"></a>
+# **ApiSoaProjectHeatNetworkHnIdGet**
+> SoaProject ApiSoaProjectHeatNetworkHnIdGet (string hnId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **hnId** | **string** |  |  |
+
+### Return type
+
+[**SoaProject**](SoaProject.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apisoaprojectnetworktypepatch"></a>
+# **ApiSoaProjectNetworkTypePatch**
+> void ApiSoaProjectNetworkTypePatch (NetworkTypeSelection2 networkTypeSelection2, string hnId = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **networkTypeSelection2** | [**NetworkTypeSelection2**](NetworkTypeSelection2.md) |  |  |
+| **hnId** | **string** |  | [optional]  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apisoaprojectprojectidget"></a>
+# **ApiSoaProjectProjectIdGet**
+> SoaProject ApiSoaProjectProjectIdGet (string projectId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **projectId** | **string** |  |  |
+
+### Return type
+
+[**SoaProject**](SoaProject.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+

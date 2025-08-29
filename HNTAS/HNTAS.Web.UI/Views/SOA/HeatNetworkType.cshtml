@@ -1,108 +1,117 @@
-﻿
+﻿@using HNTAS.Web.UI.Models.Soa
+@model HeatNetworkTypeViewModel
+
 @{
     ViewData["Title"] = "What is your heat network type?";
 }
 
-<div class="govuk-width-container">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form asp-controller="SOA" asp-action="SubmitHeatNetworkType" method="post" novalidate>
+            @Html.AntiForgeryToken()
             <span class="govuk-caption-xl">Statement of applicability (SOA)</span>
-            <h1 class="govuk-heading-xl">
-                What is your heat network type?
-            </h1>
+            <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedHNType)) && ViewData.ModelState[nameof(Model.SelectedHNType)].Errors.Any() ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset"
+                          aria-describedby="@(ViewData.ModelState.ContainsKey(nameof(Model.SelectedHNType)) && ViewData.ModelState[nameof(Model.SelectedHNType)].Errors.Any() ? "heat-network-type-error" : "")">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            What is your heat network type?
+                        </h1>
+                    </legend>
 
-            <form asp-action="SubmitHeatNetworkType" method="post">
-                <div class="govuk-form-group">
-                    <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-visually-hidden">
-                            <h2 class="govuk-fieldset__heading">
-                                What is your heat network type?
-                            </h2>
-                        </legend>
-                        <div class="govuk-radios" data-module="govuk-radios">
+                    @if (ViewData.ModelState.ContainsKey(nameof(Model.SelectedHNType)) && ViewData.ModelState[nameof(Model.SelectedHNType)].Errors.Any())
+                    {
+                        <p id="heat-network-type-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.SelectedHNType)
+                        </p>
+                    }
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        @{
+                            int itemsRendered = 0;
+                        }
+                        @foreach (var item in Model.HeatNetworkTypes)
+                        {
+                            var itemId = $"SelectedHNType_{itemsRendered}".ToLowerInvariant();
+                            var hintId = !string.IsNullOrWhiteSpace(item.Hint) ? $"heat-network-type-hint-{itemsRendered}" : "";
+
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="type-1" name="heatNetworkType" type="radio" value="CSDH" data-aria-controls="conditional-CSDH">
-                                <label class="govuk-label govuk-radios__label" for="type-1">
-                                    City-scale district heating network (CSDH)
+                                <input class="govuk-radios__input"
+                                       id="@itemId"
+                                       name="SelectedHNType"
+                                       type="radio"
+                                       value="@item.Value"
+                                       aria-describedby="@(string.IsNullOrWhiteSpace(hintId) ? null : hintId)"
+                                       @(Model.SelectedHNType == item.Value ? "checked" : "") />
+                                <label class="govuk-label govuk-radios__label" for="@itemId">
+                                    @item.Text
                                 </label>
-                                <div id="type-1-item-hint" class="govuk-hint govuk-radios__hint">
-                                    Connects multiple residential or commercial buildings, constructed independently with third parties connecting to it.
-                                </div>
+                                @if (!string.IsNullOrWhiteSpace(item.Hint))
+                                {
+                                    <div id="@hintId" class="govuk-hint govuk-radios__hint">
+                                        @item.Hint
+                                    </div>
+                                }
                             </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="type-2" name="heatNetworkType" type="radio" value="DLDH" data-aria-controls="conditional-DLDH">
-                                <label class="govuk-label govuk-radios__label" for="type-2">
-                                    Development led district heating network (DLDH)
+
+                            itemsRendered++;
+
+                            @* @if (itemsRendered == 5)
+                            {
+                                <div class="govuk-radios__divider">or</div>
+                            } *@
+                        }
+                        <div id="other-network-description-group" class="govuk-radios__conditional govuk-radios__conditional--hidden">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-body-s" for="otherText">
+                                    Type of network
                                 </label>
-                                <div id="type-2-item-hint" class="govuk-hint govuk-radios__hint">
-                                    Connects multiple residential or commercial buildings, constructed simultaneously with the wider building works.
-                                </div>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="type-3" name="heatNetworkType" type="radio" value="LD" data-aria-controls="conditional-LD">
-                                <label class="govuk-label govuk-radios__label" for="type-3">
-                                    Large communal heat network (c.300 consumers) (LD)
-                                </label>
-                                <div id="type-3-item-hint" class="govuk-hint govuk-radios__hint">
-                                    Connects residential consumers, within one development, serving consumers across multiple buildings within the development.
-                                </div>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="type-4" name="heatNetworkType" type="radio" value="MC" data-aria-controls="conditional-MC">
-                                <label class="govuk-label govuk-radios__label" for="type-4">
-                                    Medium communal heat network (c.100 consumers) (MC)
-                                </label>
-                                <div id="type-4-item-hint" class="govuk-hint govuk-radios__hint">
-                                    Connects residential consumers, within one development, serving consumers across multiple buildings within the development.
-                                </div>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="type-5" name="heatNetworkType" type="radio" value="SC" data-aria-controls="conditional-SC">
-                                <label class="govuk-label govuk-radios__label" for="type-5">
-                                    Small communal heat network (c. 50 consumers) (SC)
-                                </label>
-                                <div id="type-5-item-hint" class="govuk-hint govuk-radios__hint">
-                                    Connects residential consumers, within one development, serving consumers within one building.
-                                </div>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="type-6" name="heatNetworkType" type="radio" value="Other" data-aria-controls="conditional-other">
-                                <label class="govuk-label govuk-radios__label" for="type-6">
-                                    Other
-                                </label>
-                            </div>
-                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-other">
-                                <div class="govuk-form-group">
-                                    <label class="govuk-label" for="other-text">
-                                        Type of network
-                                    </label>
-                                    <input class="govuk-input govuk-!-width-one-half" id="other-text" name="otherText" type="text">
-                                </div>
+                                <input class="govuk-input" id="OtherNetworkDescription" name="OtherNetworkDescription" type="text" placeholder="Free text" value="@Model.OtherNetworkDescription">
                             </div>
                         </div>
-                    </fieldset>
-                </div>
-                <button type="submit" class="govuk-button" data-module="govuk-button">
-                    Continue
-                </button>
-            </form>
-        </div>
-        <div class="govuk-grid-column-one-third">
-            <div class="app-related-items">
-                <h2 class="govuk-heading-m">
-                    Related content
-                </h2>
-                <nav role="navigation" aria-labelledby="related-content-section">
-                    <ul class="govuk-list govuk-!-font-size-16">
-                        <li>
-                            <a class="govuk-link" href="#">
-                                Heat network types
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                    </div>
+                </fieldset>
             </div>
-        </div>
+
+           
+           @*  <div id="other-network-description-group" class="govuk-form-group" style="@(Model.SelectedHNType == "Other" ? "" : "display: none;")">
+                <label class="govuk-label" for="OtherNetworkDescription">
+                    Describe your network type
+                </label>
+                <textarea class="govuk-textarea"
+                        id="OtherNetworkDescription"
+                        name="OtherNetworkDescription"
+                        rows="4">@Model.OtherNetworkDescription</textarea>
+            </div> *@
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const radios = document.querySelectorAll("input[name='SelectedHNType']");
+        const otherGroup = document.getElementById("other-network-description-group");
+
+        function toggleOtherField() {
+            const selected = document.querySelector("input[name='SelectedHNType']:checked");
+            if (!otherGroup) return; // Defensive check
+
+            if (selected && selected.value === "Other") {
+                otherGroup.style.display = "block";
+            } else {
+                otherGroup.style.display = "none";
+            }
+        }
+
+        radios.forEach(radio => {
+            radio.addEventListener("change", toggleOtherField);
+        });
+
+        toggleOtherField(); // Initial state
+    });
+</script>
+

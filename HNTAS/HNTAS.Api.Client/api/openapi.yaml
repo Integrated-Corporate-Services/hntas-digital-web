@@ -7,6 +7,7 @@ servers:
 tags:
 - name: HeatNetworks
 - name: Invitations
+- name: SoaProject
 - name: Users
 paths:
   /api/HeatNetworks:
@@ -386,6 +387,211 @@ paths:
           description: Bad Request
       tags:
       - Invitations
+  /api/SoaProject/{projectId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: projectId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/SoaProject"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoaProject"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/SoaProject"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SoaProject
+  /api/SoaProject/heat-network/{hnId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/SoaProject"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoaProject"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/SoaProject"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SoaProject
+  /api/SoaProject/create:
+    post:
+      parameters:
+      - explode: true
+        in: query
+        name: hnId
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "201":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/SoaProject"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoaProject"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/SoaProject"
+          description: Created
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+      tags:
+      - SoaProject
+  /api/SoaProject/connections:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConnectionsRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConnectionsRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateConnectionsRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SoaProject
+  /api/SoaProject/network-type:
+    patch:
+      parameters:
+      - explode: true
+        in: query
+        name: hnId
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NetworkTypeSelection2"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/NetworkTypeSelection2"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/NetworkTypeSelection2"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SoaProject
   /api/Users:
     get:
       responses:
@@ -961,6 +1167,13 @@ components:
       - preferredContactType
       - status
       type: object
+    ConnectionType:
+      enum:
+      - ChildConnections
+      - CommunalHeatNetworkConnection
+      - CommercialConnection
+      - ParentConnection
+      type: string
     ContributorRole:
       enum:
       - DesignatedDesigner
@@ -1012,6 +1225,15 @@ components:
         location:
           type: string
       type: object
+    HeatNetworkType:
+      enum:
+      - CityScaleDistrictHeatingNetwork
+      - DevelopmentLedDistrictHeatingNetwork
+      - LargeCommunalHeatNetwork
+      - MediumCommunalHeatNetwork
+      - SmallCommunalHeatNetwork
+      - Other
+      type: string
     HnRoleMapping:
       example:
         hnId: hnId
@@ -1233,6 +1455,29 @@ components:
             $ref: "#/components/schemas/InvitedUserResponse"
           type: array
       type: object
+    NetworkTypeSelection:
+      example:
+        otherNetworkDescription: otherNetworkDescription
+        type: CityScaleDistrictHeatingNetwork
+      nullable: true
+      properties:
+        type:
+          $ref: "#/components/schemas/HeatNetworkType"
+        otherNetworkDescription:
+          nullable: true
+          type: string
+      type: object
+    NetworkTypeSelection2:
+      example:
+        otherNetworkDescription: otherNetworkDescription
+        type: CityScaleDistrictHeatingNetwork
+      properties:
+        type:
+          $ref: "#/components/schemas/HeatNetworkType"
+        otherNetworkDescription:
+          nullable: true
+          type: string
+      type: object
     NullableOfPreferredContactType:
       enum:
       - Landline
@@ -1367,6 +1612,78 @@ components:
           type: string
       required:
       - token
+      type: object
+    SoaJourneyData:
+      example:
+        networkType:
+          otherNetworkDescription: otherNetworkDescription
+          type: CityScaleDistrictHeatingNetwork
+        connectionTypes:
+        - ChildConnections
+        - ChildConnections
+      nullable: true
+      properties:
+        networkType:
+          $ref: "#/components/schemas/NetworkTypeSelection"
+        connectionTypes:
+          items:
+            $ref: "#/components/schemas/ConnectionType"
+          nullable: true
+          type: array
+      type: object
+    SoaProject:
+      example:
+        hnId: hnId
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        id: id
+        journeyData:
+          networkType:
+            otherNetworkDescription: otherNetworkDescription
+            type: CityScaleDistrictHeatingNetwork
+          connectionTypes:
+          - ChildConnections
+          - ChildConnections
+        status: InProgress
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          type: string
+        hnId:
+          type: string
+        status:
+          $ref: "#/components/schemas/SoaProjectStatus"
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        journeyData:
+          $ref: "#/components/schemas/SoaJourneyData"
+      type: object
+    SoaProjectStatus:
+      enum:
+      - InProgress
+      - Complete
+      - Archived
+      type: string
+    UpdateConnectionsRequest:
+      example:
+        hnId: hnId
+        connectionTypes:
+        - ChildConnections
+        - ChildConnections
+      properties:
+        hnId:
+          type: string
+        connectionTypes:
+          items:
+            $ref: "#/components/schemas/ConnectionType"
+          minItems: 1
+          type: array
+      required:
+      - connectionTypes
+      - hnId
       type: object
     UpdateUserOrganisationRequest:
       example:

@@ -7,7 +7,7 @@
         public string Pathway { get; set; }
 
         public List<SelectedElement> SelectedElements { get; set; }
-
+        public List<StepNavItem> Steps { get; set; } = [];
     }
     public class SelectedElement
     {

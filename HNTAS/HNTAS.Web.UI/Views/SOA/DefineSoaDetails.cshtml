@@ -1,173 +1,81 @@
-﻿@using HNTAS.Web.UI.Models.Soa
-@model SoADetailsViewModel
+﻿@using HNTAS.Web.UI.Helpers
+@using HNTAS.Web.UI.Models.Soa
+
+@model StatementOfApplicabilityViewModel
 
 @{
-    ViewData["Title"] = "Define SOA - add details to your statement of applicability (SOA)";
+    ViewData["Title"] = Model.PageTitle;
 }
 
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">@Model.ProjectName</span>
+            <h1 class="govuk-heading-l">@Model.PageTitle</h1>
 
-            <span class="govuk-caption-l">Define overall SOA</span>
-            <h2 class="govuk-heading-l">
-                Define SOA - add details to your statement of applicability (SOA)
-            </h2>
+            <p class="govuk-body">You would be able to add/upload details for statement of applicability for each stage per phase.</p>
+            <p class="govuk-body">You need to complete previous phase before you can proceed with next phase.</p>
 
-            <p class="govuk-body">As a next step you will be asked to provide detail information & submit evidences for the SOA</p>
-
-            <h2 class="govuk-heading-m">Your pathway</h2>
-            <p class="govuk-body">Based on your answers you have been identified for @Model.Pathway pathway.</p>
-            <p class="govuk-body">Your SOA will be drafted based on the selected elements and pathway journey identified.</p>
-
-
-            <h2 class="govuk-heading-m">Your selected elements</h2>
-            <p class="govuk-body">You have selected following elements for your heat network. Your SOA will be drafted based on the selected elements and pathway journey identified.</p>
-
-
-            <div class="govuk-summary-card">
-                <div class="govuk-summary-card__title-wrapper">
-                    <h2 class="govuk-summary-card__title">
-                        List of elements
-                    </h2>
-                    <ul class="govuk-summary-card__actions">
-                        <li class="govuk-summary-card__action">
-                            <a class="govuk-link" href="#">Update<span class="govuk-visually-hidden"> of University of Gloucestershire (University of Gloucestershire)</span></a>
+            <div class="govuk-tabs" data-module="govuk-tabs">
+                <h2 class="govuk-tabs__title">Contents</h2>
+                <ul class="govuk-tabs__list">
+                    @for (int i = 0; i < Model.Phases.Count; i++)
+                    {
+                        var phase = Model.Phases[i];
+                        <li class="govuk-tabs__list-item @(i == Model.CurrentPhaseIndex ? "govuk-tabs__list-item--selected" : "")">
+                          @*   <a class="govuk-tabs__tab" href="@Url.Action("DefineSoaDetails", "Soa", new { phaseIndex = i })">
+                                @phase.Name
+                            </a> *@
+                            <a class="govuk-tabs__tab" href="#phase-@i">
+                                @phase.Name
+                            </a>
                         </li>
-                    </ul>
-                </div>
-                <div class="govuk-summary-card__content">
-                    <dl class="govuk-summary-list">
-                          @if (Model.SelectedElements != null)
+                    }
+                </ul>
+
+                @for (int i = 0; i < Model.Phases.Count; i++)
+                {
+                    var phase = Model.Phases[i];
+                    <div id="phase-@i" class="govuk-tabs__panel @(i != Model.CurrentPhaseIndex ? "govuk-tabs__panel--hidden" : "")">
+                        <h2 class="govuk-heading-l">@phase.Title</h2>
+
+                        @foreach (var stage in phase.Stages)
                         {
-                            for (int i = 0; i < Model.SelectedElements.Count; i++)
-                            {
-                                var element = Model.SelectedElements[i];
-                                <div class="govuk-summary-list__row">
-                                    <dt class="govuk-summary-list__key">
-                                        Element @(i + 1)
-                                    </dt>
-                                    <dd class="govuk-summary-list__value">
-                                        @element.Name (@element.Count)
-                                    </dd>
-                                </div>
-                            }
+                            <h3 class="govuk-heading-m">@stage.Name</h3>
+                            <hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible">
+                            <table class="govuk-table">
+                                <tbody class="govuk-table__body">
+                                    @foreach (var element in stage.Elements)
+                                    {
+                                        <tr class="govuk-table__row">
+                                            <td class="govuk-table__cell">
+                                                <a class="govuk-link app-element-list__link" href="@element.Url">@element.Name</a>
+                                            </td>
+                                            <td class="govuk-table__cell">
+                                                <strong class="govuk-tag @GovUkTagHelper.GetTagClass(element.Status)">
+                                                    @element.Status
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                           @*  <ul class="govuk-list app-element-list">
+                                @foreach (var element in stage.Elements)
+                                {
+                                    <li class="app-element-list__item">
+                                        <a class="govuk-link app-element-list__link" href="@element.Url">@element.Name</a>
+                                        <strong class="govuk-tag @element.StatusClass app-element-list__tag">
+                                            @element.Status
+                                        </strong>
+                                    </li>
+                                }
+                            </ul> *@
+                          
                         }
-                    </dl>
-                </div>
-            </div>
-
-
-
-            <a href="@Url.Action("DefineSoaStepByStep")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
-                Continue
-            </a>
-
-        </div>
-
-        <div class="govuk-grid-column-one-third">
-            <div class="app-related-items">
-                <h2 class="govuk-heading-m">
-                    Part of
-                </h2>
-                <nav role="navigation" aria-labelledby="related-content-section">
-                    <ul class="govuk-list govuk-!-font-size-16">
-                        <li>
-                            <a class="govuk-link" href="#">Define overall SOA</a>
-                        </li>
-                        <li>
-                            <a class="govuk-link" href="#">Hide all sections</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="govuk-accordion" data-module="govuk-accordion" id="accordion-with-summary">
-                <div class="govuk-accordion__section govuk-accordion__section--expanded">
-                    <div class="govuk-accordion__section-header">
-                        <h2 class="govuk-accordion__section-heading">
-                            <span class="govuk-accordion__section-button" id="accordion-with-summary-heading-1">
-                                <span class="govuk-accordion-nav__label">1.</span>
-                                Choose your elements
-                            </span>
-                        </h2>
                     </div>
-                    <div id="accordion-with-summary-content-1" class="govuk-accordion__section-content" aria-labelledby="accordion-with-summary-heading-1">
-                        <p class="govuk-body">
-                            You need to choose the elements from the list of 6 elements applicable for your heat network
-                        </p>
-                        <p class="govuk-body">
-                            <a class="govuk-link" href="#">Select your elements</a>
-                        </p>
-                    </div>
-                </div>
-                <div class="govuk-accordion__section govuk-accordion__section--expanded">
-                    <div class="govuk-accordion__section-header">
-                        <h2 class="govuk-accordion__section-heading">
-                            <span class="govuk-accordion__section-button" id="accordion-with-summary-heading-2">
-                                <span class="govuk-accordion-nav__label">2.</span>
-                                Initial SOA
-                            </span>
-                        </h2>
-                    </div>
-                    <div id="accordion-with-summary-content-2" class="govuk-accordion__section-content" aria-labelledby="accordion-with-summary-heading-2">
-                        <p class="govuk-body">
-                            Share details on the selected elements for your heat network
-                        </p>
-                        <p class="govuk-body">
-                            <a class="govuk-link" href="#">Element details</a>
-                        </p>
-                    </div>
-                </div>
-                <div class="govuk-accordion__section govuk-accordion__section--expanded">
-                    <div class="govuk-accordion__section-header">
-                        <h2 class="govuk-accordion__section-heading">
-                            <span class="govuk-accordion__section-button" id="accordion-with-summary-heading-3">
-                                <span class="govuk-accordion-nav__label">3.</span>
-                                Define SOA
-                            </span>
-                        </h2>
-                    </div>
-                    <div id="accordion-with-summary-content-3" class="govuk-accordion__section-content" aria-labelledby="accordion-with-summary-heading-3">
-                        <p class="govuk-body">
-                            This is the content for writing well for the web.
-                        </p>
-                        <p class="govuk-body">
-                            <a class="govuk-link" href="#">Define SOA</a>
-                        </p>
-                    </div>
-                </div>
-                <div class="govuk-accordion__section ">
-                    <div class="govuk-accordion__section-header">
-                        <h2 class="govuk-accordion__section-heading">
-                            <span class="govuk-accordion__section-button" id="accordion-with-summary-heading-4">
-                                <span class="govuk-accordion-nav__label">4.</span>
-                                Add assessment plan
-                            </span>
-                        </h2>
-                    </div>
-                    <div id="accordion-with-summary-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-with-summary-heading-4">
-                        <p class="govuk-body">
-                            [Content for Add assessment plan]
-                        </p>
-                    </div>
-                </div>
-                <div class="govuk-accordion__section ">
-                    <div class="govuk-accordion__section-header">
-                        <h2 class="govuk-accordion__section-heading">
-                            <span class="govuk-accordion__section-button" id="accordion-with-summary-heading-5">
-                                <span class="govuk-accordion-nav__label">5.</span>
-                                Submit your SOA
-                            </span>
-                        </h2>
-                    </div>
-                    <div id="accordion-with-summary-content-5" class="govuk-accordion__section-content" aria-labelledby="accordion-with-summary-heading-5">
-                        <p class="govuk-body">
-                            [Content for Submit your SOA]
-                        </p>
-                    </div>
-                </div>
+                }
             </div>
         </div>
-
     </div>
 </div>

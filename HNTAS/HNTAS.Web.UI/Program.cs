@@ -74,7 +74,11 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new RegisteredAddressJsonConverter(),
         new ManagedUserResponseJsonConverter(),
         new InvitedUserResponseJsonConverter(),
-        new HnRoleMappingJsonConverter()
+        new HnRoleMappingJsonConverter(),
+        new SoaProjectJsonConverter(),
+        new SoaJourneyDataJsonConverter(),
+        new NetworkTypeSelectionJsonConverter(),
+        new ConnectionTypeJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -95,7 +99,15 @@ builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
 });
 
 builder.Services.AddSingleton<InvitationsApiEvents>();
-builder.Services.AddHttpClient<InvitationsApi, InvitationsApi>(client =>
+builder.Services.AddHttpClient<IInvitationsApi, InvitationsApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
+builder.Services.AddSingleton<SoaProjectApiEvents>();
+builder.Services.AddHttpClient<ISoaProjectApi, SoaProjectApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
@@ -116,6 +128,7 @@ builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
+builder.Services.AddScoped<ISoaProjectService, SoaProjectService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 

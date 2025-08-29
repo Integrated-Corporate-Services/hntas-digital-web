@@ -33,5 +33,7 @@
         public const string InvitedInviterUserId = "InvitedInviterUserIdKey";
         public const string InvitedInviterUserOrgId = "InvitedInviterUserOrgIdKey";
 
+        public const string SoaProjectId = "SoaProjectIdKey";
+
     }
 }

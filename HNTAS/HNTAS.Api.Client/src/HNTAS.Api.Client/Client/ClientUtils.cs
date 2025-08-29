@@ -111,8 +111,12 @@ namespace HNTAS.Api.Client.Client
                 return boolean
                     ? "true"
                     : "false";
+            if (obj is ConnectionType connectionType)
+                return ConnectionTypeValueConverter.ToJsonValue(connectionType);
             if (obj is ContributorRole contributorRole)
                 return ContributorRoleValueConverter.ToJsonValue(contributorRole);
+            if (obj is HeatNetworkType heatNetworkType)
+                return HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType);
             if (obj is InvitationStatus invitationStatus)
                 return InvitationStatusValueConverter.ToJsonValue(invitationStatus);
             if (obj is NullableOfPreferredContactType nullableOfPreferredContactType)
@@ -121,6 +125,8 @@ namespace HNTAS.Api.Client.Client
                 return OrganisationTypeValueConverter.ToJsonValue(organisationType);
             if (obj is PreferredContactType preferredContactType)
                 return PreferredContactTypeValueConverter.ToJsonValue(preferredContactType);
+            if (obj is SoaProjectStatus soaProjectStatus)
+                return SoaProjectStatusValueConverter.ToJsonValue(soaProjectStatus);
             if (obj is UserRole userRole)
                 return UserRoleValueConverter.ToJsonValue(userRole);
             if (obj is UserStatus userStatus)
