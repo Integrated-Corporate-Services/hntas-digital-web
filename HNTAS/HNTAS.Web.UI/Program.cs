@@ -131,6 +131,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<ISoaProjectService, SoaProjectService>();
 
+builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
+
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
@@ -212,10 +214,6 @@ builder.Services.AddSession(options =>
 
 
 builder.Services.AddHttpClient<AddressLookupService>();
-
-//Aws Logging
-builder.Logging.AddAWSProvider(builder.Configuration.GetAWSLoggingConfigSection());
-builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 var app = builder.Build();
 

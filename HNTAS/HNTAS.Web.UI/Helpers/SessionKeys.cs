@@ -13,10 +13,15 @@
 
         // Session keys for specific models
         public const string WhatDoYouWantToDoViewModelKey = "WhatDoYouWantToDoViewModel";
-        public const string WhereIsTheHeatNetworkModelKey = "whereIsTheHeatNetwork";
-        public const string HowManyDwellingsIncludedModelKey = "howManyDwellingsIncluded";
+        public const string WhereIsTheHeatNetworkModelKey = "whereIsTheHeatNetwork";        
         public const string IsHNCurrentlyOperatingModelKey = "isHNCurrentlyOperating";
         public const string HaveYouSignedMEContractModelKey = "haveYouSignedMEContract";
+
+        public const string AreYouTheRPModelKey = "AreYouTheRP";
+        public const string IsYourOrgWorkingOnANewHNModelKey = "IsYourOrgWorkingOnANewHN";
+        public const string IsHNLocatedInEnglandScotlandWalesModelKey = "IsHNLocatedInEnglandScotlandWales";
+        public const string HowManyDwellingsIncludedModelKey = "HowManyDwellingsIncluded";
+
 
         public const string HnId = "HnIdkey";
         public const string HnName = "HnNameKey";

@@ -1319,6 +1319,7 @@ components:
       example:
         hnId: hnId
         name: name
+        pathway: pathway
         location: location
         id: id
       properties:
@@ -1331,6 +1332,8 @@ components:
         location:
           type: string
         name:
+          type: string
+        pathway:
           type: string
       type: object
     HeatNetworkElement:
