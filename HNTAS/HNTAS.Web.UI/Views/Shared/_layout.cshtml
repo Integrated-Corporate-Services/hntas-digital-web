@@ -14,7 +14,16 @@
     <link rel="stylesheet" href="/assets/css/main.min.css">
     <meta property="og:image" content="YOUR-DOMAIN/images/govuk-opengraph-image.png">
 </head>
-
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGJT0GGBSZ"></script>
+<script> 
+    window.dataLayer = window.dataLayer || []; 
+    function gtag(){
+        dataLayer.push(arguments);
+    } 
+    gtag('js', new Date()); 
+    gtag('config', 'G-NGJT0GGBSZ'); 
+</script>
 <body class="govuk-template__body app-body-class">
     <script>
         document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
