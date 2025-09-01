@@ -31,9 +31,9 @@ namespace HNTAS.Api.Client.Model
     public enum HeatNetworkElementType
     {
         /// <summary>
-        /// Enum EnergyCentres for value: EnergyCentres
+        /// Enum EnergyCentre for value: EnergyCentre
         /// </summary>
-        EnergyCentres = 1,
+        EnergyCentre = 1,
 
         /// <summary>
         /// Enum DistributionNetwork for value: DistributionNetwork
@@ -73,8 +73,8 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static HeatNetworkElementType FromString(string value)
         {
-            if (value.Equals("EnergyCentres"))
-                return HeatNetworkElementType.EnergyCentres;
+            if (value.Equals("EnergyCentre"))
+                return HeatNetworkElementType.EnergyCentre;
 
             if (value.Equals("DistributionNetwork"))
                 return HeatNetworkElementType.DistributionNetwork;
@@ -101,8 +101,8 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static HeatNetworkElementType? FromStringOrDefault(string value)
         {
-            if (value.Equals("EnergyCentres"))
-                return HeatNetworkElementType.EnergyCentres;
+            if (value.Equals("EnergyCentre"))
+                return HeatNetworkElementType.EnergyCentre;
 
             if (value.Equals("DistributionNetwork"))
                 return HeatNetworkElementType.DistributionNetwork;
@@ -130,8 +130,8 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(HeatNetworkElementType value)
         {
-            if (value == HeatNetworkElementType.EnergyCentres)
-                return "EnergyCentres";
+            if (value == HeatNetworkElementType.EnergyCentre)
+                return "EnergyCentre";
 
             if (value == HeatNetworkElementType.DistributionNetwork)
                 return "DistributionNetwork";

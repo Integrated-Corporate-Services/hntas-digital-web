@@ -1,12 +1,13 @@
-# HNTAS.Api.Client.Model.HeatNetworkElement
+# HNTAS.Api.Client.Model.UpdateElementLocationsRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **HeatNetworkElementType** |  | [optional] 
-**Count** | **int** |  | [optional] 
-**Locations** | **List&lt;string&gt;** |  | [optional] 
+**HnId** | **string** |  | 
+**UpdatedBy** | **string** |  | 
+**ElementType** | **HeatNetworkElementType** |  | 
+**Locations** | **List&lt;string&gt;** |  | 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

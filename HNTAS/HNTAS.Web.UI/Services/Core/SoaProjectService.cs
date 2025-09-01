@@ -126,5 +126,33 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+
+        public async Task UpdateElementLocations(UpdateElementLocationsRequest request)
+        {
+            _logger.LogInformation("Updating element locations for HN ID: {HnId}, ElementType: {ElementType}, UpdatedBy: {UpdatedBy}. Location count: {LocationCount}",
+                request.HnId, request.ElementType, request.UpdatedBy, request.Locations?.Count ?? 0);
+
+            try
+            {
+                var response = await _soaProjectApi.ApiSoaProjectElementLocationsPostAsync(request);
+
+                if (response.IsOk)
+                {
+                    _logger.LogInformation("Element locations updated successfully for HN ID: {HnId}, ElementType: {ElementType}", request.HnId, request.ElementType);
+                }
+                else
+                {
+                    _logger.LogWarning("Element location update returned non-OK status. StatusCode: {StatusCode}, HN ID: {HnId}, ElementType: {ElementType}",
+                        response.StatusCode, request.HnId, request.ElementType);
+                    throw new Exception($"Update failed with status code: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception occurred while updating element locations for HN ID: {HnId}, ElementType: {ElementType}", request.HnId, request.ElementType);
+                throw;
+            }
+        }
+
     }
 }

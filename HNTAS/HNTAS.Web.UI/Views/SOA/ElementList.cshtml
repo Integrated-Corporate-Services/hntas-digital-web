@@ -1,4 +1,5 @@
-﻿@using HNTAS.Web.UI.Models.Soa
+﻿@using HNTAS.Web.UI.Helpers
+@using HNTAS.Web.UI.Models.Soa
 @model ElementListViewModel
 
 @{
@@ -19,53 +20,49 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-            <span class="govuk-caption-xl">@Model.HeatNetworkName</span>
-            <h1 class="govuk-heading-xl">
+            <span class="govuk-caption-l">@Model.HeatNetworkName</span>
+            <h1 class="govuk-heading-l">
                 List of element
             </h1>
 
             <table class="govuk-table">
                 <tbody class="govuk-table__body">
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">
-                            <a href="@Url.Action("EnergyCentre")" class="govuk-link">Energy centre (@Model.EnergyCentreCount)</a>
-                        </th>
-                        <td class="govuk-table__cell govuk-table__cell--no-border govuk-!-text-align-right">
-                            <strong class="govuk-tag govuk-tag--blue">Not yet started</strong>
-                        </td>
-                    </tr>
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">
-                            <a href="@Url.Action("ThermalSubstation")" class="govuk-link">Thermal sub station (@Model.ThermalSubStationCount)</a>
-                        </th>
-                        <td class="govuk-table__cell govuk-table__cell--no-border govuk-!-text-align-right">
-                            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                        </td>
-                    </tr>
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">
-                            Communal distribution network (@Model.CommunalDistributionNetworkCount)
-                        </th>
-                        <td class="govuk-table__cell govuk-table__cell--no-border govuk-!-text-align-right">
-                            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                        </td>
-                    </tr>
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">
-                            Consumer connections (@Model.ConsumerConnectionsCount)
-                        </th>
-                        <td class="govuk-table__cell govuk-table__cell--no-border govuk-!-text-align-right">
-                            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                        </td>
-                    </tr>
+                    @foreach (var element in Model.Elements)
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">
+                                @if (element.IsEnabled)
+                                {
+                                    <a href="@Url.Action("EnterElementLocations", new { elementName = element.ElementType.ToString() })" class="govuk-link">
+                                        @element.Name  (@element.Count)
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span> @element.Name (@element.Count)</span>
+                                }
+                            </td>
+
+                            <td class="govuk-table__cell">
+                                <strong class="govuk-tag @GovUkTagHelper.GetTagClass(element.UiStatus)">
+                                    @element.UiStatus
+                                </strong>
+                            </td>
+                        </tr>
+                    }
+                   
                 </tbody>
             </table>
 
-            <form asp-action="DefineSoa" method="post">
-                <button type="submit" class="govuk-button" data-module="govuk-button">
-                    Continue
-                </button>
-            </form>
+            @if (Model.Elements.All(e => e.UiStatus == UiStatusConstants.Completed))
+            {
+                <form asp-action="DefineSoa" method="post">
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Continue
+                    </button>
+                </form>
+            }
+
         </div>
     </div>
 </div>

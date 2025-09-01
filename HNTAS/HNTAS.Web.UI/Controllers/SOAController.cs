@@ -13,11 +13,13 @@ namespace HNTAS.Web.UI.Controllers
     {
         private readonly ISessionHelper _sessionHelper;
         private readonly ISoaProjectService _soaProjectService;
+        private readonly ILogger<SOAController> _logger;
 
-        public SOAController(ISessionHelper sessionHelper, ISoaProjectService soaProjectService)
+        public SOAController(ISessionHelper sessionHelper, ISoaProjectService soaProjectService, ILogger<SOAController> logger)
         {
             _sessionHelper = sessionHelper;
             _soaProjectService = soaProjectService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -142,75 +144,239 @@ namespace HNTAS.Web.UI.Controllers
         {
             return new List<HeatNetworkElementOption>
             {
-                new() { Id = HeatNetworkElementType.EnergyCentres.ToString(), Label = "Energy centres", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
-                new() { Id = HeatNetworkElementType.DistributionNetwork.ToString(), Label = "Distribution network", Hint = "Only 1 allowed per heat network." },
-                new() { Id = HeatNetworkElementType.ThermalSubStation.ToString(), Label = "Thermal sub station", Hint = "Number of thermal sub stations." },
-                new() { Id = HeatNetworkElementType.CommunalDistributionNetwork.ToString(), Label = "Communal distribution network", Hint = "Number of communal distribution networks." },
-                new() { Id = HeatNetworkElementType.ConsumerConnections.ToString(), Label = "Consumer connections", Hint = "Number of consumer connections." },
-                new() { Id = HeatNetworkElementType.ConsumerHeatSystems.ToString(), Label = "Consumer heat systems", Hint = "Number of consumer heat systems." }
+                new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
+                new() { Id = HeatNetworkElementType.DistributionNetwork, Label = "Distribution network", Hint = "Only 1 allowed per heat network." },
+                new() { Id = HeatNetworkElementType.ThermalSubStation, Label = "Thermal sub station" },
+                new() { Id = HeatNetworkElementType.CommunalDistributionNetwork, Label = "Communal distribution network"},
+                new() { Id = HeatNetworkElementType.ConsumerConnections, Label = "Consumer connections" },
+                new() { Id = HeatNetworkElementType.ConsumerHeatSystems, Label = "Consumer heat systems" }
             };
         }
 
         [HttpPost]
         public IActionResult SubmitSelectedElements(HeatNetworkElementViewModel model)
         {
+            model.ElementOptions = GetElementOptions();
+
             if (!ModelState.IsValid)
             {
-                model.ElementOptions = GetElementOptions();
                 return View("SelectElements", model);
             }
+
+            // Custom validation: ensure quantity is entered for each selected element
+            foreach (var selectedId in model.SelectedElementIds)
+            {
+                if (!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0)
+                {
+                    var element = GetElementOptions().FirstOrDefault(x => x.Id == selectedId);
+                    if (element == null)
+                    {
+                        return BadRequest();
+                    }
+                    ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter number of {element.Label}.");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+
+                return View("SelectElements", model);
+            }
+
+            List<HeatNetworkElement> heatNetworkElements = new List<HeatNetworkElement>();
+
+            foreach (var selectedElement in model.SelectedElementIds)
+            {
+                heatNetworkElements.Add(new HeatNetworkElement(selectedElement, model.ElementCounts[selectedElement].Value));
+            }
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+
+            _soaProjectService.UpdateNetworkElements(hnId, userId, heatNetworkElements);
+
             return RedirectToAction("InitialSoa");
         }
 
         [HttpGet]
-        public IActionResult InitialSoa()
+        public async Task<IActionResult> InitialSoa()
         {
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             this.ShowBackButton("ElementsOfHeatNetwork");
-            var model = new StepByStepGuideModel
+            //get soa from db
+            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
+
+            if (soaProject == null)
             {
-                Steps = StaticSoaSteps.GetSteps(SoaSteps.InitialSoa, Url)
+                return BadRequest();
+            }
+
+            List<SelectedElement> networkElements = new List<SelectedElement>();
+            foreach (var element in soaProject.JourneyData.HeatNetworkElements)
+            {
+                networkElements.Add(new SelectedElement
+                {
+                    Count = element.Count ?? 0,
+                    Name = GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty
+                });
+            }
+
+            var model = new InitialSoaViewModel
+            {
+                Steps = StaticSoaSteps.GetSteps(SoaSteps.InitialSoa, Url),
+                SelectedElements = networkElements
             };
 
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult ElementList()
+        public async Task<IActionResult> ElementList()
         {
             this.ShowBackButton("InitialSoa");
 
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
+
+            if (soaProject?.JourneyData?.HeatNetworkElements == null)
+            {
+                return View(new ElementListViewModel
+                {
+                    HeatNetworkName = hnName,
+                    HnId = hnId,
+                    Elements = new List<ElementListItem>()
+                });
+            }
+
+            var orderedTypes = new List<HeatNetworkElementType>
+            {
+                HeatNetworkElementType.EnergyCentre,
+                HeatNetworkElementType.DistributionNetwork,
+                HeatNetworkElementType.ThermalSubStation,
+                HeatNetworkElementType.CommunalDistributionNetwork,
+                HeatNetworkElementType.ConsumerConnections,
+                HeatNetworkElementType.ConsumerHeatSystems
+            };
+
+            var elements = new List<ElementListItem>();
+            bool previousCompleted = true;
+
+            foreach (var type in orderedTypes)
+            {
+                var element = soaProject.JourneyData.HeatNetworkElements.FirstOrDefault(e => e.Name == type);
+                var count = element?.Count ?? 0;
+
+                if (count == 0)
+                {
+                    continue;
+                }
+
+                var hasData = element?.Locations?.Any() == true;
+                var allFilled = element?.Locations?.Count == count && element.Locations.All(loc => !string.IsNullOrWhiteSpace(loc));
+
+                bool isEnabled = elements.Count == 0 || previousCompleted;
+
+                string uiStatus;
+
+                if (allFilled)
+                {
+                    uiStatus = UiStatusConstants.Completed;
+                    previousCompleted = true;
+                }
+                else if (isEnabled && hasData)
+                {
+                    uiStatus = UiStatusConstants.InProgress;
+                    previousCompleted = false;
+                }
+                else if (isEnabled)
+                {
+                    uiStatus = UiStatusConstants.NotStarted;
+                    previousCompleted = false;
+                }
+                else
+                {
+                    uiStatus = UiStatusConstants.CannotStartYet;
+                    previousCompleted = false;
+                }
+
+                elements.Add(new ElementListItem
+                {
+                    ElementType = type,
+                    Name = GetElementOptions().FirstOrDefault(x => x.Id == type).Label ?? string.Empty,
+                    Count = count,
+                    UiStatus = uiStatus,
+                    IsEnabled = isEnabled
+                });
+            }
+
             var model = new ElementListViewModel
             {
-                HeatNetworkName = "Olympic Park Aberdeen",
-                EnergyCentreCount = 2,
-                ThermalSubStationCount = 2,
-                CommunalDistributionNetworkCount = 1,
-                ConsumerConnectionsCount = 10
+                HeatNetworkName = hnName,
+                HnId = soaProject.HnId,
+                Elements = elements
             };
+
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult EnergyCentre()
+        public IActionResult EnterElementLocations(string elementName)
         {
             this.ShowBackButton("ElementList");
-            var model = new EnergyCentreViewModel
+
+            var model = new EnterElementLocationsViewModel
             {
-                PrimaryEnergyCentreLocation = "https://what3words.com/pretty.needed.chill"
+                ElementName = GetElementOptions().FirstOrDefault(x => x.Id.ToString().ToLower() == elementName.ToLower()).Label ?? string.Empty,
             };
+
+            model.Locations = Enumerable.Repeat(string.Empty, 2).ToList();
+
             return View(model);
         }
 
-        [HttpGet]
-        public IActionResult ThermalSubstation()
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SaveEnterElementLocations(EnterElementLocationsViewModel model)
         {
-            this.ShowBackButton("ElementList");
-            var model = new ThermalSubstationViewModel
+            if (!ModelState.IsValid)
             {
-                PrimaryThermalSubstationLocation = "https://what3words.com/pretty.needed.chill"
-            };
-            return View(model);
+                _logger.LogWarning("Invalid location input for element: {ElementName}", model.ElementName);
+                return View("EnterElementLocations", model);
+            }
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var elementType = GetElementOptions().FirstOrDefault(x => x.Id.ToString().ToLower() == model.ElementName.ToLower()).Id;
+            model.Locations = model.Locations.Where(x => !string.IsNullOrEmpty(x)).ToList();
+            await _soaProjectService.UpdateElementLocations(new UpdateElementLocationsRequest(hnId, userId, elementType, model.Locations));
+
+            _logger.LogInformation("Saving {Count} locations for element: {ElementName}", model.Locations.Count, model.ElementName);
+
+            return RedirectToAction("ElementList");
+            //var request = new UpdateElementLocationsRequest
+            //{
+            //    HnId = model.HnId, // You can pass this via hidden field or session
+            //    ElementType = model.ElementType,
+            //    UpdatedBy = User.Identity?.Name ?? "unknown", // Or inject user context
+            //    Locations = model.Locations
+            //};
+
+            //try
+            //{
+            //    await _soaProjectApiClient.UpdateElementLocations(request);
+            //    _logger.LogInformation("Locations saved successfully for element: {ElementType}", model.ElementType);
+            //    return RedirectToAction("ElementList");
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex, "Failed to save locations for element: {ElementType}", model.ElementType);
+            //    ModelState.AddModelError(string.Empty, "An error occurred while saving locations.");
+            //    return View(model);
+            //}
         }
+
 
         public IActionResult DefineSoa()
         {

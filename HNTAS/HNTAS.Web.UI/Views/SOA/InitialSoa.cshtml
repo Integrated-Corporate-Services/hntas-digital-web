@@ -1,5 +1,5 @@
 ﻿@using HNTAS.Web.UI.Models.Soa
-@model StepByStepGuideModel
+@model InitialSoaViewModel
 @{
     ViewData["Title"] = "Initial SOA - add details for selected elements";
 }
@@ -7,66 +7,56 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-xl">SOA selection</span>
-            <h1 class="govuk-heading-xl">
+            <span class="govuk-caption-l">SOA selection</span>
+            <h1 class="govuk-heading-l">
                 Initial SOA - add details for selected elements
             </h1>
 
-            <div class="govuk-inset-text">
-                <p>You may need to provide these details for the selected elements</p>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>location of energy centres</li>
-                    <li>location of distribution network</li>
-                    <li>number of sub station with their location</li>
-                    <li>consumer connection details</li>
-                    <li>consumer heat system details</li>
-                </ul>
-                <a href="@Url.Action("ElementList")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
-                    Continue
-                </a>
+            <p class="govuk-body">You may need to provide these details for the selected elements:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>location of energy centres</li>
+                <li>location of distribution network</li>
+                <li>number of sub station with their location</li>
+                <li>consumer connection details</li>
+                <li>consumer heat system details</li>
+            </ul>
+
+            <a href="@Url.Action("ElementList")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                Continue
+            </a>
+          
+
+            <div class="govuk-summary-card">
+                <div class="govuk-summary-card__title-wrapper">
+                    <h2 class="govuk-summary-card__title">
+                        List of elements
+                    </h2>
+                    <ul class="govuk-summary-card__actions">
+                        <li class="govuk-summary-card__action">
+                            <a class="govuk-link" href="#">Update<span class="govuk-visually-hidden"></span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="govuk-summary-card__content">
+                    <dl class="govuk-summary-list">
+                        @if (Model.SelectedElements != null)
+                        {
+                            for (int i = 0; i < Model.SelectedElements.Count; i++)
+                            {
+                                var element = Model.SelectedElements[i];
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Element @(i + 1)
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @element.Name (@element.Count)
+                                    </dd>
+                                </div>
+                            }
+                        }
+                    </dl>
+                </div>
             </div>
-
-            <h2 class="govuk-heading-m">Your selected elements</h2>
-
-            <div class="govuk-!-margin-bottom-6">
-                <span class="govuk-hint">List of elements</span>
-                <a class="govuk-link" href="#">Update</a>
-            </div>
-
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Element 1
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        Energy Centre (2)
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Element 2
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        Thermal sub station (2)
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Element 3
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        Communal distribution network (1)
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Element 4
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        Consumer connections (10)
-                    </dd>
-                </div>
-            </dl>
 
         </div>
 

@@ -90,6 +90,29 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="updateElementLocationsRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSoaProjectElementLocationsPostApiResponse"/>&gt;</returns>
+        Task<IApiSoaProjectElementLocationsPostApiResponse> ApiSoaProjectElementLocationsPostAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="updateElementLocationsRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSoaProjectElementLocationsPostApiResponse"/>?&gt;</returns>
+        Task<IApiSoaProjectElementLocationsPostApiResponse?> ApiSoaProjectElementLocationsPostOrDefaultAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="hnId"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiSoaProjectHeatNetworkHnIdGetApiResponse"/>&gt;</returns>
@@ -227,6 +250,30 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiSoaProjectElementLocationsPostApiResponse"/>
+    /// </summary>
+    public interface IApiSoaProjectElementLocationsPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IApiSoaProjectHeatNetworkHnIdGetApiResponse"/>
     /// </summary>
     public interface IApiSoaProjectHeatNetworkHnIdGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.SoaProject?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
@@ -353,6 +400,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiSoaProjectCreatePost(Exception exception)
         {
             OnErrorApiSoaProjectCreatePost?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiSoaProjectElementLocationsPost;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiSoaProjectElementLocationsPost;
+
+        internal void ExecuteOnApiSoaProjectElementLocationsPost(SoaProjectApi.ApiSoaProjectElementLocationsPostApiResponse apiResponse)
+        {
+            OnApiSoaProjectElementLocationsPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiSoaProjectElementLocationsPost(Exception exception)
+        {
+            OnErrorApiSoaProjectElementLocationsPost?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -1019,6 +1086,286 @@ namespace HNTAS.Api.Client.Api
                 } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiSoaProjectElementLocationsPost(UpdateElementLocationsRequest updateElementLocationsRequest);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="updateElementLocationsRequest"></param>
+        /// <returns></returns>
+        private void ValidateApiSoaProjectElementLocationsPost(UpdateElementLocationsRequest updateElementLocationsRequest)
+        {
+            if (updateElementLocationsRequest == null)
+                throw new ArgumentNullException(nameof(updateElementLocationsRequest));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="updateElementLocationsRequest"></param>
+        private void AfterApiSoaProjectElementLocationsPostDefaultImplementation(IApiSoaProjectElementLocationsPostApiResponse apiResponseLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiSoaProjectElementLocationsPost(ref suppressDefaultLog, apiResponseLocalVar, updateElementLocationsRequest);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="updateElementLocationsRequest"></param>
+        partial void AfterApiSoaProjectElementLocationsPost(ref bool suppressDefaultLog, IApiSoaProjectElementLocationsPostApiResponse apiResponseLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="updateElementLocationsRequest"></param>
+        private void OnErrorApiSoaProjectElementLocationsPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiSoaProjectElementLocationsPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, updateElementLocationsRequest);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="updateElementLocationsRequest"></param>
+        partial void OnErrorApiSoaProjectElementLocationsPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="updateElementLocationsRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSoaProjectElementLocationsPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSoaProjectElementLocationsPostApiResponse?> ApiSoaProjectElementLocationsPostOrDefaultAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiSoaProjectElementLocationsPostAsync(updateElementLocationsRequest, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="updateElementLocationsRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSoaProjectElementLocationsPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSoaProjectElementLocationsPostApiResponse> ApiSoaProjectElementLocationsPostAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiSoaProjectElementLocationsPost(updateElementLocationsRequest);
+
+                FormatApiSoaProjectElementLocationsPost(updateElementLocationsRequest);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/SoaProject/element-locations"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/SoaProject/element-locations");
+
+                    httpRequestMessageLocalVar.Content = (updateElementLocationsRequest as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(updateElementLocationsRequest, _jsonSerializerOptions));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "text/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiSoaProjectElementLocationsPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSoaProjectElementLocationsPostApiResponse>();
+
+                        ApiSoaProjectElementLocationsPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SoaProject/element-locations", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiSoaProjectElementLocationsPostDefaultImplementation(apiResponseLocalVar, updateElementLocationsRequest);
+
+                        Events.ExecuteOnApiSoaProjectElementLocationsPost(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiSoaProjectElementLocationsPostDefaultImplementation(e, "/api/SoaProject/element-locations", uriBuilderLocalVar.Path, updateElementLocationsRequest);
+                Events.ExecuteOnErrorApiSoaProjectElementLocationsPost(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiSoaProjectElementLocationsPostApiResponse"/>
+        /// </summary>
+        public partial class ApiSoaProjectElementLocationsPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSoaProjectElementLocationsPostApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiSoaProjectElementLocationsPostApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiSoaProjectElementLocationsPostApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiSoaProjectElementLocationsPostApiResponse(ILogger<ApiSoaProjectElementLocationsPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
 
                 return result != null;

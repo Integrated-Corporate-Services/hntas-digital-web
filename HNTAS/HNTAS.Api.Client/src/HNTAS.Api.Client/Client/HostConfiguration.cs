@@ -81,6 +81,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new SoaProjectStatusJsonConverter());
             _jsonOptions.Converters.Add(new SoaProjectStatusNullableJsonConverter());
             _jsonOptions.Converters.Add(new UpdateConnectionsRequestJsonConverter());
+            _jsonOptions.Converters.Add(new UpdateElementLocationsRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateUserOrganisationRequestJsonConverter());
             _jsonOptions.Converters.Add(new UserJsonConverter());
             _jsonOptions.Converters.Add(new UserDetailsResponseJsonConverter());

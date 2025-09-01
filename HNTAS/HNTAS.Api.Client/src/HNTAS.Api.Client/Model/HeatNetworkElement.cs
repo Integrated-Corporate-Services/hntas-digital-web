@@ -34,12 +34,14 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="HeatNetworkElement" /> class.
         /// </summary>
         /// <param name="name">name</param>
-        /// <param name="quantity">quantity</param>
+        /// <param name="count">count</param>
+        /// <param name="locations">locations</param>
         [JsonConstructor]
-        public HeatNetworkElement(Option<HeatNetworkElementType?> name = default, Option<int?> quantity = default)
+        public HeatNetworkElement(Option<HeatNetworkElementType?> name = default, Option<int?> count = default, Option<List<string>?> locations = default)
         {
             NameOption = name;
-            QuantityOption = quantity;
+            CountOption = count;
+            LocationsOption = locations;
             OnCreated();
         }
 
@@ -59,17 +61,30 @@ namespace HNTAS.Api.Client.Model
         public HeatNetworkElementType? Name { get { return this.NameOption; } set { this.NameOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Quantity
+        /// Used to track the state of Count
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<int?> QuantityOption { get; private set; }
+        public Option<int?> CountOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Quantity
+        /// Gets or Sets Count
         /// </summary>
-        [JsonPropertyName("quantity")]
-        public int? Quantity { get { return this.QuantityOption; } set { this.QuantityOption = new(value); } }
+        [JsonPropertyName("count")]
+        public int? Count { get { return this.CountOption; } set { this.CountOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Locations
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<string>?> LocationsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Locations
+        /// </summary>
+        [JsonPropertyName("locations")]
+        public List<string>? Locations { get { return this.LocationsOption; } set { this.LocationsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -80,7 +95,8 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class HeatNetworkElement {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Quantity: ").Append(Quantity).Append("\n");
+            sb.Append("  Count: ").Append(Count).Append("\n");
+            sb.Append("  Locations: ").Append(Locations).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -119,7 +135,8 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<HeatNetworkElementType?> name = default;
-            Option<int?> quantity = default;
+            Option<int?> count = default;
+            Option<List<string>?> locations = default;
 
             while (utf8JsonReader.Read())
             {
@@ -141,8 +158,11 @@ namespace HNTAS.Api.Client.Model
                             if (nameRawValue != null)
                                 name = new Option<HeatNetworkElementType?>(HeatNetworkElementTypeValueConverter.FromStringOrDefault(nameRawValue));
                             break;
-                        case "quantity":
-                            quantity = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                        case "count":
+                            count = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "locations":
+                            locations = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -153,10 +173,13 @@ namespace HNTAS.Api.Client.Model
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetworkElement.");
 
-            if (quantity.IsSet && quantity.Value == null)
-                throw new ArgumentNullException(nameof(quantity), "Property is not nullable for class HeatNetworkElement.");
+            if (count.IsSet && count.Value == null)
+                throw new ArgumentNullException(nameof(count), "Property is not nullable for class HeatNetworkElement.");
 
-            return new HeatNetworkElement(name, quantity);
+            if (locations.IsSet && locations.Value == null)
+                throw new ArgumentNullException(nameof(locations), "Property is not nullable for class HeatNetworkElement.");
+
+            return new HeatNetworkElement(name, count, locations);
         }
 
         /// <summary>
@@ -183,13 +206,22 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, HeatNetworkElement heatNetworkElement, JsonSerializerOptions jsonSerializerOptions)
         {
+            if (heatNetworkElement.LocationsOption.IsSet && heatNetworkElement.Locations == null)
+                throw new ArgumentNullException(nameof(heatNetworkElement.Locations), "Property is required for class HeatNetworkElement.");
+
             if (heatNetworkElement.NameOption.IsSet)
             {
                 var nameRawValue = HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElement.Name!.Value);
                 writer.WriteString("name", nameRawValue);
             }
-            if (heatNetworkElement.QuantityOption.IsSet)
-                writer.WriteNumber("quantity", heatNetworkElement.QuantityOption.Value!.Value);
+            if (heatNetworkElement.CountOption.IsSet)
+                writer.WriteNumber("count", heatNetworkElement.CountOption.Value!.Value);
+
+            if (heatNetworkElement.LocationsOption.IsSet)
+            {
+                writer.WritePropertyName("locations");
+                JsonSerializer.Serialize(writer, heatNetworkElement.Locations, jsonSerializerOptions);
+            }
         }
     }
 }

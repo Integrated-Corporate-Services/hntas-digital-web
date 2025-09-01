@@ -8,7 +8,9 @@
             { "Invited", "govuk-tag--blue" },
             { "Accepted", "govuk-tag--green" },
             { "Rejected", "govuk-tag--orange" },
-            { "Not yet started", "govuk-tag--blue" }
+            { "Not yet started", "govuk-tag--blue" },
+            { "In Progress", "govuk-tag--blue" },
+            { "Completed",  "govuk-tag--green"}
         };
 
         public static string GetTagClass(string status)

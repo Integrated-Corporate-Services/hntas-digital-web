@@ -343,6 +343,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult SubmitDetails(HNDetailsViewModel model)
         {
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, model.Name);
             return RedirectToAction("SOAIntro", "SOA");
         }
 

@@ -670,6 +670,49 @@ paths:
           description: Not Found
       tags:
       - SoaProject
+  /api/SoaProject/element-locations:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateElementLocationsRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateElementLocationsRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateElementLocationsRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SoaProject
   /api/Users:
     get:
       responses:
@@ -1292,18 +1335,25 @@ components:
       type: object
     HeatNetworkElement:
       example:
-        quantity: 0
-        name: EnergyCentres
+        name: EnergyCentre
+        count: 0
+        locations:
+        - locations
+        - locations
       properties:
         name:
           $ref: "#/components/schemas/HeatNetworkElementType"
-        quantity:
+        count:
           format: int32
           type: integer
+        locations:
+          items:
+            type: string
+          type: array
       type: object
     HeatNetworkElementType:
       enum:
-      - EnergyCentres
+      - EnergyCentre
       - DistributionNetwork
       - ThermalSubStation
       - CommunalDistributionNetwork
@@ -1714,10 +1764,16 @@ components:
     SoaJourneyData:
       example:
         heatNetworkElements:
-        - quantity: 0
-          name: EnergyCentres
-        - quantity: 0
-          name: EnergyCentres
+        - name: EnergyCentre
+          count: 0
+          locations:
+          - locations
+          - locations
+        - name: EnergyCentre
+          count: 0
+          locations:
+          - locations
+          - locations
         networkType:
           otherNetworkDescription: otherNetworkDescription
           type: CityScaleDistrictHeatingNetwork
@@ -1747,10 +1803,16 @@ components:
         id: id
         journeyData:
           heatNetworkElements:
-          - quantity: 0
-            name: EnergyCentres
-          - quantity: 0
-            name: EnergyCentres
+          - name: EnergyCentre
+            count: 0
+            locations:
+            - locations
+            - locations
+          - name: EnergyCentre
+            count: 0
+            locations:
+            - locations
+            - locations
           networkType:
             otherNetworkDescription: otherNetworkDescription
             type: CityScaleDistrictHeatingNetwork
@@ -1807,6 +1869,32 @@ components:
       required:
       - connectionTypes
       - hnId
+      - updatedBy
+      type: object
+    UpdateElementLocationsRequest:
+      example:
+        hnId: hnId
+        updatedBy: updatedBy
+        locations:
+        - locations
+        - locations
+        elementType: EnergyCentre
+      properties:
+        hnId:
+          type: string
+        updatedBy:
+          type: string
+        elementType:
+          $ref: "#/components/schemas/HeatNetworkElementType"
+        locations:
+          items:
+            type: string
+          minItems: 1
+          type: array
+      required:
+      - elementType
+      - hnId
+      - locations
       - updatedBy
       type: object
     UpdateUserOrganisationRequest:

@@ -10,7 +10,7 @@
     <div class="govuk-grid-column-two-thirds">
         <form asp-controller="SOA" asp-action="SubmitHeatNetworkType" method="post" novalidate>
             @Html.AntiForgeryToken()
-            <span class="govuk-caption-xl">Statement of applicability (SOA)</span>
+            <span class="govuk-caption-l">Statement of applicability (SOA)</span>
             <div class="govuk-form-group @(Html.HasError(nameof(Model.SelectedHNType)) ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset"
                           aria-describedby="@(Html.HasError(nameof(Model.SelectedHNType)) ? "heat-network-type-error" : "")">
