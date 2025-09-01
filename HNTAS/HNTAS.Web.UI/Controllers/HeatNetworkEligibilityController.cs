@@ -14,178 +14,134 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper = sessionHelper;
         }
 
-
-        #region Response Pages
-
-
+               
         [HttpGet]
-        public IActionResult LocatedInNorthernIreland()
-        {
-            this.ShowBackButton("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult FewerThan10Dwellings()
-        {
-            throw new Exception("Testing 500 error");
-            //this.ShowBackButton("HowManyDwellingsIncluded", "HeatNetworkEligibility");
-            //return View();
-        }
-
-        [HttpGet]
-        public IActionResult HNNotOperationalYet()
-        {
-            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult MEContractIsSigned()
-        {
-            this.ShowBackButton("HaveYouSignedMEContract", "HeatNetworkEligibility");
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult YouAreEligible()
-        {
-            return View();
-        }
-
-
-        #endregion
-
-        #region User Input pages
-
-        [HttpGet]
-        public IActionResult WhereIsTheHeatNetwork()
+        public IActionResult AreYouTheRP()
         {
             this.ShowBackButton("WhatDoYouWantToDo", "Home");
-            var model = _sessionHelper.GetFromSession<WhereIsTheHeatNetworkViewModel>(HttpContext, SessionKeys.WhereIsTheHeatNetworkModelKey) ?? new WhereIsTheHeatNetworkViewModel();
+            var model = _sessionHelper.GetFromSession<AreYouTheRPModel>(HttpContext, SessionKeys.AreYouTheRPModelKey) ?? new AreYouTheRPModel();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult WhereIsTheHeatNetwork(WhereIsTheHeatNetworkViewModel model)
+        public IActionResult AreYouTheRP(AreYouTheRPModel model)
         {
             this.ShowBackButton("WhatDoYouWantToDo", "Home");
             if (!ModelState.IsValid)
             {
-                 return View(model);
+                return View(model);
             }
-
-            switch (model.PartOfTheUK)
+            switch (model.AreYouTheRP)
             {
-                case "england":
-                case "scotland":
-                case "wales":
-                    _sessionHelper.SaveToSession<WhereIsTheHeatNetworkViewModel>(HttpContext, SessionKeys.WhereIsTheHeatNetworkModelKey, model);
-                    return RedirectToAction("HowManyDwellingsIncluded", "HeatNetworkEligibility");
-                case "ni":
-                    _sessionHelper.SaveToSession<WhereIsTheHeatNetworkViewModel>(HttpContext, SessionKeys.WhereIsTheHeatNetworkModelKey, model);
-                    return RedirectToAction("LocatedInNorthernIreland", "HeatNetworkEligibility");
+                case "yes":
+                    _sessionHelper.SaveToSession<AreYouTheRPModel>(HttpContext, SessionKeys.AreYouTheRPModelKey, model);
+                    return RedirectToAction("IsYourOrgWorkingOnANewHN", "HeatNetworkEligibility");
+                case "no":
+                    _sessionHelper.SaveToSession<AreYouTheRPModel>(HttpContext, SessionKeys.AreYouTheRPModelKey, model);
+                    return RedirectToAction("UserIsNotRP", "EndOfJourney");
                 default:
-                    ModelState.AddModelError(nameof(model.PartOfTheUK), "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.AreYouTheRP), "Please select a valid option.");
                     return View(model);
             }
+        }
 
+        [HttpGet]
+        public IActionResult IsYourOrgWorkingOnANewHN()
+        {
+            this.ShowBackButton("AreYouTheRP", "HeatNetworkEligibility");
+            var model = _sessionHelper.GetFromSession<IsYourOrgWorkingOnANewHNModel>(HttpContext, SessionKeys.IsYourOrgWorkingOnANewHNModelKey) ?? new IsYourOrgWorkingOnANewHNModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult IsYourOrgWorkingOnANewHN(IsYourOrgWorkingOnANewHNModel model)
+        {
+            this.ShowBackButton("AreYouTheRP", "HeatNetworkEligibility");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            switch (model.IsYourOrgWorkingOnANewHN)
+            {
+                case "yes":
+                    _sessionHelper.SaveToSession<IsYourOrgWorkingOnANewHNModel>(HttpContext, SessionKeys.IsYourOrgWorkingOnANewHNModelKey, model);
+                    return RedirectToAction("IsHNLocatedInEnglandScotlandWales", "HeatNetworkEligibility");
+                case "no":
+                    _sessionHelper.SaveToSession<IsYourOrgWorkingOnANewHNModel>(HttpContext, SessionKeys.IsYourOrgWorkingOnANewHNModelKey, model);
+                    return RedirectToAction("HNIsOperationalRegisterLater", "EndOfJourney");
+                default:
+                    ModelState.AddModelError(nameof(model.IsYourOrgWorkingOnANewHN), "Please select a valid option.");
+                    return View(model);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult IsHNLocatedInEnglandScotlandWales()
+        {
+            this.ShowBackButton("IsYourOrgWorkingOnANewHN", "HeatNetworkEligibility");
+            var model = _sessionHelper.GetFromSession<IsHNLocatedInEnglandScotlandWalesModel>(HttpContext, SessionKeys.IsHNLocatedInEnglandScotlandWalesModelKey) ?? new IsHNLocatedInEnglandScotlandWalesModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult IsHNLocatedInEnglandScotlandWales(IsHNLocatedInEnglandScotlandWalesModel model)
+        {
+            this.ShowBackButton("IsYourOrgWorkingOnANewHN", "HeatNetworkEligibility");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            switch (model.IsHNLocatedInEnglandScotlandWales)
+            {
+                case "yes":
+                    _sessionHelper.SaveToSession<IsHNLocatedInEnglandScotlandWalesModel>(HttpContext, SessionKeys.IsHNLocatedInEnglandScotlandWalesModelKey, model);
+                    return RedirectToAction("HowManyDwellingsIncluded", "HeatNetworkEligibility");
+                case "no":
+                    _sessionHelper.SaveToSession<IsHNLocatedInEnglandScotlandWalesModel>(HttpContext, SessionKeys.IsHNLocatedInEnglandScotlandWalesModelKey, model);
+                    return RedirectToAction("HNNotINEnglandScotlandWales", "EndOfJourney");
+                default:
+                    ModelState.AddModelError(nameof(model.IsHNLocatedInEnglandScotlandWales), "Please select a valid option.");
+                    return View(model);
+            }
         }
 
         [HttpGet]
         public IActionResult HowManyDwellingsIncluded()
         {
-            this.ShowBackButton("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
-            var model = _sessionHelper.GetFromSession<HowManyDwellingsIncludedViewModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey) ?? new HowManyDwellingsIncludedViewModel();
+            this.ShowBackButton("IsHNLocatedInEnglandScotlandWales", "HeatNetworkEligibility");
+            var model = _sessionHelper.GetFromSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey) ?? new HowManyDwellingsIncludedModel();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult HowManyDwellingsIncluded(HowManyDwellingsIncludedViewModel model)
+        public IActionResult HowManyDwellingsIncluded(HowManyDwellingsIncludedModel model)
         {
-            this.ShowBackButton("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
-            if (!ModelState.IsValid)
-            {
-                    return View(model);
-            }
-            switch (model.NumberOfDwellings)
-            {
-                case ">10":
-                    _sessionHelper.SaveToSession<HowManyDwellingsIncludedViewModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey, model);
-                    return RedirectToAction("IsHNCurrentlyOperating", "HeatNetworkEligibility");
-                case "<10":
-                    _sessionHelper.SaveToSession<HowManyDwellingsIncludedViewModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey, model);
-                    return RedirectToAction("FewerThan10Dwellings", "HeatNetworkEligibility");
-                default:
-                    ModelState.AddModelError(nameof(model.NumberOfDwellings), "Please select a valid option.");
-                    return View(model);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult IsHNCurrentlyOperating()
-        {
-            this.ShowBackButton("HowManyDwellingsIncluded", "HeatNetworkEligibility");
-            var model = _sessionHelper.GetFromSession<IsHNCurrentlyOperatingViewModel>(HttpContext, SessionKeys.IsHNCurrentlyOperatingModelKey) ?? new IsHNCurrentlyOperatingViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult IsHNCurrentlyOperating(IsHNCurrentlyOperatingViewModel model)
-        {
-            this.ShowBackButton("HowManyDwellingsIncluded", "HeatNetworkEligibility");
+            this.ShowBackButton("IsHNLocatedInEnglandScotlandWales", "HeatNetworkEligibility");
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            switch (model.IsCurrentlyOperating)
+            switch (model.HowManyDwellingsIncluded)
             {
                 case "yes":
-                    _sessionHelper.SaveToSession<IsHNCurrentlyOperatingViewModel>(HttpContext, SessionKeys.IsHNCurrentlyOperatingModelKey, model);
-                    return RedirectToAction("HNNotOperationalYet", "HeatNetworkEligibility");
-                case "no":
-                    _sessionHelper.SaveToSession<IsHNCurrentlyOperatingViewModel>(HttpContext, SessionKeys.IsHNCurrentlyOperatingModelKey, model);
-                    return RedirectToAction("HaveYouSignedMEContract", "HeatNetworkEligibility");
-                default:
-                    ModelState.AddModelError(nameof(model.IsCurrentlyOperating), "Please select a valid option.");
-                    return View(model);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult HaveYouSignedMEContract()
-        {
-            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
-            var model = _sessionHelper.GetFromSession<HaveYouSignedMEContractViewModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? new HaveYouSignedMEContractViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult HaveYouSignedMEContract(HaveYouSignedMEContractViewModel model)
-        {
-            this.ShowBackButton("IsHNCurrentlyOperating", "HeatNetworkEligibility");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            switch (model.HaveYouSignedMEContract)
-            {
-                case "yes":
-                    _sessionHelper.SaveToSession<HaveYouSignedMEContractViewModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model);
-                    return RedirectToAction("MEContractIsSigned", "HeatNetworkEligibility");
-                case "no":
-                    _sessionHelper.SaveToSession<HaveYouSignedMEContractViewModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model);
+                    _sessionHelper.SaveToSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey, model);
                     return RedirectToAction("YouAreEligible", "HeatNetworkEligibility");
+                case "no":
+                    _sessionHelper.SaveToSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey, model);
+                    return RedirectToAction("LessThan10Dwellings", "EndOfJourney");
                 default:
-                    ModelState.AddModelError(nameof(model.HaveYouSignedMEContract), "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.HowManyDwellingsIncluded), "Please select a valid option.");
                     return View(model);
             }
         }
 
-        #endregion
+        public IActionResult YouAreEligible()
+        {
+            return View();
+        }
     }
 }
