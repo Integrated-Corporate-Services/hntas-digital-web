@@ -18,7 +18,9 @@
                 You can <a class="govuk-link" href="#">download</a> the template to fill in and update later.
             </p>
 
-            <form method="post" enctype="multipart/form-data">
+            <form asp-action="SaveUploadedSOAElementDocuments" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="ElementName" value="@Model.ElementName" />
+
                 @if (Model.Documents != null && Model.Documents.Any())
                 {
                     @foreach (var doc in Model.Documents)

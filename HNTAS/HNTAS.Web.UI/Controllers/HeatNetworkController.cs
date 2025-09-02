@@ -1,5 +1,4 @@
-﻿using HNTAS.Api.Client.Api;
-using HNTAS.Api.Client.Model;
+﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.HeatNetwork;
@@ -356,27 +355,24 @@ namespace HNTAS.Web.UI.Controllers
         {
             this.ShowBackButton("HeatNetworks", "UserManagement");
             // get user details
-            var response = await _heatNetworksApi.ApiHeatNetworksHnIdGetAsync(hnid?.ToUpper());
+            var response = await _heatNetworkService.GetAsync(hnid?.ToUpper());
 
-            if (response.IsOk)
-            {
-                var responseModel = response.Ok();
-
-                var model = new HNDetailsViewModel
-                {
-                    Name = responseModel?.Name,
-                    LocationUrl = responseModel?.Location,
-                    OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName),
-                    PathWay = "",
-                    UHNID = responseModel?.HnId
-                };
-
-                return View(model);
-            }
-            else
+            if (response == null)
             {
                 return BadRequest();
             }
+
+            var model = new HNDetailsViewModel
+            {
+                Name = response?.Name,
+                LocationUrl = response?.Location,
+                OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName),
+                PathWay = response.Pathway,
+                UHNID = response?.HnId
+            };
+
+            return View(model);
+
         }
 
         [HttpPost]

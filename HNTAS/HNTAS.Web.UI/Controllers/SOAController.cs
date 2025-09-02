@@ -3,6 +3,7 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.Soa;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
 using ApiHeatNetworkType = HNTAS.Api.Client.Model.HeatNetworkType;
@@ -14,12 +15,17 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ISessionHelper _sessionHelper;
         private readonly ISoaProjectService _soaProjectService;
         private readonly ILogger<SOAController> _logger;
+        private readonly IS3UploadService _s3UploadService;
 
-        public SOAController(ISessionHelper sessionHelper, ISoaProjectService soaProjectService, ILogger<SOAController> logger)
+        public SOAController(ISessionHelper sessionHelper,
+            ISoaProjectService soaProjectService,
+            ILogger<SOAController> logger,
+            IS3UploadService s3UploadService)
         {
             _sessionHelper = sessionHelper;
             _soaProjectService = soaProjectService;
             _logger = logger;
+            _s3UploadService = s3UploadService;
         }
 
         [HttpGet]
@@ -202,7 +208,7 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> InitialSoa()
         {
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            this.ShowBackButton("ElementsOfHeatNetwork");
+            this.ShowBackButton("SelectElements");
             //get soa from db
             var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
 
@@ -321,16 +327,22 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult EnterElementLocations(string elementName)
+        public async Task<IActionResult> EnterElementLocationsAsync(string elementName)
         {
             this.ShowBackButton("ElementList");
 
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
+            var selectedElement = GetElementOptions().FirstOrDefault(x => x.Id.ToString().ToLower() == elementName.ToLower());
+            var element = soaProject.JourneyData.HeatNetworkElements.FirstOrDefault(x => x.Name == selectedElement.Id);
+
             var model = new EnterElementLocationsViewModel
             {
-                ElementName = GetElementOptions().FirstOrDefault(x => x.Id.ToString().ToLower() == elementName.ToLower()).Label ?? string.Empty,
+                ElementName = selectedElement?.Label ?? string.Empty,
             };
 
-            model.Locations = Enumerable.Repeat(string.Empty, 2).ToList();
+            model.Locations = Enumerable.Repeat(string.Empty, element.Count.Value).ToList();
 
             return View(model);
         }
@@ -355,117 +367,163 @@ namespace HNTAS.Web.UI.Controllers
             _logger.LogInformation("Saving {Count} locations for element: {ElementName}", model.Locations.Count, model.ElementName);
 
             return RedirectToAction("ElementList");
-            //var request = new UpdateElementLocationsRequest
-            //{
-            //    HnId = model.HnId, // You can pass this via hidden field or session
-            //    ElementType = model.ElementType,
-            //    UpdatedBy = User.Identity?.Name ?? "unknown", // Or inject user context
-            //    Locations = model.Locations
-            //};
-
-            //try
-            //{
-            //    await _soaProjectApiClient.UpdateElementLocations(request);
-            //    _logger.LogInformation("Locations saved successfully for element: {ElementType}", model.ElementType);
-            //    return RedirectToAction("ElementList");
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError(ex, "Failed to save locations for element: {ElementType}", model.ElementType);
-            //    ModelState.AddModelError(string.Empty, "An error occurred while saving locations.");
-            //    return View(model);
-            //}
         }
 
 
-        public IActionResult DefineSoa()
+        public async Task<IActionResult> DefineSoaAsync()
         {
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnNameId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
+
+            if (soaProject == null)
+            {
+                return BadRequest();
+            }
+
+            List<SelectedElement> networkElements = new List<SelectedElement>();
+            foreach (var element in soaProject.JourneyData.HeatNetworkElements)
+            {
+                networkElements.Add(new SelectedElement
+                {
+                    Count = element.Count ?? 0,
+                    Name = GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty
+                });
+            }
+
             var model = new SoADetailsViewModel
             {
-                SelectedElements = new List<SelectedElement>
-                {
-                    new SelectedElement { Name = "Energy Centre", Count = 2 },
-                    new SelectedElement { Name = "Thermal sub station", Count = 2 },
-                    new SelectedElement { Name = "Communal distribution network", Count = 1 },
-                    new SelectedElement { Name = "Consumer connections", Count = 10 }
-                },
-                HeatNetworkName = "Heat Network 1",
-                Pathway = "new build (stage 1-7)",
+                SelectedElements = networkElements,
+                HeatNetworkName = hnNameId,
+                Pathway = "1",
                 Steps = StaticSoaSteps.GetSteps(SoaSteps.DefineSoa, Url)
             };
+
+            this.ShowBackButton("ElementList");
             return View(model);
         }
 
-        public IActionResult DefineSoaDetails(int phaseIndex = 0)
+        public IActionResult DefineSoaDetails(int phaseIndex = 0, int pathway = 3)
         {
             var model = new StatementOfApplicabilityViewModel
             {
                 ProjectName = "Olympic Park Aberdeen",
                 PageTitle = "Define SOA – add details to your statement of applicability (SOA)",
+                Pathway = pathway,
                 CurrentPhaseIndex = phaseIndex,
-                Phases = new List<PhaseViewModel>
+                Phases = SoaPhaseStageMapping.Phases.Select((phase, index) => new PhaseViewModel
                 {
-                    new()
+                    Name = phase.Name,
+                    Title = phase.Title,
+                    IsActive = index == phaseIndex,
+                    Stages = phase.Stages.Select(stage => new StageViewModel
                     {
-                        Name = "Phase 1",
-                        Title = "Feasibility",
-                        IsActive = true,
-                        Stages = new List<StageViewModel>
-                        {
-                            new()
-                            {
-                                Name = "Stage 1 – concept design",
-                                Elements = new List<ElementViewModel>
-                                {
-                                    new() { Name = "Energy centre", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = 1, elementName = "energy-centre" }) },
-                                    new() { Name = "Thermal sub station", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = 1, elementName = "thermal-sub-station" }) },
-                                    new() { Name = "Communal distribution network", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("AddDetails", "Soa", new { phase = 1, elementName = "communal-distribution-network" }) },
-                                    new() { Name = "Consumer connections", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("AddDetails", "Soa", new { phase = 1, elementName = "consumer-connections" }) }
-                                }
-                            }
-                        }
-                    },
-                    // Add Phase 2–5 similarly
-                    new PhaseViewModel { Name = "Phase 2", Title = "Design", Stages = new List<StageViewModel>() },
-                    new PhaseViewModel { Name = "Phase 3", Title = "Construction", Stages = new List<StageViewModel>() },
-                    new PhaseViewModel { Name = "Phase 4", Title = "Testing", Stages = new List<StageViewModel>() },
-                    new PhaseViewModel { Name = "Phase 5", Title = "Handover", Stages = new List<StageViewModel>() }
-                },
+                        Name = stage.Name,
+                        Elements = GetDefaultElementsForStage(stage.Name, index + 1)
+                    }).ToList()
+                }).ToList()
             };
 
             return View(model);
         }
 
-
-        public IActionResult UploadSOAElementDocuments(string elementName)
+        private List<ElementViewModel> GetDefaultElementsForStage(string stageName, int phaseNumber)
         {
+            return new List<ElementViewModel>
+            {
+                new() { Name = "Energy centre", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.EnergyCentre.ToString() }) },
+                new() { Name = "Thermal sub station", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.ThermalSubStation.ToString() }) },
+                new() { Name = "Communal distribution network", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("AddDetails", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.CommunalDistributionNetwork.ToString() }) },
+                new() { Name = "Consumer connections", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("AddDetails", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.ConsumerConnections.ToString() }) }
+            };
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> UploadSOAElementDocuments(string elementName)
+        {
+            this.ShowBackButton("ElementList");
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
+
+            var selectedElement = GetElementOptions().FirstOrDefault(x =>
+                x.Id.ToString().Equals(elementName, StringComparison.OrdinalIgnoreCase));
+
+            if (selectedElement == null)
+            {
+                _logger.LogWarning("Element not found for name: {ElementName}", elementName);
+                return NotFound();
+            }
+
+            var element = soaProject.JourneyData.HeatNetworkElements
+                .FirstOrDefault(x => x.Name == selectedElement.Id);
+
             var model = new UploadSOAElementDocumentsViewModel
             {
                 PageTitle = "Upload SOA Documents",
-                ElementDescription = "Upload your SOA for each element."
+                ElementName = selectedElement.Label,
+                ElementDescription = "Upload your SOA for each element.",
+                Documents = BuildDocumentInputsForElement(selectedElement.Id, element?.Count ?? 0)
             };
-
-            if (elementName == "energy-centre")
-            {
-                model.ElementName = "Energy centre";
-                model.Documents = new List<DocumentUploadModel>
-                    {
-                        new DocumentUploadModel { Name = "Primary energy centre", FileInputId = "primary-soa-upload", IsRequired = true },
-                        new DocumentUploadModel { Name = "Secondary energy centre", FileInputId = "secondary-soa-upload", IsRequired = false }
-                    };
-            }
-            else if (elementName == "thermal-sub-station")
-            {
-                model.ElementName = "Thermal sub station";
-                model.Documents = new List<DocumentUploadModel>
-                {
-                    new DocumentUploadModel { Name = "Thermal sub station 1", FileInputId = "thermal-soa-upload-1", IsRequired = true },
-                    new DocumentUploadModel { Name = "Thermal sub station 2", FileInputId = "thermal-soa-upload-1", IsRequired = true }
-                };
-            }
 
             return View(model);
         }
+
+        private List<DocumentUploadModel> BuildDocumentInputsForElement(HeatNetworkElementType elementId, int count)
+        {
+            var elementLabel = GetElementOptions().FirstOrDefault(x => x.Id == elementId)?.Label;
+
+            var documents = new List<DocumentUploadModel>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                documents.Add(new DocumentUploadModel
+                {
+                    Name = $"{elementLabel} {i}",
+                    FileInputId = $"{elementLabel.ToLower().Replace(" ", "-")}-soa-upload-{i}",
+                    IsRequired = true
+                });
+            }
+
+            return documents;
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SaveUploadedSOAElementDocuments(string elementName)
+        {
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
+            var selectedElement = GetElementOptions().FirstOrDefault(x => x.Label.ToLower() == elementName.ToLower());
+
+            if (selectedElement == null)
+            {
+                _logger.LogWarning("Invalid element name: {ElementName}", elementName);
+                return NotFound();
+            }
+
+            var uploadedKeys = new List<string>();
+
+            foreach (var key in Request.Form.Files.Select(f => f.Name))
+            {
+                var file = Request.Form.Files[key];
+                if (file != null && file.Length > 0)
+                {
+                    var s3Key = await _s3UploadService.UploadFileAsync(file, $"soa/{hnId}/{selectedElement.Id.ToString()}");
+                    uploadedKeys.Add(s3Key);
+                }
+            }
+
+            _logger.LogInformation("Uploaded {Count} documents for element {ElementName}", uploadedKeys.Count, elementName);
+
+            return RedirectToAction("ElementList");
+        }
+
+
 
 
         private List<SelectItemOption> GetHeatNetworkTypeOptions()

@@ -1,3 +1,4 @@
+using Amazon.S3;
 using GovUk.OneLogin.AspNetCore;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
@@ -136,6 +137,13 @@ builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
+
+builder.Services.AddSingleton<IAmazonS3>(sp =>
+{
+    return new AmazonS3Client(); // Uses env vars and default credential chain
+});
+
+builder.Services.AddSingleton<IS3UploadService, S3UploadService>();
 
 //Configure onelogin settings
 builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
