@@ -934,6 +934,7 @@ components:
       example:
         hnId: hnId
         name: name
+        pathway: pathway
         location: location
         id: id
       properties:
@@ -946,6 +947,8 @@ components:
         location:
           type: string
         name:
+          type: string
+        pathway:
           type: string
       type: object
     HeatNetworkResponse:
@@ -970,19 +973,6 @@ components:
           type: string
         role:
           $ref: "#/components/schemas/ContributorRole"
-      type: object
-    HeatNetworkResponse:
-      example:
-        hnId: hnId
-        name: name
-        location: location
-      properties:
-        hnId:
-          type: string
-        name:
-          type: string
-        location:
-          type: string
       type: object
     InitialUserRegistrationRequest:
       example:
@@ -1068,10 +1058,6 @@ components:
           $ref: "#/components/schemas/InvitationStatus"
         invitedAt:
           format: date-time
-          type: string
-        acceptedAt:
-          format: date-time
-          nullable: true
           type: string
         acceptedAt:
           format: date-time
@@ -1298,39 +1284,27 @@ components:
       type: object
     RegisteredAddress:
       example:
-        lastName: lastName
-        preferredContactType: Landline
-        mobileNumber: mobileNumber
-        jobTitle: jobTitle
-        roles:
-        - RegulatoryContact
-        - RegulatoryContact
-        oneLoginId: oneLoginId
-        emailId: emailId
-        landlineNumber: landlineNumber
-        orgId: orgId
-        firstName: firstName
-        id: id
-        hnIds:
-        - hnIds
-        - hnIds
-        status: Active
+        country: country
+        town: town
+        county: county
+        postcode: postcode
+        addressLine1: addressLine1
+        addressLine2: addressLine2
       properties:
-        id:
+        addressLine1:
+          type: string
+        addressLine2:
           nullable: true
           type: string
-        oneLoginId:
-          type: string
-        orgId:
+        town:
           nullable: true
           type: string
-        firstName:
+        county:
           nullable: true
           type: string
-        lastName:
-          nullable: true
+        postcode:
           type: string
-        jobTitle:
+        country:
           nullable: true
           type: string
       required:
@@ -1424,17 +1398,9 @@ components:
         status: Active
       properties:
         id:
+          nullable: true
           type: string
         oneLoginId:
-          type: string
-        firstName:
-          nullable: true
-          type: string
-        lastName:
-          nullable: true
-          type: string
-        fullName:
-          nullable: true
           type: string
         orgId:
           nullable: true
@@ -1542,7 +1508,7 @@ components:
           type: string
         roles:
           items:
-            type: string
+            $ref: "#/components/schemas/UserRole"
           nullable: true
           type: array
         organisation:

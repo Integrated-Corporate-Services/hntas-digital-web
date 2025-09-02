@@ -440,9 +440,6 @@ namespace HNTAS.Api.Client.Model
             if (invitedUserResponse.RolesOption.IsSet && invitedUserResponse.Roles == null)
                 throw new ArgumentNullException(nameof(invitedUserResponse.Roles), "Property is required for class InvitedUserResponse.");
 
-            if (invitedUserResponse.StatusOption.IsSet && invitedUserResponse.Status == null)
-                throw new ArgumentNullException(nameof(invitedUserResponse.Status), "Property is required for class InvitedUserResponse.");
-
             if (invitedUserResponse.IdOption.IsSet)
                 writer.WriteString("id", invitedUserResponse.Id);
 

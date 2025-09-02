@@ -1,60 +1,103 @@
 ﻿@{
-    ViewData["Title"] = "Check if the new regulations apply to your heat network";
+    ViewData["Title"] = "Register your new heat network with Heat Networks Technical Assurance Scheme (HNTAS)";
 }
 <style>
     .govuk-blue-bar {
         background-color: #1d70b8;
         height: 8px;
-        margin-bottom: 20px;
+    }
+
+    .govuk-button--start-green {
+        background-color: #00703c;
+        color: #fff;
+        border: none;
+    }
+
+        .govuk-button--start-green:hover,
+        .govuk-button--start-green:focus {
+            background-color: #005a30;
+            color: #fff;
+        }
+
+    .govuk-related-items {
+        margin-top: 0;
     }
 </style>
 
 <div class="govuk-width-container">
+    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="#">Home</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="#">Heat networks</a>
+            </li>
+        </ol>
+    </nav>
     <main class="govuk-main-wrapper" id="main-content" role="main">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
                 <h1 class="govuk-heading-l">
-                    Check if the new regulations apply to your heat network
+                    Register your new heat network with Heat Networks Technical Assurance Scheme (HNTAS)
                 </h1>
 
                 <p class="govuk-body">
-                    If you're running an existing heat network or creating a new one, use this tool to check if you need to comply with new regulations from:
+                    If you build or operate heat networks, you may need to meet new legal requirements under HNTAS.
                 </p>
 
+                <h2 class="govuk-heading-s">Use this service to:</h2>
                 <ul class="govuk-list govuk-list--bullet">
-                    <li>Heat Network Technical Assurance Scheme (HNTAS)</li>
+                    <li>check if any of your new heat networks need to comply</li>
+                    <li>register and send technical specifications for assessment</li>
                 </ul>
 
-                <a href="@ViewBag.NavigateUrl" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
+                <h2 class="govuk-heading-s">Who can use this service</h2>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>heat network owners with pre-operational networks</li>
+                    <li>designers, contractors and operators working on heat networks</li>
+                    <li>assessors validating specifications entered by heat network owners</li>
+                </ul>
+
+                <h2 class="govuk-heading-s">Understand your heat network structure</h2>
+                <p class="govuk-body">
+                    Learn more about <a href="#" class="govuk-link">heat networks</a> to better understand how your development adheres to HNTAS.
+                </p>
+
+                <p class="govuk-body" style="margin-top: 24px;">
+                    HNTAS is run by the Department for Energy Security and Net Zero (DESNZ) and regulated by Ofgem, who make sure networks meet the scheme’s requirements.
+                </p>
+
+                <a href="@ViewBag.NavigateUrl" role="button" draggable="false" class="govuk-button govuk-button--start govuk-button--start-green" data-module="govuk-button" style="margin-top: 24px;">
                     Start now
                     <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
                         <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
                     </svg>
                 </a>
 
-                <h2 class="govuk-heading-m">Before you start</h2>
+                <h2 class="govuk-heading-m" style="margin-top: 40px;">Before you start</h2>
 
-                <p class="govuk-body">You'll be asked about your heat network's:</p>
-
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>type</li>
-                    <li>current state of development</li>
-                    <li>number of dwellings served</li>
-                    <li>thermal capacity in kW (if known)</li>
-                </ul>
-
-                <p class="govuk-body govuk-!-margin-top-6">
-                    The online service is also available in Welsh (ar gael yn Gymraeg).
+                <p class="govuk-body">
+                    Read the <a href="#" class="govuk-link">HNTAS guidance</a> for a full overview of the scheme.
                 </p>
-                
+                <p class="govuk-body">
+                    <strong>Heat network owners</strong> can use <a href="#" class="govuk-link">Companies House</a> to verify their company information.
+                </p>
+                <p class="govuk-body">
+                    <strong>Contributors (designers, contractors, operators)</strong> will use <a href="#" class="govuk-link">what3words</a> to pinpoint elements within each heat network.
+                </p>
+                <p class="govuk-body">
+                    <strong>Assessors</strong> should follow the <a href="#" class="govuk-link">HNTAS assessment procedures</a> to validate each network.
+                </p>
             </div>
             <div class="govuk-grid-column-one-third">
                 <aside class="govuk-related-items">
                     <hr class="govuk-blue-bar" />
                     <h2 class="govuk-heading-m">Related content</h2>
                     <ul class="govuk-list govuk-list--bullet">
-                        <li><a class="govuk-link" href="#">Link 1</a></li>
+                        <li><a class="govuk-link" href="#">Ofgem</a></li>
+                        <li><a class="govuk-link" href="#">Zoning</a></li>
                     </ul>
                 </aside>
             </div>

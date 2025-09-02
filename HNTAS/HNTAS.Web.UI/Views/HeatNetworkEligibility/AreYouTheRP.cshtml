@@ -1,29 +1,29 @@
 ﻿@using HNTAS.Web.UI.Models
-@model HowManyDwellingsIncludedModel
+@model AreYouTheRPModel
 
 @{
     ViewData["Title"] = "Check your eligibility to register a heat network";
-    var fieldOrder = new[] { nameof(Model.HowManyDwellingsIncluded) };
-    var elementId = Html.GenerateIdFromName(nameof(Model.HowManyDwellingsIncluded)).ToLowerInvariant();
+    var fieldOrder = new[] { nameof(Model.AreYouTheRP) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.AreYouTheRP)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "HeatNetworkEligibility",
-        Action = "HowManyDwellingsIncluded",
+        Action = "AreYouTheRP",
         FieldOrder = fieldOrder,
         Questions = new List<Question>
         {
             new Question
             {
                 QId = elementId,
-                QText = "Do any of your new heat networks have 10 or more dwellings?",
-                QDescText = "This includes houses, flats or units connected to the same heat network.",
+                QText = "Are you the responsible person for the organisation?",
+                QDescText = "This person is usually one of the directors legally accountable for meeting Heat Network Technical Assurance Scheme (HNTAS) requirements.",
                 QHintText = null,
                 Options = new List<Option>
                 {
                     new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
                     new Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = null }
                 },
-                SeletedOption = Model.HowManyDwellingsIncluded
+                SeletedOption = Model.AreYouTheRP
             },
         }
     };
