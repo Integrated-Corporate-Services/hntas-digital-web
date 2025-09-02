@@ -33,7 +33,7 @@ public class HomeController : Controller
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
         {
-            _logger.LogError("Missing claims. Email: '{Email}', ID: '{Id}'", email, oneLoginId);
+            _logger.LogError("Missing claims. ID: '{Id}'", oneLoginId);
             TempData["ErrorMessage"] = "Unable to retrieve essential user info. Please try again.";
             return BadRequest();
         }
@@ -106,7 +106,7 @@ public class HomeController : Controller
             if (existingUser == null)
             {
                 var registration = new InitialUserRegistrationRequest(oneLoginId: oneLoginId, emailId: email, status: UserStatus.Active);
-                _logger.LogInformation("Submitting initial user entry. Email: {Email}, ID: {Id}", email, oneLoginId);
+                _logger.LogInformation("Submitting initial user entry. ID: {Id}", oneLoginId);
 
                 var newUserId = await _iUserService.CreateUser(registration);
 
@@ -136,7 +136,7 @@ public class HomeController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Exception during initial user registration for {Email}", email);
+            _logger.LogError(ex, "Exception during initial user registration.");
             TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
             return BadRequest();
         }
