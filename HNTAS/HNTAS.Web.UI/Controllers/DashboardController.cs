@@ -84,6 +84,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult OrganisationDetails()
         {
+            this.ShowBackButton("UserAccount", "Dashboard");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             ViewBag.AddressLine1 = TempData["AddressLine1"];
             ViewBag.AddressLine2 = TempData["AddressLine2"];
