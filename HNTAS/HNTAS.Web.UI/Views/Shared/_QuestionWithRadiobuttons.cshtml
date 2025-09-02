@@ -21,7 +21,7 @@
                 </legend>
                 @if (!string.IsNullOrEmpty(q.QDescText))
                 {
-                    <p class="govuk-body">@q.QDescText</p>
+                    <p class="govuk-body">@Html.Raw(q.QDescText)</p>
                 }
                 @if (!string.IsNullOrEmpty(q.QHintText))
                 {

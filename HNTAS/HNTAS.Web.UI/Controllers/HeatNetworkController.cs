@@ -129,7 +129,7 @@ namespace HNTAS.Web.UI.Controllers
                         _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
                         return RedirectToAction("CheckYourAnswers");
                     case "construction":
-                        return RedirectToAction("HasElementBeenRegistered");
+                        return RedirectToAction("HaveYouSignedMEContract");
                     case "operation":
                         return RedirectToAction("HNInOperation");
                     default:
@@ -140,9 +140,47 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult HasElementBeenRegistered()
+        public IActionResult HaveYouSignedMEContract()
         {
             this.ShowBackButton("EnterHNPhase", "HeatNetwork");
+            var model = _sessionHelper.GetFromSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? new HaveYouSignedMEContractModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult HaveYouSignedMEContract(HaveYouSignedMEContractModel model)
+        {
+            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            switch (model.HaveYouSignedMEContract)
+            {
+                case "yes":
+                    _sessionHelper.SaveToSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model);
+                    return RedirectToAction("MEContractIsSigned", "HeatNetwork");
+                case "no":
+                    _sessionHelper.SaveToSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model);
+                    return RedirectToAction("HasElementBeenRegistered", "HeatNetwork");
+                default:
+                    ModelState.AddModelError(nameof(model.HaveYouSignedMEContract), "Please select a valid option.");
+                    return View(model);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult MEContractIsSigned()
+        {
+            this.ShowBackButton("HaveYouSignedMEContract", "HeatNetwork");
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult HasElementBeenRegistered()
+        {
+            this.ShowBackButton("HaveYouSignedMEContract", "HeatNetwork");
             var model = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? new HasElementBeenRegisteredModel();
             return View(model);
         }
@@ -151,7 +189,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult HasElementBeenRegistered(HasElementBeenRegisteredModel model)
         {
-            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
+            this.ShowBackButton("HaveYouSignedMEContract", "HeatNetwork");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -238,6 +276,7 @@ namespace HNTAS.Web.UI.Controllers
                 HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey),
                 HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey),
                 HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey),
+                HaveYouSignedMEContractModel = _sessionHelper.GetFromSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? new HaveYouSignedMEContractModel(),
                 HasElementBeenRegisteredModel = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? null,
                 HasPlanningApplicationBeenSubmittedModel = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? null,
                 PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey) ?? new PathwayModel() { Pathway = "1" },
@@ -256,6 +295,7 @@ namespace HNTAS.Web.UI.Controllers
             viewModel.HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
             viewModel.PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey);
             viewModel.HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey);
+            viewModel.HaveYouSignedMEContractModel = _sessionHelper.GetFromSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? null;
             viewModel.HasElementBeenRegisteredModel = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? null;
             viewModel.HasPlanningApplicationBeenSubmittedModel = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? null;
 
@@ -263,6 +303,7 @@ namespace HNTAS.Web.UI.Controllers
             ModelState.Remove(nameof(viewModel.HeatNetworkLocationModel));
             ModelState.Remove(nameof(viewModel.PathwayModel));
             ModelState.Remove(nameof(viewModel.HeatNetworkPhaseModel));
+            ModelState.Remove(nameof(viewModel.HaveYouSignedMEContractModel));
             ModelState.Remove(nameof(viewModel.HasElementBeenRegisteredModel));
             ModelState.Remove(nameof(viewModel.HasPlanningApplicationBeenSubmittedModel));
 
