@@ -1144,7 +1144,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersAcceptInvitationPatchDefaultImplementation(e, "/api/Users/accept-invitation", uriBuilderLocalVar.Path, invitedUserRequest);
                 Events.ExecuteOnErrorApiUsersAcceptInvitationPatch(e);
@@ -1203,15 +1203,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out string? result)
+            public bool TryOk([NotNullWhen(true)]out string? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -1242,15 +1241,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryCreated([NotNullWhen(true)] out string? result)
+            public bool TryCreated([NotNullWhen(true)]out string? result)
             {
                 result = null;
 
                 try
                 {
                     result = Created();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)201);
                 }
@@ -1281,15 +1279,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryConflict([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryConflict([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = Conflict();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)409);
                 }
@@ -1320,15 +1317,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -1466,7 +1462,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersContributorRolesGetDefaultImplementation(e, "/api/Users/contributor-roles", uriBuilderLocalVar.Path);
                 Events.ExecuteOnErrorApiUsersContributorRolesGet(e);
@@ -1525,15 +1521,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<EnumItemResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<EnumItemResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -1665,7 +1660,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersGetDefaultImplementation(e, "/api/Users", uriBuilderLocalVar.Path);
                 Events.ExecuteOnErrorApiUsersGet(e);
@@ -1724,15 +1719,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<UserResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<UserResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -1894,7 +1888,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersIdDeleteDefaultImplementation(e, "/api/Users/{id}", uriBuilderLocalVar.Path, id);
                 Events.ExecuteOnErrorApiUsersIdDelete(e);
@@ -1959,15 +1953,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -2140,7 +2133,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersIdHeatnetworkHeatNetworkIdPatchDefaultImplementation(e, "/api/Users/{id}/heatnetwork/{heatNetworkId}", uriBuilderLocalVar.Path, id, heatNetworkId);
                 Events.ExecuteOnErrorApiUsersIdHeatnetworkHeatNetworkIdPatch(e);
@@ -2205,15 +2198,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -2399,7 +2391,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersIdOrgDetailsPatchDefaultImplementation(e, "/api/Users/{id}/org-details", uriBuilderLocalVar.Path, id, updateUserOrganisationRequest);
                 Events.ExecuteOnErrorApiUsersIdOrgDetailsPatch(e);
@@ -2458,15 +2450,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.User? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.User? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -2497,15 +2488,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -2536,15 +2526,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -2719,7 +2708,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersInitialEntryPostDefaultImplementation(e, "/api/Users/initial-entry", uriBuilderLocalVar.Path, initialUserRegistrationRequest);
                 Events.ExecuteOnErrorApiUsersInitialEntryPost(e);
@@ -2778,15 +2767,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryCreated([NotNullWhen(true)] out string? result)
+            public bool TryCreated([NotNullWhen(true)]out string? result)
             {
                 result = null;
 
                 try
                 {
                     result = Created();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)201);
                 }
@@ -2817,15 +2805,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -2856,15 +2843,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryConflict([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryConflict([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = Conflict();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)409);
                 }
@@ -3030,7 +3016,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersManagedUsersGetDefaultImplementation(e, "/api/Users/managed-users", uriBuilderLocalVar.Path, userId);
                 Events.ExecuteOnErrorApiUsersManagedUsersGet(e);
@@ -3089,15 +3075,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.ManagedUserResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.ManagedUserResponse? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -3128,15 +3113,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -3298,7 +3282,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersOrganisationExistsGetDefaultImplementation(e, "/api/Users/organisation/exists", uriBuilderLocalVar.Path, companiesHouseNumber);
                 Events.ExecuteOnErrorApiUsersOrganisationExistsGet(e);
@@ -3357,15 +3341,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out bool? result)
+            public bool TryOk([NotNullWhen(true)]out bool? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -3396,15 +3379,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -3570,7 +3552,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersRegisteredUsersGetDefaultImplementation(e, "/api/Users/registered-users", uriBuilderLocalVar.Path, userId);
                 Events.ExecuteOnErrorApiUsersRegisteredUsersGet(e);
@@ -3629,15 +3611,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<UserResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<UserResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -3668,15 +3649,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -3838,7 +3818,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersUserDetailsByIdGetDefaultImplementation(e, "/api/Users/user-details-by-id", uriBuilderLocalVar.Path, id);
                 Events.ExecuteOnErrorApiUsersUserDetailsByIdGet(e);
@@ -3897,15 +3877,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.UserDetailsResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.UserDetailsResponse? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -4043,7 +4022,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersUserRolesGetDefaultImplementation(e, "/api/Users/user-roles", uriBuilderLocalVar.Path);
                 Events.ExecuteOnErrorApiUsersUserRolesGet(e);
@@ -4102,15 +4081,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<EnumItemResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<EnumItemResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -4266,7 +4244,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorGetUserByIdDefaultImplementation(e, "/api/Users/{id}", uriBuilderLocalVar.Path, id);
                 Events.ExecuteOnErrorGetUserById(e);
@@ -4325,15 +4303,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.UserResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.UserResponse? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -4364,15 +4341,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -4534,7 +4510,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorGetUserByOneLoginIdDefaultImplementation(e, "/api/Users/onelogin/{oneLoginId}", uriBuilderLocalVar.Path, oneLoginId);
                 Events.ExecuteOnErrorGetUserByOneLoginId(e);
@@ -4593,15 +4569,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.UserResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.UserResponse? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -4632,15 +4607,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }

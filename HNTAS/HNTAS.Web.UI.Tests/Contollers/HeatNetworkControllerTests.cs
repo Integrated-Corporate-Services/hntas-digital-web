@@ -15,14 +15,14 @@ namespace HNTAS.Web.UI.Tests.Controllers
     {
         private readonly Mock<ILogger<HeatNetworkController>> _loggerMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
-        private readonly Mock<IHeatNetworksApi> _heatNetworksApiMock;
+        private readonly Mock<IHeatNetworkService> _heatNetworkServiceMock;
         private readonly Mock<IUserService> _userServiceMock;
 
         public HeatNetworkControllerTests()
         {
             _loggerMock = new Mock<ILogger<HeatNetworkController>>();
             _sessionHelperMock = new Mock<ISessionHelper>();
-            _heatNetworksApiMock = new Mock<IHeatNetworksApi>();
+            _heatNetworkServiceMock = new Mock<IHeatNetworkService>();
             _userServiceMock = new Mock<IUserService>();
         }
 
@@ -30,7 +30,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             var controller = new HeatNetworkController(
                 _loggerMock.Object,
-                _heatNetworksApiMock.Object,
+                _heatNetworkServiceMock.Object,
                 _userServiceMock.Object,
                 _sessionHelperMock.Object
             );
@@ -228,63 +228,3 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
     }
 }
-
-
-// Test cases for testing the model validation in the HeatNetworkController - works in ui, does not work in tests
-// TC passe upon adding the model state validation in the controller methods - code redundancy
-
-//[Fact]
-//public void EnterHNLocation_Post_InvalidModel_ReturnsViewWithModelError()
-//{
-//    // Arrange
-//    var controller = CreateController();
-
-//    var model = new HeatNetworkLocationModel { HeatNetworkLocation = "" };
-//    controller.ModelState.AddModelError("HeatNetworkLocation", "Required");
-
-//    var httpContext = new DefaultHttpContext();
-//    httpContext.Request.Headers["Referer"] = "https://localhost/dashboard";
-//    controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
-
-//    // Act
-//    var result = controller.EnterHNLocation(model);
-
-//    // Assert
-//    var viewResult = Assert.IsType<ViewResult>(result);
-//    Assert.Equal(model, viewResult.Model);
-//    Assert.True(controller.ModelState.ContainsKey("HeatNetworkLocation"));
-//}
-
-//[Fact]
-//public void EnterHNName_Post_InvalidModel_ReturnsViewWithModelError()
-//{
-//    // Arrange
-//    var controller = CreateController();
-//    var model = new HeatNetworkNameModel { HeatNetworkName = "" }; // Invalid due to [Required]
-
-//    // Simulate model validation
-//    var validationContext = new ValidationContext(model, null, null);
-//    var validationResults = new List<ValidationResult>();
-//    Validator.TryValidateObject(model, validationContext, validationResults, true);
-
-//    foreach (var validationResult in validationResults)
-//    {
-//        foreach (var memberName in validationResult.MemberNames)
-//        {
-//            controller.ModelState.AddModelError(memberName, validationResult.ErrorMessage);
-//        }
-//    }
-
-//    var httpContext = new DefaultHttpContext();
-//    httpContext.Request.Headers["Referer"] = "https://localhost/dashboard";
-//    controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
-
-//    // Act
-//    var result = controller.EnterHNName(model);
-
-//    // Assert
-//    var viewResult = Assert.IsType<ViewResult>(result);
-//    Assert.Equal(model, viewResult.Model);
-//    Assert.False(controller.ModelState.IsValid);
-//    Assert.True(controller.ModelState.ContainsKey("HeatNetworkName"));
-//}

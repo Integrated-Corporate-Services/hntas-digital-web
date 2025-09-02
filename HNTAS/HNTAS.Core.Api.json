@@ -1448,6 +1448,34 @@
           },
           "name": {
             "type": "string"
+          },
+          "pathway": {
+            "type": "string"
+          }
+        }
+      },
+      "HeatNetworkResponse": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
+      },
+      "HnRoleMapping": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/ContributorRole"
           }
         }
       },

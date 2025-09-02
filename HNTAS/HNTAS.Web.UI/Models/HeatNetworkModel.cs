@@ -34,6 +34,12 @@ namespace HNTAS.Web.UI.Models
         public string? HasPlanningApplicationBeenSubmitted { get; set; }
     }
 
+    public class HaveYouSignedMEContractModel
+    {
+        [Required(ErrorMessage = "Please select an option.")]
+        public string? HaveYouSignedMEContract { get; set; }
+    }
+
     public class PathwayModel
     {
         public string Pathway { get; set; }
@@ -46,6 +52,7 @@ namespace HNTAS.Web.UI.Models
         public HeatNetworkPhaseModel HeatNetworkPhaseModel { get; set; }
         public HasElementBeenRegisteredModel? HasElementBeenRegisteredModel { get; set; }
         public HasPlanningApplicationBeenSubmittedModel? HasPlanningApplicationBeenSubmittedModel { get; set; }
+        public HaveYouSignedMEContractModel HaveYouSignedMEContractModel { get; set; }
         public PathwayModel PathwayModel { get; set; }
 
         // The ConfirmedDeclaration property, now part of this specific ViewModel
