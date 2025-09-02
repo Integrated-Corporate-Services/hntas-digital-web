@@ -1,0 +1,51 @@
+﻿@{  
+    ViewData["Title"] = "Organisation Details";
+    string RenderLine(string value, string suffix = "<br>") =>
+            !string.IsNullOrEmpty(value) ? $"{value}{suffix}" : "";
+
+}  
+
+<div class="govuk-width-container">  
+    <div class="govuk-grid-row">  
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-hint">@ViewBag.OrganisationName</span>
+            <h1 class="govuk-heading-l">Organisation details</h1>  
+
+            <h2 class="govuk-heading-m">Heat networks</h2>  
+
+            <dl class="govuk-summary-list">  
+                <div class="govuk-summary-list__row">  
+                    <dt class="govuk-summary-list__key">Name</dt>  
+                    <dd class="govuk-summary-list__value">@ViewBag.OrganisationName</dd>  
+                </div>  
+
+                <div class="govuk-summary-list__row">  
+                    <dt class="govuk-summary-list__key">Address</dt>  
+                    <dd class="govuk-summary-list__value"> 
+                        @ViewBag.OrganisationName <br />
+                        @Html.Raw(RenderLine(ViewBag.AddressLine1 as string, ",<br>"))
+                        @Html.Raw(RenderLine(ViewBag.AddressLine2 as string, ",<br>"))
+                        @Html.Raw(RenderLine(ViewBag.Town as string, ",<br>"))
+                        @Html.Raw(RenderLine(ViewBag.County as string, ",<br>"))
+                        @Html.Raw(RenderLine(ViewBag.Postcode as string))
+                        @Html.Raw(RenderLine(ViewBag.Country as string))
+                    </dd>  
+                </div>  
+
+                <div class="govuk-summary-list__row">  
+                    <dt class="govuk-summary-list__key">Email address</dt>  
+                    <dd class="govuk-summary-list__value">  
+                        <span>@ViewBag.UserEmailId</span>
+                    </dd>  
+                </div>  
+
+                <div class="govuk-summary-list__row">  
+                    <dt class="govuk-summary-list__key">Organisation description</dt>  
+                    <dd class="govuk-summary-list__value"></dd>  
+                </div>  
+            </dl>  
+
+            <a href="#" class="govuk-link">Edit organisation details</a>  
+        </div>  
+    </div>  
+</div>

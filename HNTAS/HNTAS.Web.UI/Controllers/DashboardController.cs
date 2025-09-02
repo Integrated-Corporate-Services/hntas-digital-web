@@ -23,6 +23,7 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper = sessionHelper;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> UserAccount()
         {
@@ -44,6 +45,13 @@ namespace HNTAS.Web.UI.Controllers
             else
             {
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
+                TempData["AddressLine1"] = user.Organisation.RegisteredAddress?.AddressLine1;
+                TempData["AddressLine2"] = user.Organisation.RegisteredAddress?.AddressLine2;
+                TempData["Town"] = user.Organisation.RegisteredAddress?.Town;
+                TempData["County"] = user.Organisation.RegisteredAddress?.County;
+                TempData["Postcode"] = user.Organisation.RegisteredAddress?.Postcode;
+                TempData["Country"] = user.Organisation.RegisteredAddress?.Country;
+                TempData["UserEmailId"] = user.EmailId;
             }
 
             ViewBag.IsRegulatoryContact = user.Roles?.Contains(Api.Client.Model.UserRole.RegulatoryContact);
@@ -71,6 +79,20 @@ namespace HNTAS.Web.UI.Controllers
 
             return View(dashboardModel);
 
+        }
+
+        [HttpGet]
+        public IActionResult OrganisationDetails()
+        {
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            ViewBag.AddressLine1 = TempData["AddressLine1"];
+            ViewBag.AddressLine2 = TempData["AddressLine2"];
+            ViewBag.Town = TempData["Town"];
+            ViewBag.County = TempData["County"];
+            ViewBag.Postcode = TempData["Postcode"];
+            ViewBag.Country = TempData["Country"];
+            ViewBag.UserEmailId = TempData["UserEmailId"];
+            return View();
         }
     }
 }
