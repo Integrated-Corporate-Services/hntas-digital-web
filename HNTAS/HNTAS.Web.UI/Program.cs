@@ -177,6 +177,8 @@ builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.Authenticatio
                 identity.AddClaim(new Claim("hntas.inviterUserId", inviterUserId));
                 identity.AddClaim(new Claim("hntas.inviterOrgId", inviterOrgId));
             }
+            return Task.CompletedTask;
+        };
         // Assign individual event handlers
         options.Events.OnRedirectToIdentityProvider = context =>
         {
