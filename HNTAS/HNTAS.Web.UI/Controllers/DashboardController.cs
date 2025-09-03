@@ -56,14 +56,15 @@ namespace HNTAS.Web.UI.Controllers
             try
             {
                 user = await RetrieveUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new DashboardModel());
             }
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
-                        
+
             ViewBag.IsRegulatoryContact = user.Roles?.Contains(Api.Client.Model.UserRole.RegulatoryContact);
 
             var heatNetworks = new List<HeatNetworkModel>();

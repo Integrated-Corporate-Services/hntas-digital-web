@@ -36,5 +36,27 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
         }
+
+        public async Task<List<HeatNetwork>> GetAllHeatNetworks()
+        {
+            try
+            {
+                var response = await _heatNetworksApi.ApiHeatNetworksGetAsync();
+
+                if (response.IsOk)
+                {
+                    var networks = response.Ok();
+                    _logger.LogInformation("Retrieved {Count} heat networks.", networks.Count);
+                    return networks;
+                }
+
+                throw new InvalidOperationException($"Failed to retrieve heat networks. Status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving heat networks.");
+                throw;
+            }
+        }
     }
 }
