@@ -1,7 +1,6 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 
-
 namespace HNTAS.Web.UI.Services.Core
 {
     public class HeatNetworkService : IHeatNetworkService
@@ -55,6 +54,28 @@ namespace HNTAS.Web.UI.Services.Core
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error submitting heat network answers.");
+                throw;
+            }
+        }
+
+        public async Task<List<HeatNetwork>> GetAllHeatNetworks()
+        {
+            try
+            {
+                var response = await _heatNetworksApi.ApiHeatNetworksGetAsync();
+
+                if (response.IsOk)
+                {
+                    var networks = response.Ok();
+                    _logger.LogInformation("Retrieved {Count} heat networks.", networks.Count);
+                    return networks;
+                }
+
+                throw new InvalidOperationException($"Failed to retrieve heat networks. Status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving heat networks.");
                 throw;
             }
         }

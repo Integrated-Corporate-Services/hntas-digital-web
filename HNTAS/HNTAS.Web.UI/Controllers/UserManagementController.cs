@@ -16,16 +16,23 @@ namespace HNTAS.Web.UI.Controllers
     public class UserManagementController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IHeatNetworkService _heatNetworkService;
         private readonly ILogger<UserManagementController> _logger;
         private readonly ISessionHelper _sessionHelper;
         private readonly IWorkflowManager _workflowManager;
 
-        public UserManagementController(IUserService userService, ILogger<UserManagementController> logger, ISessionHelper sessionHelper, IWorkflowManager workflowManager)
+        public UserManagementController(IUserService userService,
+            ILogger<UserManagementController> logger,
+            ISessionHelper sessionHelper,
+            IWorkflowManager workflowManager,
+            IHeatNetworkService heatNetworkService
+            )
         {
             _logger = logger;
             _userService = userService;
             _sessionHelper = sessionHelper;
             _workflowManager = workflowManager;
+            _heatNetworkService = heatNetworkService;
         }
 
         [HttpGet]
@@ -38,8 +45,8 @@ namespace HNTAS.Web.UI.Controllers
                 var user = await _userService.GetManagedUsers(userId);
                 var contributorRoles = await _userService.GetContributorRolesAsync();
                 var userRoles = await _userService.GetUserRolesAsync();
-
                 var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+                var heatNetworks = await _heatNetworkService.GetAllHeatNetworks();
 
                 var displayUsers = new List<UserDisplayModel>();
 
@@ -51,7 +58,8 @@ namespace HNTAS.Web.UI.Controllers
                         EmailAddress = user.ResponsibleUser.EmailId,
                         Name = user.ResponsibleUser.FullName,
                         Roles = user.ResponsibleUser.Roles.Select(r => userRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
-                        Status = user.ResponsibleUser.Status.ToString()
+                        Status = user.ResponsibleUser.Status.ToString(),
+                        HeatNetworks = heatNetworks.Where(hn => user.ResponsibleUser.HnIds.Any(hnId => hnId == hn.HnId)).Select(h => h.Name).ToList()
                     });
                 }
 
@@ -65,7 +73,8 @@ namespace HNTAS.Web.UI.Controllers
                             EmailAddress = contributor.EmailId,
                             Name = contributor.FullName,
                             Roles = contributor.Roles.Select(r => userRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
-                            Status = contributor.Status.ToString()
+                            Status = contributor.Status.ToString(),
+                            HeatNetworks = heatNetworks.Where(hn => contributor.HnRoleMappings.Any(hr => hr.HnId == hn.HnId)).Select(h => h.Name).ToList()
                         });
                     }
                 }
@@ -80,7 +89,8 @@ namespace HNTAS.Web.UI.Controllers
                             EmailAddress = invited.Email,
                             Name = invited.FullName,
                             Roles = invited.Roles.Select(r => contributorRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
-                            Status = invited.Status.ToString()
+                            Status = invited.Status.ToString(),
+                            HeatNetworks = [heatNetworks.FirstOrDefault(x => x.HnId == invited.InvitedHnId)?.Name]
                         });
                     }
                 }

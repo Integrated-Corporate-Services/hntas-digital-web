@@ -6,5 +6,6 @@ namespace HNTAS.Web.UI.Services.Core
     {
         Task<HeatNetwork?> GetAsync(string hnId);
         Task<HeatNetwork> AddHeatNetwork(HeatNetwork heatNetwork, string hnId);
+        Task<List<HeatNetwork>> GetAllHeatNetworks();
     }
 }
