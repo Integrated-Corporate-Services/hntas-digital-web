@@ -404,8 +404,28 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        public IActionResult DefineSoaDetails(int phaseIndex = 0, int pathway = 3)
+        public async Task<IActionResult> DefineSoaDetailsAsync(int phaseIndex = 0, int pathway = 3)
         {
+            this.ShowBackButton("DefineSoa");
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
+
+            if (soaProject == null)
+            {
+                return BadRequest();
+            }
+
+            List<SelectedElement> networkElements = new List<SelectedElement>();
+            foreach (var element in soaProject.JourneyData.HeatNetworkElements)
+            {
+                networkElements.Add(new SelectedElement
+                {
+                    Count = element.Count ?? 0,
+                    Name = GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty
+                });
+            }
+
             var model = new StatementOfApplicabilityViewModel
             {
                 ProjectName = "Olympic Park Aberdeen",
@@ -420,7 +440,7 @@ namespace HNTAS.Web.UI.Controllers
                     Stages = phase.Stages.Select(stage => new StageViewModel
                     {
                         Name = stage.Name,
-                        Elements = GetDefaultElementsForStage(stage.Name, index + 1)
+                        Elements = GetDefaultElementsForStage(stage.Name, index + 1, soaProject)
                     }).ToList()
                 }).ToList()
             };
@@ -428,15 +448,32 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        private List<ElementViewModel> GetDefaultElementsForStage(string stageName, int phaseNumber)
+        private List<ElementViewModel> GetDefaultElementsForStage(string stageName, int phaseNumber, SoaProject soaProject)
         {
-            return new List<ElementViewModel>
+
+            List<ElementViewModel> networkElements = new List<ElementViewModel>();
+
+            foreach (var element in soaProject.JourneyData.HeatNetworkElements)
             {
-                new() { Name = "Energy centre", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.EnergyCentre.ToString() }) },
-                new() { Name = "Thermal sub station", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.ThermalSubStation.ToString() }) },
-                new() { Name = "Communal distribution network", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("AddDetails", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.CommunalDistributionNetwork.ToString() }) },
-                new() { Name = "Consumer connections", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("AddDetails", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.ConsumerConnections.ToString() }) }
-            };
+
+                networkElements.Add(new ElementViewModel
+                {
+                    //Count = element.Count ?? 0,
+                    Name = GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty,
+                    Status = "Not yet started",
+                    Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = phaseNumber, elementName = element.Name.ToString() })
+                });
+            }
+
+            return networkElements;
+
+            //return new List<ElementViewModel>
+            //{
+            //    new() { Name = "Energy centre", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.EnergyCentre.ToString() }) },
+            //    new() { Name = "Thermal sub station", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.ThermalSubStation.ToString() }) },
+            //    new() { Name = "Communal distribution network", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("AddDetails", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.CommunalDistributionNetwork.ToString() }) },
+            //    new() { Name = "Consumer connections", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("AddDetails", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.ConsumerConnections.ToString() }) }
+            //};
         }
 
 
