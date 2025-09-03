@@ -37,13 +37,15 @@ namespace HNTAS.Api.Client.Model
         /// <param name="hnId">hnId</param>
         /// <param name="location">location</param>
         /// <param name="name">name</param>
+        /// <param name="pathway">pathway</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> location = default, Option<string?> name = default)
+        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> location = default, Option<string?> name = default, Option<string?> pathway = default)
         {
             IdOption = id;
             HnIdOption = hnId;
             LocationOption = location;
             NameOption = name;
+            PathwayOption = pathway;
             OnCreated();
         }
 
@@ -72,7 +74,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets HnId
         /// </summary>
-        [JsonPropertyName("hn_id")]
+        [JsonPropertyName("hnId")]
         public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
 
         /// <summary>
@@ -102,6 +104,19 @@ namespace HNTAS.Api.Client.Model
         public string? Name { get { return this.NameOption; } set { this.NameOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Pathway
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> PathwayOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Pathway
+        /// </summary>
+        [JsonPropertyName("pathway")]
+        public string? Pathway { get { return this.PathwayOption; } set { this.PathwayOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -113,6 +128,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  Location: ").Append(Location).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  Pathway: ").Append(Pathway).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -154,6 +170,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> hnId = default;
             Option<string?> location = default;
             Option<string?> name = default;
+            Option<string?> pathway = default;
 
             while (utf8JsonReader.Read())
             {
@@ -173,7 +190,7 @@ namespace HNTAS.Api.Client.Model
                         case "id":
                             id = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "hn_id":
+                        case "hnId":
                             hnId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "location":
@@ -181,6 +198,9 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "name":
                             name = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "pathway":
+                            pathway = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         default:
                             break;
@@ -194,7 +214,10 @@ namespace HNTAS.Api.Client.Model
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetwork.");
 
-            return new HeatNetwork(id, hnId, location, name);
+            if (pathway.IsSet && pathway.Value == null)
+                throw new ArgumentNullException(nameof(pathway), "Property is not nullable for class HeatNetwork.");
+
+            return new HeatNetwork(id, hnId, location, name, pathway);
         }
 
         /// <summary>
@@ -227,6 +250,9 @@ namespace HNTAS.Api.Client.Model
             if (heatNetwork.NameOption.IsSet && heatNetwork.Name == null)
                 throw new ArgumentNullException(nameof(heatNetwork.Name), "Property is required for class HeatNetwork.");
 
+            if (heatNetwork.PathwayOption.IsSet && heatNetwork.Pathway == null)
+                throw new ArgumentNullException(nameof(heatNetwork.Pathway), "Property is required for class HeatNetwork.");
+
             if (heatNetwork.IdOption.IsSet)
                 if (heatNetwork.IdOption.Value != null)
                     writer.WriteString("id", heatNetwork.Id);
@@ -235,15 +261,18 @@ namespace HNTAS.Api.Client.Model
 
             if (heatNetwork.HnIdOption.IsSet)
                 if (heatNetwork.HnIdOption.Value != null)
-                    writer.WriteString("hn_id", heatNetwork.HnId);
+                    writer.WriteString("hnId", heatNetwork.HnId);
                 else
-                    writer.WriteNull("hn_id");
+                    writer.WriteNull("hnId");
 
             if (heatNetwork.LocationOption.IsSet)
                 writer.WriteString("location", heatNetwork.Location);
 
             if (heatNetwork.NameOption.IsSet)
                 writer.WriteString("name", heatNetwork.Name);
+
+            if (heatNetwork.PathwayOption.IsSet)
+                writer.WriteString("pathway", heatNetwork.Pathway);
         }
     }
 }

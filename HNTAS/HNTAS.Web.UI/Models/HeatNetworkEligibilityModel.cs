@@ -2,46 +2,24 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
 {
-    
-    public class  WhereIsTheHeatNetworkViewModel
+    public class  AreYouTheRPModel
     {
         [Required(ErrorMessage = "Please select an option.")]
-        public string? PartOfTheUK { get; set; }
+        public string? AreYouTheRP { get; set; }
     }
-
-    public class  HowManyDwellingsIncludedViewModel
+    public class  IsYourOrgWorkingOnANewHNModel
     {
         [Required(ErrorMessage = "Please select an option.")]
-        public string? NumberOfDwellings { get; set; }
+        public string? IsYourOrgWorkingOnANewHN { get; set; }
     }
-
-    public class  IsHNCurrentlyOperatingViewModel
+    public class  IsHNLocatedInEnglandScotlandWalesModel
     {
         [Required(ErrorMessage = "Please select an option.")]
-        public string? IsCurrentlyOperating { get; set; }
-    }
-
-    public class DoesElementExistViewModel
+        public string? IsHNLocatedInEnglandScotlandWales { get; set; }
+    }  
+    public class  HowManyDwellingsIncludedModel
     {
         [Required(ErrorMessage = "Please select an option.")]
-        public string? DoesElementExist { get; set; }
-    }
-
-    public class  HasElementBeenRegisteredViewModel
-    {
-        [Required(ErrorMessage = "Please select an option.")]
-        public string? HasElementBeenRegistered { get; set; }
-    }
-
-    public class HasPlanningApplicationBeenSubmittedViewModel
-    {
-        [Required(ErrorMessage = "Please select an option.")]
-        public string? HasPlanningApplicationBeenSubmitted { get; set; }
-    }
-
-    public class  HaveYouSignedMEContractViewModel
-    {
-        [Required(ErrorMessage = "Please select an option.")]
-        public string? HaveYouSignedMEContract { get; set; }
+        public string? HowManyDwellingsIncluded { get; set; }
     }
 }

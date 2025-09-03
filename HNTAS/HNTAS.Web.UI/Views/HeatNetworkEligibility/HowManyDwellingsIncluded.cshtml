@@ -1,10 +1,10 @@
 ﻿@using HNTAS.Web.UI.Models
-@model HowManyDwellingsIncludedViewModel
+@model HowManyDwellingsIncludedModel
 
 @{
     ViewData["Title"] = "Check your eligibility to register a heat network";
-    var fieldOrder = new[] { nameof(Model.NumberOfDwellings) };
-    var elementId = Html.GenerateIdFromName(nameof(Model.NumberOfDwellings)).ToLowerInvariant();
+    var fieldOrder = new[] { nameof(Model.HowManyDwellingsIncluded) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.HowManyDwellingsIncluded)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "HeatNetworkEligibility",
@@ -15,15 +15,15 @@
             new Question
             {
                 QId = elementId,
-                QText = "How many dwellings are included in the heat network?",
+                QText = "Do any of your new heat networks have 10 or more dwellings?",
                 QDescText = "This includes houses, flats or units connected to the same heat network.",
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = $"{elementId}", OptValue = "<10", OptText = "Fewer than 10", OptHintText = null },
-                    new Option { OptId = $"{elementId}-2", OptValue = ">10", OptText = "10 or more", OptHintText = null }
+                    new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = null }
                 },
-                SeletedOption = Model.NumberOfDwellings
+                SeletedOption = Model.HowManyDwellingsIncluded
             },
         }
     };

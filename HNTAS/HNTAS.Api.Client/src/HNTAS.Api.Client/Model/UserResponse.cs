@@ -34,26 +34,70 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="UserResponse" /> class.
         /// </summary>
         /// <param name="id">id</param>
-        /// <param name="emailAddress">emailAddress</param>
+        /// <param name="oneLoginId">oneLoginId</param>
+        /// <param name="emailId">emailId</param>
+        /// <param name="firstName">firstName</param>
+        /// <param name="lastName">lastName</param>
         /// <param name="fullName">fullName</param>
-        /// <param name="organisation">organisation</param>
+        /// <param name="jobTitle">jobTitle</param>
+        /// <param name="preferredContactType">preferredContactType</param>
+        /// <param name="landlineNumber">landlineNumber</param>
+        /// <param name="mobileNumber">mobileNumber</param>
+        /// <param name="contactNumberExtension">contactNumberExtension</param>
+        /// <param name="orgId">orgId</param>
         /// <param name="roles">roles</param>
-        /// <param name="hnIds">hnIds</param>
         /// <param name="status">status</param>
+        /// <param name="hnIds">hnIds</param>
+        /// <param name="hnRoleMappings">hnRoleMappings</param>
         [JsonConstructor]
-        public UserResponse(Option<string?> id = default, Option<string?> emailAddress = default, Option<string?> fullName = default, Option<Organisation?> organisation = default, Option<List<string>?> roles = default, Option<List<string>?> hnIds = default, Option<string?> status = default)
+        public UserResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<string?> orgId = default, Option<List<UserRole>?> roles = default, Option<UserStatus?> status = default, Option<List<string>?> hnIds = default, Option<List<HnRoleMapping>?> hnRoleMappings = default)
         {
             IdOption = id;
-            EmailAddressOption = emailAddress;
+            OneLoginIdOption = oneLoginId;
+            EmailIdOption = emailId;
+            FirstNameOption = firstName;
+            LastNameOption = lastName;
             FullNameOption = fullName;
-            OrganisationOption = organisation;
+            JobTitleOption = jobTitle;
+            PreferredContactTypeOption = preferredContactType;
+            LandlineNumberOption = landlineNumber;
+            MobileNumberOption = mobileNumber;
+            ContactNumberExtensionOption = contactNumberExtension;
+            OrgIdOption = orgId;
             RolesOption = roles;
-            HnIdsOption = hnIds;
             StatusOption = status;
+            HnIdsOption = hnIds;
+            HnRoleMappingsOption = hnRoleMappings;
             OnCreated();
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Used to track the state of PreferredContactType
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NullableOfPreferredContactType?> PreferredContactTypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets PreferredContactType
+        /// </summary>
+        [JsonPropertyName("preferredContactType")]
+        public NullableOfPreferredContactType? PreferredContactType { get { return this.PreferredContactTypeOption; } set { this.PreferredContactTypeOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Status
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<UserStatus?> StatusOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Status
+        /// </summary>
+        [JsonPropertyName("status")]
+        public UserStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Id
@@ -69,17 +113,56 @@ namespace HNTAS.Api.Client.Model
         public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of EmailAddress
+        /// Used to track the state of OneLoginId
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> EmailAddressOption { get; private set; }
+        public Option<string?> OneLoginIdOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets EmailAddress
+        /// Gets or Sets OneLoginId
         /// </summary>
-        [JsonPropertyName("emailAddress")]
-        public string? EmailAddress { get { return this.EmailAddressOption; } set { this.EmailAddressOption = new(value); } }
+        [JsonPropertyName("oneLoginId")]
+        public string? OneLoginId { get { return this.OneLoginIdOption; } set { this.OneLoginIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of EmailId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> EmailIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets EmailId
+        /// </summary>
+        [JsonPropertyName("emailId")]
+        public string? EmailId { get { return this.EmailIdOption; } set { this.EmailIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of FirstName
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> FirstNameOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets FirstName
+        /// </summary>
+        [JsonPropertyName("firstName")]
+        public string? FirstName { get { return this.FirstNameOption; } set { this.FirstNameOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of LastName
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> LastNameOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets LastName
+        /// </summary>
+        [JsonPropertyName("lastName")]
+        public string? LastName { get { return this.LastNameOption; } set { this.LastNameOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of FullName
@@ -95,30 +178,82 @@ namespace HNTAS.Api.Client.Model
         public string? FullName { get { return this.FullNameOption; } set { this.FullNameOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Organisation
+        /// Used to track the state of JobTitle
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<Organisation?> OrganisationOption { get; private set; }
+        public Option<string?> JobTitleOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Organisation
+        /// Gets or Sets JobTitle
         /// </summary>
-        [JsonPropertyName("organisation")]
-        public Organisation? Organisation { get { return this.OrganisationOption; } set { this.OrganisationOption = new(value); } }
+        [JsonPropertyName("jobTitle")]
+        public string? JobTitle { get { return this.JobTitleOption; } set { this.JobTitleOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of LandlineNumber
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> LandlineNumberOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets LandlineNumber
+        /// </summary>
+        [JsonPropertyName("landlineNumber")]
+        public string? LandlineNumber { get { return this.LandlineNumberOption; } set { this.LandlineNumberOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of MobileNumber
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> MobileNumberOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets MobileNumber
+        /// </summary>
+        [JsonPropertyName("mobileNumber")]
+        public string? MobileNumber { get { return this.MobileNumberOption; } set { this.MobileNumberOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ContactNumberExtension
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> ContactNumberExtensionOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ContactNumberExtension
+        /// </summary>
+        [JsonPropertyName("contactNumberExtension")]
+        public string? ContactNumberExtension { get { return this.ContactNumberExtensionOption; } set { this.ContactNumberExtensionOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of OrgId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> OrgIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets OrgId
+        /// </summary>
+        [JsonPropertyName("orgId")]
+        public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Roles
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<string>?> RolesOption { get; private set; }
+        public Option<List<UserRole>?> RolesOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Roles
         /// </summary>
         [JsonPropertyName("roles")]
-        public List<string>? Roles { get { return this.RolesOption; } set { this.RolesOption = new(value); } }
+        public List<UserRole>? Roles { get { return this.RolesOption; } set { this.RolesOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of HnIds
@@ -134,17 +269,17 @@ namespace HNTAS.Api.Client.Model
         public List<string>? HnIds { get { return this.HnIdsOption; } set { this.HnIdsOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Status
+        /// Used to track the state of HnRoleMappings
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> StatusOption { get; private set; }
+        public Option<List<HnRoleMapping>?> HnRoleMappingsOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Status
+        /// Gets or Sets HnRoleMappings
         /// </summary>
-        [JsonPropertyName("status")]
-        public string? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+        [JsonPropertyName("hnRoleMappings")]
+        public List<HnRoleMapping>? HnRoleMappings { get { return this.HnRoleMappingsOption; } set { this.HnRoleMappingsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -155,12 +290,21 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class UserResponse {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  EmailAddress: ").Append(EmailAddress).Append("\n");
+            sb.Append("  OneLoginId: ").Append(OneLoginId).Append("\n");
+            sb.Append("  EmailId: ").Append(EmailId).Append("\n");
+            sb.Append("  FirstName: ").Append(FirstName).Append("\n");
+            sb.Append("  LastName: ").Append(LastName).Append("\n");
             sb.Append("  FullName: ").Append(FullName).Append("\n");
-            sb.Append("  Organisation: ").Append(Organisation).Append("\n");
+            sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
+            sb.Append("  PreferredContactType: ").Append(PreferredContactType).Append("\n");
+            sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
+            sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
+            sb.Append("  ContactNumberExtension: ").Append(ContactNumberExtension).Append("\n");
+            sb.Append("  OrgId: ").Append(OrgId).Append("\n");
             sb.Append("  Roles: ").Append(Roles).Append("\n");
-            sb.Append("  HnIds: ").Append(HnIds).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  HnIds: ").Append(HnIds).Append("\n");
+            sb.Append("  HnRoleMappings: ").Append(HnRoleMappings).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -199,12 +343,21 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> id = default;
-            Option<string?> emailAddress = default;
+            Option<string?> oneLoginId = default;
+            Option<string?> emailId = default;
+            Option<string?> firstName = default;
+            Option<string?> lastName = default;
             Option<string?> fullName = default;
-            Option<Organisation?> organisation = default;
-            Option<List<string>?> roles = default;
+            Option<string?> jobTitle = default;
+            Option<NullableOfPreferredContactType?> preferredContactType = default;
+            Option<string?> landlineNumber = default;
+            Option<string?> mobileNumber = default;
+            Option<string?> contactNumberExtension = default;
+            Option<string?> orgId = default;
+            Option<List<UserRole>?> roles = default;
+            Option<UserStatus?> status = default;
             Option<List<string>?> hnIds = default;
-            Option<string?> status = default;
+            Option<List<HnRoleMapping>?> hnRoleMappings = default;
 
             while (utf8JsonReader.Read())
             {
@@ -224,23 +377,54 @@ namespace HNTAS.Api.Client.Model
                         case "id":
                             id = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "emailAddress":
-                            emailAddress = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "oneLoginId":
+                            oneLoginId = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "emailId":
+                            emailId = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "firstName":
+                            firstName = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "lastName":
+                            lastName = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "fullName":
                             fullName = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "organisation":
-                            organisation = new Option<Organisation?>(JsonSerializer.Deserialize<Organisation>(ref utf8JsonReader, jsonSerializerOptions));
+                        case "jobTitle":
+                            jobTitle = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "preferredContactType":
+                            string? preferredContactTypeRawValue = utf8JsonReader.GetString();
+                            if (preferredContactTypeRawValue != null)
+                                preferredContactType = new Option<NullableOfPreferredContactType?>(NullableOfPreferredContactTypeValueConverter.FromStringOrDefault(preferredContactTypeRawValue));
+                            break;
+                        case "landlineNumber":
+                            landlineNumber = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "mobileNumber":
+                            mobileNumber = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "contactNumberExtension":
+                            contactNumberExtension = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "orgId":
+                            orgId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "roles":
-                            roles = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions));
-                            break;
-                        case "hnIds":
-                            hnIds = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions));
+                            roles = new Option<List<UserRole>?>(JsonSerializer.Deserialize<List<UserRole>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "status":
-                            status = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? statusRawValue = utf8JsonReader.GetString();
+                            if (statusRawValue != null)
+                                status = new Option<UserStatus?>(UserStatusValueConverter.FromStringOrDefault(statusRawValue));
+                            break;
+                        case "hnIds":
+                            hnIds = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
+                        case "hnRoleMappings":
+                            hnRoleMappings = new Option<List<HnRoleMapping>?>(JsonSerializer.Deserialize<List<HnRoleMapping>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -251,13 +435,25 @@ namespace HNTAS.Api.Client.Model
             if (id.IsSet && id.Value == null)
                 throw new ArgumentNullException(nameof(id), "Property is not nullable for class UserResponse.");
 
-            if (emailAddress.IsSet && emailAddress.Value == null)
-                throw new ArgumentNullException(nameof(emailAddress), "Property is not nullable for class UserResponse.");
+            if (oneLoginId.IsSet && oneLoginId.Value == null)
+                throw new ArgumentNullException(nameof(oneLoginId), "Property is not nullable for class UserResponse.");
+
+            if (emailId.IsSet && emailId.Value == null)
+                throw new ArgumentNullException(nameof(emailId), "Property is not nullable for class UserResponse.");
+
+            if (roles.IsSet && roles.Value == null)
+                throw new ArgumentNullException(nameof(roles), "Property is not nullable for class UserResponse.");
 
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class UserResponse.");
 
-            return new UserResponse(id, emailAddress, fullName, organisation, roles, hnIds, status);
+            if (hnIds.IsSet && hnIds.Value == null)
+                throw new ArgumentNullException(nameof(hnIds), "Property is not nullable for class UserResponse.");
+
+            if (hnRoleMappings.IsSet && hnRoleMappings.Value == null)
+                throw new ArgumentNullException(nameof(hnRoleMappings), "Property is not nullable for class UserResponse.");
+
+            return new UserResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, orgId, roles, status, hnIds, hnRoleMappings);
         }
 
         /// <summary>
@@ -287,17 +483,41 @@ namespace HNTAS.Api.Client.Model
             if (userResponse.IdOption.IsSet && userResponse.Id == null)
                 throw new ArgumentNullException(nameof(userResponse.Id), "Property is required for class UserResponse.");
 
-            if (userResponse.EmailAddressOption.IsSet && userResponse.EmailAddress == null)
-                throw new ArgumentNullException(nameof(userResponse.EmailAddress), "Property is required for class UserResponse.");
+            if (userResponse.OneLoginIdOption.IsSet && userResponse.OneLoginId == null)
+                throw new ArgumentNullException(nameof(userResponse.OneLoginId), "Property is required for class UserResponse.");
 
-            if (userResponse.StatusOption.IsSet && userResponse.Status == null)
-                throw new ArgumentNullException(nameof(userResponse.Status), "Property is required for class UserResponse.");
+            if (userResponse.EmailIdOption.IsSet && userResponse.EmailId == null)
+                throw new ArgumentNullException(nameof(userResponse.EmailId), "Property is required for class UserResponse.");
+
+            if (userResponse.RolesOption.IsSet && userResponse.Roles == null)
+                throw new ArgumentNullException(nameof(userResponse.Roles), "Property is required for class UserResponse.");
+
+            if (userResponse.HnIdsOption.IsSet && userResponse.HnIds == null)
+                throw new ArgumentNullException(nameof(userResponse.HnIds), "Property is required for class UserResponse.");
+
+            if (userResponse.HnRoleMappingsOption.IsSet && userResponse.HnRoleMappings == null)
+                throw new ArgumentNullException(nameof(userResponse.HnRoleMappings), "Property is required for class UserResponse.");
 
             if (userResponse.IdOption.IsSet)
                 writer.WriteString("id", userResponse.Id);
 
-            if (userResponse.EmailAddressOption.IsSet)
-                writer.WriteString("emailAddress", userResponse.EmailAddress);
+            if (userResponse.OneLoginIdOption.IsSet)
+                writer.WriteString("oneLoginId", userResponse.OneLoginId);
+
+            if (userResponse.EmailIdOption.IsSet)
+                writer.WriteString("emailId", userResponse.EmailId);
+
+            if (userResponse.FirstNameOption.IsSet)
+                if (userResponse.FirstNameOption.Value != null)
+                    writer.WriteString("firstName", userResponse.FirstName);
+                else
+                    writer.WriteNull("firstName");
+
+            if (userResponse.LastNameOption.IsSet)
+                if (userResponse.LastNameOption.Value != null)
+                    writer.WriteString("lastName", userResponse.LastName);
+                else
+                    writer.WriteNull("lastName");
 
             if (userResponse.FullNameOption.IsSet)
                 if (userResponse.FullNameOption.Value != null)
@@ -305,32 +525,64 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("fullName");
 
-            if (userResponse.OrganisationOption.IsSet)
-                if (userResponse.OrganisationOption.Value != null)
+            if (userResponse.JobTitleOption.IsSet)
+                if (userResponse.JobTitleOption.Value != null)
+                    writer.WriteString("jobTitle", userResponse.JobTitle);
+                else
+                    writer.WriteNull("jobTitle");
+
+            if (userResponse.PreferredContactTypeOption.IsSet)
+                if (userResponse.PreferredContactTypeOption!.Value != null)
                 {
-                    writer.WritePropertyName("organisation");
-                    JsonSerializer.Serialize(writer, userResponse.Organisation, jsonSerializerOptions);
+                    var preferredContactTypeRawValue = NullableOfPreferredContactTypeValueConverter.ToJsonValue(userResponse.PreferredContactTypeOption.Value!.Value);
+                    writer.WriteString("preferredContactType", preferredContactTypeRawValue);
                 }
                 else
-                    writer.WriteNull("organisation");
+                    writer.WriteNull("preferredContactType");
+            if (userResponse.LandlineNumberOption.IsSet)
+                if (userResponse.LandlineNumberOption.Value != null)
+                    writer.WriteString("landlineNumber", userResponse.LandlineNumber);
+                else
+                    writer.WriteNull("landlineNumber");
+
+            if (userResponse.MobileNumberOption.IsSet)
+                if (userResponse.MobileNumberOption.Value != null)
+                    writer.WriteString("mobileNumber", userResponse.MobileNumber);
+                else
+                    writer.WriteNull("mobileNumber");
+
+            if (userResponse.ContactNumberExtensionOption.IsSet)
+                if (userResponse.ContactNumberExtensionOption.Value != null)
+                    writer.WriteString("contactNumberExtension", userResponse.ContactNumberExtension);
+                else
+                    writer.WriteNull("contactNumberExtension");
+
+            if (userResponse.OrgIdOption.IsSet)
+                if (userResponse.OrgIdOption.Value != null)
+                    writer.WriteString("orgId", userResponse.OrgId);
+                else
+                    writer.WriteNull("orgId");
+
             if (userResponse.RolesOption.IsSet)
-                if (userResponse.RolesOption.Value != null)
-                {
-                    writer.WritePropertyName("roles");
-                    JsonSerializer.Serialize(writer, userResponse.Roles, jsonSerializerOptions);
-                }
-                else
-                    writer.WriteNull("roles");
-            if (userResponse.HnIdsOption.IsSet)
-                if (userResponse.HnIdsOption.Value != null)
-                {
-                    writer.WritePropertyName("hnIds");
-                    JsonSerializer.Serialize(writer, userResponse.HnIds, jsonSerializerOptions);
-                }
-                else
-                    writer.WriteNull("hnIds");
+            {
+                writer.WritePropertyName("roles");
+                JsonSerializer.Serialize(writer, userResponse.Roles, jsonSerializerOptions);
+            }
             if (userResponse.StatusOption.IsSet)
-                writer.WriteString("status", userResponse.Status);
+            {
+                var statusRawValue = UserStatusValueConverter.ToJsonValue(userResponse.Status!.Value);
+                writer.WriteString("status", statusRawValue);
+            }
+            if (userResponse.HnIdsOption.IsSet)
+            {
+                writer.WritePropertyName("hnIds");
+                JsonSerializer.Serialize(writer, userResponse.HnIds, jsonSerializerOptions);
+            }
+            if (userResponse.HnRoleMappingsOption.IsSet)
+            {
+                writer.WritePropertyName("hnRoleMappings");
+                JsonSerializer.Serialize(writer, userResponse.HnRoleMappings, jsonSerializerOptions);
+            }
         }
     }
 }

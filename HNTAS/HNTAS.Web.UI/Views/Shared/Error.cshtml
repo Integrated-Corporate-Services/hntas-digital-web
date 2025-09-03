@@ -1,14 +1,21 @@
-﻿@{
-    ViewData["Title"] = "Service Error";
-    var errorMessage = TempData["ErrorMessage"] as string ?? "Sorry, something went wrong.";
-}
+﻿
 
-<div class="govuk-width-container">
-    <h1 class="govuk-heading-xl">Sorry, there’s a problem</h1>
-    <p class="govuk-body">
-        @errorMessage
-    </p>
-    <p class="govuk-body">
-        <a href="/" class="govuk-link">Go back to the homepage</a>
-    </p>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Sorry, the service is unavailable</h1>
+        <p class="govuk-body">
+            The HNTAS digital service is under maintanance or having issues.
+        </p>
+        <p class="govuk-body">
+            Contact on below for anything urgent.
+        </p>
+        <p class="govuk-body">
+            Phone:<br>
+            <strong class="govuk-!-font-weight-bold">0000 0000 0000</strong>
+        </p>
+        <p class="govuk-body">
+            Opening times:<br>
+            <strong class="govuk-!-font-weight-bold">Monday to Friday: 8:30am to 4:30pm</strong>
+        </p>
+    </div>
 </div>

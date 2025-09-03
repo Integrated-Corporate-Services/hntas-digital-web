@@ -1,0 +1,129 @@
+﻿using HNTAS.Web.UI.Controllers;
+using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models.User;
+using HNTAS.Web.UI.Workflows;
+using HNTAS.Web.UI.Workflows.Models;
+using HNTAS.Web.UI.Workflows.Models.Data;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Logging;
+using Moq;
+
+namespace HNTAS.Web.UI.Tests.Contollers
+{
+    public class NewContributorControllerTests
+    {
+        private readonly Mock<ILogger<NewContributorController>> _mockLogger;
+        private readonly Mock<IWorkflowManager> _mockWorkflowManager;
+        private readonly Mock<ISessionHelper> _mockSessionHelper;
+        private readonly NewContributorController _controller;
+        private readonly Mock<IUrlHelper> _mockUrlHelper;
+
+
+        public NewContributorControllerTests()
+        {
+            // Set up all the mock objects once in the constructor
+            _mockLogger = new Mock<ILogger<NewContributorController>>();
+            _mockWorkflowManager = new Mock<IWorkflowManager>();
+            _mockSessionHelper = new Mock<ISessionHelper>();
+
+            // We also need to mock HttpContext for the session helper call
+            var mockHttpContext = new Mock<HttpContext>();
+
+            _controller = new NewContributorController(
+                _mockLogger.Object,
+                _mockWorkflowManager.Object,
+                _mockSessionHelper.Object, null, null, null, null);
+
+            // Assign the mocked HttpContext to the controller
+            _controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = mockHttpContext.Object
+            };
+
+            _mockUrlHelper = new Mock<IUrlHelper>();
+            _mockUrlHelper
+               .Setup(x => x.Action(It.IsAny<UrlActionContext>()))
+               .Returns("/mocked-url");
+
+            _controller.Url = _mockUrlHelper.Object;
+        }
+
+        [Fact]
+        public void AddEmailAddress_WithExistingModel_ReturnsViewModel()
+        {
+            // Arrange
+            // Set up a pre-existing AddUserEmailAddressModel to be returned by the mock.
+            var existingModel = new AddUserEmailAddressModel { EmailAddress = "test@example.com" };
+            var workflowState = new WorkflowState<AddNewContributorWorkflowModel>
+            {
+                Data = new AddNewContributorWorkflowModel
+                {
+                    AddUserEmailAddressModel = existingModel
+                }
+            };
+
+            // Configure the mocks to return our pre-defined objects.
+            _mockWorkflowManager.Setup(m => m.GetState<AddNewContributorWorkflowModel>()).Returns(workflowState);
+            _mockSessionHelper.Setup(m => m.GetFromSession<string>(It.IsAny<HttpContext>(), It.IsAny<string>())).Returns("Test Organisation");
+            _mockUrlHelper.Setup(u => u.Action(It.Is<UrlActionContext>(ctx => ctx.Action == "AddContributor" && ctx.Controller == "UserManagement")))
+                .Returns("UserManagement/AddContributor");
+            _controller.Url = _mockUrlHelper.Object;
+
+            // Act
+            var result = _controller.AddEmailAddress() as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<AddUserEmailAddressModel>(result.Model);
+            Assert.Same(existingModel, result.Model); // Check if the exact same instance is returned
+            Assert.Equal("Test Organisation", _controller.ViewBag.OrganisationName);
+            Assert.True(_controller.ViewBag.ShowBackButton);
+            Assert.Equal("UserManagement/AddContributor", _controller.ViewBag.BackLinkUrl);
+
+            // Verify that GetState and GetFromSession were called exactly once.
+            _mockWorkflowManager.Verify(m => m.GetState<AddNewContributorWorkflowModel>(), Times.Once);
+            _mockSessionHelper.Verify(m => m.GetFromSession<string>(It.IsAny<HttpContext>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public void AddEmailAddress_WithNullModel_ReturnsNewViewModel()
+        {
+            // Arrange
+            // Set up the workflow state to return a null AddUserEmailAddressModel.
+            var workflowState = new WorkflowState<AddNewContributorWorkflowModel>
+            {
+                Data = new AddNewContributorWorkflowModel
+                {
+                    AddUserEmailAddressModel = null
+                }
+            };
+
+            // Configure the mocks.
+            _mockWorkflowManager.Setup(m => m.GetState<AddNewContributorWorkflowModel>()).Returns(workflowState);
+            _mockSessionHelper.Setup(m => m.GetFromSession<string>(It.IsAny<HttpContext>(), It.IsAny<string>())).Returns("Test Organisation");
+            _mockUrlHelper.Setup(u => u.Action(It.Is<UrlActionContext>(ctx => ctx.Action == "AddContributor" && ctx.Controller == "UserManagement")))
+               .Returns("UserManagement/AddContributor");
+            _controller.Url = _mockUrlHelper.Object;
+
+            // Act
+            var result = _controller.AddEmailAddress() as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<AddUserEmailAddressModel>(result.Model);
+            Assert.NotNull(result.Model); // Check that a new instance was created.
+            Assert.Equal("Test Organisation", _controller.ViewBag.OrganisationName);
+
+            // The returned model should be a *new* instance, not the same as anything we set up.
+            var returnedModel = result.Model as AddUserEmailAddressModel;
+            Assert.Equal(null, returnedModel.EmailAddress); // Check a property to ensure it's a default, new object.
+
+            // Verify that GetState and GetFromSession were called exactly once.
+            _mockWorkflowManager.Verify(m => m.GetState<AddNewContributorWorkflowModel>(), Times.Once);
+            _mockSessionHelper.Verify(m => m.GetFromSession<string>(It.IsAny<HttpContext>(), It.IsAny<string>()), Times.Once);
+        }
+
+    }
+}

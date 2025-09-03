@@ -6,12 +6,14 @@ namespace HNTAS.Web.UI.Services.Core
     public class UserService : IUserService
     {
         private readonly IUsersApi _usersApi;
+        private readonly IHeatNetworksApi _heatNetworksApi;
         private readonly ILogger<UserService> _logger;
 
-        public UserService(IUsersApi usersApi, ILogger<UserService> logger)
+        public UserService(IUsersApi usersApi, ILogger<UserService> logger, IHeatNetworksApi heatNetworksApi)
         {
             _usersApi = usersApi;
             _logger = logger;
+            _heatNetworksApi = heatNetworksApi;
         }
 
         public async Task<UserResponse?> GetUserById(string id)
@@ -90,7 +92,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<string?> UpdateUserOrganisation(string id, UpdateOrgDetailsAndRolesRequest request)
+        public async Task<string?> UpdateUserOrganisation(string id, UpdateUserOrganisationRequest request)
         {
             _logger.LogInformation("Updating user organisation for ID: {UserId}", id);
             try
@@ -99,7 +101,7 @@ namespace HNTAS.Web.UI.Services.Core
 
                 if (response.IsOk)
                 {
-                    return response.Ok()?.OrgDetails?.OrgId;
+                    return response.Ok()?.OrgId;
                 }
 
                 throw new Exception($"Failed to create user with status code: {response.StatusCode}");
@@ -116,14 +118,14 @@ namespace HNTAS.Web.UI.Services.Core
             _logger.LogInformation("Updating user heat network for ID: {UserId} heat network : {hnId}", id, heatNetworkId);
             try
             {
-                var responce = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
+                var response = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
 
-                if (responce.IsNoContent)
+                if (response.IsNoContent)
                 {
                     _logger.LogInformation("User heat network ID updated successfully for user ID: {userId}", id);
                     return;
                 }
-                throw new Exception($"Failed to update user heat network ID with status code: {responce.StatusCode}");
+                throw new Exception($"Failed to update user heat network ID with status code: {response.StatusCode}");
             }
             catch (Exception ex)
             {
@@ -150,5 +152,155 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
         }
+
+        public async Task<List<HeatNetwork>?> GetUserHeatNetworks(string id)
+        {
+            var user = await GetUserById(id);
+            if (user?.HnIds == null || !user.HnIds.Any())
+            {
+                _logger.LogInformation("User with ID {UserId} has no heat networks assigned.", id);
+                return null;
+            }
+            _logger.LogInformation("User with ID {UserId} has heat networks assigned: {HeatNetworkIds}", id, string.Join(", ", user.HnIds));
+
+            try
+            {
+                var heatNetworkResponse = await _heatNetworksApi.ApiHeatNetworksHnIdsGetAsync(string.Join(",", user?.HnIds));
+                if (heatNetworkResponse.IsOk)
+                {
+                    return heatNetworkResponse.Ok();
+                }
+                throw new Exception($"Failed to retrieve heat network with status code: {heatNetworkResponse.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving heat networks for user ID: {UserId}", id);
+                throw;
+            }
+        }
+
+        public async Task<List<EnumItemResponse>> GetContributorRolesAsync()
+        {
+            var response = await _usersApi.ApiUsersContributorRolesGetAsync();
+
+            if (response.IsOk)
+            {
+                return response.Ok();
+            }
+            else
+            {
+                _logger.LogError("Failed to retrieve contributor roles with status code: {StatusCode}", response.StatusCode);
+                throw new Exception($"Failed to retrieve contributor roles with status code: {response.StatusCode}");
+            }
+
+        }
+
+        public async Task<List<EnumItemResponse>> GetUserRolesAsync()
+        {
+            var response = await _usersApi.ApiUsersUserRolesGetAsync();
+
+            if (response.IsOk)
+            {
+                return response.Ok();
+            }
+            else
+            {
+                _logger.LogError("Failed to retrieve contributor roles with status code: {StatusCode}", response.StatusCode);
+                throw new Exception($"Failed to retrieve contributor roles with status code: {response.StatusCode}");
+            }
+        }
+
+
+        public async Task<UserDetailsResponse> GetUserDetails(string userId)
+        {
+
+            _logger.LogInformation("Getting user details for user ID: {UserId}", userId);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                _logger.LogError("User ID is null or empty");
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty");
+            }
+
+            try
+            {
+                var user = await _usersApi.ApiUsersUserDetailsByIdGetAsync(userId);
+                if (user.IsOk)
+                {
+                    return user.Ok();
+                }
+                throw new Exception($"Failed to get user details with status code: {user.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting user details for user ID: {UserId}", userId);
+                throw;
+            }
+        }
+
+        public async Task<ManagedUserResponse> GetManagedUsers(string userId)
+        {
+            _logger.LogInformation("Getting managed users for user ID: {UserId}", userId);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                _logger.LogError("User ID is null or empty");
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty");
+            }
+            try
+            {
+                var users = await _usersApi.ApiUsersManagedUsersGetAsync(userId);
+                if (users.IsOk)
+                {
+                    return users.Ok();
+                }
+                throw new Exception($"Failed to get managed users with status code: {users.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting managed users for user ID: {UserId}", userId);
+                throw;
+            }
+        }
+
+        public async Task<string?> AcceptUserInvitation(InvitedUserRequest userRequest)
+        {
+            _logger.LogInformation("Accepting user invitation for email: {Email}", userRequest.InvitedEmail);
+
+            try
+            {
+                var response = await _usersApi.ApiUsersAcceptInvitationPatchOrDefaultAsync(userRequest);
+                if (response.IsOk)
+                {
+                    _logger.LogInformation("User invitation accepted for email: {Email}", userRequest.InvitedEmail);
+                    return response.Ok();
+                }
+                if (response.IsCreated)
+                {
+                    _logger.LogInformation("User invitation accepted for email: {Email}", userRequest.InvitedEmail);
+                    return response.Created();
+                }
+                throw new Exception($"Failed to update user heat network ID with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error accepting user invitation for email: {Email}", userRequest.InvitedEmail);
+                throw;
+            }
+
+        }
+
+        public async Task<List<UserResponse>> GetRegisteredUsersAsync(string rpUserId)
+        {
+            var users = await _usersApi.ApiUsersRegisteredUsersGetAsync(rpUserId);
+            if (users.IsOk)
+            {
+                return users.Ok();
+            }
+
+            _logger.LogError("Failed to retrieve registered users with status code: {StatusCode}", users.StatusCode);
+            throw new Exception($"Failed to retrieve registered users with status code: {users.StatusCode}");
+
+        }
     }
 }
+
+

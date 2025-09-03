@@ -42,6 +42,50 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="invitedUserRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersAcceptInvitationPatchApiResponse"/>&gt;</returns>
+        Task<IApiUsersAcceptInvitationPatchApiResponse> ApiUsersAcceptInvitationPatchAsync(InvitedUserRequest invitedUserRequest, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="invitedUserRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersAcceptInvitationPatchApiResponse"/>?&gt;</returns>
+        Task<IApiUsersAcceptInvitationPatchApiResponse?> ApiUsersAcceptInvitationPatchOrDefaultAsync(InvitedUserRequest invitedUserRequest, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersContributorRolesGetApiResponse"/>&gt;</returns>
+        Task<IApiUsersContributorRolesGetApiResponse> ApiUsersContributorRolesGetAsync(System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersContributorRolesGetApiResponse"/>?&gt;</returns>
+        Task<IApiUsersContributorRolesGetApiResponse?> ApiUsersContributorRolesGetOrDefaultAsync(System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersGetApiResponse"/>&gt;</returns>
         Task<IApiUsersGetApiResponse> ApiUsersGetAsync(System.Threading.CancellationToken cancellationToken = default);
@@ -112,10 +156,10 @@ namespace HNTAS.Api.Client.Api
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
+        /// <param name="updateUserOrganisationRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersIdOrgDetailsPatchApiResponse"/>&gt;</returns>
-        Task<IApiUsersIdOrgDetailsPatchApiResponse> ApiUsersIdOrgDetailsPatchAsync(string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest, System.Threading.CancellationToken cancellationToken = default);
+        Task<IApiUsersIdOrgDetailsPatchApiResponse> ApiUsersIdOrgDetailsPatchAsync(string id, UpdateUserOrganisationRequest updateUserOrganisationRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -124,10 +168,10 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <param name="id"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
+        /// <param name="updateUserOrganisationRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersIdOrgDetailsPatchApiResponse"/>?&gt;</returns>
-        Task<IApiUsersIdOrgDetailsPatchApiResponse?> ApiUsersIdOrgDetailsPatchOrDefaultAsync(string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest, System.Threading.CancellationToken cancellationToken = default);
+        Task<IApiUsersIdOrgDetailsPatchApiResponse?> ApiUsersIdOrgDetailsPatchOrDefaultAsync(string id, UpdateUserOrganisationRequest updateUserOrganisationRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -159,6 +203,29 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersManagedUsersGetApiResponse"/>&gt;</returns>
+        Task<IApiUsersManagedUsersGetApiResponse> ApiUsersManagedUsersGetAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersManagedUsersGetApiResponse"/>?&gt;</returns>
+        Task<IApiUsersManagedUsersGetApiResponse?> ApiUsersManagedUsersGetOrDefaultAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="companiesHouseNumber"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsGetApiResponse"/>&gt;</returns>
@@ -174,6 +241,73 @@ namespace HNTAS.Api.Client.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationExistsGetApiResponse"/>?&gt;</returns>
         Task<IApiUsersOrganisationExistsGetApiResponse?> ApiUsersOrganisationExistsGetOrDefaultAsync(Option<string> companiesHouseNumber = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersRegisteredUsersGetApiResponse"/>&gt;</returns>
+        Task<IApiUsersRegisteredUsersGetApiResponse> ApiUsersRegisteredUsersGetAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersRegisteredUsersGetApiResponse"/>?&gt;</returns>
+        Task<IApiUsersRegisteredUsersGetApiResponse?> ApiUsersRegisteredUsersGetOrDefaultAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersUserDetailsByIdGetApiResponse"/>&gt;</returns>
+        Task<IApiUsersUserDetailsByIdGetApiResponse> ApiUsersUserDetailsByIdGetAsync(Option<string> id = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="id"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersUserDetailsByIdGetApiResponse"/>?&gt;</returns>
+        Task<IApiUsersUserDetailsByIdGetApiResponse?> ApiUsersUserDetailsByIdGetOrDefaultAsync(Option<string> id = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersUserRolesGetApiResponse"/>&gt;</returns>
+        Task<IApiUsersUserRolesGetApiResponse> ApiUsersUserRolesGetAsync(System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersUserRolesGetApiResponse"/>?&gt;</returns>
+        Task<IApiUsersUserRolesGetApiResponse?> ApiUsersUserRolesGetOrDefaultAsync(System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -220,6 +354,54 @@ namespace HNTAS.Api.Client.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IGetUserByOneLoginIdApiResponse"/>?&gt;</returns>
         Task<IGetUserByOneLoginIdApiResponse?> GetUserByOneLoginIdOrDefaultAsync(string oneLoginId, System.Threading.CancellationToken cancellationToken = default);
+    }
+
+    /// <summary>
+    /// The <see cref="IApiUsersAcceptInvitationPatchApiResponse"/>
+    /// </summary>
+    public interface IApiUsersAcceptInvitationPatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<string?>, ICreated<string?>, IConflict<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 201 Created
+        /// </summary>
+        /// <returns></returns>
+        bool IsCreated { get; }
+
+        /// <summary>
+        /// Returns true if the response is 409 Conflict
+        /// </summary>
+        /// <returns></returns>
+        bool IsConflict { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IApiUsersContributorRolesGetApiResponse"/>
+    /// </summary>
+    public interface IApiUsersContributorRolesGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<EnumItemResponse>?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
     }
 
     /// <summary>
@@ -349,6 +531,24 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiUsersManagedUsersGetApiResponse"/>
+    /// </summary>
+    public interface IApiUsersManagedUsersGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.ManagedUserResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IApiUsersOrganisationExistsGetApiResponse"/>
     /// </summary>
     public interface IApiUsersOrganisationExistsGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<bool?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>
@@ -370,6 +570,54 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <returns></returns>
         bool IsInternalServerError { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IApiUsersRegisteredUsersGetApiResponse"/>
+    /// </summary>
+    public interface IApiUsersRegisteredUsersGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<UserResponse>?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IApiUsersUserDetailsByIdGetApiResponse"/>
+    /// </summary>
+    public interface IApiUsersUserDetailsByIdGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.UserDetailsResponse?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IApiUsersUserRolesGetApiResponse"/>
+    /// </summary>
+    public interface IApiUsersUserRolesGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<EnumItemResponse>?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
     }
 
     /// <summary>
@@ -425,6 +673,46 @@ namespace HNTAS.Api.Client.Api
     /// </summary>
     public class UsersApiEvents
     {
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiUsersAcceptInvitationPatch;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiUsersAcceptInvitationPatch;
+
+        internal void ExecuteOnApiUsersAcceptInvitationPatch(UsersApi.ApiUsersAcceptInvitationPatchApiResponse apiResponse)
+        {
+            OnApiUsersAcceptInvitationPatch?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiUsersAcceptInvitationPatch(Exception exception)
+        {
+            OnErrorApiUsersAcceptInvitationPatch?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiUsersContributorRolesGet;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiUsersContributorRolesGet;
+
+        internal void ExecuteOnApiUsersContributorRolesGet(UsersApi.ApiUsersContributorRolesGetApiResponse apiResponse)
+        {
+            OnApiUsersContributorRolesGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiUsersContributorRolesGet(Exception exception)
+        {
+            OnErrorApiUsersContributorRolesGet?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
         /// <summary>
         /// The event raised after the server response
         /// </summary>
@@ -528,6 +816,26 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The event raised after the server response
         /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiUsersManagedUsersGet;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiUsersManagedUsersGet;
+
+        internal void ExecuteOnApiUsersManagedUsersGet(UsersApi.ApiUsersManagedUsersGetApiResponse apiResponse)
+        {
+            OnApiUsersManagedUsersGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiUsersManagedUsersGet(Exception exception)
+        {
+            OnErrorApiUsersManagedUsersGet?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
         public event EventHandler<ApiResponseEventArgs>? OnApiUsersOrganisationExistsGet;
 
         /// <summary>
@@ -543,6 +851,66 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiUsersOrganisationExistsGet(Exception exception)
         {
             OnErrorApiUsersOrganisationExistsGet?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiUsersRegisteredUsersGet;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiUsersRegisteredUsersGet;
+
+        internal void ExecuteOnApiUsersRegisteredUsersGet(UsersApi.ApiUsersRegisteredUsersGetApiResponse apiResponse)
+        {
+            OnApiUsersRegisteredUsersGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiUsersRegisteredUsersGet(Exception exception)
+        {
+            OnErrorApiUsersRegisteredUsersGet?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiUsersUserDetailsByIdGet;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiUsersUserDetailsByIdGet;
+
+        internal void ExecuteOnApiUsersUserDetailsByIdGet(UsersApi.ApiUsersUserDetailsByIdGetApiResponse apiResponse)
+        {
+            OnApiUsersUserDetailsByIdGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiUsersUserDetailsByIdGet(Exception exception)
+        {
+            OnErrorApiUsersUserDetailsByIdGet?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiUsersUserRolesGet;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiUsersUserRolesGet;
+
+        internal void ExecuteOnApiUsersUserRolesGet(UsersApi.ApiUsersUserRolesGetApiResponse apiResponse)
+        {
+            OnApiUsersUserRolesGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiUsersUserRolesGet(Exception exception)
+        {
+            OnErrorApiUsersUserRolesGet?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -624,6 +992,559 @@ namespace HNTAS.Api.Client.Api
             Logger = LoggerFactory.CreateLogger<UsersApi>();
             HttpClient = httpClient;
             Events = usersApiEvents;
+        }
+
+        partial void FormatApiUsersAcceptInvitationPatch(InvitedUserRequest invitedUserRequest);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="invitedUserRequest"></param>
+        /// <returns></returns>
+        private void ValidateApiUsersAcceptInvitationPatch(InvitedUserRequest invitedUserRequest)
+        {
+            if (invitedUserRequest == null)
+                throw new ArgumentNullException(nameof(invitedUserRequest));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="invitedUserRequest"></param>
+        private void AfterApiUsersAcceptInvitationPatchDefaultImplementation(IApiUsersAcceptInvitationPatchApiResponse apiResponseLocalVar, InvitedUserRequest invitedUserRequest)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiUsersAcceptInvitationPatch(ref suppressDefaultLog, apiResponseLocalVar, invitedUserRequest);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="invitedUserRequest"></param>
+        partial void AfterApiUsersAcceptInvitationPatch(ref bool suppressDefaultLog, IApiUsersAcceptInvitationPatchApiResponse apiResponseLocalVar, InvitedUserRequest invitedUserRequest);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="invitedUserRequest"></param>
+        private void OnErrorApiUsersAcceptInvitationPatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, InvitedUserRequest invitedUserRequest)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiUsersAcceptInvitationPatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, invitedUserRequest);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="invitedUserRequest"></param>
+        partial void OnErrorApiUsersAcceptInvitationPatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, InvitedUserRequest invitedUserRequest);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="invitedUserRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersAcceptInvitationPatchApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersAcceptInvitationPatchApiResponse?> ApiUsersAcceptInvitationPatchOrDefaultAsync(InvitedUserRequest invitedUserRequest, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiUsersAcceptInvitationPatchAsync(invitedUserRequest, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="invitedUserRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersAcceptInvitationPatchApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersAcceptInvitationPatchApiResponse> ApiUsersAcceptInvitationPatchAsync(InvitedUserRequest invitedUserRequest, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiUsersAcceptInvitationPatch(invitedUserRequest);
+
+                FormatApiUsersAcceptInvitationPatch(invitedUserRequest);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Users/accept-invitation"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/accept-invitation");
+
+                    httpRequestMessageLocalVar.Content = (invitedUserRequest as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(invitedUserRequest, _jsonSerializerOptions));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Patch;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiUsersAcceptInvitationPatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersAcceptInvitationPatchApiResponse>();
+
+                        ApiUsersAcceptInvitationPatchApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/accept-invitation", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiUsersAcceptInvitationPatchDefaultImplementation(apiResponseLocalVar, invitedUserRequest);
+
+                        Events.ExecuteOnApiUsersAcceptInvitationPatch(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiUsersAcceptInvitationPatchDefaultImplementation(e, "/api/Users/accept-invitation", uriBuilderLocalVar.Path, invitedUserRequest);
+                Events.ExecuteOnErrorApiUsersAcceptInvitationPatch(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiUsersAcceptInvitationPatchApiResponse"/>
+        /// </summary>
+        public partial class ApiUsersAcceptInvitationPatchApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiUsersAcceptInvitationPatchApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiUsersAcceptInvitationPatchApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiUsersAcceptInvitationPatchApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiUsersAcceptInvitationPatchApiResponse(ILogger<ApiUsersAcceptInvitationPatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public string? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<string>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out string? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 201 Created
+            /// </summary>
+            /// <returns></returns>
+            public bool IsCreated => 201 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 201 Created
+            /// </summary>
+            /// <returns></returns>
+            public string? Created()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsCreated
+                    ? System.Text.Json.JsonSerializer.Deserialize<string>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 201 Created and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryCreated([NotNullWhen(true)]out string? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Created();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)201);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 409 Conflict
+            /// </summary>
+            /// <returns></returns>
+            public bool IsConflict => 409 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 409 Conflict
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? Conflict()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsConflict
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 409 Conflict and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryConflict([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Conflict();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)409);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        private void AfterApiUsersContributorRolesGetDefaultImplementation(IApiUsersContributorRolesGetApiResponse apiResponseLocalVar)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiUsersContributorRolesGet(ref suppressDefaultLog, apiResponseLocalVar);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        partial void AfterApiUsersContributorRolesGet(ref bool suppressDefaultLog, IApiUsersContributorRolesGetApiResponse apiResponseLocalVar);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        private void OnErrorApiUsersContributorRolesGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiUsersContributorRolesGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        partial void OnErrorApiUsersContributorRolesGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersContributorRolesGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersContributorRolesGetApiResponse?> ApiUsersContributorRolesGetOrDefaultAsync(System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiUsersContributorRolesGetAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersContributorRolesGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersContributorRolesGetApiResponse> ApiUsersContributorRolesGetAsync(System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Users/contributor-roles"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/contributor-roles");
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiUsersContributorRolesGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersContributorRolesGetApiResponse>();
+
+                        ApiUsersContributorRolesGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/contributor-roles", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiUsersContributorRolesGetDefaultImplementation(apiResponseLocalVar);
+
+                        Events.ExecuteOnApiUsersContributorRolesGet(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiUsersContributorRolesGetDefaultImplementation(e, "/api/Users/contributor-roles", uriBuilderLocalVar.Path);
+                Events.ExecuteOnErrorApiUsersContributorRolesGet(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiUsersContributorRolesGetApiResponse"/>
+        /// </summary>
+        public partial class ApiUsersContributorRolesGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiUsersContributorRolesGetApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiUsersContributorRolesGetApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiUsersContributorRolesGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiUsersContributorRolesGetApiResponse(ILogger<ApiUsersContributorRolesGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public List<EnumItemResponse>? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<List<EnumItemResponse>>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out List<EnumItemResponse>? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
         /// <summary>
@@ -1309,21 +2230,21 @@ namespace HNTAS.Api.Client.Api
             partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
-        partial void FormatApiUsersIdOrgDetailsPatch(ref string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest);
+        partial void FormatApiUsersIdOrgDetailsPatch(ref string id, UpdateUserOrganisationRequest updateUserOrganisationRequest);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
+        /// <param name="updateUserOrganisationRequest"></param>
         /// <returns></returns>
-        private void ValidateApiUsersIdOrgDetailsPatch(string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest)
+        private void ValidateApiUsersIdOrgDetailsPatch(string id, UpdateUserOrganisationRequest updateUserOrganisationRequest)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
 
-            if (updateOrgDetailsAndRolesRequest == null)
-                throw new ArgumentNullException(nameof(updateOrgDetailsAndRolesRequest));
+            if (updateUserOrganisationRequest == null)
+                throw new ArgumentNullException(nameof(updateUserOrganisationRequest));
         }
 
         /// <summary>
@@ -1331,11 +2252,11 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="id"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
-        private void AfterApiUsersIdOrgDetailsPatchDefaultImplementation(IApiUsersIdOrgDetailsPatchApiResponse apiResponseLocalVar, string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest)
+        /// <param name="updateUserOrganisationRequest"></param>
+        private void AfterApiUsersIdOrgDetailsPatchDefaultImplementation(IApiUsersIdOrgDetailsPatchApiResponse apiResponseLocalVar, string id, UpdateUserOrganisationRequest updateUserOrganisationRequest)
         {
             bool suppressDefaultLog = false;
-            AfterApiUsersIdOrgDetailsPatch(ref suppressDefaultLog, apiResponseLocalVar, id, updateOrgDetailsAndRolesRequest);
+            AfterApiUsersIdOrgDetailsPatch(ref suppressDefaultLog, apiResponseLocalVar, id, updateUserOrganisationRequest);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -1346,8 +2267,8 @@ namespace HNTAS.Api.Client.Api
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="id"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
-        partial void AfterApiUsersIdOrgDetailsPatch(ref bool suppressDefaultLog, IApiUsersIdOrgDetailsPatchApiResponse apiResponseLocalVar, string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest);
+        /// <param name="updateUserOrganisationRequest"></param>
+        partial void AfterApiUsersIdOrgDetailsPatch(ref bool suppressDefaultLog, IApiUsersIdOrgDetailsPatchApiResponse apiResponseLocalVar, string id, UpdateUserOrganisationRequest updateUserOrganisationRequest);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -1356,11 +2277,11 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="id"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
-        private void OnErrorApiUsersIdOrgDetailsPatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest)
+        /// <param name="updateUserOrganisationRequest"></param>
+        private void OnErrorApiUsersIdOrgDetailsPatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string id, UpdateUserOrganisationRequest updateUserOrganisationRequest)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiUsersIdOrgDetailsPatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, id, updateOrgDetailsAndRolesRequest);
+            OnErrorApiUsersIdOrgDetailsPatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, id, updateUserOrganisationRequest);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -1373,21 +2294,21 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="id"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
-        partial void OnErrorApiUsersIdOrgDetailsPatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest);
+        /// <param name="updateUserOrganisationRequest"></param>
+        partial void OnErrorApiUsersIdOrgDetailsPatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string id, UpdateUserOrganisationRequest updateUserOrganisationRequest);
 
         /// <summary>
         ///  
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
+        /// <param name="updateUserOrganisationRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersIdOrgDetailsPatchApiResponse"/>&gt;</returns>
-        public async Task<IApiUsersIdOrgDetailsPatchApiResponse?> ApiUsersIdOrgDetailsPatchOrDefaultAsync(string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest, System.Threading.CancellationToken cancellationToken = default)
+        public async Task<IApiUsersIdOrgDetailsPatchApiResponse?> ApiUsersIdOrgDetailsPatchOrDefaultAsync(string id, UpdateUserOrganisationRequest updateUserOrganisationRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiUsersIdOrgDetailsPatchAsync(id, updateOrgDetailsAndRolesRequest, cancellationToken).ConfigureAwait(false);
+                return await ApiUsersIdOrgDetailsPatchAsync(id, updateUserOrganisationRequest, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -1400,18 +2321,18 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
-        /// <param name="updateOrgDetailsAndRolesRequest"></param>
+        /// <param name="updateUserOrganisationRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersIdOrgDetailsPatchApiResponse"/>&gt;</returns>
-        public async Task<IApiUsersIdOrgDetailsPatchApiResponse> ApiUsersIdOrgDetailsPatchAsync(string id, UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest, System.Threading.CancellationToken cancellationToken = default)
+        public async Task<IApiUsersIdOrgDetailsPatchApiResponse> ApiUsersIdOrgDetailsPatchAsync(string id, UpdateUserOrganisationRequest updateUserOrganisationRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiUsersIdOrgDetailsPatch(id, updateOrgDetailsAndRolesRequest);
+                ValidateApiUsersIdOrgDetailsPatch(id, updateUserOrganisationRequest);
 
-                FormatApiUsersIdOrgDetailsPatch(ref id, updateOrgDetailsAndRolesRequest);
+                FormatApiUsersIdOrgDetailsPatch(ref id, updateUserOrganisationRequest);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -1423,9 +2344,9 @@ namespace HNTAS.Api.Client.Api
                         : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/{id}/org-details");
                     uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7Bid%7D", Uri.EscapeDataString(id.ToString()));
 
-                    httpRequestMessageLocalVar.Content = (updateOrgDetailsAndRolesRequest as object) is System.IO.Stream stream
+                    httpRequestMessageLocalVar.Content = (updateUserOrganisationRequest as object) is System.IO.Stream stream
                         ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
-                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(updateOrgDetailsAndRolesRequest, _jsonSerializerOptions));
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(updateUserOrganisationRequest, _jsonSerializerOptions));
 
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
@@ -1462,7 +2383,7 @@ namespace HNTAS.Api.Client.Api
 
                         ApiUsersIdOrgDetailsPatchApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/{id}/org-details", requestedAtLocalVar, _jsonSerializerOptions);
 
-                        AfterApiUsersIdOrgDetailsPatchDefaultImplementation(apiResponseLocalVar, id, updateOrgDetailsAndRolesRequest);
+                        AfterApiUsersIdOrgDetailsPatchDefaultImplementation(apiResponseLocalVar, id, updateUserOrganisationRequest);
 
                         Events.ExecuteOnApiUsersIdOrgDetailsPatch(apiResponseLocalVar);
 
@@ -1472,7 +2393,7 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiUsersIdOrgDetailsPatchDefaultImplementation(e, "/api/Users/{id}/org-details", uriBuilderLocalVar.Path, id, updateOrgDetailsAndRolesRequest);
+                OnErrorApiUsersIdOrgDetailsPatchDefaultImplementation(e, "/api/Users/{id}/org-details", uriBuilderLocalVar.Path, id, updateUserOrganisationRequest);
                 Events.ExecuteOnErrorApiUsersIdOrgDetailsPatch(e);
                 throw;
             }
@@ -1954,6 +2875,270 @@ namespace HNTAS.Api.Client.Api
             partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
+        partial void FormatApiUsersManagedUsersGet(ref Option<string> userId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private void ValidateApiUsersManagedUsersGet(Option<string> userId)
+        {
+            if (userId.IsSet && userId.Value == null)
+                throw new ArgumentNullException(nameof(userId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="userId"></param>
+        private void AfterApiUsersManagedUsersGetDefaultImplementation(IApiUsersManagedUsersGetApiResponse apiResponseLocalVar, Option<string> userId)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiUsersManagedUsersGet(ref suppressDefaultLog, apiResponseLocalVar, userId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="userId"></param>
+        partial void AfterApiUsersManagedUsersGet(ref bool suppressDefaultLog, IApiUsersManagedUsersGetApiResponse apiResponseLocalVar, Option<string> userId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="userId"></param>
+        private void OnErrorApiUsersManagedUsersGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiUsersManagedUsersGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, userId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="userId"></param>
+        partial void OnErrorApiUsersManagedUsersGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersManagedUsersGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersManagedUsersGetApiResponse?> ApiUsersManagedUsersGetOrDefaultAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiUsersManagedUsersGetAsync(userId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersManagedUsersGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersManagedUsersGetApiResponse> ApiUsersManagedUsersGetAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiUsersManagedUsersGet(userId);
+
+                FormatApiUsersManagedUsersGet(ref userId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Users/managed-users"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/managed-users");
+
+                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    if (userId.IsSet)
+                        parseQueryStringLocalVar["userId"] = ClientUtils.ParameterToString(userId.Value);
+
+                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "application/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiUsersManagedUsersGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersManagedUsersGetApiResponse>();
+
+                        ApiUsersManagedUsersGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/managed-users", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiUsersManagedUsersGetDefaultImplementation(apiResponseLocalVar, userId);
+
+                        Events.ExecuteOnApiUsersManagedUsersGet(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiUsersManagedUsersGetDefaultImplementation(e, "/api/Users/managed-users", uriBuilderLocalVar.Path, userId);
+                Events.ExecuteOnErrorApiUsersManagedUsersGet(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiUsersManagedUsersGetApiResponse"/>
+        /// </summary>
+        public partial class ApiUsersManagedUsersGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiUsersManagedUsersGetApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiUsersManagedUsersGetApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiUsersManagedUsersGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiUsersManagedUsersGetApiResponse(ILogger<ApiUsersManagedUsersGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ManagedUserResponse? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ManagedUserResponse>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.ManagedUserResponse? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
         partial void FormatApiUsersOrganisationExistsGet(ref Option<string> companiesHouseNumber);
 
         /// <summary>
@@ -2214,6 +3399,702 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <returns></returns>
             public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiUsersRegisteredUsersGet(ref Option<string> userId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private void ValidateApiUsersRegisteredUsersGet(Option<string> userId)
+        {
+            if (userId.IsSet && userId.Value == null)
+                throw new ArgumentNullException(nameof(userId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="userId"></param>
+        private void AfterApiUsersRegisteredUsersGetDefaultImplementation(IApiUsersRegisteredUsersGetApiResponse apiResponseLocalVar, Option<string> userId)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiUsersRegisteredUsersGet(ref suppressDefaultLog, apiResponseLocalVar, userId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="userId"></param>
+        partial void AfterApiUsersRegisteredUsersGet(ref bool suppressDefaultLog, IApiUsersRegisteredUsersGetApiResponse apiResponseLocalVar, Option<string> userId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="userId"></param>
+        private void OnErrorApiUsersRegisteredUsersGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiUsersRegisteredUsersGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, userId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="userId"></param>
+        partial void OnErrorApiUsersRegisteredUsersGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersRegisteredUsersGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersRegisteredUsersGetApiResponse?> ApiUsersRegisteredUsersGetOrDefaultAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiUsersRegisteredUsersGetAsync(userId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersRegisteredUsersGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersRegisteredUsersGetApiResponse> ApiUsersRegisteredUsersGetAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiUsersRegisteredUsersGet(userId);
+
+                FormatApiUsersRegisteredUsersGet(ref userId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Users/registered-users"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/registered-users");
+
+                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    if (userId.IsSet)
+                        parseQueryStringLocalVar["userId"] = ClientUtils.ParameterToString(userId.Value);
+
+                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "application/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiUsersRegisteredUsersGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersRegisteredUsersGetApiResponse>();
+
+                        ApiUsersRegisteredUsersGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/registered-users", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiUsersRegisteredUsersGetDefaultImplementation(apiResponseLocalVar, userId);
+
+                        Events.ExecuteOnApiUsersRegisteredUsersGet(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiUsersRegisteredUsersGetDefaultImplementation(e, "/api/Users/registered-users", uriBuilderLocalVar.Path, userId);
+                Events.ExecuteOnErrorApiUsersRegisteredUsersGet(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiUsersRegisteredUsersGetApiResponse"/>
+        /// </summary>
+        public partial class ApiUsersRegisteredUsersGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiUsersRegisteredUsersGetApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiUsersRegisteredUsersGetApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiUsersRegisteredUsersGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiUsersRegisteredUsersGetApiResponse(ILogger<ApiUsersRegisteredUsersGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public List<UserResponse>? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<List<UserResponse>>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out List<UserResponse>? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiUsersUserDetailsByIdGet(ref Option<string> id);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private void ValidateApiUsersUserDetailsByIdGet(Option<string> id)
+        {
+            if (id.IsSet && id.Value == null)
+                throw new ArgumentNullException(nameof(id));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="id"></param>
+        private void AfterApiUsersUserDetailsByIdGetDefaultImplementation(IApiUsersUserDetailsByIdGetApiResponse apiResponseLocalVar, Option<string> id)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiUsersUserDetailsByIdGet(ref suppressDefaultLog, apiResponseLocalVar, id);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="id"></param>
+        partial void AfterApiUsersUserDetailsByIdGet(ref bool suppressDefaultLog, IApiUsersUserDetailsByIdGetApiResponse apiResponseLocalVar, Option<string> id);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="id"></param>
+        private void OnErrorApiUsersUserDetailsByIdGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> id)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiUsersUserDetailsByIdGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, id);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="id"></param>
+        partial void OnErrorApiUsersUserDetailsByIdGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> id);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="id"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersUserDetailsByIdGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersUserDetailsByIdGetApiResponse?> ApiUsersUserDetailsByIdGetOrDefaultAsync(Option<string> id = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiUsersUserDetailsByIdGetAsync(id, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersUserDetailsByIdGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersUserDetailsByIdGetApiResponse> ApiUsersUserDetailsByIdGetAsync(Option<string> id = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiUsersUserDetailsByIdGet(id);
+
+                FormatApiUsersUserDetailsByIdGet(ref id);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Users/user-details-by-id"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/user-details-by-id");
+
+                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    if (id.IsSet)
+                        parseQueryStringLocalVar["id"] = ClientUtils.ParameterToString(id.Value);
+
+                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiUsersUserDetailsByIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersUserDetailsByIdGetApiResponse>();
+
+                        ApiUsersUserDetailsByIdGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/user-details-by-id", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiUsersUserDetailsByIdGetDefaultImplementation(apiResponseLocalVar, id);
+
+                        Events.ExecuteOnApiUsersUserDetailsByIdGet(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiUsersUserDetailsByIdGetDefaultImplementation(e, "/api/Users/user-details-by-id", uriBuilderLocalVar.Path, id);
+                Events.ExecuteOnErrorApiUsersUserDetailsByIdGet(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiUsersUserDetailsByIdGetApiResponse"/>
+        /// </summary>
+        public partial class ApiUsersUserDetailsByIdGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiUsersUserDetailsByIdGetApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiUsersUserDetailsByIdGetApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiUsersUserDetailsByIdGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiUsersUserDetailsByIdGetApiResponse(ILogger<ApiUsersUserDetailsByIdGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.UserDetailsResponse? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.UserDetailsResponse>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.UserDetailsResponse? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        private void AfterApiUsersUserRolesGetDefaultImplementation(IApiUsersUserRolesGetApiResponse apiResponseLocalVar)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiUsersUserRolesGet(ref suppressDefaultLog, apiResponseLocalVar);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        partial void AfterApiUsersUserRolesGet(ref bool suppressDefaultLog, IApiUsersUserRolesGetApiResponse apiResponseLocalVar);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        private void OnErrorApiUsersUserRolesGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiUsersUserRolesGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        partial void OnErrorApiUsersUserRolesGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersUserRolesGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersUserRolesGetApiResponse?> ApiUsersUserRolesGetOrDefaultAsync(System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiUsersUserRolesGetAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersUserRolesGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersUserRolesGetApiResponse> ApiUsersUserRolesGetAsync(System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Users/user-roles"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/user-roles");
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiUsersUserRolesGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersUserRolesGetApiResponse>();
+
+                        ApiUsersUserRolesGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/user-roles", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiUsersUserRolesGetDefaultImplementation(apiResponseLocalVar);
+
+                        Events.ExecuteOnApiUsersUserRolesGet(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiUsersUserRolesGetDefaultImplementation(e, "/api/Users/user-roles", uriBuilderLocalVar.Path);
+                Events.ExecuteOnErrorApiUsersUserRolesGet(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiUsersUserRolesGetApiResponse"/>
+        /// </summary>
+        public partial class ApiUsersUserRolesGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiUsersUserRolesGetApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiUsersUserRolesGetApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiUsersUserRolesGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiUsersUserRolesGetApiResponse(ILogger<ApiUsersUserRolesGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public List<EnumItemResponse>? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<List<EnumItemResponse>>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out List<EnumItemResponse>? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {
