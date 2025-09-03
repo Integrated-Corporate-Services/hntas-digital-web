@@ -1,4 +1,6 @@
-﻿@model HNTAS.Web.UI.Models.ContactDetailsModel
+﻿@using HNTAS.Web.UI.Models.User
+@using HNTAS.Web.UI.Models.Enums
+@model OrganisationContactDetailsModel
 
 @{
     ViewData["Title"] = "Your details";
@@ -15,8 +17,8 @@
 
     // Determine if the entire preferred contact number section should show an error state
     bool hasAnyContactNumberSectionError = hasPreferredContactTypeErrors ||
-                                          (Model.PreferredContactType == HNTAS.Web.UI.Models.PreferredContactType.Landline && (hasLandlineNumberErrors || hasContactNumberExtensionErrors)) ||
-                                          (Model.PreferredContactType == HNTAS.Web.UI.Models.PreferredContactType.Mobile && hasMobileNumberErrors);
+                                          (Model.PreferredContactType == PreferredContactType.Landline && (hasLandlineNumberErrors || hasContactNumberExtensionErrors)) ||
+                                          (Model.PreferredContactType == PreferredContactType.Mobile && hasMobileNumberErrors);
 }
 
 <div class="govuk-grid-row">
@@ -132,9 +134,9 @@
 
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="PreferredContactType-Landline" name="PreferredContactType" type="radio" value="@HNTAS.Web.UI.Models.PreferredContactType.Landline"
+                            <input class="govuk-radios__input" id="PreferredContactType-Landline" name="PreferredContactType" type="radio" value="@PreferredContactType.Landline"
                                    data-aria-controls="conditional-Landline"
-                                   @(Model.PreferredContactType == HNTAS.Web.UI.Models.PreferredContactType.Landline ? "checked" : "")
+                                   @(Model.PreferredContactType == PreferredContactType.Landline ? "checked" : "")
                                    aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
                             <label class="govuk-label govuk-radios__label" for="PreferredContactType-Landline">
                                 Landline
@@ -173,9 +175,9 @@
                         </div>
 
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="PreferredContactType-Mobile" name="PreferredContactType" type="radio" value="@HNTAS.Web.UI.Models.PreferredContactType.Mobile"
+                            <input class="govuk-radios__input" id="PreferredContactType-Mobile" name="PreferredContactType" type="radio" value="@PreferredContactType.Mobile"
                                    data-aria-controls="conditional-Mobile"
-                                   @(Model.PreferredContactType == HNTAS.Web.UI.Models.PreferredContactType.Mobile ? "checked" : "")
+                                   @(Model.PreferredContactType == PreferredContactType.Mobile ? "checked" : "")
                                    aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
                             <label class="govuk-label govuk-radios__label" for="PreferredContactType-Mobile">
                                 Mobile

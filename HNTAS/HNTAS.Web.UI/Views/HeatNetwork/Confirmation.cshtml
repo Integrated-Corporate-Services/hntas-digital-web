@@ -1,37 +1,33 @@
 ﻿@{
     ViewData["Title"] = "Confirmation";
 }
-
+<script>
+gtag('event', 'hn_registrations', {
+  method: 'hntas_digital',
+});
+</script>
 
 <div class="govuk-width-container">
     <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
                 <div class="govuk-panel govuk-panel--confirmation">
-                    <span class="govuk-!-font-weight-bold">Heat network registered</span><br /><br/>
-                    <span>UHNID</span><br/>
-                    <span class="govuk-!-font-weight-bold">@ViewBag.HNId</span>
+                    <span class="govuk-!-font-weight-bold">Heat network successfully registered</span><br/>
+                    <span class="govuk-!-font-weight-regular">@ViewBag.HNName</span><br />
+                    <span class="govuk-!-font-weight-regular">UHNID</span><span class="govuk-!-font-weight-bold"> @ViewBag.HNId</span>
                 </div><br/>
                 <p class="govuk-body">We have:</p>
                 <ul class="govuk-list govuk-list--bullet">
-                    <li>registered heat network service under @ViewBag.CompanyName's organisation</li>
+                    <li>registered your heat network service under @ViewBag.CompanyName's organisation</li>
                     <li>sent an email confirmation, with the UHNID, to @ViewBag.ContactName</li>
                 </ul>
 
-                <p class="govuk-body">As regulatory contact, you can now:</p>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>access the service</li>
-                    <li>add team members to the service</li>
-                    <li>decide what your team members can and cannot do on the service by setting their permission levels</li>
-                </ul>
+                <p class="govuk-body">As the responsible party, you can now designate team members to help provide technical information for your heat network.</p>
                 
-                @* TODO - repoint to appropriate page when available. Pointing to HN Location page for now, to test page in flow *@
-                <a role="button" draggable="false" asp-controller="Dashboard" role="button" asp-action="UserAccount" class="govuk-button">
-                    Go to heat networks home
-                    @* not in the design, will add it back if required
-                        <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
-                        <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
-                    </svg> *@
+                
+                @* TODO - repoint to appropriate page when available. Pointing to UserAccount page for now, to test page in flow *@
+                <a class="govuk-button" role="button" draggable="false" asp-controller="Dashboard" asp-action="UserAccount">
+                    Continue
                 </a>
             </div>
         </div>

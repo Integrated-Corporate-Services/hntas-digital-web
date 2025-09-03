@@ -3,35 +3,11 @@ using Newtonsoft.Json;
 
 namespace HNTAS.Web.UI.Helpers
 {
-    public static class SessionHelper
+    public class SessionHelper : ISessionHelper
     {
-        #region Constants
-
-        public static class SessionKeys
-        {
-            public const string UserCreation_SessionKey = "UserModelDataKey";
-            public const string UserModel_Id_SessionKey = "UserModelIdDataKey";
-            public const string OrganisationCreation_SessionKey = "OrganisationModelDataKey";
-
-            // Session key for the boolean flow state
-            public const string IsCheckAnswerFlowKey = "IsCheckAnswerFlow";
-
-            // Session keys for specific models
-            public const string WhatDoYouWantToDoViewModelKey = "WhatDoYouWantToDoViewModel";
-            public const string WhereIsTheHeatNetworkModelKey = "whereIsTheHeatNetwork";
-            public const string HowManyDwellingsIncludedModelKey = "howManyDwellingsIncluded";
-            public const string IsHNCurrentlyOperatingModelKey = "isHNCurrentlyOperating";
-            public const string HaveYouSignedMEContractModelKey = "haveYouSignedMEContract";
-
-            public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
-            public const string HeatNetworkNameModelKey = "HeatNetworkName";            
-        }
-
-        #endregion
-
         #region Generic Session Methods
 
-        public static void SaveToSession<T>(HttpContext httpContext, string sessionKey, T model)
+        public void SaveToSession<T>(HttpContext httpContext, string sessionKey, T model)
         {
             if (model == null)
             {
@@ -42,7 +18,7 @@ namespace HNTAS.Web.UI.Helpers
             httpContext.Session.SetString(sessionKey, json);
         }
 
-        public static T? GetFromSession<T>(HttpContext httpContext, string sessionKey) where T : class
+        public T? GetFromSession<T>(HttpContext httpContext, string sessionKey) where T : class
         {
             string? json = httpContext.Session.GetString(sessionKey);
             if (!string.IsNullOrEmpty(json))
@@ -61,13 +37,13 @@ namespace HNTAS.Web.UI.Helpers
             return null;
         }
 
-        public static void ClearFromSession(HttpContext httpContext, string sessionKey)
+        public void ClearFromSession(HttpContext httpContext, string sessionKey)
         {
             httpContext.Session.Remove(sessionKey);
         }
 
         // You might still want a general ClearAllFlowRelatedSessionData if starting completely fresh
-        public static void ClearAllFlowRelatedSessionData(HttpContext context)
+        public void ClearAllFlowRelatedSessionData(HttpContext context)
         {
             ClearFromSession(context, SessionKeys.WhatDoYouWantToDoViewModelKey);
             ClearFromSession(context, SessionKeys.WhereIsTheHeatNetworkModelKey);
@@ -77,7 +53,7 @@ namespace HNTAS.Web.UI.Helpers
 
             ClearFromSession(context, SessionKeys.UserCreation_SessionKey);
             ClearFromSession(context, SessionKeys.OrganisationCreation_SessionKey);
-                        
+
             ClearFromSession(context, SessionKeys.HeatNetworkLocationModelKey);
             ClearFromSession(context, SessionKeys.HeatNetworkNameModelKey);
 
@@ -88,12 +64,12 @@ namespace HNTAS.Web.UI.Helpers
 
         #region Flow State Methods
 
-        public static void SetIsCheckAnswerFlow(HttpContext httpContext, bool isCheckAnswerFlow)
+        public void SetIsCheckAnswerFlow(HttpContext httpContext, bool isCheckAnswerFlow)
         {
             httpContext.Session.SetBoolean(SessionKeys.IsCheckAnswerFlowKey, isCheckAnswerFlow);
         }
 
-        public static bool GetIsCheckAnswerFlow(HttpContext httpContext)
+        public bool GetIsCheckAnswerFlow(HttpContext httpContext)
         {
             return httpContext.Session.GetBoolean(SessionKeys.IsCheckAnswerFlowKey) ?? false;
         }

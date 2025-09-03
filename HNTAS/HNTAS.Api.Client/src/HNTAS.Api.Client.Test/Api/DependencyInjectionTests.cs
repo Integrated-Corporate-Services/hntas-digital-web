@@ -69,14 +69,11 @@ namespace HNTAS.Api.Client.Test.Api
             var heatNetworksApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 
-            var testApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ITestApi>();
-            Assert.True(testApi.HttpClient.BaseAddress != null);
+            var invitationsApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IInvitationsApi>();
+            Assert.True(invitationsApi.HttpClient.BaseAddress != null);
 
             var usersApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
-
-            var welcomeApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IWelcomeApi>();
-            Assert.True(welcomeApi.HttpClient.BaseAddress != null);
         }
 
         /// <summary>
@@ -88,14 +85,11 @@ namespace HNTAS.Api.Client.Test.Api
             var heatNetworksApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 
-            var testApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ITestApi>();
-            Assert.True(testApi.HttpClient.BaseAddress != null);
+            var invitationsApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
+            Assert.True(invitationsApi.HttpClient.BaseAddress != null);
 
             var usersApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
-
-            var welcomeApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IWelcomeApi>();
-            Assert.True(welcomeApi.HttpClient.BaseAddress != null);
         }
 
         /// <summary>
@@ -107,14 +101,11 @@ namespace HNTAS.Api.Client.Test.Api
             var heatNetworksApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
             
-            var testApi = _hostUsingAddWithAClient.Services.GetRequiredService<ITestApi>();
-            Assert.True(testApi.HttpClient.BaseAddress != null);
+            var invitationsApi = _hostUsingAddWithAClient.Services.GetRequiredService<IInvitationsApi>();
+            Assert.True(invitationsApi.HttpClient.BaseAddress != null);
             
             var usersApi = _hostUsingAddWithAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
-            
-            var welcomeApi = _hostUsingAddWithAClient.Services.GetRequiredService<IWelcomeApi>();
-            Assert.True(welcomeApi.HttpClient.BaseAddress != null);
         }
 
         /// <summary>
@@ -126,14 +117,11 @@ namespace HNTAS.Api.Client.Test.Api
             var heatNetworksApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 
-            var testApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ITestApi>();
-            Assert.True(testApi.HttpClient.BaseAddress != null);
+            var invitationsApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
+            Assert.True(invitationsApi.HttpClient.BaseAddress != null);
 
             var usersApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
-
-            var welcomeApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IWelcomeApi>();
-            Assert.True(welcomeApi.HttpClient.BaseAddress != null);
         }
     }
 }

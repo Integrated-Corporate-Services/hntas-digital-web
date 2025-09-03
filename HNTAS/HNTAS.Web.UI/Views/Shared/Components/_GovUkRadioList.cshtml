@@ -1,0 +1,23 @@
+﻿@model HNTAS.Web.UI.Models.Components.GovUkRadioListModel
+
+<div class="govuk-radios" data-module="govuk-radios">
+    @for (int i = 0; i < Model.Items.Count; i++)
+    {
+        var item = Model.Items[i];
+        var id = i == 0 ? Model.FieldId : $"{Model.FieldId}-{i}";
+        var isChecked = Model.SelectedValue == item.Value;
+
+        <div class="govuk-radios__item">
+            <input class="govuk-radios__input"
+                   id="@id"
+                   name="@Model.FieldName"
+                   type="radio"
+                   value="@item.Value"
+                   @(isChecked ? "checked" : "") />
+
+            <label class="govuk-label govuk-radios__label" for="@id">
+                @item.Text
+            </label>
+        </div>
+    }
+</div>

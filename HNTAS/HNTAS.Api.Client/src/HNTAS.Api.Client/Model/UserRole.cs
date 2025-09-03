@@ -36,14 +36,9 @@ namespace HNTAS.Api.Client.Model
         RegulatoryContact = 1,
 
         /// <summary>
-        /// Enum ThirdParty for value: ThirdParty
-        /// </summary>
-        ThirdParty = 2,
-
-        /// <summary>
         /// Enum Contributor for value: Contributor
         /// </summary>
-        Contributor = 3
+        Contributor = 2
     }
 
     /// <summary>
@@ -61,9 +56,6 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("RegulatoryContact"))
                 return UserRole.RegulatoryContact;
 
-            if (value.Equals("ThirdParty"))
-                return UserRole.ThirdParty;
-
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
 
@@ -79,9 +71,6 @@ namespace HNTAS.Api.Client.Model
         {
             if (value.Equals("RegulatoryContact"))
                 return UserRole.RegulatoryContact;
-
-            if (value.Equals("ThirdParty"))
-                return UserRole.ThirdParty;
 
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
@@ -99,9 +88,6 @@ namespace HNTAS.Api.Client.Model
         {
             if (value == UserRole.RegulatoryContact)
                 return "RegulatoryContact";
-
-            if (value == UserRole.ThirdParty)
-                return "ThirdParty";
 
             if (value == UserRole.Contributor)
                 return "Contributor";

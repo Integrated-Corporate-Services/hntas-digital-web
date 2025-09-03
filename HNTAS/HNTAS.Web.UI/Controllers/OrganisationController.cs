@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
-using PreferredContactType = HNTAS.Web.UI.Models.PreferredContactType;
+using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -20,29 +20,31 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ICompaniesHouseService _companiesHouseService;
         private readonly ILogger<OrganisationController> _logger;
         private readonly IUserService _userService;
+        private readonly ISessionHelper _sessionHelper;
 
-        public OrganisationController(ICompaniesHouseService companiesHouseService, ILogger<OrganisationController> logger, IUserService userService)
+        public OrganisationController(ICompaniesHouseService companiesHouseService, ILogger<OrganisationController> logger, IUserService userService, ISessionHelper sessionHelper)
         {
             _companiesHouseService = companiesHouseService;
             _logger = logger;
             _userService = userService;
+            _sessionHelper = sessionHelper;
         }
 
         [HttpGet]
         public IActionResult Start()
         {
-            SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
-            SessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
+            _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+            _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
             return RedirectToAction("OrganisationType");
         }
 
         [HttpGet]
         public IActionResult OrganisationType()
         {
-            var model = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey) ?? new OrganisationModel();
+            var model = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey) ?? new OrganisationModel();
             model.OrganisationTypes = GetOrganisationTypeOptions();
 
-            bool isCheckAnswerFlow = SessionHelper.GetIsCheckAnswerFlow(HttpContext);
+            bool isCheckAnswerFlow = _sessionHelper.GetIsCheckAnswerFlow(HttpContext);
             ViewBag.ShowBackButton = isCheckAnswerFlow ? false : true;
             ViewBag.BackLinkUrl = Url.Action("Index", "Home");
 
@@ -53,7 +55,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult OrganisationType(OrganisationModel model)
         {
-            var orgModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             if (orgModel != null)
             {
                 model.CompanyNumber = orgModel.CompanyNumber;
@@ -86,9 +88,9 @@ namespace HNTAS.Web.UI.Controllers
 
                 model.SelectedOrganisationTypeText = selectedOrganisationTypeText;
 
-                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey, model);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, model);
 
-                if (model.SelectedOrganisationType == Models.OrganisationType.OtherUkOrganisation.ToString() || model.SelectedOrganisationType == Models.OrganisationType.OverseasOrganisation.ToString())
+                if (model.SelectedOrganisationType == Models.Enums.OrganisationType.OtherUkOrganisation.ToString() || model.SelectedOrganisationType == Models.Enums.OrganisationType.OverseasOrganisation.ToString())
                 {
                     return RedirectToAction("OrganisationName");
                 }
@@ -101,10 +103,10 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        [EnsureSessionForOrganisationFlowOnGet]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult CompanyNumber()
         {
-            var model = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var model = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
 
             ViewBag.ShowBackButton = true;
             ViewBag.BackLinkUrl = Url.Action("OrganisationType");
@@ -114,10 +116,10 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [EnsureSessionForOrganisationFlowOnPost]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
         public async Task<IActionResult> CompanyNumberAsync(OrganisationModel model)
         {
-            var orgModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
 
             orgModel.CompanyNumber = model.CompanyNumber;
             ModelState.Clear();
@@ -147,7 +149,7 @@ namespace HNTAS.Web.UI.Controllers
             if (ModelState.IsValid && companyDetails != null)
             {
                 orgModel.CompanyDetails = companyDetails;
-                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey, orgModel);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, orgModel);
                 return RedirectToAction("CompanyConfirm");
             }
 
@@ -158,10 +160,10 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        [EnsureSessionForOrganisationFlowOnGet]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult CompanyConfirm()
         {
-            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
 
             if (organisationModel?.CompanyDetails == null)
                 return RedirectToAction("CompanyNumber");
@@ -176,15 +178,15 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [EnsureSessionForOrganisationFlowOnPost]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
         public async Task<IActionResult> ConfirmAndContinue()
         {
-            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
 
             if (organisationModel?.CompanyDetails == null)
                 return RedirectToAction("CompanyNumber");
 
-            //Set empty contact details to ensure they pass the EnsureSessionForOrganisationFlowOnPost action filter validation 
+            //Set empty contact details to ensure they pass the  [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))] action filter validation 
             //on user controller actions
             if (!string.IsNullOrEmpty(organisationModel?.CompanyNumber))
             {
@@ -195,12 +197,12 @@ namespace HNTAS.Web.UI.Controllers
                 }
             }
 
-            var existingUserModel = SessionHelper.GetFromSession<UserModel>(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey);
+            var existingUserModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
 
             if (existingUserModel == null)
             {
                 existingUserModel = new UserModel();
-                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey, existingUserModel);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, existingUserModel);
             }
 
             return RedirectToAction("ConfirmRegulatoryContact");
@@ -215,11 +217,11 @@ namespace HNTAS.Web.UI.Controllers
 
 
         [HttpGet]
-        [EnsureSessionForOrganisationFlowOnGet]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult ConfirmRegulatoryContact()
         {
-            var userModel = SessionHelper.GetFromSession<UserModel>(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey) ?? new UserModel();
-            var orgModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey) ?? new UserModel();
+            var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
 
             userModel.OrganisationName = orgModel?.CompanyDetails?.Title ?? string.Empty;
 
@@ -231,11 +233,11 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [EnsureSessionForOrganisationFlowOnPost]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
         public IActionResult ConfirmRegulatoryContact(UserModel model)
         {
-            var userModel = SessionHelper.GetFromSession<UserModel>(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey) ?? new UserModel();
-            var orgModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey) ?? new UserModel();
+            var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
 
             foreach (var field in new[] { "EmailAddress", "FirstName", "LastName", "PreferredContactType", "JobTitle" })
             {
@@ -252,21 +254,21 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
 
-            var sessionUserModel = SessionHelper.GetFromSession<UserModel>(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey) ?? new UserModel();
+            var sessionUserModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey) ?? new UserModel();
 
             if (sessionUserModel != null)
             {
                 model.ContactDetails = sessionUserModel.ContactDetails;
             }
 
-            SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey, model);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, model);
 
             if (model.IsRegulatoryContact == true)
             {
                 if (string.IsNullOrEmpty(model.ContactDetails.EmailAddress))
                 {
                     model.ContactDetails.EmailAddress = User.FindFirstValue("email");
-                    SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey, model);
+                    _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, model);
                 }
 
                 return RedirectToAction("ContactDetails");
@@ -276,21 +278,21 @@ namespace HNTAS.Web.UI.Controllers
 
 
 
-        [EnsureSessionForOrganisationFlowOnGet]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult CannotContinue()
         {
             ViewBag.ShowBackButton = true;
             ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
-            ViewBag.OrganisationName = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey)?.CompanyDetails?.Title;
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey)?.CompanyDetails?.Title;
             return View("CannotContinue");
         }
 
         [HttpGet]
-        [EnsureSessionForOrganisationFlowOnGet]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult ContactDetails()
         {
-            var orgModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
-            var userModel = SessionHelper.GetFromSession<UserModel>(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey);
+            var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+            var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
 
             ViewBag.ShowBackButton = true;
             ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
@@ -300,11 +302,11 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [EnsureSessionForOrganisationFlowOnPost]
-        public IActionResult SaveContactDetails(ContactDetailsModel contactDetails)
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
+        public IActionResult SaveContactDetails(OrganisationContactDetailsModel contactDetails)
         {
-            var orgModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
-            var userModel = SessionHelper.GetFromSession<UserModel>(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey);
+            var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+            var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
 
             if (string.IsNullOrEmpty(contactDetails.EmailAddress))
                 contactDetails.EmailAddress = userModel.ContactDetails?.EmailAddress;
@@ -345,17 +347,17 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             userModel.ContactDetails = contactDetails;
-            SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey, userModel);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, userModel);
 
             return RedirectToAction("CheckYourAnswers");
         }
 
         [HttpGet]
-        [EnsureSessionForOrganisationFlowOnGet]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult CheckYourAnswers()
         {
-            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
-            var userModel = SessionHelper.GetFromSession<UserModel>(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey);
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+            var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
 
             var viewModel = new CheckYourAnswersModel
             {
@@ -367,18 +369,18 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.ShowBackButton = false;
 
             // Set the flow state to Check Answers mode
-            SessionHelper.SetIsCheckAnswerFlow(HttpContext, true);
+            _sessionHelper.SetIsCheckAnswerFlow(HttpContext, true);
 
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [EnsureSessionForOrganisationFlowOnPost]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
         public async Task<IActionResult> SubmitAnswers(CheckYourAnswersModel viewModel)
         {
-            viewModel.Organisation = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
-            viewModel.User = SessionHelper.GetFromSession<UserModel>(HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey);
+            viewModel.Organisation = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+            viewModel.User = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
 
             ModelState.Remove(nameof(viewModel.Organisation));
             ModelState.Remove(nameof(viewModel.User));
@@ -397,9 +399,9 @@ namespace HNTAS.Web.UI.Controllers
             TempData["Confirmation_CompanyName"] = company?.Title;
             TempData["Confirmation_EmailAddress"] = emailAddress;
 
-            var userId = SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            var regAddress = new OrgRegisteredAddress(
+            var regAddress = new RegisteredAddress(
                 addressLine1: company?.RegisteredOfficeAddress?.AddressLine1,
                 addressLine2: company?.RegisteredOfficeAddress?.AddressLine2,
                 town: company?.RegisteredOfficeAddress?.Locality,
@@ -407,25 +409,31 @@ namespace HNTAS.Web.UI.Controllers
                 country: company?.RegisteredOfficeAddress?.Country);
 
             var preferredContactType = userModel?.ContactDetails?.PreferredContactType == PreferredContactType.Landline ? HNTAS.Api.Client.Model.PreferredContactType.Landline : HNTAS.Api.Client.Model.PreferredContactType.Mobile;
-            var orgType = (Api.Client.Model.OrganisationType)Enum.Parse(typeof(Models.OrganisationType), organisationModel.SelectedOrganisationType);
+            var orgType = (Api.Client.Model.OrganisationType)Enum.Parse(typeof(Models.Enums.OrganisationType), organisationModel.SelectedOrganisationType);
 
 
             try
             {
 
-                var OrgId = await _userService.UpdateUserOrganisation(userId, new UpdateOrgDetailsAndRolesRequest(new OrgDetails2(
-                    orgType: orgType,
-                    companiesHouseNumber: organisationModel.CompanyNumber,
-                    orgName: company?.Title,
+                var updateModel = new UpdateUserOrganisationRequest(
                     firstName: userModel?.ContactDetails?.FirstName,
                     lastName: userModel?.ContactDetails?.LastName,
-                    preferredContactType: preferredContactType,//(HNTAS.Api.Client.Model.PreferredContactType)(int)userModel?.ContactDetails?.PreferredContactType,
-                    orgRegisteredAddress: regAddress,
-                    orgId: null,
-                    landlineNumber: userModel?.ContactDetails?.LandlineNumber,
-                    contactNumberExtension: userModel?.ContactDetails?.ContactNumberExtension,
-                    mobileNumber: userModel?.ContactDetails?.MobileNumber,
-                    jobTitle: userModel?.ContactDetails?.JobTitle), UserRole.RegulatoryContact));
+                    preferredContactType: preferredContactType,
+                    jobTitle: userModel?.ContactDetails?.JobTitle,
+                    role: UserRole.RegulatoryContact,
+                    organisation: new OrganisationRequest
+                    (
+                        name: company?.Title,
+                        type: orgType,
+                        companiesHouseNumber: organisationModel.CompanyNumber,
+                        registeredAddress: regAddress
+                    ),
+                    landlineNumber: userModel.ContactDetails.LandlineNumber,
+                    contactNumberExtension: userModel.ContactDetails.ContactNumberExtension,
+                    mobileNumber: userModel.ContactDetails.MobileNumber);
+
+
+                var OrgId = await _userService.UpdateUserOrganisation(userId, updateModel);
 
                 TempData["Confirmation_Organisation_Id"] = OrgId;
                 _logger.LogInformation("Successfully updated OrgDetails for user {UserId}. Retrieved OrgId: {OrgId}", userId, OrgId);
@@ -438,8 +446,8 @@ namespace HNTAS.Web.UI.Controllers
                 return View("CheckYourAnswers", viewModel);
             }
 
-            SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
-            SessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
+            _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+            _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
 
             return RedirectToAction("Confirmation");
         }
@@ -456,7 +464,7 @@ namespace HNTAS.Web.UI.Controllers
             if (string.IsNullOrEmpty(companyName) || string.IsNullOrEmpty(emailAddress) || string.IsNullOrEmpty(orgId))
             {
                 // Ensure any lingering session data is cleared before redirecting for a clean start.
-                SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+                _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
                 return RedirectToAction("Start", "Organisation"); // Redirect to the very beginning of the flow
             }
 
@@ -470,13 +478,13 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        [EnsureSessionForOrganisationFlowOnGet]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult OrganisationName()
         {
-            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var model = new OtherOrganisationNameModel();
-            if (organisationModel.SelectedOrganisationType == Models.OrganisationType.OtherUkOrganisation.ToString() ||
-                organisationModel.SelectedOrganisationType == Models.OrganisationType.OverseasOrganisation.ToString())
+            if (organisationModel.SelectedOrganisationType == Models.Enums.OrganisationType.OtherUkOrganisation.ToString() ||
+                organisationModel.SelectedOrganisationType == Models.Enums.OrganisationType.OverseasOrganisation.ToString())
             {
                 model.OrganisationName = organisationModel.CompanyDetails?.Title;
             }
@@ -487,7 +495,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
-        [EnsureSessionForOrganisationFlowOnPost]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
         public IActionResult SaveOrganisationName(OtherOrganisationNameModel model)
         {
             if (!ModelState.IsValid)
@@ -498,7 +506,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View("OrganisationName", model);
             }
 
-            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             if (organisationModel?.CompanyDetails == null)
             {
                 organisationModel.CompanyDetails = new CompanyDetailsModel
@@ -511,7 +519,7 @@ namespace HNTAS.Web.UI.Controllers
                 organisationModel.CompanyDetails.Title = model.OrganisationName;
             }
 
-            SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey, organisationModel);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, organisationModel);
 
             return RedirectToAction("OrganisationAddress");
         }
@@ -519,13 +527,23 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult OrganisationAddress()
         {
-            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
-            var model = new RegisteredOfficeAddressModel();
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+            var model = new ManualOfficeAddressModel();
 
-            if (organisationModel.SelectedOrganisationType == Models.OrganisationType.OtherUkOrganisation.ToString() ||
-                organisationModel.SelectedOrganisationType == Models.OrganisationType.OverseasOrganisation.ToString())
+            if (organisationModel.SelectedOrganisationType == Models.Enums.OrganisationType.OtherUkOrganisation.ToString() ||
+                organisationModel.SelectedOrganisationType == Models.Enums.OrganisationType.OverseasOrganisation.ToString())
             {
-                model = organisationModel.CompanyDetails?.RegisteredOfficeAddress ?? model;
+                if (organisationModel.CompanyDetails?.RegisteredOfficeAddress is RegisteredOfficeAddressModel address)
+                {
+                    model = new ManualOfficeAddressModel
+                    {
+                        AddressLine1 = address.AddressLine1,
+                        AddressLine2 = address.AddressLine2,
+                        Locality = address.Locality,
+                        PostalCode = address.PostalCode,
+                        Country = address.Country
+                    };
+                }
             }
             else
             {
@@ -539,7 +557,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveOrganisationAddress(RegisteredOfficeAddressModel model)
+        public IActionResult SaveOrganisationAddress(ManualOfficeAddressModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -549,10 +567,10 @@ namespace HNTAS.Web.UI.Controllers
                 return View("OrganisationAddress", model);
             }
 
-            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             organisationModel.CompanyDetails.RegisteredOfficeAddress = model;
 
-            SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey, organisationModel);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, organisationModel);
 
             return RedirectToAction("CompanyConfirm");
         }
@@ -561,9 +579,9 @@ namespace HNTAS.Web.UI.Controllers
         {
             return
             [
-                new SelectListItem { Value = Models.OrganisationType.UkCompaniesHouse.ToString(), Text = "UK company registered with Companies House" },
-                new SelectListItem { Value = Models.OrganisationType.OtherUkOrganisation.ToString(), Text = "Other UK organisation" },
-                new SelectListItem { Value = Models.OrganisationType.OverseasOrganisation.ToString(), Text = "Overseas organisation" }
+                new SelectListItem { Value = Models.Enums.OrganisationType.UkCompaniesHouse.ToString(), Text = "UK company registered with Companies House" },
+                new SelectListItem { Value = Models.Enums.OrganisationType.OtherUkOrganisation.ToString(), Text = "Other UK organisation" },
+                new SelectListItem { Value = Models.Enums.OrganisationType.OverseasOrganisation.ToString(), Text = "Overseas organisation" }
             ];
         }
     }

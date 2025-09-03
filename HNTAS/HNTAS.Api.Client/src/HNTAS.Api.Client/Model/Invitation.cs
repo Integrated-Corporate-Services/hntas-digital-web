@@ -36,24 +36,52 @@ namespace HNTAS.Api.Client.Model
         /// <param name="id">id</param>
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
-        /// <param name="permissions">permissions</param>
+        /// <param name="preferredContactType">preferredContactType</param>
+        /// <param name="invitedRoles">invitedRoles</param>
+        /// <param name="invitedHnId">invitedHnId</param>
         /// <param name="invitedEmail">invitedEmail</param>
         /// <param name="invitedAt">invitedAt</param>
         /// <param name="status">status</param>
+        /// <param name="landlineNumber">landlineNumber</param>
+        /// <param name="contactNumberExtension">contactNumberExtension</param>
+        /// <param name="mobileNumber">mobileNumber</param>
+        /// <param name="permissions">permissions</param>
+        /// <param name="acceptedAt">acceptedAt</param>
+        /// <param name="rejectedAt">rejectedAt</param>
         [JsonConstructor]
-        public Invitation(string id, string firstName, string lastName, List<string> permissions, string invitedEmail, DateTimeOffset invitedAt, string status)
+        public Invitation(string id, string firstName, string lastName, PreferredContactType preferredContactType, List<ContributorRole> invitedRoles, string invitedHnId, string invitedEmail, DateTimeOffset invitedAt, InvitationStatus status, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, Option<List<string>?> permissions = default, Option<DateTimeOffset?> acceptedAt = default, Option<DateTimeOffset?> rejectedAt = default)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
-            Permissions = permissions;
+            PreferredContactType = preferredContactType;
+            InvitedRoles = invitedRoles;
+            InvitedHnId = invitedHnId;
             InvitedEmail = invitedEmail;
             InvitedAt = invitedAt;
             Status = status;
+            LandlineNumberOption = landlineNumber;
+            ContactNumberExtensionOption = contactNumberExtension;
+            MobileNumberOption = mobileNumber;
+            PermissionsOption = permissions;
+            AcceptedAtOption = acceptedAt;
+            RejectedAtOption = rejectedAt;
             OnCreated();
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Gets or Sets PreferredContactType
+        /// </summary>
+        [JsonPropertyName("preferredContactType")]
+        public PreferredContactType PreferredContactType { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Status
+        /// </summary>
+        [JsonPropertyName("status")]
+        public InvitationStatus Status { get; set; }
 
         /// <summary>
         /// Gets or Sets Id
@@ -74,10 +102,16 @@ namespace HNTAS.Api.Client.Model
         public string LastName { get; set; }
 
         /// <summary>
-        /// Gets or Sets Permissions
+        /// Gets or Sets InvitedRoles
         /// </summary>
-        [JsonPropertyName("permissions")]
-        public List<string> Permissions { get; set; }
+        [JsonPropertyName("invitedRoles")]
+        public List<ContributorRole> InvitedRoles { get; set; }
+
+        /// <summary>
+        /// Gets or Sets InvitedHnId
+        /// </summary>
+        [JsonPropertyName("invitedHnId")]
+        public string InvitedHnId { get; set; }
 
         /// <summary>
         /// Gets or Sets InvitedEmail
@@ -92,10 +126,82 @@ namespace HNTAS.Api.Client.Model
         public DateTimeOffset InvitedAt { get; set; }
 
         /// <summary>
-        /// Gets or Sets Status
+        /// Used to track the state of LandlineNumber
         /// </summary>
-        [JsonPropertyName("status")]
-        public string Status { get; set; }
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> LandlineNumberOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets LandlineNumber
+        /// </summary>
+        [JsonPropertyName("landlineNumber")]
+        public string? LandlineNumber { get { return this.LandlineNumberOption; } set { this.LandlineNumberOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ContactNumberExtension
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> ContactNumberExtensionOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ContactNumberExtension
+        /// </summary>
+        [JsonPropertyName("contactNumberExtension")]
+        public string? ContactNumberExtension { get { return this.ContactNumberExtensionOption; } set { this.ContactNumberExtensionOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of MobileNumber
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> MobileNumberOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets MobileNumber
+        /// </summary>
+        [JsonPropertyName("mobileNumber")]
+        public string? MobileNumber { get { return this.MobileNumberOption; } set { this.MobileNumberOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Permissions
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<string>?> PermissionsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Permissions
+        /// </summary>
+        [JsonPropertyName("permissions")]
+        public List<string>? Permissions { get { return this.PermissionsOption; } set { this.PermissionsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of AcceptedAt
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<DateTimeOffset?> AcceptedAtOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets AcceptedAt
+        /// </summary>
+        [JsonPropertyName("acceptedAt")]
+        public DateTimeOffset? AcceptedAt { get { return this.AcceptedAtOption; } set { this.AcceptedAtOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of RejectedAt
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<DateTimeOffset?> RejectedAtOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets RejectedAt
+        /// </summary>
+        [JsonPropertyName("rejectedAt")]
+        public DateTimeOffset? RejectedAt { get { return this.RejectedAtOption; } set { this.RejectedAtOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -108,10 +214,18 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
-            sb.Append("  Permissions: ").Append(Permissions).Append("\n");
+            sb.Append("  PreferredContactType: ").Append(PreferredContactType).Append("\n");
+            sb.Append("  InvitedRoles: ").Append(InvitedRoles).Append("\n");
+            sb.Append("  InvitedHnId: ").Append(InvitedHnId).Append("\n");
             sb.Append("  InvitedEmail: ").Append(InvitedEmail).Append("\n");
             sb.Append("  InvitedAt: ").Append(InvitedAt).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
+            sb.Append("  ContactNumberExtension: ").Append(ContactNumberExtension).Append("\n");
+            sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
+            sb.Append("  Permissions: ").Append(Permissions).Append("\n");
+            sb.Append("  AcceptedAt: ").Append(AcceptedAt).Append("\n");
+            sb.Append("  RejectedAt: ").Append(RejectedAt).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -123,6 +237,54 @@ namespace HNTAS.Api.Client.Model
         /// <returns>Validation Result</returns>
         IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
+            // LandlineNumber (string) maxLength
+            if (this.LandlineNumber != null && this.LandlineNumber.Length > 20)
+            {
+                yield return new ValidationResult("Invalid value for LandlineNumber, length must be less than 20.", new [] { "LandlineNumber" });
+            }
+
+            if (this.LandlineNumberOption.Value != null) {
+                // LandlineNumber (string) pattern
+                Regex regexLandlineNumber = new Regex(@"^\+?\d{1,3}[\s-]?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$", RegexOptions.CultureInvariant);
+
+                if (this.LandlineNumberOption.Value != null &&!regexLandlineNumber.Match(this.LandlineNumberOption.Value).Success)
+                {
+                    yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for LandlineNumber, must match a pattern of " + regexLandlineNumber, new [] { "LandlineNumber" });
+                }
+            }
+
+            // ContactNumberExtension (string) maxLength
+            if (this.ContactNumberExtension != null && this.ContactNumberExtension.Length > 10)
+            {
+                yield return new ValidationResult("Invalid value for ContactNumberExtension, length must be less than 10.", new [] { "ContactNumberExtension" });
+            }
+
+            if (this.ContactNumberExtensionOption.Value != null) {
+                // ContactNumberExtension (string) pattern
+                Regex regexContactNumberExtension = new Regex(@"^\d*$", RegexOptions.CultureInvariant);
+
+                if (this.ContactNumberExtensionOption.Value != null &&!regexContactNumberExtension.Match(this.ContactNumberExtensionOption.Value).Success)
+                {
+                    yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for ContactNumberExtension, must match a pattern of " + regexContactNumberExtension, new [] { "ContactNumberExtension" });
+                }
+            }
+
+            // MobileNumber (string) maxLength
+            if (this.MobileNumber != null && this.MobileNumber.Length > 13)
+            {
+                yield return new ValidationResult("Invalid value for MobileNumber, length must be less than 13.", new [] { "MobileNumber" });
+            }
+
+            if (this.MobileNumberOption.Value != null) {
+                // MobileNumber (string) pattern
+                Regex regexMobileNumber = new Regex(@"^\+?\d{1,3}[\s-]?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$", RegexOptions.CultureInvariant);
+
+                if (this.MobileNumberOption.Value != null &&!regexMobileNumber.Match(this.MobileNumberOption.Value).Success)
+                {
+                    yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for MobileNumber, must match a pattern of " + regexMobileNumber, new [] { "MobileNumber" });
+                }
+            }
+
             yield break;
         }
     }
@@ -136,6 +298,16 @@ namespace HNTAS.Api.Client.Model
         /// The format to use to serialize InvitedAt
         /// </summary>
         public static string InvitedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+
+        /// <summary>
+        /// The format to use to serialize AcceptedAt
+        /// </summary>
+        public static string AcceptedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+
+        /// <summary>
+        /// The format to use to serialize RejectedAt
+        /// </summary>
+        public static string RejectedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
         /// <summary>
         /// Deserializes json to <see cref="Invitation" />
@@ -157,10 +329,18 @@ namespace HNTAS.Api.Client.Model
             Option<string?> id = default;
             Option<string?> firstName = default;
             Option<string?> lastName = default;
-            Option<List<string>?> permissions = default;
+            Option<PreferredContactType?> preferredContactType = default;
+            Option<List<ContributorRole>?> invitedRoles = default;
+            Option<string?> invitedHnId = default;
             Option<string?> invitedEmail = default;
             Option<DateTimeOffset?> invitedAt = default;
-            Option<string?> status = default;
+            Option<InvitationStatus?> status = default;
+            Option<string?> landlineNumber = default;
+            Option<string?> contactNumberExtension = default;
+            Option<string?> mobileNumber = default;
+            Option<List<string>?> permissions = default;
+            Option<DateTimeOffset?> acceptedAt = default;
+            Option<DateTimeOffset?> rejectedAt = default;
 
             while (utf8JsonReader.Read())
             {
@@ -186,8 +366,16 @@ namespace HNTAS.Api.Client.Model
                         case "lastName":
                             lastName = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "permissions":
-                            permissions = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                        case "preferredContactType":
+                            string? preferredContactTypeRawValue = utf8JsonReader.GetString();
+                            if (preferredContactTypeRawValue != null)
+                                preferredContactType = new Option<PreferredContactType?>(PreferredContactTypeValueConverter.FromStringOrDefault(preferredContactTypeRawValue));
+                            break;
+                        case "invitedRoles":
+                            invitedRoles = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
+                        case "invitedHnId":
+                            invitedHnId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "invitedEmail":
                             invitedEmail = new Option<string?>(utf8JsonReader.GetString()!);
@@ -196,7 +384,27 @@ namespace HNTAS.Api.Client.Model
                             invitedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "status":
-                            status = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? statusRawValue = utf8JsonReader.GetString();
+                            if (statusRawValue != null)
+                                status = new Option<InvitationStatus?>(InvitationStatusValueConverter.FromStringOrDefault(statusRawValue));
+                            break;
+                        case "landlineNumber":
+                            landlineNumber = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "contactNumberExtension":
+                            contactNumberExtension = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "mobileNumber":
+                            mobileNumber = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "permissions":
+                            permissions = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "acceptedAt":
+                            acceptedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "rejectedAt":
+                            rejectedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -213,8 +421,14 @@ namespace HNTAS.Api.Client.Model
             if (!lastName.IsSet)
                 throw new ArgumentException("Property is required for class Invitation.", nameof(lastName));
 
-            if (!permissions.IsSet)
-                throw new ArgumentException("Property is required for class Invitation.", nameof(permissions));
+            if (!preferredContactType.IsSet)
+                throw new ArgumentException("Property is required for class Invitation.", nameof(preferredContactType));
+
+            if (!invitedRoles.IsSet)
+                throw new ArgumentException("Property is required for class Invitation.", nameof(invitedRoles));
+
+            if (!invitedHnId.IsSet)
+                throw new ArgumentException("Property is required for class Invitation.", nameof(invitedHnId));
 
             if (!invitedEmail.IsSet)
                 throw new ArgumentException("Property is required for class Invitation.", nameof(invitedEmail));
@@ -234,8 +448,14 @@ namespace HNTAS.Api.Client.Model
             if (lastName.IsSet && lastName.Value == null)
                 throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class Invitation.");
 
-            if (permissions.IsSet && permissions.Value == null)
-                throw new ArgumentNullException(nameof(permissions), "Property is not nullable for class Invitation.");
+            if (preferredContactType.IsSet && preferredContactType.Value == null)
+                throw new ArgumentNullException(nameof(preferredContactType), "Property is not nullable for class Invitation.");
+
+            if (invitedRoles.IsSet && invitedRoles.Value == null)
+                throw new ArgumentNullException(nameof(invitedRoles), "Property is not nullable for class Invitation.");
+
+            if (invitedHnId.IsSet && invitedHnId.Value == null)
+                throw new ArgumentNullException(nameof(invitedHnId), "Property is not nullable for class Invitation.");
 
             if (invitedEmail.IsSet && invitedEmail.Value == null)
                 throw new ArgumentNullException(nameof(invitedEmail), "Property is not nullable for class Invitation.");
@@ -246,7 +466,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class Invitation.");
 
-            return new Invitation(id.Value!, firstName.Value!, lastName.Value!, permissions.Value!, invitedEmail.Value!, invitedAt.Value!.Value!, status.Value!);
+            return new Invitation(id.Value!, firstName.Value!, lastName.Value!, preferredContactType.Value!.Value!, invitedRoles.Value!, invitedHnId.Value!, invitedEmail.Value!, invitedAt.Value!.Value!, status.Value!.Value!, landlineNumber, contactNumberExtension, mobileNumber, permissions, acceptedAt, rejectedAt);
         }
 
         /// <summary>
@@ -282,14 +502,14 @@ namespace HNTAS.Api.Client.Model
             if (invitation.LastName == null)
                 throw new ArgumentNullException(nameof(invitation.LastName), "Property is required for class Invitation.");
 
-            if (invitation.Permissions == null)
-                throw new ArgumentNullException(nameof(invitation.Permissions), "Property is required for class Invitation.");
+            if (invitation.InvitedRoles == null)
+                throw new ArgumentNullException(nameof(invitation.InvitedRoles), "Property is required for class Invitation.");
+
+            if (invitation.InvitedHnId == null)
+                throw new ArgumentNullException(nameof(invitation.InvitedHnId), "Property is required for class Invitation.");
 
             if (invitation.InvitedEmail == null)
                 throw new ArgumentNullException(nameof(invitation.InvitedEmail), "Property is required for class Invitation.");
-
-            if (invitation.Status == null)
-                throw new ArgumentNullException(nameof(invitation.Status), "Property is required for class Invitation.");
 
             writer.WriteString("id", invitation.Id);
 
@@ -297,13 +517,57 @@ namespace HNTAS.Api.Client.Model
 
             writer.WriteString("lastName", invitation.LastName);
 
-            writer.WritePropertyName("permissions");
-            JsonSerializer.Serialize(writer, invitation.Permissions, jsonSerializerOptions);
+            var preferredContactTypeRawValue = PreferredContactTypeValueConverter.ToJsonValue(invitation.PreferredContactType);
+            writer.WriteString("preferredContactType", preferredContactTypeRawValue);
+
+            writer.WritePropertyName("invitedRoles");
+            JsonSerializer.Serialize(writer, invitation.InvitedRoles, jsonSerializerOptions);
+            writer.WriteString("invitedHnId", invitation.InvitedHnId);
+
             writer.WriteString("invitedEmail", invitation.InvitedEmail);
 
             writer.WriteString("invitedAt", invitation.InvitedAt.ToString(InvitedAtFormat));
 
-            writer.WriteString("status", invitation.Status);
+            var statusRawValue = InvitationStatusValueConverter.ToJsonValue(invitation.Status);
+            writer.WriteString("status", statusRawValue);
+
+            if (invitation.LandlineNumberOption.IsSet)
+                if (invitation.LandlineNumberOption.Value != null)
+                    writer.WriteString("landlineNumber", invitation.LandlineNumber);
+                else
+                    writer.WriteNull("landlineNumber");
+
+            if (invitation.ContactNumberExtensionOption.IsSet)
+                if (invitation.ContactNumberExtensionOption.Value != null)
+                    writer.WriteString("contactNumberExtension", invitation.ContactNumberExtension);
+                else
+                    writer.WriteNull("contactNumberExtension");
+
+            if (invitation.MobileNumberOption.IsSet)
+                if (invitation.MobileNumberOption.Value != null)
+                    writer.WriteString("mobileNumber", invitation.MobileNumber);
+                else
+                    writer.WriteNull("mobileNumber");
+
+            if (invitation.PermissionsOption.IsSet)
+                if (invitation.PermissionsOption.Value != null)
+                {
+                    writer.WritePropertyName("permissions");
+                    JsonSerializer.Serialize(writer, invitation.Permissions, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("permissions");
+            if (invitation.AcceptedAtOption.IsSet)
+                if (invitation.AcceptedAtOption.Value != null)
+                    writer.WriteString("acceptedAt", invitation.AcceptedAtOption.Value!.Value.ToString(AcceptedAtFormat));
+                else
+                    writer.WriteNull("acceptedAt");
+
+            if (invitation.RejectedAtOption.IsSet)
+                if (invitation.RejectedAtOption.Value != null)
+                    writer.WriteString("rejectedAt", invitation.RejectedAtOption.Value!.Value.ToString(RejectedAtFormat));
+                else
+                    writer.WriteNull("rejectedAt");
         }
     }
 }
