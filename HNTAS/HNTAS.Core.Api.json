@@ -1502,6 +1502,20 @@
           "name": {
             "type": "string"
           },
+          "pathway": {
+            "type": "string"
+          }
+        }
+      },
+      "HeatNetworkResponse": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
           "location": {
             "type": "string"
           }

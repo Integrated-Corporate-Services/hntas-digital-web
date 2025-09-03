@@ -123,6 +123,7 @@ builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
 
+
 //Configure onelogin settings
 builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -177,47 +178,6 @@ builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.Authenticatio
                 identity.AddClaim(new Claim("hntas.inviterUserId", inviterUserId));
                 identity.AddClaim(new Claim("hntas.inviterOrgId", inviterOrgId));
             }
-            return Task.CompletedTask;
-        };
-        // Assign individual event handlers
-        options.Events.OnRedirectToIdentityProvider = context =>
-        {
-            var invitedEmail = context.HttpContext.Session.GetString(SessionKeys.InvitedTokenEmail)?.Trim('"');
-            var invitationId = context.HttpContext.Session.GetString(SessionKeys.InvitationId)?.Trim('"');
-            var inviterUserId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserId)?.Trim('"');
-            var inviterOrgId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserOrgId)?.Trim('"');
-
-            if (!string.IsNullOrWhiteSpace(invitedEmail) &&
-                !string.IsNullOrWhiteSpace(invitationId) &&
-                !string.IsNullOrWhiteSpace(inviterUserId) &&
-                !string.IsNullOrWhiteSpace(inviterOrgId))
-            {
-                var customState = $"{invitedEmail}|{invitationId}|{inviterUserId}|{inviterOrgId}";
-                context.ProtocolMessage.State = customState;
-            }
-
-            return Task.CompletedTask;
-        };
-
-        // You can assign other events similarly
-        options.Events.OnTokenValidated = context =>
-        {
-            var state = context.ProtocolMessage.State;
-            var parts = state?.Split('|');
-
-            if (parts?.Length == 4)
-            {
-                var invitedEmail = parts[0];
-                var invitationId = parts[1];
-                var inviterUserId = parts[2];
-                var inviterOrgId = parts[3];
-
-                var identity = (ClaimsIdentity)context.Principal.Identity!;
-                identity.AddClaim(new Claim("hntas.invitedEmail", invitedEmail));
-                identity.AddClaim(new Claim("hntas.invitationId", invitationId));
-                identity.AddClaim(new Claim("hntas.inviterUserId", inviterUserId));
-                identity.AddClaim(new Claim("hntas.inviterOrgId", inviterOrgId));
-            }
 
             return Task.CompletedTask;
         };
@@ -229,7 +189,7 @@ builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.Authenticatio
                 SecurityAlgorithms.RsaSha256);
         }
 
-        options.VectorsOfTrust = ["Cl"];
+        options.VectorsOfTrust = ["Cl.Cm"];
     });
 
 builder.Services.AddSession(options =>
