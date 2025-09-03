@@ -140,7 +140,8 @@ builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
 
 builder.Services.AddSingleton<IAmazonS3>(sp =>
 {
-    return new AmazonS3Client(); // Uses env vars and default credential chain
+    var config = sp.GetRequiredService<IConfiguration>();
+    return S3ClientHelper.Create(config);
 });
 
 builder.Services.AddSingleton<IS3UploadService, S3UploadService>();
