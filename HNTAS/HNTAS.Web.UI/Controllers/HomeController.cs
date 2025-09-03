@@ -206,42 +206,4 @@ public class HomeController : Controller
                 return View();
         }
     }
-
-    [HttpGet]
-    public IActionResult StartPage()
-    {
-        SessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
-        return View();
-    }
-
-    [HttpGet]
-    public IActionResult WhatDoYouWantToDo()
-    {
-        this.ShowBackButton("StartPage", "Home");
-        var model = SessionHelper.GetFromSession<WhatDoYouWantToDoViewModel>(HttpContext, SessionHelper.SessionKeys.WhatDoYouWantToDoViewModelKey) ?? new WhatDoYouWantToDoViewModel();
-        return View(model);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult WhatDoYouWantToDo(WhatDoYouWantToDoViewModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        switch (model.UserPathToday)
-        {
-            case "registerNewHN":
-                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.WhatDoYouWantToDoViewModelKey, model);
-                return RedirectToAction("WhereIsTheHeatNetwork", "HeatNetworkEligibility");
-            case "updateExistingHN":
-                SessionHelper.SaveToSession(HttpContext, SessionHelper.SessionKeys.WhatDoYouWantToDoViewModelKey, model);
-                return RedirectToAction("Index", "Home");
-            default:
-                ModelState.AddModelError(nameof(model.UserPathToday), "Invalid selection. Please try again.");
-                return View();
-        }
-    }
 }
