@@ -354,7 +354,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Invalid location input for element: {ElementName}", model.ElementName);
+                //_logger.LogWarning("Invalid location input for element: {ElementName}", model.ElementName);
                 return View("EnterElementLocations", model);
             }
 
@@ -364,7 +364,7 @@ namespace HNTAS.Web.UI.Controllers
             model.Locations = model.Locations.Where(x => !string.IsNullOrEmpty(x)).ToList();
             await _soaProjectService.UpdateElementLocations(new UpdateElementLocationsRequest(hnId, userId, elementType, model.Locations));
 
-            _logger.LogInformation("Saving {Count} locations for element: {ElementName}", model.Locations.Count, model.ElementName);
+            //_logger.LogInformation("Saving {Count} locations for element: {ElementName}", model.Locations.Count, model.ElementName);
 
             return RedirectToAction("ElementList");
         }
@@ -501,7 +501,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (selectedElement == null)
             {
-                _logger.LogWarning("Element not found for name: {ElementName}", elementName);
+                //_logger.LogWarning("Element not found for name: {ElementName}", elementName);
                 return NotFound();
             }
 
@@ -551,7 +551,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (selectedElement == null)
             {
-                _logger.LogWarning("Invalid element name: {ElementName}", elementName);
+                //_logger.LogWarning("Invalid element name: {ElementName}", elementName);
                 return NotFound();
             }
 
@@ -586,11 +586,11 @@ namespace HNTAS.Web.UI.Controllers
                 };
 
                 await _soaProjectService.UpdateElementDocuments(request);
-                _logger.LogInformation("Saved {Count} documents for element {ElementName} in HN ID: {HnId}", uploadedDocuments.Count, elementName, hnId);
+                // _logger.LogInformation("Saved {Count} documents for element {ElementName} in HN ID: {HnId}", uploadedDocuments.Count, elementName, hnId);
             }
             else
             {
-                _logger.LogWarning("No valid files uploaded for element {ElementName} in HN ID: {HnId}", elementName, hnId);
+                // _logger.LogWarning("No valid files uploaded for element {ElementName} in HN ID: {HnId}", elementName, hnId);
             }
 
             return RedirectToAction("DefineSoaDetails");
