@@ -6,6 +6,7 @@ All URIs are relative to *https://localhost:7117*
 |--------|--------------|-------------|
 | [**ApiSoaProjectConnectionsPatch**](SoaProjectApi.md#apisoaprojectconnectionspatch) | **PATCH** /api/SoaProject/connections |  |
 | [**ApiSoaProjectCreatePost**](SoaProjectApi.md#apisoaprojectcreatepost) | **POST** /api/SoaProject/create |  |
+| [**ApiSoaProjectElementDocumentsPost**](SoaProjectApi.md#apisoaprojectelementdocumentspost) | **POST** /api/SoaProject/element-documents |  |
 | [**ApiSoaProjectElementLocationsPost**](SoaProjectApi.md#apisoaprojectelementlocationspost) | **POST** /api/SoaProject/element-locations |  |
 | [**ApiSoaProjectHeatNetworkHnIdGet**](SoaProjectApi.md#apisoaprojectheatnetworkhnidget) | **GET** /api/SoaProject/heat-network/{hnId} |  |
 | [**ApiSoaProjectNetworkElementsPatch**](SoaProjectApi.md#apisoaprojectnetworkelementspatch) | **PATCH** /api/SoaProject/network-elements |  |
@@ -81,6 +82,42 @@ No authorization required
 |-------------|-------------|------------------|
 | **201** | Created |  -  |
 | **400** | Bad Request |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apisoaprojectelementdocumentspost"></a>
+# **ApiSoaProjectElementDocumentsPost**
+> void ApiSoaProjectElementDocumentsPost (UpdateElementDocumentsRequest updateElementDocumentsRequest)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **updateElementDocumentsRequest** | [**UpdateElementDocumentsRequest**](UpdateElementDocumentsRequest.md) |  |  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

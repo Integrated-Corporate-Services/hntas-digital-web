@@ -20,6 +20,8 @@
 
             <form asp-action="SaveUploadedSOAElementDocuments" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="ElementName" value="@Model.ElementName" />
+                <input type="hidden" name="Phase" value="@Model.Phase" />
+                <input type="hidden" name="Stage" value="@Model.Stage" />
 
                 @if (Model.Documents != null && Model.Documents.Any())
                 {

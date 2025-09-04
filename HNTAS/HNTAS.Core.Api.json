@@ -1127,6 +1127,78 @@
         }
       }
     },
+    "/api/SoaProject/element-documents": {
+      "post": {
+        "tags": [
+          "SoaProject"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateElementDocumentsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateElementDocumentsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateElementDocumentsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Users": {
       "get": {
         "tags": [
@@ -2071,6 +2143,12 @@
             "items": {
               "type": "string"
             }
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedDocument"
+            }
           }
         }
       },
@@ -2419,6 +2497,15 @@
         },
         "nullable": true
       },
+      "SoaPhase": {
+        "enum": [
+          "Phase1",
+          "Phase2",
+          "Phase3",
+          "Phase4",
+          "Phase5"
+        ]
+      },
       "SoaProject": {
         "type": "object",
         "properties": {
@@ -2459,6 +2546,18 @@
           "Archived"
         ]
       },
+      "SoaStage": {
+        "enum": [
+          "Stage1",
+          "Stage2",
+          "Stage3",
+          "Stage4",
+          "Stage5",
+          "Stage6",
+          "Stage7",
+          "Stage8"
+        ]
+      },
       "UpdateConnectionsRequest": {
         "required": [
           "hnId",
@@ -2478,6 +2577,26 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ConnectionType"
+            }
+          }
+        }
+      },
+      "UpdateElementDocumentsRequest": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "elementType": {
+            "$ref": "#/components/schemas/HeatNetworkElementType"
+          },
+          "updatedBy": {
+            "type": "string"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedDocument"
             }
           }
         }
@@ -2549,6 +2668,30 @@
           },
           "organisation": {
             "$ref": "#/components/schemas/OrganisationRequest"
+          }
+        }
+      },
+      "UploadedDocument": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "phase": {
+            "$ref": "#/components/schemas/SoaPhase"
+          },
+          "stage": {
+            "$ref": "#/components/schemas/SoaStage"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
           }
         }
       },

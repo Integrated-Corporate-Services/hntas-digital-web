@@ -154,5 +154,41 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+        public async Task UpdateElementDocuments(UpdateElementDocumentsRequest request)
+        {
+            if (request == null || string.IsNullOrWhiteSpace(request.HnId) || request.Documents == null)
+            {
+                _logger.LogWarning("Invalid document update request: {@Request}", request);
+                throw new ArgumentException("Request is missing required fields.");
+            }
+
+            _logger.LogInformation("Initiating document update for HN ID: {HnId}, ElementType: {ElementType}, UpdatedBy: {UpdatedBy}. Document count: {Count}",
+                request.HnId, request.ElementType, request.UpdatedBy, request.Documents.Count);
+
+            try
+            {
+                var response = await _soaProjectApi.ApiSoaProjectElementDocumentsPostAsync(request);
+
+                if (response.IsOk)
+                {
+                    _logger.LogInformation("Documents updated successfully for HN ID: {HnId}, ElementType: {ElementType}, UpdatedBy: {UpdatedBy}",
+                        request.HnId, request.ElementType, request.UpdatedBy);
+                }
+                else
+                {
+                    _logger.LogWarning("Document update failed with status code: {StatusCode}. HN ID: {HnId}, ElementType: {ElementType}, UpdatedBy: {UpdatedBy}",
+                        response.StatusCode, request.HnId, request.ElementType, request.UpdatedBy);
+                    throw new Exception($"Document update failed with status code: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception during document update for HN ID: {HnId}, ElementType: {ElementType}, UpdatedBy: {UpdatedBy}",
+                    request.HnId, request.ElementType, request.UpdatedBy);
+                throw;
+            }
+        }
+
+
     }
 }

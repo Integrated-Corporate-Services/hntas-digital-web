@@ -440,7 +440,7 @@ namespace HNTAS.Web.UI.Controllers
                     Stages = phase.Stages.Select(stage => new StageViewModel
                     {
                         Name = stage.Name,
-                        Elements = GetDefaultElementsForStage(stage.Name, index + 1, soaProject)
+                        Elements = GetDefaultElementsForStage(stage.SoaStage, index + 1, soaProject)
                     }).ToList()
                 }).ToList()
             };
@@ -448,37 +448,47 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        private List<ElementViewModel> GetDefaultElementsForStage(string stageName, int phaseNumber, SoaProject soaProject)
+        private List<ElementViewModel> GetDefaultElementsForStage(SoaStage stage, int phaseNumber, SoaProject soaProject)
         {
+            var stageNumber = (int)stage;
+            var phaseEnum = (SoaPhase)phaseNumber;
 
-            List<ElementViewModel> networkElements = new List<ElementViewModel>();
+            var networkElements = new List<ElementViewModel>();
 
             foreach (var element in soaProject.JourneyData.HeatNetworkElements)
             {
+                var label = GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty;
+
+                var matchingDocs = element.Documents
+                    .Where(d => d.Phase == phaseEnum && d.Stage == stage)
+                    .ToList();
+
+                var status = matchingDocs.Count == 0
+                    ? UiStatusConstants.NotStarted
+                    : matchingDocs.Count < element.Count
+                        ? UiStatusConstants.InProgress
+                        : UiStatusConstants.Completed;
 
                 networkElements.Add(new ElementViewModel
                 {
-                    //Count = element.Count ?? 0,
-                    Name = GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty,
-                    Status = "Not yet started",
-                    Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = phaseNumber, elementName = element.Name.ToString() })
+                    Name = label,
+                    Status = status,
+                    Url = Url.Action("UploadSOAElementDocuments", "Soa", new
+                    {
+                        phase = phaseNumber,
+                        stage = stageNumber,
+                        elementName = element.Name.ToString()
+                    })
                 });
             }
 
             return networkElements;
-
-            //return new List<ElementViewModel>
-            //{
-            //    new() { Name = "Energy centre", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.EnergyCentre.ToString() }) },
-            //    new() { Name = "Thermal sub station", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("UploadSOAElementDocuments", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.ThermalSubStation.ToString() }) },
-            //    new() { Name = "Communal distribution network", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("AddDetails", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.CommunalDistributionNetwork.ToString() }) },
-            //    new() { Name = "Consumer connections", Status = "Not yet started", StatusClass = "govuk-tag--grey", Url = Url.Action("AddDetails", "Soa", new { phase = phaseNumber, elementName = HeatNetworkElementType.ConsumerConnections.ToString() }) }
-            //};
         }
 
 
+
         [HttpGet]
-        public async Task<IActionResult> UploadSOAElementDocuments(string elementName)
+        public async Task<IActionResult> UploadSOAElementDocuments(string elementName, int phase, int stage)
         {
             this.ShowBackButton("ElementList");
 
@@ -501,6 +511,8 @@ namespace HNTAS.Web.UI.Controllers
             var model = new UploadSOAElementDocumentsViewModel
             {
                 PageTitle = "Upload SOA Documents",
+                Phase = phase,
+                Stage = stage,
                 ElementName = selectedElement.Label,
                 ElementDescription = "Upload your SOA for each element.",
                 Documents = BuildDocumentInputsForElement(selectedElement.Id, element?.Count ?? 0)
@@ -528,12 +540,12 @@ namespace HNTAS.Web.UI.Controllers
             return documents;
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> SaveUploadedSOAElementDocuments(string elementName)
+        public async Task<IActionResult> SaveUploadedSOAElementDocuments(string elementName, int phase, int stage)
         {
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
             var selectedElement = GetElementOptions().FirstOrDefault(x => x.Label.ToLower() == elementName.ToLower());
 
@@ -543,22 +555,47 @@ namespace HNTAS.Web.UI.Controllers
                 return NotFound();
             }
 
-            var uploadedKeys = new List<string>();
+            var uploadedDocuments = new List<UploadedDocument>();
 
             foreach (var key in Request.Form.Files.Select(f => f.Name))
             {
                 var file = Request.Form.Files[key];
                 if (file != null && file.Length > 0)
                 {
-                    var s3Key = await _s3UploadService.UploadFileAsync(file, $"soa/{hnId}/{selectedElement.Id.ToString()}");
-                    uploadedKeys.Add(s3Key);
+                    var s3Key = await _s3UploadService.UploadFileAsync(file, $"soa/{hnId}/{phase}/{stage}/{selectedElement.Id}");
+                    uploadedDocuments.Add(new UploadedDocument
+                    {
+                        FileName = file.FileName,
+                        S3Key = s3Key,
+                        Phase = (SoaPhase)phase, // You can dynamically resolve this if needed
+                        Stage = (SoaStage)stage, // Same here
+                        UploadedAt = DateTime.UtcNow,
+                        UploadedBy = userId
+                    });
                 }
             }
 
-            _logger.LogInformation("Uploaded {Count} documents for element {ElementName}", uploadedKeys.Count, elementName);
+            if (uploadedDocuments.Any())
+            {
+                var request = new UpdateElementDocumentsRequest
+                {
+                    HnId = hnId,
+                    ElementType = selectedElement.Id,
+                    UpdatedBy = userId,
+                    Documents = uploadedDocuments
+                };
 
-            return RedirectToAction("ElementList");
+                await _soaProjectService.UpdateElementDocuments(request);
+                _logger.LogInformation("Saved {Count} documents for element {ElementName} in HN ID: {HnId}", uploadedDocuments.Count, elementName, hnId);
+            }
+            else
+            {
+                _logger.LogWarning("No valid files uploaded for element {ElementName} in HN ID: {HnId}", elementName, hnId);
+            }
+
+            return RedirectToAction("DefineSoaDetails");
         }
+
 
 
 

@@ -7,6 +7,9 @@
         public string ElementName { get; set; }
         public string ElementDescription { get; set; }
         public List<DocumentUploadModel> Documents { get; set; }
+
+        public int Phase { get; set; }
+        public int Stage { get; set; }
     }
     public class DocumentUploadModel
     {

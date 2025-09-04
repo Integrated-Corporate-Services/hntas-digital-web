@@ -36,12 +36,14 @@ namespace HNTAS.Api.Client.Model
         /// <param name="name">name</param>
         /// <param name="count">count</param>
         /// <param name="locations">locations</param>
+        /// <param name="documents">documents</param>
         [JsonConstructor]
-        public HeatNetworkElement(Option<HeatNetworkElementType?> name = default, Option<int?> count = default, Option<List<string>?> locations = default)
+        public HeatNetworkElement(Option<HeatNetworkElementType?> name = default, Option<int?> count = default, Option<List<string>?> locations = default, Option<List<UploadedDocument>?> documents = default)
         {
             NameOption = name;
             CountOption = count;
             LocationsOption = locations;
+            DocumentsOption = documents;
             OnCreated();
         }
 
@@ -87,6 +89,19 @@ namespace HNTAS.Api.Client.Model
         public List<string>? Locations { get { return this.LocationsOption; } set { this.LocationsOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Documents
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<UploadedDocument>?> DocumentsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Documents
+        /// </summary>
+        [JsonPropertyName("documents")]
+        public List<UploadedDocument>? Documents { get { return this.DocumentsOption; } set { this.DocumentsOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -97,6 +112,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Count: ").Append(Count).Append("\n");
             sb.Append("  Locations: ").Append(Locations).Append("\n");
+            sb.Append("  Documents: ").Append(Documents).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -137,6 +153,7 @@ namespace HNTAS.Api.Client.Model
             Option<HeatNetworkElementType?> name = default;
             Option<int?> count = default;
             Option<List<string>?> locations = default;
+            Option<List<UploadedDocument>?> documents = default;
 
             while (utf8JsonReader.Read())
             {
@@ -164,6 +181,9 @@ namespace HNTAS.Api.Client.Model
                         case "locations":
                             locations = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
+                        case "documents":
+                            documents = new Option<List<UploadedDocument>?>(JsonSerializer.Deserialize<List<UploadedDocument>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
                         default:
                             break;
                     }
@@ -179,7 +199,10 @@ namespace HNTAS.Api.Client.Model
             if (locations.IsSet && locations.Value == null)
                 throw new ArgumentNullException(nameof(locations), "Property is not nullable for class HeatNetworkElement.");
 
-            return new HeatNetworkElement(name, count, locations);
+            if (documents.IsSet && documents.Value == null)
+                throw new ArgumentNullException(nameof(documents), "Property is not nullable for class HeatNetworkElement.");
+
+            return new HeatNetworkElement(name, count, locations, documents);
         }
 
         /// <summary>
@@ -209,6 +232,9 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkElement.LocationsOption.IsSet && heatNetworkElement.Locations == null)
                 throw new ArgumentNullException(nameof(heatNetworkElement.Locations), "Property is required for class HeatNetworkElement.");
 
+            if (heatNetworkElement.DocumentsOption.IsSet && heatNetworkElement.Documents == null)
+                throw new ArgumentNullException(nameof(heatNetworkElement.Documents), "Property is required for class HeatNetworkElement.");
+
             if (heatNetworkElement.NameOption.IsSet)
             {
                 var nameRawValue = HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElement.Name!.Value);
@@ -221,6 +247,11 @@ namespace HNTAS.Api.Client.Model
             {
                 writer.WritePropertyName("locations");
                 JsonSerializer.Serialize(writer, heatNetworkElement.Locations, jsonSerializerOptions);
+            }
+            if (heatNetworkElement.DocumentsOption.IsSet)
+            {
+                writer.WritePropertyName("documents");
+                JsonSerializer.Serialize(writer, heatNetworkElement.Documents, jsonSerializerOptions);
             }
         }
     }

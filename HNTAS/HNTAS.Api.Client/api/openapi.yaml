@@ -713,6 +713,49 @@ paths:
           description: Not Found
       tags:
       - SoaProject
+  /api/SoaProject/element-documents:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateElementDocumentsRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateElementDocumentsRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateElementDocumentsRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SoaProject
   /api/Users:
     get:
       responses:
@@ -1338,6 +1381,19 @@ components:
       type: object
     HeatNetworkElement:
       example:
+        documents:
+        - phase: Phase1
+          fileName: fileName
+          s3Key: s3Key
+          stage: Stage1
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - phase: Phase1
+          fileName: fileName
+          s3Key: s3Key
+          stage: Stage1
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
         name: EnergyCentre
         count: 0
         locations:
@@ -1352,6 +1408,10 @@ components:
         locations:
           items:
             type: string
+          type: array
+        documents:
+          items:
+            $ref: "#/components/schemas/UploadedDocument"
           type: array
       type: object
     HeatNetworkElementType:
@@ -1767,12 +1827,38 @@ components:
     SoaJourneyData:
       example:
         heatNetworkElements:
-        - name: EnergyCentre
+        - documents:
+          - phase: Phase1
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - phase: Phase1
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          name: EnergyCentre
           count: 0
           locations:
           - locations
           - locations
-        - name: EnergyCentre
+        - documents:
+          - phase: Phase1
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - phase: Phase1
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          name: EnergyCentre
           count: 0
           locations:
           - locations
@@ -1797,6 +1883,14 @@ components:
             $ref: "#/components/schemas/HeatNetworkElement"
           type: array
       type: object
+    SoaPhase:
+      enum:
+      - Phase1
+      - Phase2
+      - Phase3
+      - Phase4
+      - Phase5
+      type: string
     SoaProject:
       example:
         hnId: hnId
@@ -1806,12 +1900,38 @@ components:
         id: id
         journeyData:
           heatNetworkElements:
-          - name: EnergyCentre
+          - documents:
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            name: EnergyCentre
             count: 0
             locations:
             - locations
             - locations
-          - name: EnergyCentre
+          - documents:
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            name: EnergyCentre
             count: 0
             locations:
             - locations
@@ -1852,6 +1972,17 @@ components:
       - Complete
       - Archived
       type: string
+    SoaStage:
+      enum:
+      - Stage1
+      - Stage2
+      - Stage3
+      - Stage4
+      - Stage5
+      - Stage6
+      - Stage7
+      - Stage8
+      type: string
     UpdateConnectionsRequest:
       example:
         hnId: hnId
@@ -1873,6 +2004,36 @@ components:
       - connectionTypes
       - hnId
       - updatedBy
+      type: object
+    UpdateElementDocumentsRequest:
+      example:
+        hnId: hnId
+        updatedBy: updatedBy
+        documents:
+        - phase: Phase1
+          fileName: fileName
+          s3Key: s3Key
+          stage: Stage1
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - phase: Phase1
+          fileName: fileName
+          s3Key: s3Key
+          stage: Stage1
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        elementType: EnergyCentre
+      properties:
+        hnId:
+          type: string
+        elementType:
+          $ref: "#/components/schemas/HeatNetworkElementType"
+        updatedBy:
+          type: string
+        documents:
+          items:
+            $ref: "#/components/schemas/UploadedDocument"
+          type: array
       type: object
     UpdateElementLocationsRequest:
       example:
@@ -1950,6 +2111,29 @@ components:
       - organisation
       - preferredContactType
       - role
+      type: object
+    UploadedDocument:
+      example:
+        phase: Phase1
+        fileName: fileName
+        s3Key: s3Key
+        stage: Stage1
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        uploadedBy: uploadedBy
+      properties:
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        phase:
+          $ref: "#/components/schemas/SoaPhase"
+        stage:
+          $ref: "#/components/schemas/SoaStage"
+        uploadedAt:
+          format: date-time
+          type: string
+        uploadedBy:
+          type: string
       type: object
     User:
       example:

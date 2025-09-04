@@ -11,5 +11,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task UpdateConnectionsAsync(string hnId, string updatedBy, List<ConnectionType> connectionTypes);
         Task UpdateNetworkElements(string hnId, string updatedBy, List<HeatNetworkElement> networkElements);
         Task UpdateElementLocations(UpdateElementLocationsRequest request);
+        Task UpdateElementDocuments(UpdateElementDocumentsRequest request);
     }
 }

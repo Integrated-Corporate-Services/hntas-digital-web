@@ -80,7 +80,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new SoaJourneyDataJsonConverter(),
         new NetworkTypeSelectionJsonConverter(),
         new ConnectionTypeJsonConverter(),
-        new HeatNetworkElementJsonConverter()
+        new HeatNetworkElementJsonConverter(),
+        new UploadedDocumentJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
