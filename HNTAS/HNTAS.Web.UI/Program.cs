@@ -43,8 +43,7 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddHttpContextAccessor();
 
 Console.WriteLine("*********************in UI**************");
-Console.WriteLine("Environment: " + builder.Environment.EnvironmentName);
-Console.WriteLine("from env variable: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+Console.WriteLine("S3 Bucket variable: " + Environment.GetEnvironmentVariable("HNTAS_S3_BUCKET_NAME"));
 
 var coreApiBaseUrl = builder.Configuration.GetValue<string>("ApiClients:CoreApiBaseUrl");
 
