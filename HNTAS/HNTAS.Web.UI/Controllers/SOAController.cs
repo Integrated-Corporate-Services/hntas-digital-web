@@ -490,7 +490,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> UploadSOAElementDocuments(string elementName, int phase, int stage)
         {
-            this.ShowBackButton("ElementList");
+            this.ShowBackButton("DefineSoaDetails");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
