@@ -130,6 +130,10 @@ public class HomeController : Controller
                 {
                     return RedirectToAction("UserAccount", "Dashboard");
                 }
+                else
+                {
+                    return View();
+                }
             }
 
             return RedirectToAction("UserAccount", "Dashboard");
