@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using HNTAS.Web.UI.Models.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models.User
@@ -10,6 +10,6 @@ namespace HNTAS.Web.UI.Models.User
 
         public string? SelectedContributorEmail { get; set; }
 
-        public List<SelectListItem> Contributors { get; set; } = [];
+        public List<SelectItemOption> Contributors { get; set; } = [];
     }
 }

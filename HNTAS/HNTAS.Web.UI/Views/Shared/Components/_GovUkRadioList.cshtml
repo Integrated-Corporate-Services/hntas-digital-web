@@ -18,6 +18,12 @@
             <label class="govuk-label govuk-radios__label" for="@id">
                 @item.Text
             </label>
+            @if (!string.IsNullOrEmpty(item.Hint))
+            {
+                <div id="@id-item-hint" class="govuk-hint govuk-radios__hint">
+                    @item.Hint
+                </div>
+            }
         </div>
     }
 </div>

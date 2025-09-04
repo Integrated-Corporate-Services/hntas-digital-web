@@ -4,6 +4,7 @@ using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Models.Review;
 using HNTAS.Web.UI.Models.User;
@@ -13,7 +14,6 @@ using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
 using HNTAS.Web.UI.Workflows.Models.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 
@@ -349,23 +349,23 @@ namespace HNTAS.Web.UI.Controllers
             // Retrieve the data from TempData.
             var fullName = TempData["FullName"] as string;
             var heatNetwork = TempData["HeatNetwork"] as string;
-            var companyName = TempData["CompanyName"] as string;
+            var organisationName = TempData["OrganisationName"] as string;
 
             // You can use a ViewBag or ViewData to pass the data to the view.
             ViewData["FullName"] = fullName;
             ViewData["HeatNetwork"] = heatNetwork;
-            ViewData["CompanyName"] = companyName;
+            ViewData["OrganisationName"] = organisationName;
 
             return View("Contributor/Confirmation");
         }
 
 
-        private async Task<List<SelectListItem>?> GetHeatNetworkSelectListAsync(string userId)
+        private async Task<List<SelectItemOption>?> GetHeatNetworkSelectListAsync(string userId)
         {
             var response = await _userService.GetUserHeatNetworks(userId);
             if (response == null) return null;
 
-            return response.Select(hn => new SelectListItem
+            return response.Select(hn => new SelectItemOption
             {
                 Value = hn.HnId,
                 Text = hn.Name
@@ -373,11 +373,11 @@ namespace HNTAS.Web.UI.Controllers
         }
 
 
-        private async Task<List<SelectListItem>?> GetContributorSelectListAsync()
+        private async Task<List<SelectItemOption>?> GetContributorSelectListAsync()
         {
             var response = await _userService.GetContributorRolesAsync();
             if (response == null) return null;
-            return response.Select(hn => new SelectListItem
+            return response.Select(hn => new SelectItemOption
             {
                 Value = hn.Value.ToString(),
                 Text = hn.Description

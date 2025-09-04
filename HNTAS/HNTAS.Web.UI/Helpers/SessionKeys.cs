@@ -23,6 +23,9 @@
         public const string HowManyDwellingsIncludedModelKey = "HowManyDwellingsIncluded";
 
 
+        public const string HnId = "HnIdkey";
+        public const string HnName = "HnNameKey";
+
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
         public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
         public const string HeatNetworkPhaseModelKey = "HeatNetworkPhase";
@@ -36,6 +39,8 @@
         public const string InvitationId = "InvitationIdKey";
         public const string InvitedInviterUserId = "InvitedInviterUserIdKey";
         public const string InvitedInviterUserOrgId = "InvitedInviterUserOrgIdKey";
+
+        public const string SoaProjectId = "SoaProjectIdKey";
 
     }
 }

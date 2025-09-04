@@ -12,5 +12,14 @@ namespace HNTAS.Web.UI.Extensions
             var id = htmlHelper.IdFor(expression);
             return id.ToLowerInvariant();
         }
+
+        public static bool HasError(this IHtmlHelper htmlHelper, string key)
+        {
+            // Try to get the ModelState entry for the given key.
+            htmlHelper.ViewData.ModelState.TryGetValue(key, out var entry);
+
+            // Return true if the entry exists and has errors.
+            return entry?.Errors.Count > 0;
+        }
     }
 }
