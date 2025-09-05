@@ -7,6 +7,7 @@
         public const string OrganisationCreation_SessionKey = "OrganisationModelDataKey";
         public const string OrganisationName = "OrganisationNameKey";
         public const string OrganisationId = "OrganisationIdKey";
+        public const string UserRoleKey = "UserRoleKey";
 
         // Session key for the boolean flow state
         public const string IsCheckAnswerFlowKey = "IsCheckAnswerFlow";

@@ -68,7 +68,7 @@ namespace HNTAS.Web.UI.Controllers
                 ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 return View("AddEmailAddress", model);
             }
-
+                        
             // Logic to save email address goes here
             _workflowManager.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
                 m => m.AddUserEmailAddressModel = model,
@@ -151,6 +151,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View("Contributors/ChooseHeatNetwork");
             }
 
+            
             var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
 
             var model = new ChooseHeatNetworkModel
@@ -208,13 +209,35 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> ChooseRole()
         {
             var model = new ChooseRoleModel();
-            var roles = await GetContributorSelectListAsync();
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var heatNetworks = await _userService.GetUserById(userId);
+            var userRole = "";
+            var user = await _userService.GetUserById(userId);
+
+            if (user?.Roles?.Contains(Api.Client.Model.UserRole.RegulatoryContact) == true)
+            {
+                userRole = Api.Client.Model.UserRole.RegulatoryContact.ToString();
+            }
+            else
+            {
+                var hnId = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkId;
+                foreach (var mapping in user.HnRoleMappings)
+                {
+                    if (mapping.HnId == hnId)
+                    {
+                        userRole = mapping.Role.ToString();
+                    }
+                }
+            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserRoleKey, userRole);
+            var roles = GetContributorSelectList();
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");
                 TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later.";
                 return View("Contributor/ChooseRole", model);
             }
+            
             var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
             model.SelectedRoleId = state.Data?.ChooseRoleModel?.SelectedRoleId ?? null;
             model.Roles = roles;
@@ -231,8 +254,8 @@ namespace HNTAS.Web.UI.Controllers
         {
             ViewBag.FormAction = "SaveChosenRole";
             ViewBag.FormController = "NewContributor";
-
-            var roles = await GetContributorSelectListAsync();
+            
+            var roles = GetContributorSelectList();
 
             if (roles == null)
             {
@@ -241,7 +264,6 @@ namespace HNTAS.Web.UI.Controllers
                 return View("Contributors/ChooseRole", model);
             }
             model.Roles = roles;
-
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("ChooseRole");
@@ -372,16 +394,46 @@ namespace HNTAS.Web.UI.Controllers
             }).ToList();
         }
 
-
-        private async Task<List<SelectListItem>?> GetContributorSelectListAsync()
-        {
-            var response = await _userService.GetContributorRolesAsync();
-            if (response == null) return null;
-            return response.Select(hn => new SelectListItem
+        private List<SelectListItem> GetContributorSelectList()
+        {        
+           
+            var userRole = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserRoleKey);
+            switch (userRole)
             {
-                Value = hn.Value.ToString(),
-                Text = hn.Description
-            }).ToList();
+                case "RegulatoryContact":
+                    return new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = ((int)ContributorRole.DesignatedDesigner).ToString(), Text = "Designated designer" },
+                        new SelectListItem { Value = ((int)ContributorRole.DesignatedContractor).ToString(), Text = "Designated contractor" },
+                        new SelectListItem { Value = ((int)ContributorRole.DesignatedOperator).ToString(), Text = "Designated operator" },
+                        new SelectListItem { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
+                    };
+                case "DesignatedDesigner":
+                    return new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = ((int)ContributorRole.ContributingDesigner).ToString(), Text = "Contributing designer" },
+                        new SelectListItem { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
+                    };
+                case "DesignatedContractor":
+                    return new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = ((int)ContributorRole.ContributingContractor).ToString(), Text = "Contributing contractor" },
+                        new SelectListItem { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
+                    };
+                case "DesignatedOperator":
+                    return new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = ((int)ContributorRole.ContributingOperator).ToString(), Text = "Contributing operator" },
+                        new SelectListItem { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
+                    };
+                case "Assessor":
+                    return new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
+                    };
+                default:
+                    return null;
+            }
         }
 
         private List<ReviewSection> BuildReviewSections(AddNewContributorWorkflowModel model)
