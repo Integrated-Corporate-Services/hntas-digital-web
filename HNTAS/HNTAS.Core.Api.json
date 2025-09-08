@@ -141,6 +141,88 @@
         }
       }
     },
+    "/api/HeatNetworks/{hnId}": {
+      "get": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetwork"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetwork"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetwork"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/HeatNetworks/add-heat-network": {
       "post": {
         "tags": [
@@ -512,6 +594,590 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SoaProject/{projectId}": {
+      "get": {
+        "tags": [
+          "SoaProject"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoaProject"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoaProject"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoaProject"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SoaProject/heat-network/{hnId}": {
+      "get": {
+        "tags": [
+          "SoaProject"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoaProject"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoaProject"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoaProject"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SoaProject/create": {
+      "post": {
+        "tags": [
+          "SoaProject"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "createdBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoaProject"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoaProject"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoaProject"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SoaProject/connections": {
+      "patch": {
+        "tags": [
+          "SoaProject"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConnectionsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConnectionsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConnectionsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SoaProject/network-type": {
+      "patch": {
+        "tags": [
+          "SoaProject"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updatedBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkTypeSelection2"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkTypeSelection2"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkTypeSelection2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SoaProject/network-elements": {
+      "patch": {
+        "tags": [
+          "SoaProject"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updatedBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HeatNetworkElement"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HeatNetworkElement"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HeatNetworkElement"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SoaProject/element-locations": {
+      "post": {
+        "tags": [
+          "SoaProject"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateElementLocationsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateElementLocationsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateElementLocationsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SoaProject/element-documents": {
+      "post": {
+        "tags": [
+          "SoaProject"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateElementDocumentsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateElementDocumentsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateElementDocumentsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1410,11 +2076,23 @@
           }
         }
       },
+      "ConnectionType": {
+        "enum": [
+          "ChildConnections",
+          "CommunalHeatNetworkConnection",
+          "CommercialConnection",
+          "ParentConnection"
+        ]
+      },
       "ContributorRole": {
         "enum": [
           "DesignatedDesigner",
           "DesignatedContractor",
-          "DesignatedOperator"
+          "DesignatedOperator",
+          "ContributingDesigner",
+          "ContributingContractor",
+          "ContributingOperator",
+          "Assessor"
         ]
       },
       "EnumItemResponse": {
@@ -1454,6 +2132,40 @@
           }
         }
       },
+      "HeatNetworkElement": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/HeatNetworkElementType"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedDocument"
+            }
+          }
+        }
+      },
+      "HeatNetworkElementType": {
+        "enum": [
+          "EnergyCentre",
+          "DistributionNetwork",
+          "ThermalSubStation",
+          "CommunalDistributionNetwork",
+          "ConsumerConnections",
+          "ConsumerHeatSystems"
+        ]
+      },
       "HeatNetworkResponse": {
         "type": "object",
         "properties": {
@@ -1467,6 +2179,16 @@
             "type": "string"
           }
         }
+      },
+      "HeatNetworkType": {
+        "enum": [
+          "CityScaleDistrictHeatingNetwork",
+          "DevelopmentLedDistrictHeatingNetwork",
+          "LargeCommunalHeatNetwork",
+          "MediumCommunalHeatNetwork",
+          "SmallCommunalHeatNetwork",
+          "Other"
+        ]
       },
       "HnRoleMapping": {
         "type": "object",
@@ -1595,6 +2317,31 @@
             "items": {
               "$ref": "#/components/schemas/InvitedUserResponse"
             }
+          }
+        }
+      },
+      "NetworkTypeSelection": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "otherNetworkDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkTypeSelection2": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "otherNetworkDescription": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -1732,6 +2479,159 @@
           }
         }
       },
+      "SoaJourneyData": {
+        "type": "object",
+        "properties": {
+          "networkType": {
+            "$ref": "#/components/schemas/NetworkTypeSelection"
+          },
+          "connectionTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectionType"
+            },
+            "nullable": true
+          },
+          "heatNetworkElements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HeatNetworkElement"
+            }
+          }
+        },
+        "nullable": true
+      },
+      "SoaPhase": {
+        "enum": [
+          "Phase1",
+          "Phase2",
+          "Phase3",
+          "Phase4",
+          "Phase5"
+        ]
+      },
+      "SoaProject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "hnId": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/SoaProjectStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "journeyData": {
+            "$ref": "#/components/schemas/SoaJourneyData"
+          }
+        }
+      },
+      "SoaProjectStatus": {
+        "enum": [
+          "InProgress",
+          "Complete",
+          "Archived"
+        ]
+      },
+      "SoaStage": {
+        "enum": [
+          "Stage1",
+          "Stage2",
+          "Stage3",
+          "Stage4",
+          "Stage5",
+          "Stage6",
+          "Stage7",
+          "Stage8"
+        ]
+      },
+      "UpdateConnectionsRequest": {
+        "required": [
+          "hnId",
+          "updatedBy",
+          "connectionTypes"
+        ],
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          },
+          "connectionTypes": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectionType"
+            }
+          }
+        }
+      },
+      "UpdateElementDocumentsRequest": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "elementType": {
+            "$ref": "#/components/schemas/HeatNetworkElementType"
+          },
+          "updatedBy": {
+            "type": "string"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedDocument"
+            }
+          }
+        }
+      },
+      "UpdateElementLocationsRequest": {
+        "required": [
+          "hnId",
+          "updatedBy",
+          "elementType",
+          "locations"
+        ],
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          },
+          "elementType": {
+            "$ref": "#/components/schemas/HeatNetworkElementType"
+          },
+          "locations": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "UpdateUserOrganisationRequest": {
         "required": [
           "firstName",
@@ -1772,6 +2672,30 @@
           },
           "organisation": {
             "$ref": "#/components/schemas/OrganisationRequest"
+          }
+        }
+      },
+      "UploadedDocument": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "phase": {
+            "$ref": "#/components/schemas/SoaPhase"
+          },
+          "stage": {
+            "$ref": "#/components/schemas/SoaStage"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
           }
         }
       },
@@ -1976,7 +2900,11 @@
       "UserRole": {
         "enum": [
           "RegulatoryContact",
-          "Contributor"
+          "Contributor",
+          "Designer",
+          "Contractor",
+          "Operator",
+          "Assessor"
         ]
       },
       "UserStatus": {
@@ -1996,6 +2924,9 @@
     },
     {
       "name": "Invitations"
+    },
+    {
+      "name": "SoaProject"
     },
     {
       "name": "Users"

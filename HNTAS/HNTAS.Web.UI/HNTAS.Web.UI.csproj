@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="4.0.6.12" />
     <PackageReference Include="Base36" Version="1.0.0" />
     <PackageReference Include="GovUk.OneLogin.AspNetCore" Version="0.4.0" />
     <PackageReference Include="GovukNotify" Version="7.2.0" />
@@ -29,9 +30,6 @@
     <Folder Include="assets\js\shared\" />
     <Folder Include="assets\scss\shared\" />
     <Folder Include="assets\scss\views\" />
-    <Folder Include="Models\DutyHolder\" />
-    <Folder Include="UnitTests\" />
-    <Folder Include="Views\PagesYetToBeUsed\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

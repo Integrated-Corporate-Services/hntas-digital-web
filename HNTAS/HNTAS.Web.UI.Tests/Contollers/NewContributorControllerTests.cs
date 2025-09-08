@@ -1,11 +1,20 @@
-﻿using HNTAS.Web.UI.Controllers;
+﻿using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Controllers;
+using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Models.User;
+using HNTAS.Web.UI.Services;
+using HNTAS.Web.UI.Services.Core;
 using HNTAS.Web.UI.Workflows;
+using HNTAS.Web.UI.Workflows.Enums;
 using HNTAS.Web.UI.Workflows.Models;
 using HNTAS.Web.UI.Workflows.Models.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -14,9 +23,14 @@ namespace HNTAS.Web.UI.Tests.Contollers
 {
     public class NewContributorControllerTests
     {
+        private readonly Mock<IHeatNetworksApi> _mockHeatNetworksApi;
+        private readonly Mock<IInvitationTokenService> _mockInvitationTokenService;
+        private readonly Mock<IInvitationService> _mockInvitationService;
+
         private readonly Mock<ILogger<NewContributorController>> _mockLogger;
         private readonly Mock<IWorkflowManager> _mockWorkflowManager;
         private readonly Mock<ISessionHelper> _mockSessionHelper;
+        private readonly Mock<IUserService> _mockUserService;
         private readonly NewContributorController _controller;
         private readonly Mock<IUrlHelper> _mockUrlHelper;
 
@@ -27,6 +41,10 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _mockLogger = new Mock<ILogger<NewContributorController>>();
             _mockWorkflowManager = new Mock<IWorkflowManager>();
             _mockSessionHelper = new Mock<ISessionHelper>();
+            _mockUserService = new Mock<IUserService>();
+            _mockHeatNetworksApi = new Mock<IHeatNetworksApi>();
+            _mockInvitationTokenService = new Mock<IInvitationTokenService>();
+            _mockInvitationService = new Mock<IInvitationService>();
 
             // We also need to mock HttpContext for the session helper call
             var mockHttpContext = new Mock<HttpContext>();
@@ -34,7 +52,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _controller = new NewContributorController(
                 _mockLogger.Object,
                 _mockWorkflowManager.Object,
-                _mockSessionHelper.Object, null, null, null, null);
+                _mockSessionHelper.Object, _mockUserService.Object, _mockHeatNetworksApi.Object, _mockInvitationTokenService.Object, _mockInvitationService.Object);
 
             // Assign the mocked HttpContext to the controller
             _controller.ControllerContext = new ControllerContext()
@@ -124,6 +142,109 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _mockWorkflowManager.Verify(m => m.GetState<AddNewContributorWorkflowModel>(), Times.Once);
             _mockSessionHelper.Verify(m => m.GetFromSession<string>(It.IsAny<HttpContext>(), It.IsAny<string>()), Times.Once);
         }
+
+        //[Fact]
+        //public void ChooseRole_ReturnsViewWithRoles_WhenRolesExist()
+        //{
+        //    // Arrange
+        //    var roles = new List<SelectListItem> { new SelectListItem { Value = "1", Text = "Role1" } };
+        //    _mockSessionHelper.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), "UserRole")).Returns("RegulatoryContact");
+        //    _mockWorkflowManager.Setup(x => x.GetState<AddNewContributorWorkflowModel>())
+        //        .Returns(new WorkflowState<AddNewContributorWorkflowModel>
+        //        {
+        //            Data = new AddNewContributorWorkflowModel { ChooseRoleModel = new ChooseRoleModel { SelectedRoleId = "1" } }
+        //        });
+
+        //    // Act
+        //    var result = _controller.ChooseRole();
+
+        //    // Assert
+        //    var viewResult = Assert.IsType<ViewResult>(result);
+        //    var model = Assert.IsType<ChooseRoleModel>(viewResult.Model);
+        //    Assert.Equal("1", model.SelectedRoleId);
+        //    Assert.NotNull(model.Roles);
+        //}
+
+        //[Fact]
+        //public void ChooseRole_ReturnsErrorView_WhenRolesAreNull()
+        //{
+        //    // Arrange
+        //    _mockSessionHelper.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), "UserRole")).Returns("UnknownRole");
+
+        //    // Act
+        //    var result = _controller.ChooseRole() as ViewResult;
+
+        //    // Assert
+        //    var viewResult = Assert.IsType<ViewResult>(result);
+        //    var model = Assert.IsType<ChooseRoleModel>(viewResult.Model);
+        //    Assert.Null(model.Roles);
+        //    Assert.Equal("Contributor/ChooseRole", viewResult.ViewName);
+        //    Assert.Equal("Unable to retrieve contributor roles. Please try again later.", _controller.TempData["ErrorMessage"]);
+        //}
+
+        //[Fact]
+        //public async Task SaveChosenRoleAsync_RedirectsToCheckYourAnswers_WhenModelIsValid()
+        //{
+        //    // Arrange
+        //    var model = new ChooseRoleModel
+        //    {
+        //        SelectedRoleId = "1",
+        //        Roles = new List<SelectListItem> { new SelectListItem { Value = "1", Text = "Role1" } }
+        //    };
+        //    _mockWorkflowManager.Setup(x => x.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
+        //        It.IsAny<System.Action<AddNewContributorWorkflowModel>>(),
+        //        ContributorWorkflowStep.Review
+        //    ));
+
+        //    // Act
+        //    var result = await _controller.SaveChosenRoleAsync(model) as ViewResult;
+
+        //    // Assert
+        //    var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+        //    Assert.Equal("CheckYourAnswers", redirectResult.ActionName);
+        //    Assert.Equal("Role1", model.SelectedRoleName);
+        //}
+
+        //[Fact]
+        //public async Task SaveChosenRoleAsync_ReturnsView_WhenModelIsInvalid()
+        //{
+        //    // Arrange
+        //    var model = new ChooseRoleModel
+        //    {
+        //        SelectedRoleId = null,
+        //        Roles = new List<SelectListItem> { new SelectListItem { Value = "1", Text = "Role1" } }
+        //    };
+        //    _controller.ModelState.AddModelError("SelectedRoleId", "Required");
+
+        //    // Act
+        //    var result = await _controller.SaveChosenRoleAsync(model);
+
+        //    // Assert
+        //    var viewResult = Assert.IsType<ViewResult>(result);
+        //    var returnedModel = Assert.IsType<ChooseRoleModel>(viewResult.Model);
+        //    Assert.Equal("Contributors/ChooseRole", viewResult.ViewName);
+        //    Assert.Equal(model, returnedModel);
+        //}
+
+        //[Fact]
+        //public async Task SaveChosenRoleAsync_ReturnsView_WhenRolesAreNull()
+        //{
+        //    // Arrange
+        //    var model = new ChooseRoleModel
+        //    {
+        //        SelectedRoleId = "1",
+        //        Roles = null
+        //    };
+        //    _controller.ModelState.AddModelError("SelectedRoleId", "Required");
+
+        //    // Act
+        //    var result = await _controller.SaveChosenRoleAsync(model);
+
+        //    // Assert
+        //    var viewResult = Assert.IsType<ViewResult>(result);
+        //    var returnedModel = Assert.IsType<ChooseRoleModel>(viewResult.Model);
+        //    Assert.Null(returnedModel.Roles);
+        //}
 
     }
 }
