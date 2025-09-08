@@ -352,7 +352,7 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("CheckYourAnswers");
                 }
 
-                _logger.LogInformation("Successfully submitted new contributor details for email: {Email}", state.Data.AddUserEmailAddressModel.EmailAddress);
+                _logger.LogInformation("Successfully submitted new contributor details.");
                 var token = _iInvitationTokenService.GenerateToken(invitationId, state.Data.AddUserEmailAddressModel.EmailAddress);
 
                 //send invitation email
@@ -360,7 +360,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error submitting new contributor details for email: {Email}", state.Data.AddUserEmailAddressModel.EmailAddress);
+                _logger.LogError(ex, "Error submitting new contributor details.");
                 TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
                 return RedirectToAction("CheckYourAnswers");
             }
