@@ -2,6 +2,7 @@
 $govuk-assets-path: '/assets/'; // This points to where compiled assets will be in your wwwroot
 
 @import "../../node_modules/govuk-frontend/dist/govuk/all";
+@import "_step-by-step-nav.scss";
 
 
 
@@ -37,3 +38,4 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
     margin-top: 0;
     margin-bottom: 10px;
 }
+

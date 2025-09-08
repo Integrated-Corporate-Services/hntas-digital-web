@@ -4,6 +4,7 @@ using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Models.Review;
 using HNTAS.Web.UI.Models.User;
@@ -13,7 +14,6 @@ using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
 using HNTAS.Web.UI.Workflows.Models.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 
@@ -204,15 +204,10 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("ChooseRole");
         }
 
-        [HttpGet]
-        [ValidateWorkflowStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(ContributorWorkflowStep.ChooseRole)]
-        public async Task<IActionResult> ChooseRole()
+        public async Task<string> GetUserRoleByUserHNMapping(string userId, string hnId)
         {
-            var model = new ChooseRoleModel();
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var heatNetworks = await _userService.GetUserById(userId);
-            var userRole = "";
             var user = await _userService.GetUserById(userId);
+            var userRole = "";
 
             if (user?.Roles?.Contains(Api.Client.Model.UserRole.RegulatoryContact) == true)
             {
@@ -220,7 +215,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             else
             {
-                var hnId = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkId;
+                
                 foreach (var mapping in user.HnRoleMappings)
                 {
                     if (mapping.HnId == hnId)
@@ -229,8 +224,21 @@ namespace HNTAS.Web.UI.Controllers
                     }
                 }
             }
+            return userRole;
+        }
+
+        [HttpGet]
+        [ValidateWorkflowStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(ContributorWorkflowStep.ChooseRole)]
+        public async Task<IActionResult> ChooseRole()
+        {
+            var model = new ChooseRoleModel();
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var user = await _userService.GetUserById(userId);
+            var hnId = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkId;
+
+            var userRole = await GetUserRoleByUserHNMapping(userId, hnId);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserRoleKey, userRole);
-            var roles = GetContributorSelectList();
+            var roles = GetContributorSelectList(userRole);
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");
@@ -254,8 +262,8 @@ namespace HNTAS.Web.UI.Controllers
         {
             ViewBag.FormAction = "SaveChosenRole";
             ViewBag.FormController = "NewContributor";
-            
-            var roles = GetContributorSelectList();
+            var userRole = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserRoleKey);
+            var roles = GetContributorSelectList(userRole);
 
             if (roles == null)
             {
@@ -371,65 +379,64 @@ namespace HNTAS.Web.UI.Controllers
             // Retrieve the data from TempData.
             var fullName = TempData["FullName"] as string;
             var heatNetwork = TempData["HeatNetwork"] as string;
-            var companyName = TempData["CompanyName"] as string;
+            var organisationName = TempData["OrganisationName"] as string;
 
             // You can use a ViewBag or ViewData to pass the data to the view.
             ViewData["FullName"] = fullName;
             ViewData["HeatNetwork"] = heatNetwork;
-            ViewData["CompanyName"] = companyName;
+            ViewData["OrganisationName"] = organisationName;
 
             return View("Contributor/Confirmation");
         }
 
 
-        private async Task<List<SelectListItem>?> GetHeatNetworkSelectListAsync(string userId)
+        private async Task<List<SelectItemOption>?> GetHeatNetworkSelectListAsync(string userId)
         {
             var response = await _userService.GetUserHeatNetworks(userId);
             if (response == null) return null;
 
-            return response.Select(hn => new SelectListItem
+            return response.Select(hn => new SelectItemOption
             {
                 Value = hn.HnId,
                 Text = hn.Name
             }).ToList();
         }
 
-        private List<SelectListItem> GetContributorSelectList()
+        private List<SelectItemOption> GetContributorSelectList(string userRole)
         {        
            
-            var userRole = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserRoleKey);
             switch (userRole)
             {
                 case "RegulatoryContact":
-                    return new List<SelectListItem>
+                    return new List<SelectItemOption>
                     {
-                        new SelectListItem { Value = ((int)ContributorRole.DesignatedDesigner).ToString(), Text = "Designated designer" },
-                        new SelectListItem { Value = ((int)ContributorRole.DesignatedContractor).ToString(), Text = "Designated contractor" },
-                        new SelectListItem { Value = ((int)ContributorRole.DesignatedOperator).ToString(), Text = "Designated operator" },
-                        new SelectListItem { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
+                        new SelectItemOption { Value = ((int)ContributorRole.DesignatedDesigner).ToString(), Text = "Designated designer" },
+                        new SelectItemOption { Value = ((int)ContributorRole.DesignatedContractor).ToString(), Text = "Designated contractor" },
+                        new SelectItemOption { Value = ((int)ContributorRole.DesignatedOperator).ToString(), Text = "Designated operator" },
+                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
                 case "DesignatedDesigner":
-                    return new List<SelectListItem>
+                    return new List<SelectItemOption>
                     {
-                        new SelectListItem { Value = ((int)ContributorRole.ContributingDesigner).ToString(), Text = "Contributing designer" },
-                        new SelectListItem { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
+                        new SelectItemOption { Value = ((int)ContributorRole.ContributingDesigner).ToString(), Text = "Contributing designer" },
+                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
                 case "DesignatedContractor":
-                    return new List<SelectListItem>
+                    return new List<SelectItemOption>
                     {
-                        new SelectListItem { Value = ((int)ContributorRole.ContributingContractor).ToString(), Text = "Contributing contractor" },
-                        new SelectListItem { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
+                        new SelectItemOption { Value = ((int)ContributorRole.ContributingContractor).ToString(), Text = "Contributing contractor" },
+                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
                 case "DesignatedOperator":
-                    return new List<SelectListItem>
+                    return new List<SelectItemOption>
                     {
-                        new SelectListItem { Value = ((int)ContributorRole.ContributingOperator).ToString(), Text = "Contributing operator" },
-                        new SelectListItem { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
+                        new SelectItemOption { Value = ((int)ContributorRole.ContributingOperator).ToString(), Text = "Contributing operator" },
+                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
                 case "Assessor":
-                    return new List<SelectListItem>
+                    return new List<SelectItemOption>
                     {
-                        new SelectListItem { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
+                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
                 default:
                     return null;

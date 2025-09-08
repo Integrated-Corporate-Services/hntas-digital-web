@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using HNTAS.Web.UI.Models.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models.HeatNetwork
@@ -10,6 +10,6 @@ namespace HNTAS.Web.UI.Models.HeatNetwork
 
         public string? SelectedHeatNetworkName { get; set; }
 
-        public List<SelectListItem> HeatNetworks { get; set; } = [];
+        public List<SelectItemOption> HeatNetworks { get; set; } = [];
     }
 }
