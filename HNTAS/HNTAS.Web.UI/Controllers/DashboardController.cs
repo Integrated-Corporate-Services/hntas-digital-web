@@ -60,21 +60,8 @@ namespace HNTAS.Web.UI.Controllers
             {
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new DashboardModel());
-            }
-            else
-            {
-                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
-                TempData["AddressLine1"] = user.Organisation.RegisteredAddress?.AddressLine1;
-                TempData["AddressLine2"] = user.Organisation.RegisteredAddress?.AddressLine2;
-                TempData["Town"] = user.Organisation.RegisteredAddress?.Town;
-                TempData["County"] = user.Organisation.RegisteredAddress?.County;
-                TempData["Postcode"] = user.Organisation.RegisteredAddress?.Postcode;
-                TempData["Country"] = user.Organisation.RegisteredAddress?.Country;
-                TempData["UserEmailId"] = user.EmailId;
-            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);                        
 
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
-                        
             ViewBag.IsRegulatoryContact = user.Roles?.Contains(Api.Client.Model.UserRole.RegulatoryContact);
 
             var heatNetworks = new List<HeatNetworkModel>();
@@ -105,6 +92,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> OrganisationDetails()
         {
+            this.ShowBackButton("UserAccount", "Dashboard");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             UserDetailsResponse user;
             try

@@ -2132,45 +2132,6 @@
           }
         }
       },
-      "HeatNetworkResponse": {
-        "type": "object",
-        "properties": {
-          "hnId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "location": {
-            "type": "string"
-          }
-        }
-      },
-      "HnRoleMapping": {
-        "type": "object",
-        "properties": {
-          "hnId": {
-            "type": "string"
-          },
-          "role": {
-            "$ref": "#/components/schemas/ContributorRole"
-          }
-        }
-      },
-      "HeatNetworkResponse": {
-        "type": "object",
-        "properties": {
-          "hnId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "pathway": {
-            "type": "string"
-          }
-        }
-      },
       "HeatNetworkElement": {
         "type": "object",
         "properties": {
@@ -2606,9 +2567,9 @@
           "hnId",
           "updatedBy",
           "connectionTypes"
-          "orgRegisteredAddress"
         ],
         "type": "object",
+        "properties": {
           "hnId": {
             "type": "string"
           },
@@ -2682,7 +2643,6 @@
         ],
         "type": "object",
         "properties": {
-          },
           "firstName": {
             "type": "string"
           },
@@ -2714,15 +2674,16 @@
             "$ref": "#/components/schemas/OrganisationRequest"
           }
         }
+      },
       "UploadedDocument": {
-      "OrgRegisteredAddress": {
-        "required": [
+        "type": "object",
+        "properties": {
           "fileName": {
             "type": "string"
           },
           "s3Key": {
-          "postcode"
-        ],
+            "type": "string"
+          },
           "phase": {
             "$ref": "#/components/schemas/SoaPhase"
           },
@@ -2730,9 +2691,9 @@
             "$ref": "#/components/schemas/SoaStage"
           },
           "uploadedAt": {
-        "properties": {
-          "addressLine1": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
+          },
           "uploadedBy": {
             "type": "string"
           }
@@ -2742,28 +2703,28 @@
         "type": "object",
         "properties": {
           "id": {
-          "town": {
             "type": "string",
             "nullable": true
+          },
           "oneLoginId": {
             "type": "string"
           },
           "orgId": {
-          },
-          "postcode": {
+            "type": "string",
+            "nullable": true
           },
           "firstName": {
             "type": "string",
             "nullable": true
           },
           "lastName": {
-      "PreferredContactType": {
-        "enum": [
-          "Landline",
+            "type": "string",
+            "nullable": true
+          },
           "jobTitle": {
-        ]
-      },
-      "ProblemDetails": {
+            "type": "string",
+            "nullable": true
+          },
           "emailId": {
             "type": "string"
           },
@@ -2775,9 +2736,9 @@
             "nullable": true
           },
           "mobileNumber": {
-          "title": {
             "type": "string",
             "nullable": true
+          },
           "contactNumberExtension": {
             "type": "string",
             "nullable": true
@@ -2799,16 +2760,6 @@
             "items": {
               "$ref": "#/components/schemas/HnRoleMapping"
             }
-      },
-      "UpdateOrgDetailsAndRolesRequest": {
-        "required": [
-          "orgDetails",
-          "role"
-        ],
-        "type": "object",
-        "properties": {
-          "orgDetails": {
-            "$ref": "#/components/schemas/OrgDetails2"
           },
           "status": {
             "$ref": "#/components/schemas/UserStatus"
@@ -2939,11 +2890,8 @@
             }
           },
           "hnRoleMappings": {
-          "Contributor",
-          "Designer",
-          "Contractor",
-          "Operator",
-          "Assessor"
+            "type": "array",
+            "items": {
               "$ref": "#/components/schemas/HnRoleMapping"
             }
           }
@@ -2952,8 +2900,11 @@
       "UserRole": {
         "enum": [
           "RegulatoryContact",
-          "ThirdParty",
-          "Contributor"
+          "Contributor",
+          "Designer",
+          "Contractor",
+          "Operator",
+          "Assessor"
         ]
       },
       "UserStatus": {
@@ -2965,20 +2916,20 @@
           "InvitationDeclined"
         ]
       }
-      "name": "SoaProject"
-    },
+    }
+  },
+  "tags": [
     {
-      "name": "Users"
       "name": "HeatNetworks"
     },
     {
       "name": "Invitations"
     },
     {
-      "name": "Users"
+      "name": "SoaProject"
     },
     {
-      "name": "Welcome"
+      "name": "Users"
     }
   ]
 }
