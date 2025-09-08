@@ -130,6 +130,10 @@ public class HomeController : Controller
                 {
                     return RedirectToAction("UserAccount", "Dashboard");
                 }
+                else
+                {
+                    return View();
+                }
             }
 
             return RedirectToAction("UserAccount", "Dashboard");
@@ -140,6 +144,8 @@ public class HomeController : Controller
             TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
             return BadRequest();
         }
+
+        return View();
     }
 
     public IActionResult Error(int code)

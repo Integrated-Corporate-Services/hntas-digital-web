@@ -1,0 +1,68 @@
+﻿@using HNTAS.Web.UI.Helpers
+@using HNTAS.Web.UI.Models.Soa
+@model ElementListViewModel
+
+@{
+    ViewData["Title"] = "List of elements";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="dashboard-card">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a href="@Url.Action("DefineSOA")" class="govuk-link govuk-link--no-visited-state">Part of define your overall SOA</a>
+                </h3>
+                <p class="govuk-body-s">Choose your elements</p>
+            </div>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <span class="govuk-caption-l">@Model.HeatNetworkName</span>
+            <h1 class="govuk-heading-l">
+                List of element
+            </h1>
+
+            <table class="govuk-table">
+                <tbody class="govuk-table__body">
+                    @foreach (var element in Model.Elements)
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">
+                                @if (element.IsEnabled)
+                                {
+                                    <a href="@Url.Action("EnterElementLocations", new { elementName = element.ElementType.ToString() })" class="govuk-link">
+                                        @element.Name  (@element.Count)
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span> @element.Name (@element.Count)</span>
+                                }
+                            </td>
+
+                            <td class="govuk-table__cell">
+                                <strong class="govuk-tag @GovUkTagHelper.GetTagClass(element.UiStatus)">
+                                    @element.UiStatus
+                                </strong>
+                            </td>
+                        </tr>
+                    }
+                   
+                </tbody>
+            </table>
+
+            @if (Model.Elements.All(e => e.UiStatus == UiStatusConstants.Completed))
+            {
+                <form asp-action="DefineSoa" method="post">
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Continue
+                    </button>
+                </form>
+            }
+
+        </div>
+    </div>
+</div>

@@ -6,8 +6,8 @@ namespace HNTAS.Web.UI.Services.Core
     public class InvitationService : IInvitationService
     {
         private readonly ILogger<InvitationService> _logger;
-        private readonly InvitationsApi _invitationsApi;
-        public InvitationService(ILogger<InvitationService> logger, InvitationsApi invitationsApi)
+        private readonly IInvitationsApi _invitationsApi;
+        public InvitationService(ILogger<InvitationService> logger, IInvitationsApi invitationsApi)
         {
             _logger = logger;
             _invitationsApi = invitationsApi;

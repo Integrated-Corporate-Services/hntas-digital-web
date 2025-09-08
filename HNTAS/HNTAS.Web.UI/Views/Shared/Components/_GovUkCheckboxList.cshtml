@@ -1,0 +1,30 @@
+﻿@model HNTAS.Web.UI.Models.Components.GovUkCheckboxListModel
+
+<div class="govuk-checkboxes" data-module="govuk-checkboxes">
+    @for (int i = 0; i < Model.Items.Count; i++)
+    {
+        var item = Model.Items[i];
+        var id = i == 0 ? Model.FieldId : $"{Model.FieldId}-{i}";
+        var isChecked = Model.SelectedValues.Contains(item.Value);
+
+        <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input"
+                   id="@id"
+                   name="@Model.FieldName"
+                   type="checkbox"
+                   value="@item.Value"
+                   @(isChecked ? "checked" : "")
+                   @(string.IsNullOrEmpty(item.Hint) ? "" : $"aria-describedby=\"{id}-item-hint\"") />
+
+            <label class="govuk-label govuk-checkboxes__label" for="@id">
+                @item.Text
+            </label>
+            @if (!string.IsNullOrEmpty(item.Hint))
+            {
+                <div id="@id-item-hint" class="govuk-hint govuk-checkboxes__hint">
+                    @item.Hint
+                </div>
+            }
+        </div>
+    }
+</div>
