@@ -2088,7 +2088,11 @@
         "enum": [
           "DesignatedDesigner",
           "DesignatedContractor",
-          "DesignatedOperator"
+          "DesignatedOperator",
+          "ContributingDesigner",
+          "ContributingContractor",
+          "ContributingOperator",
+          "Assessor"
         ]
       },
       "EnumItemResponse": {
@@ -2896,7 +2900,11 @@
       "UserRole": {
         "enum": [
           "RegulatoryContact",
-          "Contributor"
+          "Contributor",
+          "Designer",
+          "Contractor",
+          "Operator",
+          "Assessor"
         ]
       },
       "UserStatus": {

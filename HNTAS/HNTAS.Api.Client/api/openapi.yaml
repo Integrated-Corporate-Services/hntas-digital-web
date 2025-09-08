@@ -1343,6 +1343,10 @@ components:
       - DesignatedDesigner
       - DesignatedContractor
       - DesignatedOperator
+      - ContributingDesigner
+      - ContributingContractor
+      - ContributingOperator
+      - Assessor
       type: string
     EnumItemResponse:
       example:
@@ -2361,6 +2365,10 @@ components:
       enum:
       - RegulatoryContact
       - Contributor
+      - Designer
+      - Contractor
+      - Operator
+      - Assessor
       type: string
     UserStatus:
       enum:
