@@ -266,8 +266,6 @@ namespace HNTAS.Web.UI.Controllers
             var userRole = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserRoleKey);
             var roles = GetContributorSelectList(userRole);
 
-            var roles = await GetContributorSelectListAsync();
-
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");

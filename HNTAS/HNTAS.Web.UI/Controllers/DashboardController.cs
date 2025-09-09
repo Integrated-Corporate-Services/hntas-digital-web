@@ -91,35 +91,6 @@ namespace HNTAS.Web.UI.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> OrganisationDetails()
-        {
-            this.ShowBackButton("UserAccount", "Dashboard");
-            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-            UserDetailsResponse user;
-            try
-            {
-                user = await RetrieveUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = ex.Message;
-                return View(new OrganisationDetailsModel());
-            }
-            var model = new OrganisationDetailsModel
-            {
-                OrganisationName = user.Organisation.Name,
-                RPEmail = user.EmailId,
-                AddressLine1 = user.Organisation?.RegisteredAddress?.AddressLine1,
-                AddressLine2 = user.Organisation?.RegisteredAddress?.AddressLine2,
-                Town = user.Organisation?.RegisteredAddress?.Town,
-                County = user.Organisation?.RegisteredAddress?.County,
-                Postcode = user.Organisation?.RegisteredAddress?.Postcode,
-                Country = user.Organisation?.RegisteredAddress?.Country
-            };
-
-            return View(model);
-        }
 
         [HttpGet]
         public async Task<IActionResult> OrganisationDetails()
