@@ -15,17 +15,39 @@ namespace HNTAS.Web.UI.Services.Core
             _heatNetworksApi = heatNetworksApi;
         }
 
+        public async Task<HeatNetwork?> GetAsync(string hnId)
+        {
+            // _logger.LogInformation("Fetching heat network with ID: {HnId}", hnId);
+
+            var response = await _heatNetworksApi.ApiHeatNetworksHnIdGetAsync(hnId);
+
+            if (response.IsOk)
+            {
+                //_logger.LogInformation("Successfully retrieved heat network: {HnId}", hnId);
+                return response.Ok();
+            }
+            else if (response.IsNotFound)
+            {
+                //_logger.LogWarning("Heat network with ID: {HnId} not found", hnId);
+                return null;
+            }
+
+            //_logger.LogError("Failed to fetch heat network {HnId}. Status code: {StatusCode}", hnId, response.StatusCode);
+            throw new Exception($"Failed to fetch heat network '{hnId}' — status code: {response.StatusCode}");
+        }
+
+
         public async Task<HeatNetwork> AddHeatNetwork(HeatNetwork heatNetwork, string hnId)
         {
             // Implementation for adding a heat network
-            _logger.LogInformation("Adding heat network: {HeatNetworkName}", heatNetwork.Name);
+            // _logger.LogInformation("Adding heat network: {HeatNetworkName}", heatNetwork.Name);
             try
             {
                 var response = await _heatNetworksApi.ApiHeatNetworksAddHeatNetworkPostAsync(heatNetwork);
 
                 if (response.IsCreated)
                 {
-                    _logger.LogInformation("Heat network created successfully with ID: {Id}", heatNetwork.Id);
+                    //_logger.LogInformation("Heat network created successfully with ID: {Id}", heatNetwork.Id);
                     return response.Created();
                 }
                 throw new Exception($"Failed to add heat network with status code: {response.StatusCode}");

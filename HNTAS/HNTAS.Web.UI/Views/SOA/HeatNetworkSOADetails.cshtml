@@ -1,0 +1,25 @@
+﻿@using HNTAS.Web.UI.Models.Soa
+@model StepByStepGuideModel
+
+@{
+    ViewData["Title"] = "Define overall statement of applicability (SOA)";
+}
+
+<div class="govuk-width-container">
+   
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <span class="govuk-caption-l">Heat network SOA details</span>
+            <h1 class="govuk-heading-l">
+                Define overall statement of applicability (SOA)
+            </h1>
+
+            <p class="govuk-body">Check how can you choose element and submit your SOA</p>
+
+            @await Html.PartialAsync("Soa/_StepByStepGuide", Model.Steps)
+
+        </div>
+    </div>
+</div>

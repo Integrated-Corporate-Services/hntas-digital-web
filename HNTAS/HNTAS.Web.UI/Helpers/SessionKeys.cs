@@ -7,6 +7,7 @@
         public const string OrganisationCreation_SessionKey = "OrganisationModelDataKey";
         public const string OrganisationName = "OrganisationNameKey";
         public const string OrganisationId = "OrganisationIdKey";
+        public const string UserRoleKey = "UserRoleKey";
 
         // Session key for the boolean flow state
         public const string IsCheckAnswerFlowKey = "IsCheckAnswerFlow";
@@ -23,6 +24,9 @@
         public const string HowManyDwellingsIncludedModelKey = "HowManyDwellingsIncluded";
 
 
+        public const string HnId = "HnIdkey";
+        public const string HnName = "HnNameKey";
+
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
         public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
         public const string HeatNetworkPhaseModelKey = "HeatNetworkPhase";
@@ -36,6 +40,8 @@
         public const string InvitationId = "InvitationIdKey";
         public const string InvitedInviterUserId = "InvitedInviterUserIdKey";
         public const string InvitedInviterUserOrgId = "InvitedInviterUserOrgIdKey";
+
+        public const string SoaProjectId = "SoaProjectIdKey";
 
     }
 }

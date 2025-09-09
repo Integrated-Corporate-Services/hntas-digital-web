@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using HNTAS.Web.UI.Models.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
@@ -10,6 +10,6 @@ namespace HNTAS.Web.UI.Models
 
         public string? SelectedRoleName { get; set; }
 
-        public List<SelectListItem> Roles { get; set; } = [];
+        public List<SelectItemOption> Roles { get; set; } = [];
     }
 }
