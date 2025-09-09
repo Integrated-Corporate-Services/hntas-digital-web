@@ -81,6 +81,7 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = "The invitation token is missing from your request. Please use the link provided in the invitation email to proceed.";
             }
             var model = _sessionHelper.GetFromSession<YouHaveBeenInvitedModel>(HttpContext, SessionKeys.YouHaveBeenInvitedModelKey) ?? new YouHaveBeenInvitedModel();
+            ViewBag.HNName = "[Heat network name]"; // Placeholder until we get the actual value from the invitation email story
             return View(model);
         }
 
