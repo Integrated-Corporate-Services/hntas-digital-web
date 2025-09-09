@@ -1,3 +1,4 @@
+using Amazon.S3;
 using GovUk.OneLogin.AspNetCore;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
@@ -42,6 +43,7 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddHttpContextAccessor();
 
 Console.WriteLine("*********************in UI**************");
+Console.WriteLine("S3 Bucket variable: " + Environment.GetEnvironmentVariable("HNTAS_S3_BUCKET_NAME"));
 Console.WriteLine("Environment: " + builder.Environment.EnvironmentName);
 Console.WriteLine("from env variable: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
 
@@ -74,7 +76,13 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new RegisteredAddressJsonConverter(),
         new ManagedUserResponseJsonConverter(),
         new InvitedUserResponseJsonConverter(),
-        new HnRoleMappingJsonConverter()
+        new HnRoleMappingJsonConverter(),
+        new SoaProjectJsonConverter(),
+        new SoaJourneyDataJsonConverter(),
+        new NetworkTypeSelectionJsonConverter(),
+        new ConnectionTypeJsonConverter(),
+        new HeatNetworkElementJsonConverter(),
+        new UploadedDocumentJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -95,7 +103,15 @@ builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
 });
 
 builder.Services.AddSingleton<InvitationsApiEvents>();
-builder.Services.AddHttpClient<InvitationsApi, InvitationsApi>(client =>
+builder.Services.AddHttpClient<IInvitationsApi, InvitationsApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
+builder.Services.AddSingleton<SoaProjectApiEvents>();
+builder.Services.AddHttpClient<ISoaProjectApi, SoaProjectApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
@@ -116,6 +132,7 @@ builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
+builder.Services.AddScoped<ISoaProjectService, SoaProjectService>();
 
 builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
 
@@ -123,6 +140,13 @@ builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
 
+builder.Services.AddSingleton<IAmazonS3>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    return S3ClientHelper.Create(config);
+});
+
+builder.Services.AddSingleton<IS3UploadService, S3UploadService>();
 
 //Configure onelogin settings
 builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)

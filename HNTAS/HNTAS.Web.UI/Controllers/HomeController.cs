@@ -106,7 +106,7 @@ public class HomeController : Controller
             if (existingUser == null)
             {
                 var registration = new InitialUserRegistrationRequest(oneLoginId: oneLoginId, emailId: email, status: UserStatus.Active);
-                _logger.LogInformation("Submitting initial user entry. ID: {Id}", oneLoginId);
+                _logger.LogInformation("Submitting initial user entry. Email: {Email}, ID: {Id}", email, oneLoginId);
 
                 var newUserId = await _iUserService.CreateUser(registration);
 
@@ -144,6 +144,8 @@ public class HomeController : Controller
             TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
             return BadRequest();
         }
+
+
     }
 
     public IActionResult Error(int code)

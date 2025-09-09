@@ -72,6 +72,9 @@ namespace HNTAS.Api.Client.Test.Api
             var invitationsApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
 
+            var soaProjectApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ISoaProjectApi>();
+            Assert.True(soaProjectApi.HttpClient.BaseAddress != null);
+
             var usersApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
         }
@@ -87,6 +90,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var invitationsApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+
+            var soaProjectApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ISoaProjectApi>();
+            Assert.True(soaProjectApi.HttpClient.BaseAddress != null);
 
             var usersApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
@@ -104,6 +110,9 @@ namespace HNTAS.Api.Client.Test.Api
             var invitationsApi = _hostUsingAddWithAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
             
+            var soaProjectApi = _hostUsingAddWithAClient.Services.GetRequiredService<ISoaProjectApi>();
+            Assert.True(soaProjectApi.HttpClient.BaseAddress != null);
+            
             var usersApi = _hostUsingAddWithAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
         }
@@ -119,6 +128,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var invitationsApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+
+            var soaProjectApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ISoaProjectApi>();
+            Assert.True(soaProjectApi.HttpClient.BaseAddress != null);
 
             var usersApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
