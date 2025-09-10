@@ -14,9 +14,11 @@ using HNTAS.Web.UI.Workflows.Models.Data;
 using HNTAS.Web.UI.Workflows.Services;
 using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -146,73 +148,152 @@ builder.Services.AddSingleton<IAmazonS3>(sp =>
 
 builder.Services.AddSingleton<IS3UploadService, S3UploadService>();
 
-//Configure onelogin settings
-builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddOneLogin(options =>
-    {
-        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+// Decide which authentication to use based on the environment variable
+var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
 
-        options.Environment = OneLoginEnvironments.Integration;
-        options.ClientId = Environment.GetEnvironmentVariable("ONELOGIN_CLIENT_ID");
-        options.CallbackPath = "/onelogin-callback";
-        options.SignedOutCallbackPath = "/onelogin-logout-callback";
-        options.Scope.Add("openid");
-        options.Scope.Add("email");
-        options.Scope.Add("phone");
-        // options.Scope.Add("profile"); // If your service needs name, birthdate, etc.
-        // Assign individual event handlers
-        options.Events.OnRedirectToIdentityProvider = context =>
+if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
+{
+    // GOV.UK Simulator authentication
+    builder.Services.AddAuthentication("GovUkSimulator")
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddOpenIdConnect("GovUkSimulator", options =>
         {
-            var invitedEmail = context.HttpContext.Session.GetString(SessionKeys.InvitedTokenEmail)?.Trim('"');
-            var invitationId = context.HttpContext.Session.GetString(SessionKeys.InvitationId)?.Trim('"');
-            var inviterUserId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserId)?.Trim('"');
-            var inviterOrgId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserOrgId)?.Trim('"');
+            options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.Authority = Environment.GetEnvironmentVariable("SIMULATOR_PROP1");
+            options.ClientId = Environment.GetEnvironmentVariable("SIMULATOR_PROP2");
+            options.CallbackPath = "/onelogin-callback";
+            options.RequireHttpsMetadata = false;
+            options.SignedOutCallbackPath = "/account/signed-out";
+            options.ResponseType = "code";
+            options.SaveTokens = true;
+            options.Scope.Clear();
+            options.Scope.Add("openid");
+            options.Scope.Add("email");
+            options.ResponseMode = "query";
+            options.GetClaimsFromUserInfoEndpoint = true;
+            // Add more options as needed for your simulator
+            //options.TokenEndpointAuthenticationMethod = OpenIdConnectRedirectBehavior.Post;
 
-            if (!string.IsNullOrWhiteSpace(invitedEmail) &&
-                !string.IsNullOrWhiteSpace(invitationId) &&
-                !string.IsNullOrWhiteSpace(inviterUserId) &&
-                !string.IsNullOrWhiteSpace(inviterOrgId))
+            options.Events = new Microsoft.AspNetCore.Authentication.OpenIdConnect.OpenIdConnectEvents
             {
-                var customState = $"{invitedEmail}|{invitationId}|{inviterUserId}|{inviterOrgId}";
-                context.ProtocolMessage.State = customState;
+                OnAuthorizationCodeReceived = async context =>
+                {
+                    // Load your RSA private key (PEM format from environment variable or file)
+                    var privateKeyPem = Environment.GetEnvironmentVariable("SIMULATOR_PROP3");
+                    using var rsa = RSA.Create();
+                    rsa.ImportFromPem(privateKeyPem.Replace("\\n", "\n"));
+
+                    var now = DateTime.UtcNow;
+                    var clientId = options.ClientId; // This must match your OIDC client_id
+
+                    var handler = new JwtSecurityTokenHandler();
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Issuer = clientId,
+                        Subject = new ClaimsIdentity(new[]
+                        {
+                            new Claim("sub", clientId ?? string.Empty), // Must match client_id
+                            new Claim("jti", Guid.NewGuid().ToString()) // Required unique JWT ID
+                        }),
+                        Audience = options.Authority + "/token", // token endpoint
+                        Expires = now.AddMinutes(5),
+                        SigningCredentials = new SigningCredentials(
+                            new RsaSecurityKey(rsa.ExportParameters(true)),
+                            SecurityAlgorithms.RsaSha256)
+                        // Do NOT set NotBefore
+                    };
+                    var jwt = handler.CreateEncodedJwt(tokenDescriptor);
+
+                    context.TokenEndpointRequest.ClientAssertionType = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer";
+                    context.TokenEndpointRequest.ClientAssertion = jwt;
+                },
+                OnTokenValidated = context =>
+                {
+                    var identity = (ClaimsIdentity)context.Principal.Identity!;
+                    foreach (var claim in context.Principal.Claims)
+                    {
+                        Console.WriteLine($"[OIDC] Claim: {claim.Type} = {claim.Value}");
+                    }
+                    // Existing mapping code
+                    var email = context.Principal.FindFirst("email")?.Value;
+                    if (!string.IsNullOrEmpty(email))
+                        identity.AddClaim(new Claim(ClaimTypes.Email, email));
+                    var sub = context.Principal.FindFirst("sub")?.Value;
+                    if (!string.IsNullOrEmpty(sub))
+                        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, sub));
+                    return Task.CompletedTask;
+                }
+            };
+        });
+
+}
+else
+{
+    // GOV.UK One Login authentication
+    builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddOneLogin(options =>
+        {
+            options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.Environment = OneLoginEnvironments.Integration;
+            options.ClientId = Environment.GetEnvironmentVariable("ONELOGIN_CLIENT_ID");
+            options.CallbackPath = "/onelogin-callback";
+            options.SignedOutCallbackPath = "/onelogin-logout-callback";
+            options.Scope.Add("openid");
+            options.Scope.Add("email");
+            options.Scope.Add("phone");
+            // ... your existing OneLogin event handlers and configuration ...
+            options.Events.OnRedirectToIdentityProvider = context =>
+            {
+                var invitedEmail = context.HttpContext.Session.GetString(SessionKeys.InvitedTokenEmail)?.Trim('"');
+                var invitationId = context.HttpContext.Session.GetString(SessionKeys.InvitationId)?.Trim('"');
+                var inviterUserId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserId)?.Trim('"');
+                var inviterOrgId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserOrgId)?.Trim('"');
+
+                if (!string.IsNullOrWhiteSpace(invitedEmail) &&
+                    !string.IsNullOrWhiteSpace(invitationId) &&
+                    !string.IsNullOrWhiteSpace(inviterUserId) &&
+                    !string.IsNullOrWhiteSpace(inviterOrgId))
+                {
+                    var customState = $"{invitedEmail}|{invitationId}|{inviterUserId}|{inviterOrgId}";
+                    context.ProtocolMessage.State = customState;
+                }
+
+                return Task.CompletedTask;
+            };
+
+            options.Events.OnTokenValidated = context =>
+            {
+                var state = context.ProtocolMessage.State;
+                var parts = state?.Split('|');
+
+                if (parts?.Length == 4)
+                {
+                    var invitedEmail = parts[0];
+                    var invitationId = parts[1];
+                    var inviterUserId = parts[2];
+                    var inviterOrgId = parts[3];
+
+                    var identity = (ClaimsIdentity)context.Principal.Identity!;
+                    identity.AddClaim(new Claim("hntas.invitedEmail", invitedEmail));
+                    identity.AddClaim(new Claim("hntas.invitationId", invitationId));
+                    identity.AddClaim(new Claim("hntas.inviterUserId", inviterUserId));
+                    identity.AddClaim(new Claim("hntas.inviterOrgId", inviterOrgId));
+                }
+
+                return Task.CompletedTask;
+            };
+            using (var rsa = RSA.Create())
+            {
+                rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
+                options.ClientAuthenticationCredentials = new SigningCredentials(
+                    new RsaSecurityKey(rsa.ExportParameters(true)),
+                    SecurityAlgorithms.RsaSha256);
             }
 
-            return Task.CompletedTask;
-        };
-
-        // You can assign other events similarly
-        options.Events.OnTokenValidated = context =>
-        {
-            var state = context.ProtocolMessage.State;
-            var parts = state?.Split('|');
-
-            if (parts?.Length == 4)
-            {
-                var invitedEmail = parts[0];
-                var invitationId = parts[1];
-                var inviterUserId = parts[2];
-                var inviterOrgId = parts[3];
-
-                var identity = (ClaimsIdentity)context.Principal.Identity!;
-                identity.AddClaim(new Claim("hntas.invitedEmail", invitedEmail));
-                identity.AddClaim(new Claim("hntas.invitationId", invitationId));
-                identity.AddClaim(new Claim("hntas.inviterUserId", inviterUserId));
-                identity.AddClaim(new Claim("hntas.inviterOrgId", inviterOrgId));
-            }
-
-            return Task.CompletedTask;
-        };
-        using (var rsa = RSA.Create())
-        {
-            rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
-            options.ClientAuthenticationCredentials = new SigningCredentials(
-                new RsaSecurityKey(rsa.ExportParameters(true)), // Fix: Ensure RsaSecurityKey is resolved
-                SecurityAlgorithms.RsaSha256);
-        }
-
-        options.VectorsOfTrust = ["Cl.Cm"];
-    });
+            options.VectorsOfTrust = ["Cl.Cm"];
+        });
+}
 
 builder.Services.AddSession(options =>
 {
