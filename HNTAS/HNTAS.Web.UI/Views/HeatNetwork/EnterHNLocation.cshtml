@@ -16,13 +16,13 @@
                     Where is @ViewBag.HNName located?
                 </h1>
 
-                <div class="govuk-form-group @(ViewData.ModelState["HeatNetworkLocation"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+                <div class="govuk-form-group" aria-described-by="enter-hnlocation" @(ViewData.ModelState["HeatNetworkLocation"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
 
-                    <p class="govuk-body">
+                    <p class="govuk-body" id="description1">
                         We need to know the specific location of your heat network and we require you to use the <a class="govuk-link" href="https://what3words.com/" target="_blank">what3words</a> (opens in a new tab) service to do this.
-                    </p><p class="govuk-body">
+                    </p><p class="govuk-body" id="description2">
                         Use the heat network’s primary energy centre location for this.
-                    </p><p class="govuk-body">
+                    </p><p class="govuk-body" id="description3">
                         what3words location e.g. ///fired.deeply.smoke
                     </p>
 
@@ -31,7 +31,7 @@
                         <span asp-validation-for="HeatNetworkLocation" class="govuk-error-message"></span>
                     }
 
-                    <input class="govuk-input govuk-!-width-two-thirds" id="@heatNetworkLocationId" name="@heatNetworkLocationId" asp-for="HeatNetworkLocation" autocomplete="off" />
+                    <input class="govuk-input govuk-!-width-two-thirds" id="@heatNetworkLocationId" aria-labelledby="description1 description2 description3" name="@heatNetworkLocationId" asp-for="HeatNetworkLocation" autocomplete="off" />
                 </div>
                 <br />
 
