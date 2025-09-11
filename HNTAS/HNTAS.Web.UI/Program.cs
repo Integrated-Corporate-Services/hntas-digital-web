@@ -45,6 +45,10 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddHttpContextAccessor();
 
 Console.WriteLine("*********************in UI**************");
+Console.WriteLine("SIMULATOR_PROP1: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP1"));
+Console.WriteLine("SIMULATOR_PROP2: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP2"));
+Console.WriteLine("SIMULATOR_PROP3: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP3"));
+Console.WriteLine("SIMULATOR_PROP4: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP4"));
 Console.WriteLine("S3 Bucket variable: " + Environment.GetEnvironmentVariable("HNTAS_S3_BUCKET_NAME"));
 
 var coreApiBaseUrl = builder.Configuration.GetValue<string>("ApiClients:CoreApiBaseUrl");
@@ -195,7 +199,7 @@ if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true",
                             new Claim("sub", clientId ?? string.Empty), // Must match client_id
                             new Claim("jti", Guid.NewGuid().ToString()) // Required unique JWT ID
                         }),
-                        Audience = options.Authority + "/token", // token endpoint
+                        Audience = options.Authority.TrimEnd('/') + "/token";
                         Expires = now.AddMinutes(5),
                         SigningCredentials = new SigningCredentials(
                             new RsaSecurityKey(rsa.ExportParameters(true)),
