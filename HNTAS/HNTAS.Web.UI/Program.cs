@@ -199,7 +199,7 @@ if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true",
                             new Claim("sub", clientId ?? string.Empty), // Must match client_id
                             new Claim("jti", Guid.NewGuid().ToString()) // Required unique JWT ID
                         }),
-                        Audience = options.Authority.TrimEnd('/') + "/token";
+                        Audience = options.Authority.TrimEnd('/') + "/token",
                         Expires = now.AddMinutes(5),
                         SigningCredentials = new SigningCredentials(
                             new RsaSecurityKey(rsa.ExportParameters(true)),
