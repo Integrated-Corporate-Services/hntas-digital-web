@@ -112,6 +112,41 @@
             </a>
         </p>
     }
+    else if(ViewBag.userRole == "Assessor")
+    {
+        <h1 class="govuk-heading-l">My Details</h1>
+        
+        <div class="govuk-grid-row" style="display: flex; align-items: stretch;">
+            <div class="govuk-grid-column-one-third">
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a asp-controller="Dashboard" href="#" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
+                    </h3>
+                    <p class="govuk-body-s">View or change your organisation's details.</p>
+                    <span class="govuk-tag govuk-tag--green">Submitted</span>
+                </div>
+            </div>
+
+            <div class="govuk-grid-column-one-third">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="UserManagement">User Details</a>
+                    </h3>
+                    <p class="govuk-body-s">Register a heat network to activate manage users.</p>
+
+                </div>
+            </div>
+            <div class="govuk-grid-column-one-third">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks</a>
+                    </h3>
+                    <p class="govuk-body-s">View the heat network to be assessed.</p>
+
+                </div>
+            </div>
+        </div>
+    }
     else
     {
         <h1 class="govuk-heading-l">My Details</h1>
