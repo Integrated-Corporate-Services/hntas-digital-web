@@ -43,5 +43,7 @@
 
         public const string SoaProjectId = "SoaProjectIdKey";
 
+        public const string DeclarationOfImpartialityModelKey = "DeclarationOfImpartialityModelKey";
+
     }
 }

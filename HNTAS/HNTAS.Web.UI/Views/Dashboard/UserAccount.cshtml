@@ -8,7 +8,7 @@
 }
 
 <div class="govuk-width-container">
-    @if (ViewBag.IsRegulatoryContact)
+    @if (ViewBag.UserRole == "RegulatoryContact")
     {
         <div><span class="govuk-hint">Your organisation</span></div>
         <h1 class="govuk-heading-l">@Model.OrganisationName</h1>
@@ -112,7 +112,7 @@
             </a>
         </p>
     }
-    else if(ViewBag.userRole == "Assessor")
+    else if(ViewBag.UserRole == "Assessor")
     {
         <h1 class="govuk-heading-l">My Details</h1>
         
@@ -120,7 +120,7 @@
             <div class="govuk-grid-column-one-third">
                 <div class="dashboard-card">
                     <h3 class="dashboard-card__title govuk-heading-s">
-                        <a asp-controller="Dashboard" href="#" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
+                        <a asp-controller="Dashboard" asp-action="OrganisationDetails" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
                     </h3>
                     <p class="govuk-body-s">View or change your organisation's details.</p>
                     <span class="govuk-tag govuk-tag--green">Submitted</span>
@@ -146,6 +146,8 @@
                 </div>
             </div>
         </div>
+        <br/>
+        <br/>
     }
     else
     {

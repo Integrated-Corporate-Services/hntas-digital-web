@@ -1,6 +1,5 @@
 ﻿@model HNTAS.Web.UI.Models.HeatNetworksViewModel
 
-
 @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
 {
     <h1 class="govuk-heading-m" style="margin-top: 2rem;">Heat network list</h1>
@@ -42,7 +41,22 @@
                         <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
                     </td>
                     <td class="govuk-table__cell">
-                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View/Edit</a>
+                        @if (ViewBag.IsAssessor)
+                        {
+                            if(ViewBag.HasDeclaredImpartiality != true)
+                            {
+                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("DeclarationOfImpartiality", "Assessor", new { hnId = @heatNetwork.HnId })">View or Update</a>
+                            }
+                            else
+                            {
+                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View or Update</a>
+                            }
+                        }
+                        else
+                        {
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View/Edit</a>
+                        }
+
                     </td>
                 </tr>
             }
