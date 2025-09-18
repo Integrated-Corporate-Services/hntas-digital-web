@@ -23,7 +23,7 @@
                     {
                         var phase = Model.Phases[i];
                         <li class="govuk-tabs__list-item @(i == Model.CurrentPhaseIndex ? "govuk-tabs__list-item--selected" : "")">
-                          @*   <a class="govuk-tabs__tab" href="@Url.Action("DefineSoaDetails", "Soa", new { phaseIndex = i })">
+                          @*   <a class="govuk-tabs__tab" href="@Url.Action("DefineSOADetails", "Soa", new { phaseIndex = i })">
                                 @phase.Name
                             </a> *@
                             <a class="govuk-tabs__tab" href="#phase-@i">
@@ -60,22 +60,18 @@
                                     }
                                 </tbody>
                             </table>
-                           @*  <ul class="govuk-list app-element-list">
-                                @foreach (var element in stage.Elements)
-                                {
-                                    <li class="app-element-list__item">
-                                        <a class="govuk-link app-element-list__link" href="@element.Url">@element.Name</a>
-                                        <strong class="govuk-tag @element.StatusClass app-element-list__tag">
-                                            @element.Status
-                                        </strong>
-                                    </li>
-                                }
-                            </ul> *@
-                          
                         }
                     </div>
                 }
+
+
+              
+
             </div>
+            <a href="@Url.Action("AddAssessmentPlanSoa", new { phaseIndex = 0 })" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                Continue
+            </a>
+
         </div>
     </div>
 </div>

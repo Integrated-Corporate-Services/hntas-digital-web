@@ -14,7 +14,7 @@ namespace HNTAS.Web.UI.Services.Core
             _heatNetworksApi = heatNetworksApi;
         }
 
-        public async Task<HeatNetwork?> GetAsync(string hnId)
+        public async Task<HeatNetworkResponse?> GetAsync(string hnId)
         {
             // _logger.LogInformation("Fetching heat network with ID: {HnId}", hnId);
 
@@ -36,7 +36,7 @@ namespace HNTAS.Web.UI.Services.Core
         }
 
 
-        public async Task<HeatNetwork> AddHeatNetwork(HeatNetwork heatNetwork, string hnId)
+        public async Task<HeatNetworkResponse> AddHeatNetwork(HeatNetwork heatNetwork, string hnId)
         {
             // Implementation for adding a heat network
             // _logger.LogInformation("Adding heat network: {HeatNetworkName}", heatNetwork.Name);
@@ -58,7 +58,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<List<HeatNetwork>> GetAllHeatNetworks()
+        public async Task<List<HeatNetworkResponse>> GetAllHeatNetworks()
         {
             try
             {
