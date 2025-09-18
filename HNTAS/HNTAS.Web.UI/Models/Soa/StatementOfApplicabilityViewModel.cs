@@ -30,5 +30,6 @@
         public string? Url { get; set; } // URL for the link
         public string? Status { get; set; } // e.g., "Not yet started", "Completed"
         public string? StatusClass { get; set; } // CSS class for status styling
+        public int? Count { get; set; } // Number of elements
     }
 }

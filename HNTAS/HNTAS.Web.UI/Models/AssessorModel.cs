@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Models.Soa;
+using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
 {
@@ -8,5 +10,28 @@ namespace HNTAS.Web.UI.Models
         public bool HasDeclaredImpartiality { get; set; }
         [Required]
         public string HnId { get; set; }
+    }
+
+    public class HeatNetworkDetailsViewModel
+    {
+        public string HnId;
+        public string HnName;
+        public string HnLocation;
+        public string OrganisationName;
+        public List<SelectedElement> HeatNetworkElements { get; set; }
+        public int CurrentPhaseIndex;
+        public RegisteredAddress OrganisationAddress;
+        public string Pathway;
+        public List<PhaseViewModel> Phases { get; set; }
+    }
+
+    public class DownloadTheDocumentModel
+    {
+        public string Phase;
+        public string Stage;
+        public string Element;
+        public List<ElementViewModel> ElementList;
+        public List<UploadedDocument> Documents;
+        public List<UploadedDocument> AssessementPlan;
     }
 }
