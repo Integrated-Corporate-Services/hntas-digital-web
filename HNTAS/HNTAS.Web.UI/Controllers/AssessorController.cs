@@ -77,7 +77,7 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("HeatNetworkDetails", "Assessor", new { hnId = model.HnId });
         }
 
-        private List<ElementViewModel> GetElementsForStage(SoaStage stage, int phaseNumber, SoaResponse soa)
+        private List<ElementViewModel> GetElementsForStage(NullableOfSoaStage stage, int phaseNumber, SoaResponse soa)
         {
             var phaseEnum = (SoaPhase)phaseNumber;
 
@@ -128,16 +128,8 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     return BadRequest();
                 }
-                var pathway = "";
                 var phaseIndex = 0;
-                if (hnDetails.Pathway == "1")
-                {
-                    pathway = "1 - 7 (New built Pathway)";
-                }
-                else if (hnDetails.Pathway == "3")
-                {
-                    pathway = "3 - 7 (Existing Pathway)";
-                }
+                
 
                 var model = new HeatNetworkDetailsViewModel
                 {
@@ -146,7 +138,7 @@ namespace HNTAS.Web.UI.Controllers
                     HnLocation = hnDetails.Location,
                     OrganisationName = user.Organisation.Name,
                     OrganisationAddress = user.Organisation.RegisteredAddress,
-                    Pathway = pathway,
+                    Pathway = hnDetails.Pathway,
                     CurrentPhaseIndex = phaseIndex,
                     Phases = SoaPhaseStageMapping.Phases.Skip(Convert.ToInt32(hnDetails.Pathway) - 1).ToList().Select((phase, index) => new PhaseViewModel
                     {
@@ -198,7 +190,7 @@ namespace HNTAS.Web.UI.Controllers
             var elementList = new List<ElementViewModel>();
             var phasesData = _sessionHelper.GetFromSession<List<PhaseViewModel>>(HttpContext, "PhaseData");
 
-            elementList = phasesData[Phase].Stages[Stage].Elements;
+            elementList = phasesData[Phase-1].Stages[Stage-1].Elements;
 
             var model = new DownloadTheDocumentModel()
             {
@@ -241,12 +233,56 @@ namespace HNTAS.Web.UI.Controllers
             return File(stream, "application/octet-stream", Path.GetFileName(key));
         }
 
-
         [HttpGet]
-        public IActionResult UploadSOC()
+        public IActionResult UploadSOC([FromQuery] int phase)
         {
-            return View();
+            this.ShowBackButton("HeatNetworkDetails", "Assessor");
+            var model = new UploadSOCViewModel
+            {
+                PhaseNumber = phase,
+                TemplateDownloadUrl = Url.Action("DownloadTemplate", "Soa", new { phase })
+            };
+            return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadSOC([FromQuery] int phase, IFormFile assessorDoc)
+        {
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+
+            if (assessorDoc == null || assessorDoc.Length == 0)
+            {
+                ModelState.AddModelError("assessmentPlan", "Please select a file to upload.");
+                return View(new UploadAssessmentPlanViewModel
+                {
+                    PhaseNumber = phase,
+                    TemplateDownloadUrl = Url.Action("DownloadTemplate", "Soa", new { phase })
+                });
+            }
+            try {
+                var s3Key = await _s3UploadService.UploadFileAsync(assessorDoc, $"soa/{hnId}/{phase}/AssessorDocuments");
+
+                // Optionally persist metadata or update project state here
+                var request = new UpdateDocumentRequest(hnId: hnId, phase: (SoaPhase)phase, uploadedBy: userId, fileName: assessorDoc.FileName, s3Key: s3Key, documentType: DocumentType.Assessor);
+                await _soaService.UpdateDocument(request);
+
+                _logger.LogInformation("Assessor document uploaded for HN ID: {HnId}, Phase: {Phase}, UploadedBy: {UserId}, s3Key: {s3Key}", hnId, phase, userId, s3Key);
+                return RedirectToAction("CheckYourAnswers");
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error uploading assessor document for HN ID: {HnId}, Phase: {Phase}, UploadedBy: {UserId}", hnId, phase, userId);
+                ModelState.AddModelError(string.Empty, "An error occurred while uploading the document. Please try again.");
+                return View(new UploadAssessmentPlanViewModel
+                {
+                    PhaseNumber = phase,
+                    TemplateDownloadUrl = Url.Action("DownloadTemplate", "Soa", new { phase })
+                });
+            }            
+        }
+
+
 
         [HttpGet]
         public IActionResult CheckYourAnswers()

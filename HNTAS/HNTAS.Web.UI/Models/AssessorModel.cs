@@ -34,4 +34,12 @@ namespace HNTAS.Web.UI.Models
         public List<UploadedDocument> Documents;
         public List<UploadedDocument> AssessementPlan;
     }
+
+    public class UploadSOCViewModel
+    {
+        public int PhaseNumber { get; set; }
+        public string TemplateDownloadUrl { get; set; } = string.Empty;
+    }
+
+
 }

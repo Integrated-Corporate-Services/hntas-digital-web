@@ -4,6 +4,17 @@
     ViewData["Title"] = "Heat network details";
     string RenderLine(string value, string suffix = "<br>") =>
             !string.IsNullOrEmpty(value) ? $"{value}{suffix}" : "";
+    string pathwayString = "";
+    // int pathwayNumber = 1;
+    if (Model.Pathway == "1")
+    {
+        pathwayString = "1 - 7 (New built Pathway)";
+    }
+    else if (Model.Pathway == "3")
+    {
+        pathwayString = "3 - 7 (Existing Pathway)";
+        // pathwayNumber = 3;
+    }
 }
 
 <div class="govuk-width-container">
@@ -49,7 +60,7 @@
         </div>
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Pathway</dt>
-            <dd class="govuk-summary-list__value">@Model.Pathway</dd>
+            <dd class="govuk-summary-list__value">@pathwayString</dd>
         </div>
     </div>
 
@@ -104,7 +115,7 @@
                                         Assigned to Assessor
                                     </td>
                                     <td class="govuk-table__cell">
-                                        <a class="govuk-link app-element-list__link" href="@Url.Action("DownloadTheDocuments", "Assessor", new { Phase = i+1, Stage = j+1, Element = element.Name, ElementList = stage.Elements })">Continue</a>
+                                        <a class="govuk-link app-element-list__link" href="@Url.Action("DownloadTheDocuments", "Assessor", new { Phase = i+1, Stage = j + 1, Element = element.Name, ElementList = stage.Elements })">Continue</a>
                                     </td>
                                 </tr>
                             }
