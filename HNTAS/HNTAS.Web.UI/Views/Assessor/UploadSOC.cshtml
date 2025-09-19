@@ -18,17 +18,18 @@
                 the template to fill in and update later.
             </p>
 
-            <form method="post" enctype="multipart/form-data">
-                <div class="govuk-form-group">
-                    <p class="govuk-hint" for="socFile">
-                        Select your document
-                    </p>
-                    <input class="govuk-file-upload" id="socFile" name="socFile" type="file">
-                </div>
-                <div class="app-button-wrapper">
-                    <a role="button" asp-controller="Assessor" asp-action="UploadSOC" data-module="govuk-button" draggable="false" class="govuk-button">Continue</a>
-                </div>
-            </form>
+                <form asp-action="SaveUploadSOC" method="post" enctype="multipart/form-data" class="govuk-form-group">
+                    <div class="govuk-form-group">
+
+                    <input class="govuk-file-upload" id="assessorSoc" name="assessorSoc" type="file">
+                    </div>
+                    <br />
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Continue
+                    </button>
+                </form>
+
+
         </div>
     </div>
 </div>
