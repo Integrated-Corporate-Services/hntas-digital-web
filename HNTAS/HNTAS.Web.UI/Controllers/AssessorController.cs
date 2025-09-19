@@ -77,7 +77,7 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("HeatNetworkDetails", "Assessor", new { hnId = model.HnId });
         }
 
-        private List<ElementViewModel> GetElementsForStage(SoaStage stage, int phaseNumber, SoaResponse soa)
+        private List<ElementViewModel> GetElementsForStage(NullableOfSoaStage stage, int phaseNumber, SoaResponse soa)
         {
             var phaseEnum = (SoaPhase)phaseNumber;
 

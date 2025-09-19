@@ -435,7 +435,7 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        private List<ElementViewModel> GetDefaultElementsForStage(SoaStage stage, int phaseNumber, Soa2 soa)
+        private List<ElementViewModel> GetDefaultElementsForStage(NullableOfSoaStage stage, int phaseNumber, Soa2 soa)
         {
             var stageNumber = (int)stage;
             var phaseEnum = (SoaPhase)phaseNumber;
@@ -555,7 +555,7 @@ namespace HNTAS.Web.UI.Controllers
                         FileName = file.FileName,
                         S3Key = s3Key,
                         Phase = (SoaPhase)phase, // You can dynamically resolve this if needed
-                        Stage = (SoaStage)stage, // Same here
+                        Stage = (NullableOfSoaStage)stage, // Same here
                         UploadedAt = DateTime.UtcNow,
                         UploadedBy = userId
                     });
@@ -667,8 +667,8 @@ namespace HNTAS.Web.UI.Controllers
             var s3Key = await _s3UploadService.UploadFileAsync(assessmentPlan, $"soa/{hnId}/{phase}/AssessmentPlan");
 
             // Optionally persist metadata or update project state here
-            var request = new UpdateAssessmentPlanRequest(hnId: hnId, phase: (SoaPhase)phase, updatedBy: userId, fileName: assessmentPlan.FileName, s3Key: s3Key);
-            await _soaProjectService.UpdateAssessmentPlanDocument(request);
+            var request = new UpdateDocumentRequest(hnId: hnId, phase: (SoaPhase)phase, uploadedBy: userId, fileName: assessmentPlan.FileName, s3Key: s3Key, documentType: DocumentType.Assessment);
+            await _soaProjectService.UpdateDocument(request);
 
             _logger.LogInformation("Assessment plan uploaded for HN ID: {HnId}, Phase: {Phase}, UploadedBy: {UserId}", hnId, phase, userId);
 
@@ -686,7 +686,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new SubmitAssessmentPlanViewModel // Updated reference
             {
-                DocumentName = heatNetworkResponse.Soa.JourneyData.AssessmentPlans.FirstOrDefault()?.FileName, //"MyAssessmentPlan.docx",
+                DocumentName = heatNetworkResponse.Soa.JourneyData.AssessmentDocs.FirstOrDefault()?.FileName, //"MyAssessmentPlan.docx",
                 PhaseNumber = phaseIndex + 1,
                 Steps = StaticSoaSteps.GetSteps(SoaSteps.SubmitSoa, Url)
             };
@@ -730,7 +730,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             //filter assessment plan for current phase
-            var assessmentPlanDoc = heatNetworkResponse?.Soa?.JourneyData?.AssessmentPlans?
+            var assessmentPlanDoc = heatNetworkResponse?.Soa?.JourneyData?.AssessmentDocs?
                 .Where(d => d.Phase == "Phase" + currentPhase)
                 .Select(d => new DocumentItem
                 {

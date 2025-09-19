@@ -1,4 +1,4 @@
-# HNTAS.Api.Client.Model.UploadedDocument
+# HNTAS.Api.Client.Model.UploadedCertifierDocumentResponse
 
 ## Properties
 
@@ -6,8 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **FileName** | **string** |  | [optional] 
 **S3Key** | **string** |  | [optional] 
-**Phase** | **SoaPhase** |  | [optional] 
-**Stage** | **NullableOfSoaStage** |  | [optional] 
+**Phase** | **string** |  | [optional] 
+**Stage** | **string** |  | [optional] 
 **UploadedAt** | **DateTimeOffset** |  | [optional] 
 **UploadedBy** | **string** |  | [optional] 
 

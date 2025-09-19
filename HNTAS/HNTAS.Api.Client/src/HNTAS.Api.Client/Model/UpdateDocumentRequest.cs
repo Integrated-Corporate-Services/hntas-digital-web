@@ -26,27 +26,29 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// UpdateAssessmentPlanRequest
+    /// UpdateDocumentRequest
     /// </summary>
-    public partial class UpdateAssessmentPlanRequest : IValidatableObject
+    public partial class UpdateDocumentRequest : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateAssessmentPlanRequest" /> class.
+        /// Initializes a new instance of the <see cref="UpdateDocumentRequest" /> class.
         /// </summary>
         /// <param name="hnId">hnId</param>
         /// <param name="phase">phase</param>
-        /// <param name="updatedBy">updatedBy</param>
+        /// <param name="uploadedBy">uploadedBy</param>
         /// <param name="fileName">fileName</param>
         /// <param name="s3Key">s3Key</param>
+        /// <param name="documentType">documentType</param>
         /// <param name="stage">stage</param>
         [JsonConstructor]
-        public UpdateAssessmentPlanRequest(string hnId, SoaPhase phase, string updatedBy, string fileName, string s3Key, Option<NullableOfSoaStage?> stage = default)
+        public UpdateDocumentRequest(string hnId, SoaPhase phase, string uploadedBy, string fileName, string s3Key, DocumentType documentType, Option<NullableOfSoaStage?> stage = default)
         {
             HnId = hnId;
             Phase = phase;
-            UpdatedBy = updatedBy;
+            UploadedBy = uploadedBy;
             FileName = fileName;
             S3Key = s3Key;
+            DocumentType = documentType;
             StageOption = stage;
             OnCreated();
         }
@@ -58,6 +60,12 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("phase")]
         public SoaPhase Phase { get; set; }
+
+        /// <summary>
+        /// Gets or Sets DocumentType
+        /// </summary>
+        [JsonPropertyName("documentType")]
+        public DocumentType DocumentType { get; set; }
 
         /// <summary>
         /// Used to track the state of Stage
@@ -79,10 +87,10 @@ namespace HNTAS.Api.Client.Model
         public string HnId { get; set; }
 
         /// <summary>
-        /// Gets or Sets UpdatedBy
+        /// Gets or Sets UploadedBy
         /// </summary>
-        [JsonPropertyName("updatedBy")]
-        public string UpdatedBy { get; set; }
+        [JsonPropertyName("uploadedBy")]
+        public string UploadedBy { get; set; }
 
         /// <summary>
         /// Gets or Sets FileName
@@ -103,12 +111,13 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class UpdateAssessmentPlanRequest {\n");
+            sb.Append("class UpdateDocumentRequest {\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  Phase: ").Append(Phase).Append("\n");
-            sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
+            sb.Append("  UploadedBy: ").Append(UploadedBy).Append("\n");
             sb.Append("  FileName: ").Append(FileName).Append("\n");
             sb.Append("  S3Key: ").Append(S3Key).Append("\n");
+            sb.Append("  DocumentType: ").Append(DocumentType).Append("\n");
             sb.Append("  Stage: ").Append(Stage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -126,19 +135,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="UpdateAssessmentPlanRequest" />
+    /// A Json converter for type <see cref="UpdateDocumentRequest" />
     /// </summary>
-    public class UpdateAssessmentPlanRequestJsonConverter : JsonConverter<UpdateAssessmentPlanRequest>
+    public class UpdateDocumentRequestJsonConverter : JsonConverter<UpdateDocumentRequest>
     {
         /// <summary>
-        /// Deserializes json to <see cref="UpdateAssessmentPlanRequest" />
+        /// Deserializes json to <see cref="UpdateDocumentRequest" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override UpdateAssessmentPlanRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override UpdateDocumentRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -149,9 +158,10 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> hnId = default;
             Option<SoaPhase?> phase = default;
-            Option<string?> updatedBy = default;
+            Option<string?> uploadedBy = default;
             Option<string?> fileName = default;
             Option<string?> s3Key = default;
+            Option<DocumentType?> documentType = default;
             Option<NullableOfSoaStage?> stage = default;
 
             while (utf8JsonReader.Read())
@@ -177,14 +187,19 @@ namespace HNTAS.Api.Client.Model
                             if (phaseRawValue != null)
                                 phase = new Option<SoaPhase?>(SoaPhaseValueConverter.FromStringOrDefault(phaseRawValue));
                             break;
-                        case "updatedBy":
-                            updatedBy = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "uploadedBy":
+                            uploadedBy = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "fileName":
                             fileName = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "s3Key":
                             s3Key = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "documentType":
+                            string? documentTypeRawValue = utf8JsonReader.GetString();
+                            if (documentTypeRawValue != null)
+                                documentType = new Option<DocumentType?>(DocumentTypeValueConverter.FromStringOrDefault(documentTypeRawValue));
                             break;
                         case "stage":
                             string? stageRawValue = utf8JsonReader.GetString();
@@ -198,89 +213,98 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (!hnId.IsSet)
-                throw new ArgumentException("Property is required for class UpdateAssessmentPlanRequest.", nameof(hnId));
+                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(hnId));
 
             if (!phase.IsSet)
-                throw new ArgumentException("Property is required for class UpdateAssessmentPlanRequest.", nameof(phase));
+                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(phase));
 
-            if (!updatedBy.IsSet)
-                throw new ArgumentException("Property is required for class UpdateAssessmentPlanRequest.", nameof(updatedBy));
+            if (!uploadedBy.IsSet)
+                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(uploadedBy));
 
             if (!fileName.IsSet)
-                throw new ArgumentException("Property is required for class UpdateAssessmentPlanRequest.", nameof(fileName));
+                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(fileName));
 
             if (!s3Key.IsSet)
-                throw new ArgumentException("Property is required for class UpdateAssessmentPlanRequest.", nameof(s3Key));
+                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(s3Key));
+
+            if (!documentType.IsSet)
+                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(documentType));
 
             if (hnId.IsSet && hnId.Value == null)
-                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class UpdateAssessmentPlanRequest.");
+                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class UpdateDocumentRequest.");
 
             if (phase.IsSet && phase.Value == null)
-                throw new ArgumentNullException(nameof(phase), "Property is not nullable for class UpdateAssessmentPlanRequest.");
+                throw new ArgumentNullException(nameof(phase), "Property is not nullable for class UpdateDocumentRequest.");
 
-            if (updatedBy.IsSet && updatedBy.Value == null)
-                throw new ArgumentNullException(nameof(updatedBy), "Property is not nullable for class UpdateAssessmentPlanRequest.");
+            if (uploadedBy.IsSet && uploadedBy.Value == null)
+                throw new ArgumentNullException(nameof(uploadedBy), "Property is not nullable for class UpdateDocumentRequest.");
 
             if (fileName.IsSet && fileName.Value == null)
-                throw new ArgumentNullException(nameof(fileName), "Property is not nullable for class UpdateAssessmentPlanRequest.");
+                throw new ArgumentNullException(nameof(fileName), "Property is not nullable for class UpdateDocumentRequest.");
 
             if (s3Key.IsSet && s3Key.Value == null)
-                throw new ArgumentNullException(nameof(s3Key), "Property is not nullable for class UpdateAssessmentPlanRequest.");
+                throw new ArgumentNullException(nameof(s3Key), "Property is not nullable for class UpdateDocumentRequest.");
 
-            return new UpdateAssessmentPlanRequest(hnId.Value!, phase.Value!.Value!, updatedBy.Value!, fileName.Value!, s3Key.Value!, stage);
+            if (documentType.IsSet && documentType.Value == null)
+                throw new ArgumentNullException(nameof(documentType), "Property is not nullable for class UpdateDocumentRequest.");
+
+            return new UpdateDocumentRequest(hnId.Value!, phase.Value!.Value!, uploadedBy.Value!, fileName.Value!, s3Key.Value!, documentType.Value!.Value!, stage);
         }
 
         /// <summary>
-        /// Serializes a <see cref="UpdateAssessmentPlanRequest" />
+        /// Serializes a <see cref="UpdateDocumentRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="updateAssessmentPlanRequest"></param>
+        /// <param name="updateDocumentRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, UpdateAssessmentPlanRequest updateAssessmentPlanRequest, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, UpdateDocumentRequest updateDocumentRequest, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, updateAssessmentPlanRequest, jsonSerializerOptions);
+            WriteProperties(writer, updateDocumentRequest, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="UpdateAssessmentPlanRequest" />
+        /// Serializes the properties of <see cref="UpdateDocumentRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="updateAssessmentPlanRequest"></param>
+        /// <param name="updateDocumentRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, UpdateAssessmentPlanRequest updateAssessmentPlanRequest, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, UpdateDocumentRequest updateDocumentRequest, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (updateAssessmentPlanRequest.HnId == null)
-                throw new ArgumentNullException(nameof(updateAssessmentPlanRequest.HnId), "Property is required for class UpdateAssessmentPlanRequest.");
+            if (updateDocumentRequest.HnId == null)
+                throw new ArgumentNullException(nameof(updateDocumentRequest.HnId), "Property is required for class UpdateDocumentRequest.");
 
-            if (updateAssessmentPlanRequest.UpdatedBy == null)
-                throw new ArgumentNullException(nameof(updateAssessmentPlanRequest.UpdatedBy), "Property is required for class UpdateAssessmentPlanRequest.");
+            if (updateDocumentRequest.UploadedBy == null)
+                throw new ArgumentNullException(nameof(updateDocumentRequest.UploadedBy), "Property is required for class UpdateDocumentRequest.");
 
-            if (updateAssessmentPlanRequest.FileName == null)
-                throw new ArgumentNullException(nameof(updateAssessmentPlanRequest.FileName), "Property is required for class UpdateAssessmentPlanRequest.");
+            if (updateDocumentRequest.FileName == null)
+                throw new ArgumentNullException(nameof(updateDocumentRequest.FileName), "Property is required for class UpdateDocumentRequest.");
 
-            if (updateAssessmentPlanRequest.S3Key == null)
-                throw new ArgumentNullException(nameof(updateAssessmentPlanRequest.S3Key), "Property is required for class UpdateAssessmentPlanRequest.");
+            if (updateDocumentRequest.S3Key == null)
+                throw new ArgumentNullException(nameof(updateDocumentRequest.S3Key), "Property is required for class UpdateDocumentRequest.");
 
-            writer.WriteString("hnId", updateAssessmentPlanRequest.HnId);
+            writer.WriteString("hnId", updateDocumentRequest.HnId);
 
-            var phaseRawValue = SoaPhaseValueConverter.ToJsonValue(updateAssessmentPlanRequest.Phase);
+            var phaseRawValue = SoaPhaseValueConverter.ToJsonValue(updateDocumentRequest.Phase);
             writer.WriteString("phase", phaseRawValue);
 
-            writer.WriteString("updatedBy", updateAssessmentPlanRequest.UpdatedBy);
+            writer.WriteString("uploadedBy", updateDocumentRequest.UploadedBy);
 
-            writer.WriteString("fileName", updateAssessmentPlanRequest.FileName);
+            writer.WriteString("fileName", updateDocumentRequest.FileName);
 
-            writer.WriteString("s3Key", updateAssessmentPlanRequest.S3Key);
+            writer.WriteString("s3Key", updateDocumentRequest.S3Key);
 
-            if (updateAssessmentPlanRequest.StageOption.IsSet)
-                if (updateAssessmentPlanRequest.StageOption!.Value != null)
+            var documentTypeRawValue = DocumentTypeValueConverter.ToJsonValue(updateDocumentRequest.DocumentType);
+            writer.WriteString("documentType", documentTypeRawValue);
+
+            if (updateDocumentRequest.StageOption.IsSet)
+                if (updateDocumentRequest.StageOption!.Value != null)
                 {
-                    var stageRawValue = NullableOfSoaStageValueConverter.ToJsonValue(updateAssessmentPlanRequest.StageOption.Value!.Value);
+                    var stageRawValue = NullableOfSoaStageValueConverter.ToJsonValue(updateDocumentRequest.StageOption.Value!.Value);
                     writer.WriteString("stage", stageRawValue);
                 }
                 else

@@ -12,7 +12,7 @@ namespace HNTAS.Web.UI.Helpers
                 Title = "Feasibility",
                 Stages = new List<StageDefinition>
                 {
-                    new() { Name = "Stage 1 – concept design", SoaStage = Api.Client.Model.SoaStage.Stage1 }
+                    new() { Name = "Stage 1 – concept design", SoaStage = Api.Client.Model.NullableOfSoaStage.Stage1 }
                 }
             },
             new PhaseDefinition
@@ -21,8 +21,8 @@ namespace HNTAS.Web.UI.Helpers
                 Title = "Design",
                 Stages = new List<StageDefinition>
                 {
-                    new() { Name = "Stage 2 – developed design", SoaStage = Api.Client.Model.SoaStage.Stage2 },
-                    new() { Name = "Stage 3 – technical design", SoaStage = Api.Client.Model.SoaStage.Stage3 }
+                    new() { Name = "Stage 2 – developed design", SoaStage = Api.Client.Model.NullableOfSoaStage.Stage2 },
+                    new() { Name = "Stage 3 – technical design", SoaStage = Api.Client.Model.NullableOfSoaStage.Stage3 }
                 }
             },
             new PhaseDefinition
@@ -31,9 +31,9 @@ namespace HNTAS.Web.UI.Helpers
                 Title = "Construction",
                 Stages = new List<StageDefinition>
                 {
-                    new() { Name = "Stage 4 – construction design", SoaStage = Api.Client.Model.SoaStage.Stage4},
-                    new() { Name = "Stage 5 – installation", SoaStage = Api.Client.Model.SoaStage.Stage5 },
-                    new() { Name = "Stage 6 – commissioning", SoaStage = Api.Client.Model.SoaStage.Stage6 }
+                    new() { Name = "Stage 4 – construction design", SoaStage = Api.Client.Model.NullableOfSoaStage.Stage4},
+                    new() { Name = "Stage 5 – installation", SoaStage = Api.Client.Model.NullableOfSoaStage.Stage5 },
+                    new() { Name = "Stage 6 – commissioning", SoaStage = Api.Client.Model.NullableOfSoaStage.Stage6 }
                 }
             },
             new PhaseDefinition
@@ -42,7 +42,7 @@ namespace HNTAS.Web.UI.Helpers
                 Title = "Operation (initial 2 years)",
                 Stages = new List<StageDefinition>
                 {
-                    new() { Name = "Stage 7 – operation & maintenance", SoaStage = Api.Client.Model.SoaStage.Stage7 }
+                    new() { Name = "Stage 7 – operation & maintenance", SoaStage = Api.Client.Model.NullableOfSoaStage.Stage7 }
                 }
             },
             new PhaseDefinition
@@ -51,7 +51,7 @@ namespace HNTAS.Web.UI.Helpers
                 Title = "Operation (ongoing)",
                 Stages = new List<StageDefinition>
                 {
-                    new() { Name = "Stage 8 – ongoing monitoring", SoaStage = Api.Client.Model.SoaStage.Stage8}
+                    new() { Name = "Stage 8 – ongoing monitoring", SoaStage = Api.Client.Model.NullableOfSoaStage.Stage8}
                 }
             }
         };

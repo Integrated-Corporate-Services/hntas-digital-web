@@ -997,7 +997,7 @@
       }
     },
     "/api/SOA/element-locations": {
-      "post": {
+      "patch": {
         "tags": [
           "SOA"
         ],
@@ -1069,7 +1069,7 @@
       }
     },
     "/api/SOA/element-documents": {
-      "post": {
+      "patch": {
         "tags": [
           "SOA"
         ],
@@ -1140,8 +1140,8 @@
         }
       }
     },
-    "/api/SOA/assessment-plan": {
-      "post": {
+    "/api/SOA/document-update": {
+      "patch": {
         "tags": [
           "SOA"
         ],
@@ -1149,17 +1149,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAssessmentPlanRequest"
+                "$ref": "#/components/schemas/UpdateDocumentRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAssessmentPlanRequest"
+                "$ref": "#/components/schemas/UpdateDocumentRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAssessmentPlanRequest"
+                "$ref": "#/components/schemas/UpdateDocumentRequest"
               }
             }
           },
@@ -2203,55 +2203,6 @@
           }
         }
       },
-      "AssessmentPlanDocument": {
-        "type": "object",
-        "properties": {
-          "phase": {
-            "$ref": "#/components/schemas/SoaPhase"
-          },
-          "stage": {
-            "$ref": "#/components/schemas/NullableOfSoaStage"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "s3Key": {
-            "type": "string"
-          },
-          "uploadedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "uploadedBy": {
-            "type": "string"
-          }
-        }
-      },
-      "AssessmentPlanDocumentResponse": {
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string"
-          },
-          "s3Key": {
-            "type": "string"
-          },
-          "phase": {
-            "type": "string"
-          },
-          "stage": {
-            "type": "string",
-            "nullable": true
-          },
-          "uploadedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "uploadedBy": {
-            "type": "string"
-          }
-        }
-      },
       "ConnectionType": {
         "enum": [
           "ChildConnections",
@@ -2269,6 +2220,13 @@
           "ContributingContractor",
           "ContributingOperator",
           "Assessor"
+        ]
+      },
+      "DocumentType": {
+        "enum": [
+          "Assessment",
+          "Assessor",
+          "Certifier"
         ]
       },
       "EnumItemResponse": {
@@ -2545,10 +2503,22 @@
               "$ref": "#/components/schemas/HeatNetworkElementResponse"
             }
           },
-          "assessmentPlans": {
+          "assessmentDocs": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AssessmentPlanDocumentResponse"
+              "$ref": "#/components/schemas/UploadedAssessmentDocumentResponse"
+            }
+          },
+          "assessorDocs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedAssessorDocumentResponse"
+            }
+          },
+          "certifierDocs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedCertifierDocumentResponse"
             }
           }
         },
@@ -2834,11 +2804,17 @@
               "$ref": "#/components/schemas/HeatNetworkElement"
             }
           },
-          "assessmentPlans": {
+          "assessmentDocs": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AssessmentPlanDocument"
-            }
+            "items": { }
+          },
+          "assessorDocs": {
+            "type": "array",
+            "items": { }
+          },
+          "certifierDocs": {
+            "type": "array",
+            "items": { }
           }
         },
         "nullable": true
@@ -2881,18 +2857,6 @@
         },
         "nullable": true
       },
-      "SoaStage": {
-        "enum": [
-          "Stage1",
-          "Stage2",
-          "Stage3",
-          "Stage4",
-          "Stage5",
-          "Stage6",
-          "Stage7",
-          "Stage8"
-        ]
-      },
       "SoaStatus": {
         "enum": [
           "InProgress",
@@ -2900,36 +2864,6 @@
           "Complete",
           "Archived"
         ]
-      },
-      "UpdateAssessmentPlanRequest": {
-        "required": [
-          "hnId",
-          "phase",
-          "updatedBy",
-          "fileName",
-          "s3Key"
-        ],
-        "type": "object",
-        "properties": {
-          "hnId": {
-            "type": "string"
-          },
-          "phase": {
-            "$ref": "#/components/schemas/SoaPhase"
-          },
-          "stage": {
-            "$ref": "#/components/schemas/NullableOfSoaStage"
-          },
-          "updatedBy": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "s3Key": {
-            "type": "string"
-          }
-        }
       },
       "UpdateConnectionsRequest": {
         "required": [
@@ -2951,6 +2885,40 @@
             "items": {
               "$ref": "#/components/schemas/ConnectionType"
             }
+          }
+        }
+      },
+      "UpdateDocumentRequest": {
+        "required": [
+          "hnId",
+          "phase",
+          "uploadedBy",
+          "fileName",
+          "s3Key",
+          "documentType"
+        ],
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "phase": {
+            "$ref": "#/components/schemas/SoaPhase"
+          },
+          "stage": {
+            "$ref": "#/components/schemas/NullableOfSoaStage"
+          },
+          "uploadedBy": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "documentType": {
+            "$ref": "#/components/schemas/DocumentType"
           }
         }
       },
@@ -3058,6 +3026,81 @@
           }
         }
       },
+      "UploadedAssessmentDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "UploadedAssessorDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "UploadedCertifierDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
+        }
+      },
       "UploadedDocument": {
         "type": "object",
         "properties": {
@@ -3071,7 +3114,7 @@
             "$ref": "#/components/schemas/SoaPhase"
           },
           "stage": {
-            "$ref": "#/components/schemas/SoaStage"
+            "$ref": "#/components/schemas/NullableOfSoaStage"
           },
           "uploadedAt": {
             "type": "string",
@@ -3095,7 +3138,8 @@
             "type": "string"
           },
           "stage": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "uploadedAt": {
             "type": "string",
