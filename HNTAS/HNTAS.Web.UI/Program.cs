@@ -14,7 +14,6 @@ using HNTAS.Web.UI.Workflows.Models.Data;
 using HNTAS.Web.UI.Workflows.Services;
 using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
@@ -65,14 +64,11 @@ builder.Services.AddSingleton(new JsonSerializerOptions
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Common setting for JSON serialization
     Converters = {
         new UserJsonConverter(),
-        new OrgRegisteredAddressJsonConverter(),
         new InitialUserRegistrationRequestJsonConverter(),
         new UserRoleJsonConverter(),
         new UserResponseJsonConverter(),
-        new OrganisationJsonConverter(),
-        new HeatNetworkJsonConverter(),
+        new HeatNetworkUserResponseJsonConverter(),
         new EnumItemResponseJsonConverter(),
-        new InvitationJsonConverter(),
         new ContributorRoleJsonConverter(),
         new UserDetailsResponseJsonConverter(),
         new OrganisationResponseJsonConverter(),
@@ -81,12 +77,23 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new ManagedUserResponseJsonConverter(),
         new InvitedUserResponseJsonConverter(),
         new HnRoleMappingJsonConverter(),
-        new SoaProjectJsonConverter(),
         new SoaJourneyDataJsonConverter(),
         new NetworkTypeSelectionJsonConverter(),
         new ConnectionTypeJsonConverter(),
         new HeatNetworkElementJsonConverter(),
-        new UploadedDocumentJsonConverter()
+        new UploadedDocumentJsonConverter(),
+        new HeatNetworkResponseJsonConverter(),
+        new SoaResponseJsonConverter(),
+        new SoaStatusJsonConverter(),
+        new SoaJsonConverter(),
+        new Soa2JsonConverter(),
+        new JourneyDataResponseJsonConverter(),
+        new NetworkTypeResponseJsonConverter(),
+        new ConnectionTypeJsonConverter(),
+        new HeatNetworkElementResponseJsonConverter(),
+        new AssessmentPlanDocumentResponseJsonConverter(),
+        new UploadedDocumentResponseJsonConverter(),
+        new AssessmentPlanDocumentJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -114,8 +121,8 @@ builder.Services.AddHttpClient<IInvitationsApi, InvitationsApi>(client =>
 });
 
 
-builder.Services.AddSingleton<SoaProjectApiEvents>();
-builder.Services.AddHttpClient<ISoaProjectApi, SoaProjectApi>(client =>
+builder.Services.AddSingleton<SOAApiEvents>();
+builder.Services.AddHttpClient<ISOAApi, SOAApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
@@ -136,7 +143,7 @@ builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
-builder.Services.AddScoped<ISoaProjectService, SoaProjectService>();
+builder.Services.AddScoped<ISoaService, SoaService>();
 
 builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
 

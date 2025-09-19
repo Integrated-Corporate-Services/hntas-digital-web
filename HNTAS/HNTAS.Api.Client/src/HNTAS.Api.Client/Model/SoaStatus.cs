@@ -26,9 +26,9 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// Defines SoaProjectStatus
+    /// Defines SoaStatus
     /// </summary>
-    public enum SoaProjectStatus
+    public enum SoaStatus
     {
         /// <summary>
         /// Enum InProgress for value: InProgress
@@ -36,74 +36,88 @@ namespace HNTAS.Api.Client.Model
         InProgress = 1,
 
         /// <summary>
+        /// Enum Submitted for value: Submitted
+        /// </summary>
+        Submitted = 2,
+
+        /// <summary>
         /// Enum Complete for value: Complete
         /// </summary>
-        Complete = 2,
+        Complete = 3,
 
         /// <summary>
         /// Enum Archived for value: Archived
         /// </summary>
-        Archived = 3
+        Archived = 4
     }
 
     /// <summary>
-    /// Converts <see cref="SoaProjectStatus"/> to and from the JSON value
+    /// Converts <see cref="SoaStatus"/> to and from the JSON value
     /// </summary>
-    public static class SoaProjectStatusValueConverter
+    public static class SoaStatusValueConverter
     {
         /// <summary>
-        /// Parses a given value to <see cref="SoaProjectStatus"/>
+        /// Parses a given value to <see cref="SoaStatus"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static SoaProjectStatus FromString(string value)
+        public static SoaStatus FromString(string value)
         {
             if (value.Equals("InProgress"))
-                return SoaProjectStatus.InProgress;
+                return SoaStatus.InProgress;
+
+            if (value.Equals("Submitted"))
+                return SoaStatus.Submitted;
 
             if (value.Equals("Complete"))
-                return SoaProjectStatus.Complete;
+                return SoaStatus.Complete;
 
             if (value.Equals("Archived"))
-                return SoaProjectStatus.Archived;
+                return SoaStatus.Archived;
 
-            throw new NotImplementedException($"Could not convert value to type SoaProjectStatus: '{value}'");
+            throw new NotImplementedException($"Could not convert value to type SoaStatus: '{value}'");
         }
 
         /// <summary>
-        /// Parses a given value to <see cref="SoaProjectStatus"/>
+        /// Parses a given value to <see cref="SoaStatus"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static SoaProjectStatus? FromStringOrDefault(string value)
+        public static SoaStatus? FromStringOrDefault(string value)
         {
             if (value.Equals("InProgress"))
-                return SoaProjectStatus.InProgress;
+                return SoaStatus.InProgress;
+
+            if (value.Equals("Submitted"))
+                return SoaStatus.Submitted;
 
             if (value.Equals("Complete"))
-                return SoaProjectStatus.Complete;
+                return SoaStatus.Complete;
 
             if (value.Equals("Archived"))
-                return SoaProjectStatus.Archived;
+                return SoaStatus.Archived;
 
             return null;
         }
 
         /// <summary>
-        /// Converts the <see cref="SoaProjectStatus"/> to the json value
+        /// Converts the <see cref="SoaStatus"/> to the json value
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static string ToJsonValue(SoaProjectStatus value)
+        public static string ToJsonValue(SoaStatus value)
         {
-            if (value == SoaProjectStatus.InProgress)
+            if (value == SoaStatus.InProgress)
                 return "InProgress";
 
-            if (value == SoaProjectStatus.Complete)
+            if (value == SoaStatus.Submitted)
+                return "Submitted";
+
+            if (value == SoaStatus.Complete)
                 return "Complete";
 
-            if (value == SoaProjectStatus.Archived)
+            if (value == SoaStatus.Archived)
                 return "Archived";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
@@ -111,10 +125,10 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="SoaProjectStatus"/>
+    /// A Json converter for type <see cref="SoaStatus"/>
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
-    public class SoaProjectStatusJsonConverter : JsonConverter<SoaProjectStatus>
+    public class SoaStatusJsonConverter : JsonConverter<SoaStatus>
     {
         /// <summary>
         /// Returns a  from the Json object
@@ -123,13 +137,13 @@ namespace HNTAS.Api.Client.Model
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override SoaProjectStatus Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override SoaStatus Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            SoaProjectStatus? result = rawValue == null
+            SoaStatus? result = rawValue == null
                 ? null
-                : SoaProjectStatusValueConverter.FromStringOrDefault(rawValue);
+                : SoaStatusValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -138,36 +152,36 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the SoaProjectStatus to the json writer
+        /// Writes the SoaStatus to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="soaProjectStatus"></param>
+        /// <param name="soaStatus"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, SoaProjectStatus soaProjectStatus, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, SoaStatus soaStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(soaProjectStatus.ToString());
+            writer.WriteStringValue(soaStatus.ToString());
         }
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="SoaProjectStatus"/>
+    /// A Json converter for type <see cref="SoaStatus"/>
     /// </summary>
-    public class SoaProjectStatusNullableJsonConverter : JsonConverter<SoaProjectStatus?>
+    public class SoaStatusNullableJsonConverter : JsonConverter<SoaStatus?>
     {
         /// <summary>
-        /// Returns a SoaProjectStatus from the Json object
+        /// Returns a SoaStatus from the Json object
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override SoaProjectStatus? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override SoaStatus? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            SoaProjectStatus? result = rawValue == null
+            SoaStatus? result = rawValue == null
                 ? null
-                : SoaProjectStatusValueConverter.FromStringOrDefault(rawValue);
+                : SoaStatusValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -179,11 +193,11 @@ namespace HNTAS.Api.Client.Model
         /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="soaProjectStatus"></param>
+        /// <param name="soaStatus"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, SoaProjectStatus? soaProjectStatus, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, SoaStatus? soaStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(soaProjectStatus?.ToString() ?? "null");
+            writer.WriteStringValue(soaStatus?.ToString() ?? "null");
         }
     }
 }

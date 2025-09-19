@@ -38,14 +38,16 @@ namespace HNTAS.Api.Client.Model
         /// <param name="location">location</param>
         /// <param name="name">name</param>
         /// <param name="pathway">pathway</param>
+        /// <param name="soa">soa</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> location = default, Option<string?> name = default, Option<string?> pathway = default)
+        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> location = default, Option<string?> name = default, Option<string?> pathway = default, Option<Soa?> soa = default)
         {
             IdOption = id;
             HnIdOption = hnId;
             LocationOption = location;
             NameOption = name;
             PathwayOption = pathway;
+            SoaOption = soa;
             OnCreated();
         }
 
@@ -117,6 +119,19 @@ namespace HNTAS.Api.Client.Model
         public string? Pathway { get { return this.PathwayOption; } set { this.PathwayOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Soa
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<Soa?> SoaOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Soa
+        /// </summary>
+        [JsonPropertyName("soa")]
+        public Soa? Soa { get { return this.SoaOption; } set { this.SoaOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -129,6 +144,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Location: ").Append(Location).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Pathway: ").Append(Pathway).Append("\n");
+            sb.Append("  Soa: ").Append(Soa).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -171,6 +187,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> location = default;
             Option<string?> name = default;
             Option<string?> pathway = default;
+            Option<Soa?> soa = default;
 
             while (utf8JsonReader.Read())
             {
@@ -202,6 +219,9 @@ namespace HNTAS.Api.Client.Model
                         case "pathway":
                             pathway = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "soa":
+                            soa = new Option<Soa?>(JsonSerializer.Deserialize<Soa>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         default:
                             break;
                     }
@@ -217,7 +237,7 @@ namespace HNTAS.Api.Client.Model
             if (pathway.IsSet && pathway.Value == null)
                 throw new ArgumentNullException(nameof(pathway), "Property is not nullable for class HeatNetwork.");
 
-            return new HeatNetwork(id, hnId, location, name, pathway);
+            return new HeatNetwork(id, hnId, location, name, pathway, soa);
         }
 
         /// <summary>
@@ -273,6 +293,15 @@ namespace HNTAS.Api.Client.Model
 
             if (heatNetwork.PathwayOption.IsSet)
                 writer.WriteString("pathway", heatNetwork.Pathway);
+
+            if (heatNetwork.SoaOption.IsSet)
+                if (heatNetwork.SoaOption.Value != null)
+                {
+                    writer.WritePropertyName("soa");
+                    JsonSerializer.Serialize(writer, heatNetwork.Soa, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("soa");
         }
     }
 }

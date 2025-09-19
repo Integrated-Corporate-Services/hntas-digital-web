@@ -3,38 +3,22 @@ using HNTAS.Api.Client.Model;
 
 namespace HNTAS.Web.UI.Services.Core
 {
-    public class SoaProjectService : ISoaProjectService
+    public class SoaService : ISoaService
     {
-        private readonly ISoaProjectApi _soaProjectApi;
-        private readonly ILogger<SoaProjectService> _logger;
+        private readonly ISOAApi _soaApi;
+        private readonly ILogger<SoaService> _logger;
 
-        public SoaProjectService(ISoaProjectApi soaProjectApi, ILogger<SoaProjectService> logger)
+        public SoaService(ISOAApi soaProjectApi, ILogger<SoaService> logger)
         {
-            _soaProjectApi = soaProjectApi;
+            _soaApi = soaProjectApi;
             _logger = logger;
         }
 
-        public async Task<SoaProject> GetAsync(string projectId)
-        {
-            //_logger.LogInformation("Fetching SOA project with ID: {ProjectId}", projectId);
-
-            var response = await _soaProjectApi.ApiSoaProjectProjectIdGetAsync(projectId);
-
-            if (response.IsOk)
-            {
-                //_logger.LogInformation("SOA project retrieved successfully for ID: {ProjectId}", projectId);
-                return response.Ok();
-            }
-
-            //_logger.LogError("Failed to fetch SOA project. Status code: {StatusCode}, Project ID: {ProjectId}", response.StatusCode, projectId);
-            throw new Exception($"Failed to fetch SoaProject with status code: {response.StatusCode}");
-        }
-
-        public async Task<SoaProject> GetByHnIdAsync(string hnId)
+        public async Task<Soa2?> GetByHnIdAsync(string hnId)
         {
             //_logger.LogInformation("Fetching SOA project with ID: {ProjectId}", hnId);
 
-            var response = await _soaProjectApi.ApiSoaProjectHeatNetworkHnIdGetAsync(hnId);
+            var response = await _soaApi.ApiSOAHeatNetworkHnIdGetAsync(hnId);
 
             if (response.IsOk)
             {
@@ -50,15 +34,15 @@ namespace HNTAS.Web.UI.Services.Core
             throw new Exception($"Failed to fetch SoaProject with status code: {response.StatusCode}");
         }
 
-        public async Task<SoaProject> CreateAsync(string hnId, string createdBy)
+        public async Task<Soa2?> CreateAsync(string hnId, string createdBy)
         {
             //_logger.LogInformation("Creating new SOA project for Heat Network ID: {HeatNetworkId} by {CreatedBy}", hnId, createdBy);
 
-            var response = await _soaProjectApi.ApiSoaProjectCreatePostAsync(hnId, createdBy);
+            var response = await _soaApi.ApiSOACreatePostAsync(hnId, createdBy);
 
-            if (response.IsCreated)
+            if (response.IsOk)
             {
-                var createdProject = response.Created();
+                var createdProject = response.Ok();
                 //_logger.LogInformation("SOA project created successfully with ID: {ProjectId} for Heat Network ID: {HeatNetworkId} by {CreatedBy}", createdProject.Id, hnId, createdBy);
                 return createdProject;
             }
@@ -72,7 +56,7 @@ namespace HNTAS.Web.UI.Services.Core
         {
             //_logger.LogInformation("Updating network type for project ID: {ProjectId} to {NetworkType}", hnId, networkTypeSelection.Type);
 
-            var response = await _soaProjectApi.ApiSoaProjectNetworkTypePatchAsync(networkTypeSelection, hnId, updatedBy);
+            var response = await _soaApi.ApiSOANetworkTypePatchAsync(networkTypeSelection, hnId, updatedBy);
 
             if (response.IsOk)
             {
@@ -89,7 +73,7 @@ namespace HNTAS.Web.UI.Services.Core
             // _logger.LogInformation("Updating connection types for project ID: {ProjectId} with values: {ConnectionTypes}", hnId, string.Join(", ", connectionTypes));
 
             var request = new UpdateConnectionsRequest(hnId, updatedBy, connectionTypes);
-            var response = await _soaProjectApi.ApiSoaProjectConnectionsPatchAsync(request);
+            var response = await _soaApi.ApiSOAConnectionsPatchAsync(request);
 
             if (response.IsOk)
             {
@@ -107,7 +91,7 @@ namespace HNTAS.Web.UI.Services.Core
 
             try
             {
-                var response = await _soaProjectApi.ApiSoaProjectNetworkElementsPatchAsync(networkElements, hnId, updatedBy);
+                var response = await _soaApi.ApiSOANetworkElementsPatchAsync(networkElements, hnId, updatedBy);
 
                 if (response.IsOk)
                 {
@@ -134,7 +118,7 @@ namespace HNTAS.Web.UI.Services.Core
 
             try
             {
-                var response = await _soaProjectApi.ApiSoaProjectElementLocationsPostAsync(request);
+                var response = await _soaApi.ApiSOAElementLocationsPostAsync(request);
 
                 if (response.IsOk)
                 {
@@ -167,7 +151,7 @@ namespace HNTAS.Web.UI.Services.Core
 
             try
             {
-                var response = await _soaProjectApi.ApiSoaProjectElementDocumentsPostAsync(request);
+                var response = await _soaApi.ApiSOAElementDocumentsPostAsync(request);
 
                 if (response.IsOk)
                 {
@@ -187,6 +171,66 @@ namespace HNTAS.Web.UI.Services.Core
                     request.HnId, request.ElementType, request.UpdatedBy);
                 throw;
             }
+        }
+
+
+
+        public async Task UpdateAssessmentPlanDocument(UpdateAssessmentPlanRequest request)
+        {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request), "Request cannot be null.");
+
+            if (string.IsNullOrWhiteSpace(request.HnId))
+                throw new ArgumentException("Heat Network ID is required.", nameof(request.HnId));
+
+            try
+            {
+                var response = await _soaApi.ApiSOAAssessmentPlanPostAsync(request);
+
+                if (response.IsOk)
+                {
+                    //_logger.LogInformation("Assessment plan documents updated successfully for HN ID: {HnId}, UpdatedBy: {UpdatedBy}",
+                    //    request.HnId, request.UpdatedBy);
+                }
+                else
+                {
+                    //_logger.LogWarning("Assessment plan update failed. StatusCode: {StatusCode}, HN ID: {HnId}, UpdatedBy: {UpdatedBy}",
+                    //    response.StatusCode, request.HnId, request.UpdatedBy);
+
+                    throw new InvalidOperationException($"Assessment plan update failed with status code: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception during assessment plan update for HN ID: {HnId}, UpdatedBy: {UpdatedBy}",
+                    request.HnId, request.UpdatedBy);
+                throw;
+            }
+        }
+
+
+        public async Task UpdateSOAStatus(UpdateSoaStatusRequest soaStatusRequest)
+        {
+            if (soaStatusRequest == null)
+                throw new ArgumentNullException(nameof(soaStatusRequest), "Request payload is required.");
+
+            if (string.IsNullOrWhiteSpace(soaStatusRequest.HnId))
+                throw new ArgumentException("Heat Network ID is required.", nameof(soaStatusRequest.HnId));
+
+            if (string.IsNullOrWhiteSpace(soaStatusRequest.UpdatedBy))
+                throw new ArgumentException("UpdatedBy is required.", nameof(soaStatusRequest.UpdatedBy));
+
+            if (!Enum.IsDefined(typeof(SoaStatus), soaStatusRequest.Status))
+                throw new ArgumentOutOfRangeException(nameof(soaStatusRequest.Status), $"Invalid SOA status: {soaStatusRequest.Status}");
+
+            var response = await _soaApi.ApiSOAUpdateSoaStatusPutAsync(soaStatusRequest);
+
+            if (response.IsNoContent)
+            {
+                return;
+            }
+
+            throw new Exception($"Failed to update SoaStatus with status code: {response.StatusCode}");
         }
 
 

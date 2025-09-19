@@ -36,12 +36,14 @@ namespace HNTAS.Api.Client.Model
         /// <param name="networkType">networkType</param>
         /// <param name="connectionTypes">connectionTypes</param>
         /// <param name="heatNetworkElements">heatNetworkElements</param>
+        /// <param name="assessmentPlans">assessmentPlans</param>
         [JsonConstructor]
-        public SoaJourneyData(Option<NetworkTypeSelection?> networkType = default, Option<List<ConnectionType>?> connectionTypes = default, Option<List<HeatNetworkElement>?> heatNetworkElements = default)
+        public SoaJourneyData(Option<NetworkTypeSelection?> networkType = default, Option<List<ConnectionType>?> connectionTypes = default, Option<List<HeatNetworkElement>?> heatNetworkElements = default, Option<List<AssessmentPlanDocument>?> assessmentPlans = default)
         {
             NetworkTypeOption = networkType;
             ConnectionTypesOption = connectionTypes;
             HeatNetworkElementsOption = heatNetworkElements;
+            AssessmentPlansOption = assessmentPlans;
             OnCreated();
         }
 
@@ -87,6 +89,19 @@ namespace HNTAS.Api.Client.Model
         public List<HeatNetworkElement>? HeatNetworkElements { get { return this.HeatNetworkElementsOption; } set { this.HeatNetworkElementsOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of AssessmentPlans
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<AssessmentPlanDocument>?> AssessmentPlansOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets AssessmentPlans
+        /// </summary>
+        [JsonPropertyName("assessmentPlans")]
+        public List<AssessmentPlanDocument>? AssessmentPlans { get { return this.AssessmentPlansOption; } set { this.AssessmentPlansOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -97,6 +112,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  NetworkType: ").Append(NetworkType).Append("\n");
             sb.Append("  ConnectionTypes: ").Append(ConnectionTypes).Append("\n");
             sb.Append("  HeatNetworkElements: ").Append(HeatNetworkElements).Append("\n");
+            sb.Append("  AssessmentPlans: ").Append(AssessmentPlans).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -137,6 +153,7 @@ namespace HNTAS.Api.Client.Model
             Option<NetworkTypeSelection?> networkType = default;
             Option<List<ConnectionType>?> connectionTypes = default;
             Option<List<HeatNetworkElement>?> heatNetworkElements = default;
+            Option<List<AssessmentPlanDocument>?> assessmentPlans = default;
 
             while (utf8JsonReader.Read())
             {
@@ -162,6 +179,9 @@ namespace HNTAS.Api.Client.Model
                         case "heatNetworkElements":
                             heatNetworkElements = new Option<List<HeatNetworkElement>?>(JsonSerializer.Deserialize<List<HeatNetworkElement>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
+                        case "assessmentPlans":
+                            assessmentPlans = new Option<List<AssessmentPlanDocument>?>(JsonSerializer.Deserialize<List<AssessmentPlanDocument>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
                         default:
                             break;
                     }
@@ -171,7 +191,10 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkElements.IsSet && heatNetworkElements.Value == null)
                 throw new ArgumentNullException(nameof(heatNetworkElements), "Property is not nullable for class SoaJourneyData.");
 
-            return new SoaJourneyData(networkType, connectionTypes, heatNetworkElements);
+            if (assessmentPlans.IsSet && assessmentPlans.Value == null)
+                throw new ArgumentNullException(nameof(assessmentPlans), "Property is not nullable for class SoaJourneyData.");
+
+            return new SoaJourneyData(networkType, connectionTypes, heatNetworkElements, assessmentPlans);
         }
 
         /// <summary>
@@ -201,6 +224,9 @@ namespace HNTAS.Api.Client.Model
             if (soaJourneyData.HeatNetworkElementsOption.IsSet && soaJourneyData.HeatNetworkElements == null)
                 throw new ArgumentNullException(nameof(soaJourneyData.HeatNetworkElements), "Property is required for class SoaJourneyData.");
 
+            if (soaJourneyData.AssessmentPlansOption.IsSet && soaJourneyData.AssessmentPlans == null)
+                throw new ArgumentNullException(nameof(soaJourneyData.AssessmentPlans), "Property is required for class SoaJourneyData.");
+
             if (soaJourneyData.NetworkTypeOption.IsSet)
                 if (soaJourneyData.NetworkTypeOption.Value != null)
                 {
@@ -221,6 +247,11 @@ namespace HNTAS.Api.Client.Model
             {
                 writer.WritePropertyName("heatNetworkElements");
                 JsonSerializer.Serialize(writer, soaJourneyData.HeatNetworkElements, jsonSerializerOptions);
+            }
+            if (soaJourneyData.AssessmentPlansOption.IsSet)
+            {
+                writer.WritePropertyName("assessmentPlans");
+                JsonSerializer.Serialize(writer, soaJourneyData.AssessmentPlans, jsonSerializerOptions);
             }
         }
     }

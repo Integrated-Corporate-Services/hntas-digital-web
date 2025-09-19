@@ -2,8 +2,8 @@
 {
     public class UploadSOAElementDocumentsViewModel
     {
-        public string ProjectName { get; set; } = "Olympic Park Aberdeen";
-        public string PageTitle { get; set; } = "Upload SOA Documents";
+        public string ProjectName { get; set; }
+        public string PageTitle { get; set; }
         public string ElementName { get; set; }
         public string ElementDescription { get; set; }
         public List<DocumentUploadModel> Documents { get; set; }

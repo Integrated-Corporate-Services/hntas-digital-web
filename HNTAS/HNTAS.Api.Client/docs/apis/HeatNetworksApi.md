@@ -11,7 +11,7 @@ All URIs are relative to *https://localhost:7117*
 
 <a id="apiheatnetworksaddheatnetworkpost"></a>
 # **ApiHeatNetworksAddHeatNetworkPost**
-> HeatNetwork ApiHeatNetworksAddHeatNetworkPost (HeatNetwork heatNetwork)
+> HeatNetworkResponse ApiHeatNetworksAddHeatNetworkPost (HeatNetwork heatNetwork)
 
 
 
@@ -24,7 +24,7 @@ All URIs are relative to *https://localhost:7117*
 
 ### Return type
 
-[**HeatNetwork**](HeatNetwork.md)
+[**HeatNetworkResponse**](HeatNetworkResponse.md)
 
 ### Authorization
 
@@ -49,7 +49,7 @@ No authorization required
 
 <a id="apiheatnetworksget"></a>
 # **ApiHeatNetworksGet**
-> List&lt;HeatNetwork&gt; ApiHeatNetworksGet ()
+> List&lt;HeatNetworkResponse&gt; ApiHeatNetworksGet ()
 
 
 
@@ -58,7 +58,7 @@ No authorization required
 This endpoint does not need any parameter.
 ### Return type
 
-[**List&lt;HeatNetwork&gt;**](HeatNetwork.md)
+[**List&lt;HeatNetworkResponse&gt;**](HeatNetworkResponse.md)
 
 ### Authorization
 
@@ -80,7 +80,7 @@ No authorization required
 
 <a id="apiheatnetworkshnidget"></a>
 # **ApiHeatNetworksHnIdGet**
-> HeatNetwork ApiHeatNetworksHnIdGet (string hnId)
+> HeatNetworkResponse ApiHeatNetworksHnIdGet (string hnId)
 
 
 
@@ -93,7 +93,7 @@ No authorization required
 
 ### Return type
 
-[**HeatNetwork**](HeatNetwork.md)
+[**HeatNetworkResponse**](HeatNetworkResponse.md)
 
 ### Authorization
 
@@ -117,7 +117,7 @@ No authorization required
 
 <a id="apiheatnetworkshnidsget"></a>
 # **ApiHeatNetworksHnIdsGet**
-> List&lt;HeatNetwork&gt; ApiHeatNetworksHnIdsGet (string hnIdsString = null)
+> List&lt;HeatNetworkResponse&gt; ApiHeatNetworksHnIdsGet (string hnIdsString = null)
 
 
 
@@ -130,7 +130,7 @@ No authorization required
 
 ### Return type
 
-[**List&lt;HeatNetwork&gt;**](HeatNetwork.md)
+[**List&lt;HeatNetworkResponse&gt;**](HeatNetworkResponse.md)
 
 ### Authorization
 
