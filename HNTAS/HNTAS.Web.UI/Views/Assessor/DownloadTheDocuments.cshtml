@@ -79,10 +79,14 @@
                 </div>
                 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
             </div>
-            
-            <div class="app-button-wrapper">
-                <a role="button" asp-controller="Assessor" asp-action="UploadSOC" data-module="govuk-button" draggable="false" class="govuk-button">Continue</a>
-            </div>
+            <form method="post">
+                <input type="hidden" value="@Model.Phase"/>
+                <div class="app-button-wrapper">
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Continue
+                    </button>
+                </div>
+            </form>
            
         </div>
     </div>
