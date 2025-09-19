@@ -480,8 +480,8 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("DefineSOADetails");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
+            //var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId.ToUpper());
 
             var selectedElement = Utility.GetElementOptions().FirstOrDefault(x =>
                 x.Id.ToString().Equals(elementName, StringComparison.OrdinalIgnoreCase));
