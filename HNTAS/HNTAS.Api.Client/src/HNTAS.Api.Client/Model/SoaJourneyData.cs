@@ -36,14 +36,18 @@ namespace HNTAS.Api.Client.Model
         /// <param name="networkType">networkType</param>
         /// <param name="connectionTypes">connectionTypes</param>
         /// <param name="heatNetworkElements">heatNetworkElements</param>
-        /// <param name="assessmentPlans">assessmentPlans</param>
+        /// <param name="assessmentDocs">assessmentDocs</param>
+        /// <param name="assessorDocs">assessorDocs</param>
+        /// <param name="certifierDocs">certifierDocs</param>
         [JsonConstructor]
-        public SoaJourneyData(Option<NetworkTypeSelection?> networkType = default, Option<List<ConnectionType>?> connectionTypes = default, Option<List<HeatNetworkElement>?> heatNetworkElements = default, Option<List<AssessmentPlanDocument>?> assessmentPlans = default)
+        public SoaJourneyData(Option<NetworkTypeSelection?> networkType = default, Option<List<ConnectionType>?> connectionTypes = default, Option<List<HeatNetworkElement>?> heatNetworkElements = default, Option<List<Object>?> assessmentDocs = default, Option<List<Object>?> assessorDocs = default, Option<List<Object>?> certifierDocs = default)
         {
             NetworkTypeOption = networkType;
             ConnectionTypesOption = connectionTypes;
             HeatNetworkElementsOption = heatNetworkElements;
-            AssessmentPlansOption = assessmentPlans;
+            AssessmentDocsOption = assessmentDocs;
+            AssessorDocsOption = assessorDocs;
+            CertifierDocsOption = certifierDocs;
             OnCreated();
         }
 
@@ -89,17 +93,43 @@ namespace HNTAS.Api.Client.Model
         public List<HeatNetworkElement>? HeatNetworkElements { get { return this.HeatNetworkElementsOption; } set { this.HeatNetworkElementsOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of AssessmentPlans
+        /// Used to track the state of AssessmentDocs
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<AssessmentPlanDocument>?> AssessmentPlansOption { get; private set; }
+        public Option<List<Object>?> AssessmentDocsOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets AssessmentPlans
+        /// Gets or Sets AssessmentDocs
         /// </summary>
-        [JsonPropertyName("assessmentPlans")]
-        public List<AssessmentPlanDocument>? AssessmentPlans { get { return this.AssessmentPlansOption; } set { this.AssessmentPlansOption = new(value); } }
+        [JsonPropertyName("assessmentDocs")]
+        public List<Object>? AssessmentDocs { get { return this.AssessmentDocsOption; } set { this.AssessmentDocsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of AssessorDocs
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<Object>?> AssessorDocsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets AssessorDocs
+        /// </summary>
+        [JsonPropertyName("assessorDocs")]
+        public List<Object>? AssessorDocs { get { return this.AssessorDocsOption; } set { this.AssessorDocsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of CertifierDocs
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<Object>?> CertifierDocsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets CertifierDocs
+        /// </summary>
+        [JsonPropertyName("certifierDocs")]
+        public List<Object>? CertifierDocs { get { return this.CertifierDocsOption; } set { this.CertifierDocsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -112,7 +142,9 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  NetworkType: ").Append(NetworkType).Append("\n");
             sb.Append("  ConnectionTypes: ").Append(ConnectionTypes).Append("\n");
             sb.Append("  HeatNetworkElements: ").Append(HeatNetworkElements).Append("\n");
-            sb.Append("  AssessmentPlans: ").Append(AssessmentPlans).Append("\n");
+            sb.Append("  AssessmentDocs: ").Append(AssessmentDocs).Append("\n");
+            sb.Append("  AssessorDocs: ").Append(AssessorDocs).Append("\n");
+            sb.Append("  CertifierDocs: ").Append(CertifierDocs).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -153,7 +185,9 @@ namespace HNTAS.Api.Client.Model
             Option<NetworkTypeSelection?> networkType = default;
             Option<List<ConnectionType>?> connectionTypes = default;
             Option<List<HeatNetworkElement>?> heatNetworkElements = default;
-            Option<List<AssessmentPlanDocument>?> assessmentPlans = default;
+            Option<List<Object>?> assessmentDocs = default;
+            Option<List<Object>?> assessorDocs = default;
+            Option<List<Object>?> certifierDocs = default;
 
             while (utf8JsonReader.Read())
             {
@@ -179,8 +213,14 @@ namespace HNTAS.Api.Client.Model
                         case "heatNetworkElements":
                             heatNetworkElements = new Option<List<HeatNetworkElement>?>(JsonSerializer.Deserialize<List<HeatNetworkElement>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
-                        case "assessmentPlans":
-                            assessmentPlans = new Option<List<AssessmentPlanDocument>?>(JsonSerializer.Deserialize<List<AssessmentPlanDocument>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                        case "assessmentDocs":
+                            assessmentDocs = new Option<List<Object>?>(JsonSerializer.Deserialize<List<Object>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
+                        case "assessorDocs":
+                            assessorDocs = new Option<List<Object>?>(JsonSerializer.Deserialize<List<Object>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
+                        case "certifierDocs":
+                            certifierDocs = new Option<List<Object>?>(JsonSerializer.Deserialize<List<Object>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -191,10 +231,16 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkElements.IsSet && heatNetworkElements.Value == null)
                 throw new ArgumentNullException(nameof(heatNetworkElements), "Property is not nullable for class SoaJourneyData.");
 
-            if (assessmentPlans.IsSet && assessmentPlans.Value == null)
-                throw new ArgumentNullException(nameof(assessmentPlans), "Property is not nullable for class SoaJourneyData.");
+            if (assessmentDocs.IsSet && assessmentDocs.Value == null)
+                throw new ArgumentNullException(nameof(assessmentDocs), "Property is not nullable for class SoaJourneyData.");
 
-            return new SoaJourneyData(networkType, connectionTypes, heatNetworkElements, assessmentPlans);
+            if (assessorDocs.IsSet && assessorDocs.Value == null)
+                throw new ArgumentNullException(nameof(assessorDocs), "Property is not nullable for class SoaJourneyData.");
+
+            if (certifierDocs.IsSet && certifierDocs.Value == null)
+                throw new ArgumentNullException(nameof(certifierDocs), "Property is not nullable for class SoaJourneyData.");
+
+            return new SoaJourneyData(networkType, connectionTypes, heatNetworkElements, assessmentDocs, assessorDocs, certifierDocs);
         }
 
         /// <summary>
@@ -224,8 +270,14 @@ namespace HNTAS.Api.Client.Model
             if (soaJourneyData.HeatNetworkElementsOption.IsSet && soaJourneyData.HeatNetworkElements == null)
                 throw new ArgumentNullException(nameof(soaJourneyData.HeatNetworkElements), "Property is required for class SoaJourneyData.");
 
-            if (soaJourneyData.AssessmentPlansOption.IsSet && soaJourneyData.AssessmentPlans == null)
-                throw new ArgumentNullException(nameof(soaJourneyData.AssessmentPlans), "Property is required for class SoaJourneyData.");
+            if (soaJourneyData.AssessmentDocsOption.IsSet && soaJourneyData.AssessmentDocs == null)
+                throw new ArgumentNullException(nameof(soaJourneyData.AssessmentDocs), "Property is required for class SoaJourneyData.");
+
+            if (soaJourneyData.AssessorDocsOption.IsSet && soaJourneyData.AssessorDocs == null)
+                throw new ArgumentNullException(nameof(soaJourneyData.AssessorDocs), "Property is required for class SoaJourneyData.");
+
+            if (soaJourneyData.CertifierDocsOption.IsSet && soaJourneyData.CertifierDocs == null)
+                throw new ArgumentNullException(nameof(soaJourneyData.CertifierDocs), "Property is required for class SoaJourneyData.");
 
             if (soaJourneyData.NetworkTypeOption.IsSet)
                 if (soaJourneyData.NetworkTypeOption.Value != null)
@@ -248,10 +300,20 @@ namespace HNTAS.Api.Client.Model
                 writer.WritePropertyName("heatNetworkElements");
                 JsonSerializer.Serialize(writer, soaJourneyData.HeatNetworkElements, jsonSerializerOptions);
             }
-            if (soaJourneyData.AssessmentPlansOption.IsSet)
+            if (soaJourneyData.AssessmentDocsOption.IsSet)
             {
-                writer.WritePropertyName("assessmentPlans");
-                JsonSerializer.Serialize(writer, soaJourneyData.AssessmentPlans, jsonSerializerOptions);
+                writer.WritePropertyName("assessmentDocs");
+                JsonSerializer.Serialize(writer, soaJourneyData.AssessmentDocs, jsonSerializerOptions);
+            }
+            if (soaJourneyData.AssessorDocsOption.IsSet)
+            {
+                writer.WritePropertyName("assessorDocs");
+                JsonSerializer.Serialize(writer, soaJourneyData.AssessorDocs, jsonSerializerOptions);
+            }
+            if (soaJourneyData.CertifierDocsOption.IsSet)
+            {
+                writer.WritePropertyName("certifierDocs");
+                JsonSerializer.Serialize(writer, soaJourneyData.CertifierDocs, jsonSerializerOptions);
             }
         }
     }

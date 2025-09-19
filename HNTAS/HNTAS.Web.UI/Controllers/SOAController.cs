@@ -409,7 +409,7 @@ namespace HNTAS.Web.UI.Controllers
                 networkElements.Add(new SelectedElement
                 {
                     Count = element.Count ?? 0,
-                    Name = GetElementOptions()?.FirstOrDefault(e => e.Id.ToString() == element.Name)?.Label ?? string.Empty
+                    Name = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id.ToString() == element.Name)?.Label ?? string.Empty
                 });
             }
 
@@ -435,7 +435,7 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        private List<ElementViewModel> GetDefaultElementsForStage(NullableOfSoaStage stage, int phaseNumber, Soa2 soa)
+        private List<ElementViewModel> GetDefaultElementsForStage(NullableOfSoaStage stage, int phaseNumber, SoaResponse soa)
         {
             var stageNumber = (int)stage;
             var phaseEnum = (SoaPhase)phaseNumber;
@@ -444,7 +444,7 @@ namespace HNTAS.Web.UI.Controllers
 
             foreach (var element in soa.JourneyData.HeatNetworkElements)
             {
-                var label = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty;
+                var label = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id.ToString() == element.Name)?.Label ?? string.Empty;
 
                 var matchingDocs = element.Documents
                     .Where(d => d.Phase == phaseEnum.ToString() && d.Stage == stage.ToString())
@@ -602,7 +602,7 @@ namespace HNTAS.Web.UI.Controllers
                 networkElements.Add(new SelectedElement
                 {
                     Count = element.Count ?? 0,
-                    Name = GetElementOptions()?.FirstOrDefault(e => e.Id.ToString() == element.Name)?.Label ?? string.Empty
+                    Name = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id.ToString() == element.Name)?.Label ?? string.Empty
                 });
             }
 
@@ -669,8 +669,8 @@ namespace HNTAS.Web.UI.Controllers
             var s3Key = await _s3UploadService.UploadFileAsync(assessmentPlan, $"soa/{hnId}/{phase}/AssessmentPlan");
 
             // Optionally persist metadata or update project state here
-            var request = new UpdateAssessmentPlanRequest(hnId: hnId, phase: (SoaPhase)phase, updatedBy: userId, fileName: assessmentPlan.FileName, s3Key: s3Key);
-            await _soaProjectService.UpdateAssessmentPlanDocument(request);
+            var request = new UpdateDocumentRequest(hnId: hnId, phase: (SoaPhase)phase, uploadedBy: userId, fileName: assessmentPlan.FileName, s3Key: s3Key, documentType: DocumentType.Assessment);
+            await _soaProjectService.UpdateDocument(request);
 
             _logger.LogInformation("Assessment plan uploaded for HN ID: {HnId}, Phase: {Phase}, UploadedBy: {UserId}", hnId, phase, userId);
 
@@ -688,7 +688,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new SubmitAssessmentPlanViewModel // Updated reference
             {
-                DocumentName = heatNetworkResponse.Soa.JourneyData.AssessmentPlans.FirstOrDefault()?.FileName, //"MyAssessmentPlan.docx",
+                DocumentName = heatNetworkResponse.Soa.JourneyData.AssessmentDocs.FirstOrDefault()?.FileName, //"MyAssessmentPlan.docx",
                 PhaseNumber = phaseIndex + 1,
                 Steps = StaticSoaSteps.GetSteps(SoaSteps.SubmitSoa, Url)
             };
@@ -715,7 +715,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 var elementItem = new ElementItem
                 {
-                    Name = GetElementOptions()?.FirstOrDefault(x => x.Id.ToString().ToLower() == element.Name.ToLower())?.Label,
+                    Name = Utility.GetElementOptions()?.FirstOrDefault(x => x.Id.ToString().ToLower() == element.Name.ToLower())?.Label,
                     Count = element.Count ?? 0,
                 };
 
@@ -723,7 +723,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 var elementItemDocs = new DocumentItem
                 {
-                    Name = GetElementOptions()?.FirstOrDefault(x => x.Id.ToString().ToLower() == element.Name.ToLower())?.Label,
+                    Name = Utility.GetElementOptions()?.FirstOrDefault(x => x.Id.ToString().ToLower() == element.Name.ToLower())?.Label,
                     DocNames = element.Documents?.Select(d => d.FileName).ToList() ?? new List<string>(),
                     ChangeUrl = "#"
                 };
@@ -732,7 +732,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             //filter assessment plan for current phase
-            var assessmentPlanDoc = heatNetworkResponse?.Soa?.JourneyData?.AssessmentPlans?
+            var assessmentPlanDoc = heatNetworkResponse?.Soa?.JourneyData?.AssessorDocs?
                 .Where(d => d.Phase == "Phase" + currentPhase)
                 .Select(d => new DocumentItem
                 {
@@ -779,7 +779,7 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.ElementList = heatNetworkResponse?.Soa?.JourneyData?.HeatNetworkElements?.Select(e => new
             {
-                Name = GetElementOptions()?.FirstOrDefault(x => x.Id.ToString().ToLower() == e.Name.ToLower())?.Label
+                Name = Utility.GetElementOptions()?.FirstOrDefault(x => x.Id.ToString().ToLower() == e.Name.ToLower())?.Label
             }).ToList();
 
             ViewBag.HnId = hnId;

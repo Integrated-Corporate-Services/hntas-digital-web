@@ -219,7 +219,7 @@ namespace HNTAS.Api.Client.Model
                             phase = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "stage":
-                            stage = new Option<string?>(utf8JsonReader.GetString()!);
+                            stage = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "uploadedAt":
                             uploadedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
@@ -241,9 +241,6 @@ namespace HNTAS.Api.Client.Model
 
             if (phase.IsSet && phase.Value == null)
                 throw new ArgumentNullException(nameof(phase), "Property is not nullable for class UploadedDocumentResponse.");
-
-            if (stage.IsSet && stage.Value == null)
-                throw new ArgumentNullException(nameof(stage), "Property is not nullable for class UploadedDocumentResponse.");
 
             if (uploadedAt.IsSet && uploadedAt.Value == null)
                 throw new ArgumentNullException(nameof(uploadedAt), "Property is not nullable for class UploadedDocumentResponse.");
@@ -287,9 +284,6 @@ namespace HNTAS.Api.Client.Model
             if (uploadedDocumentResponse.PhaseOption.IsSet && uploadedDocumentResponse.Phase == null)
                 throw new ArgumentNullException(nameof(uploadedDocumentResponse.Phase), "Property is required for class UploadedDocumentResponse.");
 
-            if (uploadedDocumentResponse.StageOption.IsSet && uploadedDocumentResponse.Stage == null)
-                throw new ArgumentNullException(nameof(uploadedDocumentResponse.Stage), "Property is required for class UploadedDocumentResponse.");
-
             if (uploadedDocumentResponse.UploadedByOption.IsSet && uploadedDocumentResponse.UploadedBy == null)
                 throw new ArgumentNullException(nameof(uploadedDocumentResponse.UploadedBy), "Property is required for class UploadedDocumentResponse.");
 
@@ -303,7 +297,10 @@ namespace HNTAS.Api.Client.Model
                 writer.WriteString("phase", uploadedDocumentResponse.Phase);
 
             if (uploadedDocumentResponse.StageOption.IsSet)
-                writer.WriteString("stage", uploadedDocumentResponse.Stage);
+                if (uploadedDocumentResponse.StageOption.Value != null)
+                    writer.WriteString("stage", uploadedDocumentResponse.Stage);
+                else
+                    writer.WriteNull("stage");
 
             if (uploadedDocumentResponse.UploadedAtOption.IsSet)
                 writer.WriteString("uploadedAt", uploadedDocumentResponse.UploadedAtOption.Value!.Value.ToString(UploadedAtFormat));
