@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 **Status** | **string** |  | [optional] 
 **Roles** | [**List&lt;UserRole&gt;**](UserRole.md) |  | [optional] 
 **Organisation** | [**OrganisationResponse**](OrganisationResponse.md) |  | [optional] 
-**HeatNetworks** | [**List&lt;HeatNetworkResponse&gt;**](HeatNetworkResponse.md) |  | [optional] 
+**HeatNetworks** | [**List&lt;HeatNetworkUserResponse&gt;**](HeatNetworkUserResponse.md) |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

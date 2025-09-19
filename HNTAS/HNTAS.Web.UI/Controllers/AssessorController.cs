@@ -1,5 +1,4 @@
-﻿using HNTAS.Api.Client.Api;
-using HNTAS.Api.Client.Model;
+﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Soa;
@@ -16,17 +15,17 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ISessionHelper _sessionHelper;
         private readonly IUserService _userService;
         private readonly IHeatNetworkService _heatNetworkService;
-        private readonly ISoaProjectService _soaProjectService;
+        private readonly ISoaService _soaService;
         private readonly IS3UploadService _s3UploadService;
 
 
-        public AssessorController(ILogger<AssessorController> logger, ISessionHelper sessionHelper, IUserService userService, IHeatNetworkService heatNetworkService, ISoaProjectService soaProjectService, IS3UploadService s3UploadService)
+        public AssessorController(ILogger<AssessorController> logger, ISessionHelper sessionHelper, IUserService userService, IHeatNetworkService heatNetworkService, ISoaService soaProjectService, IS3UploadService s3UploadService)
         {
             _logger = logger;
             _sessionHelper = sessionHelper;
             _userService = userService;
             _heatNetworkService = heatNetworkService;
-            _soaProjectService = soaProjectService;
+            _soaService = soaProjectService;
             _s3UploadService = s3UploadService;
         }
 
@@ -42,19 +41,19 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     throw new Exception("Unable to retrieve user information. Please try again later.");
                 }
-                return View(user); 
+                return View(user);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving user details.");
-                throw;            
+                throw;
             }
         }
 
         [HttpGet]
         public IActionResult DeclarationOfImpartiality([FromQuery] string hnid)
         {
-            if(_sessionHelper.GetFromSession<string>(HttpContext, "HasDeclaredImpartiality") == "true")
+            if (_sessionHelper.GetFromSession<string>(HttpContext, "HasDeclaredImpartiality") == "true")
             {
                 return RedirectToAction("HeatNetworkDetails", "Assessor", new { hnId = hnid });
             }
@@ -66,8 +65,9 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeclarationOfImpartiality(DeclationOfImpartialityModel model) {
-            
+        public IActionResult DeclarationOfImpartiality(DeclationOfImpartialityModel model)
+        {
+
             this.ShowBackButton("HeatNetworks", "UserManagement");
             if (!ModelState.IsValid || model.HasDeclaredImpartiality == false)
             {
@@ -77,18 +77,17 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("HeatNetworkDetails", "Assessor", new { hnId = model.HnId });
         }
 
-        private List<ElementViewModel> GetElementsForStage(SoaStage stage, int phaseNumber, SoaProject soaProject)
+        private List<ElementViewModel> GetElementsForStage(SoaStage stage, int phaseNumber, SoaResponse soa)
         {
-            var stageNumber = (int)stage;
             var phaseEnum = (SoaPhase)phaseNumber;
 
             var networkElements = new List<ElementViewModel>();
-            
-            foreach (var element in soaProject.JourneyData.HeatNetworkElements)
+
+            foreach (var element in soa.JourneyData.HeatNetworkElements)
             {
 
                 var matchingDocs = element.Documents
-                    .Where(d => d.Phase == phaseEnum && d.Stage == stage)
+                    .Where(d => d.Phase == phaseEnum.ToString() && d.Stage == stage.ToString())
                     .ToList();
 
                 var status = matchingDocs.Count == 0
@@ -104,7 +103,7 @@ namespace HNTAS.Web.UI.Controllers
                     Url = Url.Action("UploadSOAElementDocuments", "Soa", new
                     {
                         phase = phaseNumber,
-                        stage = stageNumber,
+                        stage = (int)stage,
                         elementName = element.Name.ToString()
                     }),
                     Count = element.Count
@@ -120,11 +119,12 @@ namespace HNTAS.Web.UI.Controllers
 
             this.ShowBackButton("HeatNetworks", "UserManagement");
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnid);
-            try {
+            try
+            {
                 var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
                 var hnDetails = await _heatNetworkService.GetAsync(hnid?.ToUpper());
-                var soaProject = await _soaProjectService.GetByHnIdAsync(hnid.ToUpper());
-                if (user == null || soaProject == null || hnDetails == null)
+
+                if (user == null || hnDetails.Soa == null || hnDetails == null)
                 {
                     return BadRequest();
                 }
@@ -138,7 +138,7 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     pathway = "3 - 7 (Existing Pathway)";
                 }
-                
+
                 var model = new HeatNetworkDetailsViewModel
                 {
                     HnId = hnDetails.HnId,
@@ -156,18 +156,18 @@ namespace HNTAS.Web.UI.Controllers
                         Stages = phase.Stages.Select(stage => new StageViewModel
                         {
                             Name = stage.Name,
-                            Elements = GetElementsForStage(stage.SoaStage, index + 1, soaProject)
+                            Elements = GetElementsForStage(stage.SoaStage, index + 1, hnDetails.Soa)
                         }).ToList()
                     }).ToList()
                 };
                 _sessionHelper.SaveToSession(HttpContext, "PhaseData", model.Phases);
                 return View(model);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving details.");
                 throw;
-            }     
+            }
         }
 
         [HttpGet]
@@ -175,7 +175,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             this.ShowBackButton("HeatNetworkDetails", "Assessor");
             var hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            var soaProject = await _soaProjectService.GetByHnIdAsync(hnid.ToUpper());
+            var soaProject = await _soaService.GetByHnIdAsync(hnid.ToUpper());
             if (soaProject == null)
             {
                 return BadRequest();
@@ -183,19 +183,21 @@ namespace HNTAS.Web.UI.Controllers
             var documents = new List<UploadedDocument>();
             foreach (var hnElement in soaProject.JourneyData.HeatNetworkElements)
             {
-                if(hnElement.Name.ToString().ToLower() == Element)
+                if (hnElement.Name.ToString().ToLower() == Element)
                 {
-                    foreach (var d in hnElement.Documents) {
-                        if (d.Phase.ToString() == "Phase" + Phase.ToString() && d.Stage.ToString() == "Stage" + Stage.ToString()) {
+                    foreach (var d in hnElement.Documents)
+                    {
+                        if (d.Phase.ToString() == "Phase" + Phase.ToString() && d.Stage.ToString() == "Stage" + Stage.ToString())
+                        {
                             documents.Add(d);
                         }
                     }
                 }
             }
-            
+
             var elementList = new List<ElementViewModel>();
             var phasesData = _sessionHelper.GetFromSession<List<PhaseViewModel>>(HttpContext, "PhaseData");
-            
+
             elementList = phasesData[Phase].Stages[Stage].Elements;
 
             var model = new DownloadTheDocumentModel()
@@ -212,7 +214,7 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> Download([FromQuery] string stage, string filename, string element)
         {
             var hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            var soaProject = await _soaProjectService.GetByHnIdAsync(hnid.ToUpper());
+            var soaProject = await _soaService.GetByHnIdAsync(hnid.ToUpper());
             if (soaProject == null)
             {
                 return BadRequest();
@@ -231,7 +233,7 @@ namespace HNTAS.Web.UI.Controllers
                     }
                 }
             }
-            
+
             var stream = await _s3UploadService.GetFileAsync(key);
             if (stream == null)
                 return NotFound();

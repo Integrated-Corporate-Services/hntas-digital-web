@@ -30,6 +30,13 @@ public class HomeController : Controller
     {
         var email = User.FindFirstValue("email");
         var oneLoginId = User.FindFirstValue("sub");
+        var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
+
+        if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
+        {
+            oneLoginId = User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+
+        }
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
         {

@@ -1,0 +1,37 @@
+﻿@using HNTAS.Web.UI.Models.Soa
+@model UploadAssessmentPlanViewModel
+@{
+    ViewData["Title"] = "Add assessment plan to statement of applicability (SOA)";
+}
+
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Olympic Park Aberdeen</span>
+            <h1 class="govuk-heading-l">@ViewData["Title"] </h1>
+
+            <p class="govuk-body">
+                Upload your assessment plan for <strong>phase @Model.PhaseNumber</strong>. You can
+                <a href="@Model.TemplateDownloadUrl" class="govuk-link">download</a> the template to fill in and update later.
+            </p>
+
+            <form asp-action="UploadAssessmentPlan" method="post" enctype="multipart/form-data" class="govuk-form-group">
+                <div class="govuk-form-group">
+@*                     <label class="govuk-label" for="assessmentPlan">
+                        Choose file
+                    </label> *@
+                    <input class="govuk-file-upload" id="assessmentPlan" name="assessmentPlan" type="file">
+                </div>
+                <br />
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+

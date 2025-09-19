@@ -1,0 +1,101 @@
+﻿@using HNTAS.Web.UI.Models.Soa
+@model SOAReviewSummaryViewModel
+
+@{
+    ViewData["Title"] = "Check your answers before submitting";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+
+                    <h1 class="govuk-heading-l">
+                        Check your answers before submitting
+                    </h1>
+
+                    <h2 class="govuk-heading-m">
+                        Phase @Model.Phase overall Statement of applicability (SOA)
+                    </h2>
+
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Element list
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @foreach (var element in Model.Elements)
+                                {
+                                    @($"{element.Name} ({element.Count})")
+                                
+                                    <br />
+                                }
+                            </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="/change-elements">
+                                    Change
+                                </a>
+                            </dd>
+                        </div>
+                    </dl>
+
+                    <h2 class="govuk-heading-m">
+                        Stage 1 SOA documents
+                    </h2>
+
+                    <dl class="govuk-summary-list">
+                        @foreach (var doc in Model.ElementDocuments)
+                        {
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    @doc.Name
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @foreach (var docName in doc.DocNames)
+                                    {
+                                        @($"[{docName}]")
+
+                                        <br />
+                                    }
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="@doc.ChangeUrl">
+                                        Change
+                                    </a>
+                                </dd>
+                            </div>
+                        }
+                    </dl>
+
+                    <h2 class="govuk-heading-m">
+                        Assessment plan
+                    </h2>
+
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                @Model.AssessmentPlanDocument.Name
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                               @($"[{Model.AssessmentPlanDocument.DocNames.FirstOrDefault()}]")
+                            </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@(Model.AssessmentPlanDocument?.ChangeUrl ?? "#")">
+                                    Change
+                                </a>
+                            </dd>
+                        </div>
+                    </dl>
+
+                    <form asp-action="SubmitSOA" method="post">
+                        <button type="submit" class="govuk-button" data-module="govuk-button">
+                            Continue
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

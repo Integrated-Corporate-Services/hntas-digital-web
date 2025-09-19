@@ -7,7 +7,7 @@ servers:
 tags:
 - name: HeatNetworks
 - name: Invitations
-- name: SoaProject
+- name: SOA
 - name: Users
 paths:
   /api/HeatNetworks:
@@ -18,17 +18,17 @@ paths:
             text/plain:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetwork"
+                  $ref: "#/components/schemas/HeatNetworkResponse"
                 type: array
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetwork"
+                  $ref: "#/components/schemas/HeatNetworkResponse"
                 type: array
             text/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetwork"
+                  $ref: "#/components/schemas/HeatNetworkResponse"
                 type: array
           description: OK
         "500":
@@ -51,17 +51,17 @@ paths:
             text/plain:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetwork"
+                  $ref: "#/components/schemas/HeatNetworkResponse"
                 type: array
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetwork"
+                  $ref: "#/components/schemas/HeatNetworkResponse"
                 type: array
             text/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetwork"
+                  $ref: "#/components/schemas/HeatNetworkResponse"
                 type: array
           description: OK
         "400":
@@ -107,13 +107,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/HeatNetwork"
+                $ref: "#/components/schemas/HeatNetworkResponse"
             application/json:
               schema:
-                $ref: "#/components/schemas/HeatNetwork"
+                $ref: "#/components/schemas/HeatNetworkResponse"
             text/json:
               schema:
-                $ref: "#/components/schemas/HeatNetwork"
+                $ref: "#/components/schemas/HeatNetworkResponse"
           description: OK
         "400":
           content:
@@ -159,25 +159,25 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/HeatNetwork"
+                $ref: "#/components/schemas/HeatNetworkResponse"
             application/json:
               schema:
-                $ref: "#/components/schemas/HeatNetwork"
+                $ref: "#/components/schemas/HeatNetworkResponse"
             text/json:
               schema:
-                $ref: "#/components/schemas/HeatNetwork"
+                $ref: "#/components/schemas/HeatNetworkResponse"
           description: Created
         "200":
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/HeatNetwork"
+                $ref: "#/components/schemas/HeatNetworkResponse"
             application/json:
               schema:
-                $ref: "#/components/schemas/HeatNetwork"
+                $ref: "#/components/schemas/HeatNetworkResponse"
             text/json:
               schema:
-                $ref: "#/components/schemas/HeatNetwork"
+                $ref: "#/components/schemas/HeatNetworkResponse"
           description: OK
         "400":
           content:
@@ -387,44 +387,7 @@ paths:
           description: Bad Request
       tags:
       - Invitations
-  /api/SoaProject/{projectId}:
-    get:
-      parameters:
-      - explode: false
-        in: path
-        name: projectId
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/SoaProject"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SoaProject"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/SoaProject"
-          description: OK
-        "404":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Not Found
-      tags:
-      - SoaProject
-  /api/SoaProject/heat-network/{hnId}:
+  /api/SOA/heat-network/{hnId}:
     get:
       parameters:
       - explode: false
@@ -439,13 +402,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/SoaProject"
+                $ref: "#/components/schemas/Soa2"
             application/json:
               schema:
-                $ref: "#/components/schemas/SoaProject"
+                $ref: "#/components/schemas/Soa2"
             text/json:
               schema:
-                $ref: "#/components/schemas/SoaProject"
+                $ref: "#/components/schemas/Soa2"
           description: OK
         "404":
           content:
@@ -460,8 +423,8 @@ paths:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
       tags:
-      - SoaProject
-  /api/SoaProject/create:
+      - SOA
+  /api/SOA/create:
     post:
       parameters:
       - explode: true
@@ -479,18 +442,18 @@ paths:
           type: string
         style: form
       responses:
-        "201":
+        "200":
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/SoaProject"
+                $ref: "#/components/schemas/Soa2"
             application/json:
               schema:
-                $ref: "#/components/schemas/SoaProject"
+                $ref: "#/components/schemas/Soa2"
             text/json:
               schema:
-                $ref: "#/components/schemas/SoaProject"
-          description: Created
+                $ref: "#/components/schemas/Soa2"
+          description: OK
         "400":
           content:
             text/plain:
@@ -504,8 +467,8 @@ paths:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Bad Request
       tags:
-      - SoaProject
-  /api/SoaProject/connections:
+      - SOA
+  /api/SOA/connections:
     patch:
       requestBody:
         content:
@@ -547,66 +510,8 @@ paths:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
       tags:
-      - SoaProject
-  /api/SoaProject/network-type:
-    patch:
-      parameters:
-      - explode: true
-        in: query
-        name: hnId
-        required: false
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: updatedBy
-        required: false
-        schema:
-          type: string
-        style: form
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/NetworkTypeSelection2"
-          text/json:
-            schema:
-              $ref: "#/components/schemas/NetworkTypeSelection2"
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/NetworkTypeSelection2"
-        required: true
-      responses:
-        "200":
-          description: OK
-        "400":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Bad Request
-        "404":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Not Found
-      tags:
-      - SoaProject
-  /api/SoaProject/network-elements:
+      - SOA
+  /api/SOA/network-type:
     patch:
       parameters:
       - explode: true
@@ -627,6 +532,64 @@ paths:
         content:
           application/json:
             schema:
+              $ref: "#/components/schemas/NetworkTypeSelection2"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/NetworkTypeSelection2"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/NetworkTypeSelection2"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SOA
+  /api/SOA/network-elements:
+    patch:
+      parameters:
+      - explode: true
+        in: query
+        name: hnId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: updatedBy
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
               items:
                 $ref: "#/components/schemas/HeatNetworkElement"
               type: array
@@ -669,8 +632,8 @@ paths:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
       tags:
-      - SoaProject
-  /api/SoaProject/element-locations:
+      - SOA
+  /api/SOA/element-locations:
     post:
       requestBody:
         content:
@@ -712,8 +675,8 @@ paths:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
       tags:
-      - SoaProject
-  /api/SoaProject/element-documents:
+      - SOA
+  /api/SOA/element-documents:
     post:
       requestBody:
         content:
@@ -755,7 +718,120 @@ paths:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
       tags:
-      - SoaProject
+      - SOA
+  /api/SOA/assessment-plan:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAssessmentPlanRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAssessmentPlanRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateAssessmentPlanRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SOA
+  /api/SOA/{hnId}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SOA
+  /api/SOA/update-soa-status:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSoaStatusRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSoaStatusRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateSoaStatusRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+      tags:
+      - SOA
   /api/Users:
     get:
       responses:
@@ -1331,6 +1407,53 @@ components:
       - preferredContactType
       - status
       type: object
+    AssessmentPlanDocument:
+      example:
+        phase: null
+        fileName: fileName
+        s3Key: s3Key
+        stage: Stage1
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        uploadedBy: uploadedBy
+      properties:
+        phase:
+          $ref: "#/components/schemas/SoaPhase"
+        stage:
+          $ref: "#/components/schemas/NullableOfSoaStage"
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        uploadedAt:
+          format: date-time
+          type: string
+        uploadedBy:
+          type: string
+      type: object
+    AssessmentPlanDocumentResponse:
+      example:
+        phase: phase
+        fileName: fileName
+        s3Key: s3Key
+        stage: stage
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        uploadedBy: uploadedBy
+      properties:
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        phase:
+          type: string
+        stage:
+          nullable: true
+          type: string
+        uploadedAt:
+          format: date-time
+          type: string
+        uploadedBy:
+          type: string
+      type: object
     ConnectionType:
       enum:
       - ChildConnections
@@ -1365,6 +1488,69 @@ components:
     HeatNetwork:
       example:
         hnId: hnId
+        soa:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          journeyData:
+            heatNetworkElements:
+            - documents:
+              - phase: Phase1
+                fileName: fileName
+                s3Key: s3Key
+                stage: Stage1
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - phase: Phase1
+                fileName: fileName
+                s3Key: s3Key
+                stage: Stage1
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              name: EnergyCentre
+              count: 0
+              locations:
+              - locations
+              - locations
+            - documents:
+              - phase: Phase1
+                fileName: fileName
+                s3Key: s3Key
+                stage: Stage1
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - phase: Phase1
+                fileName: fileName
+                s3Key: s3Key
+                stage: Stage1
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              name: EnergyCentre
+              count: 0
+              locations:
+              - locations
+              - locations
+            networkType:
+              otherNetworkDescription: otherNetworkDescription
+              type: CityScaleDistrictHeatingNetwork
+            assessmentPlans:
+            - phase: null
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - phase: null
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            connectionTypes:
+            - ChildConnections
+            - ChildConnections
+          status: InProgress
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
         pathway: pathway
         location: location
@@ -1382,6 +1568,8 @@ components:
           type: string
         pathway:
           type: string
+        soa:
+          $ref: "#/components/schemas/Soa"
       type: object
     HeatNetworkElement:
       example:
@@ -1418,6 +1606,41 @@ components:
             $ref: "#/components/schemas/UploadedDocument"
           type: array
       type: object
+    HeatNetworkElementResponse:
+      example:
+        documents:
+        - phase: phase
+          fileName: fileName
+          s3Key: s3Key
+          stage: stage
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - phase: phase
+          fileName: fileName
+          s3Key: s3Key
+          stage: stage
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        name: name
+        count: 0
+        locations:
+        - locations
+        - locations
+      properties:
+        name:
+          type: string
+        count:
+          format: int32
+          type: integer
+        locations:
+          items:
+            type: string
+          type: array
+        documents:
+          items:
+            $ref: "#/components/schemas/UploadedDocumentResponse"
+          type: array
+      type: object
     HeatNetworkElementType:
       enum:
       - EnergyCentre
@@ -1430,15 +1653,86 @@ components:
     HeatNetworkResponse:
       example:
         hnId: hnId
+        soa:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          journeyData:
+            heatNetworkElements:
+            - documents:
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              name: name
+              count: 0
+              locations:
+              - locations
+              - locations
+            - documents:
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              name: name
+              count: 0
+              locations:
+              - locations
+              - locations
+            networkType:
+              otherNetworkDescription: otherNetworkDescription
+              type: type
+            assessmentPlans:
+            - phase: phase
+              fileName: fileName
+              s3Key: s3Key
+              stage: stage
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - phase: phase
+              fileName: fileName
+              s3Key: s3Key
+              stage: stage
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            connectionTypes:
+            - connectionTypes
+            - connectionTypes
+          status: InProgress
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
+        pathway: pathway
         location: location
+        id: id
       properties:
-        hnId:
+        id:
           type: string
-        name:
+        hnId:
           type: string
         location:
           type: string
+        name:
+          type: string
+        pathway:
+          type: string
+        soa:
+          $ref: "#/components/schemas/SoaResponse"
       type: object
     HeatNetworkType:
       enum:
@@ -1449,6 +1743,19 @@ components:
       - SmallCommunalHeatNetwork
       - Other
       type: string
+    HeatNetworkUserResponse:
+      example:
+        hnId: hnId
+        name: name
+        location: location
+      properties:
+        hnId:
+          type: string
+        name:
+          type: string
+        location:
+          type: string
+      type: object
     HnRoleMapping:
       example:
         hnId: hnId
@@ -1552,6 +1859,82 @@ components:
           format: date-time
           nullable: true
           type: string
+      type: object
+    JourneyDataResponse:
+      example:
+        heatNetworkElements:
+        - documents:
+          - phase: phase
+            fileName: fileName
+            s3Key: s3Key
+            stage: stage
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - phase: phase
+            fileName: fileName
+            s3Key: s3Key
+            stage: stage
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          name: name
+          count: 0
+          locations:
+          - locations
+          - locations
+        - documents:
+          - phase: phase
+            fileName: fileName
+            s3Key: s3Key
+            stage: stage
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - phase: phase
+            fileName: fileName
+            s3Key: s3Key
+            stage: stage
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          name: name
+          count: 0
+          locations:
+          - locations
+          - locations
+        networkType:
+          otherNetworkDescription: otherNetworkDescription
+          type: type
+        assessmentPlans:
+        - phase: phase
+          fileName: fileName
+          s3Key: s3Key
+          stage: stage
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - phase: phase
+          fileName: fileName
+          s3Key: s3Key
+          stage: stage
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        connectionTypes:
+        - connectionTypes
+        - connectionTypes
+      nullable: true
+      properties:
+        networkType:
+          $ref: "#/components/schemas/NetworkTypeResponse"
+        connectionTypes:
+          items:
+            type: string
+          nullable: true
+          type: array
+        heatNetworkElements:
+          items:
+            $ref: "#/components/schemas/HeatNetworkElementResponse"
+          type: array
+        assessmentPlans:
+          items:
+            $ref: "#/components/schemas/AssessmentPlanDocumentResponse"
+          type: array
       type: object
     ManagedUserResponse:
       example:
@@ -1670,6 +2053,18 @@ components:
             $ref: "#/components/schemas/InvitedUserResponse"
           type: array
       type: object
+    NetworkTypeResponse:
+      example:
+        otherNetworkDescription: otherNetworkDescription
+        type: type
+      nullable: true
+      properties:
+        type:
+          type: string
+        otherNetworkDescription:
+          nullable: true
+          type: string
+      type: object
     NetworkTypeSelection:
       example:
         otherNetworkDescription: otherNetworkDescription
@@ -1697,6 +2092,19 @@ components:
       enum:
       - Landline
       - Mobile
+      - null
+      nullable: true
+      type: string
+    NullableOfSoaStage:
+      enum:
+      - Stage1
+      - Stage2
+      - Stage3
+      - Stage4
+      - Stage5
+      - Stage6
+      - Stage7
+      - Stage8
       - null
       nullable: true
       type: string
@@ -1828,6 +2236,171 @@ components:
       required:
       - token
       type: object
+    Soa:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        journeyData:
+          heatNetworkElements:
+          - documents:
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            name: EnergyCentre
+            count: 0
+            locations:
+            - locations
+            - locations
+          - documents:
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            name: EnergyCentre
+            count: 0
+            locations:
+            - locations
+            - locations
+          networkType:
+            otherNetworkDescription: otherNetworkDescription
+            type: CityScaleDistrictHeatingNetwork
+          assessmentPlans:
+          - phase: null
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - phase: null
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          connectionTypes:
+          - ChildConnections
+          - ChildConnections
+        status: InProgress
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/SoaStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+        journeyData:
+          $ref: "#/components/schemas/SoaJourneyData"
+      type: object
+    Soa2:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        journeyData:
+          heatNetworkElements:
+          - documents:
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            name: EnergyCentre
+            count: 0
+            locations:
+            - locations
+            - locations
+          - documents:
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - phase: Phase1
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            name: EnergyCentre
+            count: 0
+            locations:
+            - locations
+            - locations
+          networkType:
+            otherNetworkDescription: otherNetworkDescription
+            type: CityScaleDistrictHeatingNetwork
+          assessmentPlans:
+          - phase: null
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - phase: null
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          connectionTypes:
+          - ChildConnections
+          - ChildConnections
+        status: InProgress
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        status:
+          $ref: "#/components/schemas/SoaStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+        journeyData:
+          $ref: "#/components/schemas/SoaJourneyData"
+      type: object
     SoaJourneyData:
       example:
         heatNetworkElements:
@@ -1870,6 +2443,19 @@ components:
         networkType:
           otherNetworkDescription: otherNetworkDescription
           type: CityScaleDistrictHeatingNetwork
+        assessmentPlans:
+        - phase: null
+          fileName: fileName
+          s3Key: s3Key
+          stage: Stage1
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - phase: null
+          fileName: fileName
+          s3Key: s3Key
+          stage: Stage1
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
         connectionTypes:
         - ChildConnections
         - ChildConnections
@@ -1886,6 +2472,10 @@ components:
           items:
             $ref: "#/components/schemas/HeatNetworkElement"
           type: array
+        assessmentPlans:
+          items:
+            $ref: "#/components/schemas/AssessmentPlanDocument"
+          type: array
       type: object
     SoaPhase:
       enum:
@@ -1895,70 +2485,79 @@ components:
       - Phase4
       - Phase5
       type: string
-    SoaProject:
+    SoaResponse:
       example:
-        hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
-        id: id
         journeyData:
           heatNetworkElements:
           - documents:
-            - phase: Phase1
+            - phase: phase
               fileName: fileName
               s3Key: s3Key
-              stage: Stage1
+              stage: stage
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            - phase: Phase1
+            - phase: phase
               fileName: fileName
               s3Key: s3Key
-              stage: Stage1
+              stage: stage
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            name: EnergyCentre
+            name: name
             count: 0
             locations:
             - locations
             - locations
           - documents:
-            - phase: Phase1
+            - phase: phase
               fileName: fileName
               s3Key: s3Key
-              stage: Stage1
+              stage: stage
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            - phase: Phase1
+            - phase: phase
               fileName: fileName
               s3Key: s3Key
-              stage: Stage1
+              stage: stage
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            name: EnergyCentre
+            name: name
             count: 0
             locations:
             - locations
             - locations
           networkType:
             otherNetworkDescription: otherNetworkDescription
-            type: CityScaleDistrictHeatingNetwork
+            type: type
+          assessmentPlans:
+          - phase: phase
+            fileName: fileName
+            s3Key: s3Key
+            stage: stage
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - phase: phase
+            fileName: fileName
+            s3Key: s3Key
+            stage: stage
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
           connectionTypes:
-          - ChildConnections
-          - ChildConnections
+          - connectionTypes
+          - connectionTypes
         status: InProgress
         updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
       properties:
-        id:
-          type: string
-        hnId:
-          type: string
         status:
-          $ref: "#/components/schemas/SoaProjectStatus"
+          $ref: "#/components/schemas/SoaStatus"
         createdAt:
           format: date-time
           type: string
         createdBy:
+          nullable: true
           type: string
         updatedAt:
           format: date-time
@@ -1968,14 +2567,8 @@ components:
           nullable: true
           type: string
         journeyData:
-          $ref: "#/components/schemas/SoaJourneyData"
+          $ref: "#/components/schemas/JourneyDataResponse"
       type: object
-    SoaProjectStatus:
-      enum:
-      - InProgress
-      - Complete
-      - Archived
-      type: string
     SoaStage:
       enum:
       - Stage1
@@ -1987,6 +2580,41 @@ components:
       - Stage7
       - Stage8
       type: string
+    SoaStatus:
+      enum:
+      - InProgress
+      - Submitted
+      - Complete
+      - Archived
+      type: string
+    UpdateAssessmentPlanRequest:
+      example:
+        phase: Phase1
+        hnId: hnId
+        fileName: fileName
+        updatedBy: updatedBy
+        s3Key: s3Key
+        stage: Stage1
+      properties:
+        hnId:
+          type: string
+        phase:
+          $ref: "#/components/schemas/SoaPhase"
+        stage:
+          $ref: "#/components/schemas/NullableOfSoaStage"
+        updatedBy:
+          type: string
+        fileName:
+          type: string
+        s3Key:
+          type: string
+      required:
+      - fileName
+      - hnId
+      - phase
+      - s3Key
+      - updatedBy
+      type: object
     UpdateConnectionsRequest:
       example:
         hnId: hnId
@@ -2065,6 +2693,19 @@ components:
       - locations
       - updatedBy
       type: object
+    UpdateSoaStatusRequest:
+      example:
+        hnId: hnId
+        updatedBy: updatedBy
+        status: InProgress
+      properties:
+        hnId:
+          type: string
+        updatedBy:
+          type: string
+        status:
+          $ref: "#/components/schemas/SoaStatus"
+      type: object
     UpdateUserOrganisationRequest:
       example:
         firstName: firstName
@@ -2133,6 +2774,29 @@ components:
           $ref: "#/components/schemas/SoaPhase"
         stage:
           $ref: "#/components/schemas/SoaStage"
+        uploadedAt:
+          format: date-time
+          type: string
+        uploadedBy:
+          type: string
+      type: object
+    UploadedDocumentResponse:
+      example:
+        phase: phase
+        fileName: fileName
+        s3Key: s3Key
+        stage: stage
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        uploadedBy: uploadedBy
+      properties:
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        phase:
+          type: string
+        stage:
+          type: string
         uploadedAt:
           format: date-time
           type: string
@@ -2283,7 +2947,7 @@ components:
           $ref: "#/components/schemas/OrganisationResponse"
         heatNetworks:
           items:
-            $ref: "#/components/schemas/HeatNetworkResponse"
+            $ref: "#/components/schemas/HeatNetworkUserResponse"
           nullable: true
           type: array
       type: object

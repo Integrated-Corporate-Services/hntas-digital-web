@@ -153,7 +153,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<List<HeatNetwork>?> GetUserHeatNetworks(string id)
+        public async Task<List<HeatNetworkResponse>?> GetUserHeatNetworks(string id)
         {
             var user = await GetUserById(id);
             if (user?.HnIds == null || !user.HnIds.Any())
