@@ -118,7 +118,7 @@ namespace HNTAS.Web.UI.Controllers
         {
 
             this.ShowBackButton("HeatNetworks", "UserManagement");
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnid);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnid.ToUpper());
             try
             {
                 var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
