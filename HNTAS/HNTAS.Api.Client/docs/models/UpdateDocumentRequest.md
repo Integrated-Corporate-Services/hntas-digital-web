@@ -1,15 +1,16 @@
-# HNTAS.Api.Client.Model.UploadedDocument
+# HNTAS.Api.Client.Model.UpdateDocumentRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**FileName** | **string** |  | [optional] 
-**S3Key** | **string** |  | [optional] 
-**Phase** | **SoaPhase** |  | [optional] 
+**HnId** | **string** |  | 
+**Phase** | **SoaPhase** |  | 
+**UploadedBy** | **string** |  | 
+**FileName** | **string** |  | 
+**S3Key** | **string** |  | 
+**DocumentType** | **DocumentType** |  | 
 **Stage** | **NullableOfSoaStage** |  | [optional] 
-**UploadedAt** | **DateTimeOffset** |  | [optional] 
-**UploadedBy** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

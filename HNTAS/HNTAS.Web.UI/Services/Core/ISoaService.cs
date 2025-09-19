@@ -12,8 +12,10 @@ namespace HNTAS.Web.UI.Services.Core
         Task UpdateElementLocations(UpdateElementLocationsRequest request);
         Task UpdateElementDocuments(UpdateElementDocumentsRequest request);
 
-        Task UpdateAssessmentPlanDocument(UpdateAssessmentPlanRequest request);
+        Task UpdateDocument(UpdateDocumentRequest request);
 
         Task UpdateSOAStatus(UpdateSoaStatusRequest soaStatusRequest);
+
+
     }
 }

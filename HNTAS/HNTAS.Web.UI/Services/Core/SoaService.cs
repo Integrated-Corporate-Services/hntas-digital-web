@@ -118,7 +118,7 @@ namespace HNTAS.Web.UI.Services.Core
 
             try
             {
-                var response = await _soaApi.ApiSOAElementLocationsPostAsync(request);
+                var response = await _soaApi.ApiSOAElementLocationsPatchAsync(request);
 
                 if (response.IsOk)
                 {
@@ -151,7 +151,7 @@ namespace HNTAS.Web.UI.Services.Core
 
             try
             {
-                var response = await _soaApi.ApiSOAElementDocumentsPostAsync(request);
+                var response = await _soaApi.ApiSOAElementDocumentsPatchAsync(request);
 
                 if (response.IsOk)
                 {
@@ -175,7 +175,7 @@ namespace HNTAS.Web.UI.Services.Core
 
 
 
-        public async Task UpdateAssessmentPlanDocument(UpdateAssessmentPlanRequest request)
+        public async Task UpdateDocument(UpdateDocumentRequest request)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request), "Request cannot be null.");
@@ -185,7 +185,7 @@ namespace HNTAS.Web.UI.Services.Core
 
             try
             {
-                var response = await _soaApi.ApiSOAAssessmentPlanPostAsync(request);
+                var response = await _soaApi.ApiSOADocumentUpdatePatchAsync(request);
 
                 if (response.IsOk)
                 {
@@ -202,8 +202,8 @@ namespace HNTAS.Web.UI.Services.Core
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Exception during assessment plan update for HN ID: {HnId}, UpdatedBy: {UpdatedBy}",
-                    request.HnId, request.UpdatedBy);
+                _logger.LogError(ex, "Exception during assessment plan update for HN ID: {HnId}, UploadedBy: {UploadedBy}",
+                    request.HnId, request.UploadedBy);
                 throw;
             }
         }
