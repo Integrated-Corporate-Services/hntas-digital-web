@@ -8,8 +8,18 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-l">Olympic Park Aberdeen</span>
-            <h1 class="govuk-heading-l">@ViewData["Title"] </h1>
+            <div class="dashboard-card">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a href="@Url.Action("DefineSOA")" class="govuk-link govuk-link--no-visited-state">Part of define your overall SOA</a>
+                </h3>
+                <p class="govuk-body-s">Choose your elements</p>
+            </div>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">@Model.HeatNetworkName</span>
+            <h1 class="govuk-heading-m">@ViewData["Title"] </h1>
 
             <p class="govuk-body">
                 Upload your assessment plan for <strong>phase @Model.PhaseNumber</strong>. You can

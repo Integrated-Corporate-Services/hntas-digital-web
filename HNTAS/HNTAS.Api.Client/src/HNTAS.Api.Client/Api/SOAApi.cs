@@ -42,6 +42,29 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="updateAssessmentPlanRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAAssessmentPlanPostApiResponse"/>&gt;</returns>
+        Task<IApiSOAAssessmentPlanPostApiResponse> ApiSOAAssessmentPlanPostAsync(UpdateAssessmentPlanRequest updateAssessmentPlanRequest, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="updateAssessmentPlanRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAAssessmentPlanPostApiResponse"/>?&gt;</returns>
+        Task<IApiSOAAssessmentPlanPostApiResponse?> ApiSOAAssessmentPlanPostOrDefaultAsync(UpdateAssessmentPlanRequest updateAssessmentPlanRequest, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="updateConnectionsRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAConnectionsPatchApiResponse"/>&gt;</returns>
@@ -90,33 +113,10 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="updateDocumentRequest"></param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOADocumentUpdatePatchApiResponse"/>&gt;</returns>
-        Task<IApiSOADocumentUpdatePatchApiResponse> ApiSOADocumentUpdatePatchAsync(UpdateDocumentRequest updateDocumentRequest, System.Threading.CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <param name="updateDocumentRequest"></param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOADocumentUpdatePatchApiResponse"/>?&gt;</returns>
-        Task<IApiSOADocumentUpdatePatchApiResponse?> ApiSOADocumentUpdatePatchOrDefaultAsync(UpdateDocumentRequest updateDocumentRequest, System.Threading.CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="updateElementDocumentsRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementDocumentsPatchApiResponse"/>&gt;</returns>
-        Task<IApiSOAElementDocumentsPatchApiResponse> ApiSOAElementDocumentsPatchAsync(UpdateElementDocumentsRequest updateElementDocumentsRequest, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementDocumentsPostApiResponse"/>&gt;</returns>
+        Task<IApiSOAElementDocumentsPostApiResponse> ApiSOAElementDocumentsPostAsync(UpdateElementDocumentsRequest updateElementDocumentsRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -126,8 +126,8 @@ namespace HNTAS.Api.Client.Api
         /// </remarks>
         /// <param name="updateElementDocumentsRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementDocumentsPatchApiResponse"/>?&gt;</returns>
-        Task<IApiSOAElementDocumentsPatchApiResponse?> ApiSOAElementDocumentsPatchOrDefaultAsync(UpdateElementDocumentsRequest updateElementDocumentsRequest, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementDocumentsPostApiResponse"/>?&gt;</returns>
+        Task<IApiSOAElementDocumentsPostApiResponse?> ApiSOAElementDocumentsPostOrDefaultAsync(UpdateElementDocumentsRequest updateElementDocumentsRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -138,8 +138,8 @@ namespace HNTAS.Api.Client.Api
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="updateElementLocationsRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementLocationsPatchApiResponse"/>&gt;</returns>
-        Task<IApiSOAElementLocationsPatchApiResponse> ApiSOAElementLocationsPatchAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementLocationsPostApiResponse"/>&gt;</returns>
+        Task<IApiSOAElementLocationsPostApiResponse> ApiSOAElementLocationsPostAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -149,8 +149,8 @@ namespace HNTAS.Api.Client.Api
         /// </remarks>
         /// <param name="updateElementLocationsRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementLocationsPatchApiResponse"/>?&gt;</returns>
-        Task<IApiSOAElementLocationsPatchApiResponse?> ApiSOAElementLocationsPatchOrDefaultAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementLocationsPostApiResponse"/>?&gt;</returns>
+        Task<IApiSOAElementLocationsPostApiResponse?> ApiSOAElementLocationsPostOrDefaultAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -277,6 +277,30 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiSOAAssessmentPlanPostApiResponse"/>
+    /// </summary>
+    public interface IApiSOAAssessmentPlanPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IApiSOAConnectionsPatchApiResponse"/>
     /// </summary>
     public interface IApiSOAConnectionsPatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
@@ -319,9 +343,9 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
-    /// The <see cref="IApiSOADocumentUpdatePatchApiResponse"/>
+    /// The <see cref="IApiSOAElementDocumentsPostApiResponse"/>
     /// </summary>
-    public interface IApiSOADocumentUpdatePatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IApiSOAElementDocumentsPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -343,33 +367,9 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
-    /// The <see cref="IApiSOAElementDocumentsPatchApiResponse"/>
+    /// The <see cref="IApiSOAElementLocationsPostApiResponse"/>
     /// </summary>
-    public interface IApiSOAElementDocumentsPatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
-    {
-        /// <summary>
-        /// Returns true if the response is 200 Ok
-        /// </summary>
-        /// <returns></returns>
-        bool IsOk { get; }
-
-        /// <summary>
-        /// Returns true if the response is 400 BadRequest
-        /// </summary>
-        /// <returns></returns>
-        bool IsBadRequest { get; }
-
-        /// <summary>
-        /// Returns true if the response is 404 NotFound
-        /// </summary>
-        /// <returns></returns>
-        bool IsNotFound { get; }
-    }
-
-    /// <summary>
-    /// The <see cref="IApiSOAElementLocationsPatchApiResponse"/>
-    /// </summary>
-    public interface IApiSOAElementLocationsPatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IApiSOAElementLocationsPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -506,6 +506,26 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The event raised after the server response
         /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiSOAAssessmentPlanPost;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiSOAAssessmentPlanPost;
+
+        internal void ExecuteOnApiSOAAssessmentPlanPost(SOAApi.ApiSOAAssessmentPlanPostApiResponse apiResponse)
+        {
+            OnApiSOAAssessmentPlanPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiSOAAssessmentPlanPost(Exception exception)
+        {
+            OnErrorApiSOAAssessmentPlanPost?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
         public event EventHandler<ApiResponseEventArgs>? OnApiSOAConnectionsPatch;
 
         /// <summary>
@@ -546,61 +566,41 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The event raised after the server response
         /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiSOADocumentUpdatePatch;
+        public event EventHandler<ApiResponseEventArgs>? OnApiSOAElementDocumentsPost;
 
         /// <summary>
         /// The event raised after an error querying the server
         /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiSOADocumentUpdatePatch;
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiSOAElementDocumentsPost;
 
-        internal void ExecuteOnApiSOADocumentUpdatePatch(SOAApi.ApiSOADocumentUpdatePatchApiResponse apiResponse)
+        internal void ExecuteOnApiSOAElementDocumentsPost(SOAApi.ApiSOAElementDocumentsPostApiResponse apiResponse)
         {
-            OnApiSOADocumentUpdatePatch?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+            OnApiSOAElementDocumentsPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
         }
 
-        internal void ExecuteOnErrorApiSOADocumentUpdatePatch(Exception exception)
+        internal void ExecuteOnErrorApiSOAElementDocumentsPost(Exception exception)
         {
-            OnErrorApiSOADocumentUpdatePatch?.Invoke(this, new ExceptionEventArgs(exception));
+            OnErrorApiSOAElementDocumentsPost?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
         /// The event raised after the server response
         /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiSOAElementDocumentsPatch;
+        public event EventHandler<ApiResponseEventArgs>? OnApiSOAElementLocationsPost;
 
         /// <summary>
         /// The event raised after an error querying the server
         /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiSOAElementDocumentsPatch;
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiSOAElementLocationsPost;
 
-        internal void ExecuteOnApiSOAElementDocumentsPatch(SOAApi.ApiSOAElementDocumentsPatchApiResponse apiResponse)
+        internal void ExecuteOnApiSOAElementLocationsPost(SOAApi.ApiSOAElementLocationsPostApiResponse apiResponse)
         {
-            OnApiSOAElementDocumentsPatch?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+            OnApiSOAElementLocationsPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
         }
 
-        internal void ExecuteOnErrorApiSOAElementDocumentsPatch(Exception exception)
+        internal void ExecuteOnErrorApiSOAElementLocationsPost(Exception exception)
         {
-            OnErrorApiSOAElementDocumentsPatch?.Invoke(this, new ExceptionEventArgs(exception));
-        }
-
-        /// <summary>
-        /// The event raised after the server response
-        /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiSOAElementLocationsPatch;
-
-        /// <summary>
-        /// The event raised after an error querying the server
-        /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiSOAElementLocationsPatch;
-
-        internal void ExecuteOnApiSOAElementLocationsPatch(SOAApi.ApiSOAElementLocationsPatchApiResponse apiResponse)
-        {
-            OnApiSOAElementLocationsPatch?.Invoke(this, new ApiResponseEventArgs(apiResponse));
-        }
-
-        internal void ExecuteOnErrorApiSOAElementLocationsPatch(Exception exception)
-        {
-            OnErrorApiSOAElementLocationsPatch?.Invoke(this, new ExceptionEventArgs(exception));
+            OnErrorApiSOAElementLocationsPost?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -742,6 +742,286 @@ namespace HNTAS.Api.Client.Api
             Logger = LoggerFactory.CreateLogger<SOAApi>();
             HttpClient = httpClient;
             Events = sOAApiEvents;
+        }
+
+        partial void FormatApiSOAAssessmentPlanPost(UpdateAssessmentPlanRequest updateAssessmentPlanRequest);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="updateAssessmentPlanRequest"></param>
+        /// <returns></returns>
+        private void ValidateApiSOAAssessmentPlanPost(UpdateAssessmentPlanRequest updateAssessmentPlanRequest)
+        {
+            if (updateAssessmentPlanRequest == null)
+                throw new ArgumentNullException(nameof(updateAssessmentPlanRequest));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="updateAssessmentPlanRequest"></param>
+        private void AfterApiSOAAssessmentPlanPostDefaultImplementation(IApiSOAAssessmentPlanPostApiResponse apiResponseLocalVar, UpdateAssessmentPlanRequest updateAssessmentPlanRequest)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiSOAAssessmentPlanPost(ref suppressDefaultLog, apiResponseLocalVar, updateAssessmentPlanRequest);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="updateAssessmentPlanRequest"></param>
+        partial void AfterApiSOAAssessmentPlanPost(ref bool suppressDefaultLog, IApiSOAAssessmentPlanPostApiResponse apiResponseLocalVar, UpdateAssessmentPlanRequest updateAssessmentPlanRequest);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="updateAssessmentPlanRequest"></param>
+        private void OnErrorApiSOAAssessmentPlanPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateAssessmentPlanRequest updateAssessmentPlanRequest)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiSOAAssessmentPlanPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, updateAssessmentPlanRequest);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="updateAssessmentPlanRequest"></param>
+        partial void OnErrorApiSOAAssessmentPlanPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateAssessmentPlanRequest updateAssessmentPlanRequest);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="updateAssessmentPlanRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAAssessmentPlanPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSOAAssessmentPlanPostApiResponse?> ApiSOAAssessmentPlanPostOrDefaultAsync(UpdateAssessmentPlanRequest updateAssessmentPlanRequest, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiSOAAssessmentPlanPostAsync(updateAssessmentPlanRequest, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="updateAssessmentPlanRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAAssessmentPlanPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSOAAssessmentPlanPostApiResponse> ApiSOAAssessmentPlanPostAsync(UpdateAssessmentPlanRequest updateAssessmentPlanRequest, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiSOAAssessmentPlanPost(updateAssessmentPlanRequest);
+
+                FormatApiSOAAssessmentPlanPost(updateAssessmentPlanRequest);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/SOA/assessment-plan"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/SOA/assessment-plan");
+
+                    httpRequestMessageLocalVar.Content = (updateAssessmentPlanRequest as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(updateAssessmentPlanRequest, _jsonSerializerOptions));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "text/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiSOAAssessmentPlanPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSOAAssessmentPlanPostApiResponse>();
+
+                        ApiSOAAssessmentPlanPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SOA/assessment-plan", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiSOAAssessmentPlanPostDefaultImplementation(apiResponseLocalVar, updateAssessmentPlanRequest);
+
+                        Events.ExecuteOnApiSOAAssessmentPlanPost(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiSOAAssessmentPlanPostDefaultImplementation(e, "/api/SOA/assessment-plan", uriBuilderLocalVar.Path, updateAssessmentPlanRequest);
+                Events.ExecuteOnErrorApiSOAAssessmentPlanPost(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiSOAAssessmentPlanPostApiResponse"/>
+        /// </summary>
+        public partial class ApiSOAAssessmentPlanPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSOAAssessmentPlanPostApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiSOAAssessmentPlanPostApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiSOAAssessmentPlanPostApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiSOAAssessmentPlanPostApiResponse(ILogger<ApiSOAAssessmentPlanPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
         partial void FormatApiSOAConnectionsPatch(UpdateConnectionsRequest updateConnectionsRequest);
@@ -1303,294 +1583,14 @@ namespace HNTAS.Api.Client.Api
             partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
-        partial void FormatApiSOADocumentUpdatePatch(UpdateDocumentRequest updateDocumentRequest);
-
-        /// <summary>
-        /// Validates the request parameters
-        /// </summary>
-        /// <param name="updateDocumentRequest"></param>
-        /// <returns></returns>
-        private void ValidateApiSOADocumentUpdatePatch(UpdateDocumentRequest updateDocumentRequest)
-        {
-            if (updateDocumentRequest == null)
-                throw new ArgumentNullException(nameof(updateDocumentRequest));
-        }
-
-        /// <summary>
-        /// Processes the server response
-        /// </summary>
-        /// <param name="apiResponseLocalVar"></param>
-        /// <param name="updateDocumentRequest"></param>
-        private void AfterApiSOADocumentUpdatePatchDefaultImplementation(IApiSOADocumentUpdatePatchApiResponse apiResponseLocalVar, UpdateDocumentRequest updateDocumentRequest)
-        {
-            bool suppressDefaultLog = false;
-            AfterApiSOADocumentUpdatePatch(ref suppressDefaultLog, apiResponseLocalVar, updateDocumentRequest);
-            if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
-        }
-
-        /// <summary>
-        /// Processes the server response
-        /// </summary>
-        /// <param name="suppressDefaultLog"></param>
-        /// <param name="apiResponseLocalVar"></param>
-        /// <param name="updateDocumentRequest"></param>
-        partial void AfterApiSOADocumentUpdatePatch(ref bool suppressDefaultLog, IApiSOADocumentUpdatePatchApiResponse apiResponseLocalVar, UpdateDocumentRequest updateDocumentRequest);
-
-        /// <summary>
-        /// Logs exceptions that occur while retrieving the server response
-        /// </summary>
-        /// <param name="exceptionLocalVar"></param>
-        /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
-        /// <param name="updateDocumentRequest"></param>
-        private void OnErrorApiSOADocumentUpdatePatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateDocumentRequest updateDocumentRequest)
-        {
-            bool suppressDefaultLogLocalVar = false;
-            OnErrorApiSOADocumentUpdatePatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, updateDocumentRequest);
-            if (!suppressDefaultLogLocalVar)
-                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
-        }
-
-        /// <summary>
-        /// A partial method that gives developers a way to provide customized exception handling
-        /// </summary>
-        /// <param name="suppressDefaultLogLocalVar"></param>
-        /// <param name="exceptionLocalVar"></param>
-        /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
-        /// <param name="updateDocumentRequest"></param>
-        partial void OnErrorApiSOADocumentUpdatePatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateDocumentRequest updateDocumentRequest);
-
-        /// <summary>
-        ///  
-        /// </summary>
-        /// <param name="updateDocumentRequest"></param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOADocumentUpdatePatchApiResponse"/>&gt;</returns>
-        public async Task<IApiSOADocumentUpdatePatchApiResponse?> ApiSOADocumentUpdatePatchOrDefaultAsync(UpdateDocumentRequest updateDocumentRequest, System.Threading.CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                return await ApiSOADocumentUpdatePatchAsync(updateDocumentRequest, cancellationToken).ConfigureAwait(false);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        ///  
-        /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="updateDocumentRequest"></param>
-        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOADocumentUpdatePatchApiResponse"/>&gt;</returns>
-        public async Task<IApiSOADocumentUpdatePatchApiResponse> ApiSOADocumentUpdatePatchAsync(UpdateDocumentRequest updateDocumentRequest, System.Threading.CancellationToken cancellationToken = default)
-        {
-            UriBuilder uriBuilderLocalVar = new UriBuilder();
-
-            try
-            {
-                ValidateApiSOADocumentUpdatePatch(updateDocumentRequest);
-
-                FormatApiSOADocumentUpdatePatch(updateDocumentRequest);
-
-                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
-                {
-                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
-                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
-                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
-                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
-                        ? "/api/SOA/document-update"
-                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/SOA/document-update");
-
-                    httpRequestMessageLocalVar.Content = (updateDocumentRequest as object) is System.IO.Stream stream
-                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
-                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(updateDocumentRequest, _jsonSerializerOptions));
-
-                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
-
-                    string[] contentTypes = new string[] {
-                        "application/json",
-                        "text/json",
-                        "application/*+json"
-                    };
-
-                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
-
-                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
-                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
-
-                    string[] acceptLocalVars = new string[] {
-                        "text/plain",
-                        "application/json",
-                        "text/json"
-                    };
-
-                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
-
-                    if (acceptLocalVar != null)
-                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
-
-                    httpRequestMessageLocalVar.Method = HttpMethod.Patch;
-
-                    DateTime requestedAtLocalVar = DateTime.UtcNow;
-
-                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
-                    {
-                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
-                        ILogger<ApiSOADocumentUpdatePatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSOADocumentUpdatePatchApiResponse>();
-
-                        ApiSOADocumentUpdatePatchApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SOA/document-update", requestedAtLocalVar, _jsonSerializerOptions);
-
-                        AfterApiSOADocumentUpdatePatchDefaultImplementation(apiResponseLocalVar, updateDocumentRequest);
-
-                        Events.ExecuteOnApiSOADocumentUpdatePatch(apiResponseLocalVar);
-
-                        return apiResponseLocalVar;
-                    }
-                }
-            }
-            catch(Exception e)
-            {
-                OnErrorApiSOADocumentUpdatePatchDefaultImplementation(e, "/api/SOA/document-update", uriBuilderLocalVar.Path, updateDocumentRequest);
-                Events.ExecuteOnErrorApiSOADocumentUpdatePatch(e);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// The <see cref="ApiSOADocumentUpdatePatchApiResponse"/>
-        /// </summary>
-        public partial class ApiSOADocumentUpdatePatchApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSOADocumentUpdatePatchApiResponse
-        {
-            /// <summary>
-            /// The logger
-            /// </summary>
-            public ILogger<ApiSOADocumentUpdatePatchApiResponse> Logger { get; }
-
-            /// <summary>
-            /// The <see cref="ApiSOADocumentUpdatePatchApiResponse"/>
-            /// </summary>
-            /// <param name="logger"></param>
-            /// <param name="httpRequestMessage"></param>
-            /// <param name="httpResponseMessage"></param>
-            /// <param name="rawContent"></param>
-            /// <param name="path"></param>
-            /// <param name="requestedAt"></param>
-            /// <param name="jsonSerializerOptions"></param>
-            public ApiSOADocumentUpdatePatchApiResponse(ILogger<ApiSOADocumentUpdatePatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
-            {
-                Logger = logger;
-                OnCreated(httpRequestMessage, httpResponseMessage);
-            }
-
-            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
-
-            /// <summary>
-            /// Returns true if the response is 200 Ok
-            /// </summary>
-            /// <returns></returns>
-            public bool IsOk => 200 == (int)StatusCode;
-
-            /// <summary>
-            /// Returns true if the response is 400 BadRequest
-            /// </summary>
-            /// <returns></returns>
-            public bool IsBadRequest => 400 == (int)StatusCode;
-
-            /// <summary>
-            /// Deserializes the response if the response is 400 BadRequest
-            /// </summary>
-            /// <returns></returns>
-            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
-            {
-                // This logic may be modified with the AsModel.mustache template
-                return IsBadRequest
-                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
-                    : null;
-            }
-
-            /// <summary>
-            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
-            /// </summary>
-            /// <param name="result"></param>
-            /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
-            {
-                result = null;
-
-                try
-                {
-                    result = BadRequest();
-                } catch (Exception e)
-                {
-                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
-                }
-
-                return result != null;
-            }
-
-            /// <summary>
-            /// Returns true if the response is 404 NotFound
-            /// </summary>
-            /// <returns></returns>
-            public bool IsNotFound => 404 == (int)StatusCode;
-
-            /// <summary>
-            /// Deserializes the response if the response is 404 NotFound
-            /// </summary>
-            /// <returns></returns>
-            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
-            {
-                // This logic may be modified with the AsModel.mustache template
-                return IsNotFound
-                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
-                    : null;
-            }
-
-            /// <summary>
-            /// Returns true if the response is 404 NotFound and the deserialized response is not null
-            /// </summary>
-            /// <param name="result"></param>
-            /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
-            {
-                result = null;
-
-                try
-                {
-                    result = NotFound();
-                } catch (Exception e)
-                {
-                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
-                }
-
-                return result != null;
-            }
-
-            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
-            {
-                bool suppressDefaultLog = false;
-                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
-                if (!suppressDefaultLog)
-                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
-            }
-
-            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
-        }
-
-        partial void FormatApiSOAElementDocumentsPatch(UpdateElementDocumentsRequest updateElementDocumentsRequest);
+        partial void FormatApiSOAElementDocumentsPost(UpdateElementDocumentsRequest updateElementDocumentsRequest);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
         /// <param name="updateElementDocumentsRequest"></param>
         /// <returns></returns>
-        private void ValidateApiSOAElementDocumentsPatch(UpdateElementDocumentsRequest updateElementDocumentsRequest)
+        private void ValidateApiSOAElementDocumentsPost(UpdateElementDocumentsRequest updateElementDocumentsRequest)
         {
             if (updateElementDocumentsRequest == null)
                 throw new ArgumentNullException(nameof(updateElementDocumentsRequest));
@@ -1601,10 +1601,10 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="updateElementDocumentsRequest"></param>
-        private void AfterApiSOAElementDocumentsPatchDefaultImplementation(IApiSOAElementDocumentsPatchApiResponse apiResponseLocalVar, UpdateElementDocumentsRequest updateElementDocumentsRequest)
+        private void AfterApiSOAElementDocumentsPostDefaultImplementation(IApiSOAElementDocumentsPostApiResponse apiResponseLocalVar, UpdateElementDocumentsRequest updateElementDocumentsRequest)
         {
             bool suppressDefaultLog = false;
-            AfterApiSOAElementDocumentsPatch(ref suppressDefaultLog, apiResponseLocalVar, updateElementDocumentsRequest);
+            AfterApiSOAElementDocumentsPost(ref suppressDefaultLog, apiResponseLocalVar, updateElementDocumentsRequest);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -1615,7 +1615,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="updateElementDocumentsRequest"></param>
-        partial void AfterApiSOAElementDocumentsPatch(ref bool suppressDefaultLog, IApiSOAElementDocumentsPatchApiResponse apiResponseLocalVar, UpdateElementDocumentsRequest updateElementDocumentsRequest);
+        partial void AfterApiSOAElementDocumentsPost(ref bool suppressDefaultLog, IApiSOAElementDocumentsPostApiResponse apiResponseLocalVar, UpdateElementDocumentsRequest updateElementDocumentsRequest);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -1624,10 +1624,10 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="updateElementDocumentsRequest"></param>
-        private void OnErrorApiSOAElementDocumentsPatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateElementDocumentsRequest updateElementDocumentsRequest)
+        private void OnErrorApiSOAElementDocumentsPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateElementDocumentsRequest updateElementDocumentsRequest)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiSOAElementDocumentsPatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, updateElementDocumentsRequest);
+            OnErrorApiSOAElementDocumentsPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, updateElementDocumentsRequest);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -1640,19 +1640,19 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="updateElementDocumentsRequest"></param>
-        partial void OnErrorApiSOAElementDocumentsPatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateElementDocumentsRequest updateElementDocumentsRequest);
+        partial void OnErrorApiSOAElementDocumentsPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateElementDocumentsRequest updateElementDocumentsRequest);
 
         /// <summary>
         ///  
         /// </summary>
         /// <param name="updateElementDocumentsRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementDocumentsPatchApiResponse"/>&gt;</returns>
-        public async Task<IApiSOAElementDocumentsPatchApiResponse?> ApiSOAElementDocumentsPatchOrDefaultAsync(UpdateElementDocumentsRequest updateElementDocumentsRequest, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementDocumentsPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSOAElementDocumentsPostApiResponse?> ApiSOAElementDocumentsPostOrDefaultAsync(UpdateElementDocumentsRequest updateElementDocumentsRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiSOAElementDocumentsPatchAsync(updateElementDocumentsRequest, cancellationToken).ConfigureAwait(false);
+                return await ApiSOAElementDocumentsPostAsync(updateElementDocumentsRequest, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -1666,16 +1666,16 @@ namespace HNTAS.Api.Client.Api
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="updateElementDocumentsRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementDocumentsPatchApiResponse"/>&gt;</returns>
-        public async Task<IApiSOAElementDocumentsPatchApiResponse> ApiSOAElementDocumentsPatchAsync(UpdateElementDocumentsRequest updateElementDocumentsRequest, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementDocumentsPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSOAElementDocumentsPostApiResponse> ApiSOAElementDocumentsPostAsync(UpdateElementDocumentsRequest updateElementDocumentsRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiSOAElementDocumentsPatch(updateElementDocumentsRequest);
+                ValidateApiSOAElementDocumentsPost(updateElementDocumentsRequest);
 
-                FormatApiSOAElementDocumentsPatch(updateElementDocumentsRequest);
+                FormatApiSOAElementDocumentsPost(updateElementDocumentsRequest);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -1714,7 +1714,7 @@ namespace HNTAS.Api.Client.Api
                     if (acceptLocalVar != null)
                         httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
 
-                    httpRequestMessageLocalVar.Method = HttpMethod.Patch;
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
 
                     DateTime requestedAtLocalVar = DateTime.UtcNow;
 
@@ -1722,13 +1722,13 @@ namespace HNTAS.Api.Client.Api
                     {
                         string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-                        ILogger<ApiSOAElementDocumentsPatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSOAElementDocumentsPatchApiResponse>();
+                        ILogger<ApiSOAElementDocumentsPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSOAElementDocumentsPostApiResponse>();
 
-                        ApiSOAElementDocumentsPatchApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SOA/element-documents", requestedAtLocalVar, _jsonSerializerOptions);
+                        ApiSOAElementDocumentsPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SOA/element-documents", requestedAtLocalVar, _jsonSerializerOptions);
 
-                        AfterApiSOAElementDocumentsPatchDefaultImplementation(apiResponseLocalVar, updateElementDocumentsRequest);
+                        AfterApiSOAElementDocumentsPostDefaultImplementation(apiResponseLocalVar, updateElementDocumentsRequest);
 
-                        Events.ExecuteOnApiSOAElementDocumentsPatch(apiResponseLocalVar);
+                        Events.ExecuteOnApiSOAElementDocumentsPost(apiResponseLocalVar);
 
                         return apiResponseLocalVar;
                     }
@@ -1736,24 +1736,24 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiSOAElementDocumentsPatchDefaultImplementation(e, "/api/SOA/element-documents", uriBuilderLocalVar.Path, updateElementDocumentsRequest);
-                Events.ExecuteOnErrorApiSOAElementDocumentsPatch(e);
+                OnErrorApiSOAElementDocumentsPostDefaultImplementation(e, "/api/SOA/element-documents", uriBuilderLocalVar.Path, updateElementDocumentsRequest);
+                Events.ExecuteOnErrorApiSOAElementDocumentsPost(e);
                 throw;
             }
         }
 
         /// <summary>
-        /// The <see cref="ApiSOAElementDocumentsPatchApiResponse"/>
+        /// The <see cref="ApiSOAElementDocumentsPostApiResponse"/>
         /// </summary>
-        public partial class ApiSOAElementDocumentsPatchApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSOAElementDocumentsPatchApiResponse
+        public partial class ApiSOAElementDocumentsPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSOAElementDocumentsPostApiResponse
         {
             /// <summary>
             /// The logger
             /// </summary>
-            public ILogger<ApiSOAElementDocumentsPatchApiResponse> Logger { get; }
+            public ILogger<ApiSOAElementDocumentsPostApiResponse> Logger { get; }
 
             /// <summary>
-            /// The <see cref="ApiSOAElementDocumentsPatchApiResponse"/>
+            /// The <see cref="ApiSOAElementDocumentsPostApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -1762,7 +1762,7 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiSOAElementDocumentsPatchApiResponse(ILogger<ApiSOAElementDocumentsPatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public ApiSOAElementDocumentsPostApiResponse(ILogger<ApiSOAElementDocumentsPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -1863,14 +1863,14 @@ namespace HNTAS.Api.Client.Api
             partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
-        partial void FormatApiSOAElementLocationsPatch(UpdateElementLocationsRequest updateElementLocationsRequest);
+        partial void FormatApiSOAElementLocationsPost(UpdateElementLocationsRequest updateElementLocationsRequest);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
         /// <param name="updateElementLocationsRequest"></param>
         /// <returns></returns>
-        private void ValidateApiSOAElementLocationsPatch(UpdateElementLocationsRequest updateElementLocationsRequest)
+        private void ValidateApiSOAElementLocationsPost(UpdateElementLocationsRequest updateElementLocationsRequest)
         {
             if (updateElementLocationsRequest == null)
                 throw new ArgumentNullException(nameof(updateElementLocationsRequest));
@@ -1881,10 +1881,10 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="updateElementLocationsRequest"></param>
-        private void AfterApiSOAElementLocationsPatchDefaultImplementation(IApiSOAElementLocationsPatchApiResponse apiResponseLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest)
+        private void AfterApiSOAElementLocationsPostDefaultImplementation(IApiSOAElementLocationsPostApiResponse apiResponseLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest)
         {
             bool suppressDefaultLog = false;
-            AfterApiSOAElementLocationsPatch(ref suppressDefaultLog, apiResponseLocalVar, updateElementLocationsRequest);
+            AfterApiSOAElementLocationsPost(ref suppressDefaultLog, apiResponseLocalVar, updateElementLocationsRequest);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -1895,7 +1895,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="updateElementLocationsRequest"></param>
-        partial void AfterApiSOAElementLocationsPatch(ref bool suppressDefaultLog, IApiSOAElementLocationsPatchApiResponse apiResponseLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest);
+        partial void AfterApiSOAElementLocationsPost(ref bool suppressDefaultLog, IApiSOAElementLocationsPostApiResponse apiResponseLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -1904,10 +1904,10 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="updateElementLocationsRequest"></param>
-        private void OnErrorApiSOAElementLocationsPatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest)
+        private void OnErrorApiSOAElementLocationsPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiSOAElementLocationsPatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, updateElementLocationsRequest);
+            OnErrorApiSOAElementLocationsPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, updateElementLocationsRequest);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -1920,19 +1920,19 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="updateElementLocationsRequest"></param>
-        partial void OnErrorApiSOAElementLocationsPatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest);
+        partial void OnErrorApiSOAElementLocationsPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, UpdateElementLocationsRequest updateElementLocationsRequest);
 
         /// <summary>
         ///  
         /// </summary>
         /// <param name="updateElementLocationsRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementLocationsPatchApiResponse"/>&gt;</returns>
-        public async Task<IApiSOAElementLocationsPatchApiResponse?> ApiSOAElementLocationsPatchOrDefaultAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementLocationsPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSOAElementLocationsPostApiResponse?> ApiSOAElementLocationsPostOrDefaultAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiSOAElementLocationsPatchAsync(updateElementLocationsRequest, cancellationToken).ConfigureAwait(false);
+                return await ApiSOAElementLocationsPostAsync(updateElementLocationsRequest, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -1946,16 +1946,16 @@ namespace HNTAS.Api.Client.Api
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="updateElementLocationsRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementLocationsPatchApiResponse"/>&gt;</returns>
-        public async Task<IApiSOAElementLocationsPatchApiResponse> ApiSOAElementLocationsPatchAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAElementLocationsPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSOAElementLocationsPostApiResponse> ApiSOAElementLocationsPostAsync(UpdateElementLocationsRequest updateElementLocationsRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiSOAElementLocationsPatch(updateElementLocationsRequest);
+                ValidateApiSOAElementLocationsPost(updateElementLocationsRequest);
 
-                FormatApiSOAElementLocationsPatch(updateElementLocationsRequest);
+                FormatApiSOAElementLocationsPost(updateElementLocationsRequest);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -1994,7 +1994,7 @@ namespace HNTAS.Api.Client.Api
                     if (acceptLocalVar != null)
                         httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
 
-                    httpRequestMessageLocalVar.Method = HttpMethod.Patch;
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
 
                     DateTime requestedAtLocalVar = DateTime.UtcNow;
 
@@ -2002,13 +2002,13 @@ namespace HNTAS.Api.Client.Api
                     {
                         string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-                        ILogger<ApiSOAElementLocationsPatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSOAElementLocationsPatchApiResponse>();
+                        ILogger<ApiSOAElementLocationsPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSOAElementLocationsPostApiResponse>();
 
-                        ApiSOAElementLocationsPatchApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SOA/element-locations", requestedAtLocalVar, _jsonSerializerOptions);
+                        ApiSOAElementLocationsPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SOA/element-locations", requestedAtLocalVar, _jsonSerializerOptions);
 
-                        AfterApiSOAElementLocationsPatchDefaultImplementation(apiResponseLocalVar, updateElementLocationsRequest);
+                        AfterApiSOAElementLocationsPostDefaultImplementation(apiResponseLocalVar, updateElementLocationsRequest);
 
-                        Events.ExecuteOnApiSOAElementLocationsPatch(apiResponseLocalVar);
+                        Events.ExecuteOnApiSOAElementLocationsPost(apiResponseLocalVar);
 
                         return apiResponseLocalVar;
                     }
@@ -2016,24 +2016,24 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiSOAElementLocationsPatchDefaultImplementation(e, "/api/SOA/element-locations", uriBuilderLocalVar.Path, updateElementLocationsRequest);
-                Events.ExecuteOnErrorApiSOAElementLocationsPatch(e);
+                OnErrorApiSOAElementLocationsPostDefaultImplementation(e, "/api/SOA/element-locations", uriBuilderLocalVar.Path, updateElementLocationsRequest);
+                Events.ExecuteOnErrorApiSOAElementLocationsPost(e);
                 throw;
             }
         }
 
         /// <summary>
-        /// The <see cref="ApiSOAElementLocationsPatchApiResponse"/>
+        /// The <see cref="ApiSOAElementLocationsPostApiResponse"/>
         /// </summary>
-        public partial class ApiSOAElementLocationsPatchApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSOAElementLocationsPatchApiResponse
+        public partial class ApiSOAElementLocationsPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSOAElementLocationsPostApiResponse
         {
             /// <summary>
             /// The logger
             /// </summary>
-            public ILogger<ApiSOAElementLocationsPatchApiResponse> Logger { get; }
+            public ILogger<ApiSOAElementLocationsPostApiResponse> Logger { get; }
 
             /// <summary>
-            /// The <see cref="ApiSOAElementLocationsPatchApiResponse"/>
+            /// The <see cref="ApiSOAElementLocationsPostApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -2042,7 +2042,7 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiSOAElementLocationsPatchApiResponse(ILogger<ApiSOAElementLocationsPatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public ApiSOAElementLocationsPostApiResponse(ILogger<ApiSOAElementLocationsPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);

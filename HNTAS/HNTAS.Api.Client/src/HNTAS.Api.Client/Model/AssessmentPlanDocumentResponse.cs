@@ -26,12 +26,12 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// UploadedDocumentResponse
+    /// AssessmentPlanDocumentResponse
     /// </summary>
-    public partial class UploadedDocumentResponse : IValidatableObject
+    public partial class AssessmentPlanDocumentResponse : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UploadedDocumentResponse" /> class.
+        /// Initializes a new instance of the <see cref="AssessmentPlanDocumentResponse" /> class.
         /// </summary>
         /// <param name="fileName">fileName</param>
         /// <param name="s3Key">s3Key</param>
@@ -40,7 +40,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="uploadedAt">uploadedAt</param>
         /// <param name="uploadedBy">uploadedBy</param>
         [JsonConstructor]
-        public UploadedDocumentResponse(Option<string?> fileName = default, Option<string?> s3Key = default, Option<string?> phase = default, Option<string?> stage = default, Option<DateTimeOffset?> uploadedAt = default, Option<string?> uploadedBy = default)
+        public AssessmentPlanDocumentResponse(Option<string?> fileName = default, Option<string?> s3Key = default, Option<string?> phase = default, Option<string?> stage = default, Option<DateTimeOffset?> uploadedAt = default, Option<string?> uploadedBy = default)
         {
             FileNameOption = fileName;
             S3KeyOption = s3Key;
@@ -138,7 +138,7 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class UploadedDocumentResponse {\n");
+            sb.Append("class AssessmentPlanDocumentResponse {\n");
             sb.Append("  FileName: ").Append(FileName).Append("\n");
             sb.Append("  S3Key: ").Append(S3Key).Append("\n");
             sb.Append("  Phase: ").Append(Phase).Append("\n");
@@ -161,9 +161,9 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="UploadedDocumentResponse" />
+    /// A Json converter for type <see cref="AssessmentPlanDocumentResponse" />
     /// </summary>
-    public class UploadedDocumentResponseJsonConverter : JsonConverter<UploadedDocumentResponse>
+    public class AssessmentPlanDocumentResponseJsonConverter : JsonConverter<AssessmentPlanDocumentResponse>
     {
         /// <summary>
         /// The format to use to serialize UploadedAt
@@ -171,14 +171,14 @@ namespace HNTAS.Api.Client.Model
         public static string UploadedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
         /// <summary>
-        /// Deserializes json to <see cref="UploadedDocumentResponse" />
+        /// Deserializes json to <see cref="AssessmentPlanDocumentResponse" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override UploadedDocumentResponse Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override AssessmentPlanDocumentResponse Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -219,7 +219,7 @@ namespace HNTAS.Api.Client.Model
                             phase = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "stage":
-                            stage = new Option<string?>(utf8JsonReader.GetString()!);
+                            stage = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "uploadedAt":
                             uploadedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
@@ -234,82 +234,79 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (fileName.IsSet && fileName.Value == null)
-                throw new ArgumentNullException(nameof(fileName), "Property is not nullable for class UploadedDocumentResponse.");
+                throw new ArgumentNullException(nameof(fileName), "Property is not nullable for class AssessmentPlanDocumentResponse.");
 
             if (s3Key.IsSet && s3Key.Value == null)
-                throw new ArgumentNullException(nameof(s3Key), "Property is not nullable for class UploadedDocumentResponse.");
+                throw new ArgumentNullException(nameof(s3Key), "Property is not nullable for class AssessmentPlanDocumentResponse.");
 
             if (phase.IsSet && phase.Value == null)
-                throw new ArgumentNullException(nameof(phase), "Property is not nullable for class UploadedDocumentResponse.");
-
-            if (stage.IsSet && stage.Value == null)
-                throw new ArgumentNullException(nameof(stage), "Property is not nullable for class UploadedDocumentResponse.");
+                throw new ArgumentNullException(nameof(phase), "Property is not nullable for class AssessmentPlanDocumentResponse.");
 
             if (uploadedAt.IsSet && uploadedAt.Value == null)
-                throw new ArgumentNullException(nameof(uploadedAt), "Property is not nullable for class UploadedDocumentResponse.");
+                throw new ArgumentNullException(nameof(uploadedAt), "Property is not nullable for class AssessmentPlanDocumentResponse.");
 
             if (uploadedBy.IsSet && uploadedBy.Value == null)
-                throw new ArgumentNullException(nameof(uploadedBy), "Property is not nullable for class UploadedDocumentResponse.");
+                throw new ArgumentNullException(nameof(uploadedBy), "Property is not nullable for class AssessmentPlanDocumentResponse.");
 
-            return new UploadedDocumentResponse(fileName, s3Key, phase, stage, uploadedAt, uploadedBy);
+            return new AssessmentPlanDocumentResponse(fileName, s3Key, phase, stage, uploadedAt, uploadedBy);
         }
 
         /// <summary>
-        /// Serializes a <see cref="UploadedDocumentResponse" />
+        /// Serializes a <see cref="AssessmentPlanDocumentResponse" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="uploadedDocumentResponse"></param>
+        /// <param name="assessmentPlanDocumentResponse"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, UploadedDocumentResponse uploadedDocumentResponse, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, AssessmentPlanDocumentResponse assessmentPlanDocumentResponse, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, uploadedDocumentResponse, jsonSerializerOptions);
+            WriteProperties(writer, assessmentPlanDocumentResponse, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="UploadedDocumentResponse" />
+        /// Serializes the properties of <see cref="AssessmentPlanDocumentResponse" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="uploadedDocumentResponse"></param>
+        /// <param name="assessmentPlanDocumentResponse"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, UploadedDocumentResponse uploadedDocumentResponse, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, AssessmentPlanDocumentResponse assessmentPlanDocumentResponse, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (uploadedDocumentResponse.FileNameOption.IsSet && uploadedDocumentResponse.FileName == null)
-                throw new ArgumentNullException(nameof(uploadedDocumentResponse.FileName), "Property is required for class UploadedDocumentResponse.");
+            if (assessmentPlanDocumentResponse.FileNameOption.IsSet && assessmentPlanDocumentResponse.FileName == null)
+                throw new ArgumentNullException(nameof(assessmentPlanDocumentResponse.FileName), "Property is required for class AssessmentPlanDocumentResponse.");
 
-            if (uploadedDocumentResponse.S3KeyOption.IsSet && uploadedDocumentResponse.S3Key == null)
-                throw new ArgumentNullException(nameof(uploadedDocumentResponse.S3Key), "Property is required for class UploadedDocumentResponse.");
+            if (assessmentPlanDocumentResponse.S3KeyOption.IsSet && assessmentPlanDocumentResponse.S3Key == null)
+                throw new ArgumentNullException(nameof(assessmentPlanDocumentResponse.S3Key), "Property is required for class AssessmentPlanDocumentResponse.");
 
-            if (uploadedDocumentResponse.PhaseOption.IsSet && uploadedDocumentResponse.Phase == null)
-                throw new ArgumentNullException(nameof(uploadedDocumentResponse.Phase), "Property is required for class UploadedDocumentResponse.");
+            if (assessmentPlanDocumentResponse.PhaseOption.IsSet && assessmentPlanDocumentResponse.Phase == null)
+                throw new ArgumentNullException(nameof(assessmentPlanDocumentResponse.Phase), "Property is required for class AssessmentPlanDocumentResponse.");
 
-            if (uploadedDocumentResponse.StageOption.IsSet && uploadedDocumentResponse.Stage == null)
-                throw new ArgumentNullException(nameof(uploadedDocumentResponse.Stage), "Property is required for class UploadedDocumentResponse.");
+            if (assessmentPlanDocumentResponse.UploadedByOption.IsSet && assessmentPlanDocumentResponse.UploadedBy == null)
+                throw new ArgumentNullException(nameof(assessmentPlanDocumentResponse.UploadedBy), "Property is required for class AssessmentPlanDocumentResponse.");
 
-            if (uploadedDocumentResponse.UploadedByOption.IsSet && uploadedDocumentResponse.UploadedBy == null)
-                throw new ArgumentNullException(nameof(uploadedDocumentResponse.UploadedBy), "Property is required for class UploadedDocumentResponse.");
+            if (assessmentPlanDocumentResponse.FileNameOption.IsSet)
+                writer.WriteString("fileName", assessmentPlanDocumentResponse.FileName);
 
-            if (uploadedDocumentResponse.FileNameOption.IsSet)
-                writer.WriteString("fileName", uploadedDocumentResponse.FileName);
+            if (assessmentPlanDocumentResponse.S3KeyOption.IsSet)
+                writer.WriteString("s3Key", assessmentPlanDocumentResponse.S3Key);
 
-            if (uploadedDocumentResponse.S3KeyOption.IsSet)
-                writer.WriteString("s3Key", uploadedDocumentResponse.S3Key);
+            if (assessmentPlanDocumentResponse.PhaseOption.IsSet)
+                writer.WriteString("phase", assessmentPlanDocumentResponse.Phase);
 
-            if (uploadedDocumentResponse.PhaseOption.IsSet)
-                writer.WriteString("phase", uploadedDocumentResponse.Phase);
+            if (assessmentPlanDocumentResponse.StageOption.IsSet)
+                if (assessmentPlanDocumentResponse.StageOption.Value != null)
+                    writer.WriteString("stage", assessmentPlanDocumentResponse.Stage);
+                else
+                    writer.WriteNull("stage");
 
-            if (uploadedDocumentResponse.StageOption.IsSet)
-                writer.WriteString("stage", uploadedDocumentResponse.Stage);
+            if (assessmentPlanDocumentResponse.UploadedAtOption.IsSet)
+                writer.WriteString("uploadedAt", assessmentPlanDocumentResponse.UploadedAtOption.Value!.Value.ToString(UploadedAtFormat));
 
-            if (uploadedDocumentResponse.UploadedAtOption.IsSet)
-                writer.WriteString("uploadedAt", uploadedDocumentResponse.UploadedAtOption.Value!.Value.ToString(UploadedAtFormat));
-
-            if (uploadedDocumentResponse.UploadedByOption.IsSet)
-                writer.WriteString("uploadedBy", uploadedDocumentResponse.UploadedBy);
+            if (assessmentPlanDocumentResponse.UploadedByOption.IsSet)
+                writer.WriteString("uploadedBy", assessmentPlanDocumentResponse.UploadedBy);
         }
     }
 }

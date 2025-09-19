@@ -115,8 +115,6 @@ namespace HNTAS.Api.Client.Client
                 return ConnectionTypeValueConverter.ToJsonValue(connectionType);
             if (obj is ContributorRole contributorRole)
                 return ContributorRoleValueConverter.ToJsonValue(contributorRole);
-            if (obj is DocumentType documentType)
-                return DocumentTypeValueConverter.ToJsonValue(documentType);
             if (obj is HeatNetworkElementType heatNetworkElementType)
                 return HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElementType);
             if (obj is HeatNetworkType heatNetworkType)
@@ -133,6 +131,8 @@ namespace HNTAS.Api.Client.Client
                 return PreferredContactTypeValueConverter.ToJsonValue(preferredContactType);
             if (obj is SoaPhase soaPhase)
                 return SoaPhaseValueConverter.ToJsonValue(soaPhase);
+            if (obj is SoaStage soaStage)
+                return SoaStageValueConverter.ToJsonValue(soaStage);
             if (obj is SoaStatus soaStatus)
                 return SoaStatusValueConverter.ToJsonValue(soaStatus);
             if (obj is UserRole userRole)

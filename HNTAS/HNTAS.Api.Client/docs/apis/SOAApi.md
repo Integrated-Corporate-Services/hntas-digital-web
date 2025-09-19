@@ -4,16 +4,52 @@ All URIs are relative to *https://localhost:7117*
 
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
+| [**ApiSOAAssessmentPlanPost**](SOAApi.md#apisoaassessmentplanpost) | **POST** /api/SOA/assessment-plan |  |
 | [**ApiSOAConnectionsPatch**](SOAApi.md#apisoaconnectionspatch) | **PATCH** /api/SOA/connections |  |
 | [**ApiSOACreatePost**](SOAApi.md#apisoacreatepost) | **POST** /api/SOA/create |  |
-| [**ApiSOADocumentUpdatePatch**](SOAApi.md#apisoadocumentupdatepatch) | **PATCH** /api/SOA/document-update |  |
-| [**ApiSOAElementDocumentsPatch**](SOAApi.md#apisoaelementdocumentspatch) | **PATCH** /api/SOA/element-documents |  |
-| [**ApiSOAElementLocationsPatch**](SOAApi.md#apisoaelementlocationspatch) | **PATCH** /api/SOA/element-locations |  |
+| [**ApiSOAElementDocumentsPost**](SOAApi.md#apisoaelementdocumentspost) | **POST** /api/SOA/element-documents |  |
+| [**ApiSOAElementLocationsPost**](SOAApi.md#apisoaelementlocationspost) | **POST** /api/SOA/element-locations |  |
 | [**ApiSOAHeatNetworkHnIdGet**](SOAApi.md#apisoaheatnetworkhnidget) | **GET** /api/SOA/heat-network/{hnId} |  |
 | [**ApiSOAHnIdDelete**](SOAApi.md#apisoahniddelete) | **DELETE** /api/SOA/{hnId} |  |
 | [**ApiSOANetworkElementsPatch**](SOAApi.md#apisoanetworkelementspatch) | **PATCH** /api/SOA/network-elements |  |
 | [**ApiSOANetworkTypePatch**](SOAApi.md#apisoanetworktypepatch) | **PATCH** /api/SOA/network-type |  |
 | [**ApiSOAUpdateSoaStatusPut**](SOAApi.md#apisoaupdatesoastatusput) | **PUT** /api/SOA/update-soa-status |  |
+
+<a id="apisoaassessmentplanpost"></a>
+# **ApiSOAAssessmentPlanPost**
+> void ApiSOAAssessmentPlanPost (UpdateAssessmentPlanRequest updateAssessmentPlanRequest)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **updateAssessmentPlanRequest** | [**UpdateAssessmentPlanRequest**](UpdateAssessmentPlanRequest.md) |  |  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 <a id="apisoaconnectionspatch"></a>
 # **ApiSOAConnectionsPatch**
@@ -87,45 +123,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="apisoadocumentupdatepatch"></a>
-# **ApiSOADocumentUpdatePatch**
-> void ApiSOADocumentUpdatePatch (UpdateDocumentRequest updateDocumentRequest)
-
-
-
-
-### Parameters
-
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| **updateDocumentRequest** | [**UpdateDocumentRequest**](UpdateDocumentRequest.md) |  |  |
-
-### Return type
-
-void (empty response body)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json, text/json, application/*+json
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
-| **400** | Bad Request |  -  |
-| **404** | Not Found |  -  |
-
-[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
-
-<a id="apisoaelementdocumentspatch"></a>
-# **ApiSOAElementDocumentsPatch**
-> void ApiSOAElementDocumentsPatch (UpdateElementDocumentsRequest updateElementDocumentsRequest)
+<a id="apisoaelementdocumentspost"></a>
+# **ApiSOAElementDocumentsPost**
+> void ApiSOAElementDocumentsPost (UpdateElementDocumentsRequest updateElementDocumentsRequest)
 
 
 
@@ -159,9 +159,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="apisoaelementlocationspatch"></a>
-# **ApiSOAElementLocationsPatch**
-> void ApiSOAElementLocationsPatch (UpdateElementLocationsRequest updateElementLocationsRequest)
+<a id="apisoaelementlocationspost"></a>
+# **ApiSOAElementLocationsPost**
+> void ApiSOAElementLocationsPost (UpdateElementLocationsRequest updateElementLocationsRequest)
 
 
 

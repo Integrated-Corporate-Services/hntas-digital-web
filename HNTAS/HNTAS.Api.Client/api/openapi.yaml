@@ -634,7 +634,7 @@ paths:
       tags:
       - SOA
   /api/SOA/element-locations:
-    patch:
+    post:
       requestBody:
         content:
           application/json:
@@ -677,7 +677,7 @@ paths:
       tags:
       - SOA
   /api/SOA/element-documents:
-    patch:
+    post:
       requestBody:
         content:
           application/json:
@@ -719,19 +719,19 @@ paths:
           description: Not Found
       tags:
       - SOA
-  /api/SOA/document-update:
-    patch:
+  /api/SOA/assessment-plan:
+    post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateDocumentRequest"
+              $ref: "#/components/schemas/UpdateAssessmentPlanRequest"
           text/json:
             schema:
-              $ref: "#/components/schemas/UpdateDocumentRequest"
+              $ref: "#/components/schemas/UpdateAssessmentPlanRequest"
           application/*+json:
             schema:
-              $ref: "#/components/schemas/UpdateDocumentRequest"
+              $ref: "#/components/schemas/UpdateAssessmentPlanRequest"
         required: true
       responses:
         "200":
@@ -1407,6 +1407,53 @@ components:
       - preferredContactType
       - status
       type: object
+    AssessmentPlanDocument:
+      example:
+        phase: null
+        fileName: fileName
+        s3Key: s3Key
+        stage: Stage1
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        uploadedBy: uploadedBy
+      properties:
+        phase:
+          $ref: "#/components/schemas/SoaPhase"
+        stage:
+          $ref: "#/components/schemas/NullableOfSoaStage"
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        uploadedAt:
+          format: date-time
+          type: string
+        uploadedBy:
+          type: string
+      type: object
+    AssessmentPlanDocumentResponse:
+      example:
+        phase: phase
+        fileName: fileName
+        s3Key: s3Key
+        stage: stage
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        uploadedBy: uploadedBy
+      properties:
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        phase:
+          type: string
+        stage:
+          nullable: true
+          type: string
+        uploadedAt:
+          format: date-time
+          type: string
+        uploadedBy:
+          type: string
+      type: object
     ConnectionType:
       enum:
       - ChildConnections
@@ -1423,12 +1470,6 @@ components:
       - ContributingContractor
       - ContributingOperator
       - Assessor
-      type: string
-    DocumentType:
-      enum:
-      - Assessment
-      - Assessor
-      - Certifier
       type: string
     EnumItemResponse:
       example:
@@ -1452,9 +1493,6 @@ components:
           updatedBy: updatedBy
           createdBy: createdBy
           journeyData:
-            certifierDocs:
-            - ""
-            - ""
             heatNetworkElements:
             - documents:
               - phase: Phase1
@@ -1492,15 +1530,22 @@ components:
               locations:
               - locations
               - locations
-            assessmentDocs:
-            - ""
-            - ""
             networkType:
               otherNetworkDescription: otherNetworkDescription
               type: CityScaleDistrictHeatingNetwork
-            assessorDocs:
-            - ""
-            - ""
+            assessmentPlans:
+            - phase: null
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - phase: null
+              fileName: fileName
+              s3Key: s3Key
+              stage: Stage1
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
             connectionTypes:
             - ChildConnections
             - ChildConnections
@@ -1613,19 +1658,6 @@ components:
           updatedBy: updatedBy
           createdBy: createdBy
           journeyData:
-            certifierDocs:
-            - phase: phase
-              fileName: fileName
-              s3Key: s3Key
-              stage: stage
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
-            - phase: phase
-              fileName: fileName
-              s3Key: s3Key
-              stage: stage
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
             heatNetworkElements:
             - documents:
               - phase: phase
@@ -1663,23 +1695,10 @@ components:
               locations:
               - locations
               - locations
-            assessmentDocs:
-            - phase: phase
-              fileName: fileName
-              s3Key: s3Key
-              stage: stage
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
-            - phase: phase
-              fileName: fileName
-              s3Key: s3Key
-              stage: stage
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
             networkType:
               otherNetworkDescription: otherNetworkDescription
               type: type
-            assessorDocs:
+            assessmentPlans:
             - phase: phase
               fileName: fileName
               s3Key: s3Key
@@ -1843,19 +1862,6 @@ components:
       type: object
     JourneyDataResponse:
       example:
-        certifierDocs:
-        - phase: phase
-          fileName: fileName
-          s3Key: s3Key
-          stage: stage
-          uploadedAt: 2000-01-23T04:56:07.000+00:00
-          uploadedBy: uploadedBy
-        - phase: phase
-          fileName: fileName
-          s3Key: s3Key
-          stage: stage
-          uploadedAt: 2000-01-23T04:56:07.000+00:00
-          uploadedBy: uploadedBy
         heatNetworkElements:
         - documents:
           - phase: phase
@@ -1893,23 +1899,10 @@ components:
           locations:
           - locations
           - locations
-        assessmentDocs:
-        - phase: phase
-          fileName: fileName
-          s3Key: s3Key
-          stage: stage
-          uploadedAt: 2000-01-23T04:56:07.000+00:00
-          uploadedBy: uploadedBy
-        - phase: phase
-          fileName: fileName
-          s3Key: s3Key
-          stage: stage
-          uploadedAt: 2000-01-23T04:56:07.000+00:00
-          uploadedBy: uploadedBy
         networkType:
           otherNetworkDescription: otherNetworkDescription
           type: type
-        assessorDocs:
+        assessmentPlans:
         - phase: phase
           fileName: fileName
           s3Key: s3Key
@@ -1938,17 +1931,9 @@ components:
           items:
             $ref: "#/components/schemas/HeatNetworkElementResponse"
           type: array
-        assessmentDocs:
+        assessmentPlans:
           items:
-            $ref: "#/components/schemas/UploadedAssessmentDocumentResponse"
-          type: array
-        assessorDocs:
-          items:
-            $ref: "#/components/schemas/UploadedAssessorDocumentResponse"
-          type: array
-        certifierDocs:
-          items:
-            $ref: "#/components/schemas/UploadedCertifierDocumentResponse"
+            $ref: "#/components/schemas/AssessmentPlanDocumentResponse"
           type: array
       type: object
     ManagedUserResponse:
@@ -2257,9 +2242,6 @@ components:
         updatedBy: updatedBy
         createdBy: createdBy
         journeyData:
-          certifierDocs:
-          - ""
-          - ""
           heatNetworkElements:
           - documents:
             - phase: Phase1
@@ -2297,15 +2279,22 @@ components:
             locations:
             - locations
             - locations
-          assessmentDocs:
-          - ""
-          - ""
           networkType:
             otherNetworkDescription: otherNetworkDescription
             type: CityScaleDistrictHeatingNetwork
-          assessorDocs:
-          - ""
-          - ""
+          assessmentPlans:
+          - phase: null
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - phase: null
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
           connectionTypes:
           - ChildConnections
           - ChildConnections
@@ -2336,9 +2325,6 @@ components:
         updatedBy: updatedBy
         createdBy: createdBy
         journeyData:
-          certifierDocs:
-          - ""
-          - ""
           heatNetworkElements:
           - documents:
             - phase: Phase1
@@ -2376,15 +2362,22 @@ components:
             locations:
             - locations
             - locations
-          assessmentDocs:
-          - ""
-          - ""
           networkType:
             otherNetworkDescription: otherNetworkDescription
             type: CityScaleDistrictHeatingNetwork
-          assessorDocs:
-          - ""
-          - ""
+          assessmentPlans:
+          - phase: null
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - phase: null
+            fileName: fileName
+            s3Key: s3Key
+            stage: Stage1
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
           connectionTypes:
           - ChildConnections
           - ChildConnections
@@ -2410,9 +2403,6 @@ components:
       type: object
     SoaJourneyData:
       example:
-        certifierDocs:
-        - ""
-        - ""
         heatNetworkElements:
         - documents:
           - phase: Phase1
@@ -2450,15 +2440,22 @@ components:
           locations:
           - locations
           - locations
-        assessmentDocs:
-        - ""
-        - ""
         networkType:
           otherNetworkDescription: otherNetworkDescription
           type: CityScaleDistrictHeatingNetwork
-        assessorDocs:
-        - ""
-        - ""
+        assessmentPlans:
+        - phase: null
+          fileName: fileName
+          s3Key: s3Key
+          stage: Stage1
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - phase: null
+          fileName: fileName
+          s3Key: s3Key
+          stage: Stage1
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
         connectionTypes:
         - ChildConnections
         - ChildConnections
@@ -2475,14 +2472,9 @@ components:
           items:
             $ref: "#/components/schemas/HeatNetworkElement"
           type: array
-        assessmentDocs:
-          items: {}
-          type: array
-        assessorDocs:
-          items: {}
-          type: array
-        certifierDocs:
-          items: {}
+        assessmentPlans:
+          items:
+            $ref: "#/components/schemas/AssessmentPlanDocument"
           type: array
       type: object
     SoaPhase:
@@ -2499,19 +2491,6 @@ components:
         updatedBy: updatedBy
         createdBy: createdBy
         journeyData:
-          certifierDocs:
-          - phase: phase
-            fileName: fileName
-            s3Key: s3Key
-            stage: stage
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
-          - phase: phase
-            fileName: fileName
-            s3Key: s3Key
-            stage: stage
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
           heatNetworkElements:
           - documents:
             - phase: phase
@@ -2549,23 +2528,10 @@ components:
             locations:
             - locations
             - locations
-          assessmentDocs:
-          - phase: phase
-            fileName: fileName
-            s3Key: s3Key
-            stage: stage
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
-          - phase: phase
-            fileName: fileName
-            s3Key: s3Key
-            stage: stage
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
           networkType:
             otherNetworkDescription: otherNetworkDescription
             type: type
-          assessorDocs:
+          assessmentPlans:
           - phase: phase
             fileName: fileName
             s3Key: s3Key
@@ -2603,6 +2569,17 @@ components:
         journeyData:
           $ref: "#/components/schemas/JourneyDataResponse"
       type: object
+    SoaStage:
+      enum:
+      - Stage1
+      - Stage2
+      - Stage3
+      - Stage4
+      - Stage5
+      - Stage6
+      - Stage7
+      - Stage8
+      type: string
     SoaStatus:
       enum:
       - InProgress
@@ -2610,6 +2587,34 @@ components:
       - Complete
       - Archived
       type: string
+    UpdateAssessmentPlanRequest:
+      example:
+        phase: Phase1
+        hnId: hnId
+        fileName: fileName
+        updatedBy: updatedBy
+        s3Key: s3Key
+        stage: Stage1
+      properties:
+        hnId:
+          type: string
+        phase:
+          $ref: "#/components/schemas/SoaPhase"
+        stage:
+          $ref: "#/components/schemas/NullableOfSoaStage"
+        updatedBy:
+          type: string
+        fileName:
+          type: string
+        s3Key:
+          type: string
+      required:
+      - fileName
+      - hnId
+      - phase
+      - s3Key
+      - updatedBy
+      type: object
     UpdateConnectionsRequest:
       example:
         hnId: hnId
@@ -2631,38 +2636,6 @@ components:
       - connectionTypes
       - hnId
       - updatedBy
-      type: object
-    UpdateDocumentRequest:
-      example:
-        phase: Phase1
-        hnId: hnId
-        fileName: fileName
-        s3Key: s3Key
-        stage: Stage1
-        documentType: Assessment
-        uploadedBy: uploadedBy
-      properties:
-        hnId:
-          type: string
-        phase:
-          $ref: "#/components/schemas/SoaPhase"
-        stage:
-          $ref: "#/components/schemas/NullableOfSoaStage"
-        uploadedBy:
-          type: string
-        fileName:
-          type: string
-        s3Key:
-          type: string
-        documentType:
-          $ref: "#/components/schemas/DocumentType"
-      required:
-      - documentType
-      - fileName
-      - hnId
-      - phase
-      - s3Key
-      - uploadedBy
       type: object
     UpdateElementDocumentsRequest:
       example:
@@ -2784,78 +2757,6 @@ components:
       - preferredContactType
       - role
       type: object
-    UploadedAssessmentDocumentResponse:
-      example:
-        phase: phase
-        fileName: fileName
-        s3Key: s3Key
-        stage: stage
-        uploadedAt: 2000-01-23T04:56:07.000+00:00
-        uploadedBy: uploadedBy
-      properties:
-        fileName:
-          type: string
-        s3Key:
-          type: string
-        phase:
-          type: string
-        stage:
-          nullable: true
-          type: string
-        uploadedAt:
-          format: date-time
-          type: string
-        uploadedBy:
-          type: string
-      type: object
-    UploadedAssessorDocumentResponse:
-      example:
-        phase: phase
-        fileName: fileName
-        s3Key: s3Key
-        stage: stage
-        uploadedAt: 2000-01-23T04:56:07.000+00:00
-        uploadedBy: uploadedBy
-      properties:
-        fileName:
-          type: string
-        s3Key:
-          type: string
-        phase:
-          type: string
-        stage:
-          nullable: true
-          type: string
-        uploadedAt:
-          format: date-time
-          type: string
-        uploadedBy:
-          type: string
-      type: object
-    UploadedCertifierDocumentResponse:
-      example:
-        phase: phase
-        fileName: fileName
-        s3Key: s3Key
-        stage: stage
-        uploadedAt: 2000-01-23T04:56:07.000+00:00
-        uploadedBy: uploadedBy
-      properties:
-        fileName:
-          type: string
-        s3Key:
-          type: string
-        phase:
-          type: string
-        stage:
-          nullable: true
-          type: string
-        uploadedAt:
-          format: date-time
-          type: string
-        uploadedBy:
-          type: string
-      type: object
     UploadedDocument:
       example:
         phase: Phase1
@@ -2872,7 +2773,7 @@ components:
         phase:
           $ref: "#/components/schemas/SoaPhase"
         stage:
-          $ref: "#/components/schemas/NullableOfSoaStage"
+          $ref: "#/components/schemas/SoaStage"
         uploadedAt:
           format: date-time
           type: string
@@ -2895,7 +2796,6 @@ components:
         phase:
           type: string
         stage:
-          nullable: true
           type: string
         uploadedAt:
           format: date-time
