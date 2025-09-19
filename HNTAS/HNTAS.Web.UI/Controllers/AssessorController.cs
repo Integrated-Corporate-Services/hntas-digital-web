@@ -203,6 +203,18 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DownloadTheDocuments(int Phase)
+        {
+            this.ShowBackButton("HeatNetworkDetails", "Assessor");
+            var model = new UploadAssessmentPlanViewModel
+            {
+                PhaseNumber = Phase,
+                TemplateDownloadUrl = Url.Action("DownloadTemplate", "Soa", new { Phase })
+            };
+            return RedirectToAction("UploadSOC", "Assessor", model);
+        }
+
         public async Task<IActionResult> Download([FromQuery] string stage, string filename, string element)
         {
             var hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
