@@ -1,4 +1,7 @@
-﻿@{
+﻿@using HNTAS.Web.UI.Models;
+@model AssessorCYAModel;
+
+@{
     ViewData["Title"] = "Check your answers";
 }
 
@@ -8,7 +11,7 @@
             Check your answers before submitting
         </h1>
         <p class="govuk-body govuk-!-margin-bottom-6">
-            Phase 1 overall Statement of applicability (SOA)
+            @Model.PhaseName overall Statement of applicability (SOA)
         </p>
 
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
@@ -17,10 +20,10 @@
         <div class="govuk-summary-list govuk-!-margin-bottom-6">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                    Stage 1 - Energy centre
+                    @Model.StageName - @Model.ElementName
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    [ Document name ]
+                    @Model.SOCfileName
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" href="@Url.Action("UploadSOC", "Assessor")">Change</a>

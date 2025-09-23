@@ -60,23 +60,15 @@
             </h2>
             <br/>
             <div class="govuk-form-group govuk-!-margin-bottom-4">
-                <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                <div class="govuk-grid-row">
                     <div class="govuk-grid-column-one-third"><p class="govuk-body govuk-!-font-weight-bold">Assessment plan</p></div>
-                    @foreach(var doc in Model.Documents)
-                    {
-                        <div class="govuk-grid-column-one-third govuk-!-text-colour-muted">
-                            <ul class="govuk-list">
-                            
-                                    <li>@doc.FileName</li>
-                            
-                            </ul>
-                        </div>
-                        <div class="govuk-grid-column-one-third">
-                            <a href="@Url.Action("Download", "Assessor", new { key = doc.S3Key })" class="govuk-link">Download</a>
-                        </div>
-                    }
-                </div>
-                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+                    <div class="govuk-grid-column-one-third govuk-!-text-colour-muted">
+                        <p class="govuk-body">@Model.AssessementPlan.DocNames.FirstOrDefault()</p>
+                    </div>
+                    <div class="govuk-grid-column-one-third">
+                        <a href="#" class="govuk-link">Download</a>
+                    </div>
+                </div>                 
             </div>
             <form method="post">
                 <input type="hidden" value="@Model.Phase"/>

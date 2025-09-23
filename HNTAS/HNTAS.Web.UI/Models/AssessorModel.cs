@@ -32,7 +32,7 @@ namespace HNTAS.Web.UI.Models
         public string Element;
         public List<ElementViewModel> ElementList;
         public List<UploadedDocument> Documents;
-        public List<UploadedDocument> AssessementPlan;
+        public DocumentItem AssessementPlan;
     }
 
     public class UploadSOCViewModel
@@ -41,5 +41,18 @@ namespace HNTAS.Web.UI.Models
         public string TemplateDownloadUrl { get; set; } = string.Empty;
     }
 
+    public class AssessorCYAModel
+    {
+        public string ElementName { get; set; }
+        public string PhaseName { get; set; }
+        public string StageName { get; set; }
+        public string SOCfileName { get; set; }
 
+    }
+
+    public class SOCSubmittedModel
+    {
+        public string ElementName { get; set; }
+        
+    }
 }

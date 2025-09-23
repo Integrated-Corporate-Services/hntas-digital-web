@@ -1,4 +1,6 @@
-﻿@{
+﻿@using HNTAS.Web.UI.Models;
+
+@{
     ViewData["Title"] = "Statement of Conformity (SOC) sent";
 }
 
@@ -16,13 +18,13 @@
                     You've sent the SOC for the following
                 </p>
                 <ul class="govuk-list govuk-list--bullet">
-                    <li>energy centre</li>
+                    <li>@Model.ElementName</li>
                 </ul>
                 <p class="govuk-body">
                     Return to the
-                    <a href="#" class="govuk-link">heat network overview</a>
+                    <a href="@Url.Action("HeatNetworks", "UserManagement")" class="govuk-link">heat network overview</a>
                     or back to
-                    <a href="#" class="govuk-link">your account</a>.
+                    <a href="@Url.Action("UserAccount", "Dashboard")" class="govuk-link">your account</a>.
                 </p>
             </div>
         </div>

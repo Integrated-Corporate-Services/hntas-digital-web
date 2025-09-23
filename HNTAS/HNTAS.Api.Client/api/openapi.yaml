@@ -207,6 +207,67 @@ paths:
           description: Internal Server Error
       tags:
       - HeatNetworks
+  /api/HeatNetworks/{hnid}/assessor-impartiality:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: hnid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - HeatNetworks
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: hnid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
+          description: OK
+      tags:
+      - HeatNetworks
   /api/Invitations/{id}:
     get:
       parameters:
@@ -1452,6 +1513,7 @@ components:
           updatedBy: updatedBy
           createdBy: createdBy
           journeyData:
+            hasAssessorDeclaredImpartiality: true
             certifierDocs:
             - ""
             - ""
@@ -1613,6 +1675,7 @@ components:
           updatedBy: updatedBy
           createdBy: createdBy
           journeyData:
+            hasAssessorDeclaredImpartiality: true
             certifierDocs:
             - phase: phase
               fileName: fileName
@@ -1843,6 +1906,7 @@ components:
       type: object
     JourneyDataResponse:
       example:
+        hasAssessorDeclaredImpartiality: true
         certifierDocs:
         - phase: phase
           fileName: fileName
@@ -1938,6 +2002,8 @@ components:
           items:
             $ref: "#/components/schemas/HeatNetworkElementResponse"
           type: array
+        hasAssessorDeclaredImpartiality:
+          type: boolean
         assessmentDocs:
           items:
             $ref: "#/components/schemas/UploadedAssessmentDocumentResponse"
@@ -2257,6 +2323,7 @@ components:
         updatedBy: updatedBy
         createdBy: createdBy
         journeyData:
+          hasAssessorDeclaredImpartiality: true
           certifierDocs:
           - ""
           - ""
@@ -2336,6 +2403,7 @@ components:
         updatedBy: updatedBy
         createdBy: createdBy
         journeyData:
+          hasAssessorDeclaredImpartiality: true
           certifierDocs:
           - ""
           - ""
@@ -2410,6 +2478,7 @@ components:
       type: object
     SoaJourneyData:
       example:
+        hasAssessorDeclaredImpartiality: true
         certifierDocs:
         - ""
         - ""
@@ -2475,6 +2544,8 @@ components:
           items:
             $ref: "#/components/schemas/HeatNetworkElement"
           type: array
+        hasAssessorDeclaredImpartiality:
+          type: boolean
         assessmentDocs:
           items: {}
           type: array
@@ -2499,6 +2570,7 @@ components:
         updatedBy: updatedBy
         createdBy: createdBy
         journeyData:
+          hasAssessorDeclaredImpartiality: true
           certifierDocs:
           - phase: phase
             fileName: fileName

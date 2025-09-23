@@ -53,13 +53,15 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult DeclarationOfImpartiality([FromQuery] string hnid)
         {
-            if (_sessionHelper.GetFromSession<string>(HttpContext, "HasDeclaredImpartiality") == "true")
+            var hasDeclaredImpartiality = _heatNetworkService.GetAssessorImpartialityAsync(hnid.ToUpper()).Result;
+            if(hasDeclaredImpartiality == true)
             {
-                return RedirectToAction("HeatNetworkDetails", "Assessor", new { hnId = hnid });
+                _sessionHelper.SaveToSession(HttpContext, "HasDeclaredImpartiality", "true");
+                return RedirectToAction("HeatNetworkDetails", "Assessor", new { hnId = hnid.ToUpper() });
             }
             this.ShowBackButton("HeatNetworks", "UserManagement");
             var model = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(HttpContext, SessionKeys.DeclarationOfImpartialityModelKey) ?? new DeclationOfImpartialityModel();
-            model.HnId = hnid;
+            model.HnId = hnid.ToUpper();
             return View(model);
         }
 
@@ -73,7 +75,13 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            _sessionHelper.SaveToSession(HttpContext, "HasDeclaredImpartiality", "true"); // Save to db, but where? once per element or once per user or hnid?
+            var setImpartiality = _heatNetworkService.SetAssessorImpartialityAsync(model.HnId.ToUpper()).Result;
+            if (!setImpartiality)
+            {
+                ModelState.AddModelError(string.Empty, "There was a problem saving your declaration. Please try again.");
+                return View(model);
+            }
+            _sessionHelper.SaveToSession(HttpContext, "HasDeclaredImpartiality", "true");
             return RedirectToAction("HeatNetworkDetails", "Assessor", new { hnId = model.HnId });
         }
 
@@ -114,9 +122,12 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> HeatNetworkDetails([FromQuery] string hnid)
+        public async Task<IActionResult> HeatNetworkDetails([FromQuery] string hnid = "")
         {
-
+            if(hnid == "")
+            {
+                hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            }
             this.ShowBackButton("HeatNetworks", "UserManagement");
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnid.ToUpper());
             try
@@ -168,6 +179,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("HeatNetworkDetails", "Assessor");
             var hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var soaProject = await _soaService.GetByHnIdAsync(hnid.ToUpper());
+            var heatNetworkResponse = await _heatNetworkService.GetAsync(hnid.ToUpper());
             if (soaProject == null)
             {
                 return BadRequest();
@@ -175,7 +187,7 @@ namespace HNTAS.Web.UI.Controllers
             var documents = new List<UploadedDocument>();
             foreach (var hnElement in soaProject.JourneyData.HeatNetworkElements)
             {
-                if (hnElement.Name.ToString().ToLower() == Element)
+            if (hnElement.Name.ToString().ToLower() == Element)
                 {
                     foreach (var d in hnElement.Documents)
                     {
@@ -186,6 +198,15 @@ namespace HNTAS.Web.UI.Controllers
                     }
                 }
             }
+            var assessmentPlanDoc = heatNetworkResponse?.Soa?.JourneyData?.AssessorDocs?
+                .Where(d => d.Phase == "Phase" + Phase.ToString())
+                .Select(d => new DocumentItem
+                {
+                    Name = "Assessment plan",
+                    DocNames = new List<string> { d.FileName },
+                    ChangeUrl = "#"
+                })
+                .FirstOrDefault();
 
             var elementList = new List<ElementViewModel>();
             var phasesData = _sessionHelper.GetFromSession<List<PhaseViewModel>>(HttpContext, "PhaseData");
@@ -194,12 +215,16 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new DownloadTheDocumentModel()
             {
-                Phase = "Phase" + Phase,
-                Stage = "Stage" + Stage,
-                Element = char.ToUpper(Element[0]) + Element.Substring(1),
-                ElementList = elementList,
-                Documents = documents,
+                    Phase = "Phase" + Phase,
+                    Stage = "Stage" + Stage,
+                    Element = char.ToUpper(Element[0]) + Element.Substring(1),
+                    ElementList = elementList,
+                    Documents = documents,
+                    AssessementPlan = assessmentPlanDoc
             };
+            _sessionHelper.SaveToSession(HttpContext, "ElementName", model.Element);
+            _sessionHelper.SaveToSession(HttpContext, "PhaseNumber", Phase.ToString());
+            _sessionHelper.SaveToSession(HttpContext, "StageNumber", Stage.ToString());
             return View(model);
         }
 
@@ -287,15 +312,38 @@ namespace HNTAS.Web.UI.Controllers
 
 
         [HttpGet]
-        public IActionResult CheckYourAnswers()
+        public async Task<IActionResult> CheckYourAnswers()
         {
-            return View();
+            // soc - get assessorDocs
+            var hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var heatNetworkResponse = await _heatNetworkService.GetAsync(hnid.ToUpper());
+            var elementName = _sessionHelper.GetFromSession<string>(HttpContext, "ElementName");
+            var phaseNumber = int.Parse(_sessionHelper.GetFromSession<string>(HttpContext, "PhaseNumber"));
+            var stageNumber = int.Parse(_sessionHelper.GetFromSession<string>(HttpContext, "StageNumber"));
+            var assessorsoc = heatNetworkResponse?.Soa?.JourneyData?.AssessorDocs?
+                .Where(d => d.Phase == "Phase" + phaseNumber.ToString()) // Updated to use phaseNumber directly
+                .Select(d => new DocumentItem
+                {
+                    Name = "Assessment plan",
+                    DocNames = new List<string> { d.FileName },
+                    ChangeUrl = "#"
+                })
+                .FirstOrDefault();
+            var model = new AssessorCYAModel()
+            {
+                ElementName = char.ToUpper(elementName[0]) + elementName.Substring(1),
+                PhaseName = "Phase" + phaseNumber,
+                StageName = "Stage" + stageNumber,
+                SOCfileName = assessorsoc != null && assessorsoc.DocNames.Count > 0 ? assessorsoc.DocNames[0] : "No file uploaded"
+            };
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult SOCSubmitted()
         {
-            return View();
-        }
+            var model = new SOCSubmittedModel { ElementName = _sessionHelper.GetFromSession<string>(HttpContext, "ElementName") };
+            return View(model);
+        }        
     }
 }

@@ -79,5 +79,50 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
         }
+        
+
+        public async Task<bool?> GetAssessorImpartialityAsync(string hnId)
+        {
+            try
+            {
+                var response = await _heatNetworksApi.ApiHeatNetworksHnidAssessorImpartialityGetAsync(hnId);
+                if (response.IsOk)
+                {
+                    // Assuming the API returns a DTO with HasAssessorDeclaredImpartiality property
+                    var result = response.Ok();
+                    // result should have a property HasAssessorDeclaredImpartiality (bool?)
+                    return result;
+                }
+                else if (response.IsNotFound)
+                {
+                    _logger.LogWarning("Impartiality status for heat network {HnId} not found", hnId);
+                    return null;
+                }
+                throw new Exception($"Failed to get assessor impartiality for '{hnId}' — status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting assessor impartiality for heat network {HnId}", hnId);
+                throw;
+            }
+        }
+
+        public async Task<bool> SetAssessorImpartialityAsync(string hnId)
+        {
+            try
+            {
+                var response = await _heatNetworksApi.ApiHeatNetworksHnidAssessorImpartialityPostAsync(hnId);
+                if (response.IsOk)
+                {
+                    return true;
+                }
+                throw new Exception($"Failed to set assessor impartiality for '{hnId}' — status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error setting assessor impartiality for heat network {HnId}", hnId);
+                throw;
+            }
+        }
     }
 }

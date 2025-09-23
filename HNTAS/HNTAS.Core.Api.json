@@ -330,6 +330,102 @@
         }
       }
     },
+    "/api/HeatNetworks/{hnid}/assessor-impartiality": {
+      "get": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "parameters": [
+          {
+            "name": "hnid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "parameters": [
+          {
+            "name": "hnid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Invitations/{id}": {
       "get": {
         "tags": [
@@ -2503,6 +2599,9 @@
               "$ref": "#/components/schemas/HeatNetworkElementResponse"
             }
           },
+          "hasAssessorDeclaredImpartiality": {
+            "type": "boolean"
+          },
           "assessmentDocs": {
             "type": "array",
             "items": {
@@ -2803,6 +2902,9 @@
             "items": {
               "$ref": "#/components/schemas/HeatNetworkElement"
             }
+          },
+          "hasAssessorDeclaredImpartiality": {
+            "type": "boolean"
           },
           "assessmentDocs": {
             "type": "array",
