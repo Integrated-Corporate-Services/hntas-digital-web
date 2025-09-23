@@ -23,7 +23,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetwork"
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
                   }
                 }
               },
@@ -31,7 +31,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetwork"
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
                   }
                 }
               },
@@ -39,7 +39,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetwork"
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
                   }
                 }
               }
@@ -73,7 +73,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetwork"
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
                   }
                 }
               },
@@ -81,7 +81,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetwork"
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
                   }
                 }
               },
@@ -89,7 +89,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetwork"
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
                   }
                 }
               }
@@ -162,17 +162,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetwork"
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetwork"
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetwork"
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
                 }
               }
             }
@@ -249,17 +249,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetwork"
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetwork"
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetwork"
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
                 }
               }
             }
@@ -269,17 +269,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetwork"
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetwork"
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetwork"
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
                 }
               }
             }
@@ -615,69 +615,10 @@
         }
       }
     },
-    "/api/SoaProject/{projectId}": {
+    "/api/SOA/heat-network/{hnId}": {
       "get": {
         "tags": [
-          "SoaProject"
-        ],
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/SoaProject"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SoaProject"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SoaProject"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/SoaProject/heat-network/{hnId}": {
-      "get": {
-        "tags": [
-          "SoaProject"
+          "SOA"
         ],
         "parameters": [
           {
@@ -695,17 +636,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/SoaProject"
+                  "$ref": "#/components/schemas/Soa2"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SoaProject"
+                  "$ref": "#/components/schemas/Soa2"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SoaProject"
+                  "$ref": "#/components/schemas/Soa2"
                 }
               }
             }
@@ -733,10 +674,10 @@
         }
       }
     },
-    "/api/SoaProject/create": {
+    "/api/SOA/create": {
       "post": {
         "tags": [
-          "SoaProject"
+          "SOA"
         ],
         "parameters": [
           {
@@ -755,22 +696,22 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/SoaProject"
+                  "$ref": "#/components/schemas/Soa2"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SoaProject"
+                  "$ref": "#/components/schemas/Soa2"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SoaProject"
+                  "$ref": "#/components/schemas/Soa2"
                 }
               }
             }
@@ -798,10 +739,10 @@
         }
       }
     },
-    "/api/SoaProject/connections": {
+    "/api/SOA/connections": {
       "patch": {
         "tags": [
-          "SoaProject"
+          "SOA"
         ],
         "requestBody": {
           "content": {
@@ -870,10 +811,10 @@
         }
       }
     },
-    "/api/SoaProject/network-type": {
+    "/api/SOA/network-type": {
       "patch": {
         "tags": [
-          "SoaProject"
+          "SOA"
         ],
         "parameters": [
           {
@@ -958,10 +899,10 @@
         }
       }
     },
-    "/api/SoaProject/network-elements": {
+    "/api/SOA/network-elements": {
       "patch": {
         "tags": [
-          "SoaProject"
+          "SOA"
         ],
         "parameters": [
           {
@@ -1055,10 +996,10 @@
         }
       }
     },
-    "/api/SoaProject/element-locations": {
-      "post": {
+    "/api/SOA/element-locations": {
+      "patch": {
         "tags": [
-          "SoaProject"
+          "SOA"
         ],
         "requestBody": {
           "content": {
@@ -1127,10 +1068,10 @@
         }
       }
     },
-    "/api/SoaProject/element-documents": {
-      "post": {
+    "/api/SOA/element-documents": {
+      "patch": {
         "tags": [
-          "SoaProject"
+          "SOA"
         ],
         "requestBody": {
           "content": {
@@ -1195,6 +1136,306 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/SOA/document-update": {
+      "patch": {
+        "tags": [
+          "SOA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDocumentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDocumentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDocumentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SOA/{hnId}": {
+      "delete": {
+        "tags": [
+          "SOA"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SOA/update-soa-status": {
+      "put": {
+        "tags": [
+          "SOA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SOA/send-assessor-assessment-email": {
+      "post": {
+        "tags": [
+          "SOA"
+        ],
+        "parameters": [
+          {
+            "name": "hnName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hnId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assessmentResult",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/SOA/send-certification-complete-email": {
+      "post": {
+        "tags": [
+          "SOA"
+        ],
+        "parameters": [
+          {
+            "name": "hnName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hnId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -2092,7 +2333,15 @@
           "ContributingDesigner",
           "ContributingContractor",
           "ContributingOperator",
-          "Assessor"
+          "Assessor",
+          "Certifier"
+        ]
+      },
+      "DocumentType": {
+        "enum": [
+          "Assessment",
+          "Assessor",
+          "Certifier"
         ]
       },
       "EnumItemResponse": {
@@ -2129,73 +2378,9 @@
           },
           "pathway": {
             "type": "string"
-          }
-        }
-      },
-      "HeatNetworkResponse": {
-        "type": "object",
-        "properties": {
-          "hnId": {
-            "type": "string"
           },
-          "name": {
-            "type": "string"
-          },
-          "location": {
-            "type": "string"
-          }
-        }
-      },
-      "HnRoleMapping": {
-        "type": "object",
-        "properties": {
-          "hnId": {
-            "type": "string"
-          },
-          "role": {
-            "$ref": "#/components/schemas/ContributorRole"
-          }
-        }
-      },
-      "HeatNetworkResponse": {
-        "type": "object",
-        "properties": {
-          "hnId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "pathway": {
-            "type": "string"
-          }
-        }
-      },
-      "HeatNetworkResponse": {
-        "type": "object",
-        "properties": {
-          "hnId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "pathway": {
-            "type": "string"
-          }
-        }
-      },
-      "HeatNetworkResponse": {
-        "type": "object",
-        "properties": {
-          "hnId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "pathway": {
-            "type": "string"
+          "soa": {
+            "$ref": "#/components/schemas/Soa"
           }
         }
       },
@@ -2223,6 +2408,30 @@
           }
         }
       },
+      "HeatNetworkElementResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedDocumentResponse"
+            }
+          }
+        }
+      },
       "HeatNetworkElementType": {
         "enum": [
           "EnergyCentre",
@@ -2236,14 +2445,23 @@
       "HeatNetworkResponse": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string"
+          },
           "hnId": {
+            "type": "string"
+          },
+          "location": {
             "type": "string"
           },
           "name": {
             "type": "string"
           },
-          "location": {
+          "pathway": {
             "type": "string"
+          },
+          "soa": {
+            "$ref": "#/components/schemas/SoaResponse"
           }
         }
       },
@@ -2256,6 +2474,20 @@
           "SmallCommunalHeatNetwork",
           "Other"
         ]
+      },
+      "HeatNetworkUserResponse": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
       },
       "HnRoleMapping": {
         "type": "object",
@@ -2367,6 +2599,46 @@
           }
         }
       },
+      "JourneyDataResponse": {
+        "type": "object",
+        "properties": {
+          "networkType": {
+            "$ref": "#/components/schemas/NetworkTypeResponse"
+          },
+          "connectionTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "heatNetworkElements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HeatNetworkElementResponse"
+            }
+          },
+          "assessmentDocs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedAssessmentDocumentResponse"
+            }
+          },
+          "assessorDocs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedAssessorDocumentResponse"
+            }
+          },
+          "certifierDocs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadedCertifierDocumentResponse"
+            }
+          }
+        },
+        "nullable": true
+      },
       "ManagedUserResponse": {
         "type": "object",
         "properties": {
@@ -2386,6 +2658,19 @@
             }
           }
         }
+      },
+      "NetworkTypeResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "otherNetworkDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
       },
       "NetworkTypeSelection": {
         "type": "object",
@@ -2416,6 +2701,20 @@
         "enum": [
           "Landline",
           "Mobile",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfSoaStage": {
+        "enum": [
+          "Stage1",
+          "Stage2",
+          "Stage3",
+          "Stage4",
+          "Stage5",
+          "Stage6",
+          "Stage7",
+          "Stage8",
           null
         ],
         "nullable": true
@@ -2546,48 +2845,39 @@
           }
         }
       },
-      "SoaJourneyData": {
+      "Soa": {
         "type": "object",
         "properties": {
-          "networkType": {
-            "$ref": "#/components/schemas/NetworkTypeSelection"
+          "status": {
+            "$ref": "#/components/schemas/SoaStatus"
           },
-          "connectionTypes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ConnectionType"
-            },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           },
-          "heatNetworkElements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/HeatNetworkElement"
-            }
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "journeyData": {
+            "$ref": "#/components/schemas/SoaJourneyData"
           }
         },
         "nullable": true
       },
-      "SoaPhase": {
-        "enum": [
-          "Phase1",
-          "Phase2",
-          "Phase3",
-          "Phase4",
-          "Phase5"
-        ]
-      },
-      "SoaProject": {
+      "Soa2": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "hnId": {
-            "type": "string"
-          },
           "status": {
-            "$ref": "#/components/schemas/SoaProjectStatus"
+            "$ref": "#/components/schemas/SoaStatus"
           },
           "createdAt": {
             "type": "string",
@@ -2610,23 +2900,84 @@
           }
         }
       },
-      "SoaProjectStatus": {
+      "SoaJourneyData": {
+        "type": "object",
+        "properties": {
+          "networkType": {
+            "$ref": "#/components/schemas/NetworkTypeSelection"
+          },
+          "connectionTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectionType"
+            },
+            "nullable": true
+          },
+          "heatNetworkElements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HeatNetworkElement"
+            }
+          },
+          "assessmentDocs": {
+            "type": "array",
+            "items": { }
+          },
+          "assessorDocs": {
+            "type": "array",
+            "items": { }
+          },
+          "certifierDocs": {
+            "type": "array",
+            "items": { }
+          }
+        },
+        "nullable": true
+      },
+      "SoaPhase": {
         "enum": [
-          "InProgress",
-          "Complete",
-          "Archived"
+          "Phase1",
+          "Phase2",
+          "Phase3",
+          "Phase4",
+          "Phase5"
         ]
       },
-      "SoaStage": {
+      "SoaResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/SoaStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "journeyData": {
+            "$ref": "#/components/schemas/JourneyDataResponse"
+          }
+        },
+        "nullable": true
+      },
+      "SoaStatus": {
         "enum": [
-          "Stage1",
-          "Stage2",
-          "Stage3",
-          "Stage4",
-          "Stage5",
-          "Stage6",
-          "Stage7",
-          "Stage8"
+          "InProgress",
+          "Submitted",
+          "Complete",
+          "Archived"
         ]
       },
       "UpdateConnectionsRequest": {
@@ -2649,6 +3000,40 @@
             "items": {
               "$ref": "#/components/schemas/ConnectionType"
             }
+          }
+        }
+      },
+      "UpdateDocumentRequest": {
+        "required": [
+          "hnId",
+          "phase",
+          "uploadedBy",
+          "fileName",
+          "s3Key",
+          "documentType"
+        ],
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "phase": {
+            "$ref": "#/components/schemas/SoaPhase"
+          },
+          "stage": {
+            "$ref": "#/components/schemas/NullableOfSoaStage"
+          },
+          "uploadedBy": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "documentType": {
+            "$ref": "#/components/schemas/DocumentType"
           }
         }
       },
@@ -2699,6 +3084,23 @@
           }
         }
       },
+      "UpdateSoaStatusRequest": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "hnName": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/SoaStatus"
+          }
+        }
+      },
       "UpdateUserOrganisationRequest": {
         "required": [
           "firstName",
@@ -2742,6 +3144,81 @@
           }
         }
       },
+      "UploadedAssessmentDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "UploadedAssessorDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "UploadedCertifierDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
+        }
+      },
       "UploadedDocument": {
         "type": "object",
         "properties": {
@@ -2755,7 +3232,32 @@
             "$ref": "#/components/schemas/SoaPhase"
           },
           "stage": {
-            "$ref": "#/components/schemas/SoaStage"
+            "$ref": "#/components/schemas/NullableOfSoaStage"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "UploadedDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
           },
           "uploadedAt": {
             "type": "string",
@@ -2888,7 +3390,7 @@
           "heatNetworks": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/HeatNetworkResponse"
+              "$ref": "#/components/schemas/HeatNetworkUserResponse"
             },
             "nullable": true
           }
@@ -2971,7 +3473,8 @@
           "Designer",
           "Contractor",
           "Operator",
-          "Assessor"
+          "Assessor",
+          "Certifier"
         ]
       },
       "UserStatus": {
@@ -2993,7 +3496,7 @@
       "name": "Invitations"
     },
     {
-      "name": "SoaProject"
+      "name": "SOA"
     },
     {
       "name": "Users"

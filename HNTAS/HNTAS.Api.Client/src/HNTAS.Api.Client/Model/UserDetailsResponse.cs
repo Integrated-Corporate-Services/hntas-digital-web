@@ -48,7 +48,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="organisation">organisation</param>
         /// <param name="heatNetworks">heatNetworks</param>
         [JsonConstructor]
-        public UserDetailsResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> emailId = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> status = default, Option<List<UserRole>?> roles = default, Option<OrganisationResponse?> organisation = default, Option<List<HeatNetworkResponse>?> heatNetworks = default)
+        public UserDetailsResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> emailId = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> status = default, Option<List<UserRole>?> roles = default, Option<OrganisationResponse?> organisation = default, Option<List<HeatNetworkUserResponse>?> heatNetworks = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
@@ -243,13 +243,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<HeatNetworkResponse>?> HeatNetworksOption { get; private set; }
+        public Option<List<HeatNetworkUserResponse>?> HeatNetworksOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets HeatNetworks
         /// </summary>
         [JsonPropertyName("heatNetworks")]
-        public List<HeatNetworkResponse>? HeatNetworks { get { return this.HeatNetworksOption; } set { this.HeatNetworksOption = new(value); } }
+        public List<HeatNetworkUserResponse>? HeatNetworks { get { return this.HeatNetworksOption; } set { this.HeatNetworksOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -323,7 +323,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> status = default;
             Option<List<UserRole>?> roles = default;
             Option<OrganisationResponse?> organisation = default;
-            Option<List<HeatNetworkResponse>?> heatNetworks = default;
+            Option<List<HeatNetworkUserResponse>?> heatNetworks = default;
 
             while (utf8JsonReader.Read())
             {
@@ -382,7 +382,7 @@ namespace HNTAS.Api.Client.Model
                             organisation = new Option<OrganisationResponse?>(JsonSerializer.Deserialize<OrganisationResponse>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "heatNetworks":
-                            heatNetworks = new Option<List<HeatNetworkResponse>?>(JsonSerializer.Deserialize<List<HeatNetworkResponse>>(ref utf8JsonReader, jsonSerializerOptions));
+                            heatNetworks = new Option<List<HeatNetworkUserResponse>?>(JsonSerializer.Deserialize<List<HeatNetworkUserResponse>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;

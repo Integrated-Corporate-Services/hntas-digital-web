@@ -56,15 +56,39 @@ namespace HNTAS.Web.UI.Controllers
             try
             {
                 user = await RetrieveUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new DashboardModel());
             }
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
-                        
-            ViewBag.IsRegulatoryContact = user.Roles?.Contains(Api.Client.Model.UserRole.RegulatoryContact);
+
+            ViewBag.IsRegulatoryContact = user.Roles?.Contains(UserRole.RegulatoryContact);
+
+            ViewBag.UserRole = user.Roles[0].ToString();
+
+            //switch (user.Roles[0])
+            //{
+            //    case Api.Client.Model.UserRole.RegulatoryContact:
+            //        ViewBag.UserRole = "RegulatoryContact";
+            //        break;
+            //    case Api.Client.Model.UserRole.Designer:
+            //        ViewBag.UserRole = "Designer";
+            //        break;
+            //    case Api.Client.Model.UserRole.Contractor:
+            //        ViewBag.UserRole = "Contractor";
+            //        break;
+            //    case Api.Client.Model.UserRole.Assessor:
+            //        ViewBag.UserRole = "Assessor";
+            //        break;
+            //    case Api.Client.Model.UserRole.Contributor:
+            //    default:
+            //        ViewBag.UserRole = "Contributor";
+            //        break;
+            //}
+
 
             var heatNetworks = new List<HeatNetworkModel>();
 
@@ -90,7 +114,6 @@ namespace HNTAS.Web.UI.Controllers
             return View(dashboardModel);
 
         }
-
 
         [HttpGet]
         public async Task<IActionResult> OrganisationDetails()

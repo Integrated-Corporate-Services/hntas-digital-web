@@ -42,7 +42,26 @@
                         <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
                     </td>
                     <td class="govuk-table__cell">
-                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View/Edit</a>
+                        @if (ViewBag.UserRole == HNTAS.Api.Client.Model.ContributorRole.Assessor.ToString())
+                        {
+                            if(ViewBag.HasDeclaredImpartiality != true)
+                            {
+                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("DeclarationOfImpartiality", "Assessor", new { hnId = @heatNetwork.HnId })">View or Update</a>
+                            }
+                            else
+                            {
+                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View or Update</a>
+                            }
+                        }
+                        else if(ViewBag.UserRole == HNTAS.Api.Client.Model.ContributorRole.Certifier.ToString())
+                        {
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("HeatNetworkDetails", "Certifier", new { hnId = @heatNetwork.HnId })">Certify</a>
+                        }
+                        else
+                        {
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View/Edit</a>
+                        }
+
                     </td>
                 </tr>
             }

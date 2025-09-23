@@ -58,7 +58,12 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Enum Assessor for value: Assessor
         /// </summary>
-        Assessor = 6
+        Assessor = 6,
+
+        /// <summary>
+        /// Enum Certifier for value: Certifier
+        /// </summary>
+        Certifier = 7
     }
 
     /// <summary>
@@ -91,6 +96,9 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Assessor"))
                 return UserRole.Assessor;
 
+            if (value.Equals("Certifier"))
+                return UserRole.Certifier;
+
             throw new NotImplementedException($"Could not convert value to type UserRole: '{value}'");
         }
 
@@ -118,6 +126,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("Assessor"))
                 return UserRole.Assessor;
+
+            if (value.Equals("Certifier"))
+                return UserRole.Certifier;
 
             return null;
         }
@@ -147,6 +158,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value == UserRole.Assessor)
                 return "Assessor";
+
+            if (value == UserRole.Certifier)
+                return "Certifier";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }

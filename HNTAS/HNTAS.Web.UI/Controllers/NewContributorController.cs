@@ -14,7 +14,6 @@ using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
 using HNTAS.Web.UI.Workflows.Models.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 
@@ -273,7 +272,6 @@ namespace HNTAS.Web.UI.Controllers
                 return View("Contributors/ChooseRole", model);
             }
             model.Roles = roles;
-
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("ChooseRole");
