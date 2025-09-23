@@ -234,5 +234,27 @@ namespace HNTAS.Web.UI.Services.Core
         }
 
 
+        public async Task SendAssessorAssessmentEmail(string hnName, string hnId, string assessmentResult)
+        {
+            var response = await _soaApi.ApiSOASendAssessorAssessmentEmailPostAsync(hnName, hnId, assessmentResult);
+
+            if (response.IsNoContent)
+            {
+                return;
+            }
+            throw new Exception($"Failed to send assessor email with status code: {response.StatusCode}");
+        }
+
+
+        public async Task SendCertificationCompleteEmail(string hnName, string hnId)
+        {
+            var response = await _soaApi.ApiSOASendCertificationCompleteEmailPostAsync(hnName, hnId);
+
+            if (response.IsNoContent)
+            {
+                return;
+            }
+            throw new Exception($"Failed to send assessor email with status code: {response.StatusCode}");
+        }
     }
 }

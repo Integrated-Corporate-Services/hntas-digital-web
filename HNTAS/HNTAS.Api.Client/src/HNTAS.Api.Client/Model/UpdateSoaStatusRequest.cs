@@ -34,12 +34,14 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="UpdateSoaStatusRequest" /> class.
         /// </summary>
         /// <param name="hnId">hnId</param>
+        /// <param name="hnName">hnName</param>
         /// <param name="updatedBy">updatedBy</param>
         /// <param name="status">status</param>
         [JsonConstructor]
-        public UpdateSoaStatusRequest(Option<string?> hnId = default, Option<string?> updatedBy = default, Option<SoaStatus?> status = default)
+        public UpdateSoaStatusRequest(Option<string?> hnId = default, Option<string?> hnName = default, Option<string?> updatedBy = default, Option<SoaStatus?> status = default)
         {
             HnIdOption = hnId;
+            HnNameOption = hnName;
             UpdatedByOption = updatedBy;
             StatusOption = status;
             OnCreated();
@@ -74,6 +76,19 @@ namespace HNTAS.Api.Client.Model
         public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of HnName
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> HnNameOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HnName
+        /// </summary>
+        [JsonPropertyName("hnName")]
+        public string? HnName { get { return this.HnNameOption; } set { this.HnNameOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of UpdatedBy
         /// </summary>
         [JsonIgnore]
@@ -95,6 +110,7 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class UpdateSoaStatusRequest {\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
+            sb.Append("  HnName: ").Append(HnName).Append("\n");
             sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("}\n");
@@ -135,6 +151,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> hnId = default;
+            Option<string?> hnName = default;
             Option<string?> updatedBy = default;
             Option<SoaStatus?> status = default;
 
@@ -156,6 +173,9 @@ namespace HNTAS.Api.Client.Model
                         case "hnId":
                             hnId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "hnName":
+                            hnName = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         case "updatedBy":
                             updatedBy = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
@@ -173,13 +193,16 @@ namespace HNTAS.Api.Client.Model
             if (hnId.IsSet && hnId.Value == null)
                 throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class UpdateSoaStatusRequest.");
 
+            if (hnName.IsSet && hnName.Value == null)
+                throw new ArgumentNullException(nameof(hnName), "Property is not nullable for class UpdateSoaStatusRequest.");
+
             if (updatedBy.IsSet && updatedBy.Value == null)
                 throw new ArgumentNullException(nameof(updatedBy), "Property is not nullable for class UpdateSoaStatusRequest.");
 
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class UpdateSoaStatusRequest.");
 
-            return new UpdateSoaStatusRequest(hnId, updatedBy, status);
+            return new UpdateSoaStatusRequest(hnId, hnName, updatedBy, status);
         }
 
         /// <summary>
@@ -209,11 +232,17 @@ namespace HNTAS.Api.Client.Model
             if (updateSoaStatusRequest.HnIdOption.IsSet && updateSoaStatusRequest.HnId == null)
                 throw new ArgumentNullException(nameof(updateSoaStatusRequest.HnId), "Property is required for class UpdateSoaStatusRequest.");
 
+            if (updateSoaStatusRequest.HnNameOption.IsSet && updateSoaStatusRequest.HnName == null)
+                throw new ArgumentNullException(nameof(updateSoaStatusRequest.HnName), "Property is required for class UpdateSoaStatusRequest.");
+
             if (updateSoaStatusRequest.UpdatedByOption.IsSet && updateSoaStatusRequest.UpdatedBy == null)
                 throw new ArgumentNullException(nameof(updateSoaStatusRequest.UpdatedBy), "Property is required for class UpdateSoaStatusRequest.");
 
             if (updateSoaStatusRequest.HnIdOption.IsSet)
                 writer.WriteString("hnId", updateSoaStatusRequest.HnId);
+
+            if (updateSoaStatusRequest.HnNameOption.IsSet)
+                writer.WriteString("hnName", updateSoaStatusRequest.HnName);
 
             if (updateSoaStatusRequest.UpdatedByOption.IsSet)
                 writer.WriteString("updatedBy", updateSoaStatusRequest.UpdatedBy);

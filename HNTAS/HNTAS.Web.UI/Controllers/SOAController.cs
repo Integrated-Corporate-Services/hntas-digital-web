@@ -724,7 +724,7 @@ namespace HNTAS.Web.UI.Controllers
                 var elementItemDocs = new DocumentItem
                 {
                     Name = Utility.GetElementOptions()?.FirstOrDefault(x => x.Id.ToString().ToLower() == element.Name.ToLower())?.Label,
-                    DocNames = element.Documents?.Select(d => d.FileName).ToList() ?? new List<string>(),
+                    Documents = element.Documents?.Select(d => new DocumentReference { FileName = d.FileName, DownloadUrl = "#" }).ToList() ?? new List<DocumentReference>(),
                     ChangeUrl = "#"
                 };
 
@@ -737,7 +737,13 @@ namespace HNTAS.Web.UI.Controllers
                 .Select(d => new DocumentItem
                 {
                     Name = "Assessment plan",
-                    DocNames = new List<string> { d.FileName },
+                    Documents = new List<DocumentReference>
+                                {
+                                    new DocumentReference
+                                    {
+                                        FileName = d.FileName
+                                    }
+                                },
                     ChangeUrl = "#"
                 })
                 .FirstOrDefault();
@@ -754,8 +760,6 @@ namespace HNTAS.Web.UI.Controllers
                 AssessmentPlanDocument = assessmentPlanDoc
             };
 
-
-
             return View(soaSummaryModel);
         }
 
@@ -764,9 +768,10 @@ namespace HNTAS.Web.UI.Controllers
         {
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            await _soaProjectService.UpdateSOAStatus(new UpdateSoaStatusRequest(hnId, userId, SoaStatus.Submitted));
+            await _soaProjectService.UpdateSOAStatus(new UpdateSoaStatusRequest(hnId, hnName, userId, SoaStatus.Submitted));
 
             return RedirectToAction("Confirmation");
         }
