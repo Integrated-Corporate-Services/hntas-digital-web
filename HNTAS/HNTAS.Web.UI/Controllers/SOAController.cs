@@ -732,7 +732,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             //filter assessment plan for current phase
-            var assessmentPlanDoc = heatNetworkResponse?.Soa?.JourneyData?.AssessorDocs?
+            var assessmentPlanDoc = heatNetworkResponse?.Soa?.JourneyData?.AssessmentDocs?
                 .Where(d => d.Phase == "Phase" + currentPhase)
                 .Select(d => new DocumentItem
                 {
