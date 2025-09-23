@@ -27,7 +27,18 @@ namespace HNTAS.Web.UI.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Sign out from GOV.UK One Login
-            return SignOut(new AuthenticationProperties(), OneLoginDefaults.AuthenticationScheme);
+            var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
+
+            if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                return SignOut(new AuthenticationProperties(), "GovUkSimulator");
+            }
+            else
+            {
+                return SignOut(new AuthenticationProperties(), OneLoginDefaults.AuthenticationScheme);
+            }
+
+                
         }
 
         // This action will be called after successful authentication by One Login

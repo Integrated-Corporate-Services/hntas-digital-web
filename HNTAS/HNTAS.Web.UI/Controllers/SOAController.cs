@@ -13,19 +13,22 @@ namespace HNTAS.Web.UI.Controllers
     public class SOAController : Controller
     {
         private readonly ISessionHelper _sessionHelper;
-        private readonly ISoaProjectService _soaProjectService;
+        private readonly ISoaService _soaProjectService;
+        private readonly IHeatNetworkService _heatNetworkService;
         private readonly ILogger<SOAController> _logger;
         private readonly IS3UploadService _s3UploadService;
 
         public SOAController(ISessionHelper sessionHelper,
-            ISoaProjectService soaProjectService,
+            ISoaService soaProjectService,
             ILogger<SOAController> logger,
-            IS3UploadService s3UploadService)
+            IS3UploadService s3UploadService,
+            IHeatNetworkService heatNetworkService)
         {
             _sessionHelper = sessionHelper;
             _soaProjectService = soaProjectService;
             _logger = logger;
             _s3UploadService = s3UploadService;
+            _heatNetworkService = heatNetworkService;
         }
 
         [HttpGet]
@@ -48,8 +51,6 @@ namespace HNTAS.Web.UI.Controllers
             }
             var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
             soaProject ??= await _soaProjectService.CreateAsync(hnId, userId);
-
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.SoaProjectId, soaProject.Id);
             return RedirectToAction("HeatNetworkType");
         }
 
@@ -139,30 +140,16 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("HeatNetworkSOADetails");
             var model = new HeatNetworkElementViewModel()
             {
-                ElementOptions = GetElementOptions()
+                ElementOptions = Utility.GetElementOptions()
             };
 
             return View(model);
         }
 
-
-        private List<HeatNetworkElementOption> GetElementOptions()
-        {
-            return new List<HeatNetworkElementOption>
-            {
-                new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
-                new() { Id = HeatNetworkElementType.DistributionNetwork, Label = "Distribution network", Hint = "Only 1 allowed per heat network." },
-                new() { Id = HeatNetworkElementType.ThermalSubStation, Label = "Thermal sub station" },
-                new() { Id = HeatNetworkElementType.CommunalDistributionNetwork, Label = "Communal distribution network"},
-                new() { Id = HeatNetworkElementType.ConsumerConnections, Label = "Consumer connections" },
-                new() { Id = HeatNetworkElementType.ConsumerHeatSystems, Label = "Consumer heat systems" }
-            };
-        }
-
         [HttpPost]
         public IActionResult SubmitSelectedElements(HeatNetworkElementViewModel model)
         {
-            model.ElementOptions = GetElementOptions();
+            model.ElementOptions = Utility.GetElementOptions();
 
             if (!ModelState.IsValid)
             {
@@ -174,7 +161,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 if (!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0)
                 {
-                    var element = GetElementOptions().FirstOrDefault(x => x.Id == selectedId);
+                    var element = Utility.GetElementOptions().FirstOrDefault(x => x.Id == selectedId);
                     if (element == null)
                     {
                         return BadRequest();
@@ -223,7 +210,7 @@ namespace HNTAS.Web.UI.Controllers
                 networkElements.Add(new SelectedElement
                 {
                     Count = element.Count ?? 0,
-                    Name = GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty
+                    Name = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty
                 });
             }
 
@@ -309,7 +296,7 @@ namespace HNTAS.Web.UI.Controllers
                 elements.Add(new ElementListItem
                 {
                     ElementType = type,
-                    Name = GetElementOptions().FirstOrDefault(x => x.Id == type).Label ?? string.Empty,
+                    Name = Utility.GetElementOptions().FirstOrDefault(x => x.Id == type).Label ?? string.Empty,
                     Count = count,
                     UiStatus = uiStatus,
                     IsEnabled = isEnabled
@@ -319,7 +306,7 @@ namespace HNTAS.Web.UI.Controllers
             var model = new ElementListViewModel
             {
                 HeatNetworkName = hnName,
-                HnId = soaProject.HnId,
+                HnId = hnId,
                 Elements = elements
             };
 
@@ -334,7 +321,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
-            var selectedElement = GetElementOptions().FirstOrDefault(x => x.Id.ToString().ToLower() == elementName.ToLower());
+            var selectedElement = Utility.GetElementOptions().FirstOrDefault(x => x.Id.ToString().ToLower() == elementName.ToLower());
             var element = soaProject.JourneyData.HeatNetworkElements.FirstOrDefault(x => x.Name == selectedElement.Id);
 
             var model = new EnterElementLocationsViewModel
@@ -360,7 +347,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var elementType = GetElementOptions().FirstOrDefault(x => x.Id.ToString().ToLower() == model.ElementName.ToLower()).Id;
+            var elementType = Utility.GetElementOptions().FirstOrDefault(x => x.Id.ToString().ToLower() == model.ElementName.ToLower()).Id;
             model.Locations = model.Locations.Where(x => !string.IsNullOrEmpty(x)).ToList();
             await _soaProjectService.UpdateElementLocations(new UpdateElementLocationsRequest(hnId, userId, elementType, model.Locations));
 
@@ -388,7 +375,7 @@ namespace HNTAS.Web.UI.Controllers
                 networkElements.Add(new SelectedElement
                 {
                     Count = element.Count ?? 0,
-                    Name = GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty
+                    Name = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty
                 });
             }
 
@@ -404,31 +391,31 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> DefineSoaDetailsAsync(int phaseIndex = 0, int pathway = 3)
+        public async Task<IActionResult> DefineSOADetailsAsync(int phaseIndex = 0, int pathway = 3)
         {
             this.ShowBackButton("DefineSoa");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
+            var heatNetworkResponse = await _heatNetworkService.GetAsync(hnId);
 
-            if (soaProject == null)
+            if (heatNetworkResponse == null)
             {
                 return BadRequest();
             }
 
             List<SelectedElement> networkElements = new List<SelectedElement>();
-            foreach (var element in soaProject.JourneyData.HeatNetworkElements)
+            foreach (var element in heatNetworkResponse.Soa.JourneyData.HeatNetworkElements)
             {
                 networkElements.Add(new SelectedElement
                 {
                     Count = element.Count ?? 0,
-                    Name = GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty
+                    Name = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id.ToString() == element.Name)?.Label ?? string.Empty
                 });
             }
 
             var model = new StatementOfApplicabilityViewModel
             {
-                ProjectName = "Olympic Park Aberdeen",
+                ProjectName = heatNetworkResponse?.Name,
                 PageTitle = "Define SOA – add details to your statement of applicability (SOA)",
                 Pathway = pathway,
                 CurrentPhaseIndex = phaseIndex,
@@ -440,7 +427,7 @@ namespace HNTAS.Web.UI.Controllers
                     Stages = phase.Stages.Select(stage => new StageViewModel
                     {
                         Name = stage.Name,
-                        Elements = GetDefaultElementsForStage(stage.SoaStage, index + 1, soaProject)
+                        Elements = GetDefaultElementsForStage(stage.SoaStage, index + 1, heatNetworkResponse.Soa)
                     }).ToList()
                 }).ToList()
             };
@@ -448,19 +435,19 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        private List<ElementViewModel> GetDefaultElementsForStage(SoaStage stage, int phaseNumber, SoaProject soaProject)
+        private List<ElementViewModel> GetDefaultElementsForStage(NullableOfSoaStage stage, int phaseNumber, SoaResponse soa)
         {
             var stageNumber = (int)stage;
             var phaseEnum = (SoaPhase)phaseNumber;
 
             var networkElements = new List<ElementViewModel>();
 
-            foreach (var element in soaProject.JourneyData.HeatNetworkElements)
+            foreach (var element in soa.JourneyData.HeatNetworkElements)
             {
-                var label = GetElementOptions()?.FirstOrDefault(e => e.Id == element.Name)?.Label ?? string.Empty;
+                var label = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id.ToString() == element.Name)?.Label ?? string.Empty;
 
                 var matchingDocs = element.Documents
-                    .Where(d => d.Phase == phaseEnum && d.Stage == stage)
+                    .Where(d => d.Phase == phaseEnum.ToString() && d.Stage == stage.ToString())
                     .ToList();
 
                 var status = matchingDocs.Count == 0
@@ -490,13 +477,13 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> UploadSOAElementDocuments(string elementName, int phase, int stage)
         {
-            this.ShowBackButton("DefineSoaDetails");
+            this.ShowBackButton("DefineSOADetails");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            var soaProject = await _soaProjectService.GetByHnIdAsync(hnId);
+            var heatNetworkResponse = await _heatNetworkService.GetAsync(hnId);
 
-            var selectedElement = GetElementOptions().FirstOrDefault(x =>
+            var selectedElement = Utility.GetElementOptions().FirstOrDefault(x =>
                 x.Id.ToString().Equals(elementName, StringComparison.OrdinalIgnoreCase));
 
             if (selectedElement == null)
@@ -505,12 +492,13 @@ namespace HNTAS.Web.UI.Controllers
                 return NotFound();
             }
 
-            var element = soaProject.JourneyData.HeatNetworkElements
-                .FirstOrDefault(x => x.Name == selectedElement.Id);
+            var element = heatNetworkResponse.Soa.JourneyData.HeatNetworkElements
+                .FirstOrDefault(x => x.Name == selectedElement.Id.ToString());
 
             var model = new UploadSOAElementDocumentsViewModel
             {
-                PageTitle = "Upload SOA Documents",
+                ProjectName = heatNetworkResponse.Name,
+                PageTitle = "Define SOA – add details to your statement of applicability (SOA)",
                 Phase = phase,
                 Stage = stage,
                 ElementName = selectedElement.Label,
@@ -523,7 +511,7 @@ namespace HNTAS.Web.UI.Controllers
 
         private List<DocumentUploadModel> BuildDocumentInputsForElement(HeatNetworkElementType elementId, int count)
         {
-            var elementLabel = GetElementOptions().FirstOrDefault(x => x.Id == elementId)?.Label;
+            var elementLabel = Utility.GetElementOptions().FirstOrDefault(x => x.Id == elementId)?.Label;
 
             var documents = new List<DocumentUploadModel>();
 
@@ -547,7 +535,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            var selectedElement = GetElementOptions().FirstOrDefault(x => x.Label.ToLower() == elementName.ToLower());
+            var selectedElement = Utility.GetElementOptions().FirstOrDefault(x => x.Label.ToLower() == elementName.ToLower());
 
             if (selectedElement == null)
             {
@@ -568,7 +556,7 @@ namespace HNTAS.Web.UI.Controllers
                         FileName = file.FileName,
                         S3Key = s3Key,
                         Phase = (SoaPhase)phase, // You can dynamically resolve this if needed
-                        Stage = (SoaStage)stage, // Same here
+                        Stage = (NullableOfSoaStage)stage, // Same here
                         UploadedAt = DateTime.UtcNow,
                         UploadedBy = userId
                     });
@@ -593,11 +581,216 @@ namespace HNTAS.Web.UI.Controllers
                 // _logger.LogWarning("No valid files uploaded for element {ElementName} in HN ID: {HnId}", elementName, hnId);
             }
 
-            return RedirectToAction("DefineSoaDetails");
+            return RedirectToAction("DefineSOADetails");
+        }
+
+        public async Task<IActionResult> AddAssessmentPlanSoaAsync(int phaseIndex = 0, int pathway = 3)
+        {
+            this.ShowBackButton("DefineSoa");
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var heatNetworkResponse = await _heatNetworkService.GetAsync(hnId);
+
+            if (heatNetworkResponse == null)
+            {
+                return BadRequest();
+            }
+
+            List<SelectedElement> networkElements = new List<SelectedElement>();
+            foreach (var element in heatNetworkResponse.Soa.JourneyData.HeatNetworkElements)
+            {
+                networkElements.Add(new SelectedElement
+                {
+                    Count = element.Count ?? 0,
+                    Name = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id.ToString() == element.Name)?.Label ?? string.Empty
+                });
+            }
+
+            var model = new StatementOfApplicabilityViewModel
+            {
+                ProjectName = "Define overall SOA",
+                PageTitle = "Add assessment plan to statment of applicability (SOA)",
+                Pathway = pathway,
+                CurrentPhaseIndex = phaseIndex,
+                Phases = SoaPhaseStageMapping.Phases.Select((phase, index) => new PhaseViewModel
+                {
+                    Name = phase.Name,
+                    Title = phase.Title,
+                    IsActive = index == phaseIndex,
+                    Stages = phase.Stages.Select(stage => new StageViewModel
+                    {
+                        Name = stage.Name,
+                        Elements = GetDefaultElementsForStage(stage.SoaStage, index + 1, heatNetworkResponse.Soa)
+                    }).ToList()
+                }).ToList()
+            };
+
+            ViewBag.Steps = StaticSoaSteps.GetSteps(SoaSteps.AddAssessmentPlan, Url);
+
+            return View(model);
         }
 
 
 
+        [HttpGet]
+        public IActionResult UploadAssessmentPlan(int phase)
+        {
+
+            this.ShowBackButton("AddAssessmentPlanSoa", "SOA", new { phaseIndex = phase });
+
+            var phaseNumber = phase + 1;
+            var model = new UploadAssessmentPlanViewModel
+            {
+                HeatNetworkName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName),
+                PhaseNumber = phaseNumber,
+                TemplateDownloadUrl = Url.Action("DownloadTemplate", "Soa", new { phaseNumber })
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadAssessmentPlan(int phase, IFormFile assessmentPlan)
+        {
+            phase = phase + 1;
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+
+            if (assessmentPlan == null || assessmentPlan.Length == 0)
+            {
+                ModelState.AddModelError("assessmentPlan", "Please select a file to upload.");
+                return View(new UploadAssessmentPlanViewModel
+                {
+                    PhaseNumber = phase,
+                    TemplateDownloadUrl = Url.Action("DownloadTemplate", "Soa", new { phase })
+                });
+            }
+
+            var s3Key = await _s3UploadService.UploadFileAsync(assessmentPlan, $"soa/{hnId}/{phase}/AssessmentPlan");
+
+            // Optionally persist metadata or update project state here
+            var request = new UpdateDocumentRequest(hnId: hnId, phase: (SoaPhase)phase, uploadedBy: userId, fileName: assessmentPlan.FileName, s3Key: s3Key, documentType: DocumentType.Assessment);
+            await _soaProjectService.UpdateDocument(request);
+
+            _logger.LogInformation("Assessment plan uploaded for HN ID: {HnId}, Phase: {Phase}, UploadedBy: {UserId}", hnId, phase, userId);
+
+            return RedirectToAction("SubmitAssessmentPlan");
+        }
+
+
+        public async Task<IActionResult> SubmitAssessmentPlan(int phaseIndex = 0)
+        {
+            this.ShowBackButton("UploadAssessmentPlan", "SOA", new { phase = phaseIndex });
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+
+            var heatNetworkResponse = await _heatNetworkService.GetAsync(hnId);
+
+            var model = new SubmitAssessmentPlanViewModel // Updated reference
+            {
+                DocumentName = heatNetworkResponse.Soa.JourneyData.AssessmentDocs.FirstOrDefault()?.FileName, //"MyAssessmentPlan.docx",
+                PhaseNumber = phaseIndex + 1,
+                Steps = StaticSoaSteps.GetSteps(SoaSteps.SubmitSoa, Url)
+            };
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CheckYourAnswersAsync(int phaseIndex = 0)
+        {
+            this.ShowBackButton("SubmitAssessmentPlan", "SOA", new { phaseIndex });
+
+            var currentPhase = phaseIndex + 1;
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+
+            var heatNetworkResponse = await _heatNetworkService.GetAsync(hnId);
+
+            var elementItems = new List<ElementItem>();
+            var elementDocuments = new List<DocumentItem>();
+            var assessmentPlanDocument = new DocumentItem();
+
+
+            foreach (var element in heatNetworkResponse?.Soa?.JourneyData?.HeatNetworkElements)
+            {
+                var elementItem = new ElementItem
+                {
+                    Name = Utility.GetElementOptions()?.FirstOrDefault(x => x.Id.ToString().ToLower() == element.Name.ToLower())?.Label,
+                    Count = element.Count ?? 0,
+                };
+
+                elementItems.Add(elementItem);
+
+                var elementItemDocs = new DocumentItem
+                {
+                    Name = Utility.GetElementOptions()?.FirstOrDefault(x => x.Id.ToString().ToLower() == element.Name.ToLower())?.Label,
+                    Documents = element.Documents?.Select(d => new DocumentReference { FileName = d.FileName, DownloadUrl = "#" }).ToList() ?? new List<DocumentReference>(),
+                    ChangeUrl = "#"
+                };
+
+                elementDocuments.Add(elementItemDocs);
+            }
+
+            //filter assessment plan for current phase
+            var assessmentPlanDoc = heatNetworkResponse?.Soa?.JourneyData?.AssessmentDocs?
+                .Where(d => d.Phase == "Phase" + currentPhase)
+                .Select(d => new DocumentItem
+                {
+                    Name = "Assessment plan",
+                    Documents = new List<DocumentReference>
+                                {
+                                    new DocumentReference
+                                    {
+                                        FileName = d.FileName
+                                    }
+                                },
+                    ChangeUrl = "#"
+                })
+                .FirstOrDefault();
+
+
+            var soaSummaryModel = new SOAReviewSummaryViewModel
+            {
+                Phase = currentPhase.ToString(),
+
+                Elements = elementItems,
+
+                ElementDocuments = elementDocuments,
+
+                AssessmentPlanDocument = assessmentPlanDoc
+            };
+
+            return View(soaSummaryModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitSOAAsync()
+        {
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+
+            await _soaProjectService.UpdateSOAStatus(new UpdateSoaStatusRequest(hnId, hnName, userId, SoaStatus.Submitted));
+
+            return RedirectToAction("Confirmation");
+        }
+
+        public async Task<IActionResult> ConfirmationAsync()
+        {
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+
+            var heatNetworkResponse = await _heatNetworkService.GetAsync(hnId);
+
+            ViewBag.ElementList = heatNetworkResponse?.Soa?.JourneyData?.HeatNetworkElements?.Select(e => new
+            {
+                Name = Utility.GetElementOptions()?.FirstOrDefault(x => x.Id.ToString().ToLower() == e.Name.ToLower())?.Label
+            }).ToList();
+
+            ViewBag.HnId = hnId;
+
+            return View();
+        }
 
 
         private List<SelectItemOption> GetHeatNetworkTypeOptions()
@@ -665,6 +858,5 @@ namespace HNTAS.Web.UI.Controllers
             };
             return companyTypeOptions;
         }
-
     }
 }

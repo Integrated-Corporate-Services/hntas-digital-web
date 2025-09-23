@@ -40,7 +40,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="uploadedAt">uploadedAt</param>
         /// <param name="uploadedBy">uploadedBy</param>
         [JsonConstructor]
-        public UploadedDocument(Option<string?> fileName = default, Option<string?> s3Key = default, Option<SoaPhase?> phase = default, Option<SoaStage?> stage = default, Option<DateTimeOffset?> uploadedAt = default, Option<string?> uploadedBy = default)
+        public UploadedDocument(Option<string?> fileName = default, Option<string?> s3Key = default, Option<SoaPhase?> phase = default, Option<NullableOfSoaStage?> stage = default, Option<DateTimeOffset?> uploadedAt = default, Option<string?> uploadedBy = default)
         {
             FileNameOption = fileName;
             S3KeyOption = s3Key;
@@ -71,13 +71,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<SoaStage?> StageOption { get; private set; }
+        public Option<NullableOfSoaStage?> StageOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Stage
         /// </summary>
         [JsonPropertyName("stage")]
-        public SoaStage? Stage { get { return this.StageOption; } set { this.StageOption = new(value); } }
+        public NullableOfSoaStage? Stage { get { return this.StageOption; } set { this.StageOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of FileName
@@ -190,7 +190,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> fileName = default;
             Option<string?> s3Key = default;
             Option<SoaPhase?> phase = default;
-            Option<SoaStage?> stage = default;
+            Option<NullableOfSoaStage?> stage = default;
             Option<DateTimeOffset?> uploadedAt = default;
             Option<string?> uploadedBy = default;
 
@@ -223,7 +223,7 @@ namespace HNTAS.Api.Client.Model
                         case "stage":
                             string? stageRawValue = utf8JsonReader.GetString();
                             if (stageRawValue != null)
-                                stage = new Option<SoaStage?>(SoaStageValueConverter.FromStringOrDefault(stageRawValue));
+                                stage = new Option<NullableOfSoaStage?>(NullableOfSoaStageValueConverter.FromStringOrDefault(stageRawValue));
                             break;
                         case "uploadedAt":
                             uploadedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
@@ -245,9 +245,6 @@ namespace HNTAS.Api.Client.Model
 
             if (phase.IsSet && phase.Value == null)
                 throw new ArgumentNullException(nameof(phase), "Property is not nullable for class UploadedDocument.");
-
-            if (stage.IsSet && stage.Value == null)
-                throw new ArgumentNullException(nameof(stage), "Property is not nullable for class UploadedDocument.");
 
             if (uploadedAt.IsSet && uploadedAt.Value == null)
                 throw new ArgumentNullException(nameof(uploadedAt), "Property is not nullable for class UploadedDocument.");
@@ -303,10 +300,13 @@ namespace HNTAS.Api.Client.Model
                 writer.WriteString("phase", phaseRawValue);
             }
             if (uploadedDocument.StageOption.IsSet)
-            {
-                var stageRawValue = SoaStageValueConverter.ToJsonValue(uploadedDocument.Stage!.Value);
-                writer.WriteString("stage", stageRawValue);
-            }
+                if (uploadedDocument.StageOption!.Value != null)
+                {
+                    var stageRawValue = NullableOfSoaStageValueConverter.ToJsonValue(uploadedDocument.StageOption.Value!.Value);
+                    writer.WriteString("stage", stageRawValue);
+                }
+                else
+                    writer.WriteNull("stage");
             if (uploadedDocument.UploadedAtOption.IsSet)
                 writer.WriteString("uploadedAt", uploadedDocument.UploadedAtOption.Value!.Value.ToString(UploadedAtFormat));
 

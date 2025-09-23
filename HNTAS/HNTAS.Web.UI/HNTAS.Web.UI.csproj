@@ -30,9 +30,6 @@
     <Folder Include="assets\js\shared\" />
     <Folder Include="assets\scss\shared\" />
     <Folder Include="assets\scss\views\" />
-    <Folder Include="Models\DutyHolder\" />
-    <Folder Include="UnitTests\" />
-    <Folder Include="Views\PagesYetToBeUsed\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

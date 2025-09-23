@@ -3,17 +3,13 @@ using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
-using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Xunit;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace HNTAS.Web.UI.Tests.Controllers
 {
@@ -24,15 +20,15 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<IHeatNetworksApi> _heatNetworksApiMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
 
-        internal class OrganisationAddressResponse 
-    {
-        public string AddressLine1 { get; set; }
-        public string AddressLine2 { get; set; }
-        public string Town { get; set; }
-        public string County { get; set; }
-        public string Postcode { get; set; }
-        public string Country { get; set; }
-    }
+        internal class OrganisationAddressResponse
+        {
+            public string AddressLine1 { get; set; }
+            public string AddressLine2 { get; set; }
+            public string Town { get; set; }
+            public string County { get; set; }
+            public string Postcode { get; set; }
+            public string Country { get; set; }
+        }
 
         public DashboardControllerTests()
         {
@@ -107,7 +103,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .ReturnsAsync(new UserDetailsResponse
                 {
                     Organisation = null,
-                    HeatNetworks = new List<HeatNetworkResponse>(),
+                    HeatNetworks = new List<HeatNetworkUserResponse>(),
                     EmailId = "test@example.com"
                 });
 
@@ -135,7 +131,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 Organisation = new OrganisationResponse
                 {
                     Name = "Test Org",
-                    RegisteredAddress = new RegisteredAddress(addressLine1: "Line1", addressLine2: "Line2", town: "town", county:"county", postcode:"e23rt", country:"country"),
+                    RegisteredAddress = new RegisteredAddress(addressLine1: "Line1", addressLine2: "Line2", town: "town", county: "county", postcode: "e23rt", country: "country"),
                 },
                 EmailId = "test@example.com"
             };

@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **FileName** | **string** |  | [optional] 
 **S3Key** | **string** |  | [optional] 
 **Phase** | **SoaPhase** |  | [optional] 
-**Stage** | **SoaStage** |  | [optional] 
+**Stage** | **NullableOfSoaStage** |  | [optional] 
 **UploadedAt** | **DateTimeOffset** |  | [optional] 
 **UploadedBy** | **string** |  | [optional] 
 
