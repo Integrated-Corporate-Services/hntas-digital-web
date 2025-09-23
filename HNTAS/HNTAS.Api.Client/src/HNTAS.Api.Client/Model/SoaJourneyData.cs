@@ -36,17 +36,27 @@ namespace HNTAS.Api.Client.Model
         /// <param name="networkType">networkType</param>
         /// <param name="connectionTypes">connectionTypes</param>
         /// <param name="heatNetworkElements">heatNetworkElements</param>
+<<<<<<< HEAD
         /// <param name="hasAssessorDeclaredImpartiality">hasAssessorDeclaredImpartiality</param>
+=======
+>>>>>>> dev
         /// <param name="assessmentDocs">assessmentDocs</param>
         /// <param name="assessorDocs">assessorDocs</param>
         /// <param name="certifierDocs">certifierDocs</param>
         [JsonConstructor]
+<<<<<<< HEAD
         public SoaJourneyData(Option<NetworkTypeSelection?> networkType = default, Option<List<ConnectionType>?> connectionTypes = default, Option<List<HeatNetworkElement>?> heatNetworkElements = default, Option<bool?> hasAssessorDeclaredImpartiality = default, Option<List<Object>?> assessmentDocs = default, Option<List<Object>?> assessorDocs = default, Option<List<Object>?> certifierDocs = default)
+=======
+        public SoaJourneyData(Option<NetworkTypeSelection?> networkType = default, Option<List<ConnectionType>?> connectionTypes = default, Option<List<HeatNetworkElement>?> heatNetworkElements = default, Option<List<Object>?> assessmentDocs = default, Option<List<Object>?> assessorDocs = default, Option<List<Object>?> certifierDocs = default)
+>>>>>>> dev
         {
             NetworkTypeOption = networkType;
             ConnectionTypesOption = connectionTypes;
             HeatNetworkElementsOption = heatNetworkElements;
+<<<<<<< HEAD
             HasAssessorDeclaredImpartialityOption = hasAssessorDeclaredImpartiality;
+=======
+>>>>>>> dev
             AssessmentDocsOption = assessmentDocs;
             AssessorDocsOption = assessorDocs;
             CertifierDocsOption = certifierDocs;
@@ -95,6 +105,7 @@ namespace HNTAS.Api.Client.Model
         public List<HeatNetworkElement>? HeatNetworkElements { get { return this.HeatNetworkElementsOption; } set { this.HeatNetworkElementsOption = new(value); } }
 
         /// <summary>
+<<<<<<< HEAD
         /// Used to track the state of HasAssessorDeclaredImpartiality
         /// </summary>
         [JsonIgnore]
@@ -117,6 +128,17 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets AssessmentDocs
         /// </summary>
+=======
+        /// Used to track the state of AssessmentDocs
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<Object>?> AssessmentDocsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets AssessmentDocs
+        /// </summary>
+>>>>>>> dev
         [JsonPropertyName("assessmentDocs")]
         public List<Object>? AssessmentDocs { get { return this.AssessmentDocsOption; } set { this.AssessmentDocsOption = new(value); } }
 
@@ -157,7 +179,10 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  NetworkType: ").Append(NetworkType).Append("\n");
             sb.Append("  ConnectionTypes: ").Append(ConnectionTypes).Append("\n");
             sb.Append("  HeatNetworkElements: ").Append(HeatNetworkElements).Append("\n");
+<<<<<<< HEAD
             sb.Append("  HasAssessorDeclaredImpartiality: ").Append(HasAssessorDeclaredImpartiality).Append("\n");
+=======
+>>>>>>> dev
             sb.Append("  AssessmentDocs: ").Append(AssessmentDocs).Append("\n");
             sb.Append("  AssessorDocs: ").Append(AssessorDocs).Append("\n");
             sb.Append("  CertifierDocs: ").Append(CertifierDocs).Append("\n");
@@ -201,7 +226,10 @@ namespace HNTAS.Api.Client.Model
             Option<NetworkTypeSelection?> networkType = default;
             Option<List<ConnectionType>?> connectionTypes = default;
             Option<List<HeatNetworkElement>?> heatNetworkElements = default;
+<<<<<<< HEAD
             Option<bool?> hasAssessorDeclaredImpartiality = default;
+=======
+>>>>>>> dev
             Option<List<Object>?> assessmentDocs = default;
             Option<List<Object>?> assessorDocs = default;
             Option<List<Object>?> certifierDocs = default;
@@ -230,9 +258,12 @@ namespace HNTAS.Api.Client.Model
                         case "heatNetworkElements":
                             heatNetworkElements = new Option<List<HeatNetworkElement>?>(JsonSerializer.Deserialize<List<HeatNetworkElement>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
+<<<<<<< HEAD
                         case "hasAssessorDeclaredImpartiality":
                             hasAssessorDeclaredImpartiality = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
                             break;
+=======
+>>>>>>> dev
                         case "assessmentDocs":
                             assessmentDocs = new Option<List<Object>?>(JsonSerializer.Deserialize<List<Object>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
@@ -251,19 +282,29 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkElements.IsSet && heatNetworkElements.Value == null)
                 throw new ArgumentNullException(nameof(heatNetworkElements), "Property is not nullable for class SoaJourneyData.");
 
+<<<<<<< HEAD
             if (hasAssessorDeclaredImpartiality.IsSet && hasAssessorDeclaredImpartiality.Value == null)
                 throw new ArgumentNullException(nameof(hasAssessorDeclaredImpartiality), "Property is not nullable for class SoaJourneyData.");
 
             if (assessmentDocs.IsSet && assessmentDocs.Value == null)
                 throw new ArgumentNullException(nameof(assessmentDocs), "Property is not nullable for class SoaJourneyData.");
 
+=======
+            if (assessmentDocs.IsSet && assessmentDocs.Value == null)
+                throw new ArgumentNullException(nameof(assessmentDocs), "Property is not nullable for class SoaJourneyData.");
+
+>>>>>>> dev
             if (assessorDocs.IsSet && assessorDocs.Value == null)
                 throw new ArgumentNullException(nameof(assessorDocs), "Property is not nullable for class SoaJourneyData.");
 
             if (certifierDocs.IsSet && certifierDocs.Value == null)
                 throw new ArgumentNullException(nameof(certifierDocs), "Property is not nullable for class SoaJourneyData.");
 
+<<<<<<< HEAD
             return new SoaJourneyData(networkType, connectionTypes, heatNetworkElements, hasAssessorDeclaredImpartiality, assessmentDocs, assessorDocs, certifierDocs);
+=======
+            return new SoaJourneyData(networkType, connectionTypes, heatNetworkElements, assessmentDocs, assessorDocs, certifierDocs);
+>>>>>>> dev
         }
 
         /// <summary>
@@ -323,9 +364,12 @@ namespace HNTAS.Api.Client.Model
                 writer.WritePropertyName("heatNetworkElements");
                 JsonSerializer.Serialize(writer, soaJourneyData.HeatNetworkElements, jsonSerializerOptions);
             }
+<<<<<<< HEAD
             if (soaJourneyData.HasAssessorDeclaredImpartialityOption.IsSet)
                 writer.WriteBoolean("hasAssessorDeclaredImpartiality", soaJourneyData.HasAssessorDeclaredImpartialityOption.Value!.Value);
 
+=======
+>>>>>>> dev
             if (soaJourneyData.AssessmentDocsOption.IsSet)
             {
                 writer.WritePropertyName("assessmentDocs");
