@@ -259,6 +259,58 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="assessmentResult"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASendAssessorAssessmentEmailPostApiResponse"/>&gt;</returns>
+        Task<IApiSOASendAssessorAssessmentEmailPostApiResponse> ApiSOASendAssessorAssessmentEmailPostAsync(string hnName, string hnId, string assessmentResult, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="assessmentResult"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASendAssessorAssessmentEmailPostApiResponse"/>?&gt;</returns>
+        Task<IApiSOASendAssessorAssessmentEmailPostApiResponse?> ApiSOASendAssessorAssessmentEmailPostOrDefaultAsync(string hnName, string hnId, string assessmentResult, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASendCertificationCompleteEmailPostApiResponse"/>&gt;</returns>
+        Task<IApiSOASendCertificationCompleteEmailPostApiResponse> ApiSOASendCertificationCompleteEmailPostAsync(string hnName, string hnId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASendCertificationCompleteEmailPostApiResponse"/>?&gt;</returns>
+        Task<IApiSOASendCertificationCompleteEmailPostApiResponse?> ApiSOASendCertificationCompleteEmailPostOrDefaultAsync(string hnName, string hnId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="updateSoaStatusRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAUpdateSoaStatusPutApiResponse"/>&gt;</returns>
@@ -481,6 +533,54 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiSOASendAssessorAssessmentEmailPostApiResponse"/>
+    /// </summary>
+    public interface IApiSOASendAssessorAssessmentEmailPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 204 NoContent
+        /// </summary>
+        /// <returns></returns>
+        bool IsNoContent { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IApiSOASendCertificationCompleteEmailPostApiResponse"/>
+    /// </summary>
+    public interface IApiSOASendCertificationCompleteEmailPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 204 NoContent
+        /// </summary>
+        /// <returns></returns>
+        bool IsNoContent { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IApiSOAUpdateSoaStatusPutApiResponse"/>
     /// </summary>
     public interface IApiSOAUpdateSoaStatusPutApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>
@@ -681,6 +781,46 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiSOANetworkTypePatch(Exception exception)
         {
             OnErrorApiSOANetworkTypePatch?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiSOASendAssessorAssessmentEmailPost;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiSOASendAssessorAssessmentEmailPost;
+
+        internal void ExecuteOnApiSOASendAssessorAssessmentEmailPost(SOAApi.ApiSOASendAssessorAssessmentEmailPostApiResponse apiResponse)
+        {
+            OnApiSOASendAssessorAssessmentEmailPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiSOASendAssessorAssessmentEmailPost(Exception exception)
+        {
+            OnErrorApiSOASendAssessorAssessmentEmailPost?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiSOASendCertificationCompleteEmailPost;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiSOASendCertificationCompleteEmailPost;
+
+        internal void ExecuteOnApiSOASendCertificationCompleteEmailPost(SOAApi.ApiSOASendCertificationCompleteEmailPostApiResponse apiResponse)
+        {
+            OnApiSOASendCertificationCompleteEmailPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiSOASendCertificationCompleteEmailPost(Exception exception)
+        {
+            OnErrorApiSOASendCertificationCompleteEmailPost?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -3277,6 +3417,517 @@ namespace HNTAS.Api.Client.Api
 
                 return result != null;
             }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiSOASendAssessorAssessmentEmailPost(ref string hnName, ref string hnId, ref string assessmentResult);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="assessmentResult"></param>
+        /// <returns></returns>
+        private void ValidateApiSOASendAssessorAssessmentEmailPost(string hnName, string hnId, string assessmentResult)
+        {
+            if (hnName == null)
+                throw new ArgumentNullException(nameof(hnName));
+
+            if (hnId == null)
+                throw new ArgumentNullException(nameof(hnId));
+
+            if (assessmentResult == null)
+                throw new ArgumentNullException(nameof(assessmentResult));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="assessmentResult"></param>
+        private void AfterApiSOASendAssessorAssessmentEmailPostDefaultImplementation(IApiSOASendAssessorAssessmentEmailPostApiResponse apiResponseLocalVar, string hnName, string hnId, string assessmentResult)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiSOASendAssessorAssessmentEmailPost(ref suppressDefaultLog, apiResponseLocalVar, hnName, hnId, assessmentResult);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="assessmentResult"></param>
+        partial void AfterApiSOASendAssessorAssessmentEmailPost(ref bool suppressDefaultLog, IApiSOASendAssessorAssessmentEmailPostApiResponse apiResponseLocalVar, string hnName, string hnId, string assessmentResult);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="assessmentResult"></param>
+        private void OnErrorApiSOASendAssessorAssessmentEmailPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string hnName, string hnId, string assessmentResult)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiSOASendAssessorAssessmentEmailPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, hnName, hnId, assessmentResult);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="assessmentResult"></param>
+        partial void OnErrorApiSOASendAssessorAssessmentEmailPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string hnName, string hnId, string assessmentResult);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="assessmentResult"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASendAssessorAssessmentEmailPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSOASendAssessorAssessmentEmailPostApiResponse?> ApiSOASendAssessorAssessmentEmailPostOrDefaultAsync(string hnName, string hnId, string assessmentResult, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiSOASendAssessorAssessmentEmailPostAsync(hnName, hnId, assessmentResult, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="assessmentResult"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASendAssessorAssessmentEmailPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSOASendAssessorAssessmentEmailPostApiResponse> ApiSOASendAssessorAssessmentEmailPostAsync(string hnName, string hnId, string assessmentResult, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiSOASendAssessorAssessmentEmailPost(hnName, hnId, assessmentResult);
+
+                FormatApiSOASendAssessorAssessmentEmailPost(ref hnName, ref hnId, ref assessmentResult);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/SOA/send-assessor-assessment-email"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/SOA/send-assessor-assessment-email");
+
+                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    parseQueryStringLocalVar["hnName"] = ClientUtils.ParameterToString(hnName);
+                    parseQueryStringLocalVar["hnId"] = ClientUtils.ParameterToString(hnId);
+                    parseQueryStringLocalVar["assessmentResult"] = ClientUtils.ParameterToString(assessmentResult);
+
+                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiSOASendAssessorAssessmentEmailPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSOASendAssessorAssessmentEmailPostApiResponse>();
+
+                        ApiSOASendAssessorAssessmentEmailPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SOA/send-assessor-assessment-email", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiSOASendAssessorAssessmentEmailPostDefaultImplementation(apiResponseLocalVar, hnName, hnId, assessmentResult);
+
+                        Events.ExecuteOnApiSOASendAssessorAssessmentEmailPost(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiSOASendAssessorAssessmentEmailPostDefaultImplementation(e, "/api/SOA/send-assessor-assessment-email", uriBuilderLocalVar.Path, hnName, hnId, assessmentResult);
+                Events.ExecuteOnErrorApiSOASendAssessorAssessmentEmailPost(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiSOASendAssessorAssessmentEmailPostApiResponse"/>
+        /// </summary>
+        public partial class ApiSOASendAssessorAssessmentEmailPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSOASendAssessorAssessmentEmailPostApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiSOASendAssessorAssessmentEmailPostApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiSOASendAssessorAssessmentEmailPostApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiSOASendAssessorAssessmentEmailPostApiResponse(ILogger<ApiSOASendAssessorAssessmentEmailPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 204 NoContent
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNoContent => 204 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiSOASendCertificationCompleteEmailPost(ref string hnName, ref string hnId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <returns></returns>
+        private void ValidateApiSOASendCertificationCompleteEmailPost(string hnName, string hnId)
+        {
+            if (hnName == null)
+                throw new ArgumentNullException(nameof(hnName));
+
+            if (hnId == null)
+                throw new ArgumentNullException(nameof(hnId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        private void AfterApiSOASendCertificationCompleteEmailPostDefaultImplementation(IApiSOASendCertificationCompleteEmailPostApiResponse apiResponseLocalVar, string hnName, string hnId)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiSOASendCertificationCompleteEmailPost(ref suppressDefaultLog, apiResponseLocalVar, hnName, hnId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        partial void AfterApiSOASendCertificationCompleteEmailPost(ref bool suppressDefaultLog, IApiSOASendCertificationCompleteEmailPostApiResponse apiResponseLocalVar, string hnName, string hnId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        private void OnErrorApiSOASendCertificationCompleteEmailPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string hnName, string hnId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiSOASendCertificationCompleteEmailPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, hnName, hnId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        partial void OnErrorApiSOASendCertificationCompleteEmailPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string hnName, string hnId);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASendCertificationCompleteEmailPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSOASendCertificationCompleteEmailPostApiResponse?> ApiSOASendCertificationCompleteEmailPostOrDefaultAsync(string hnName, string hnId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiSOASendCertificationCompleteEmailPostAsync(hnName, hnId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="hnName"></param>
+        /// <param name="hnId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASendCertificationCompleteEmailPostApiResponse"/>&gt;</returns>
+        public async Task<IApiSOASendCertificationCompleteEmailPostApiResponse> ApiSOASendCertificationCompleteEmailPostAsync(string hnName, string hnId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiSOASendCertificationCompleteEmailPost(hnName, hnId);
+
+                FormatApiSOASendCertificationCompleteEmailPost(ref hnName, ref hnId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/SOA/send-certification-complete-email"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/SOA/send-certification-complete-email");
+
+                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    parseQueryStringLocalVar["hnName"] = ClientUtils.ParameterToString(hnName);
+                    parseQueryStringLocalVar["hnId"] = ClientUtils.ParameterToString(hnId);
+
+                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiSOASendCertificationCompleteEmailPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSOASendCertificationCompleteEmailPostApiResponse>();
+
+                        ApiSOASendCertificationCompleteEmailPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SOA/send-certification-complete-email", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiSOASendCertificationCompleteEmailPostDefaultImplementation(apiResponseLocalVar, hnName, hnId);
+
+                        Events.ExecuteOnApiSOASendCertificationCompleteEmailPost(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiSOASendCertificationCompleteEmailPostDefaultImplementation(e, "/api/SOA/send-certification-complete-email", uriBuilderLocalVar.Path, hnName, hnId);
+                Events.ExecuteOnErrorApiSOASendCertificationCompleteEmailPost(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiSOASendCertificationCompleteEmailPostApiResponse"/>
+        /// </summary>
+        public partial class ApiSOASendCertificationCompleteEmailPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSOASendCertificationCompleteEmailPostApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiSOASendCertificationCompleteEmailPostApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiSOASendCertificationCompleteEmailPostApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiSOASendCertificationCompleteEmailPostApiResponse(ILogger<ApiSOASendCertificationCompleteEmailPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 204 NoContent
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNoContent => 204 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {

@@ -152,6 +152,9 @@ builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
 
+builder.Services.AddSingleton<CertifierEmailGeneratorService>();
+
+
 builder.Services.AddSingleton<IAmazonS3>(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();

@@ -6,127 +6,32 @@ using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace HNTAS.Web.UI.Controllers
 {
-    public class AssessorController : Controller
+    public class CertifierController : Controller
     {
-        private readonly ILogger<AssessorController> _logger;
+        private readonly ILogger<CertifierController> _logger;
         private readonly ISessionHelper _sessionHelper;
         private readonly IUserService _userService;
         private readonly IHeatNetworkService _heatNetworkService;
         private readonly ISoaService _soaService;
         private readonly IS3UploadService _s3UploadService;
-        private readonly IInvitationService _invitationService;
-        private readonly IInvitationTokenService _iInvitationTokenService;
-        private readonly CertifierEmailGeneratorService _certifierEmailGeneratorService;
 
-
-        public AssessorController(ILogger<AssessorController> logger,
+        public CertifierController(ILogger<CertifierController> logger,
             ISessionHelper sessionHelper,
             IUserService userService,
             IHeatNetworkService heatNetworkService,
-            ISoaService soaProjectService,
-            IS3UploadService s3UploadService,
-            IInvitationService invitationService,
-            IInvitationTokenService iInvitationTokenService,
-            CertifierEmailGeneratorService certifierEmailGeneratorService)
+            ISoaService soaService,
+            IS3UploadService s3UploadService)
         {
             _logger = logger;
             _sessionHelper = sessionHelper;
             _userService = userService;
             _heatNetworkService = heatNetworkService;
-            _soaService = soaProjectService;
+            _soaService = soaService;
             _s3UploadService = s3UploadService;
-            _invitationService = invitationService;
-            _iInvitationTokenService = iInvitationTokenService;
-            _certifierEmailGeneratorService = certifierEmailGeneratorService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> UserDetails()
-        {
-            this.ShowBackButton("UserAccount", "Dashboard");
-            try
-            {
-                var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
-
-                if (user == null)
-                {
-                    throw new Exception("Unable to retrieve user information. Please try again later.");
-                }
-                return View(user);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while retrieving user details.");
-                throw;
-            }
-        }
-
-        [HttpGet]
-        public IActionResult DeclarationOfImpartiality([FromQuery] string hnid)
-        {
-            if (_sessionHelper.GetFromSession<string>(HttpContext, "HasDeclaredImpartiality") == "true")
-            {
-                return RedirectToAction("HeatNetworkDetails", "Assessor", new { hnId = hnid });
-            }
-            this.ShowBackButton("HeatNetworks", "UserManagement");
-            var model = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(HttpContext, SessionKeys.DeclarationOfImpartialityModelKey) ?? new DeclationOfImpartialityModel();
-            model.HnId = hnid;
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeclarationOfImpartiality(DeclationOfImpartialityModel model)
-        {
-
-            this.ShowBackButton("HeatNetworks", "UserManagement");
-            if (!ModelState.IsValid || model.HasDeclaredImpartiality == false)
-            {
-                return View(model);
-            }
-            _sessionHelper.SaveToSession(HttpContext, "HasDeclaredImpartiality", "true"); // Save to db, but where? once per element or once per user or hnid?
-            return RedirectToAction("HeatNetworkDetails", "Assessor", new { hnId = model.HnId });
-        }
-
-        private List<ElementViewModel> GetElementsForStage(NullableOfSoaStage stage, int phaseNumber, SoaResponse soa)
-        {
-            var phaseEnum = (SoaPhase)phaseNumber;
-
-            var networkElements = new List<ElementViewModel>();
-
-            foreach (var element in soa.JourneyData.HeatNetworkElements)
-            {
-                var label = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id.ToString() == element.Name)?.Label ?? string.Empty;
-
-                var matchingDocs = element.Documents
-                    .Where(d => d.Phase == phaseEnum.ToString() && d.Stage == stage.ToString())
-                    .ToList();
-
-                var status = matchingDocs.Count == 0
-                    ? UiStatusConstants.NotStarted
-                    : matchingDocs.Count < element.Count
-                        ? UiStatusConstants.InProgress
-                        : UiStatusConstants.Completed;
-
-                networkElements.Add(new ElementViewModel
-                {
-                    Name = label,
-                    Status = status,
-                    Url = Url.Action("UploadSOAElementDocuments", "Soa", new
-                    {
-                        phase = phaseNumber,
-                        stage = (int)stage,
-                        elementName = element.Name.ToString()
-                    }),
-                    Count = element.Count
-                });
-            }
-
-            return networkElements;
-        }
 
         [HttpGet]
         public async Task<IActionResult> HeatNetworkDetails([FromQuery] string hnid)
@@ -134,12 +39,10 @@ namespace HNTAS.Web.UI.Controllers
 
             this.ShowBackButton("HeatNetworks", "UserManagement");
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnid.ToUpper());
-
             try
             {
                 var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
                 var hnDetails = await _heatNetworkService.GetAsync(hnid?.ToUpper());
-
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnDetails.Name);
 
                 if (user == null || hnDetails.Soa == null || hnDetails == null)
@@ -180,10 +83,11 @@ namespace HNTAS.Web.UI.Controllers
             }
         }
 
+
         [HttpGet]
         public async Task<IActionResult> DownloadTheDocuments(int phase)
         {
-            this.ShowBackButton("HeatNetworkDetails", "Assessor");
+            this.ShowBackButton("HeatNetworkDetails", "Certifier");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
 
             var heatNetworkResponse = await _heatNetworkService.GetAsync(hnId);
@@ -249,15 +153,15 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitDownloadTheDocuments(int Phase)
+        public IActionResult SubmitDownloadTheDocuments(int Phase)
         {
-            this.ShowBackButton("HeatNetworkDetails", "Assessor");
+            this.ShowBackButton("HeatNetworkDetails", "Certifier");
             var model = new UploadAssessmentPlanViewModel
             {
                 PhaseNumber = Phase,
                 TemplateDownloadUrl = Url.Action("DownloadTemplate", "Soa", new { Phase })
             };
-            return RedirectToAction("UploadSOC", "Assessor", model);
+            return RedirectToAction("UploadCertificate", "Certifier", model);
         }
 
         public async Task<IActionResult> DownloadElementFile([FromQuery] string phase, string stage, string filename, string element)
@@ -307,10 +211,12 @@ namespace HNTAS.Web.UI.Controllers
             return File(stream, "application/octet-stream", Path.GetFileName(key));
         }
 
+
         [HttpGet]
-        public IActionResult UploadSOC([FromQuery] int phase)
+        public IActionResult UploadCertificate([FromQuery] int phase)
         {
-            this.ShowBackButton("HeatNetworkDetails", "Assessor");
+            this.ShowBackButton("DownloadTheDocuments", "Certifier", new { phase });
+            ViewBag.HeatNetworkName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var model = new UploadSOCViewModel
             {
                 PhaseNumber = phase,
@@ -320,16 +226,15 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveUploadSOC(int phase, IFormFile assessorSoc)
+        public async Task<IActionResult> SaveUploadCertificateAsync(int phase, IFormFile certifierSoc)
         {
-
             phase = phase + 1;
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            if (assessorSoc == null || assessorSoc.Length == 0)
+            if (certifierSoc == null || certifierSoc.Length == 0)
             {
-                ModelState.AddModelError("assessmentPlan", "Please select a file to upload.");
+                ModelState.AddModelError("certifier", "Please select a file to upload.");
                 return View(new UploadAssessmentPlanViewModel
                 {
                     PhaseNumber = phase,
@@ -337,73 +242,84 @@ namespace HNTAS.Web.UI.Controllers
                 });
             }
 
-            var s3Key = await _s3UploadService.UploadFileAsync(assessorSoc, $"soa/{hnId}/{phase}/assessorSOC");
+            var s3Key = await _s3UploadService.UploadFileAsync(certifierSoc, $"soa/{hnId}/{phase}/certifierSOC");
 
             // Optionally persist metadata or update project state here
-            var request = new UpdateDocumentRequest(hnId: hnId.ToUpper(), phase: (SoaPhase)phase, uploadedBy: userId, fileName: assessorSoc.FileName, s3Key: s3Key, documentType: DocumentType.Assessor);
+            var request = new UpdateDocumentRequest(hnId: hnId.ToUpper(), phase: (SoaPhase)phase, uploadedBy: userId, fileName: certifierSoc.FileName, s3Key: s3Key, documentType: DocumentType.Certifier);
             await _soaService.UpdateDocument(request);
 
-            _logger.LogInformation("Assessor document uploaded for HN ID: {HnId}, Phase: {Phase}, UploadedBy: {UserId}, s3Key: {s3Key}", hnId, phase, userId, s3Key);
-            return RedirectToAction("CheckYourAnswers");
+            _logger.LogInformation("certifier document uploaded for HN ID: {HnId}, Phase: {Phase}, UploadedBy: {UserId}, s3Key: {s3Key}", hnId, phase, userId, s3Key);
+            return RedirectToAction("Declaration");
         }
 
+        [HttpGet]
+        public IActionResult Declaration()
+        {
+            this.ShowBackButton("UploadCertificate");
+            ViewBag.HeatNetworkName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var model = new CertifierConfirmationViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitDeclarationAsync(CertifierConfirmationViewModel model)
+        {
+            if (!model.IsConfirmed)
+            {
+                ModelState.AddModelError("", "You must confirm and accept the declaration to continue.");
+                ViewBag.HeatNetworkName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+                return View("Declaration", model);
+            }
+
+
+            await _soaService.SendCertificationCompleteEmail(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName), _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId));
+
+            return RedirectToAction("Confirmation");
+        }
 
         [HttpGet]
-        public IActionResult CheckYourAnswers()
+        public IActionResult Confirmation()
         {
+            ViewBag.HeatNetworkName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> SOCSubmittedAsync()
+
+        private List<ElementViewModel> GetElementsForStage(NullableOfSoaStage stage, int phaseNumber, SoaResponse soa)
         {
+            var phaseEnum = (SoaPhase)phaseNumber;
 
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var networkElements = new List<ElementViewModel>();
 
-            ViewBag.HnId = hnId;
-            try
+            foreach (var element in soa.JourneyData.HeatNetworkElements)
             {
-                var email = _certifierEmailGeneratorService.GenerateCertifierEmail();
-                var invitationId = await _invitationService.AddInvitedUserAsync(
-                       userId,
-                       new AddInvitationRequest(
-                           emailAddress: email,
-                           firstName: "Certifier",
-                           lastName: "Agent",
-                           preferredContactType: PreferredContactType.Landline,
-                           hnId: hnId,
-                           contributorRoles: new List<ContributorRole> { ContributorRole.Certifier },
-                           status: InvitationStatus.Invited,
-                           landlineNumber: "24723842378",
-                           mobileNumber: null,
-                           contactNumberExtension: null
-                       )
-                   );
+                var label = Utility.GetElementOptions()?.FirstOrDefault(e => e.Id.ToString() == element.Name)?.Label ?? string.Empty;
 
-                if (string.IsNullOrWhiteSpace(invitationId))
+                var matchingDocs = element.Documents
+                    .Where(d => d.Phase == phaseEnum.ToString() && d.Stage == stage.ToString())
+                    .ToList();
+
+                var status = matchingDocs.Count == 0
+                    ? UiStatusConstants.NotStarted
+                    : matchingDocs.Count < element.Count
+                        ? UiStatusConstants.InProgress
+                        : UiStatusConstants.Completed;
+
+                networkElements.Add(new ElementViewModel
                 {
-                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
-                    return RedirectToAction("CheckYourAnswers");
-                }
-
-                _logger.LogInformation("Successfully submitted new certifier details.");
-                var token = _iInvitationTokenService.GenerateToken(invitationId, email);
-
-                //send invitation email
-                await _invitationService.SendInvitationEmailAsync(invitationId, new SendInvitationEmailRequest(token));
-
-                await _soaService.SendAssessorAssessmentEmail(hnName, hnId, "Pass");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error submitting new certifier details.");
-                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
-                return RedirectToAction("CheckYourAnswers");
+                    Name = label,
+                    Status = status,
+                    Url = Url.Action("UploadSOAElementDocuments", "Soa", new
+                    {
+                        phase = phaseNumber,
+                        stage = (int)stage,
+                        elementName = element.Name.ToString()
+                    }),
+                    Count = element.Count
+                });
             }
 
-            return View();
+            return networkElements;
         }
     }
 }

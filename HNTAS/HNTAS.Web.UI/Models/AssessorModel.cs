@@ -29,8 +29,7 @@ namespace HNTAS.Web.UI.Models
     {
         public string Phase;
         public string Stage;
-        public string Element;
-        public List<ElementViewModel> ElementList;
+        public List<ElementItem> ElementList;
         public List<UploadedDocument> Documents;
         public List<UploadedDocument> AssessementPlan;
     }

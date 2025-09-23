@@ -832,6 +832,85 @@ paths:
           description: Bad Request
       tags:
       - SOA
+  /api/SOA/send-assessor-assessment-email:
+    post:
+      parameters:
+      - explode: true
+        in: query
+        name: hnName
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: assessmentResult
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - SOA
+  /api/SOA/send-certification-complete-email:
+    post:
+      parameters:
+      - explode: true
+        in: query
+        name: hnName
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - SOA
   /api/Users:
     get:
       responses:
@@ -1423,6 +1502,7 @@ components:
       - ContributingContractor
       - ContributingOperator
       - Assessor
+      - Certifier
       type: string
     DocumentType:
       enum:
@@ -2724,9 +2804,12 @@ components:
       example:
         hnId: hnId
         updatedBy: updatedBy
+        hnName: hnName
         status: InProgress
       properties:
         hnId:
+          type: string
+        hnName:
           type: string
         updatedBy:
           type: string
@@ -3133,6 +3216,7 @@ components:
       - Contractor
       - Operator
       - Assessor
+      - Certifier
       type: string
     UserStatus:
       enum:

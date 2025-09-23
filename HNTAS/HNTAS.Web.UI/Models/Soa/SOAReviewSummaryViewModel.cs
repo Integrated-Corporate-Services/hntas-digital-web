@@ -17,7 +17,14 @@
     public class DocumentItem
     {
         public string Name { get; set; }
-        public List<string> DocNames { get; set; } = [];
+        public List<DocumentReference> Documents { get; set; } = new();
+
         public string ChangeUrl { get; set; }
+    }
+
+    public class DocumentReference
+    {
+        public string FileName { get; set; }
+        public string DownloadUrl { get; set; }
     }
 }

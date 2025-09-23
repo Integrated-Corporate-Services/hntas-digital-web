@@ -162,7 +162,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("UserAccount", "Dashboard");
             var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
 
-            ViewBag.IsAssessor = user?.Roles[0] == Api.Client.Model.UserRole.Assessor;
+            ViewBag.UserRole = user?.Roles[0].ToString();
             ViewBag.HasDeclaredImpartiality = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(HttpContext, SessionKeys.DeclarationOfImpartialityModelKey)?.HasDeclaredImpartiality;
 
             if (user == null)

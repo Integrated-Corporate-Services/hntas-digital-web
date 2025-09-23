@@ -20,9 +20,9 @@
                 </ul>
                 <p class="govuk-body">
                     Return to the
-                    <a href="#" class="govuk-link">heat network overview</a>
+                    <a <a href="@Url.Action("Details", "HeatNetwork", new { hnid = ViewBag.HnId })" class="govuk-link">heat network overview</a>
                     or back to
-                    <a href="#" class="govuk-link">your account</a>.
+                    <a href="@Url.Action("UserAccount", "Dashboard")" class="govuk-link">your account</a>.
                 </p>
             </div>
         </div>
