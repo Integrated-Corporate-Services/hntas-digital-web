@@ -48,7 +48,7 @@ namespace HNTAS.Web.UI.Models
         public string StageName { get; set; }
         public string SOCfileName { get; set; }
 
-}
+    }
 
     public class SOCSubmittedModel
     {

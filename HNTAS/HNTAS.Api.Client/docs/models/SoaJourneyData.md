@@ -7,10 +7,7 @@ Name | Type | Description | Notes
 **NetworkType** | [**NetworkTypeSelection**](NetworkTypeSelection.md) |  | [optional] 
 **ConnectionTypes** | [**List&lt;ConnectionType&gt;**](ConnectionType.md) |  | [optional] 
 **HeatNetworkElements** | [**List&lt;HeatNetworkElement&gt;**](HeatNetworkElement.md) |  | [optional] 
-<<<<<<< HEAD
 **HasAssessorDeclaredImpartiality** | **bool** |  | [optional] 
-=======
->>>>>>> dev
 **AssessmentDocs** | **List&lt;Object&gt;** |  | [optional] 
 **AssessorDocs** | **List&lt;Object&gt;** |  | [optional] 
 **CertifierDocs** | **List&lt;Object&gt;** |  | [optional] 

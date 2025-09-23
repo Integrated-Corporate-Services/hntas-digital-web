@@ -187,7 +187,7 @@ namespace HNTAS.Web.UI.Controllers
             var documents = new List<UploadedDocument>();
             foreach (var hnElement in soaProject.JourneyData.HeatNetworkElements)
             {
-                if (hnElement.Name.ToString().ToLower() == Element)
+            if (hnElement.Name.ToString().ToLower() == Element)
                 {
                     foreach (var d in hnElement.Documents)
                     {
@@ -215,11 +215,11 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new DownloadTheDocumentModel()
             {
-                Phase = "Phase" + Phase,
-                Stage = "Stage" + Stage,
-                Element = char.ToUpper(Element[0]) + Element.Substring(1),
-                ElementList = elementList,
-                Documents = documents,
+                    Phase = "Phase" + Phase,
+                    Stage = "Stage" + Stage,
+                    Element = char.ToUpper(Element[0]) + Element.Substring(1),
+                    ElementList = elementList,
+                    Documents = documents,
                     AssessementPlan = assessmentPlanDoc
             };
             _sessionHelper.SaveToSession(HttpContext, "ElementName", model.Element);
@@ -330,7 +330,7 @@ namespace HNTAS.Web.UI.Controllers
                 })
                 .FirstOrDefault();
             var model = new AssessorCYAModel()
-        {
+            {
                 ElementName = char.ToUpper(elementName[0]) + elementName.Substring(1),
                 PhaseName = "Phase" + phaseNumber,
                 StageName = "Stage" + stageNumber,
@@ -344,6 +344,6 @@ namespace HNTAS.Web.UI.Controllers
         {
             var model = new SOCSubmittedModel { ElementName = _sessionHelper.GetFromSession<string>(HttpContext, "ElementName") };
             return View(model);
-        }
+        }        
     }
 }

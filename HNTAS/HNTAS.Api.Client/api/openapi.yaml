@@ -1513,10 +1513,7 @@ components:
           updatedBy: updatedBy
           createdBy: createdBy
           journeyData:
-<<<<<<< HEAD
             hasAssessorDeclaredImpartiality: true
-=======
->>>>>>> dev
             certifierDocs:
             - ""
             - ""
@@ -1678,10 +1675,7 @@ components:
           updatedBy: updatedBy
           createdBy: createdBy
           journeyData:
-<<<<<<< HEAD
             hasAssessorDeclaredImpartiality: true
-=======
->>>>>>> dev
             certifierDocs:
             - phase: phase
               fileName: fileName
@@ -1912,10 +1906,7 @@ components:
       type: object
     JourneyDataResponse:
       example:
-<<<<<<< HEAD
         hasAssessorDeclaredImpartiality: true
-=======
->>>>>>> dev
         certifierDocs:
         - phase: phase
           fileName: fileName
@@ -2011,11 +2002,8 @@ components:
           items:
             $ref: "#/components/schemas/HeatNetworkElementResponse"
           type: array
-<<<<<<< HEAD
         hasAssessorDeclaredImpartiality:
           type: boolean
-=======
->>>>>>> dev
         assessmentDocs:
           items:
             $ref: "#/components/schemas/UploadedAssessmentDocumentResponse"
@@ -2335,10 +2323,7 @@ components:
         updatedBy: updatedBy
         createdBy: createdBy
         journeyData:
-<<<<<<< HEAD
           hasAssessorDeclaredImpartiality: true
-=======
->>>>>>> dev
           certifierDocs:
           - ""
           - ""
@@ -2418,10 +2403,7 @@ components:
         updatedBy: updatedBy
         createdBy: createdBy
         journeyData:
-<<<<<<< HEAD
           hasAssessorDeclaredImpartiality: true
-=======
->>>>>>> dev
           certifierDocs:
           - ""
           - ""
@@ -2496,10 +2478,7 @@ components:
       type: object
     SoaJourneyData:
       example:
-<<<<<<< HEAD
         hasAssessorDeclaredImpartiality: true
-=======
->>>>>>> dev
         certifierDocs:
         - ""
         - ""
@@ -2565,11 +2544,8 @@ components:
           items:
             $ref: "#/components/schemas/HeatNetworkElement"
           type: array
-<<<<<<< HEAD
         hasAssessorDeclaredImpartiality:
           type: boolean
-=======
->>>>>>> dev
         assessmentDocs:
           items: {}
           type: array
@@ -2594,10 +2570,7 @@ components:
         updatedBy: updatedBy
         createdBy: createdBy
         journeyData:
-<<<<<<< HEAD
           hasAssessorDeclaredImpartiality: true
-=======
->>>>>>> dev
           certifierDocs:
           - phase: phase
             fileName: fileName
