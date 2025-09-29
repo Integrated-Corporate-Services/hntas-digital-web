@@ -17,6 +17,7 @@
             </p>
 
             <form asp-action="SaveUploadCertificate" method="post" enctype="multipart/form-data" class="govuk-form-group">
+                @Html.AntiForgeryToken()
                 <div class="govuk-form-group">
 
                     <input class="govuk-file-upload" id="certifierSoc" name="certifierSoc" type="file">

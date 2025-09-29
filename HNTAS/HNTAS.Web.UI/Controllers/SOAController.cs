@@ -529,6 +529,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveUploadedSOAElementDocuments(string elementName, int phase, int stage)
         {
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
@@ -650,6 +651,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadAssessmentPlan(int phase, IFormFile assessmentPlan)
         {
             phase = phase + 1;

@@ -29,6 +29,7 @@
             </p>
 
             <form asp-action="SaveUploadedSOAElementDocuments" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="ElementName" value="@Model.ElementName" />
                 <input type="hidden" name="Phase" value="@Model.Phase" />
                 <input type="hidden" name="Stage" value="@Model.Stage" />

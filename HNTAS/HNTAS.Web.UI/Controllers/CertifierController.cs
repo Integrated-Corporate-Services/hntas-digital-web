@@ -137,6 +137,24 @@ namespace HNTAS.Web.UI.Controllers
                 })
                 .FirstOrDefault();
 
+            //filter assessment plan for current phase
+            var assessorDoc = heatNetworkResponse?.Soa?.JourneyData?.AssessorDocs?
+                .Where(d => d.Phase == "Phase" + phase)
+                .Select(d => new DocumentItem
+                {
+                    Name = "Assessor Doc",
+                    Documents = new List<DocumentReference>
+                                {
+                                    new DocumentReference
+                                    {
+                                        FileName = d.FileName,
+                                        DownloadUrl = Url.Action("DownloadAssessorFile")
+                                    }
+                                },
+                    ChangeUrl = "#"
+                })
+                .FirstOrDefault();
+
 
             var soaSummaryModel = new SOAReviewSummaryViewModel
             {
@@ -146,13 +164,15 @@ namespace HNTAS.Web.UI.Controllers
 
                 ElementDocuments = elementDocuments,
 
-                AssessmentPlanDocument = assessmentPlanDoc
+                AssessmentPlanDocument = assessmentPlanDoc,
+                AssessorDocument = assessorDoc
             };
 
             return View(soaSummaryModel);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SubmitDownloadTheDocuments(int Phase)
         {
             this.ShowBackButton("HeatNetworkDetails", "Certifier");
@@ -194,6 +214,7 @@ namespace HNTAS.Web.UI.Controllers
             return File(stream, "application/octet-stream", Path.GetFileName(key));
         }
 
+
         public async Task<IActionResult> DownloadAssessmentFile()
         {
             var hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
@@ -212,6 +233,23 @@ namespace HNTAS.Web.UI.Controllers
         }
 
 
+        public async Task<IActionResult> DownloadAssessorFile()
+        {
+            var hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnDetails = await _heatNetworkService.GetAsync(hnid.ToUpper());
+            if (hnDetails == null)
+            {
+                return BadRequest();
+            }
+            var key = hnDetails.Soa.JourneyData.AssessorDocs.FirstOrDefault()?.S3Key;
+
+            var stream = await _s3UploadService.GetFileAsync(key);
+            if (stream == null)
+                return NotFound();
+
+            return File(stream, "application/octet-stream", Path.GetFileName(key));
+        }
+
         [HttpGet]
         public IActionResult UploadCertificate([FromQuery] int phase)
         {
@@ -226,6 +264,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveUploadCertificateAsync(int phase, IFormFile certifierSoc)
         {
             phase = phase + 1;

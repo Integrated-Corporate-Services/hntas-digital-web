@@ -27,6 +27,7 @@
             </p>
 
             <form asp-action="UploadAssessmentPlan" method="post" enctype="multipart/form-data" class="govuk-form-group">
+                @Html.AntiForgeryToken()
                 <div class="govuk-form-group">
 @*                     <label class="govuk-label" for="assessmentPlan">
                         Choose file
