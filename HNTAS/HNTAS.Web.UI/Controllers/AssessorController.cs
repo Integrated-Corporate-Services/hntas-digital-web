@@ -321,6 +321,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveUploadSOC(int phase, IFormFile assessorSoc)
         {
 
@@ -350,8 +351,15 @@ namespace HNTAS.Web.UI.Controllers
 
 
         [HttpGet]
-        public IActionResult CheckYourAnswers()
+        public async Task<IActionResult> CheckYourAnswersAsync()
         {
+            var hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnDetails = await _heatNetworkService.GetAsync(hnid.ToUpper());
+            if (hnDetails == null)
+            {
+                return BadRequest();
+            }
+            ViewBag.SOCDocFileName = hnDetails.Soa.JourneyData.AssessorDocs.FirstOrDefault()?.FileName;
             return View();
         }
 
