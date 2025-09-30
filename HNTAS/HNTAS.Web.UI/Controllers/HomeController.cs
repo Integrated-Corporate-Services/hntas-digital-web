@@ -132,7 +132,7 @@ public class HomeController : Controller
             {
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
 
-                if (existingUser.OrgId == null && existingUser.Roles.Contains(Api.Client.Model.UserRole.RegulatoryContact))
+                if (existingUser.OrgId == null && existingUser.Roles.Count() == 0)
                 {
                     return View();
                 }
