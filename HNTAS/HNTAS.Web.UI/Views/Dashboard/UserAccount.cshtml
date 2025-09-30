@@ -54,50 +54,53 @@
         @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
         {
             <h2 class="govuk-heading-m" style="margin-top: 2rem;">My heat network list</h2>
-            <table class="govuk-table">
-                <thead class="govuk-table__head">
-                    <tr class="govuk-table__row">
-                        <th class="govuk-table__header" scope="col">Heat network name</th>
-                        <th class="govuk-table__header" scope="col">Organisation</th>
-                        <th class="govuk-table__header" scope="col">Status</th>
-                        <th class="govuk-table__header" scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                    @foreach (var heatNetwork in Model.HeatNetworks)
-                    {
+            <div class="govuk-overflow-container">
+                <table class="govuk-table">
+                    <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">@heatNetwork.Name</td>
-                            <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
-                            <td class="govuk-table__cell">
-                                @{
-                                    // You can add logic here to dynamically apply classes based on status
-                                    var statusClass = "";
-                                    switch (heatNetwork.Status.ToLower())
-                                    {
-                                        case "active":
-                                            statusClass = "govuk-tag--green";
-                                            break;
-                                        case "pending":
-                                            statusClass = "govuk-tag--yellow";
-                                            break;
-                                        case "inactive":
-                                            statusClass = "govuk-tag--red";
-                                            break;
-                                        default:
-                                            statusClass = "govuk-tag--grey"; // Default for unknown status
-                                            break;
-                                    }
-                                }
-                                <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
-                            </td>
-                            <td class="govuk-table__cell">
-                                <a class="govuk-link govuk-link--no-visited-state" href="#">View/Edit</a>
-                            </td>
+                            <th class="govuk-table__header" scope="col">Heat network name</th>
+                            <th class="govuk-table__header" scope="col">Organisation</th>
+                            <th class="govuk-table__header" scope="col">Status</th>
+                            <th class="govuk-table__header" scope="col">Action</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        @foreach (var heatNetwork in Model.HeatNetworks)
+                        {
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">@heatNetwork.Name</td>
+                                <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
+                                <td class="govuk-table__cell">
+                                    @{
+                                        // You can add logic here to dynamically apply classes based on status
+                                        var statusClass = "";
+                                        switch (heatNetwork.Status.ToLower())
+                                        {
+                                            case "active":
+                                                statusClass = "govuk-tag--green";
+                                                break;
+                                            case "pending":
+                                                statusClass = "govuk-tag--yellow";
+                                                break;
+                                            case "inactive":
+                                                statusClass = "govuk-tag--red";
+                                                break;
+                                            default:
+                                                statusClass = "govuk-tag--grey"; // Default for unknown status
+                                                break;
+                                        }
+                                    }
+                                    <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
+                                </td>
+                                <td class="govuk-table__cell">
+                                    <a class="govuk-link govuk-link--no-visited-state" href="#">View/Edit</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+           
         }
         else
         {
@@ -189,7 +192,7 @@
         <h1 class="govuk-heading-l">My Details</h1>
 
         <div class="govuk-grid-row" style="display: flex; align-items: stretch;">
-            <div class="govuk-grid-column-one-third">
+            <div class="govuk-grid-column-one-quarter">
                 <div class="dashboard-card">
                     <h3 class="dashboard-card__title govuk-heading-s">
                         <a href="#" class="govuk-link govuk-link--no-visited-state">My Profile</a>
@@ -198,7 +201,7 @@
                 </div>
             </div>
 
-            <div class="govuk-grid-column-one-third">
+            <div class="govuk-grid-column-one-quarter">
                 <div class="dashboard-card">
                     <h3 class="dashboard-card__title govuk-heading-s">
                         <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="UserManagement">Manage user</a>
@@ -207,22 +210,21 @@
                 </div>
             </div>
 
-            <div class="govuk-grid-column-one-third">
+            <div class="govuk-grid-column-one-quarter">
                 <div class="dashboard-card @disabled">
                     <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement"> Your heat networks</a>
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks</a>
                     </h3>
                     <p class="govuk-body-s">View, add or edit heat network details.</p>
-
                 </div>
             </div>
-            <div class="govuk-grid-column-one-third">
+
+            <div class="govuk-grid-column-one-quarter">
                 <div class="dashboard-card @disabled">
                     <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="AddContributor" asp-controller="UserManagement"> Contributors</a>
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="AddContributor" asp-controller="UserManagement">Contributors</a>
                     </h3>
                     <p class="govuk-body-s">You can add or view contributors to your heat network.</p>
-
                 </div>
             </div>
         </div>
