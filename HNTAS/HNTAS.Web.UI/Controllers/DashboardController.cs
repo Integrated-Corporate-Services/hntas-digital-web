@@ -118,6 +118,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> OrganisationDetails()
         {
+            this.ShowBackButton("UserAccount");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             UserDetailsResponse user;
             try
