@@ -28,7 +28,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             try
             {
-                var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+                var user = await _userService.GetUserDetails(userId);
 
                 if (user == null)
                 {

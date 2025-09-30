@@ -35,7 +35,6 @@ public class HomeController : Controller
         if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
         {
             oneLoginId = User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
-
         }
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
@@ -133,13 +132,13 @@ public class HomeController : Controller
             {
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
 
-                if (existingUser.OrgId != null || existingUser.Roles.Contains(Api.Client.Model.UserRole.RegulatoryContact) != true)
+                if (existingUser.OrgId == null && existingUser.Roles.Contains(Api.Client.Model.UserRole.RegulatoryContact))
                 {
-                    return RedirectToAction("UserAccount", "Dashboard");
+                    return View();
                 }
                 else
                 {
-                    return View();
+                    return RedirectToAction("UserAccount", "Dashboard");
                 }
             }
 
