@@ -19,9 +19,9 @@
             </p>
 
             <form asp-action="SaveUploadSOC" method="post" enctype="multipart/form-data" class="govuk-form-group">
+                @Html.AntiForgeryToken()
                     <div class="govuk-form-group">
-
-                    <input class="govuk-file-upload" id="assessorSoc" name="assessorSoc" type="file">
+                        <input class="govuk-file-upload" id="assessorSoc" name="assessorSoc" type="file">
                     </div>
                     <br />
                     <button type="submit" class="govuk-button" data-module="govuk-button">

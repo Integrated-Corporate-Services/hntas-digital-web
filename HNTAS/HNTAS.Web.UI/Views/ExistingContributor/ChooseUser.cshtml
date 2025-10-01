@@ -8,8 +8,6 @@
     var selectedContributorId = Html.LowercaseIdFor(m => m.SelectedContributorId);
     var hasErrors = ViewData.ModelState.TryGetValue(nameof(Model.SelectedContributorId), out var entry) && entry.Errors.Any();
     var errorId = $"{selectedContributorId}-error";
-    var hintId = $"{selectedContributorId}-hint";
-    var ariaDescribedBy = hasErrors ? $"{errorId} {hintId}" : hintId;
 }
 
 <div class="govuk-grid-row">
@@ -23,8 +21,8 @@
         <form asp-action="SaveChooseUser" asp-controller="ExistingContributor" method="post" novalidate>
             @Html.AntiForgeryToken()
 
-            <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")">
-                <fieldset class="govuk-fieldset" aria-describedby="@ariaDescribedBy">
+            <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")" style="overflow-x : auto">
+                <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Choose the user
                     </legend>

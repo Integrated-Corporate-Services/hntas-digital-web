@@ -16,6 +16,7 @@
                 </h1>
 
                 <form asp-action="SubmitDeclaration" method="post">
+                    @Html.AntiForgeryToken()
                     <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset">
                             <div class="govuk-checkboxes">

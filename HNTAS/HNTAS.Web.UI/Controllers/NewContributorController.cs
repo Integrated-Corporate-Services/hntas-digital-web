@@ -59,16 +59,52 @@ namespace HNTAS.Web.UI.Controllers
             return View(state.Data.AddUserEmailAddressModel ?? new AddUserEmailAddressModel());
         }
 
+        private async Task<bool> DoesUserAlreadyExist(string newUserEmailID)
+        {
+            // Call API to get list of contributors
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var contributors = await _userService.GetRegisteredUsersAsync(userId);
+
+            // Check for null or empty list and return an empty list if necessary
+            if (contributors == null || !contributors.Any())
+            {
+                _logger.LogWarning("No contributors found for the current user ID {UserId}.", userId);
+                return false;
+            }
+
+            // Map contributors to a list of SelectListItem
+            var contributorEmailIds = contributors.Select(item => item.EmailId).ToList();
+
+            bool isExistingUser = false;
+            foreach (var email in contributorEmailIds)
+            {
+                if (email.ToLower() == newUserEmailID.ToLower())
+                {
+                    isExistingUser = true;
+                }
+            }
+
+            return isExistingUser;
+        }
+
         [HttpPost]
-        public IActionResult SaveEmailAddress(AddUserEmailAddressModel model)
+        public async Task<IActionResult> SaveEmailAddress(AddUserEmailAddressModel model)
         {
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("AddContributor", "UserManagement");
-                ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 return View("AddEmailAddress", model);
             }
-                        
+
+            // if this email address exists in the existing users list then throw error
+            bool isExistingUser = await DoesUserAlreadyExist(model.EmailAddress);
+            if (isExistingUser)
+            {
+                ModelState.AddModelError(nameof(model.EmailAddress), "User already exists.");
+                this.ShowBackButton("AddContributor", "UserManagement");
+                return View("AddEmailAddress", model);
+            }
+            
             // Logic to save email address goes here
             _workflowManager.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
                 m => m.AddUserEmailAddressModel = model,
@@ -142,7 +178,8 @@ namespace HNTAS.Web.UI.Controllers
             _logger.LogInformation("Retrieving heat networks for the user.");
 
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var heatNetworks = await GetHeatNetworkSelectListAsync(userId);
+            var response = await _userService.GetUserHeatNetworks(userId);
+            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(response);
 
             if (heatNetworks == null)
             {
@@ -173,7 +210,8 @@ namespace HNTAS.Web.UI.Controllers
         {
 
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var heatNetworks = await GetHeatNetworkSelectListAsync(userId);
+            var response = await _userService.GetUserHeatNetworks(userId);
+            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(response);
 
             if (heatNetworks == null)
             {
@@ -204,29 +242,7 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("ChooseRole");
         }
 
-        public async Task<string> GetUserRoleByUserHNMapping(string userId, string hnId)
-        {
-            var user = await _userService.GetUserById(userId);
-            var userRole = "";
-
-            if (user?.Roles?.Contains(Api.Client.Model.UserRole.RegulatoryContact) == true)
-            {
-                userRole = Api.Client.Model.UserRole.RegulatoryContact.ToString();
-            }
-            else
-            {
-                
-                foreach (var mapping in user.HnRoleMappings)
-                {
-                    if (mapping.HnId == hnId)
-                    {
-                        userRole = mapping.Role.ToString();
-                    }
-                }
-            }
-            return userRole;
-        }
-
+        
         [HttpGet]
         [ValidateWorkflowStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(ContributorWorkflowStep.ChooseRole)]
         public async Task<IActionResult> ChooseRole()
@@ -236,9 +252,9 @@ namespace HNTAS.Web.UI.Controllers
             var user = await _userService.GetUserById(userId);
             var hnId = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkId;
 
-            var userRole = await GetUserRoleByUserHNMapping(userId, hnId);
+            var userRole = await Utility.GetUserRoleByUserHNMapping(user, hnId);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserRoleKey, userRole);
-            var roles = GetContributorSelectList(userRole);
+            var roles = Utility.GetContributorSelectList(userRole);
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");
@@ -263,7 +279,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.FormAction = "SaveChosenRole";
             ViewBag.FormController = "NewContributor";
             var userRole = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserRoleKey);
-            var roles = GetContributorSelectList(userRole);
+            var roles = Utility.GetContributorSelectList(userRole);
 
             if (roles == null)
             {
@@ -390,58 +406,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
 
-        private async Task<List<SelectItemOption>?> GetHeatNetworkSelectListAsync(string userId)
-        {
-            var response = await _userService.GetUserHeatNetworks(userId);
-            if (response == null) return null;
-
-            return response.Select(hn => new SelectItemOption
-            {
-                Value = hn.HnId,
-                Text = hn.Name
-            }).ToList();
-        }
-
-        private List<SelectItemOption> GetContributorSelectList(string userRole)
-        {        
-           
-            switch (userRole)
-            {
-                case "RegulatoryContact":
-                    return new List<SelectItemOption>
-                    {
-                        new SelectItemOption { Value = ((int)ContributorRole.DesignatedDesigner).ToString(), Text = "Designated designer" },
-                        new SelectItemOption { Value = ((int)ContributorRole.DesignatedContractor).ToString(), Text = "Designated contractor" },
-                        new SelectItemOption { Value = ((int)ContributorRole.DesignatedOperator).ToString(), Text = "Designated operator" },
-                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
-                    };
-                case "DesignatedDesigner":
-                    return new List<SelectItemOption>
-                    {
-                        new SelectItemOption { Value = ((int)ContributorRole.ContributingDesigner).ToString(), Text = "Contributing designer" },
-                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
-                    };
-                case "DesignatedContractor":
-                    return new List<SelectItemOption>
-                    {
-                        new SelectItemOption { Value = ((int)ContributorRole.ContributingContractor).ToString(), Text = "Contributing contractor" },
-                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
-                    };
-                case "DesignatedOperator":
-                    return new List<SelectItemOption>
-                    {
-                        new SelectItemOption { Value = ((int)ContributorRole.ContributingOperator).ToString(), Text = "Contributing operator" },
-                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
-                    };
-                case "Assessor":
-                    return new List<SelectItemOption>
-                    {
-                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
-                    };
-                default:
-                    return null;
-            }
-        }
+        
 
         private List<ReviewSection> BuildReviewSections(AddNewContributorWorkflowModel model)
         {
