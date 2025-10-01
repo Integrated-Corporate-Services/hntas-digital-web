@@ -88,7 +88,28 @@
                         </div>
                     </dl>
 
+                    <h2 class="govuk-heading-m">
+                        Stage 1 SOC documents
+                    </h2>
+
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                               Energy centre
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @($"[{Model.AssessorDocument?.Documents.FirstOrDefault().FileName}]")
+                            </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@(Model.AssessorDocument.Documents.FirstOrDefault().DownloadUrl ?? "#")">
+                                    Download
+                                </a>
+                            </dd>
+                        </div>
+                    </dl>
+
                     <form asp-action="SubmitDownloadTheDocuments" method="post">
+                        @Html.AntiForgeryToken()
                         <button type="submit" class="govuk-button" data-module="govuk-button">
                             Continue
                         </button>
