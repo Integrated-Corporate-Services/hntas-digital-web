@@ -112,7 +112,8 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> ChooseHeatNetworkAsync()
         {
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var heatNetworks = await GetHeatNetworkSelectListAsync(userId);
+            var response = await _userService.GetUserHeatNetworks(userId);
+            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(response);
 
             if (heatNetworks == null)
             {
@@ -140,7 +141,8 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> SaveChooseHeatNetworkAsync(ChooseHeatNetworkModel model)
         {
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var heatNetworks = await GetHeatNetworkSelectListAsync(userId);
+            var response = await _userService.GetUserHeatNetworks(userId);
+            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(response);
 
             if (heatNetworks == null)
             {
@@ -179,7 +181,15 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> ChooseRole()
         {
             var model = new ChooseRoleModel();
-            var roles = await GetContributorSelectListAsync();
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var user = await _userService.GetUserById(userId);
+            var hnId = _workflowManager.GetState<AddExistingContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkId;
+
+            var userRole = await Utility.GetUserRoleByUserHNMapping(user, hnId);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserRoleKey, userRole);
+
+
+            var roles = Utility.GetContributorSelectList(userRole);
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");
@@ -203,7 +213,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.FormAction = "SaveChooseRole";
             ViewBag.FormController = "ExistingContributor";
 
-            var roles = await GetContributorSelectListAsync();
+            var roles = await GetContributorRolesSelectListAsync();
 
             if (roles == null)
             {
@@ -391,20 +401,8 @@ namespace HNTAS.Web.UI.Controllers
             return selectedItems;
         }
 
-        private async Task<List<SelectItemOption>?> GetHeatNetworkSelectListAsync(string userId)
-        {
-            var response = await _userService.GetUserHeatNetworks(userId);
-            if (response == null) return null;
-
-            return response.Select(hn => new SelectItemOption
-            {
-                Value = hn.HnId,
-                Text = hn.Name
-            }).ToList();
-        }
-
-
-        private async Task<List<SelectItemOption>?> GetContributorSelectListAsync()
+        
+        private async Task<List<SelectItemOption>?> GetContributorRolesSelectListAsync()
         {
             var response = await _userService.GetContributorRolesAsync();
             if (response == null) return null;
