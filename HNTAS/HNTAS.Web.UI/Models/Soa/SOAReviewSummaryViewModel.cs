@@ -6,6 +6,7 @@
         public List<ElementItem> Elements { get; set; } = [];
         public List<DocumentItem> ElementDocuments { get; set; } = [];
         public DocumentItem AssessmentPlanDocument { get; set; }
+        public DocumentItem? AssessorDocument { get; set; }
     }
 
     public class ElementItem

@@ -151,6 +151,8 @@ namespace HNTAS.Web.UI.Controllers
                 }
             }
 
+            this.ShowBackButton("UserAccount", "Dashboard");
+
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             return View(viewModel);
         }

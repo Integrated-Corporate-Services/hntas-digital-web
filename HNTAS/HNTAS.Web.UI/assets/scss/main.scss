@@ -4,8 +4,6 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
 @import "../../node_modules/govuk-frontend/dist/govuk/all";
 @import "_step-by-step-nav.scss";
 
-
-
 .dashboard-card {
     padding: 20px;
     margin-bottom: 20px;
@@ -15,8 +13,8 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
 }
 
 .dashboard-card--disabled {
-    opacity: 0.6; /* Makes the card appear faded */
-    pointer-events: none; /* Disables all clicks and interactions on the card */
+    opacity: 0.6;
+    pointer-events: none;
 }
 
 .dashboard-card__overlay {
@@ -25,13 +23,13 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+    background-color: rgba(255, 255, 255, 0.7);
     z-index: 10;
-    display: none; /* Hidden by default */
+    display: none;
 }
 
 .dashboard-card--disabled .dashboard-card__overlay {
-    display: block; /* Show the overlay when the card is disabled */
+    display: block;
 }
 
 .dashboard-card__title {
@@ -39,3 +37,33 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
     margin-bottom: 10px;
 }
 
+@media screen and (max-width: 640px) {
+    .govuk-grid-row {
+        flex-wrap: wrap;
+    }
+
+    .govuk-grid-column-one-quarter {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+    }
+
+    .dashboard-card {
+        height: auto;
+    }
+}
+
+
+.govuk-overflow-container {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.govuk-table {
+    min-width: 900px; /* Ensures table doesn't collapse too tightly */
+}
+
+.govuk-table__cell,
+.govuk-table__header {
+    white-space: normal;
+}
