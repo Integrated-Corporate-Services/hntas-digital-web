@@ -110,7 +110,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 _logger.LogError(ex, "An error occurred while trying to manage users.");
                 TempData["ErrorMessage"] = "An unexpected error occurred. Please try again later.";
-                return View("ManageUsers");
+                return View("ManageUsers", new ManageUsersModel());
             }
         }
 
@@ -150,6 +150,8 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("ChooseUser", "ExistingContributor");
                 }
             }
+
+            this.ShowBackButton("UserAccount", "Dashboard");
 
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             return View(viewModel);
