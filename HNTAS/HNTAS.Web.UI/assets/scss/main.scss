@@ -59,10 +59,6 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
     width: 100%;
 }
 
-.govuk-table {
-    min-width: 900px; /* Ensures table doesn't collapse too tightly */
-}
-
 .govuk-table__cell,
 .govuk-table__header {
     white-space: normal;
