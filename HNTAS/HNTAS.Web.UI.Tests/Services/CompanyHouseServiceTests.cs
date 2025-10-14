@@ -38,7 +38,6 @@ namespace HNTAS.Web.UI.Tests.Services
 
             // Assert
             Assert.NotNull(result);
-            Console.WriteLine(result);
             Assert.False(string.IsNullOrEmpty(result.Title));
         }
 
