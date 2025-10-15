@@ -51,7 +51,7 @@ namespace HNTAS.Web.UI.Tests.Services
             var service = new CompaniesHouseService(httpClient, _apiKey);
 
             // Act & Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(() => service.GetCompanyByNumberAsync("08811254"));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => service.GetCompanyByNumberAsync("48850136"));
 
         }
     }
