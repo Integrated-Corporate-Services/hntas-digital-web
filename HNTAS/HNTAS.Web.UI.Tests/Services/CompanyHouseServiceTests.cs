@@ -1,10 +1,11 @@
 ﻿using HNTAS.Web.UI.Services;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace HNTAS.Web.UI.Tests.Services
 {
@@ -18,23 +19,23 @@ namespace HNTAS.Web.UI.Tests.Services
         {
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri("https://api.company-information.service.gov.uk/")
+                BaseAddress = new Uri("https://api-sandbox.company-information.service.gov.uk")
             };
 
-            _apiKey = Environment.GetEnvironmentVariable("COMPANIES_HOUSE_API_KEY");
+            _apiKey = Environment.GetEnvironmentVariable("COMPANIES_HOUSE_SANDBOX_API_KEY");
 
-            var config = new ConfigurationBuilder().Build();
-            _service = new CompaniesHouseService(_httpClient, config);
+            _service = new CompaniesHouseService(_httpClient, _apiKey);
+          
         }
 
         [Fact]
         public async Task GetCompanyByNumberAsync_ReturnsCompanyDetails_WhenCompanyExists()
         {
             // Arrange
-            var companyNumber = "08811254"; // Valid company number for testing
+            var companyNumber = "48850136"; // Sandbox test company number
 
             // Act
-            var result = await _service.GetCompanyByNumberAsync(companyNumber);
+            var result = await _service.GetCompanyByNumberAsync(companyNumber);            
 
             // Assert
             Assert.NotNull(result);
@@ -47,12 +48,11 @@ namespace HNTAS.Web.UI.Tests.Services
             // Arrange
             Environment.SetEnvironmentVariable("COMPANIES_HOUSE_API_KEY", null); // Simulate missing key
             var httpClient = new HttpClient();
-            var config = new ConfigurationBuilder().Build();
-            var service = new CompaniesHouseService(httpClient, config);
+            var service = new CompaniesHouseService(httpClient, _apiKey);
 
             // Act & Assert
             await Assert.ThrowsAsync<InvalidOperationException>(() => service.GetCompanyByNumberAsync("08811254"));
+
         }
     }
-
 }

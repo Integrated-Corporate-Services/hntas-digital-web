@@ -19,6 +19,12 @@ namespace HNTAS.Web.UI.Services
             _httpClient.BaseAddress = new Uri("https://api.company-information.service.gov.uk/");
         }
 
+        public CompaniesHouseService(HttpClient httpClient, string? apiKey)
+        {
+            _httpClient = httpClient;
+            _apiKey = apiKey;
+        }
+
         public async Task<CompanyDetailsModel?> GetCompanyByNumberAsync(string companyNumber)
         {
             if (string.IsNullOrEmpty(_apiKey))
