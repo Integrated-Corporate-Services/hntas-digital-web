@@ -24,7 +24,7 @@ namespace HNTAS.Web.UI.Services.Core
 
         Task<UserDetailsResponse> GetUserDetails(string userId);
 
-        Task<ManagedUserResponse> GetManagedUsers(string userId);
+        Task<List<ManagedUserResponse>> GetManagedUsers(string userId);
 
         Task<string?> AcceptUserInvitation(InvitedUserRequest userRequest);
 
