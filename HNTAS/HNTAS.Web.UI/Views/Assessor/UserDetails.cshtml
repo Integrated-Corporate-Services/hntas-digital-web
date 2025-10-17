@@ -1,0 +1,58 @@
+﻿@using HNTAS.Web.UI.Helpers
+@model HNTAS.Api.Client.Model.UserDetailsResponse
+
+
+@{
+    ViewData["Title"] = "User Details";
+    var heatNetworkNames = new List<string> { };
+    foreach(var hn in Model.HeatNetworks)
+    {
+        heatNetworkNames.Add(hn.Name);
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-l">
+            <span class="govuk-caption-xl">@Model.Organisation.Name</span>
+            User Details
+        </h1>
+
+        <h2 class="govuk-heading-m">Users</h2>
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Name</th>
+                    <th scope="col" class="govuk-table__header">Email address</th>
+                    <th scope="col" class="govuk-table__header">Heat network name</th>
+                    <th scope="col" class="govuk-table__header">Status</th>
+                    <td scope="col" class="govuk-table__header"></td>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">
+                            @string.Join(" ", [Model.FirstName, Model.LastName])
+                            @if (Model.Roles != null && Model.Roles.Any())
+                            {
+                                <br /> <span class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1">(@string.Join(", ", Model.Roles))</span>
+                            }
+                        </td>
+                        <td class="govuk-table__cell">@Model.EmailId</td>
+                        <td class="govuk-table__cell">
+                            <span class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1">@string.Join(", ", heatNetworkNames)</span>
+                        </td>
+                        <td class="govuk-table__cell">
+                           <strong class="govuk-tag @GovUkTagHelper.GetTagClass(Model.Status)">
+                                @Model.Status
+                            </strong>
+                        </td>
+                      
+                        <td class="govuk-table__cell govuk-table__cell--numeric">
+                            <a class="govuk-link govuk-link--no-visited-state" href="">View</a>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

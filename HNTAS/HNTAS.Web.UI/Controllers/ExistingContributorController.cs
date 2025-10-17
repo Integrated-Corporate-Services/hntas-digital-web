@@ -3,6 +3,7 @@ using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Models.Review;
 using HNTAS.Web.UI.Models.User;
@@ -12,7 +13,6 @@ using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
 using HNTAS.Web.UI.Workflows.Models.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -112,7 +112,8 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> ChooseHeatNetworkAsync()
         {
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var heatNetworks = await GetHeatNetworkSelectListAsync(userId);
+            var response = await _userService.GetUserHeatNetworks(userId);
+            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(response);
 
             if (heatNetworks == null)
             {
@@ -140,7 +141,8 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> SaveChooseHeatNetworkAsync(ChooseHeatNetworkModel model)
         {
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var heatNetworks = await GetHeatNetworkSelectListAsync(userId);
+            var response = await _userService.GetUserHeatNetworks(userId);
+            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(response);
 
             if (heatNetworks == null)
             {
@@ -179,7 +181,15 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> ChooseRole()
         {
             var model = new ChooseRoleModel();
-            var roles = await GetContributorSelectListAsync();
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var user = await _userService.GetUserById(userId);
+            var hnId = _workflowManager.GetState<AddExistingContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkId;
+
+            var userRole = await Utility.GetUserRoleByUserHNMapping(user, hnId);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserRoleKey, userRole);
+
+
+            var roles = Utility.GetContributorSelectList(userRole);
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");
@@ -203,7 +213,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.FormAction = "SaveChooseRole";
             ViewBag.FormController = "ExistingContributor";
 
-            var roles = await GetContributorSelectListAsync();
+            var roles = await GetContributorRolesSelectListAsync();
 
             if (roles == null)
             {
@@ -369,7 +379,7 @@ namespace HNTAS.Web.UI.Controllers
             return reviewSections;
         }
 
-        private async Task<List<SelectListItem>> GetContributorSelectListAsync(string userId)
+        private async Task<List<SelectItemOption>> GetContributorSelectListAsync(string userId)
         {
             // Call API to get list of contributors
             var contributors = await _userService.GetRegisteredUsersAsync(userId);
@@ -378,11 +388,11 @@ namespace HNTAS.Web.UI.Controllers
             if (contributors == null || !contributors.Any())
             {
                 _logger.LogWarning("No contributors found for the current user ID {UserId}.", userId);
-                return new List<SelectListItem>();
+                return new List<SelectItemOption>();
             }
 
             // Map contributors to a list of SelectListItem
-            var selectedItems = contributors.Select(item => new SelectListItem
+            var selectedItems = contributors.Select(item => new SelectItemOption
             {
                 Text = item.EmailId,
                 Value = item.Id
@@ -391,24 +401,12 @@ namespace HNTAS.Web.UI.Controllers
             return selectedItems;
         }
 
-        private async Task<List<SelectListItem>?> GetHeatNetworkSelectListAsync(string userId)
-        {
-            var response = await _userService.GetUserHeatNetworks(userId);
-            if (response == null) return null;
-
-            return response.Select(hn => new SelectListItem
-            {
-                Value = hn.HnId,
-                Text = hn.Name
-            }).ToList();
-        }
-
-
-        private async Task<List<SelectListItem>?> GetContributorSelectListAsync()
+        
+        private async Task<List<SelectItemOption>?> GetContributorRolesSelectListAsync()
         {
             var response = await _userService.GetContributorRolesAsync();
             if (response == null) return null;
-            return response.Select(hn => new SelectListItem
+            return response.Select(hn => new SelectItemOption
             {
                 Value = hn.Value.ToString(),
                 Text = hn.Description

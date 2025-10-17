@@ -1,0 +1,41 @@
+﻿@using HNTAS.Web.UI.Models
+@model CertifierConfirmationViewModel
+
+@{
+    ViewData["Title"] = "Confirmation";
+}
+
+<div class="govuk-width-container">
+
+    <main class="govuk-main-wrapper">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <h1 class="govuk-heading-l">
+                    Confirmation
+                </h1>
+
+                <form asp-action="SubmitDeclaration" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="is-confirmed" name="IsConfirmed" type="checkbox" value="true" @(Model.IsConfirmed ? "checked" : "")>
+                                    <label class="govuk-label govuk-checkboxes__label" for="is-confirmed">
+                                        I confirm and accept the SOA and supporting evidence for <strong>@ViewBag.HeatNetworkName</strong>, and hereby approve the heat network for Certificate One.
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <button type="submit" class="govuk-button">
+                        Continue
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,87 @@
+﻿@using HNTAS.Web.UI.Helpers
+@using HNTAS.Web.UI.Models.Soa
+
+@model StatementOfApplicabilityViewModel
+
+@{
+    ViewData["Title"] = Model.PageTitle;
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="dashboard-card">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a href="@Url.Action("DefineSOA")" class="govuk-link govuk-link--no-visited-state">Part of define your overall SOA</a>
+                </h3>
+                <p class="govuk-body-s">Choose your elements</p>
+            </div>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">@Model.ProjectName</span>
+            <h1 class="govuk-heading-l">@Model.PageTitle</h1>
+
+            <p class="govuk-body">You would be able to add/upload details for statement of applicability for each stage per phase.</p>
+            <p class="govuk-body">You need to complete previous phase before you can proceed with next phase.</p>
+
+            <div class="govuk-tabs" data-module="govuk-tabs">
+                <h2 class="govuk-tabs__title">Contents</h2>
+                <ul class="govuk-tabs__list">
+                    @for (int i = 0; i < Model.Phases.Count; i++)
+                    {
+                        var phase = Model.Phases[i];
+                        <li class="govuk-tabs__list-item @(i == Model.CurrentPhaseIndex ? "govuk-tabs__list-item--selected" : "")">
+                          @*   <a class="govuk-tabs__tab" href="@Url.Action("DefineSOADetails", "Soa", new { phaseIndex = i })">
+                                @phase.Name
+                            </a> *@
+                            <a class="govuk-tabs__tab" href="#phase-@i">
+                                @phase.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+                @for (int i = 0; i < Model.Phases.Count; i++)
+                {
+                    var phase = Model.Phases[i];
+                    <div id="phase-@i" class="govuk-tabs__panel @(i != Model.CurrentPhaseIndex ? "govuk-tabs__panel--hidden" : "")">
+                        <h2 class="govuk-heading-l">@phase.Title</h2>
+
+                        @foreach (var stage in phase.Stages)
+                        {
+                            <h3 class="govuk-heading-m">@stage.Name</h3>
+                            <hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible">
+                            <table class="govuk-table">
+                                <tbody class="govuk-table__body">
+                                    @foreach (var element in stage.Elements)
+                                    {
+                                        <tr class="govuk-table__row">
+                                            <td class="govuk-table__cell">
+                                                <a class="govuk-link app-element-list__link" href="@element.Url">@element.Name</a>
+                                            </td>
+                                            <td class="govuk-table__cell">
+                                                <strong class="govuk-tag @GovUkTagHelper.GetTagClass(element.Status)">
+                                                    @element.Status
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                }
+
+
+              
+
+            </div>
+            <a href="@Url.Action("AddAssessmentPlanSoa", new { phaseIndex = 0 })" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                Continue
+            </a>
+
+        </div>
+    </div>
+</div>
