@@ -111,16 +111,30 @@ namespace HNTAS.Api.Client.Client
                 return boolean
                     ? "true"
                     : "false";
+            if (obj is ConnectionType connectionType)
+                return ConnectionTypeValueConverter.ToJsonValue(connectionType);
             if (obj is ContributorRole contributorRole)
                 return ContributorRoleValueConverter.ToJsonValue(contributorRole);
+            if (obj is DocumentType documentType)
+                return DocumentTypeValueConverter.ToJsonValue(documentType);
+            if (obj is HeatNetworkElementType heatNetworkElementType)
+                return HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElementType);
+            if (obj is HeatNetworkType heatNetworkType)
+                return HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType);
             if (obj is InvitationStatus invitationStatus)
                 return InvitationStatusValueConverter.ToJsonValue(invitationStatus);
             if (obj is NullableOfPreferredContactType nullableOfPreferredContactType)
                 return NullableOfPreferredContactTypeValueConverter.ToJsonValue(nullableOfPreferredContactType);
+            if (obj is NullableOfSoaStage nullableOfSoaStage)
+                return NullableOfSoaStageValueConverter.ToJsonValue(nullableOfSoaStage);
             if (obj is OrganisationType organisationType)
                 return OrganisationTypeValueConverter.ToJsonValue(organisationType);
             if (obj is PreferredContactType preferredContactType)
                 return PreferredContactTypeValueConverter.ToJsonValue(preferredContactType);
+            if (obj is SoaPhase soaPhase)
+                return SoaPhaseValueConverter.ToJsonValue(soaPhase);
+            if (obj is SoaStatus soaStatus)
+                return SoaStatusValueConverter.ToJsonValue(soaStatus);
             if (obj is UserRole userRole)
                 return UserRoleValueConverter.ToJsonValue(userRole);
             if (obj is UserStatus userStatus)

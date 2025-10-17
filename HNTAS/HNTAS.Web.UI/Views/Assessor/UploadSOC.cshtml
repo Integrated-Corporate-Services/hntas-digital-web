@@ -1,0 +1,35 @@
+﻿@using HNTAS.Web.UI.Models
+@model UploadSOCViewModel
+
+@{
+    ViewData["Title"] = "Upload statement of conformity (SOC)";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Assessor</span>
+            <h1 class="govuk-heading-l">
+                Upload statement of conformity (SOC)
+            </h1>
+            <p class="govuk-body">
+                Upload SOC for each element. You can
+                <a href="@Model.TemplateDownloadUrl" class="govuk-link">download</a>
+                the template to fill in and update later.
+            </p>
+
+            <form asp-action="SaveUploadSOC" method="post" enctype="multipart/form-data" class="govuk-form-group">
+                @Html.AntiForgeryToken()
+                    <div class="govuk-form-group">
+                        <input class="govuk-file-upload" id="assessorSoc" name="assessorSoc" type="file">
+                    </div>
+                    <br />
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Continue
+                    </button>
+                </form>
+
+
+        </div>
+    </div>
+</div>

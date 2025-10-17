@@ -38,7 +38,32 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Enum Contributor for value: Contributor
         /// </summary>
-        Contributor = 2
+        Contributor = 2,
+
+        /// <summary>
+        /// Enum Designer for value: Designer
+        /// </summary>
+        Designer = 3,
+
+        /// <summary>
+        /// Enum Contractor for value: Contractor
+        /// </summary>
+        Contractor = 4,
+
+        /// <summary>
+        /// Enum Operator for value: Operator
+        /// </summary>
+        Operator = 5,
+
+        /// <summary>
+        /// Enum Assessor for value: Assessor
+        /// </summary>
+        Assessor = 6,
+
+        /// <summary>
+        /// Enum Certifier for value: Certifier
+        /// </summary>
+        Certifier = 7
     }
 
     /// <summary>
@@ -59,6 +84,21 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
 
+            if (value.Equals("Designer"))
+                return UserRole.Designer;
+
+            if (value.Equals("Contractor"))
+                return UserRole.Contractor;
+
+            if (value.Equals("Operator"))
+                return UserRole.Operator;
+
+            if (value.Equals("Assessor"))
+                return UserRole.Assessor;
+
+            if (value.Equals("Certifier"))
+                return UserRole.Certifier;
+
             throw new NotImplementedException($"Could not convert value to type UserRole: '{value}'");
         }
 
@@ -74,6 +114,21 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
+
+            if (value.Equals("Designer"))
+                return UserRole.Designer;
+
+            if (value.Equals("Contractor"))
+                return UserRole.Contractor;
+
+            if (value.Equals("Operator"))
+                return UserRole.Operator;
+
+            if (value.Equals("Assessor"))
+                return UserRole.Assessor;
+
+            if (value.Equals("Certifier"))
+                return UserRole.Certifier;
 
             return null;
         }
@@ -91,6 +146,21 @@ namespace HNTAS.Api.Client.Model
 
             if (value == UserRole.Contributor)
                 return "Contributor";
+
+            if (value == UserRole.Designer)
+                return "Designer";
+
+            if (value == UserRole.Contractor)
+                return "Contractor";
+
+            if (value == UserRole.Operator)
+                return "Operator";
+
+            if (value == UserRole.Assessor)
+                return "Assessor";
+
+            if (value == UserRole.Certifier)
+                return "Certifier";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }

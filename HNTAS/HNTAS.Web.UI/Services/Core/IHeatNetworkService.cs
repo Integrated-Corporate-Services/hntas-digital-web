@@ -4,7 +4,8 @@ namespace HNTAS.Web.UI.Services.Core
 {
     public interface IHeatNetworkService
     {
-        Task<HeatNetwork> AddHeatNetwork(HeatNetwork heatNetwork, string hnId);
-        Task<List<HeatNetwork>> GetAllHeatNetworks();
+        Task<HeatNetworkResponse?> GetAsync(string hnId);
+        Task<HeatNetworkResponse> AddHeatNetwork(HeatNetwork heatNetwork, string hnId);
+        Task<List<HeatNetworkResponse>> GetAllHeatNetworks();
     }
 }

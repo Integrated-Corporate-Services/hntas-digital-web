@@ -4,6 +4,7 @@ using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Models.Review;
 using HNTAS.Web.UI.Models.User;
@@ -13,7 +14,6 @@ using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
 using HNTAS.Web.UI.Workflows.Models.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 
@@ -59,16 +59,52 @@ namespace HNTAS.Web.UI.Controllers
             return View(state.Data.AddUserEmailAddressModel ?? new AddUserEmailAddressModel());
         }
 
+        private async Task<bool> DoesUserAlreadyExist(string newUserEmailID)
+        {
+            // Call API to get list of contributors
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var contributors = await _userService.GetRegisteredUsersAsync(userId);
+
+            // Check for null or empty list and return an empty list if necessary
+            if (contributors == null || !contributors.Any())
+            {
+                _logger.LogWarning("No contributors found for the current user ID {UserId}.", userId);
+                return false;
+            }
+
+            // Map contributors to a list of SelectListItem
+            var contributorEmailIds = contributors.Select(item => item.EmailId).ToList();
+
+            bool isExistingUser = false;
+            foreach (var email in contributorEmailIds)
+            {
+                if (email.ToLower() == newUserEmailID.ToLower())
+                {
+                    isExistingUser = true;
+                }
+            }
+
+            return isExistingUser;
+        }
+
         [HttpPost]
-        public IActionResult SaveEmailAddress(AddUserEmailAddressModel model)
+        public async Task<IActionResult> SaveEmailAddress(AddUserEmailAddressModel model)
         {
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("AddContributor", "UserManagement");
-                ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 return View("AddEmailAddress", model);
             }
 
+            // if this email address exists in the existing users list then throw error
+            bool isExistingUser = await DoesUserAlreadyExist(model.EmailAddress);
+            if (isExistingUser)
+            {
+                ModelState.AddModelError(nameof(model.EmailAddress), "User already exists.");
+                this.ShowBackButton("AddContributor", "UserManagement");
+                return View("AddEmailAddress", model);
+            }
+            
             // Logic to save email address goes here
             _workflowManager.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
                 m => m.AddUserEmailAddressModel = model,
@@ -142,7 +178,8 @@ namespace HNTAS.Web.UI.Controllers
             _logger.LogInformation("Retrieving heat networks for the user.");
 
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var heatNetworks = await GetHeatNetworkSelectListAsync(userId);
+            var response = await _userService.GetUserHeatNetworks(userId);
+            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(response);
 
             if (heatNetworks == null)
             {
@@ -151,6 +188,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View("Contributors/ChooseHeatNetwork");
             }
 
+            
             var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
 
             var model = new ChooseHeatNetworkModel
@@ -172,7 +210,8 @@ namespace HNTAS.Web.UI.Controllers
         {
 
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var heatNetworks = await GetHeatNetworkSelectListAsync(userId);
+            var response = await _userService.GetUserHeatNetworks(userId);
+            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(response);
 
             if (heatNetworks == null)
             {
@@ -203,18 +242,26 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("ChooseRole");
         }
 
+        
         [HttpGet]
         [ValidateWorkflowStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(ContributorWorkflowStep.ChooseRole)]
         public async Task<IActionResult> ChooseRole()
         {
             var model = new ChooseRoleModel();
-            var roles = await GetContributorSelectListAsync();
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var user = await _userService.GetUserById(userId);
+            var hnId = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkId;
+
+            var userRole = await Utility.GetUserRoleByUserHNMapping(user, hnId);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserRoleKey, userRole);
+            var roles = Utility.GetContributorSelectList(userRole);
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");
                 TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later.";
                 return View("Contributor/ChooseRole", model);
             }
+            
             var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
             model.SelectedRoleId = state.Data?.ChooseRoleModel?.SelectedRoleId ?? null;
             model.Roles = roles;
@@ -231,8 +278,8 @@ namespace HNTAS.Web.UI.Controllers
         {
             ViewBag.FormAction = "SaveChosenRole";
             ViewBag.FormController = "NewContributor";
-
-            var roles = await GetContributorSelectListAsync();
+            var userRole = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserRoleKey);
+            var roles = Utility.GetContributorSelectList(userRole);
 
             if (roles == null)
             {
@@ -241,7 +288,6 @@ namespace HNTAS.Web.UI.Controllers
                 return View("Contributors/ChooseRole", model);
             }
             model.Roles = roles;
-
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("ChooseRole");
@@ -322,7 +368,7 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("CheckYourAnswers");
                 }
 
-                _logger.LogInformation("Successfully submitted new contributor details for email: {Email}", state.Data.AddUserEmailAddressModel.EmailAddress);
+                _logger.LogInformation("Successfully submitted new contributor details.");
                 var token = _iInvitationTokenService.GenerateToken(invitationId, state.Data.AddUserEmailAddressModel.EmailAddress);
 
                 //send invitation email
@@ -330,7 +376,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error submitting new contributor details for email: {Email}", state.Data.AddUserEmailAddressModel.EmailAddress);
+                _logger.LogError(ex, "Error submitting new contributor details.");
                 TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
                 return RedirectToAction("CheckYourAnswers");
             }
@@ -349,40 +395,18 @@ namespace HNTAS.Web.UI.Controllers
             // Retrieve the data from TempData.
             var fullName = TempData["FullName"] as string;
             var heatNetwork = TempData["HeatNetwork"] as string;
-            var companyName = TempData["CompanyName"] as string;
+            var organisationName = TempData["OrganisationName"] as string;
 
             // You can use a ViewBag or ViewData to pass the data to the view.
             ViewData["FullName"] = fullName;
             ViewData["HeatNetwork"] = heatNetwork;
-            ViewData["CompanyName"] = companyName;
+            ViewData["OrganisationName"] = organisationName;
 
             return View("Contributor/Confirmation");
         }
 
 
-        private async Task<List<SelectListItem>?> GetHeatNetworkSelectListAsync(string userId)
-        {
-            var response = await _userService.GetUserHeatNetworks(userId);
-            if (response == null) return null;
-
-            return response.Select(hn => new SelectListItem
-            {
-                Value = hn.HnId,
-                Text = hn.Name
-            }).ToList();
-        }
-
-
-        private async Task<List<SelectListItem>?> GetContributorSelectListAsync()
-        {
-            var response = await _userService.GetContributorRolesAsync();
-            if (response == null) return null;
-            return response.Select(hn => new SelectListItem
-            {
-                Value = hn.Value.ToString(),
-                Text = hn.Description
-            }).ToList();
-        }
+        
 
         private List<ReviewSection> BuildReviewSections(AddNewContributorWorkflowModel model)
         {

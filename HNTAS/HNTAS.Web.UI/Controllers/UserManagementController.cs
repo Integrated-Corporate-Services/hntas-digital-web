@@ -45,7 +45,6 @@ namespace HNTAS.Web.UI.Controllers
                 var user = await _userService.GetManagedUsers(userId);
                 var contributorRoles = await _userService.GetContributorRolesAsync();
                 var userRoles = await _userService.GetUserRolesAsync();
-
                 var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 var heatNetworks = await _heatNetworkService.GetAllHeatNetworks();
 
@@ -111,7 +110,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 _logger.LogError(ex, "An error occurred while trying to manage users.");
                 TempData["ErrorMessage"] = "An unexpected error occurred. Please try again later.";
-                return View("ManageUsers");
+                return View("ManageUsers", new ManageUsersModel());
             }
         }
 
@@ -152,8 +151,51 @@ namespace HNTAS.Web.UI.Controllers
                 }
             }
 
+            this.ShowBackButton("UserAccount", "Dashboard");
+
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> HeatNetworksAsync()
+        {
+
+            this.ShowBackButton("UserAccount", "Dashboard");
+            var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+
+            ViewBag.UserRole = user?.Roles[0].ToString();
+            ViewBag.HasDeclaredImpartiality = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(HttpContext, SessionKeys.DeclarationOfImpartialityModelKey)?.HasDeclaredImpartiality;
+
+            if (user == null)
+            {
+                _logger.LogError("User not found in session or API.");
+                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later.";
+                return View(new HeatNetworksViewModel());
+            }
+
+            var heatNetworks = new List<HeatNetworkModel>();
+
+            if (user.HeatNetworks != null && user.HeatNetworks?.Count > 0)
+            {
+                foreach (var network in user.HeatNetworks)
+                {
+                    heatNetworks.Add(new HeatNetworkModel
+                    {
+                        HnId = network.HnId,
+                        Name = network.Name,
+                        OrganisationName = user.Organisation?.Name,
+                        Status = "Active"
+                    });
+                }
+            }
+
+            var model = new HeatNetworksViewModel
+            {
+                HeatNetworks = heatNetworks
+            };
+
+            return View(model);
         }
     }
 }
