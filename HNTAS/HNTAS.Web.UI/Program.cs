@@ -306,7 +306,7 @@ else
                     SecurityAlgorithms.RsaSha256);
             }
 
-            options.VectorsOfTrust = ["Cl.Cm"];
+            options.VectorsOfTrust = ["Cl"];
         });
 }
 
