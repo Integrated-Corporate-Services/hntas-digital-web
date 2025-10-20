@@ -26,12 +26,12 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// ManagedUserResponse
+    /// RegisteredUserResponse
     /// </summary>
-    public partial class ManagedUserResponse : IValidatableObject
+    public partial class RegisteredUserResponse : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ManagedUserResponse" /> class.
+        /// Initializes a new instance of the <see cref="RegisteredUserResponse" /> class.
         /// </summary>
         /// <param name="id">id</param>
         /// <param name="name">name</param>
@@ -40,7 +40,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="heatNetworks">heatNetworks</param>
         /// <param name="roles">roles</param>
         [JsonConstructor]
-        public ManagedUserResponse(Option<string?> id = default, Option<string?> name = default, Option<string?> emailId = default, Option<string?> status = default, Option<List<HeatNetworkInfo>?> heatNetworks = default, Option<List<string>?> roles = default)
+        public RegisteredUserResponse(Option<string?> id = default, Option<string?> name = default, Option<string?> emailId = default, Option<string?> status = default, Option<List<HeatNetworkInfo>?> heatNetworks = default, Option<List<string>?> roles = default)
         {
             IdOption = id;
             NameOption = name;
@@ -138,7 +138,7 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class ManagedUserResponse {\n");
+            sb.Append("class RegisteredUserResponse {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  EmailId: ").Append(EmailId).Append("\n");
@@ -161,19 +161,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="ManagedUserResponse" />
+    /// A Json converter for type <see cref="RegisteredUserResponse" />
     /// </summary>
-    public class ManagedUserResponseJsonConverter : JsonConverter<ManagedUserResponse>
+    public class RegisteredUserResponseJsonConverter : JsonConverter<RegisteredUserResponse>
     {
         /// <summary>
-        /// Deserializes json to <see cref="ManagedUserResponse" />
+        /// Deserializes json to <see cref="RegisteredUserResponse" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override ManagedUserResponse Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override RegisteredUserResponse Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -229,81 +229,81 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (id.IsSet && id.Value == null)
-                throw new ArgumentNullException(nameof(id), "Property is not nullable for class ManagedUserResponse.");
+                throw new ArgumentNullException(nameof(id), "Property is not nullable for class RegisteredUserResponse.");
 
             if (name.IsSet && name.Value == null)
-                throw new ArgumentNullException(nameof(name), "Property is not nullable for class ManagedUserResponse.");
+                throw new ArgumentNullException(nameof(name), "Property is not nullable for class RegisteredUserResponse.");
 
             if (emailId.IsSet && emailId.Value == null)
-                throw new ArgumentNullException(nameof(emailId), "Property is not nullable for class ManagedUserResponse.");
+                throw new ArgumentNullException(nameof(emailId), "Property is not nullable for class RegisteredUserResponse.");
 
             if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class ManagedUserResponse.");
+                throw new ArgumentNullException(nameof(status), "Property is not nullable for class RegisteredUserResponse.");
 
-            return new ManagedUserResponse(id, name, emailId, status, heatNetworks, roles);
+            return new RegisteredUserResponse(id, name, emailId, status, heatNetworks, roles);
         }
 
         /// <summary>
-        /// Serializes a <see cref="ManagedUserResponse" />
+        /// Serializes a <see cref="RegisteredUserResponse" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="managedUserResponse"></param>
+        /// <param name="registeredUserResponse"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, ManagedUserResponse managedUserResponse, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, RegisteredUserResponse registeredUserResponse, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, managedUserResponse, jsonSerializerOptions);
+            WriteProperties(writer, registeredUserResponse, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="ManagedUserResponse" />
+        /// Serializes the properties of <see cref="RegisteredUserResponse" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="managedUserResponse"></param>
+        /// <param name="registeredUserResponse"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, ManagedUserResponse managedUserResponse, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, RegisteredUserResponse registeredUserResponse, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (managedUserResponse.IdOption.IsSet && managedUserResponse.Id == null)
-                throw new ArgumentNullException(nameof(managedUserResponse.Id), "Property is required for class ManagedUserResponse.");
+            if (registeredUserResponse.IdOption.IsSet && registeredUserResponse.Id == null)
+                throw new ArgumentNullException(nameof(registeredUserResponse.Id), "Property is required for class RegisteredUserResponse.");
 
-            if (managedUserResponse.NameOption.IsSet && managedUserResponse.Name == null)
-                throw new ArgumentNullException(nameof(managedUserResponse.Name), "Property is required for class ManagedUserResponse.");
+            if (registeredUserResponse.NameOption.IsSet && registeredUserResponse.Name == null)
+                throw new ArgumentNullException(nameof(registeredUserResponse.Name), "Property is required for class RegisteredUserResponse.");
 
-            if (managedUserResponse.EmailIdOption.IsSet && managedUserResponse.EmailId == null)
-                throw new ArgumentNullException(nameof(managedUserResponse.EmailId), "Property is required for class ManagedUserResponse.");
+            if (registeredUserResponse.EmailIdOption.IsSet && registeredUserResponse.EmailId == null)
+                throw new ArgumentNullException(nameof(registeredUserResponse.EmailId), "Property is required for class RegisteredUserResponse.");
 
-            if (managedUserResponse.StatusOption.IsSet && managedUserResponse.Status == null)
-                throw new ArgumentNullException(nameof(managedUserResponse.Status), "Property is required for class ManagedUserResponse.");
+            if (registeredUserResponse.StatusOption.IsSet && registeredUserResponse.Status == null)
+                throw new ArgumentNullException(nameof(registeredUserResponse.Status), "Property is required for class RegisteredUserResponse.");
 
-            if (managedUserResponse.IdOption.IsSet)
-                writer.WriteString("id", managedUserResponse.Id);
+            if (registeredUserResponse.IdOption.IsSet)
+                writer.WriteString("id", registeredUserResponse.Id);
 
-            if (managedUserResponse.NameOption.IsSet)
-                writer.WriteString("name", managedUserResponse.Name);
+            if (registeredUserResponse.NameOption.IsSet)
+                writer.WriteString("name", registeredUserResponse.Name);
 
-            if (managedUserResponse.EmailIdOption.IsSet)
-                writer.WriteString("emailId", managedUserResponse.EmailId);
+            if (registeredUserResponse.EmailIdOption.IsSet)
+                writer.WriteString("emailId", registeredUserResponse.EmailId);
 
-            if (managedUserResponse.StatusOption.IsSet)
-                writer.WriteString("status", managedUserResponse.Status);
+            if (registeredUserResponse.StatusOption.IsSet)
+                writer.WriteString("status", registeredUserResponse.Status);
 
-            if (managedUserResponse.HeatNetworksOption.IsSet)
-                if (managedUserResponse.HeatNetworksOption.Value != null)
+            if (registeredUserResponse.HeatNetworksOption.IsSet)
+                if (registeredUserResponse.HeatNetworksOption.Value != null)
                 {
                     writer.WritePropertyName("heatNetworks");
-                    JsonSerializer.Serialize(writer, managedUserResponse.HeatNetworks, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, registeredUserResponse.HeatNetworks, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("heatNetworks");
-            if (managedUserResponse.RolesOption.IsSet)
-                if (managedUserResponse.RolesOption.Value != null)
+            if (registeredUserResponse.RolesOption.IsSet)
+                if (registeredUserResponse.RolesOption.Value != null)
                 {
                     writer.WritePropertyName("roles");
-                    JsonSerializer.Serialize(writer, managedUserResponse.Roles, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, registeredUserResponse.Roles, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("roles");

@@ -1389,7 +1389,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ManagedUserResponse"
+                items:
+                  $ref: "#/components/schemas/ManagedUserResponse"
+                type: array
           description: OK
         "404":
           content:
@@ -1685,6 +1687,16 @@ components:
       - ConsumerConnections
       - ConsumerHeatSystems
       type: string
+    HeatNetworkInfo:
+      example:
+        hnId: hnId
+        name: name
+      properties:
+        hnId:
+          type: string
+        name:
+          type: string
+      type: object
     HeatNetworkResponse:
       example:
         hnId: hnId
@@ -2033,119 +2045,36 @@ components:
       type: object
     ManagedUserResponse:
       example:
-        responsibleUser:
-          lastName: lastName
-          hnRoleMappings:
-          - hnId: hnId
-            role: DesignatedDesigner
-          - hnId: hnId
-            role: DesignatedDesigner
-          preferredContactType: Landline
-          mobileNumber: mobileNumber
-          jobTitle: jobTitle
-          roles:
-          - RegulatoryContact
-          - RegulatoryContact
-          oneLoginId: oneLoginId
-          fullName: fullName
-          emailId: emailId
-          landlineNumber: landlineNumber
-          contactNumberExtension: contactNumberExtension
-          orgId: orgId
-          firstName: firstName
-          id: id
-          hnIds:
-          - hnIds
-          - hnIds
-          status: Active
-        registeredUsers:
-        - lastName: lastName
-          hnRoleMappings:
-          - hnId: hnId
-            role: DesignatedDesigner
-          - hnId: hnId
-            role: DesignatedDesigner
-          preferredContactType: Landline
-          mobileNumber: mobileNumber
-          jobTitle: jobTitle
-          roles:
-          - RegulatoryContact
-          - RegulatoryContact
-          oneLoginId: oneLoginId
-          fullName: fullName
-          emailId: emailId
-          landlineNumber: landlineNumber
-          contactNumberExtension: contactNumberExtension
-          orgId: orgId
-          firstName: firstName
-          id: id
-          hnIds:
-          - hnIds
-          - hnIds
-          status: Active
-        - lastName: lastName
-          hnRoleMappings:
-          - hnId: hnId
-            role: DesignatedDesigner
-          - hnId: hnId
-            role: DesignatedDesigner
-          preferredContactType: Landline
-          mobileNumber: mobileNumber
-          jobTitle: jobTitle
-          roles:
-          - RegulatoryContact
-          - RegulatoryContact
-          oneLoginId: oneLoginId
-          fullName: fullName
-          emailId: emailId
-          landlineNumber: landlineNumber
-          contactNumberExtension: contactNumberExtension
-          orgId: orgId
-          firstName: firstName
-          id: id
-          hnIds:
-          - hnIds
-          - hnIds
-          status: Active
-        invitedUsers:
-        - firstName: firstName
-          lastName: lastName
-          inviterUserId: inviterUserId
-          rejectedAt: 2000-01-23T04:56:07.000+00:00
-          roles:
-          - DesignatedDesigner
-          - DesignatedDesigner
-          fullName: fullName
-          id: id
-          email: email
-          invitedHnId: invitedHnId
-          status: Invited
-          invitedAt: 2000-01-23T04:56:07.000+00:00
-          acceptedAt: 2000-01-23T04:56:07.000+00:00
-        - firstName: firstName
-          lastName: lastName
-          inviterUserId: inviterUserId
-          rejectedAt: 2000-01-23T04:56:07.000+00:00
-          roles:
-          - DesignatedDesigner
-          - DesignatedDesigner
-          fullName: fullName
-          id: id
-          email: email
-          invitedHnId: invitedHnId
-          status: Invited
-          invitedAt: 2000-01-23T04:56:07.000+00:00
-          acceptedAt: 2000-01-23T04:56:07.000+00:00
+        heatNetworks:
+        - hnId: hnId
+          name: name
+        - hnId: hnId
+          name: name
+        roles:
+        - roles
+        - roles
+        name: name
+        emailId: emailId
+        id: id
+        status: status
       properties:
-        responsibleUser:
-          $ref: "#/components/schemas/UserResponse"
-        registeredUsers:
+        id:
+          type: string
+        name:
+          type: string
+        emailId:
+          type: string
+        status:
+          type: string
+        heatNetworks:
           items:
-            $ref: "#/components/schemas/UserResponse"
+            $ref: "#/components/schemas/HeatNetworkInfo"
+          nullable: true
           type: array
-        invitedUsers:
+        roles:
           items:
-            $ref: "#/components/schemas/InvitedUserResponse"
+            type: string
+          nullable: true
           type: array
       type: object
     NetworkTypeResponse:

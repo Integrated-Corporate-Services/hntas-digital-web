@@ -56,6 +56,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new HeatNetworkElementResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementTypeJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementTypeNullableJsonConverter());
+            _jsonOptions.Converters.Add(new HeatNetworkInfoJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkTypeJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkTypeNullableJsonConverter());

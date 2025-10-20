@@ -533,7 +533,7 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// The <see cref="IApiUsersManagedUsersGetApiResponse"/>
     /// </summary>
-    public interface IApiUsersManagedUsersGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.ManagedUserResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IApiUsersManagedUsersGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<ManagedUserResponse>?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -3062,11 +3062,11 @@ namespace HNTAS.Api.Client.Api
             /// Deserializes the response if the response is 200 Ok
             /// </summary>
             /// <returns></returns>
-            public HNTAS.Api.Client.Model.ManagedUserResponse? Ok()
+            public List<ManagedUserResponse>? Ok()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ManagedUserResponse>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<List<ManagedUserResponse>>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -3075,7 +3075,7 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.ManagedUserResponse? result)
+            public bool TryOk([NotNullWhen(true)]out List<ManagedUserResponse>? result)
             {
                 result = null;
 
