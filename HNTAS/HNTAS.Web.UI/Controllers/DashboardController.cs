@@ -68,28 +68,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.IsRegulatoryContact = user.Roles?.Contains(UserRole.RegulatoryContact);
 
             ViewBag.UserRole = user.Roles[0].ToString();
-
-            //switch (user.Roles[0])
-            //{
-            //    case Api.Client.Model.UserRole.RegulatoryContact:
-            //        ViewBag.UserRole = "RegulatoryContact";
-            //        break;
-            //    case Api.Client.Model.UserRole.Designer:
-            //        ViewBag.UserRole = "Designer";
-            //        break;
-            //    case Api.Client.Model.UserRole.Contractor:
-            //        ViewBag.UserRole = "Contractor";
-            //        break;
-            //    case Api.Client.Model.UserRole.Assessor:
-            //        ViewBag.UserRole = "Assessor";
-            //        break;
-            //    case Api.Client.Model.UserRole.Contributor:
-            //    default:
-            //        ViewBag.UserRole = "Contributor";
-            //        break;
-            //}
-
-
+                        
             var heatNetworks = new List<HeatNetworkModel>();
 
             if (user.HeatNetworks != null && user.HeatNetworks?.Count > 0)

@@ -43,11 +43,13 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 _loggerMock.Object,
                 _sessionHelperMock.Object,
                 _invitationTokenService.Object
-                );
+                );            
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
             };
+            var tempData = new TempDataDictionary(controller.ControllerContext.HttpContext, Mock.Of<ITempDataProvider>());
+            controller.TempData = tempData;
             return controller;
         }
 
@@ -123,8 +125,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
             return invitedUser;
         }
 
-        #region testcases done
-
         [Fact]
         public async Task Get_YouHaveBeenInvited_ValidToken_ReturnsViewWithModel()
         {
@@ -139,11 +139,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Returns((invitationId, invitationEmail));
             _invitationServiceMock.Setup(s => s.GetInvitationByIdAsync(invitationId)).ReturnsAsync(invitation);
             _userServiceMock.Setup(s => s.GetUserDetails(invitation.InviterUserId)).ReturnsAsync(inviterUser);
-            var tempData = new TempDataDictionary(_controller.HttpContext, Mock.Of<ITempDataProvider>());
-            _controller.TempData = tempData;
-
-
-
+            
             _controller.ControllerContext.HttpContext.Request.QueryString = new QueryString($"?token={token}");
 
             // Act
@@ -158,11 +154,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
         [Fact]
         public async Task Get_YouHaveBeenInvited_MissingToken_SetsErrorMessageAndReturnsView()
         {
-            // Arrange
             // Token is missing, so no setup needed for DecryptToken or service calls as they won't be invoked
-            var tempData = new TempDataDictionary(_controller.HttpContext, Mock.Of<ITempDataProvider>());
-            _controller.TempData = tempData;
-
+            
             // Act
             var result = await _controller.YouHaveBeenInvited();
 
@@ -194,8 +187,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             // Arrange
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "accept" };
-            var tempData = new TempDataDictionary(_controller.HttpContext, Mock.Of<ITempDataProvider>());
-            _controller.TempData = tempData;
             _controller.ModelState.AddModelError("AcceptInvitation", "Required");
 
             // Act
@@ -234,9 +225,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var invitationId = Guid.NewGuid().ToString();
             _invitationServiceMock.Setup(s => s.RejectInvitationAsync(invitationId)).ThrowsAsync(new Exception("Database error"));
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.InvitationId)).Returns(invitationId);
-            var tempData = new TempDataDictionary(_controller.HttpContext, Mock.Of<ITempDataProvider>());
-            _controller.TempData = tempData;
-
+            
             // Act
             var result = await _controller.YouHaveBeenInvitedAsync(model);
 
@@ -320,9 +309,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             {
                 User = new ClaimsPrincipal(new ClaimsIdentity()) // No claims
             };
-            var tempData = new TempDataDictionary(_controller.HttpContext, Mock.Of<ITempDataProvider>());
-            _controller.TempData = tempData;
-
+            
             // Act
             var result = await _controller.UserLogin();
 
@@ -364,9 +351,5 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Null(viewResult.ViewName);
             _sessionHelperMock.Verify(s => s.SaveToSession(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey, existingUser.Id), Times.Once);
         }
-
-        #endregion
-
-
     }
 }
