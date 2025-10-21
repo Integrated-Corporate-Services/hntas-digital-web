@@ -237,7 +237,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<ManagedUserResponse> GetManagedUsers(string userId)
+        public async Task<List<ManagedUserResponse>> GetManagedUsers(string userId)
         {
             _logger.LogInformation("Getting managed users for user ID: {UserId}", userId);
             if (string.IsNullOrWhiteSpace(userId))

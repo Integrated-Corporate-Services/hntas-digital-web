@@ -1,4 +1,4 @@
-# HNTAS.Api.Client.Model.ManagedUserResponse
+# HNTAS.Api.Client.Model.RegisteredUserResponse
 
 ## Properties
 

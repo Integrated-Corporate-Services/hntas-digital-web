@@ -2198,7 +2198,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ManagedUserResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ManagedUserResponse"
+                  }
                 }
               }
             }
@@ -2442,6 +2445,17 @@
           "ConsumerHeatSystems"
         ]
       },
+      "HeatNetworkInfo": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "HeatNetworkResponse": {
         "type": "object",
         "properties": {
@@ -2642,20 +2656,31 @@
       "ManagedUserResponse": {
         "type": "object",
         "properties": {
-          "responsibleUser": {
-            "$ref": "#/components/schemas/UserResponse"
+          "id": {
+            "type": "string"
           },
-          "registeredUsers": {
+          "name": {
+            "type": "string"
+          },
+          "emailId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "heatNetworks": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserResponse"
-            }
+              "$ref": "#/components/schemas/HeatNetworkInfo"
+            },
+            "nullable": true
           },
-          "invitedUsers": {
+          "roles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/InvitedUserResponse"
-            }
+              "type": "string"
+            },
+            "nullable": true
           }
         }
       },
