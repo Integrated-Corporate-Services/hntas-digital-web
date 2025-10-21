@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HNTAS.Api.Client", "HNTAS.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HNTAS.Web.UI.Tests", "HNTAS.Web.UI.Tests\HNTAS.Web.UI.Tests.csproj", "{A5FFD583-DA57-49DB-94AE-3918266103BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HNTAS.Web.OneLogin", "HNTAS.Web.OneLogin\HNTAS.Web.OneLogin.csproj", "{BEEF961F-BE0C-4222-A971-4B04B9D4A4AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{A5FFD583-DA57-49DB-94AE-3918266103BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5FFD583-DA57-49DB-94AE-3918266103BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5FFD583-DA57-49DB-94AE-3918266103BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEEF961F-BE0C-4222-A971-4B04B9D4A4AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEEF961F-BE0C-4222-A971-4B04B9D4A4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEEF961F-BE0C-4222-A971-4B04B9D4A4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEEF961F-BE0C-4222-A971-4B04B9D4A4AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
