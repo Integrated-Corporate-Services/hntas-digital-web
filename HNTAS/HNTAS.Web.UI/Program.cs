@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -164,6 +165,18 @@ builder.Services.AddSingleton<IAmazonS3>(sp =>
 
 builder.Services.AddSingleton<IS3UploadService, S3UploadService>();
 
+
+builder.Services.AddSingleton(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+
+    var client = new HttpClient();
+    client.DefaultRequestHeaders.UserAgent.Clear();
+    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("HNTAS", "1.0"));
+
+    return client;
+});
+
 // Decide which authentication to use based on the environment variable
 var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
 
@@ -308,7 +321,10 @@ else
             }
 
             options.VectorsOfTrust = ["Cl.Cm"];
+
+
         });
+
 }
 
 builder.Services.AddSession(options =>
