@@ -268,7 +268,7 @@ No authorization required
 
 <a id="apiusersmanagedusersget"></a>
 # **ApiUsersManagedUsersGet**
-> ManagedUserResponse ApiUsersManagedUsersGet (string userId = null)
+> List&lt;ManagedUserResponse&gt; ApiUsersManagedUsersGet (string userId = null)
 
 
 
@@ -281,7 +281,7 @@ No authorization required
 
 ### Return type
 
-[**ManagedUserResponse**](ManagedUserResponse.md)
+[**List&lt;ManagedUserResponse&gt;**](ManagedUserResponse.md)
 
 ### Authorization
 
