@@ -320,9 +320,7 @@ else
                     SecurityAlgorithms.RsaSha256);
             }
 
-            options.VectorsOfTrust = ["Cl.Cm"];
-
-
+            options.VectorsOfTrust = [builder.Configuration.GetValue<string>("OneLogin:VectorsOfTrust")];
         });
 
 }
