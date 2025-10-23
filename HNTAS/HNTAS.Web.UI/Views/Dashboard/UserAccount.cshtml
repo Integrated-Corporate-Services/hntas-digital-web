@@ -4,18 +4,14 @@
 
 @{
     ViewData["Title"] = "User Account";
-    var disabled = Model.HeatNetworks?.Any() ?? false ? "" : "dashboard-card--disabled";
+    var disabled = Model.HasHeatNetworks ? "" : "dashboard-card--disabled";
 }
 
 <div class="govuk-width-container">
-    @if (ViewBag.UserRole == "RegulatoryContact")
+    @if (Model.UserRole == "RegulatoryContact")
     {
         <div><span class="govuk-hint">Your organisation</span></div>
         <h1 class="govuk-heading-l">@Model.OrganisationName</h1>
-
-        <p>
-            <a class="govuk-link govuk-link--no-visited-state" href="#">Switch to a different organisation</a>
-        </p>
 
         <div class="govuk-grid-row" style="display: flex; align-items: stretch;">
             <div class="govuk-grid-column-one-third">
@@ -40,18 +36,28 @@
             <div class="govuk-grid-column-one-third">
                 <div class="dashboard-card @disabled">
                     <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks</a>
+                    </h3>
+                    <p class="govuk-body-s">View the heat network to be assessed.</p>
+
+                </div>
+            </div>
+            <div class="govuk-grid-column-one-third">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
                         <a class="govuk-link govuk-link--no-visited-state" asp-action="AddContributor" asp-controller="UserManagement"> Contributors</a>
                     </h3>
                     <p class="govuk-body-s">You can add or view contributors to your heat network.</p>
 
                 </div>
             </div>
+           
         </div>
 
 
         <br />
         <br />
-        @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
+        @*@if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
         {
             <h2 class="govuk-heading-m" style="margin-top: 2rem;">My heat network list</h2>
             <div class="govuk-overflow-container">
@@ -113,9 +119,9 @@
             <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-controller="HeatNetwork" asp-action="EnterHNName">
                 Add a new heat network
             </a>
-        </p>
+        </p> *@
     }
-    else if(ViewBag.UserRole == "Assessor")
+    else if (Model.UserRole == "Assessor")
     {
         <h1 class="govuk-heading-l">My Details</h1>
         
@@ -151,7 +157,7 @@
         <br/>
         <br/>
     }
-    else if (ViewBag.UserRole == "Certifier")
+    else if (Model.UserRole == "Certifier")
     {
         <h1 class="govuk-heading-l">My Details</h1>
 
