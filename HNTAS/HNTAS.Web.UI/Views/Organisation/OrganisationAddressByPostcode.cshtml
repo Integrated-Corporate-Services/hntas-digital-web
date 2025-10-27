@@ -1,0 +1,45 @@
+﻿@using HNTAS.Web.UI.Models.Address
+@model SearchAddressByPostcodeModel
+
+@{
+    ViewData["Title"] = "Find an address";
+    var hasAddresses = Model?.Addresses != null && Model.Addresses.Length != 0;
+}
+
+@* TODO - Add error summary *@
+
+<div class="govuk-width-container">
+    <form asp-controller="Organisation" asp-action="OrganisationAddressByPostcode" method="post" class="govuk-form-group">
+        <h1 class="govuk-heading-l">Search by postcode</h1>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="govuk-error-summary" role="alert">
+                <h2 class="govuk-error-summary__title">There is a problem</h2>
+                <ul class="govuk-list govuk-error-summary__list">
+                    @foreach (var entry in ViewData.ModelState)
+                    {
+                        foreach (var error in entry.Value.Errors)
+                        {
+                            <li id="@entry.Key-error" class="govuk-error-message">
+                                <a href="#@entry.Key-error"> @error.ErrorMessage </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        }
+
+        @* Postcode Field *@
+        <div class="govuk-form-group govuk-!-padding-bottom-5 @(ViewData.ModelState.ContainsKey(nameof(Model.Postcode)) && ViewData.ModelState[nameof(Model.Postcode)]?.Errors.Any() == true ? "govuk-form-group--error" : "")">
+
+            @* Display specific error message for Street Address if it exists *@
+            <span asp-validation-for="Postcode" class="govuk-error-message" id="@(Html.IdFor(m => m.Postcode))-error"></span>
+            <input class="govuk-input govuk-input--width-10" asp-for="Postcode" id="Postcode" name="Postcode" type="text" value="@Model?.Postcode" spellcheck="false" autocomplete="off"
+                   aria-describedby="@(ViewData.ModelState.ContainsKey(nameof(Model.Postcode)) && ViewData.ModelState[nameof(Model.Postcode)]?.Errors.Any() == true ? Html.IdFor(m => m.Postcode) + "-error" : "")">
+        </div>
+        <button type="submit" class="govuk-button" data-module="govuk-button">Search</button>
+        <h2 class="govuk-heading-m">Other ways to search</h2>
+        <a href="@Url.Action("OrganisationAddress", "Organisation")" class="govuk-link govuk-body">Search by street and town</a>
+    </form>
+</div>
+

@@ -1,4 +1,5 @@
-﻿using HNTAS.Web.UI.Models.Address;
+﻿using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
@@ -19,20 +20,31 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult SelectAddressInputMethod(string inputMethod)
+        public IActionResult ManualAddressEntry()
         {
-            if (inputMethod == "lookup")
+            ModelState.Clear();
+            return View("ManualAddressEntry");
+        }
+
+        [HttpPost]
+        public IActionResult ManualAddressEntry(AddressByStreetOrTownModel model)
+        {
+            if (!string.IsNullOrWhiteSpace(model.Postalcode) &&
+                !Regex.IsMatch(model.Postalcode.Trim().ToUpper(), "^(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|[A-HK-Y][0-9]{1,2}|[0-9][A-HJKS-UW]|[A-HK-Y][0-9][ABEHMNPRV-Y]) ?[0-9][ABD-HJLNP-UW-Z]{2})$"))
             {
-                return RedirectToAction("AddressLookUp");
+                ModelState.AddModelError(nameof(model.Postalcode), "Please enter a valid UK postcode.");
             }
-            else if (inputMethod == "manual")
+
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction("ManualAddressEntry");
+                // Return the view with the model to preserve user input and show errors
+                return View("ManualAddressEntry", model);
             }
-            else if (inputMethod == "noPostcode")
-            {
-                return RedirectToAction("NoPostcodeAddressEntry", "Address");
-            }
+
+            // Join non-empty fields with commas
+            var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
+                .Where(part => !string.IsNullOrWhiteSpace(part));
+            model.Fulladdress = string.Join(", ", addressParts);
 
             return View("SelectAddressInputMethod");
         }
@@ -44,8 +56,8 @@ namespace HNTAS.Web.UI.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> FindAddress(string postcode)
+        [HttpPost]
+        public async Task<IActionResult> AddressLookUp(string postcode)
         {
             if (string.IsNullOrEmpty(postcode))
             {
@@ -66,82 +78,28 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
                 }
-                return View("AddressLookUp", model);
+                return View("SearchResults", model);
             }
             catch (HttpRequestException)
             {
                 ModelState.AddModelError(string.Empty, "Unable to retrieve address data.");
-                return View("AddressLookUp");
+                return View("SearchResults");
             }
         }
 
         [HttpGet]
-        public IActionResult SelectAddress(string postcode, string fulladdress, string[] addresses)
+        public IActionResult SearchResults(SearchAddressByPostcodeModel model)
         {
-            var modelIntial = new AddressLookUpModel { Postcode = postcode, Addresses = addresses };
-            if (fulladdress == "helpertext")
-            {
-                ModelState.AddModelError("fulladress", "Address is required.");
-                return View("AddressLookUp", modelIntial);
-            }
-
-            if (!string.IsNullOrWhiteSpace(postcode) &&
-                !Regex.IsMatch(postcode.Trim().ToUpper(), "^(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|[A-HK-Y][0-9]{1,2}|[0-9][A-HJKS-UW]|[A-HK-Y][0-9][ABEHMNPRV-Y]) ?[0-9][ABD-HJLNP-UW-Z]{2})$"))
-            {
-                ModelState.Remove("Postcode");
-                ModelState.AddModelError("postcode", "Please enter a valid UK postcode.");
-                return View("AddressLookUp");
-            }
-            var model = new AddressLookUpModel
-            {
-                Postcode = postcode,
-                Fulladdress = fulladdress
-            };
-            return View("SelectAddressInputMethod");
+            this.ShowBackButton("AddressLookUp");
+            return View(model);
         }
 
         [HttpGet]
-        public IActionResult ManualAddressEntry()
-        {
-            ModelState.Clear();
-            return View("ManualAddressEntry");
-        }
-
-        [HttpPost]
-        public IActionResult ManualAddressEntry(ManualAddressModel model)
-        {
-            if (string.IsNullOrWhiteSpace(model.AddressLine1))
-            {
-                ModelState.AddModelError(nameof(model.AddressLine1), "Address line 1 is required.");
-            }
-            if (string.IsNullOrWhiteSpace(model.AddressTown))
-            {
-                ModelState.AddModelError(nameof(model.AddressTown), "Town or city is required.");
-            }
-            if (string.IsNullOrWhiteSpace(model.Postcode))
-            {
-                ModelState.AddModelError(nameof(model.Postcode), "Postcode is required.");
-            }
-            if (!string.IsNullOrWhiteSpace(model.Postcode) &&
-                !Regex.IsMatch(model.Postcode.Trim().ToUpper(), "^(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|[A-HK-Y][0-9]{1,2}|[0-9][A-HJKS-UW]|[A-HK-Y][0-9][ABEHMNPRV-Y]) ?[0-9][ABD-HJLNP-UW-Z]{2})$"))
-            {
-                ModelState.AddModelError(nameof(model.Postcode), "Please enter a valid UK postcode.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                // Return the view with the model to preserve user input and show errors
-                return View("ManualAddressEntry", model);
-            }
-
-            // Join non-empty fields with commas
-            var addressParts = new[] { model.AddressLine1, model.AddressLine2, model.AddressTown, model.AddressCounty, model.Postcode }
-                .Where(part => !string.IsNullOrWhiteSpace(part));
-            model.Fulladdress = string.Join(", ", addressParts);
-
+        public IActionResult SelectAddress(string fulladdress, SearchAddressByPostcodeModel addressmodel)
+        {            
+            addressmodel.SelectedFullAddress = fulladdress;
+            Console.WriteLine(addressmodel.SelectedFullAddress);
             return View("SelectAddressInputMethod");
-        }
-
-
+        }        
     }
 }

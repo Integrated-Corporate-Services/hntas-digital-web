@@ -2,6 +2,7 @@
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.CompaniesHouse;
 using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services;
@@ -9,7 +10,9 @@ using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 namespace HNTAS.Web.UI.Controllers
@@ -18,16 +21,32 @@ namespace HNTAS.Web.UI.Controllers
     public class OrganisationController : Controller
     {
         private readonly ICompaniesHouseService _companiesHouseService;
+        private readonly AddressLookupService _addressLookUpService;
         private readonly ILogger<OrganisationController> _logger;
         private readonly IUserService _userService;
         private readonly ISessionHelper _sessionHelper;
 
-        public OrganisationController(ICompaniesHouseService companiesHouseService, ILogger<OrganisationController> logger, IUserService userService, ISessionHelper sessionHelper)
+        public OrganisationController(ICompaniesHouseService companiesHouseService, ILogger<OrganisationController> logger, IUserService userService, ISessionHelper sessionHelper, AddressLookupService addressLookUpService)
         {
             _companiesHouseService = companiesHouseService;
             _logger = logger;
             _userService = userService;
             _sessionHelper = sessionHelper;
+            _addressLookUpService = addressLookUpService;
+        }
+
+        public string CapitalizeCommaSeparated(string input) {
+
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            var words = input.Split(',')
+                             .Select(w => w.Trim())
+                             .Where(w => !string.IsNullOrEmpty(w))
+                             .Select(w => char.ToUpper(w[0]) + w.Substring(1).ToLower());
+
+            return string.Join(", ", words);
+
         }
 
         [HttpGet]
@@ -527,49 +546,120 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult OrganisationAddress()
         {
-            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
-            var model = new ManualOfficeAddressModel();
+            this.ShowBackButton("OrganisationName", "Organisation");
+            ModelState.Clear();
+            return View("OrganisationAddress", new AddressByStreetOrTownModel());           
+        }
 
-            if (organisationModel.SelectedOrganisationType == Models.Enums.OrganisationType.OtherUkOrganisation.ToString() ||
-                organisationModel.SelectedOrganisationType == Models.Enums.OrganisationType.OverseasOrganisation.ToString())
+        [HttpGet]
+        public IActionResult OrganisationAddressByPostcode()
+        {
+            this.ShowBackButton("OrganisationName", "Organisation");
+            ModelState.Clear();
+            var model = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey) ?? new SearchAddressByPostcodeModel();
+            return View(model);
+        }
+
+        
+
+        [HttpPost]
+        public async Task<IActionResult> OrganisationAddressByPostcode(string postcode)
+        {
+            this.ShowBackButton("OrganisationName", "Organisation");
+            if (string.IsNullOrEmpty(postcode))
             {
-                if (organisationModel.CompanyDetails?.RegisteredOfficeAddress is RegisteredOfficeAddressModel address)
+                return View("OrganisationAddressByPostcode");
+            }
+            if (!string.IsNullOrWhiteSpace(postcode) &&
+                !Regex.IsMatch(postcode.Trim().ToUpper(), "^(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|[A-HK-Y][0-9]{1,2}|[0-9][A-HJKS-UW]|[A-HK-Y][0-9][ABEHMNPRV-Y]) ?[0-9][ABD-HJLNP-UW-Z]{2})$"))
+            {
+                ModelState.Remove("Postcode");
+                ModelState.AddModelError("postcode", "Please enter a valid UK postcode.");
+                return View("OrganisationAddressByPostcode");
+            }
+
+            try
+            {
+                var model = await _addressLookUpService.PostcodeLookupAsync(postcode);
+
+                model.Addresses = model.Addresses
+                    .Select(address => CapitalizeCommaSeparated(address))
+                    .ToArray();
+
+                _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, model);
+                if (model == null || model.Addresses == null || model.Addresses.Length == 0)
                 {
-                    model = new ManualOfficeAddressModel
-                    {
-                        AddressLine1 = address.AddressLine1,
-                        AddressLine2 = address.AddressLine2,
-                        Locality = address.Locality,
-                        PostalCode = address.PostalCode,
-                        Country = address.Country
-                    };
+                    ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
                 }
+                return View("OrganisationAddressSearchResults", model);
             }
-            else
+            catch (HttpRequestException)
             {
-                return RedirectToAction("Index", "Home");
+                ModelState.AddModelError(string.Empty, "Unable to retrieve address data.");
+                return View("OrganisationAddressByPostcode");
             }
+        }
 
-            ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("OrganisationName");
+        [HttpGet]
+        public IActionResult OrganisationAddressSearchResults(SearchAddressByPostcodeModel model)
+        {
+            this.ShowBackButton("OrganisationAddressByPostcode", "Organisation");
+            return View(model);
+        }
 
-            return View("OrganisationAddress", model);
+        [HttpGet]
+        public IActionResult SelectAddress(string selectedAddress)
+        {
+            var addressmodel = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
+            addressmodel.SelectedFullAddress = CapitalizeCommaSeparated(selectedAddress);
+            var addressParts = addressmodel.SelectedFullAddress.Split(",");
+            var model = new AddressByStreetOrTownModel
+            {
+                StreetAddress = string.Join(",", addressParts.Take(addressParts.Length - 2)) ?? string.Empty,
+                TownOrCity = addressParts[addressParts.Length - 2] ?? string.Empty,
+                Postalcode = (addressParts[addressParts.Length - 1]).ToUpper() ?? string.Empty,
+                Country = "United Kingdom" ?? string.Empty,
+                Fulladdress = addressmodel.SelectedFullAddress
+            };
+            _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, model);
+            return RedirectToAction("SaveOrganisationAddressByPostcode");
+        }
+
+        [HttpGet]
+        public IActionResult SaveOrganisationAddressByPostcode()
+        {
+            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+            organisationModel.CompanyDetails.RegisteredOfficeAddress = model;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, organisationModel);
+
+            return RedirectToAction("CompanyConfirm");
         }
 
         [HttpPost]
-        public IActionResult SaveOrganisationAddress(ManualOfficeAddressModel model)
+        public IActionResult SaveOrganisationAddress(AddressByStreetOrTownModel model)
         {
-            if (!ModelState.IsValid)
+            if (!string.IsNullOrWhiteSpace(model.Postalcode) &&
+                !Regex.IsMatch(model.Postalcode.Trim().ToUpper(), "^(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|[A-HK-Y][0-9]{1,2}|[0-9][A-HJKS-UW]|[A-HK-Y][0-9][ABEHMNPRV-Y]) ?[0-9][ABD-HJLNP-UW-Z]{2})$"))
             {
+                ModelState.AddModelError(nameof(model.Postalcode), "Please enter a valid UK postcode.");
+            }
+
+            if (!ModelState.IsValid)
+            {                
                 ViewBag.ShowBackButton = true;
                 ViewBag.BackLinkUrl = Url.Action("OrganisationName");
-
+                // Return the view with the model to preserve user input and show errors
                 return View("OrganisationAddress", model);
             }
 
+            // Join non-empty fields with commas
+            var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
+                .Where(part => !string.IsNullOrWhiteSpace(part));
+            model.Fulladdress = string.Join(", ", addressParts);
+
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             organisationModel.CompanyDetails.RegisteredOfficeAddress = model;
-
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, organisationModel);
 
             return RedirectToAction("CompanyConfirm");
