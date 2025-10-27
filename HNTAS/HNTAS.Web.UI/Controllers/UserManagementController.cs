@@ -1,4 +1,5 @@
-﻿using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.User;
@@ -163,7 +164,8 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new HeatNetworksViewModel
             {
-                HeatNetworks = heatNetworks
+                HeatNetworks = heatNetworks,
+                IsRegulatoryContact = user.Roles?.Contains(UserRole.RegulatoryContact) ?? false,
             };
 
             return View(model);
