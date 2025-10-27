@@ -1,6 +1,7 @@
 ﻿using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         private readonly Mock<ILogger<OrganisationController>> _loggerMock;
         private readonly Mock<IUserService> _userServiceMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
+        private readonly Mock<IAddressLookupService> _addressLookUpServiceMock;
 
         public OrganisationControllerTests()
         {
@@ -24,6 +26,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _loggerMock = new Mock<ILogger<OrganisationController>>();
             _userServiceMock = new Mock<IUserService>();
             _sessionHelperMock = new Mock<ISessionHelper>();
+            _addressLookUpServiceMock = new Mock<IAddressLookupService>();            
         }
 
         private OrganisationController CreateController()
@@ -32,7 +35,8 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 _companiesHouseServiceMock.Object,
                 _loggerMock.Object,
                 _userServiceMock.Object,
-                _sessionHelperMock.Object
+                _sessionHelperMock.Object,
+                _addressLookUpServiceMock.Object
             );
 
             var httpContext = new DefaultHttpContext();

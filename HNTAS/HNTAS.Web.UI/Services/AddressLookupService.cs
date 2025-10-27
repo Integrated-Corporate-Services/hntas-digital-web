@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace HNTAS.Web.UI.Services
 {
-    public class AddressLookupService
+    public class AddressLookupService : IAddressLookupService
     {
         private readonly HttpClient _httpClient;
         private readonly string? _apiKey;

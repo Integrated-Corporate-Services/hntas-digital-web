@@ -21,12 +21,12 @@ namespace HNTAS.Web.UI.Controllers
     public class OrganisationController : Controller
     {
         private readonly ICompaniesHouseService _companiesHouseService;
-        private readonly AddressLookupService _addressLookUpService;
+        private readonly IAddressLookupService _addressLookUpService;
         private readonly ILogger<OrganisationController> _logger;
         private readonly IUserService _userService;
         private readonly ISessionHelper _sessionHelper;
 
-        public OrganisationController(ICompaniesHouseService companiesHouseService, ILogger<OrganisationController> logger, IUserService userService, ISessionHelper sessionHelper, AddressLookupService addressLookUpService)
+        public OrganisationController(ICompaniesHouseService companiesHouseService, ILogger<OrganisationController> logger, IUserService userService, ISessionHelper sessionHelper, IAddressLookupService addressLookUpService)
         {
             _companiesHouseService = companiesHouseService;
             _logger = logger;
@@ -59,13 +59,15 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpGet]
         public IActionResult OrganisationType()
-        {
+        {           
             var model = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey) ?? new OrganisationModel();
             model.OrganisationTypes = GetOrganisationTypeOptions();
 
             bool isCheckAnswerFlow = _sessionHelper.GetIsCheckAnswerFlow(HttpContext);
-            ViewBag.ShowBackButton = isCheckAnswerFlow ? false : true;
-            ViewBag.BackLinkUrl = Url.Action("Index", "Home");
+            if (!isCheckAnswerFlow)
+            {
+                this.ShowBackButton("Index", "Home");
+            }
 
             return View(model);
         }
@@ -637,6 +639,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SaveOrganisationAddress(AddressByStreetOrTownModel model)
         {
             if (!string.IsNullOrWhiteSpace(model.Postalcode) &&
