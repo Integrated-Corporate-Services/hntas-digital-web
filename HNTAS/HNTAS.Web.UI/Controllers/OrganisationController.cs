@@ -615,6 +615,13 @@ namespace HNTAS.Web.UI.Controllers
             var addressmodel = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
             addressmodel.SelectedFullAddress = CapitalizeCommaSeparated(selectedAddress);
             var addressParts = addressmodel.SelectedFullAddress.Split(",");
+
+            if (addressParts.Length < 3)
+            {
+                _logger.LogWarning("Malformed address received: {Address}", selectedAddress);
+                return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");
+            }
+
             var model = new AddressByStreetOrTownModel
             {
                 StreetAddress = string.Join(",", addressParts.Take(addressParts.Length - 2)) ?? string.Empty,
@@ -632,6 +639,14 @@ namespace HNTAS.Web.UI.Controllers
         {
             var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+
+            if(model == null || organisationModel?.CompanyDetails == null)
+    {
+                _logger.LogWarning("Missing session data : Required session data is missing or invalid. Address model and Organisation model with CompanyDetails must be present.");
+                return BadRequest("Missing session data");
+            }
+
+
             organisationModel.CompanyDetails.RegisteredOfficeAddress = model;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, organisationModel);
 
@@ -649,9 +664,8 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             if (!ModelState.IsValid)
-            {                
-                ViewBag.ShowBackButton = true;
-                ViewBag.BackLinkUrl = Url.Action("OrganisationName");
+            {
+                this.ShowBackButton("OrganisationName");
                 // Return the view with the model to preserve user input and show errors
                 return View("OrganisationAddress", model);
             }
