@@ -1,4 +1,5 @@
-﻿using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.User;
@@ -42,57 +43,28 @@ namespace HNTAS.Web.UI.Controllers
             {
                 var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-                var user = await _userService.GetManagedUsers(userId);
+                var users = await _userService.GetManagedUsers(userId);
                 var contributorRoles = await _userService.GetContributorRolesAsync();
                 var userRoles = await _userService.GetUserRolesAsync();
                 var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-                var heatNetworks = await _heatNetworkService.GetAllHeatNetworks();
+                var allRoles = contributorRoles.Concat(userRoles).ToList();
+                //var heatNetworks = await _heatNetworkService.GetAllHeatNetworks();
 
                 var displayUsers = new List<UserDisplayModel>();
 
-                if (user.ResponsibleUser != null)
+                foreach (var user in users)
                 {
+
                     displayUsers.Add(new UserDisplayModel
                     {
-                        Id = user.ResponsibleUser.Id,
-                        EmailAddress = user.ResponsibleUser.EmailId,
-                        Name = user.ResponsibleUser.FullName,
-                        Roles = user.ResponsibleUser.Roles.Select(r => userRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
-                        Status = user.ResponsibleUser.Status.ToString(),
-                        HeatNetworks = heatNetworks.Where(hn => user.ResponsibleUser.HnIds.Any(hnId => hnId == hn.HnId)).Select(h => h.Name).ToList()
+                        Id = user.Id,
+                        EmailAddress = user.EmailId,
+                        Name = user.Name,
+                        Roles = user.Roles.Select(r => allRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
+                        Status = user.Status.ToString(),
+                        HeatNetworks = user.HeatNetworks.Select(hn => hn.Name).ToList()
                     });
-                }
 
-                if (user.RegisteredUsers != null && user.RegisteredUsers.Count > 0)
-                {
-                    foreach (var contributor in user.RegisteredUsers)
-                    {
-                        displayUsers.Add(new UserDisplayModel
-                        {
-                            Id = contributor.Id,
-                            EmailAddress = contributor.EmailId,
-                            Name = contributor.FullName,
-                            Roles = contributor.Roles.Select(r => userRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
-                            Status = contributor.Status.ToString(),
-                            HeatNetworks = heatNetworks.Where(hn => contributor.HnRoleMappings.Any(hr => hr.HnId == hn.HnId)).Select(h => h.Name).ToList()
-                        });
-                    }
-                }
-
-                if (user.InvitedUsers != null && user.InvitedUsers.Count > 0)
-                {
-                    foreach (var invited in user.InvitedUsers)
-                    {
-                        displayUsers.Add(new UserDisplayModel
-                        {
-                            Id = invited.Id,
-                            EmailAddress = invited.Email,
-                            Name = invited.FullName,
-                            Roles = invited.Roles.Select(r => contributorRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
-                            Status = invited.Status.ToString(),
-                            HeatNetworks = [heatNetworks.FirstOrDefault(x => x.HnId == invited.InvitedHnId)?.Name]
-                        });
-                    }
                 }
 
                 var viewModel = new ManageUsersModel
@@ -192,7 +164,8 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new HeatNetworksViewModel
             {
-                HeatNetworks = heatNetworks
+                HeatNetworks = heatNetworks,
+                IsRegulatoryContact = user.Roles?.Contains(UserRole.RegulatoryContact) ?? false,
             };
 
             return View(model);

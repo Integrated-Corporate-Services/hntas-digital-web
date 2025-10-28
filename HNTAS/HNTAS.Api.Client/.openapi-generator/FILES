@@ -16,6 +16,7 @@ docs/models/HeatNetwork.md
 docs/models/HeatNetworkElement.md
 docs/models/HeatNetworkElementResponse.md
 docs/models/HeatNetworkElementType.md
+docs/models/HeatNetworkInfo.md
 docs/models/HeatNetworkResponse.md
 docs/models/HeatNetworkType.md
 docs/models/HeatNetworkUserResponse.md
@@ -101,6 +102,7 @@ src/HNTAS.Api.Client/Model/HeatNetwork.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElement.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElementResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElementType.cs
+src/HNTAS.Api.Client/Model/HeatNetworkInfo.cs
 src/HNTAS.Api.Client/Model/HeatNetworkResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetworkType.cs
 src/HNTAS.Api.Client/Model/HeatNetworkUserResponse.cs

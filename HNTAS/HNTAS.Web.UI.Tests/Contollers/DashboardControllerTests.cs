@@ -84,7 +84,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Equal("Unable to retrieve user information. Please try again later.", controller.TempData["ErrorMessage"]);
             Assert.IsType<DashboardModel>(viewResult.Model);
             var model = (DashboardModel)viewResult.Model;
-            Assert.Empty(model.HeatNetworks);
+            Assert.False(model.HasHeatNetworks);
         }
 
         [Fact]
