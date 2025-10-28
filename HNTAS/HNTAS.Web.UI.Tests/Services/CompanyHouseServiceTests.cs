@@ -1,11 +1,4 @@
 ﻿using HNTAS.Web.UI.Services;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace HNTAS.Web.UI.Tests.Services
 {

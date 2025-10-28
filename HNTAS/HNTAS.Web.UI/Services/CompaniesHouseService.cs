@@ -11,6 +11,7 @@ namespace HNTAS.Web.UI.Services
         private readonly string? _apiKey;
         private readonly Uri _baseUrl = new Uri("https://api-sandbox.company-information.service.gov.uk");
 
+        [ActivatorUtilitiesConstructor]
         public CompaniesHouseService(HttpClient httpClient, IConfiguration config)
         {
             _httpClient = httpClient;
