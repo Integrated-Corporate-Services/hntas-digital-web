@@ -46,6 +46,11 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name cannot exceed 100 characters.");
                 return View(model);
             }
+            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && !System.Text.RegularExpressions.Regex.IsMatch(model.HeatNetworkName, @"^[A-Za-z0-9 :;\-]+$"))
+            {
+                ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name contains invalid characters.");
+                return View(model);
+            }
 
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
             return RedirectToAction("EnterHNLocation");
@@ -71,26 +76,12 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.StartsWith("https://what3words.com/"))
+            // Match the regex pattern for ///word.word.word
+            if (string.IsNullOrWhiteSpace(model.HeatNetworkLocation) || !System.Text.RegularExpressions.Regex.IsMatch(model.HeatNetworkLocation, @"^\/\/\/\p{L}+\.\p{L}+\.\p{L}+$"))
             {
                 ModelState.AddModelError(nameof(model.HeatNetworkLocation), "Invalid url. Please enter the correct url.");
                 return View(model);
             }
-            else
-            {
-                // Extract the part after "https://what3words.com/"
-                var prefix = "https://what3words.com/";
-                var urlPart = model.HeatNetworkLocation.Substring(prefix.Length);
-
-                // Validate: 3 words, joined by 2 dots, no whitespace
-                // Regex: ^([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)$
-                if (string.IsNullOrWhiteSpace(urlPart) ||
-                    !System.Text.RegularExpressions.Regex.IsMatch(urlPart, @"^([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)$"))
-                {
-                    ModelState.AddModelError(nameof(model.HeatNetworkLocation), "Invalid url. Please enter the correct url.");
-                }
-            }
-
             _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
             return RedirectToAction("EnterHNPhase");
         }
