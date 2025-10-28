@@ -9,7 +9,6 @@ namespace HNTAS.Web.UI.Services
     {
         private readonly HttpClient _httpClient;
         private readonly string? _apiKey;
-        private readonly Uri _baseUrl = new Uri("https://api-sandbox.company-information.service.gov.uk");
 
         [ActivatorUtilitiesConstructor]
         public CompaniesHouseService(HttpClient httpClient, IConfiguration config)
@@ -18,7 +17,7 @@ namespace HNTAS.Web.UI.Services
             _apiKey = Environment.GetEnvironmentVariable("COMPANIES_HOUSE_SANDBOX_API_KEY"); // Corrected indexing issue  
 
             // Set base address for HttpClient  
-            _httpClient.BaseAddress = _baseUrl;
+            _httpClient.BaseAddress = new Uri(config["CompaniesHouse:BaseUrl"]);
         }
 
         public CompaniesHouseService(HttpClient httpClient, string? apiKey)
