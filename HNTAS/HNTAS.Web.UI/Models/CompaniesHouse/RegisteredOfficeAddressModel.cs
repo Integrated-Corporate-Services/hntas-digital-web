@@ -1,4 +1,6 @@
 ﻿
+using HNTAS.Web.UI.Models.Address;
+
 namespace HNTAS.Web.UI.Models.CompaniesHouse
 {
     public class RegisteredOfficeAddressModel
@@ -12,15 +14,14 @@ namespace HNTAS.Web.UI.Models.CompaniesHouse
 
         public string? Country { get; set; }
 
-        public static implicit operator RegisteredOfficeAddressModel(ManualOfficeAddressModel v)
+        public static implicit operator RegisteredOfficeAddressModel(AddressByStreetOrTownModel v)
         {
             if (v == null) return null!;
             return new RegisteredOfficeAddressModel
             {
-                AddressLine1 = v.AddressLine1,
-                AddressLine2 = v.AddressLine2,
-                Locality = v.Locality,
-                PostalCode = v.PostalCode,
+                AddressLine1 = v.StreetAddress,
+                Locality = v.TownOrCity,
+                PostalCode = v.Postalcode,
                 Country = v.Country
             };
         }
