@@ -41,17 +41,6 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
-            {
-                ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name cannot exceed 100 characters.");
-                return View(model);
-            }
-            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && !System.Text.RegularExpressions.Regex.IsMatch(model.HeatNetworkName, @"^[A-Za-z0-9 :;\-]+$"))
-            {
-                ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name contains invalid characters.");
-                return View(model);
-            }
-
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
             return RedirectToAction("EnterHNLocation");
         }
@@ -75,13 +64,7 @@ namespace HNTAS.Web.UI.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
-            // Match the regex pattern for ///word.word.word
-            if (string.IsNullOrWhiteSpace(model.HeatNetworkLocation) || !System.Text.RegularExpressions.Regex.IsMatch(model.HeatNetworkLocation, @"^\/\/\/\p{L}+\.\p{L}+\.\p{L}+$"))
-            {
-                ModelState.AddModelError(nameof(model.HeatNetworkLocation), "Invalid url. Please enter the correct url.");
-                return View(model);
-            }
+            }            
             _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
             return RedirectToAction("EnterHNPhase");
         }
