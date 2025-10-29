@@ -152,6 +152,8 @@ builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 
+builder.Services.AddScoped<IAddressLookupService, AddressLookupService>();
+
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
 
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
@@ -332,8 +334,6 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-
-builder.Services.AddHttpClient<AddressLookupService>();
 
 var app = builder.Build();
 
