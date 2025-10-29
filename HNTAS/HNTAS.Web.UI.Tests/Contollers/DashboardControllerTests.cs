@@ -20,16 +20,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<IHeatNetworksApi> _heatNetworksApiMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
 
-        internal class OrganisationAddressResponse
-        {
-            public string AddressLine1 { get; set; }
-            public string AddressLine2 { get; set; }
-            public string Town { get; set; }
-            public string County { get; set; }
-            public string Postcode { get; set; }
-            public string Country { get; set; }
-        }
-
         public DashboardControllerTests()
         {
             _loggerMock = new Mock<ILogger<DashboardController>>();

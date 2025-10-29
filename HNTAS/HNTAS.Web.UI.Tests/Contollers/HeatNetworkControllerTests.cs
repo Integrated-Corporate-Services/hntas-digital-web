@@ -149,7 +149,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Arrange
             var controller = CreateController();
 
-            var model = new HeatNetworkLocationModel { HeatNetworkLocation = "https://what3words.com/word1.word2.word3" };
+            var model = new HeatNetworkLocationModel { HeatNetworkLocation = "///word.word.word" };
             var urlHelperMock = new Mock<IUrlHelper>();
             urlHelperMock
                 .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
@@ -163,8 +163,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(controller.HttpContext, SessionKeys.HeatNetworkLocationModelKey, model), Times.Once);
-            Assert.Equal("EnterHNPhase", redirectResult.ActionName);
-            
+            Assert.Equal("EnterHNPhase", redirectResult.ActionName);            
         }
 
         [Fact]
@@ -579,9 +578,21 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.False((bool)controller.ViewBag.ShowBackButton);
         }
 
-        // Add TC for testing SubmitAnswer method
+        //    // Assert
+        //    Assert.NotNull(result);
+        //    Assert.IsType<ViewResult>(result);
+        //    Assert.Equal(model, result.Model);
+        //}
 
-        // Add TC to mock GetUserById and confirmation page
+        //[Fact]
+        //public void EnterWhat3Words_Post_ValidModel_RedirectsToNextStep()
+        //{
+        //    // Arrange
+        //    var controller = new HeatNetworkController();
+        //    var model = new What3wordsUrlModel
+        //    {
+        //        what3wordsUrl = "index.home.raft"
+        //    };
 
 
     }
