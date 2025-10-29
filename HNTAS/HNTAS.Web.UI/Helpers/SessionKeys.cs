@@ -8,6 +8,8 @@
         public const string OrganisationName = "OrganisationNameKey";
         public const string OrganisationId = "OrganisationIdKey";
         public const string OrganisationAddress = "OrganisationAddressKey";
+        public const string SearchAddressByPostcodeModelSessionKey = "SearchAddressByPostcodeModel";
+        public const string AddressByStreetOrTownModelSessionKey = "AddressByStreetOrTownModel";
         public const string UserRoleKey = "UserRoleKey";
 
         // Session key for the boolean flow state

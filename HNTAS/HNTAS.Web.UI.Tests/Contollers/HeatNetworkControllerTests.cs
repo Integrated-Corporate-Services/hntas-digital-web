@@ -149,7 +149,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Arrange
             var controller = CreateController();
 
-            var model = new HeatNetworkLocationModel { HeatNetworkLocation = "https://what3words.com/word1.word2.word3" };
+            var model = new HeatNetworkLocationModel { HeatNetworkLocation = "///word.word.word" };
             var urlHelperMock = new Mock<IUrlHelper>();
             urlHelperMock
                 .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
@@ -163,8 +163,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(controller.HttpContext, SessionKeys.HeatNetworkLocationModelKey, model), Times.Once);
-            Assert.Equal("EnterHNPhase", redirectResult.ActionName);
-            
+            Assert.Equal("EnterHNPhase", redirectResult.ActionName);            
         }
 
         [Fact]
@@ -398,7 +397,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
         [Fact]
         public void HasElementBeenRegistered_Post_ValidModel_RedirectsToCheckYourAnswers()
         {
-            // HasPlanningApplicationBeenSubmitted
             // Arrange
             var controller = CreateController();
             var model = new HasElementBeenRegisteredModel { HasElementBeenRegistered = "no" };

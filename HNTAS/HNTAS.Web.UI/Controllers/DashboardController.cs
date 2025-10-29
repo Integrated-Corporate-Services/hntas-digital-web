@@ -65,29 +65,13 @@ namespace HNTAS.Web.UI.Controllers
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
 
-            ViewBag.IsRegulatoryContact = user.Roles?.Contains(UserRole.RegulatoryContact);
-
-            ViewBag.UserRole = user.Roles[0].ToString();
-                        
-            var heatNetworks = new List<HeatNetworkModel>();
-
-            if (user.HeatNetworks != null && user.HeatNetworks?.Count > 0)
-            {
-                foreach (var network in user.HeatNetworks)
-                {
-                    heatNetworks.Add(new HeatNetworkModel
-                    {
-                        Name = network.Name,
-                        OrganisationName = user.Organisation?.Name,
-                        Status = "Active"
-                    });
-                }
-            }
 
             var dashboardModel = new DashboardModel
             {
                 OrganisationName = user?.Organisation?.Name,
-                HeatNetworks = heatNetworks
+                UserRole = user.Roles[0].ToString(),
+                IsRegulatoryContact = user.Roles?.Contains(UserRole.RegulatoryContact) ?? false,
+                HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any()
             };
 
             return View(dashboardModel);
