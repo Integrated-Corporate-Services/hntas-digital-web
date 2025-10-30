@@ -27,7 +27,7 @@
                 }
 
                 <input class="govuk-input @(hasEmailAddressErrors ? "govuk-input--error" : "")"
-                        id="EmailAddress"
+                       id="@Html.LowercaseIdFor(Model => Model.EmailAddress)"
                         name="EmailAddress"
                         type="email"
                         asp-for="EmailAddress"
