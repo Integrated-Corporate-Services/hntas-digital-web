@@ -7,21 +7,6 @@
 @{
     ViewData["Title"] = "Check your answers";
 
-    string GetDisplayContactNumber()
-    {
-        var contact = Model.ContributorContactDetailsModel;
-        if (contact == null) return "Not provided";
-
-        return contact.PreferredContactType switch
-        {
-            PreferredContactType.Landline => string.IsNullOrWhiteSpace(contact.ContactNumberExtension)
-                ? contact.LandlineNumber
-                : $"{contact.LandlineNumber} ext {contact.ContactNumberExtension}",
-            PreferredContactType.Mobile => contact.MobileNumber,
-            _ => "Not provided"
-        } ?? "Not provided";
-    }
-
     List<ReviewSection> BuildReviewSections()
     {
         return new List<ReviewSection>
@@ -41,7 +26,6 @@
                 Items = new List<ReviewItem>
                 {
                     new ReviewItem { Key = "Email address", Value = Model.AddUserEmailAddressModel?.EmailAddress, ChangeLink = Url.Action("AddEmailAddress"), ChangeLinkText = "Change" },
-                    new ReviewItem { Key = "Phone number", Value = GetDisplayContactNumber(), ChangeLink = Url.Action("ContactDetails"), ChangeLinkText = "Change" }
                 }
             },
             new ReviewSection
