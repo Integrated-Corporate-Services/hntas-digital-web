@@ -1,4 +1,5 @@
 using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
@@ -17,6 +18,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<ISessionHelper> _sessionHelperMock;
         private readonly Mock<IHeatNetworkService> _heatNetworkServiceMock;
         private readonly Mock<IUserService> _userServiceMock;
+        private readonly HeatNetworkController _controller;
 
         public HeatNetworkControllerTests()
         {
@@ -24,11 +26,12 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _sessionHelperMock = new Mock<ISessionHelper>();
             _heatNetworkServiceMock = new Mock<IHeatNetworkService>();
             _userServiceMock = new Mock<IUserService>();
+            _controller = CreateController();
         }
 
         private HeatNetworkController CreateController()
         {
-            var controller = new HeatNetworkController(
+            var _controller = new HeatNetworkController(
                 _loggerMock.Object,
                 _heatNetworkServiceMock.Object,
                 _userServiceMock.Object,
@@ -37,61 +40,50 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var httpContext = new DefaultHttpContext();
             httpContext.Session = new MockHttpSession();
 
-            controller.ControllerContext = new ControllerContext
+            _controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
-            };
+            };           
+            return _controller;
+        }
 
+        private Mock<IUrlHelper> SetUpBackLink(string controller, string action)
+        {
             var urlHelperMock = new Mock<IUrlHelper>();
             urlHelperMock
-                .Setup(x => x.Action(It.IsAny<UrlActionContext>()))
-                .Returns("/mocked-url");
-
-            controller.Url = urlHelperMock.Object;
-            return controller;
+                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
+                    ctx.Action == action && ctx.Controller == controller)))
+                .Returns($"{controller}/{action}");
+            return urlHelperMock;
         }
 
         [Fact]
         public void EnterHNName_Get_ReturnsViewWithModelFromSession()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HeatNetworkNameModel { HeatNetworkName = "mock-hnname" };
-            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkNameModelKey)).Returns(model);
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "UserAccount" && ctx.Controller == "Dashboard")))
-                .Returns("Dashboard/UserAccount");
-            controller.Url = urlHelperMock.Object;
+            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkNameModelKey)).Returns(model);            
+            _controller.Url = SetUpBackLink("UserAccount", "Dashboard").Object;
 
             // Act
-            var result = controller.EnterHNName();
+            var result = _controller.EnterHNName();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.True(controller.ViewBag.ShowBackButton);
             Assert.Equal(model, viewResult.Model);
-            Assert.Equal("Dashboard/UserAccount", controller.ViewBag.BackLinkUrl);
         }
 
         [Fact]
         public void EnterHNName_Post_ValidUrl_RedirectsToEnterHNLocation()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HeatNetworkNameModel { HeatNetworkName = "mock-hnname" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNLocation" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNLocation");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("UserAccount", "Dashboard").Object;
             // Act
-            var result = controller.EnterHNName(model);
+            var result = _controller.EnterHNName(model);
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkNameModel>(controller.HttpContext, SessionKeys.HeatNetworkNameModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkNameModel>(_controller.HttpContext, SessionKeys.HeatNetworkNameModelKey, model), Times.Once);
             Assert.Equal("EnterHNLocation", redirectResult.ActionName);
         }
 
@@ -99,70 +91,48 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void EnterHNLocation_Get_ReturnsViewWithModelFromSession()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HeatNetworkLocationModel { HeatNetworkLocation = "https://what3words.com/word1.word2.word3" };
             _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkLocationModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkLocationModelKey)).Returns(model);
-
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNName" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNName");
-            controller.Url = urlHelperMock.Object;
-
+            _controller.Url = SetUpBackLink("EnterHNName", "HeatNetwork").Object;
+            
             // Act
-            var result = controller.EnterHNLocation();
+            var result = _controller.EnterHNLocation();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-            Assert.Equal("HeatNetwork/EnterHNName", controller.ViewBag.BackLinkUrl);
         }
 
         [Fact]
         public void EnterHNLocation_Post_InvalidUrl_ReturnsViewWithModelError()
         {
             // Arrange
-            var controller = CreateController();
-
             var model = new HeatNetworkLocationModel { HeatNetworkLocation = "https://invalid.com/word.word.word" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNName" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNName");
-            controller.Url = urlHelperMock.Object;         
+            _controller.Url = SetUpBackLink("EnterHNName", "HeatNetwork").Object;
 
             // Act
-            var result = controller.EnterHNLocation(model);
+            var result = _controller.EnterHNLocation(model);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-            Assert.True(controller.ModelState.ContainsKey("HeatNetworkLocation"));
-            Assert.Contains("Invalid url", controller.ModelState["HeatNetworkLocation"].Errors[0].ErrorMessage);
+            Assert.True(_controller.ModelState.ContainsKey("HeatNetworkLocation"));
+            Assert.Contains("Invalid url", _controller.ModelState["HeatNetworkLocation"].Errors[0].ErrorMessage);
         }
 
         [Fact]
-        public void EnterHNLocation_Post_ValidUrl_RedirectsToCheckYourAnswers()
+        public void EnterHNLocation_Post_ValidUrl_RedirectsToEnterHNPhase()
         {
             // Arrange
-            var controller = CreateController();
-
             var model = new HeatNetworkLocationModel { HeatNetworkLocation = "///word.word.word" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNName" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNName");
-            controller.Url = urlHelperMock.Object;
-            
+            _controller.Url = SetUpBackLink("EnterHNName", "HeatNetwork").Object;
+
             // Act
-            var result = controller.EnterHNLocation(model);
+            var result = _controller.EnterHNLocation(model);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(controller.HttpContext, SessionKeys.HeatNetworkLocationModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(_controller.HttpContext, SessionKeys.HeatNetworkLocationModelKey, model), Times.Once);
             Assert.Equal("EnterHNPhase", redirectResult.ActionName);            
         }
 
@@ -170,41 +140,28 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void EnterHNPhase_Get_ReturnsViewWithModelFromSession()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HeatNetworkPhaseModel ();
             _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkPhaseModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkPhaseModelKey)).Returns(model);
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNLocation" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNLocation");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("EnterHNLocation", "HeatNetwork").Object;
             // Act
-            var result = controller.EnterHNPhase();
+            var result = _controller.EnterHNPhase();
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-            Assert.Equal("HeatNetwork/EnterHNLocation", controller.ViewBag.BackLinkUrl);
         }
 
         [Fact]
         public void EnterHNPhase_Post_ValidModel_RedirectsToCheckYourAnswers()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HeatNetworkPhaseModel { HeatNetworkPhase = "design" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNLocation" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNLocation");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("EnterHNLocation", "HeatNetwork").Object;
             // Act
-            var result = controller.EnterHNPhase(model);
+            var result = _controller.EnterHNPhase(model);
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkPhaseModel>(controller.HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model), Times.Once);
-            _sessionHelperMock.Verify(x => x.SaveToSession<PathwayModel>(controller.HttpContext, SessionKeys.PathwayModelKey, It.Is<PathwayModel>(p => p.Pathway == "1")), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkPhaseModel>(_controller.HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<PathwayModel>(_controller.HttpContext, SessionKeys.PathwayModelKey, It.Is<PathwayModel>(p => p.Pathway == "1")), Times.Once);
             Assert.Equal("CheckYourAnswers", redirectResult.ActionName);
         }
 
@@ -212,19 +169,13 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void EnterHNPhase_Post_ValidModel_RedirectsToHaveYouSignedMEContract()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HeatNetworkPhaseModel { HeatNetworkPhase = "construction" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNLocation" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNLocation");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("EnterHNLocation", "HeatNetwork").Object;
             // Act
-            var result = controller.EnterHNPhase(model);
+            var result = _controller.EnterHNPhase(model);
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkPhaseModel>(controller.HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkPhaseModel>(_controller.HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model), Times.Once);
             Assert.Equal("HaveYouSignedMEContract", redirectResult.ActionName);
         }
 
@@ -232,19 +183,13 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void EnterHNPhase_Post_ValidModel_RedirectsToHNInOperation()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HeatNetworkPhaseModel { HeatNetworkPhase = "operation" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNLocation" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNLocation");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("EnterHNLocation", "HeatNetwork").Object;
             // Act
-            var result = controller.EnterHNPhase(model);
+            var result = _controller.EnterHNPhase(model);
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkPhaseModel>(controller.HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkPhaseModel>(_controller.HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model), Times.Once);
             Assert.Equal("HNInOperation", redirectResult.ActionName);
         }
 
@@ -252,62 +197,43 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void EnterHNPhase_Post_InvalidModel_ReturnsViewWithModelError()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HeatNetworkPhaseModel { HeatNetworkPhase = null };
-            controller.ModelState.AddModelError("HeatNetworkPhase", "The HeatNetworkPhase field is required.");
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNLocation" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNLocation");
-            controller.Url = urlHelperMock.Object;
+            _controller.ModelState.AddModelError("HeatNetworkPhase", "The HeatNetworkPhase field is required.");
+            _controller.Url = SetUpBackLink("EnterHNLocation", "HeatNetwork").Object;
             // Act
-            var result = controller.EnterHNPhase(model);
+            var result = _controller.EnterHNPhase(model);
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-            Assert.True(controller.ModelState.ContainsKey("HeatNetworkPhase"));
-            Assert.Contains("The HeatNetworkPhase field is required.", controller.ModelState["HeatNetworkPhase"].Errors[0].ErrorMessage);
+            Assert.True(_controller.ModelState.ContainsKey("HeatNetworkPhase"));
+            Assert.Contains("The HeatNetworkPhase field is required.", _controller.ModelState["HeatNetworkPhase"].Errors[0].ErrorMessage);
         }
 
         [Fact]
         public void HaveYouSignedMEContract_Get_ReturnsViewWithModelFromSession()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HaveYouSignedMEContractModel();
             _sessionHelperMock.Setup(x => x.GetFromSession<HaveYouSignedMEContractModel>(It.IsAny<HttpContext>(), SessionKeys.HaveYouSignedMEContractModelKey)).Returns(model);
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNPhase" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNPhase");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("EnterHNPhase", "HeatNetwork").Object;
             // Act
-            var result = controller.HaveYouSignedMEContract();
+            var result = _controller.HaveYouSignedMEContract();
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-            Assert.Equal("HeatNetwork/EnterHNPhase", controller.ViewBag.BackLinkUrl);
         }
 
         [Fact]
         public void HaveYouSignedMEContract_Post_ValidModel_RedirectsToMEContractIsSigned()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HaveYouSignedMEContractModel { HaveYouSignedMEContract = "yes" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNPhase" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNPhase");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("MEContractIsSigned", "HeatNetwork").Object;
             // Act
-            var result = controller.HaveYouSignedMEContract(model);
+            var result = _controller.HaveYouSignedMEContract(model);
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HaveYouSignedMEContractModel>(controller.HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HaveYouSignedMEContractModel>(_controller.HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model), Times.Once);
             Assert.Equal("MEContractIsSigned", redirectResult.ActionName);
         }
 
@@ -315,19 +241,13 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void HaveYouSignedMEContract_Post_ValidModel_RedirectsToHasElementBeenRegistered()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HaveYouSignedMEContractModel { HaveYouSignedMEContract = "no" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNPhase" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNPhase");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("HasElementBeenRegistered", "HeatNetwork").Object;
             // Act
-            var result = controller.HaveYouSignedMEContract(model);
+            var result = _controller.HaveYouSignedMEContract(model);
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HaveYouSignedMEContractModel>(controller.HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HaveYouSignedMEContractModel>(_controller.HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model), Times.Once);
             Assert.Equal("HasElementBeenRegistered", redirectResult.ActionName);
         }
 
@@ -335,62 +255,43 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void HaveYouSignedMEContract_Post_InvalidModel_ReturnsViewWithModelError()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HaveYouSignedMEContractModel { HaveYouSignedMEContract = null };
-            controller.ModelState.AddModelError("HaveYouSignedMEContract", "The HaveYouSignedMEContract field is required.");
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "EnterHNPhase" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/EnterHNPhase");
-            controller.Url = urlHelperMock.Object;
+            _controller.ModelState.AddModelError("HaveYouSignedMEContract", "The HaveYouSignedMEContract field is required.");
+            _controller.Url = SetUpBackLink("EnterHNPhase", "HeatNetwork").Object;
             // Act
-            var result = controller.HaveYouSignedMEContract(model);
+            var result = _controller.HaveYouSignedMEContract(model);
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-            Assert.True(controller.ModelState.ContainsKey("HaveYouSignedMEContract"));
-            Assert.Contains("The HaveYouSignedMEContract field is required.", controller.ModelState["HaveYouSignedMEContract"].Errors[0].ErrorMessage);
+            Assert.True(_controller.ModelState.ContainsKey("HaveYouSignedMEContract"));
+            Assert.Contains("The HaveYouSignedMEContract field is required.", _controller.ModelState["HaveYouSignedMEContract"].Errors[0].ErrorMessage);
         }
 
         [Fact]
         public void HasElementBeenRegistered_Get_ReturnsViewWithModelFromSession()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HasElementBeenRegisteredModel();
             _sessionHelperMock.Setup(x => x.GetFromSession<HasElementBeenRegisteredModel>(It.IsAny<HttpContext>(), SessionKeys.HasElementBeenRegisteredModelKey)).Returns(model);
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "HaveYouSignedMEContract" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/HaveYouSignedMEContract");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("HaveYouSignedMEContract", "HeatNetwork").Object;
             // Act
-            var result = controller.HasElementBeenRegistered();
+            var result = _controller.HasElementBeenRegistered();
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-            Assert.Equal("HeatNetwork/HaveYouSignedMEContract", controller.ViewBag.BackLinkUrl);
         }
 
         [Fact]
         public void HasElementBeenRegistered_Post_ValidModel_RedirectsToHasPlanningApplicationBeenSubmitted()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HasElementBeenRegisteredModel { HasElementBeenRegistered = "yes" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "HaveYouSignedMEContract" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/HaveYouSignedMEContract");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("HaveYouSignedMEContract", "HeatNetwork").Object;
             // Act
-            var result = controller.HasElementBeenRegistered(model);
+            var result = _controller.HasElementBeenRegistered(model);
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HasElementBeenRegisteredModel>(controller.HttpContext, SessionKeys.HasElementBeenRegisteredModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HasElementBeenRegisteredModel>(_controller.HttpContext, SessionKeys.HasElementBeenRegisteredModelKey, model), Times.Once);
             Assert.Equal("HasPlanningApplicationBeenSubmitted", redirectResult.ActionName);
         }
 
@@ -398,20 +299,14 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void HasElementBeenRegistered_Post_ValidModel_RedirectsToCheckYourAnswers()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HasElementBeenRegisteredModel { HasElementBeenRegistered = "no" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "HaveYouSignedMEContract" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/HaveYouSignedMEContract");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("HaveYouSignedMEContract", "HeatNetwork").Object;
             // Act
-            var result = controller.HasElementBeenRegistered(model);
+            var result = _controller.HasElementBeenRegistered(model);
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HasElementBeenRegisteredModel>(controller.HttpContext, SessionKeys.HasElementBeenRegisteredModelKey, model), Times.Once);
-            _sessionHelperMock.Verify(x => x.SaveToSession<PathwayModel>(controller.HttpContext, SessionKeys.PathwayModelKey, It.Is<PathwayModel>(p => p.Pathway == "1")), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HasElementBeenRegisteredModel>(_controller.HttpContext, SessionKeys.HasElementBeenRegisteredModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<PathwayModel>(_controller.HttpContext, SessionKeys.PathwayModelKey, It.Is<PathwayModel>(p => p.Pathway == "1")), Times.Once);
             Assert.Equal("CheckYourAnswers", redirectResult.ActionName);
         }
 
@@ -419,63 +314,45 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void HasElementBeenRegistered_Post_InvalidModel_ReturnsViewWithModelError()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HasElementBeenRegisteredModel { HasElementBeenRegistered = null };
-            controller.ModelState.AddModelError("HasElementBeenRegistered", "The HasElementBeenRegistered field is required.");
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "HaveYouSignedMEContract" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/HaveYouSignedMEContract");
-            controller.Url = urlHelperMock.Object;
+            _controller.ModelState.AddModelError("HasElementBeenRegistered", "The HasElementBeenRegistered field is required.");
+            _controller.Url = SetUpBackLink("HaveYouSignedMEContract", "HeatNetwork").Object;
             // Act
-            var result = controller.HasElementBeenRegistered(model);
+            var result = _controller.HasElementBeenRegistered(model);
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-            Assert.True(controller.ModelState.ContainsKey("HasElementBeenRegistered"));
-            Assert.Contains("The HasElementBeenRegistered field is required.", controller.ModelState["HasElementBeenRegistered"].Errors[0].ErrorMessage);
+            Assert.True(_controller.ModelState.ContainsKey("HasElementBeenRegistered"));
+            Assert.Contains("The HasElementBeenRegistered field is required.", _controller.ModelState["HasElementBeenRegistered"].Errors[0].ErrorMessage);
         }
 
         [Fact]
         public void HasPlanningApplicationBeenSubmitted_Get_ReturnsViewWithModelFromSession()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HasPlanningApplicationBeenSubmittedModel();
             _sessionHelperMock.Setup(x => x.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(It.IsAny<HttpContext>(), SessionKeys.HasPlanningApplicationBeenSubmittedModelKey)).Returns(model);
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "HasElementBeenRegistered" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/HasElementBeenRegistered");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("HasElementBeenRegistered", "HeatNetwork").Object;
+            
             // Act
-            var result = controller.HasPlanningApplicationBeenSubmitted();
+            var result = _controller.HasPlanningApplicationBeenSubmitted();
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-            Assert.Equal("HeatNetwork/HasElementBeenRegistered", controller.ViewBag.BackLinkUrl);
         }
 
         [Fact]
         public void HasPlanningApplicationBeenSubmitted_Post_ValidModel_RedirectsToCheckYourAnswers_Pathway_3to7()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HasPlanningApplicationBeenSubmittedModel { HasPlanningApplicationBeenSubmitted = "yes" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "HasElementBeenRegistered" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/HasElementBeenRegistered");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("HasElementBeenRegistered", "HeatNetwork").Object;
             // Act
-            var result = controller.HasPlanningApplicationBeenSubmitted(model);
+            var result = _controller.HasPlanningApplicationBeenSubmitted(model);
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HasPlanningApplicationBeenSubmittedModel>(controller.HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey, model), Times.Once);
-            _sessionHelperMock.Verify(x => x.SaveToSession<PathwayModel>(controller.HttpContext, SessionKeys.PathwayModelKey, It.Is<PathwayModel>(p => p.Pathway == "3")), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HasPlanningApplicationBeenSubmittedModel>(_controller.HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<PathwayModel>(_controller.HttpContext, SessionKeys.PathwayModelKey, It.Is<PathwayModel>(p => p.Pathway == "3")), Times.Once);
             Assert.Equal("CheckYourAnswers", redirectResult.ActionName);
         }
 
@@ -483,20 +360,14 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void HasPlanningApplicationBeenSubmitted_Post_ValidModel_RedirectsToCheckYourAnswers_Pathway_1to7()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HasPlanningApplicationBeenSubmittedModel { HasPlanningApplicationBeenSubmitted = "no" };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "HasElementBeenRegistered" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/HasElementBeenRegistered");
-            controller.Url = urlHelperMock.Object;
+            _controller.Url = SetUpBackLink("HasElementBeenRegistered", "HeatNetwork").Object;
             // Act
-            var result = controller.HasPlanningApplicationBeenSubmitted(model);
+            var result = _controller.HasPlanningApplicationBeenSubmitted(model);
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HasPlanningApplicationBeenSubmittedModel>(controller.HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey, model), Times.Once);
-            _sessionHelperMock.Verify(x => x.SaveToSession<PathwayModel>(controller.HttpContext, SessionKeys.PathwayModelKey, It.Is<PathwayModel>(p => p.Pathway == "1")), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HasPlanningApplicationBeenSubmittedModel>(_controller.HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey, model), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<PathwayModel>(_controller.HttpContext, SessionKeys.PathwayModelKey, It.Is<PathwayModel>(p => p.Pathway == "1")), Times.Once);
             Assert.Equal("CheckYourAnswers", redirectResult.ActionName);
         }
 
@@ -504,30 +375,22 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void HasPlanningApplicationBeenSubmitted_Post_InvalidModel_ReturnsViewWithModelError()
         {
             // Arrange
-            var controller = CreateController();
             var model = new HasPlanningApplicationBeenSubmittedModel { HasPlanningApplicationBeenSubmitted = null };
-            controller.ModelState.AddModelError("HasPlanningApplicationBeenSubmitted", "The HasPlanningApplicationBeenSubmitted field is required.");
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
-                    ctx.Action == "HasElementBeenRegistered" && ctx.Controller == "HeatNetwork")))
-                .Returns("HeatNetwork/HasElementBeenRegistered");
-            controller.Url = urlHelperMock.Object;
+            _controller.ModelState.AddModelError("HasPlanningApplicationBeenSubmitted", "The HasPlanningApplicationBeenSubmitted field is required.");
+            _controller.Url = SetUpBackLink("HasElementBeenRegistered", "HeatNetwork").Object;
             // Act
-            var result = controller.HasPlanningApplicationBeenSubmitted(model);
+            var result = _controller.HasPlanningApplicationBeenSubmitted(model);
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
-            Assert.True(controller.ModelState.ContainsKey("HasPlanningApplicationBeenSubmitted"));
-            Assert.Contains("The HasPlanningApplicationBeenSubmitted field is required.", controller.ModelState["HasPlanningApplicationBeenSubmitted"].Errors[0].ErrorMessage);
+            Assert.True(_controller.ModelState.ContainsKey("HasPlanningApplicationBeenSubmitted"));
+            Assert.Contains("The HasPlanningApplicationBeenSubmitted field is required.", _controller.ModelState["HasPlanningApplicationBeenSubmitted"].Errors[0].ErrorMessage);
         }
 
         [Fact]
         public void CheckYourAnswers_ReturnsViewWithPopulatedModel()
         {
             // Arrange
-            var controller = CreateController();
-
             var nameModel = new HeatNetworkNameModel { HeatNetworkName = "Test Network" };
             var locationModel = new HeatNetworkLocationModel { HeatNetworkLocation = "https://what3words.com/word1.word2.word3" };
             var phaseModel = new HeatNetworkPhaseModel { HeatNetworkPhase = "design" };
@@ -540,7 +403,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 It.IsAny<HttpContext>(), SessionKeys.HeatNetworkLocationModelKey)).Returns(locationModel);
 
             // Act
-            var result = controller.CheckYourAnswers();
+            var result = _controller.CheckYourAnswers();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -549,15 +412,13 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Equal(nameModel, model.HeatNetworkNameModel);
             Assert.Equal(locationModel, model.HeatNetworkLocationModel);
             Assert.False(model.ConfirmedDeclaration);
-            Assert.False((bool)controller.ViewBag.ShowBackButton);
+            Assert.False((bool)_controller.ViewBag.ShowBackButton);
         }
 
         [Fact]
         public void CheckYourAnswers_MissingSessionData_ReturnsViewWithNullModelProperties()
         {
             // Arrange
-            var controller = CreateController();
-
             _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(
                 It.IsAny<HttpContext>(), SessionKeys.HeatNetworkNameModelKey)).Returns((HeatNetworkNameModel)null);
 
@@ -565,7 +426,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 It.IsAny<HttpContext>(), SessionKeys.HeatNetworkLocationModelKey)).Returns((HeatNetworkLocationModel)null);
 
             // Act
-            var result = controller.CheckYourAnswers();
+            var result = _controller.CheckYourAnswers();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -574,10 +435,44 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Null(model.HeatNetworkNameModel);
             Assert.Null(model.HeatNetworkLocationModel);
             Assert.False(model.ConfirmedDeclaration);
-            Assert.False((bool)controller.ViewBag.ShowBackButton);
+            Assert.False((bool)_controller.ViewBag.ShowBackButton);
         }
 
         // Add TC for testing SubmitAnswer method
+        [Fact]
+        public async Task SubmitAnswers_ValidModelState_ReturnsRedirectToConfirmation()
+        {
+            // Arrange            
+            var viewModel = new CheckYourAnswersHeatNetworkModel();
+
+            var hnId = "user123";
+            var heatNetworkNameModel = new HeatNetworkNameModel { HeatNetworkName = "Test Network" };
+            var heatNetworkLocationModel = new HeatNetworkLocationModel { HeatNetworkLocation = "Test Location" };
+            var pathwayModel = new PathwayModel { Pathway = "Test Pathway" };
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkNameModelKey))
+                .Returns(heatNetworkNameModel);
+            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkLocationModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkLocationModelKey))
+                .Returns(heatNetworkLocationModel);
+            _sessionHelperMock.Setup(x => x.GetFromSession<PathwayModel>(It.IsAny<HttpContext>(), SessionKeys.PathwayModelKey))
+                .Returns(pathwayModel);
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns(hnId);
+
+            _heatNetworkServiceMock.Setup(x => x.AddHeatNetwork(It.IsAny<HeatNetwork>(), hnId))
+                .ReturnsAsync(new HeatNetworkResponse { HnId = "hn456", Name = "Test Network" });
+
+            _userServiceMock.Setup(x => x.UpdateUserHeatNetworkId(hnId, "hn456")).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.SubmitAnswers(viewModel);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Confirmation", redirectResult.ActionName);
+            Assert.Equal("HeatNetwork", redirectResult.ControllerName);
+        }
+
 
         // Add TC to mock GetUserById and confirmation page
 

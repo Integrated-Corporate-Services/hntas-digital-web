@@ -260,8 +260,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void StartPage_ReturnsViewResult()
         {
             // Arrange
-            var urlHelperMock = SetUpBackLink("Contributor", "YouHaveBeenInvited");
-            _controller.Url = urlHelperMock.Object; // Assign mock to controller.Url
+            _controller.Url = SetUpBackLink("Contributor", "YouHaveBeenInvited").Object; // Assign mock to controller.Url
 
             // Act
             var result = _controller.StartPage();
