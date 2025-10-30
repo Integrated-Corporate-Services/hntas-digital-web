@@ -381,13 +381,9 @@ namespace HNTAS.Web.UI.Controllers
                            emailAddress: email,
                            firstName: "Certifier",
                            lastName: "Agent",
-                           preferredContactType: PreferredContactType.Landline,
                            hnId: hnId,
                            contributorRoles: new List<ContributorRole> { ContributorRole.Certifier },
-                           status: InvitationStatus.Invited,
-                           landlineNumber: "24723842378",
-                           mobileNumber: null,
-                           contactNumberExtension: null
+                           status: InvitationStatus.Invited
                        )
                    );
 
