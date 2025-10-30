@@ -4,7 +4,6 @@ using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
-using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Models.Review;
 using HNTAS.Web.UI.Models.User;
@@ -14,7 +13,6 @@ using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
 using HNTAS.Web.UI.Workflows.Models.Data;
 using Microsoft.AspNetCore.Mvc;
-using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 
 namespace HNTAS.Web.UI.Controllers
@@ -104,7 +102,7 @@ namespace HNTAS.Web.UI.Controllers
                 this.ShowBackButton("AddContributor", "UserManagement");
                 return View("AddEmailAddress", model);
             }
-            
+
             // Logic to save email address goes here
             _workflowManager.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
                 m => m.AddUserEmailAddressModel = model,
@@ -126,33 +124,6 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         public IActionResult SaveContactDetails(ContributorContactDetailsModel contactDetails)
         {
-
-            switch (contactDetails.PreferredContactType)
-            {
-                case PreferredContactType.Landline:
-                    contactDetails.MobileNumber = null;
-                    ModelState.Remove(nameof(contactDetails.MobileNumber));
-                    if (string.IsNullOrWhiteSpace(contactDetails.LandlineNumber))
-                        ModelState.AddModelError(nameof(contactDetails.LandlineNumber), "Enter your landline number.");
-                    break;
-                case PreferredContactType.Mobile:
-                    contactDetails.LandlineNumber = null;
-                    contactDetails.ContactNumberExtension = null;
-                    ModelState.Remove(nameof(contactDetails.LandlineNumber));
-                    ModelState.Remove(nameof(contactDetails.ContactNumberExtension));
-                    if (string.IsNullOrWhiteSpace(contactDetails.MobileNumber))
-                        ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number.");
-                    break;
-                default:
-                    contactDetails.LandlineNumber = null;
-                    contactDetails.ContactNumberExtension = null;
-                    contactDetails.MobileNumber = null;
-                    ModelState.Remove(nameof(contactDetails.LandlineNumber));
-                    ModelState.Remove(nameof(contactDetails.ContactNumberExtension));
-                    ModelState.Remove(nameof(contactDetails.MobileNumber));
-                    break;
-            }
-
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("ContactDetails");
@@ -188,7 +159,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View("Contributors/ChooseHeatNetwork");
             }
 
-            
+
             var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
 
             var model = new ChooseHeatNetworkModel
@@ -242,7 +213,7 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("ChooseRole");
         }
 
-        
+
         [HttpGet]
         [ValidateWorkflowStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(ContributorWorkflowStep.ChooseRole)]
         public async Task<IActionResult> ChooseRole()
@@ -261,7 +232,7 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later.";
                 return View("Contributor/ChooseRole", model);
             }
-            
+
             var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
             model.SelectedRoleId = state.Data?.ChooseRoleModel?.SelectedRoleId ?? null;
             model.Roles = roles;
@@ -340,7 +311,6 @@ namespace HNTAS.Web.UI.Controllers
 
             _logger.LogInformation("Submitting new contributor details for user: {UserId}", state.Data.AddUserEmailAddressModel?.EmailAddress);
 
-            var selectedPreferredContactType = state.Data.ContributorContactDetailsModel.PreferredContactType == PreferredContactType.Landline ? HNTAS.Api.Client.Model.PreferredContactType.Landline : HNTAS.Api.Client.Model.PreferredContactType.Mobile;
             var selectedContributorRole = (ContributorRole)Convert.ToInt32(state.Data.ChooseRoleModel.SelectedRoleId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
@@ -352,13 +322,9 @@ namespace HNTAS.Web.UI.Controllers
                            emailAddress: state.Data.AddUserEmailAddressModel.EmailAddress,
                            firstName: state.Data.ContributorContactDetailsModel.FirstName,
                            lastName: state.Data.ContributorContactDetailsModel.LastName,
-                           preferredContactType: selectedPreferredContactType,
                            hnId: state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId,
                            contributorRoles: new List<ContributorRole> { selectedContributorRole },
-                           status: InvitationStatus.Invited,
-                           landlineNumber: state.Data.ContributorContactDetailsModel.LandlineNumber,
-                           mobileNumber: state.Data.ContributorContactDetailsModel.MobileNumber,
-                           contactNumberExtension: state.Data.ContributorContactDetailsModel.ContactNumberExtension
+                           status: InvitationStatus.Invited
                        )
                    );
 
@@ -406,7 +372,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
 
-        
+
 
         private List<ReviewSection> BuildReviewSections(AddNewContributorWorkflowModel model)
         {
@@ -426,8 +392,7 @@ namespace HNTAS.Web.UI.Controllers
                     Heading = "Contact details",
                     Items = new List<ReviewItem>
                     {
-                        new ReviewItem { Key = "Email address", Value = model.AddUserEmailAddressModel?.EmailAddress, ChangeLink = Url.Action("AddEmailAddress"), ChangeLinkText = "Change" },
-                        new ReviewItem { Key = "Phone number", Value = model.ContributorContactDetailsModel.GetDisplayContactNumber(), ChangeLink = Url.Action("ContactDetails"), ChangeLinkText = "Change" }
+                        new ReviewItem { Key = "Email address", Value = model.AddUserEmailAddressModel?.EmailAddress, ChangeLink = Url.Action("AddEmailAddress"), ChangeLinkText = "Change" }
                     }
                 },
                 new ReviewSection
