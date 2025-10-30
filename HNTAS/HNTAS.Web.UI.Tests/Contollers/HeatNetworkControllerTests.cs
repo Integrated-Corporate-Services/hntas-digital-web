@@ -3,10 +3,12 @@ using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -43,7 +45,11 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
-            };           
+            };
+
+            var tempDataProvider = new Mock<ITempDataProvider>();
+            _controller.TempData = new TempDataDictionary(httpContext, tempDataProvider.Object);
+
             return _controller;
         }
 
@@ -88,54 +94,50 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void EnterHNLocation_Get_ReturnsViewWithModelFromSession()
+        public void EnterHNLocation_Post_ValidModel_ReturnsEnterHNPhaseView()
         {
             // Arrange
-            var model = new HeatNetworkLocationModel { HeatNetworkLocation = "https://what3words.com/word1.word2.word3" };
-            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkLocationModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkLocationModelKey)).Returns(model);
+            var validModel = new HeatNetworkLocationModel
+            {
+                HeatNetworkLocation = "///word1.word2.word3"
+            };
             _controller.Url = SetUpBackLink("EnterHNName", "HeatNetwork").Object;
-            
+
+            //_controller.ModelState.Clear(); // Ensure model is valid
+
             // Act
-            var result = _controller.EnterHNLocation();
+            var result = _controller.EnterHNLocation(validModel) as ViewResult;
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal(model, viewResult.Model);
+            Assert.NotNull(result);
+            Assert.Equal("EnterHNPhase", result.ViewName);
+            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.HeatNetworkLocationModelKey,
+                validModel), Times.Once);
         }
 
         [Fact]
-        public void EnterHNLocation_Post_InvalidUrl_ReturnsViewWithModelError()
+        public void EnterHNLocation_Post_InvalidModel_ReturnsSameViewWithModel()
         {
             // Arrange
-            var model = new HeatNetworkLocationModel { HeatNetworkLocation = "https://invalid.com/word.word.word" };
+            var invalidModel = new HeatNetworkLocationModel(); // Missing required fields
             _controller.Url = SetUpBackLink("EnterHNName", "HeatNetwork").Object;
+            _controller.ModelState.AddModelError("HeatNetworkLocation", "Required");
 
             // Act
-            var result = _controller.EnterHNLocation(model);
+            var result = _controller.EnterHNLocation(invalidModel) as ViewResult;
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal(model, viewResult.Model);
-            Assert.True(_controller.ModelState.ContainsKey("HeatNetworkLocation"));
-            Assert.Contains("Invalid url", _controller.ModelState["HeatNetworkLocation"].Errors[0].ErrorMessage);
+            Assert.NotNull(result);
+            Assert.Equal(invalidModel, result.Model);
+            Assert.Null(result.ViewName); // Returns default view
+            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(
+                It.IsAny<HttpContext>(),
+                It.IsAny<string>(),
+                It.IsAny<HeatNetworkLocationModel>()), Times.Never);
         }
-
-        [Fact]
-        public void EnterHNLocation_Post_ValidUrl_RedirectsToEnterHNPhase()
-        {
-            // Arrange
-            var model = new HeatNetworkLocationModel { HeatNetworkLocation = "///word.word.word" };
-            _controller.Url = SetUpBackLink("EnterHNName", "HeatNetwork").Object;
-
-            // Act
-            var result = _controller.EnterHNLocation(model);
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(_controller.HttpContext, SessionKeys.HeatNetworkLocationModelKey, model), Times.Once);
-            Assert.Equal("EnterHNPhase", redirectResult.ActionName);            
-        }
-
+        
         [Fact]
         public void EnterHNPhase_Get_ReturnsViewWithModelFromSession()
         {
@@ -473,9 +475,166 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Equal("HeatNetwork", redirectResult.ControllerName);
         }
 
+        [Fact]
+        public async Task SubmitAnswers_UserResponseHasNoHnId_ReturnsCheckYourAnswersViewWithErrorMessage()
+        {
+            // Arrange
+            var viewModel = new CheckYourAnswersHeatNetworkModel();
+
+            var hnId = "user123";
+            var heatNetworkNameModel = new HeatNetworkNameModel { HeatNetworkName = "Test Network" };
+            var heatNetworkLocationModel = new HeatNetworkLocationModel { HeatNetworkLocation = "Test Location" };
+            var pathwayModel = new PathwayModel { Pathway = "Test Pathway" };
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkNameModelKey))
+                .Returns(heatNetworkNameModel);
+            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkLocationModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkLocationModelKey))
+                .Returns(heatNetworkLocationModel);
+            _sessionHelperMock.Setup(x => x.GetFromSession<PathwayModel>(It.IsAny<HttpContext>(), SessionKeys.PathwayModelKey))
+                .Returns(pathwayModel);
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns(hnId);
+
+            // Simulate AddHeatNetwork returning a response with null HnId
+            _heatNetworkServiceMock.Setup(x => x.AddHeatNetwork(It.IsAny<HeatNetwork>(), hnId))
+                .ReturnsAsync(new HeatNetworkResponse { HnId = null, Name = "Test Network" });
+
+            // Act
+            var result = await _controller.SubmitAnswers(viewModel);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal("CheckYourAnswers", viewResult.ViewName);
+            Assert.Equal(viewModel, viewResult.Model);
+
+            // Verify TempData contains error message
+            Assert.Equal("An error occurred while submitting your heat network details. Please try again later.",
+                         _controller.TempData["ErrorMessage"]);
+        }
+
 
         // Add TC to mock GetUserById and confirmation page
+        [Fact]
+        public async Task Confirmation_ReturnsViewWithExpectedViewBagValues()
+        {
+            // Arrange
+            var hnId = "user123";
+            var userResponse = new UserDetailsResponse
+            {
+                FullName = "John Doe",
+                Organisation = new OrganisationResponse { Name = "Test Company" }
+            };
 
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns(hnId);
 
+            _userServiceMock.Setup(x => x.GetUserDetails(hnId))
+                .ReturnsAsync(userResponse);
+
+            // Initialize TempData
+            var httpContext = new DefaultHttpContext();
+            var tempDataProvider = new Mock<ITempDataProvider>();
+            _controller.TempData = new TempDataDictionary(httpContext, tempDataProvider.Object);
+            _controller.TempData["Confirmation_HN_Id"] = "hn456";
+            _controller.TempData["HNName"] = "Test Network";
+
+            // Act
+            var result = await _controller.Confirmation();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal("Confirmation", viewResult.ViewName);
+
+            Assert.Equal("Test Company", _controller.ViewBag.CompanyName);
+            Assert.Equal("John Doe", _controller.ViewBag.ContactName);
+            Assert.Equal("hn456", _controller.ViewBag.HNId);
+            Assert.Equal("Test Network", _controller.ViewBag.HNName);
+        }
+
+        [Fact]
+        public async Task Confirmation_WhenTempDataIsEmpty_ViewBagHNValuesAreNull()
+        {
+            // Arrange
+            var hnId = "user123";
+            var userResponse = new UserDetailsResponse
+            {
+                FullName = "John Doe",
+                Organisation = new OrganisationResponse { Name = "Test Company" }
+            };
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns(hnId);
+
+            _userServiceMock.Setup(x => x.GetUserDetails(hnId))
+                .ReturnsAsync(userResponse);
+
+            // Initialize TempData but leave it empty
+            var httpContext = new DefaultHttpContext();
+            var tempDataProvider = new Mock<ITempDataProvider>();
+            _controller.TempData = new TempDataDictionary(httpContext, tempDataProvider.Object);
+
+            // Act
+            var result = await _controller.Confirmation();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal("Confirmation", viewResult.ViewName);
+
+            Assert.Equal("Test Company", _controller.ViewBag.CompanyName);
+            Assert.Equal("John Doe", _controller.ViewBag.ContactName);
+            Assert.Null(_controller.ViewBag.HNId);
+            Assert.Null(_controller.ViewBag.HNName);
+        }
+
+        [Fact]
+        public async Task Details_ValidHnid_ReturnsViewWithModel()
+        {
+            // Arrange
+            var hnid = "hn123";
+            var heatNetworkResponse = new HeatNetworkResponse
+            {
+                HnId = "HN123",
+                Name = "Test Network",
+                Location = "http://location.com",
+                Pathway = "Test Pathway"
+            };
+
+            _heatNetworkServiceMock.Setup(x => x.GetAsync(hnid.ToUpper()))
+                .ReturnsAsync(heatNetworkResponse);
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.OrganisationName))
+                .Returns("Test Organisation");
+            _controller.Url = SetUpBackLink("HeatNetworks", "UserManagement").Object;
+
+            // Act
+            var result = await _controller.Details(hnid);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<HNDetailsViewModel>(viewResult.Model);
+
+            Assert.Equal("Test Network", model.Name);
+            Assert.Equal("http://location.com", model.LocationUrl);
+            Assert.Equal("Test Organisation", model.OrganisationName);
+            Assert.Equal("Test Pathway", model.PathWay);
+            Assert.Equal("HN123", model.UHNID);
+        }
+
+        [Fact]
+        public async Task Details_WhenResponseIsNull_ReturnsBadRequest()
+        {
+            // Arrange
+            var hnid = "hn123";
+
+            _heatNetworkServiceMock.Setup(x => x.GetAsync(hnid.ToUpper()))
+                .ReturnsAsync((HeatNetworkResponse)null);
+            _controller.Url = SetUpBackLink("HeatNetworks", "UserManagement").Object;
+
+            // Act
+            var result = await _controller.Details(hnid);
+
+            // Assert
+            Assert.IsType<BadRequestResult>(result);
+        }
     }
 }
