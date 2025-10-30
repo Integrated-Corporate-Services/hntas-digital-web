@@ -641,7 +641,7 @@ namespace HNTAS.Web.UI.Controllers
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
 
             if(model == null || organisationModel?.CompanyDetails == null)
-            {
+    {
                 _logger.LogWarning("Missing session data : Required session data is missing or invalid. Address model and Organisation model with CompanyDetails must be present.");
                 return BadRequest("Missing session data");
             }

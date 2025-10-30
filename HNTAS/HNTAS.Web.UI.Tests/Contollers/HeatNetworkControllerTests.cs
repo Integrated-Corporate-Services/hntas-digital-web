@@ -578,21 +578,9 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.False((bool)controller.ViewBag.ShowBackButton);
         }
 
-        //    // Assert
-        //    Assert.NotNull(result);
-        //    Assert.IsType<ViewResult>(result);
-        //    Assert.Equal(model, result.Model);
-        //}
+        // Add TC for testing SubmitAnswer method
 
-        //[Fact]
-        //public void EnterWhat3Words_Post_ValidModel_RedirectsToNextStep()
-        //{
-        //    // Arrange
-        //    var controller = new HeatNetworkController();
-        //    var model = new What3wordsUrlModel
-        //    {
-        //        what3wordsUrl = "index.home.raft"
-        //    };
+        // Add TC to mock GetUserById and confirmation page
 
 
     }
