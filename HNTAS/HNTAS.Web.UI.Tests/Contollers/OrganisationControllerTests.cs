@@ -45,12 +45,10 @@ namespace HNTAS.Web.UI.Tests.Contollers
 
             var httpContext = new DefaultHttpContext();
             httpContext.Session = new MockHttpSession();
-
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
-
             return controller;
         }
 
