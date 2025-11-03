@@ -94,11 +94,21 @@ namespace HNTAS.Web.UI.Controllers
                 return View("AddEmailAddress", model);
             }
 
+            //check for rp user
+            bool? isRpUser = await _userService.IsRpUserAsync(model.EmailAddress);
+
+            if (isRpUser.Value == true)
+            {
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation.");
+                this.ShowBackButton("AddContributor", "UserManagement");
+                return View("AddEmailAddress", model);
+            }
+
             // if this email address exists in the existing users list then throw error
             bool isExistingUser = await DoesUserAlreadyExist(model.EmailAddress);
             if (isExistingUser)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "User already exists.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "User already active, click the back button to return to Add Existing user service.");
                 this.ShowBackButton("AddContributor", "UserManagement");
                 return View("AddEmailAddress", model);
             }
