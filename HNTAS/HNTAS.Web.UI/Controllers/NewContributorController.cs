@@ -108,7 +108,7 @@ namespace HNTAS.Web.UI.Controllers
             bool isExistingUser = await DoesUserAlreadyExist(model.EmailAddress);
             if (isExistingUser)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "User already active, click the back button to return to Add Existing user service.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access.");
                 this.ShowBackButton("AddContributor", "UserManagement");
                 return View("AddEmailAddress", model);
             }
