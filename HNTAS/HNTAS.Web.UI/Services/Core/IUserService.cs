@@ -29,5 +29,7 @@ namespace HNTAS.Web.UI.Services.Core
         Task<string?> AcceptUserInvitation(InvitedUserRequest userRequest);
 
         Task<List<UserResponse>> GetRegisteredUsersAsync(string rpUserId);
+
+        Task<bool?> IsRpUserAsync(string emailId);
     }
 }
