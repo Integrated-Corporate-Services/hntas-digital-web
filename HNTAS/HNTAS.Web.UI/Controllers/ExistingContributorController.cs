@@ -85,10 +85,6 @@ namespace HNTAS.Web.UI.Controllers
 
             var selectedUserData = await _userService.GetUserById(model.SelectedContributorId);
 
-            Models.Enums.PreferredContactType? preferredContactType = selectedUserData.PreferredContactType.Value == NullableOfPreferredContactType.Landline
-                ? Models.Enums.PreferredContactType.Landline : Models.Enums.PreferredContactType.Mobile;
-
-
             var contactDetailsModel = new ContributorContactDetailsModel
             {
                 FirstName = selectedUserData?.FirstName,

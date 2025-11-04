@@ -427,8 +427,6 @@ namespace HNTAS.Api.Client.Api
         bool IsOk { get; }
     }
 
-
-
     /// <summary>
     /// The <see cref="IApiUsersGetApiResponse"/>
     /// </summary>
