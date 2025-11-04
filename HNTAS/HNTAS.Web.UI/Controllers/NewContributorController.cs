@@ -97,7 +97,7 @@ namespace HNTAS.Web.UI.Controllers
             //check for rp user
             bool? isRpUser = await _userService.IsRpUserAsync(model.EmailAddress);
 
-            if (isRpUser.Value == true)
+            if (isRpUser.HasValue && isRpUser.Value == true)
             {
                 ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation.");
                 this.ShowBackButton("AddContributor", "UserManagement");
