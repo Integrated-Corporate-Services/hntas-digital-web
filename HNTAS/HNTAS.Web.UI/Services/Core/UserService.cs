@@ -308,6 +308,10 @@ namespace HNTAS.Web.UI.Services.Core
             {
                 return users.Ok();
             }
+            else if (users.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
             var sanitizedEmailId = emailId?.Replace("\r", "").Replace("\n", "");
             var errorMessage = $"Unable to determine Regulatory Contact status for user '{sanitizedEmailId}'. API call failed with status code: {users.StatusCode}.";
             _logger.LogError(errorMessage);
