@@ -64,7 +64,7 @@ namespace HNTAS.Web.UI.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }            
+            }
             _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
             return RedirectToAction("EnterHNPhase");
         }
@@ -244,6 +244,11 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult CheckYourAnswers()
         {
             ViewBag.ShowBackButton = false;
+
+            if (_sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) == null)
+            {
+                return RedirectToAction("UserAccount", "Dashboard");
+            }
 
             var model = new CheckYourAnswersHeatNetworkModel
             {

@@ -1033,6 +1033,46 @@ paths:
           description: Internal Server Error
       tags:
       - Users
+  /api/Users/is-rp-user/{emailId}:
+    get:
+      operationId: IsRpUser
+      parameters:
+      - explode: false
+        in: path
+        name: emailId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
   /api/Users/onelogin/{oneLoginId}:
     get:
       operationId: GetUserByOneLoginId

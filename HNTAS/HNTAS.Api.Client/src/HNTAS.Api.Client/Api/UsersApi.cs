@@ -354,6 +354,29 @@ namespace HNTAS.Api.Client.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IGetUserByOneLoginIdApiResponse"/>?&gt;</returns>
         Task<IGetUserByOneLoginIdApiResponse?> GetUserByOneLoginIdOrDefaultAsync(string oneLoginId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="emailId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IIsRpUserApiResponse"/>&gt;</returns>
+        Task<IIsRpUserApiResponse> IsRpUserAsync(string emailId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="emailId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IIsRpUserApiResponse"/>?&gt;</returns>
+        Task<IIsRpUserApiResponse?> IsRpUserOrDefaultAsync(string emailId, System.Threading.CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -403,6 +426,8 @@ namespace HNTAS.Api.Client.Api
         /// <returns></returns>
         bool IsOk { get; }
     }
+
+
 
     /// <summary>
     /// The <see cref="IApiUsersGetApiResponse"/>
@@ -648,6 +673,30 @@ namespace HNTAS.Api.Client.Api
     /// The <see cref="IGetUserByOneLoginIdApiResponse"/>
     /// </summary>
     public interface IGetUserByOneLoginIdApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.UserResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IIsRpUserApiResponse"/>
+    /// </summary>
+    public interface IIsRpUserApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<bool?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -951,6 +1000,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorGetUserByOneLoginId(Exception exception)
         {
             OnErrorGetUserByOneLoginId?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnIsRpUser;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorIsRpUser;
+
+        internal void ExecuteOnIsRpUser(UsersApi.IsRpUserApiResponse apiResponse)
+        {
+            OnIsRpUser?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorIsRpUser(Exception exception)
+        {
+            OnErrorIsRpUser?.Invoke(this, new ExceptionEventArgs(exception));
         }
     }
 
@@ -4570,6 +4639,272 @@ namespace HNTAS.Api.Client.Api
             /// <param name="result"></param>
             /// <returns></returns>
             public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.UserResponse? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatIsRpUser(ref string emailId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="emailId"></param>
+        /// <returns></returns>
+        private void ValidateIsRpUser(string emailId)
+        {
+            if (emailId == null)
+                throw new ArgumentNullException(nameof(emailId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="emailId"></param>
+        private void AfterIsRpUserDefaultImplementation(IIsRpUserApiResponse apiResponseLocalVar, string emailId)
+        {
+            bool suppressDefaultLog = false;
+            AfterIsRpUser(ref suppressDefaultLog, apiResponseLocalVar, emailId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="emailId"></param>
+        partial void AfterIsRpUser(ref bool suppressDefaultLog, IIsRpUserApiResponse apiResponseLocalVar, string emailId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="emailId"></param>
+        private void OnErrorIsRpUserDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string emailId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorIsRpUser(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, emailId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="emailId"></param>
+        partial void OnErrorIsRpUser(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string emailId);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="emailId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IIsRpUserApiResponse"/>&gt;</returns>
+        public async Task<IIsRpUserApiResponse?> IsRpUserOrDefaultAsync(string emailId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await IsRpUserAsync(emailId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="emailId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IIsRpUserApiResponse"/>&gt;</returns>
+        public async Task<IIsRpUserApiResponse> IsRpUserAsync(string emailId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateIsRpUser(emailId);
+
+                FormatIsRpUser(ref emailId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Users/is-rp-user/{emailId}"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/is-rp-user/{emailId}");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BemailId%7D", Uri.EscapeDataString(emailId.ToString()));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<IsRpUserApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<IsRpUserApiResponse>();
+
+                        IsRpUserApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/is-rp-user/{emailId}", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterIsRpUserDefaultImplementation(apiResponseLocalVar, emailId);
+
+                        Events.ExecuteOnIsRpUser(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorIsRpUserDefaultImplementation(e, "/api/Users/is-rp-user/{emailId}", uriBuilderLocalVar.Path, emailId);
+                Events.ExecuteOnErrorIsRpUser(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="IsRpUserApiResponse"/>
+        /// </summary>
+        public partial class IsRpUserApiResponse : HNTAS.Api.Client.Client.ApiResponse, IIsRpUserApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<IsRpUserApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="IsRpUserApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public IsRpUserApiResponse(ILogger<IsRpUserApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<bool>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out bool? result)
             {
                 result = null;
 
