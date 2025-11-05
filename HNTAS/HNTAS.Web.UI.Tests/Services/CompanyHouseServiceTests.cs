@@ -25,7 +25,7 @@ namespace HNTAS.Web.UI.Tests.Services
         public async Task GetCompanyByNumberAsync_ReturnsCompanyDetails_WhenCompanyExists()
         {
             // Arrange
-            var companyNumber = "48850136"; // Sandbox test company number
+            var companyNumber = "83031634"; // Sandbox test company number
 
             // Act
             var result = await _service.GetCompanyByNumberAsync(companyNumber);            

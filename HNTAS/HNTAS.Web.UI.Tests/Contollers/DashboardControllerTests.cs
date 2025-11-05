@@ -20,12 +20,15 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<IHeatNetworksApi> _heatNetworksApiMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
 
+        private readonly DashboardController _controller;
+                
         public DashboardControllerTests()
         {
             _loggerMock = new Mock<ILogger<DashboardController>>();
             _userServiceMock = new Mock<IUserService>();
             _heatNetworksApiMock = new Mock<IHeatNetworksApi>();
             _sessionHelperMock = new Mock<ISessionHelper>();
+            _controller = CreateController();
         }
 
         private DashboardController CreateController()
@@ -53,6 +56,16 @@ namespace HNTAS.Web.UI.Tests.Controllers
             return controller;
         }
 
+        private Mock<IUrlHelper> SetUpBackLink(string controller, string action)
+        {
+            var urlHelperMock = new Mock<IUrlHelper>();
+            urlHelperMock
+                .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
+                    ctx.Action == action && ctx.Controller == controller)))
+                .Returns($"{controller}/{action}");
+            return urlHelperMock;
+        }
+
         [Fact]
         public async Task Get_UserAccount_UserNotFound_ReturnsViewWithErrorMessage()
         {
@@ -62,16 +75,15 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Setup(x => x.GetFromSession<string>(
                     It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
                 .Returns("nonexistent-user-id");
-            _userServiceMock
-                .Setup(x => x.GetUserDetails("nonexistent-user-id"))
+            _userServiceMock.Setup(x => x.GetUserDetails("nonexistent-user-id"))
                 .ReturnsAsync((UserDetailsResponse)null);
 
             // Act
-            var result = await controller.UserAccount();
+            var result = await _controller.UserAccount();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("Unable to retrieve user information. Please try again later.", controller.TempData["ErrorMessage"]);
+            Assert.Equal("Unable to retrieve user information. Please try again later.", _controller.TempData["ErrorMessage"]);
             Assert.IsType<DashboardModel>(viewResult.Model);
             var model = (DashboardModel)viewResult.Model;
             Assert.False(model.HasHeatNetworks);
@@ -98,11 +110,11 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 });
 
             // Act
-            var result = await controller.UserAccount();
+            var result = await _controller.UserAccount();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("Your account is not associated with any organisation. Please contact support.", controller.TempData["ErrorMessage"]);
+            Assert.Equal("Your account is not associated with any organisation. Please contact support.", _controller.TempData["ErrorMessage"]);
             Assert.IsType<DashboardModel>(viewResult.Model);
         }
 
@@ -110,7 +122,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task OrganisationDetails_ReturnsViewWithModel_WhenUserDetailsRetrievedSuccessfully()
         {
             // Arrange
-            var controller = CreateController();
+            var urlHelperMock = SetUpBackLink("Dashboard", "UserAccount");
+            _controller.Url = urlHelperMock.Object; // Assign mock to controller.Url
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.OrganisationName))
                              .Returns("Test Org");
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
@@ -130,13 +143,32 @@ namespace HNTAS.Web.UI.Tests.Controllers
                        .ReturnsAsync(userDetails);
 
             // Act
-            var result = await controller.OrganisationDetails();
+            var result = await _controller.OrganisationDetails();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<OrganisationDetailsModel>(viewResult.Model);
             Assert.Equal("Test Org", model.OrganisationName);
             Assert.Equal("test@example.com", model.RPEmail);
+        }
+
+        [Fact]
+        public async Task OrganisationDetails_ReturnsViewWithErrorMessage_WhenUserDetailsRetrievalFails()
+        {
+            // Arrange
+            var urlHelperMock = SetUpBackLink("Dashboard", "UserAccount");
+            _controller.Url = urlHelperMock.Object; // Assign mock to controller.Url
+            var errorMessage = "Some error occured.";
+            _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                             .Returns("user123");
+            _userServiceMock.Setup(s => s.GetUserDetails("user123"))
+                       .ThrowsAsync(new Exception(errorMessage));
+            // Act
+            var result = await _controller.OrganisationDetails();
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(errorMessage, _controller.TempData["ErrorMessage"]);
+            Assert.IsType<OrganisationDetailsModel>(viewResult.Model);
         }
     }
 }

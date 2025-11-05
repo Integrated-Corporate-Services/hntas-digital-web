@@ -150,8 +150,6 @@ public class HomeController : Controller
             TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
             return BadRequest();
         }
-
-
     }
 
     public IActionResult Error(int code)

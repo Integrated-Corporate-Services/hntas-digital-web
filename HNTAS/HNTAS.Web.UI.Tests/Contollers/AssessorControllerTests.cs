@@ -22,6 +22,9 @@ namespace HNTAS.Web.UI.Tests.Contollers
         private readonly Mock<IHeatNetworkService> _mockHeatNetworkService;
         private readonly Mock<IS3UploadService> _mockS3UploadService;
         private readonly Mock<ISoaService> _mockSoaService;
+        private readonly Mock<IInvitationService> _mockInvitationService;
+        private readonly Mock<IInvitationTokenService> _mockInvitationTokenService;
+        private readonly Mock<CertifierEmailGeneratorService> _mockCertifierEmailGeneratorService;
 
         private readonly AssessorController _controller;
 
@@ -34,11 +37,9 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _mockHeatNetworkService = new Mock<IHeatNetworkService>();
             _mockS3UploadService = new Mock<IS3UploadService>();
             _mockSoaService = new Mock<ISoaService>();
-
-            // Mock other dependencies with default values
-            var mockInvitationService = new Mock<IInvitationService>();
-            var mockInvitationTokenService = new Mock<IInvitationTokenService>();
-            var mockCertifierEmailGeneratorService = new Mock<CertifierEmailGeneratorService>();
+            _mockInvitationService = new Mock<IInvitationService>();
+            _mockInvitationTokenService = new Mock<IInvitationTokenService>();
+            _mockCertifierEmailGeneratorService = new Mock<CertifierEmailGeneratorService>();
             _controller = CreateController();
         }
 
@@ -49,11 +50,11 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 _mockSessionHelper.Object,
                 _mockUserService.Object,
                 _mockHeatNetworkService.Object,
-                new Mock<ISoaService>().Object,
-                new Mock<IS3UploadService>().Object,
-                new Mock<IInvitationService>().Object,
-                new Mock<IInvitationTokenService>().Object,
-                new Mock<CertifierEmailGeneratorService>().Object
+                _mockSoaService.Object,
+                _mockS3UploadService.Object,
+                _mockInvitationService.Object,
+                _mockInvitationTokenService.Object,
+                _mockCertifierEmailGeneratorService.Object
             );
             var httpContext = new DefaultHttpContext();
             httpContext.Session = new MockHttpSession();
@@ -392,42 +393,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             Assert.NotEmpty(model.ElementDocuments);
             Assert.NotNull(model.AssessmentPlanDocument);
         }
-
-        // This test case is commented out because the expected behavior when Soa is null is not defined.
-        //[Fact]
-        //public async Task DownloadTheDocuments_ReturnsViewResult_WithEmptyModel_WhenHeatNetworkIsNull()
-        //{
-        //    // Arrange
-        //    var hnId = "HN123";
-        //    var phase = 1;
-        //    var hnDetails = new HeatNetworkResponse
-        //    {
-        //        Id = "heat-network-id",
-        //        HnId = hnId,
-        //        Location = "Test Location",
-        //        Name = "Test Network",
-        //        Pathway = "1",
-        //        Soa = new SoaResponse()
-        //        {
-        //            JourneyData = null
-        //        } // Simulate missing Soa
-        //    };
-
-        //    _mockSessionHelper.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.HnId))
-        //                      .Returns(hnId);
-
-        //    _mockHeatNetworkService.Setup(h => h.GetAsync(hnId))
-        //                           .ReturnsAsync(hnDetails); // Simulate missing data
-
-        //    var controller = CreateController();
-        //    controller.Url = new Mock<IUrlHelper>().Object;
-
-        //    // Act
-        //    var result = await controller.DownloadTheDocuments(phase);
-
-        //    // Assert
-        //    // what to assert here?
-        //}
+        
 
         [Fact]
         public async Task SubmitDownloadTheDocuments_RedirectsToUploadSOC_WhenPhaseIsValid()

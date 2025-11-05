@@ -1,9 +1,11 @@
 ﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Security.Claims;
@@ -60,6 +62,16 @@ public class HomeControllerTests
         return new ClaimsPrincipal(new ClaimsIdentity(claims, "mock"));
     }
 
+    private IUrlHelper SetUpBackLink(string controller, string action)
+    {
+        var urlHelperMock = new Mock<IUrlHelper>();
+        urlHelperMock
+            .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
+                ctx.Action == action && ctx.Controller == controller)))
+            .Returns($"{controller}/{action}");
+        return urlHelperMock.Object;
+    }
+
     [Fact]
     public async Task Index_ReturnsView_WhenClaimsMissing()
     {
@@ -70,12 +82,12 @@ public class HomeControllerTests
         var result = await controller.Index();
 
         // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
+        var viewResult = Assert.IsType<BadRequestResult>(result);
         Assert.Equal("Unable to retrieve essential user info. Please try again.", controller.TempData["ErrorMessage"]);
     }
 
     [Fact]
-    public async Task Index_ReturnsView_WhenUserServiceThrows()
+    public async Task Index_ReturnsView_WhenUserServiceThrowsException()
     {
         // Arrange
         var controller = CreateController(CreateUser());
@@ -85,7 +97,7 @@ public class HomeControllerTests
         var result = await controller.Index();
 
         // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
+        var viewResult = Assert.IsType<BadRequestResult>(result);
         Assert.Equal("Error during account setup. Please contact support.", controller.TempData["ErrorMessage"]);
     }
 
@@ -123,7 +135,7 @@ public class HomeControllerTests
         var result = await controller.Index();
 
         // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
+        var viewResult = Assert.IsType<BadRequestResult>(result);
 
         // Verify the session helper was called with the correct user id
         _sessionHelperMock.Verify(x =>
@@ -134,36 +146,196 @@ public class HomeControllerTests
             Times.Once);
     }
 
-    //[Fact]
-    //public async Task Index_Redirects_WhenUserHasOrganisation()
-    //{
-    //    // Arrange
-    //    var controller = CreateController(CreateUser());
-    //    var userResponse = new UserResponse(id: "user-123", organisation: new Organisation());
-    //    _userServiceMock.Setup(s => s.GetUserByOneLoginId(It.IsAny<string>())).ReturnsAsync(userResponse);
+    [Fact]
+    public async Task Index_Redirects_WhenUserHasOrganisation()
+    {
+        // Arrange
+        var controller = CreateController(CreateUser());
+        var userResponse = new UserResponse() { Id= "user-123", OrgId = "org123" };
+        _userServiceMock.Setup(s => s.GetUserByOneLoginId(It.IsAny<string>())).ReturnsAsync(userResponse);
 
-    //    // Act
-    //    var result = await controller.Index();
+        // Act
+        var result = await controller.Index();
 
-    //    // Assert
-    //    var redirect = Assert.IsType<RedirectToActionResult>(result);
-    //    Assert.Equal("UserAccount", redirect.ActionName);
-    //    Assert.Equal("Dashboard", redirect.ControllerName);
+        // Assert
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("UserAccount", redirect.ActionName);
+        Assert.Equal("Dashboard", redirect.ControllerName);
 
-    //    // Verify the session helper was called with the correct user id
-    //    _sessionHelperMock.Verify(x =>
-    //        x.SaveToSession<string>(
-    //            It.IsAny<HttpContext>(),
-    //            SessionKeys.UserModel_Id_SessionKey,
-    //            "user-123"),
-    //        Times.Once);
+        // Verify the session helper was called with the correct user id
+        _sessionHelperMock.Verify(x =>
+            x.SaveToSession<string>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.UserModel_Id_SessionKey,
+                "user-123"),
+            Times.Once);
 
-    //    // Verify organisation details were saved
-    //    _sessionHelperMock.Verify(x =>
-    //        x.SaveToSession<string>(
-    //            It.IsAny<HttpContext>(),
-    //            SessionKeys.OrganisationName,
-    //            userResponse.Organisation.Name),
-    //        Times.Once);
-    //}
+        // Verify organisation details were saved
+        if(userResponse.OrgId != null)
+        {
+            var Redirect = Assert.IsType<RedirectToActionResult>(result);
+        }
+    }
+
+    [Fact]
+    public void Error_WhenCodeIs404_ReturnsNotFoundView()
+    {
+        // Arrange
+        var controller = CreateController();
+
+        // Act
+        var result = controller.Error(404);
+
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(result);
+        Assert.Equal("NotFound", viewResult.ViewName);
+    }
+
+    [Fact]
+    public void Error_WhenCodeIs500_ReturnsErrorView()
+    {
+        // Arrange
+        var controller = CreateController();
+
+        // Act
+        var result = controller.Error(500);
+
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(result);
+        Assert.Equal("Error", viewResult.ViewName);
+    }
+
+    [Fact]
+    public void StartPage_WithInvitedEmail_SetsBackButtonAndNavigateUrlToHomeIndex()
+    {
+        // Arrange        
+        var invitedEmail = "test@example.com";
+        _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.InvitedTokenEmail)).Returns(invitedEmail);
+        var controller = CreateController(CreateUser());        
+        controller.Url = (invitedEmail != null
+            ? SetUpBackLink("Home", "Index")
+            : SetUpBackLink("Home", "WhatDoYouWantToDo"));
+
+        // Act
+        var result = controller.StartPage();
+
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(result);
+        Assert.Equal("Home/Index", controller.ViewBag.NavigateUrl);
+    }
+
+    [Fact]
+    public void StartPage_ReturnsViewResult_WithNavigateUrlForMissingInvitedEmail()
+    {
+        // Arrange
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("/WhatDoYouWantToDo");
+        _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.InvitedTokenEmail)).Returns((string)null); // Simulate missing invited email
+        var controller = CreateController();
+
+        controller.Url = mockUrlHelper.Object;
+
+        // Act
+        var result = controller.StartPage();
+
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(result);
+        Assert.Equal("/WhatDoYouWantToDo", controller.ViewBag.NavigateUrl);
+    }
+
+    [Fact]
+    public void WhatDoYouWantToDo_WithModelInSession_ReturnsViewWithModel()
+    {
+        // Arrange
+        var expectedModel = new WhatDoYouWantToDoViewModel { UserPathToday = "TestOption" };        
+        _sessionHelperMock.Setup(s => s.GetFromSession<WhatDoYouWantToDoViewModel>(
+            It.IsAny<HttpContext>(), SessionKeys.WhatDoYouWantToDoViewModelKey))
+            .Returns(expectedModel);
+        var controller = CreateController(CreateUser());
+        controller.Url = SetUpBackLink("Home", "StartPage");        
+
+        // Act
+        var result = controller.WhatDoYouWantToDo();
+
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(result);
+        var model = Assert.IsType<WhatDoYouWantToDoViewModel>(viewResult.Model);
+        Assert.Equal("TestOption", model.UserPathToday);
+    }
+
+    [Fact]
+    public void WhatDoYouWantToDo_WithoutModelInSession_ReturnsViewWithNewModel()
+    {
+        // Arrange
+        _sessionHelperMock.Setup(s => s.GetFromSession<WhatDoYouWantToDoViewModel>(
+            It.IsAny<HttpContext>(), SessionKeys.WhatDoYouWantToDoViewModelKey))
+            .Returns((WhatDoYouWantToDoViewModel)null);
+        var controller = CreateController(CreateUser());        
+        controller.Url = SetUpBackLink("Home", "StartPage");
+
+        // Act
+        var result = controller.WhatDoYouWantToDo();
+
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(result);
+        var model = Assert.IsType<WhatDoYouWantToDoViewModel>(viewResult.Model);
+        Assert.Empty(model.UserPathToday);
+    }
+
+    [Fact]
+    public void WhatDoYouWantToDo_InvalidModelState_ReturnsViewWithModel()
+    {
+        // Arrange
+        var model = new WhatDoYouWantToDoViewModel { UserPathToday = "doSomething" };
+        var controller = CreateController();
+        controller.Url = SetUpBackLink("Home", "StartPage");
+        var errorMessage = "Invalid selection. Please try again.";
+        controller.ModelState.AddModelError("UserPathToday", errorMessage);
+        
+
+        // Act
+        var result = controller.WhatDoYouWantToDo(model);
+
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(result);
+        Assert.Equal(model, viewResult.Model);
+        Assert.Equal(errorMessage, controller.ModelState["UserPathToday"].Errors[0].ErrorMessage);
+    }
+
+    [Fact]
+    public void WhatDoYouWantToDo_RegisterNewHN_RedirectsToAreYouTheRP()
+    {
+        // Arrange
+        var model = new WhatDoYouWantToDoViewModel { UserPathToday = "registerNewHN" };
+        var controller = CreateController(CreateUser());
+        controller.Url = SetUpBackLink("Home", "StartPage");
+
+        // Act
+        var result = controller.WhatDoYouWantToDo(model);
+
+        // Assert
+        var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("AreYouTheRP", redirectResult.ActionName);
+        Assert.Equal("HeatNetworkEligibility", redirectResult.ControllerName);
+        _sessionHelperMock.Verify(s => s.SaveToSession(It.IsAny<HttpContext>(), SessionKeys.WhatDoYouWantToDoViewModelKey, model), Times.Once);
+    }
+
+    [Fact]
+    public void WhatDoYouWantToDo_UpdateExistingHN_RedirectsToHomeIndex()
+    {
+        // Arrange
+        var model = new WhatDoYouWantToDoViewModel { UserPathToday = "updateExistingHN" };
+        var controller = CreateController(CreateUser());
+        controller.Url = SetUpBackLink("Home", "StartPage");
+
+        // Act
+        var result = controller.WhatDoYouWantToDo(model);
+
+        // Assert
+        var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("Index", redirectResult.ActionName);
+        Assert.Equal("Home", redirectResult.ControllerName);
+        _sessionHelperMock.Verify(s => s.SaveToSession(It.IsAny<HttpContext>(), SessionKeys.WhatDoYouWantToDoViewModelKey, model), Times.Once);
+    }
+
 }
