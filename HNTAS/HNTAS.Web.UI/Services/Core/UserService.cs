@@ -300,6 +300,24 @@ namespace HNTAS.Web.UI.Services.Core
             throw new Exception($"Failed to retrieve registered users with status code: {users.StatusCode}");
 
         }
+
+        public async Task<bool?> IsRpUserAsync(string emailId)
+        {
+            var users = await _usersApi.IsRpUserAsync(emailId);
+            if (users.IsOk)
+            {
+                return users.Ok();
+            }
+            else if (users.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+            var sanitizedEmailId = emailId?.Replace("\r", "").Replace("\n", "");
+            var errorMessage = $"Unable to determine Regulatory Contact status for user '{sanitizedEmailId}'. API call failed with status code: {users.StatusCode}.";
+            _logger.LogError(errorMessage);
+            throw new Exception(errorMessage);
+        }
+
     }
 }
 

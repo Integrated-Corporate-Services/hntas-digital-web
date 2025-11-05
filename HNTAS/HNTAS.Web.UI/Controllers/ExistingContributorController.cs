@@ -85,18 +85,10 @@ namespace HNTAS.Web.UI.Controllers
 
             var selectedUserData = await _userService.GetUserById(model.SelectedContributorId);
 
-            Models.Enums.PreferredContactType? preferredContactType = selectedUserData.PreferredContactType.Value == NullableOfPreferredContactType.Landline
-                ? Models.Enums.PreferredContactType.Landline : Models.Enums.PreferredContactType.Mobile;
-
-
             var contactDetailsModel = new ContributorContactDetailsModel
             {
                 FirstName = selectedUserData?.FirstName,
-                LastName = selectedUserData?.LastName,
-                MobileNumber = selectedUserData?.MobileNumber,
-                LandlineNumber = selectedUserData?.LandlineNumber,
-                ContactNumberExtension = selectedUserData?.ContactNumberExtension,
-                PreferredContactType = preferredContactType.Value
+                LastName = selectedUserData?.LastName
             };
 
             _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
@@ -277,9 +269,6 @@ namespace HNTAS.Web.UI.Controllers
 
             _logger.LogInformation("Submitting new contributor details for user: {UserId}", state.Data.ChooseContributorModel?.SelectedContributorEmail);
 
-            var selectedPreferredContactType = state.Data.ContributorContactDetailsModel.PreferredContactType == Models.Enums.PreferredContactType.Landline
-                ? PreferredContactType.Landline : PreferredContactType.Mobile;
-
             var selectedContributorRole = (ContributorRole)Convert.ToInt32(state.Data.ChooseRoleModel.SelectedRoleId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             try
@@ -290,13 +279,9 @@ namespace HNTAS.Web.UI.Controllers
                          emailAddress: state.Data.ChooseContributorModel?.SelectedContributorEmail,
                          firstName: state.Data.ContributorContactDetailsModel.FirstName,
                          lastName: state.Data.ContributorContactDetailsModel.LastName,
-                         preferredContactType: selectedPreferredContactType,
                          hnId: state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId,
                          contributorRoles: new List<ContributorRole> { selectedContributorRole },
-                         status: InvitationStatus.Invited,
-                         landlineNumber: state.Data.ContributorContactDetailsModel.LandlineNumber,
-                         mobileNumber: state.Data.ContributorContactDetailsModel.MobileNumber,
-                         contactNumberExtension: state.Data.ContributorContactDetailsModel.ContactNumberExtension
+                         status: InvitationStatus.Invited
                      )
                  );
 
@@ -362,7 +347,6 @@ namespace HNTAS.Web.UI.Controllers
                     Items = new List<ReviewItem>
                     {
                         new ReviewItem { Key = "Email address", Value = model.ChooseContributorModel.SelectedContributorEmail, ChangeLink = Url.Action("ChooseUser"), ChangeLinkText = "Change" },
-                        new ReviewItem { Key = "Phone number", Value = model.ContributorContactDetailsModel.GetDisplayContactNumber() }
                     }
                 },
                 new ReviewSection
@@ -401,7 +385,7 @@ namespace HNTAS.Web.UI.Controllers
             return selectedItems;
         }
 
-        
+
         private async Task<List<SelectItemOption>?> GetContributorRolesSelectListAsync()
         {
             var response = await _userService.GetContributorRolesAsync();

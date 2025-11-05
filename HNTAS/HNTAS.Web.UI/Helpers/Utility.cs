@@ -48,34 +48,39 @@ namespace HNTAS.Web.UI.Helpers
                         new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
             }
-            else if (userRole == ContributorRole.DesignatedDesigner.ToString()) {
+            else if (userRole == ContributorRole.DesignatedDesigner.ToString())
+            {
                 return new List<SelectItemOption>
                     {
                         new SelectItemOption { Value = ((int)ContributorRole.ContributingDesigner).ToString(), Text = "Contributing designer" },
                         new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
             }
-            else if (userRole == ContributorRole.DesignatedContractor.ToString()) {
+            else if (userRole == ContributorRole.DesignatedContractor.ToString())
+            {
                 return new List<SelectItemOption>
                     {
                         new SelectItemOption { Value = ((int)ContributorRole.ContributingContractor).ToString(), Text = "Contributing contractor" },
                         new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
             }
-            else if (userRole == ContributorRole.DesignatedOperator.ToString()) {
+            else if (userRole == ContributorRole.DesignatedOperator.ToString())
+            {
                 return new List<SelectItemOption>
                     {
                         new SelectItemOption { Value = ((int)ContributorRole.ContributingOperator).ToString(), Text = "Contributing operator" },
                         new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
             }
-            else if (userRole == ContributorRole.Assessor.ToString()) {
+            else if (userRole == ContributorRole.Assessor.ToString())
+            {
                 return new List<SelectItemOption>
                     {
                         new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
             }
-            else {
+            else
+            {
                 return null;
             }
         }
@@ -108,7 +113,7 @@ namespace HNTAS.Web.UI.Helpers
             return response.Select(hn => new SelectItemOption
             {
                 Value = hn.HnId,
-                Text = hn.Name
+                Text = $"{hn.HnId} - {hn.Name}"
             }).ToList();
         }
     }

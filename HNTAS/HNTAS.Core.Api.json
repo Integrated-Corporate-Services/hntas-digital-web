@@ -1630,6 +1630,69 @@
         }
       }
     },
+    "/api/Users/is-rp-user/{emailId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "IsRpUser",
+        "parameters": [
+          {
+            "name": "emailId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/Users/onelogin/{oneLoginId}": {
       "get": {
         "tags": [
@@ -2268,7 +2331,6 @@
           "emailAddress",
           "firstName",
           "lastName",
-          "preferredContactType",
           "hnId",
           "contributorRoles",
           "status"
@@ -2283,27 +2345,6 @@
           },
           "lastName": {
             "type": "string"
-          },
-          "preferredContactType": {
-            "$ref": "#/components/schemas/PreferredContactType"
-          },
-          "landlineNumber": {
-            "maxLength": 20,
-            "pattern": "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\s-]?\\d{1,9}$",
-            "type": "string",
-            "nullable": true
-          },
-          "mobileNumber": {
-            "maxLength": 13,
-            "pattern": "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\s-]?\\d{1,9}$",
-            "type": "string",
-            "nullable": true
-          },
-          "contactNumberExtension": {
-            "maxLength": 10,
-            "pattern": "^\\d*$",
-            "type": "string",
-            "nullable": true
           },
           "hnId": {
             "type": "string"
