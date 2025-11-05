@@ -15,7 +15,7 @@ namespace HNTAS.Web.UI.Tests.Services
                 BaseAddress = new Uri("https://api-sandbox.company-information.service.gov.uk")
             };
 
-            _apiKey = Environment.GetEnvironmentVariable("COMPANIES_HOUSE_SANDBOX_API_KEY");
+            _apiKey = Environment.GetEnvironmentVariable("COMPANIES_HOUSE_API_KEY");
 
             _service = new CompaniesHouseService(_httpClient, _apiKey);
           
@@ -25,7 +25,7 @@ namespace HNTAS.Web.UI.Tests.Services
         public async Task GetCompanyByNumberAsync_ReturnsCompanyDetails_WhenCompanyExists()
         {
             // Arrange
-            var companyNumber = "48850136"; // Sandbox test company number
+            var companyNumber = "83031634"; // Sandbox test company number
 
             // Act
             var result = await _service.GetCompanyByNumberAsync(companyNumber);            

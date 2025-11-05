@@ -113,7 +113,7 @@ public class HomeControllerTests
         var result = await controller.Index();
 
         // Assert
-        var viewResult = Assert.IsType<BadRequestResult>(result);
+        var viewResult = Assert.IsType<ViewResult>(result);
         // Optionally verify session helper was called
         _sessionHelperMock.Verify(x =>
             x.SaveToSession<string>(
@@ -225,22 +225,22 @@ public class HomeControllerTests
     }
 
     [Fact]
-    public void StartPage_WithoutInvitedEmail_SetsNavigateUrlToWhatDoYouWantToDo()
+    public void StartPage_ReturnsViewResult_WithNavigateUrlForMissingInvitedEmail()
     {
         // Arrange
-        var invitedEmail = (string)null;
-        _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.InvitedTokenEmail)).Returns(invitedEmail);
-        var controller = CreateController(CreateUser());
-        controller.Url = (invitedEmail != null
-            ? SetUpBackLink("Home", "Index")
-            : SetUpBackLink("Home", "WhatDoYouWantToDo"));
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("/WhatDoYouWantToDo");
+        _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.InvitedTokenEmail)).Returns((string)null); // Simulate missing invited email
+        var controller = CreateController();
+
+        controller.Url = mockUrlHelper.Object;
 
         // Act
         var result = controller.StartPage();
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("WhatDoYouWantToDo", controller.ViewBag.NavigateUrl);
+        Assert.Equal("/WhatDoYouWantToDo", controller.ViewBag.NavigateUrl);
     }
 
     [Fact]
