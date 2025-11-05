@@ -91,7 +91,10 @@
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     Continue
                 </button><br />
-                <a href="@Url.Action("OrganisationAddressByPostcode", "Organisation")" class="govuk-link">Search by postcode</a>
+                @if (!ViewBag.IsOverseasOrganisation)
+                {
+                    <a href="@Url.Action("OrganisationAddressByPostcode", "Organisation")" class="govuk-link">Search by postcode</a>
+                }                
             </form>
         </div>
     </div>
