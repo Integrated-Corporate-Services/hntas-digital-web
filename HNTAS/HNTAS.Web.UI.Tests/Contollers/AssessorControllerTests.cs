@@ -22,6 +22,9 @@ namespace HNTAS.Web.UI.Tests.Contollers
         private readonly Mock<IHeatNetworkService> _mockHeatNetworkService;
         private readonly Mock<IS3UploadService> _mockS3UploadService;
         private readonly Mock<ISoaService> _mockSoaService;
+        private readonly Mock<IInvitationService> _mockInvitationService;
+        private readonly Mock<IInvitationTokenService> _mockInvitationTokenService;
+        private readonly Mock<CertifierEmailGeneratorService> _mockCertifierEmailGeneratorService;
 
         private readonly AssessorController _controller;
 
@@ -34,11 +37,9 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _mockHeatNetworkService = new Mock<IHeatNetworkService>();
             _mockS3UploadService = new Mock<IS3UploadService>();
             _mockSoaService = new Mock<ISoaService>();
-
-            // Mock other dependencies with default values
-            var mockInvitationService = new Mock<IInvitationService>();
-            var mockInvitationTokenService = new Mock<IInvitationTokenService>();
-            var mockCertifierEmailGeneratorService = new Mock<CertifierEmailGeneratorService>();
+            _mockInvitationService = new Mock<IInvitationService>();
+            _mockInvitationTokenService = new Mock<IInvitationTokenService>();
+            _mockCertifierEmailGeneratorService = new Mock<CertifierEmailGeneratorService>();
             _controller = CreateController();
         }
 
@@ -49,11 +50,11 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 _mockSessionHelper.Object,
                 _mockUserService.Object,
                 _mockHeatNetworkService.Object,
-                new Mock<ISoaService>().Object,
-                new Mock<IS3UploadService>().Object,
-                new Mock<IInvitationService>().Object,
-                new Mock<IInvitationTokenService>().Object,
-                new Mock<CertifierEmailGeneratorService>().Object
+                _mockSoaService.Object,
+                _mockS3UploadService.Object,
+                _mockInvitationService.Object,
+                _mockInvitationTokenService.Object,
+                _mockCertifierEmailGeneratorService.Object
             );
             var httpContext = new DefaultHttpContext();
             httpContext.Session = new MockHttpSession();
