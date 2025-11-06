@@ -66,7 +66,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
-            return RedirectToAction("EnterHNPhase");
+            return View("EnterHNPhase");
         }
 
         [HttpGet]

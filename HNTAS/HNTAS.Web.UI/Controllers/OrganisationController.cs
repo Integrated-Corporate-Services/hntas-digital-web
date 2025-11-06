@@ -110,9 +110,15 @@ namespace HNTAS.Web.UI.Controllers
                 model.SelectedOrganisationTypeText = selectedOrganisationTypeText;
 
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, model);
+                _sessionHelper.SaveToSession<string>(HttpContext, "IsOverseasOrganisation", "false");
 
-                if (model.SelectedOrganisationType == Models.Enums.OrganisationType.OtherUkOrganisation.ToString() || model.SelectedOrganisationType == Models.Enums.OrganisationType.OverseasOrganisation.ToString())
+                if (model.SelectedOrganisationType == Models.Enums.OrganisationType.OtherUkOrganisation.ToString())
                 {
+                    return RedirectToAction("OrganisationName");
+                }
+                else if (model.SelectedOrganisationType == Models.Enums.OrganisationType.OverseasOrganisation.ToString())
+                {
+                    _sessionHelper.SaveToSession<string>(HttpContext, "IsOverseasOrganisation", "true");
                     return RedirectToAction("OrganisationName");
                 }
 
@@ -549,6 +555,8 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult OrganisationAddress()
         {
             this.ShowBackButton("OrganisationName", "Organisation");
+            string isOverseasOrganisation = _sessionHelper.GetFromSession<string>(HttpContext, "IsOverseasOrganisation") ?? "false";
+            ViewBag.IsOverseasOrganisation = isOverseasOrganisation == "true" ? true : false;
             ModelState.Clear();
             return View("OrganisationAddress", new AddressByStreetOrTownModel());           
         }
