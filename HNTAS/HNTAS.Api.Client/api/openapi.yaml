@@ -1035,7 +1035,6 @@ paths:
       - Users
   /api/Users/is-rp-user/{emailId}:
     get:
-      operationId: IsRpUser
       parameters:
       - explode: false
         in: path
@@ -1071,6 +1070,31 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/is-active-user/{emailId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: emailId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: Not Found
       tags:
       - Users
   /api/Users/onelogin/{oneLoginId}:
