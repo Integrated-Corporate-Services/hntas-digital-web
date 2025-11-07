@@ -11,6 +11,8 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersIdHeatnetworkHeatNetworkIdPatch**](UsersApi.md#apiusersidheatnetworkheatnetworkidpatch) | **PATCH** /api/Users/{id}/heatnetwork/{heatNetworkId} |  |
 | [**ApiUsersIdOrgDetailsPatch**](UsersApi.md#apiusersidorgdetailspatch) | **PATCH** /api/Users/{id}/org-details |  |
 | [**ApiUsersInitialEntryPost**](UsersApi.md#apiusersinitialentrypost) | **POST** /api/Users/initial-entry |  |
+| [**ApiUsersIsActiveUserEmailIdGet**](UsersApi.md#apiusersisactiveuseremailidget) | **GET** /api/Users/is-active-user/{emailId} |  |
+| [**ApiUsersIsRpUserEmailIdGet**](UsersApi.md#apiusersisrpuseremailidget) | **GET** /api/Users/is-rp-user/{emailId} |  |
 | [**ApiUsersManagedUsersGet**](UsersApi.md#apiusersmanagedusersget) | **GET** /api/Users/managed-users |  |
 | [**ApiUsersOrganisationExistsGet**](UsersApi.md#apiusersorganisationexistsget) | **GET** /api/Users/organisation/exists |  |
 | [**ApiUsersRegisteredUsersGet**](UsersApi.md#apiusersregisteredusersget) | **GET** /api/Users/registered-users |  |
@@ -18,7 +20,6 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersUserRolesGet**](UsersApi.md#apiusersuserrolesget) | **GET** /api/Users/user-roles |  |
 | [**GetUserById**](UsersApi.md#getuserbyid) | **GET** /api/Users/{id} |  |
 | [**GetUserByOneLoginId**](UsersApi.md#getuserbyoneloginid) | **GET** /api/Users/onelogin/{oneLoginId} |  |
-| [**IsRpUser**](UsersApi.md#isrpuser) | **GET** /api/Users/is-rp-user/{emailId} |  |
 
 <a id="apiusersacceptinvitationpatch"></a>
 # **ApiUsersAcceptInvitationPatch**
@@ -267,6 +268,77 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
+<a id="apiusersisactiveuseremailidget"></a>
+# **ApiUsersIsActiveUserEmailIdGet**
+> bool ApiUsersIsActiveUserEmailIdGet (string emailId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **emailId** | **string** |  |  |
+
+### Return type
+
+**bool**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersisrpuseremailidget"></a>
+# **ApiUsersIsRpUserEmailIdGet**
+> bool ApiUsersIsRpUserEmailIdGet (string emailId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **emailId** | **string** |  |  |
+
+### Return type
+
+**bool**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
 <a id="apiusersmanagedusersget"></a>
 # **ApiUsersManagedUsersGet**
 > List&lt;ManagedUserResponse&gt; ApiUsersManagedUsersGet (string userId = null)
@@ -490,42 +562,6 @@ No authorization required
 ### Return type
 
 [**UserResponse**](UserResponse.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
-| **404** | Not Found |  -  |
-| **500** | Internal Server Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
-
-<a id="isrpuser"></a>
-# **IsRpUser**
-> bool IsRpUser (string emailId)
-
-
-
-
-### Parameters
-
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| **emailId** | **string** |  |  |
-
-### Return type
-
-**bool**
 
 ### Authorization
 
