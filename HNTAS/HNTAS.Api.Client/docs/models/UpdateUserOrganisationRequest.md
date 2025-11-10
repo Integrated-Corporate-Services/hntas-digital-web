@@ -10,6 +10,8 @@ Name | Type | Description | Notes
 **JobTitle** | **string** |  | 
 **Role** | **UserRole** |  | 
 **Organisation** | [**OrganisationRequest**](OrganisationRequest.md) |  | 
+**UserEmail** | **string** |  | [optional] 
+**OldAddress** | [**RegisteredAddress2**](RegisteredAddress2.md) |  | [optional] 
 **LandlineNumber** | **string** |  | [optional] 
 **ContactNumberExtension** | **string** |  | [optional] 
 **MobileNumber** | **string** |  | [optional] 

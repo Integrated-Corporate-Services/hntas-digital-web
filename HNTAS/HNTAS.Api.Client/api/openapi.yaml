@@ -7,6 +7,7 @@ servers:
 tags:
 - name: HeatNetworks
 - name: Invitations
+- name: Organisations
 - name: SOA
 - name: Users
 paths:
@@ -387,6 +388,73 @@ paths:
           description: Bad Request
       tags:
       - Invitations
+  /api/Organisations/{orgId}/edit-org-details:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrganisationRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/OrganisationRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/User"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Organisations
   /api/SOA/heat-network/{hnId}:
     get:
       parameters:
@@ -1035,7 +1103,6 @@ paths:
       - Users
   /api/Users/is-rp-user/{emailId}:
     get:
-      operationId: IsRpUser
       parameters:
       - explode: false
         in: path
@@ -1071,6 +1138,31 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/is-active-user/{emailId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: emailId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: Not Found
       tags:
       - Users
   /api/Users/onelogin/{oneLoginId}:
@@ -2267,6 +2359,36 @@ components:
       - addressLine1
       - postcode
       type: object
+    RegisteredAddress2:
+      example:
+        country: country
+        town: town
+        county: county
+        postcode: postcode
+        addressLine1: addressLine1
+        addressLine2: addressLine2
+      nullable: true
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          nullable: true
+          type: string
+        town:
+          nullable: true
+          type: string
+        county:
+          nullable: true
+          type: string
+        postcode:
+          type: string
+        country:
+          nullable: true
+          type: string
+      required:
+      - addressLine1
+      - postcode
+      type: object
     SendInvitationEmailRequest:
       example:
         token: token
@@ -2765,6 +2887,13 @@ components:
       example:
         firstName: firstName
         lastName: lastName
+        oldAddress:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
         role: RegulatoryContact
         preferredContactType: Landline
         mobileNumber: mobileNumber
@@ -2780,6 +2909,7 @@ components:
           name: name
           type: UkCompaniesHouse
           companiesHouseNumber: companiesHouseNumber
+        userEmail: userEmail
         landlineNumber: landlineNumber
         contactNumberExtension: contactNumberExtension
       properties:
@@ -2787,6 +2917,11 @@ components:
           type: string
         lastName:
           type: string
+        userEmail:
+          nullable: true
+          type: string
+        oldAddress:
+          $ref: "#/components/schemas/RegisteredAddress2"
         preferredContactType:
           $ref: "#/components/schemas/PreferredContactType"
         landlineNumber:

@@ -39,11 +39,13 @@ namespace HNTAS.Api.Client.Model
         /// <param name="jobTitle">jobTitle</param>
         /// <param name="role">role</param>
         /// <param name="organisation">organisation</param>
+        /// <param name="userEmail">userEmail</param>
+        /// <param name="oldAddress">oldAddress</param>
         /// <param name="landlineNumber">landlineNumber</param>
         /// <param name="contactNumberExtension">contactNumberExtension</param>
         /// <param name="mobileNumber">mobileNumber</param>
         [JsonConstructor]
-        public UpdateUserOrganisationRequest(string firstName, string lastName, PreferredContactType preferredContactType, string jobTitle, UserRole role, OrganisationRequest organisation, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default)
+        public UpdateUserOrganisationRequest(string firstName, string lastName, PreferredContactType preferredContactType, string jobTitle, UserRole role, OrganisationRequest organisation, Option<string?> userEmail = default, Option<RegisteredAddress2?> oldAddress = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -51,6 +53,8 @@ namespace HNTAS.Api.Client.Model
             JobTitle = jobTitle;
             Role = role;
             Organisation = organisation;
+            UserEmailOption = userEmail;
+            OldAddressOption = oldAddress;
             LandlineNumberOption = landlineNumber;
             ContactNumberExtensionOption = contactNumberExtension;
             MobileNumberOption = mobileNumber;
@@ -94,6 +98,32 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("organisation")]
         public OrganisationRequest Organisation { get; set; }
+
+        /// <summary>
+        /// Used to track the state of UserEmail
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> UserEmailOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets UserEmail
+        /// </summary>
+        [JsonPropertyName("userEmail")]
+        public string? UserEmail { get { return this.UserEmailOption; } set { this.UserEmailOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of OldAddress
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<RegisteredAddress2?> OldAddressOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets OldAddress
+        /// </summary>
+        [JsonPropertyName("oldAddress")]
+        public RegisteredAddress2? OldAddress { get { return this.OldAddressOption; } set { this.OldAddressOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of LandlineNumber
@@ -148,6 +178,8 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
             sb.Append("  Role: ").Append(Role).Append("\n");
             sb.Append("  Organisation: ").Append(Organisation).Append("\n");
+            sb.Append("  UserEmail: ").Append(UserEmail).Append("\n");
+            sb.Append("  OldAddress: ").Append(OldAddress).Append("\n");
             sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
             sb.Append("  ContactNumberExtension: ").Append(ContactNumberExtension).Append("\n");
             sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
@@ -194,6 +226,8 @@ namespace HNTAS.Api.Client.Model
             Option<string?> jobTitle = default;
             Option<UserRole?> role = default;
             Option<OrganisationRequest?> organisation = default;
+            Option<string?> userEmail = default;
+            Option<RegisteredAddress2?> oldAddress = default;
             Option<string?> landlineNumber = default;
             Option<string?> contactNumberExtension = default;
             Option<string?> mobileNumber = default;
@@ -234,6 +268,12 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "organisation":
                             organisation = new Option<OrganisationRequest?>(JsonSerializer.Deserialize<OrganisationRequest>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
+                        case "userEmail":
+                            userEmail = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "oldAddress":
+                            oldAddress = new Option<RegisteredAddress2?>(JsonSerializer.Deserialize<RegisteredAddress2>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "landlineNumber":
                             landlineNumber = new Option<string?>(utf8JsonReader.GetString());
@@ -286,7 +326,7 @@ namespace HNTAS.Api.Client.Model
             if (organisation.IsSet && organisation.Value == null)
                 throw new ArgumentNullException(nameof(organisation), "Property is not nullable for class UpdateUserOrganisationRequest.");
 
-            return new UpdateUserOrganisationRequest(firstName.Value!, lastName.Value!, preferredContactType.Value!.Value!, jobTitle.Value!, role.Value!.Value!, organisation.Value!, landlineNumber, contactNumberExtension, mobileNumber);
+            return new UpdateUserOrganisationRequest(firstName.Value!, lastName.Value!, preferredContactType.Value!.Value!, jobTitle.Value!, role.Value!.Value!, organisation.Value!, userEmail, oldAddress, landlineNumber, contactNumberExtension, mobileNumber);
         }
 
         /// <summary>
@@ -339,6 +379,20 @@ namespace HNTAS.Api.Client.Model
 
             writer.WritePropertyName("organisation");
             JsonSerializer.Serialize(writer, updateUserOrganisationRequest.Organisation, jsonSerializerOptions);
+            if (updateUserOrganisationRequest.UserEmailOption.IsSet)
+                if (updateUserOrganisationRequest.UserEmailOption.Value != null)
+                    writer.WriteString("userEmail", updateUserOrganisationRequest.UserEmail);
+                else
+                    writer.WriteNull("userEmail");
+
+            if (updateUserOrganisationRequest.OldAddressOption.IsSet)
+                if (updateUserOrganisationRequest.OldAddressOption.Value != null)
+                {
+                    writer.WritePropertyName("oldAddress");
+                    JsonSerializer.Serialize(writer, updateUserOrganisationRequest.OldAddress, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("oldAddress");
             if (updateUserOrganisationRequest.LandlineNumberOption.IsSet)
                 if (updateUserOrganisationRequest.LandlineNumberOption.Value != null)
                     writer.WriteString("landlineNumber", updateUserOrganisationRequest.LandlineNumber);

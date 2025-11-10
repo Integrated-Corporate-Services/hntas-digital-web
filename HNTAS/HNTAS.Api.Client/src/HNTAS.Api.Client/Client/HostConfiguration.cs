@@ -84,6 +84,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new PreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ProblemDetailsJsonConverter());
             _jsonOptions.Converters.Add(new RegisteredAddressJsonConverter());
+            _jsonOptions.Converters.Add(new RegisteredAddress2JsonConverter());
             _jsonOptions.Converters.Add(new SendInvitationEmailRequestJsonConverter());
             _jsonOptions.Converters.Add(new SoaJsonConverter());
             _jsonOptions.Converters.Add(new Soa2JsonConverter());
@@ -116,6 +117,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<IApiFactory, ApiFactory>();
             _services.AddSingleton<HeatNetworksApiEvents>();
             _services.AddSingleton<InvitationsApiEvents>();
+            _services.AddSingleton<OrganisationsApiEvents>();
             _services.AddSingleton<SOAApiEvents>();
             _services.AddSingleton<UsersApiEvents>();
         }
@@ -137,6 +139,7 @@ namespace HNTAS.Api.Client.Client
 
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
             builders.Add(_services.AddHttpClient<IInvitationsApi, InvitationsApi>(client));
+            builders.Add(_services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client));
             builders.Add(_services.AddHttpClient<ISOAApi, SOAApi>(client));
             builders.Add(_services.AddHttpClient<IUsersApi, UsersApi>(client));
             

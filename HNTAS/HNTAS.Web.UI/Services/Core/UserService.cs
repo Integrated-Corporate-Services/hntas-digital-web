@@ -303,7 +303,7 @@ namespace HNTAS.Web.UI.Services.Core
 
         public async Task<bool?> IsRpUserAsync(string emailId)
         {
-            var users = await _usersApi.IsRpUserAsync(emailId);
+            var users = await _usersApi.ApiUsersIsRpUserEmailIdGetAsync(emailId);
             if (users.IsOk)
             {
                 return users.Ok();

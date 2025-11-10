@@ -5,6 +5,7 @@ api/openapi.yaml
 appveyor.yml
 docs/apis/HeatNetworksApi.md
 docs/apis/InvitationsApi.md
+docs/apis/OrganisationsApi.md
 docs/apis/SOAApi.md
 docs/apis/UsersApi.md
 docs/models/AddInvitationRequest.md
@@ -38,6 +39,7 @@ docs/models/OrganisationType.md
 docs/models/PreferredContactType.md
 docs/models/ProblemDetails.md
 docs/models/RegisteredAddress.md
+docs/models/RegisteredAddress2.md
 docs/models/SendInvitationEmailRequest.md
 docs/models/Soa.md
 docs/models/Soa2.md
@@ -69,6 +71,7 @@ src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
 src/HNTAS.Api.Client/Api/InvitationsApi.cs
+src/HNTAS.Api.Client/Api/OrganisationsApi.cs
 src/HNTAS.Api.Client/Api/SOAApi.cs
 src/HNTAS.Api.Client/Api/UsersApi.cs
 src/HNTAS.Api.Client/Client/ApiException.cs
@@ -124,6 +127,7 @@ src/HNTAS.Api.Client/Model/OrganisationType.cs
 src/HNTAS.Api.Client/Model/PreferredContactType.cs
 src/HNTAS.Api.Client/Model/ProblemDetails.cs
 src/HNTAS.Api.Client/Model/RegisteredAddress.cs
+src/HNTAS.Api.Client/Model/RegisteredAddress2.cs
 src/HNTAS.Api.Client/Model/SendInvitationEmailRequest.cs
 src/HNTAS.Api.Client/Model/Soa.cs
 src/HNTAS.Api.Client/Model/Soa2.cs
