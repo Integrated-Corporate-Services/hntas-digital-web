@@ -26,16 +26,16 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ILogger<OrganisationController> _logger;
         private readonly IUserService _userService;
         private readonly ISessionHelper _sessionHelper;
-        private readonly IOrganisationsApi _organisationsApi;
+        private readonly IOrganisationService _organisationsService;
 
-        public OrganisationController(ICompaniesHouseService companiesHouseService, ILogger<OrganisationController> logger, IUserService userService, ISessionHelper sessionHelper, IAddressLookupService addressLookUpService, IOrganisationsApi organisationsApi)
+        public OrganisationController(ICompaniesHouseService companiesHouseService, ILogger<OrganisationController> logger, IUserService userService, ISessionHelper sessionHelper, IAddressLookupService addressLookUpService, IOrganisationService organisationsService)
         {
             _companiesHouseService = companiesHouseService;
             _logger = logger;
             _userService = userService;
             _sessionHelper = sessionHelper;
             _addressLookUpService = addressLookUpService;
-            _organisationsApi = organisationsApi ?? throw new ArgumentNullException(nameof(organisationsApi));
+            _organisationsService = organisationsService;
         }
 
         public string CapitalizeCommaSeparated(string input) {
@@ -710,13 +710,6 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditOrganisationDetails()
-        {
-            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, "true");
-            return RedirectToAction("OrganisationType");
-        }
-
-        [HttpGet]
         public async Task<IActionResult> UpdateOrganisationDetailsConfirmation()
         {
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
@@ -769,7 +762,7 @@ namespace HNTAS.Web.UI.Controllers
 
             try
             {
-                await _organisationsApi.ApiOrganisationsOrgIdEditOrgDetailsPatchOrDefaultAsync(orgId, orgRequest, userId);
+                await _organisationsService.EditOrganisationDetails(orgId, orgRequest, userId);
 
                 _logger.LogInformation("UpdateOrganisationDetailsConfirmation: Successfully updated organisation for user {UserId}. OrgId: {OrgId}", userId, orgId);
                 

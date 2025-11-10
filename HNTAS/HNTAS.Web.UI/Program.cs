@@ -151,6 +151,7 @@ builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnGetAttribute>();
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<ISoaService, SoaService>();
 builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
