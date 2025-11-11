@@ -2,6 +2,7 @@
 {
     public class OrganisationDetailsModel
     {
+        public string? OrganisationId { get; set; }
         public string OrganisationName { get; set; }
         public string RPEmail { get; set; }
         public string? AddressLine1 { get; set; }

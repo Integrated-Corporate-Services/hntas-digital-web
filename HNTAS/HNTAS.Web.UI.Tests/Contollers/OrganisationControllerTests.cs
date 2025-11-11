@@ -1,10 +1,12 @@
-﻿using HNTAS.Web.UI.Controllers;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.CompaniesHouse;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
+using HNTAS.Web.UI.Tests.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,33 +18,37 @@ namespace HNTAS.Web.UI.Tests.Contollers
 {
     public class OrganisationControllerTests
     {
-        private readonly Mock<ICompaniesHouseService> _companiesHouseServiceMock;
-        private readonly Mock<ILogger<OrganisationController>> _loggerMock;
-        private readonly Mock<IUserService> _userServiceMock;
-        private readonly Mock<ISessionHelper> _sessionHelperMock;
-        private readonly Mock<IAddressLookupService> _addressLookUpServiceMock;
+        private readonly Mock<ICompaniesHouseService> _mockCompaniesHouseService;
+        private readonly Mock<ILogger<OrganisationController>> _mockLogger;
+        private readonly Mock<IUserService> _mockUserService;
+        private readonly Mock<ISessionHelper> _mockSessionHelper;
+        private readonly Mock<IAddressLookupService> _mockAddressLookUpService;
+        private readonly Mock<IOrganisationService> _mockOrganisationService;
+        private readonly Mock<ICountriesAndTerritoriesService> _mockCountriesAndTerritoriesService;
         private readonly OrganisationController _controller;
 
         public OrganisationControllerTests()
         {
-            _companiesHouseServiceMock = new Mock<ICompaniesHouseService>();
-            _loggerMock = new Mock<ILogger<OrganisationController>>();
-            _userServiceMock = new Mock<IUserService>();
-            _sessionHelperMock = new Mock<ISessionHelper>();
-            _addressLookUpServiceMock = new Mock<IAddressLookupService>();
+            _mockCompaniesHouseService = new Mock<ICompaniesHouseService>();
+            _mockLogger = new Mock<ILogger<OrganisationController>>();
+            _mockUserService = new Mock<IUserService>();
+            _mockSessionHelper = new Mock<ISessionHelper>();
+            _mockAddressLookUpService = new Mock<IAddressLookupService>();
+            _mockOrganisationService = new Mock<IOrganisationService>();
+            _mockCountriesAndTerritoriesService = new Mock<ICountriesAndTerritoriesService>();
             _controller = CreateController();
         }
 
         private OrganisationController CreateController()
         {
             var controller = new OrganisationController(
-                _companiesHouseServiceMock.Object,
-                _loggerMock.Object,
-                _userServiceMock.Object,
-                _sessionHelperMock.Object,
-                _addressLookUpServiceMock.Object,
-                null,
-                null
+                _mockCompaniesHouseService.Object,
+                _mockLogger.Object,
+                _mockUserService.Object,
+                _mockSessionHelper.Object,
+                _mockAddressLookUpService.Object,
+                _mockCountriesAndTerritoriesService.Object,
+                _mockOrganisationService.Object
             );
 
             var httpContext = new DefaultHttpContext();
@@ -78,8 +84,8 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var redirect = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("OrganisationType", redirect.ActionName);
 
-            _sessionHelperMock.Verify(x => x.ClearAllFlowRelatedSessionData(httpContext), Times.Once);
-            _sessionHelperMock.Verify(x => x.SetIsCheckAnswerFlow(httpContext, false), Times.Once);
+            _mockSessionHelper.Verify(x => x.ClearAllFlowRelatedSessionData(httpContext), Times.Once);
+            _mockSessionHelper.Verify(x => x.SetIsCheckAnswerFlow(httpContext, false), Times.Once);
         }
 
         [Fact]
@@ -91,11 +97,11 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 SelectedOrganisationType = "UkCompaniesHouse"
             };
 
-            _sessionHelperMock
+            _mockSessionHelper
                 .Setup(x => x.GetFromSession<OrganisationModel>(_controller.ControllerContext.HttpContext, SessionKeys.OrganisationCreation_SessionKey))
                 .Returns(expectedModel);
 
-            _sessionHelperMock
+            _mockSessionHelper
                 .Setup(x => x.GetIsCheckAnswerFlow(_controller.ControllerContext.HttpContext))
                 .Returns(false);
             _controller.Url = SetUpBackLink("Index", "Home").Object;
@@ -159,7 +165,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         public async Task OrganisationAddressByPostcode_ValidPostcode_ReturnsSearchResultsView()
         {
             // Arrange
-            _addressLookUpServiceMock.Setup(s => s.PostcodeLookupAsync("UB3 4JT"))
+            _mockAddressLookUpService.Setup(s => s.PostcodeLookupAsync("UB3 4JT"))
                 .ReturnsAsync(new SearchAddressByPostcodeModel
                 {
                     Postcode = "UB3 4JT",
@@ -184,7 +190,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         public void OrganisationAddressByPostcode_ReturnsNewModel_WhenSessionIsNull()
         {
             // Arrange
-            _sessionHelperMock.Setup(s => s.GetFromSession<SearchAddressByPostcodeModel>(
+            _mockSessionHelper.Setup(s => s.GetFromSession<SearchAddressByPostcodeModel>(
                 It.IsAny<HttpContext>(), It.IsAny<string>()))
                 .Returns((SearchAddressByPostcodeModel)null);
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
@@ -202,7 +208,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         public async Task OrganisationAddressByPostcode_ApiThrowsException_ReturnsSameViewWithError()
         {
             // Arrange
-            _addressLookUpServiceMock.Setup(s => s.PostcodeLookupAsync(It.IsAny<string>()))
+            _mockAddressLookUpService.Setup(s => s.PostcodeLookupAsync(It.IsAny<string>()))
                 .ThrowsAsync(new HttpRequestException("API failure"));
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
             // Act
@@ -241,7 +247,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var selectedAddress = "123 Baker Street, London, NW1 6XE";
             var sessionModel = new SearchAddressByPostcodeModel();
 
-            _sessionHelperMock
+            _mockSessionHelper
                 .Setup(x => x.GetFromSession<SearchAddressByPostcodeModel>(
                     It.IsAny<HttpContext>(),
                     SessionKeys.SearchAddressByPostcodeModelSessionKey))
@@ -254,7 +260,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("SaveOrganisationAddressByPostcode", redirectResult.ActionName);
 
-            _sessionHelperMock.Verify(x => x.SaveToSession<AddressByStreetOrTownModel>(
+            _mockSessionHelper.Verify(x => x.SaveToSession<AddressByStreetOrTownModel>(
                 It.IsAny<HttpContext>(),
                 SessionKeys.AddressByStreetOrTownModelSessionKey,
                 It.IsAny<AddressByStreetOrTownModel>()), Times.Once);
@@ -267,7 +273,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var malformedAddress = "OnlyStreet"; // Not enough parts
             var sessionModel = new SearchAddressByPostcodeModel();
 
-            _sessionHelperMock
+            _mockSessionHelper
                 .Setup(x => x.GetFromSession<SearchAddressByPostcodeModel>(
                     It.IsAny<HttpContext>(),
                     SessionKeys.SearchAddressByPostcodeModelSessionKey))
@@ -289,12 +295,12 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var addressModel = new AddressByStreetOrTownModel { Fulladdress = "123 Baker Street, London, NW1 6XE" };
             var organisationModel = new OrganisationModel { CompanyDetails = new CompanyDetailsModel { RegisteredOfficeAddress = new RegisteredOfficeAddressModel() } };
 
-            _sessionHelperMock
+            _mockSessionHelper
                 .Setup(x => x.GetFromSession<AddressByStreetOrTownModel>(
                     It.IsAny<HttpContext>(), SessionKeys.AddressByStreetOrTownModelSessionKey))
                 .Returns(addressModel);
 
-            _sessionHelperMock
+            _mockSessionHelper
                 .Setup(x => x.GetFromSession<OrganisationModel>(
                     It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
                 .Returns(organisationModel);
@@ -306,7 +312,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("CompanyConfirm", redirectResult.ActionName);
 
-            _sessionHelperMock.Verify(x => x.SaveToSession(
+            _mockSessionHelper.Verify(x => x.SaveToSession(
                 It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey, organisationModel), Times.Once);
 
 
@@ -322,12 +328,12 @@ namespace HNTAS.Web.UI.Tests.Contollers
 
             var addressModel = new AddressByStreetOrTownModel { Fulladdress = "123 Baker Street, London, NW1 6XE" };
 
-            _sessionHelperMock
+            _mockSessionHelper
                 .Setup(x => x.GetFromSession<AddressByStreetOrTownModel>(
                     It.IsAny<HttpContext>(), SessionKeys.AddressByStreetOrTownModelSessionKey))
                 .Returns(addressModel);
 
-            _sessionHelperMock
+            _mockSessionHelper
                 .Setup(x => x.GetFromSession<OrganisationModel>(
                     It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
                 .Returns((OrganisationModel)null); // Simulate missing organisation model
@@ -346,7 +352,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         }
 
         [Fact]
-        public void SaveOrganisationAddress_ValidPostcode_RedirectsToCompanyConfirm()
+        public async Task SaveOrganisationAddress_ValidPostcode_RedirectsToCompanyConfirm()
         {
             // Arrange
 
@@ -359,14 +365,14 @@ namespace HNTAS.Web.UI.Tests.Contollers
             };
             var organisationModel = new OrganisationModel { CompanyDetails = new CompanyDetailsModel { RegisteredOfficeAddress = new RegisteredOfficeAddressModel() } };
 
-            _sessionHelperMock
+            _mockSessionHelper
                 .Setup(x => x.GetFromSession<OrganisationModel>(
                     It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
                 .Returns(organisationModel);
 
 
             // Act
-            var result = _controller.SaveOrganisationAddressAsync(model);
+            var result = await _controller.SaveOrganisationAddressAsync(model);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
@@ -375,7 +381,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         }
 
         [Fact]
-        public void SaveOrganisationAddress_InvalidPostcode_ReturnsViewWithError()
+        public async Task SaveOrganisationAddress_InvalidPostcode_ReturnsViewWithError()
         {
             // Arrange
             var model = new AddressByStreetOrTownModel
@@ -388,7 +394,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
 
             // Act
-            var result = _controller.SaveOrganisationAddressAsync(model);
+            var result = await _controller.SaveOrganisationAddressAsync(model);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -396,6 +402,70 @@ namespace HNTAS.Web.UI.Tests.Contollers
             Assert.False(_controller.ModelState.IsValid);
             Assert.True(_controller.ModelState.ContainsKey(nameof(model.Postalcode)));
             Assert.Equal("Please enter a valid UK postcode.", _controller.ModelState[nameof(model.Postalcode)].Errors.First().ErrorMessage);
+        }
+
+        [Fact]
+        public async Task UpdateOrganisationDetailsConfirmation_ValidSessionData_ReturnsView()
+        {
+            // Arrange
+
+            var userId = "user123";
+            var orgId = "org456";
+            var organisationModel = new OrganisationModel
+            {
+                CompanyDetails = new CompanyDetailsModel
+                {
+                    Title = "Test Company",
+                    RegisteredOfficeAddress = new RegisteredOfficeAddressModel
+                    {
+                        AddressLine1 = "123 Street",
+                        Locality = "Town",
+                        PostalCode = "AB12CD",
+                        Country = "UK"
+                    }
+                },
+                SelectedOrganisationType = "PrivateLimitedCompany",
+                CompanyNumber = "12345678"
+            };
+
+            var userDetails = TestingUtility.MockValid_UserService_GetUserDetails(userId);
+
+            _mockSessionHelper.Setup(x => x.GetFromSession<OrganisationModel>(It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
+                .Returns(organisationModel);
+            _mockSessionHelper.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns(userId);
+            _mockUserService.Setup(x => x.GetUserDetails(userId)).ReturnsAsync(userDetails);
+            _mockOrganisationService
+                .Setup(x => x.EditOrganisationDetails(orgId, It.IsAny<OrganisationRequest>(), userId))
+                .ReturnsAsync(new User());
+
+
+
+            // Act
+            var result = await _controller.UpdateOrganisationDetailsConfirmation();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public async Task UpdateOrganisationDetailsConfirmation_MissingCompanyDetails_ReturnsBadRequest()
+        {
+            // Arrange            
+            var organisationModel = new OrganisationModel
+            {
+                CompanyDetails = null,
+                SelectedOrganisationType = "PrivateLimitedCompany"
+            };
+            _mockSessionHelper.Setup(x => x.GetFromSession<OrganisationModel>(It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
+                .Returns(organisationModel);
+
+            // Act
+            var result = await _controller.UpdateOrganisationDetailsConfirmation();
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("Required session data is missing.", badRequestResult.Value);
         }
     }
 }

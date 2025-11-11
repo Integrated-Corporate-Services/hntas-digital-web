@@ -64,6 +64,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, "false");
             return RedirectToAction("OrganisationType");
         }
 
@@ -219,6 +220,11 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> ConfirmAndContinue()
         {
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+            var IsEditJourney = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey);
+            if (IsEditJourney == "true")
+            {
+                return RedirectToAction("UpdateOrganisationDetailsConfirmation");
+            }
 
             if (organisationModel?.CompanyDetails == null)
                 return RedirectToAction("CompanyNumber");
@@ -774,6 +780,77 @@ namespace HNTAS.Web.UI.Controllers
                 new SelectListItem { Value = Models.Enums.OrganisationType.OtherUkOrganisation.ToString(), Text = "Other UK organisation" },
                 new SelectListItem { Value = Models.Enums.OrganisationType.OverseasOrganisation.ToString(), Text = "Overseas organisation" }
             ];
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateOrganisationDetailsConfirmation()
+        {
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var userDetails = await _userService.GetUserDetails(userId);
+            var orgId = userDetails?.Organisation.OrgId;
+            var oldAddress = userDetails?.Organisation.RegisteredAddress;
+
+            if (organisationModel?.CompanyDetails == null)
+            {
+                _logger.LogWarning("UpdateOrganisationDetailsConfirmation: Missing session data (organisation or user).");
+                // Clear any flow data to ensure clean state and redirect to start of flow
+                _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+                _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
+                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, "false");
+                return BadRequest("Required session data is missing.");
+            }
+
+            // Build registered address
+            CompanyDetailsModel company = organisationModel.CompanyDetails;
+            RegisteredOfficeAddressModel regAddrModel = company.RegisteredOfficeAddress;
+            var regAddress = new RegisteredAddress(
+                addressLine1: regAddrModel?.AddressLine1,
+                addressLine2: null,
+                town: regAddrModel?.Locality,
+                postcode: regAddrModel?.PostalCode,
+                country: regAddrModel?.Country
+            );
+
+            // Map organisation type (safe parse)
+            OrganisationType apiOrgType;
+            try
+            {
+                apiOrgType = (OrganisationType)Enum.Parse(typeof(Models.Enums.OrganisationType), organisationModel.SelectedOrganisationType);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "UpdateOrganisationDetailsConfirmation: Failed to parse organisation type '{OrgType}'", organisationModel.SelectedOrganisationType);
+                ModelState.AddModelError(string.Empty, "Unable to determine organisation type.");
+                return View();
+            }
+
+            // Build organisation request
+            var orgRequest = new OrganisationRequest(
+                name: company.Title,
+                type: apiOrgType,
+                companiesHouseNumber: organisationModel.CompanyNumber,
+                registeredAddress: regAddress
+            );
+
+            try
+            {
+                await _organisationService.EditOrganisationDetails(orgId, orgRequest, userId);
+
+                _logger.LogInformation("UpdateOrganisationDetailsConfirmation: Successfully updated organisation for user {UserId}. OrgId: {OrgId}", userId, orgId);
+
+                // Clear flow session data and reset flags
+                _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+                _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
+                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, "false");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "UpdateOrganisationDetailsConfirmation: An unexpected error occurred while updating organisation for user {UserId}.", userId);
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred while updating organisation details. Please try again later.");
+                return View();
+            }
         }
     }
 }

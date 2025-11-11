@@ -51,15 +51,16 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-        /// Test ApiOrganisationsExistsByDetailsGet
+        /// Test ApiOrganisationsOrgIdEditOrgDetailsPatch
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiOrganisationsExistsByDetailsGetAsyncTest()
+        public async Task ApiOrganisationsOrgIdEditOrgDetailsPatchAsyncTest()
         {
-            Client.Option<string> name = default!;
-            Client.Option<string> postCode = default!;
-            Client.Option<string> country = default!;
-            await _instance.ApiOrganisationsExistsByDetailsGetAsync(name, postCode, country);
+            string orgId = default!;
+            OrganisationRequest organisationRequest = default!;
+            var response = await _instance.ApiOrganisationsOrgIdEditOrgDetailsPatchAsync(orgId, organisationRequest);
+            var model = response.Ok();
+            Assert.IsType<User>(model);
         }
     }
 }

@@ -109,6 +109,12 @@ builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddSingleton<OrganisationsApiEvents>();
+builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
 
 builder.Services.AddSingleton<HeatNetworksApiEvents>();
 builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
@@ -160,6 +166,7 @@ builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnGetAttribute>();
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<ISoaService, SoaService>();
 builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
@@ -167,11 +174,8 @@ builder.Services.AddScoped<ICountriesAndTerritoriesService, CountriesAndTerritor
 builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
-
 builder.Services.AddScoped<IAddressLookupService, AddressLookupService>();
-
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
-
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
 
