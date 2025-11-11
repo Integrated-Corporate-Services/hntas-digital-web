@@ -3,11 +3,13 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize]
     public class HeatNetworkController : Controller
     {
 

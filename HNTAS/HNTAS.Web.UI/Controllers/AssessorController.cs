@@ -4,11 +4,13 @@ using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize]
     public class AssessorController : Controller
     {
         private readonly ILogger<AssessorController> _logger;
