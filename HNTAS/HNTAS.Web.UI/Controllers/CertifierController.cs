@@ -43,7 +43,6 @@ namespace HNTAS.Web.UI.Controllers
             {
                 var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
                 var hnDetails = await _heatNetworkService.GetAsync(hnid?.ToUpper());
-                _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnDetails.Name);
                 
 
                 if (user == null || hnDetails == null || hnDetails.Soa == null)
