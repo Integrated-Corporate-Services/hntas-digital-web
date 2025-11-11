@@ -5,6 +5,7 @@ api/openapi.yaml
 appveyor.yml
 docs/apis/HeatNetworksApi.md
 docs/apis/InvitationsApi.md
+docs/apis/OrganisationsApi.md
 docs/apis/SOAApi.md
 docs/apis/UsersApi.md
 docs/models/AddInvitationRequest.md
@@ -69,6 +70,7 @@ src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
 src/HNTAS.Api.Client/Api/InvitationsApi.cs
+src/HNTAS.Api.Client/Api/OrganisationsApi.cs
 src/HNTAS.Api.Client/Api/SOAApi.cs
 src/HNTAS.Api.Client/Api/UsersApi.cs
 src/HNTAS.Api.Client/Client/ApiException.cs
