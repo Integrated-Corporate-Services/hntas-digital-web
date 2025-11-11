@@ -61,6 +61,33 @@ namespace HNTAS.Api.Client.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiOrganisationsExistsByDetailsGetApiResponse"/>?&gt;</returns>
         Task<IApiOrganisationsExistsByDetailsGetApiResponse?> ApiOrganisationsExistsByDetailsGetOrDefaultAsync(Option<string> name = default, Option<string> postCode = default, Option<string> country = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="orgId"></param>
+        /// <param name="organisationRequest"></param>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse"/>&gt;</returns>
+        Task<IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse> ApiOrganisationsOrgIdEditOrgDetailsPatchAsync(string orgId, OrganisationRequest organisationRequest, Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="orgId"></param>
+        /// <param name="organisationRequest"></param>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse"/>?&gt;</returns>
+        Task<IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse?> ApiOrganisationsOrgIdEditOrgDetailsPatchOrDefaultAsync(string orgId, OrganisationRequest organisationRequest, Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -79,6 +106,36 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <returns></returns>
         bool IsNotFound { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse"/>
+    /// </summary>
+    public interface IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.User?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
     }
 
     /// <summary>
@@ -104,6 +161,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiOrganisationsExistsByDetailsGet(Exception exception)
         {
             OnErrorApiOrganisationsExistsByDetailsGet?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiOrganisationsOrgIdEditOrgDetailsPatch;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiOrganisationsOrgIdEditOrgDetailsPatch;
+
+        internal void ExecuteOnApiOrganisationsOrgIdEditOrgDetailsPatch(OrganisationsApi.ApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse apiResponse)
+        {
+            OnApiOrganisationsOrgIdEditOrgDetailsPatch?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiOrganisationsOrgIdEditOrgDetailsPatch(Exception exception)
+        {
+            OnErrorApiOrganisationsOrgIdEditOrgDetailsPatch?.Invoke(this, new ExceptionEventArgs(exception));
         }
     }
 
@@ -427,6 +504,351 @@ namespace HNTAS.Api.Client.Api
 
                 return result != null;
             }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiOrganisationsOrgIdEditOrgDetailsPatch(ref string orgId, OrganisationRequest organisationRequest, ref Option<string> userId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="orgId"></param>
+        /// <param name="organisationRequest"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private void ValidateApiOrganisationsOrgIdEditOrgDetailsPatch(string orgId, OrganisationRequest organisationRequest, Option<string> userId)
+        {
+            if (orgId == null)
+                throw new ArgumentNullException(nameof(orgId));
+
+            if (organisationRequest == null)
+                throw new ArgumentNullException(nameof(organisationRequest));
+
+            if (userId.IsSet && userId.Value == null)
+                throw new ArgumentNullException(nameof(userId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="orgId"></param>
+        /// <param name="organisationRequest"></param>
+        /// <param name="userId"></param>
+        private void AfterApiOrganisationsOrgIdEditOrgDetailsPatchDefaultImplementation(IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse apiResponseLocalVar, string orgId, OrganisationRequest organisationRequest, Option<string> userId)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiOrganisationsOrgIdEditOrgDetailsPatch(ref suppressDefaultLog, apiResponseLocalVar, orgId, organisationRequest, userId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="orgId"></param>
+        /// <param name="organisationRequest"></param>
+        /// <param name="userId"></param>
+        partial void AfterApiOrganisationsOrgIdEditOrgDetailsPatch(ref bool suppressDefaultLog, IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse apiResponseLocalVar, string orgId, OrganisationRequest organisationRequest, Option<string> userId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="orgId"></param>
+        /// <param name="organisationRequest"></param>
+        /// <param name="userId"></param>
+        private void OnErrorApiOrganisationsOrgIdEditOrgDetailsPatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string orgId, OrganisationRequest organisationRequest, Option<string> userId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiOrganisationsOrgIdEditOrgDetailsPatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, orgId, organisationRequest, userId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="orgId"></param>
+        /// <param name="organisationRequest"></param>
+        /// <param name="userId"></param>
+        partial void OnErrorApiOrganisationsOrgIdEditOrgDetailsPatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string orgId, OrganisationRequest organisationRequest, Option<string> userId);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="orgId"></param>
+        /// <param name="organisationRequest"></param>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse"/>&gt;</returns>
+        public async Task<IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse?> ApiOrganisationsOrgIdEditOrgDetailsPatchOrDefaultAsync(string orgId, OrganisationRequest organisationRequest, Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiOrganisationsOrgIdEditOrgDetailsPatchAsync(orgId, organisationRequest, userId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="orgId"></param>
+        /// <param name="organisationRequest"></param>
+        /// <param name="userId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse"/>&gt;</returns>
+        public async Task<IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse> ApiOrganisationsOrgIdEditOrgDetailsPatchAsync(string orgId, OrganisationRequest organisationRequest, Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiOrganisationsOrgIdEditOrgDetailsPatch(orgId, organisationRequest, userId);
+
+                FormatApiOrganisationsOrgIdEditOrgDetailsPatch(ref orgId, organisationRequest, ref userId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Organisations/{orgId}/edit-org-details"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Organisations/{orgId}/edit-org-details");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BorgId%7D", Uri.EscapeDataString(orgId.ToString()));
+
+                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    if (userId.IsSet)
+                        parseQueryStringLocalVar["userId"] = ClientUtils.ParameterToString(userId.Value);
+
+                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
+
+                    httpRequestMessageLocalVar.Content = (organisationRequest as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(organisationRequest, _jsonSerializerOptions));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Patch;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse>();
+
+                        ApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Organisations/{orgId}/edit-org-details", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiOrganisationsOrgIdEditOrgDetailsPatchDefaultImplementation(apiResponseLocalVar, orgId, organisationRequest, userId);
+
+                        Events.ExecuteOnApiOrganisationsOrgIdEditOrgDetailsPatch(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiOrganisationsOrgIdEditOrgDetailsPatchDefaultImplementation(e, "/api/Organisations/{orgId}/edit-org-details", uriBuilderLocalVar.Path, orgId, organisationRequest, userId);
+                Events.ExecuteOnErrorApiOrganisationsOrgIdEditOrgDetailsPatch(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse"/>
+        /// </summary>
+        public partial class ApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse(ILogger<ApiOrganisationsOrgIdEditOrgDetailsPatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.User? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.User>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.User? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {
