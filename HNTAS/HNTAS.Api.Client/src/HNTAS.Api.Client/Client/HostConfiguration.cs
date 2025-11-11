@@ -84,7 +84,6 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new PreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ProblemDetailsJsonConverter());
             _jsonOptions.Converters.Add(new RegisteredAddressJsonConverter());
-            _jsonOptions.Converters.Add(new RegisteredAddress2JsonConverter());
             _jsonOptions.Converters.Add(new SendInvitationEmailRequestJsonConverter());
             _jsonOptions.Converters.Add(new SoaJsonConverter());
             _jsonOptions.Converters.Add(new Soa2JsonConverter());

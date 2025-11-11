@@ -2359,36 +2359,6 @@ components:
       - addressLine1
       - postcode
       type: object
-    RegisteredAddress2:
-      example:
-        country: country
-        town: town
-        county: county
-        postcode: postcode
-        addressLine1: addressLine1
-        addressLine2: addressLine2
-      nullable: true
-      properties:
-        addressLine1:
-          type: string
-        addressLine2:
-          nullable: true
-          type: string
-        town:
-          nullable: true
-          type: string
-        county:
-          nullable: true
-          type: string
-        postcode:
-          type: string
-        country:
-          nullable: true
-          type: string
-      required:
-      - addressLine1
-      - postcode
-      type: object
     SendInvitationEmailRequest:
       example:
         token: token
@@ -2887,13 +2857,6 @@ components:
       example:
         firstName: firstName
         lastName: lastName
-        oldAddress:
-          country: country
-          town: town
-          county: county
-          postcode: postcode
-          addressLine1: addressLine1
-          addressLine2: addressLine2
         role: RegulatoryContact
         preferredContactType: Landline
         mobileNumber: mobileNumber
@@ -2909,7 +2872,6 @@ components:
           name: name
           type: UkCompaniesHouse
           companiesHouseNumber: companiesHouseNumber
-        userEmail: userEmail
         landlineNumber: landlineNumber
         contactNumberExtension: contactNumberExtension
       properties:
@@ -2917,11 +2879,6 @@ components:
           type: string
         lastName:
           type: string
-        userEmail:
-          nullable: true
-          type: string
-        oldAddress:
-          $ref: "#/components/schemas/RegisteredAddress2"
         preferredContactType:
           $ref: "#/components/schemas/PreferredContactType"
         landlineNumber:

@@ -39,7 +39,6 @@ docs/models/OrganisationType.md
 docs/models/PreferredContactType.md
 docs/models/ProblemDetails.md
 docs/models/RegisteredAddress.md
-docs/models/RegisteredAddress2.md
 docs/models/SendInvitationEmailRequest.md
 docs/models/Soa.md
 docs/models/Soa2.md
@@ -127,7 +126,6 @@ src/HNTAS.Api.Client/Model/OrganisationType.cs
 src/HNTAS.Api.Client/Model/PreferredContactType.cs
 src/HNTAS.Api.Client/Model/ProblemDetails.cs
 src/HNTAS.Api.Client/Model/RegisteredAddress.cs
-src/HNTAS.Api.Client/Model/RegisteredAddress2.cs
 src/HNTAS.Api.Client/Model/SendInvitationEmailRequest.cs
 src/HNTAS.Api.Client/Model/Soa.cs
 src/HNTAS.Api.Client/Model/Soa2.cs

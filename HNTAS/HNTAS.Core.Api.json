@@ -3042,38 +3042,6 @@
           }
         }
       },
-      "RegisteredAddress2": {
-        "required": [
-          "addressLine1",
-          "postcode"
-        ],
-        "type": "object",
-        "properties": {
-          "addressLine1": {
-            "type": "string"
-          },
-          "addressLine2": {
-            "type": "string",
-            "nullable": true
-          },
-          "town": {
-            "type": "string",
-            "nullable": true
-          },
-          "county": {
-            "type": "string",
-            "nullable": true
-          },
-          "postcode": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "nullable": true
-      },
       "SendInvitationEmailRequest": {
         "required": [
           "token"
@@ -3357,13 +3325,6 @@
           },
           "lastName": {
             "type": "string"
-          },
-          "userEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "oldAddress": {
-            "$ref": "#/components/schemas/RegisteredAddress2"
           },
           "preferredContactType": {
             "$ref": "#/components/schemas/PreferredContactType"
