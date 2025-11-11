@@ -84,17 +84,22 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("UserAccount");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             UserDetailsResponse user;
+            bool isUserAnRP;
             try
             {
                 user = await RetrieveUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+                isUserAnRP = await _userService.IsRpUserAsync(user.EmailId) ?? false;
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new OrganisationDetailsModel());
             }
+            _sessionHelper.SaveToSession<string>(HttpContext, "IsUserAnRP", isUserAnRP.ToString());
+
             var model = new OrganisationDetailsModel
             {
+                OrganisationId = user.Organisation.OrgId,
                 OrganisationName = user.Organisation.Name,
                 RPEmail = user.EmailId,
                 AddressLine1 = user.Organisation?.RegisteredAddress?.AddressLine1,
@@ -106,6 +111,13 @@ namespace HNTAS.Web.UI.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult EditOrganisationDetails()
+        {
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, "true");
+            return RedirectToAction("OrganisationType", "Organisation");
         }
     }
 }

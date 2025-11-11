@@ -393,7 +393,42 @@ namespace HNTAS.Web.UI.Tests.Contollers
             Assert.NotEmpty(model.ElementDocuments);
             Assert.NotNull(model.AssessmentPlanDocument);
         }
-        
+
+        // This test case is commented out because the expected behavior when Soa is null is not defined.
+        //[Fact]
+        //public async Task DownloadTheDocuments_ReturnsViewResult_WithEmptyModel_WhenHeatNetworkIsNull()
+        //{
+        //    // Arrange
+        //    var hnId = "HN123";
+        //    var phase = 1;
+        //    var hnDetails = new HeatNetworkResponse
+        //    {
+        //        Id = "heat-network-id",
+        //        HnId = hnId,
+        //        Location = "Test Location",
+        //        Name = "Test Network",
+        //        Pathway = "1",
+        //        Soa = new SoaResponse()
+        //        {
+        //            JourneyData = null
+        //        } // Simulate missing Soa
+        //    };
+
+        //    _mockSessionHelper.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.HnId))
+        //                      .Returns(hnId);
+
+        //    _mockHeatNetworkService.Setup(h => h.GetAsync(hnId))
+        //                           .ReturnsAsync(hnDetails); // Simulate missing data
+
+        //    var controller = CreateController();
+        //    controller.Url = new Mock<IUrlHelper>().Object;
+
+        //    // Act
+        //    var result = await controller.DownloadTheDocuments(phase);
+
+        //    // Assert
+        //    // what to assert here?
+        //}
 
         [Fact]
         public async Task SubmitDownloadTheDocuments_RedirectsToUploadSOC_WhenPhaseIsValid()

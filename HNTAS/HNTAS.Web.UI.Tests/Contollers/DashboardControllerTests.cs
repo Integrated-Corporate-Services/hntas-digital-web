@@ -43,13 +43,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
             {
                 HttpContext = new DefaultHttpContext()
             };
-            var urlHelperMock = new Mock<IUrlHelper>();
-            urlHelperMock
-                .Setup(x => x.Action(It.IsAny<UrlActionContext>()))
-                .Returns("/mocked-url");
-            controller.Url = urlHelperMock.Object;
-
-            // Setup TempData for error message assertions
             var tempData = new TempDataDictionary(controller.ControllerContext.HttpContext, Mock.Of<ITempDataProvider>());
             controller.TempData = tempData;
 
@@ -70,7 +63,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task Get_UserAccount_UserNotFound_ReturnsViewWithErrorMessage()
         {
             // Arrange
-            var controller = CreateController();
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<string>(
                     It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
@@ -86,14 +78,12 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Equal("Unable to retrieve user information. Please try again later.", _controller.TempData["ErrorMessage"]);
             Assert.IsType<DashboardModel>(viewResult.Model);
             var model = (DashboardModel)viewResult.Model;
-            Assert.False(model.HasHeatNetworks);
         }
 
         [Fact]
         public async Task Get_UserAccount_UserHasNoOrganisation_ReturnsViewWithErrorMessage()
         {
             // Arrange
-            var controller = CreateController();
             var userId = "user-without-org";
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<string>(

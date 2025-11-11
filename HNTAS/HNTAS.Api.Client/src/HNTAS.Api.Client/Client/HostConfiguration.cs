@@ -116,6 +116,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<IApiFactory, ApiFactory>();
             _services.AddSingleton<HeatNetworksApiEvents>();
             _services.AddSingleton<InvitationsApiEvents>();
+            _services.AddSingleton<OrganisationsApiEvents>();
             _services.AddSingleton<SOAApiEvents>();
             _services.AddSingleton<UsersApiEvents>();
         }
@@ -137,6 +138,7 @@ namespace HNTAS.Api.Client.Client
 
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
             builders.Add(_services.AddHttpClient<IInvitationsApi, InvitationsApi>(client));
+            builders.Add(_services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client));
             builders.Add(_services.AddHttpClient<ISOAApi, SOAApi>(client));
             builders.Add(_services.AddHttpClient<IUsersApi, UsersApi>(client));
             

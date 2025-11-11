@@ -31,5 +31,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task<List<UserResponse>> GetRegisteredUsersAsync(string rpUserId);
 
         Task<bool?> IsRpUserAsync(string emailId);
+        Task<bool?> IsActiveUserAsync(string emailId);
     }
 }

@@ -72,6 +72,9 @@ namespace HNTAS.Api.Client.Test.Api
             var invitationsApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
 
+            var organisationsApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IOrganisationsApi>();
+            Assert.True(organisationsApi.HttpClient.BaseAddress != null);
+
             var sOAApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);
 
@@ -90,6 +93,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var invitationsApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+
+            var organisationsApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IOrganisationsApi>();
+            Assert.True(organisationsApi.HttpClient.BaseAddress != null);
 
             var sOAApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);
@@ -110,6 +116,9 @@ namespace HNTAS.Api.Client.Test.Api
             var invitationsApi = _hostUsingAddWithAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
             
+            var organisationsApi = _hostUsingAddWithAClient.Services.GetRequiredService<IOrganisationsApi>();
+            Assert.True(organisationsApi.HttpClient.BaseAddress != null);
+            
             var sOAApi = _hostUsingAddWithAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);
             
@@ -128,6 +137,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var invitationsApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+
+            var organisationsApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IOrganisationsApi>();
+            Assert.True(organisationsApi.HttpClient.BaseAddress != null);
 
             var sOAApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);

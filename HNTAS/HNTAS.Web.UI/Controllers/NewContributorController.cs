@@ -57,33 +57,7 @@ namespace HNTAS.Web.UI.Controllers
             return View(state.Data.AddUserEmailAddressModel ?? new AddUserEmailAddressModel());
         }
 
-        private async Task<bool> DoesUserAlreadyExist(string newUserEmailID)
-        {
-            // Call API to get list of contributors
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var contributors = await _userService.GetRegisteredUsersAsync(userId);
 
-            // Check for null or empty list and return an empty list if necessary
-            if (contributors == null || !contributors.Any())
-            {
-                _logger.LogWarning("No contributors found for the current user ID {UserId}.", userId);
-                return false;
-            }
-
-            // Map contributors to a list of SelectListItem
-            var contributorEmailIds = contributors.Select(item => item.EmailId).ToList();
-
-            bool isExistingUser = false;
-            foreach (var email in contributorEmailIds)
-            {
-                if (email.ToLower() == newUserEmailID.ToLower())
-                {
-                    isExistingUser = true;
-                }
-            }
-
-            return isExistingUser;
-        }
 
         [HttpPost]
         public async Task<IActionResult> SaveEmailAddress(AddUserEmailAddressModel model)
@@ -105,8 +79,8 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             // if this email address exists in the existing users list then throw error
-            bool isExistingUser = await DoesUserAlreadyExist(model.EmailAddress);
-            if (isExistingUser)
+            bool? isExistingUser = await _userService.IsActiveUserAsync(model.EmailAddress);
+            if (isExistingUser.HasValue && isExistingUser.Value == true)
             {
                 ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access.");
                 this.ShowBackButton("AddContributor", "UserManagement");
