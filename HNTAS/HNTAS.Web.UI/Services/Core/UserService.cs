@@ -312,10 +312,32 @@ namespace HNTAS.Web.UI.Services.Core
             {
                 return null;
             }
-            var sanitizedEmailId = emailId?.Replace("\r", "").Replace("\n", "");
-            var errorMessage = $"Unable to determine Regulatory Contact status for user '{sanitizedEmailId}'. API call failed with status code: {users.StatusCode}.";
+            var errorMessage = $"Unable to determine Regulatory Contact status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
             _logger.LogError(errorMessage);
             throw new Exception(errorMessage);
+        }
+
+
+        public async Task<bool?> IsActiveUserAsync(string emailId)
+        {
+            var users = await _usersApi.ApiUsersIsActiveUserEmailIdGetAsync(emailId);
+            if (users.IsOk)
+            {
+                return users.Ok();
+            }
+            else if (users.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+            var errorMessage = $"Unable to determine Regulatory Contact status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
+            _logger.LogError(errorMessage);
+            throw new Exception(errorMessage);
+        }
+
+
+        private string SanitizeForLogging(string input)
+        {
+            return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;
         }
 
     }
