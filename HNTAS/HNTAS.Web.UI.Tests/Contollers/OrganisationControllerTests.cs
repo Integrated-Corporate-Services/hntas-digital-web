@@ -40,7 +40,9 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 _loggerMock.Object,
                 _userServiceMock.Object,
                 _sessionHelperMock.Object,
-                _addressLookUpServiceMock.Object
+                _addressLookUpServiceMock.Object,
+                null,
+                null
             );
 
             var httpContext = new DefaultHttpContext();
@@ -99,7 +101,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _controller.Url = SetUpBackLink("Index", "Home").Object;
 
             var result = _controller.OrganisationType();
-            
+
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<OrganisationModel>(viewResult.Model);
@@ -141,11 +143,11 @@ namespace HNTAS.Web.UI.Tests.Contollers
 
         /* Test cases for DHB-293 only */
         [Fact]
-        public void OrganisationAddress_ReturnsViewWithModel()
+        public async Task OrganisationAddress_ReturnsViewWithModel()
         {
             // Arange & Act
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
-            var result = _controller.OrganisationAddress() as ViewResult;
+            var result = await _controller.OrganisationAddressAsync() as ViewResult;
 
             // Assert
             Assert.NotNull(result);
@@ -161,11 +163,11 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 .ReturnsAsync(new SearchAddressByPostcodeModel
                 {
                     Postcode = "UB3 4JT",
-                    Addresses = [ "10 Downing Street, London, UB3 4JT" ]
+                    Addresses = ["10 Downing Street, London, UB3 4JT"]
                 });
 
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
-            
+
 
             // Act
             var result = await _controller.OrganisationAddressByPostcode("UB3 4JT") as ViewResult;
@@ -285,7 +287,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             // Arrange
 
             var addressModel = new AddressByStreetOrTownModel { Fulladdress = "123 Baker Street, London, NW1 6XE" };
-            var organisationModel = new OrganisationModel { CompanyDetails = new CompanyDetailsModel { RegisteredOfficeAddress = new RegisteredOfficeAddressModel()} };
+            var organisationModel = new OrganisationModel { CompanyDetails = new CompanyDetailsModel { RegisteredOfficeAddress = new RegisteredOfficeAddressModel() } };
 
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<AddressByStreetOrTownModel>(
@@ -295,7 +297,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<OrganisationModel>(
                     It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
-                .Returns(organisationModel);            
+                .Returns(organisationModel);
 
             // Act
             var result = _controller.SaveOrganisationAddressByPostcode();
@@ -362,9 +364,9 @@ namespace HNTAS.Web.UI.Tests.Contollers
                     It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
                 .Returns(organisationModel);
 
-           
+
             // Act
-            var result = _controller.SaveOrganisationAddress(model);
+            var result = _controller.SaveOrganisationAddressAsync(model);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
@@ -386,7 +388,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
 
             // Act
-            var result = _controller.SaveOrganisationAddress(model);
+            var result = _controller.SaveOrganisationAddressAsync(model);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);

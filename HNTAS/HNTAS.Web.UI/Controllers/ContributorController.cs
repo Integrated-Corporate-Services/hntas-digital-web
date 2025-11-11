@@ -9,6 +9,7 @@ using System.Security.Claims;
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize]
     public class ContributorController : Controller
     {
         private readonly IUserService _iUserService;

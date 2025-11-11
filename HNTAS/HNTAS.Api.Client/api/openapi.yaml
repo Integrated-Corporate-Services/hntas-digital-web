@@ -5,11 +5,38 @@ info:
 servers:
 - url: https://localhost:7117/
 tags:
+- name: CountriesAndTerritories
 - name: HeatNetworks
 - name: Invitations
+- name: Organisations
 - name: SOA
 - name: Users
 paths:
+  /api/CountriesAndTerritories:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/CountryAndTerritory"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/CountryAndTerritory"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/CountryAndTerritory"
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - CountriesAndTerritories
   /api/HeatNetworks:
     get:
       responses:
@@ -387,6 +414,57 @@ paths:
           description: Bad Request
       tags:
       - Invitations
+  /api/Organisations/exists-by-details:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: postCode
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Organisations
   /api/SOA/heat-network/{hnId}:
     get:
       parameters:
@@ -1546,6 +1624,19 @@ components:
       - Assessor
       - Certifier
       type: string
+    CountryAndTerritory:
+      example:
+        fullValue: fullValue
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        fullValue:
+          type: string
+      type: object
     DocumentType:
       enum:
       - Assessment

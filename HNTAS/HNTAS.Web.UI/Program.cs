@@ -96,7 +96,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new UploadedAssessmentDocumentResponseJsonConverter(),
         new UploadedAssessorDocumentResponseJsonConverter(),
         new UploadedCertifierDocumentResponseJsonConverter(),
-        new HeatNetworkInfoJsonConverter()
+        new HeatNetworkInfoJsonConverter(),
+        new CountryAndTerritoryJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -131,6 +132,20 @@ builder.Services.AddHttpClient<ISOAApi, SOAApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddSingleton<CountriesAndTerritoriesApiEvents>();
+builder.Services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<OrganisationsApiEvents>();
+builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
@@ -147,8 +162,9 @@ builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<ISoaService, SoaService>();
-
 builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
+builder.Services.AddScoped<ICountriesAndTerritoriesService, CountriesAndTerritoriesService>();
+builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 
