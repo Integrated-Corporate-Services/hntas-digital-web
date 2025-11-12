@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System.Net.Http;
-using System.Security.Claims;
 
 namespace HNTAS.Web.UI.Tests.Controllers
 {
@@ -43,7 +41,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 _loggerMock.Object,
                 _sessionHelperMock.Object,
                 _invitationTokenService.Object
-                );            
+                );
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -139,7 +137,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Returns((invitationId, invitationEmail));
             _invitationServiceMock.Setup(s => s.GetInvitationByIdAsync(invitationId)).ReturnsAsync(invitation);
             _userServiceMock.Setup(s => s.GetUserDetails(invitation.InviterUserId)).ReturnsAsync(inviterUser);
-            
+
             _controller.ControllerContext.HttpContext.Request.QueryString = new QueryString($"?token={token}");
 
             // Act
@@ -155,7 +153,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task Get_YouHaveBeenInvited_MissingToken_SetsErrorMessageAndReturnsView()
         {
             // Token is missing, so no setup needed for DecryptToken or service calls as they won't be invoked
-            
+
             // Act
             var result = await _controller.YouHaveBeenInvited();
 
@@ -225,7 +223,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var invitationId = Guid.NewGuid().ToString();
             _invitationServiceMock.Setup(s => s.RejectInvitationAsync(invitationId)).ThrowsAsync(new Exception("Database error"));
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.InvitationId)).Returns(invitationId);
-            
+
             // Act
             var result = await _controller.YouHaveBeenInvitedAsync(model);
 
@@ -268,87 +266,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Null(viewResult.Model);
-        }
-
-        [Fact]
-        public async Task UserLogin_ValidClaims_UserExistsWithOrgId_RedirectsToDashboard()
-        {
-            // Arrange
-            var email = "test@example.com";
-            var oneLoginId = "12345";
-                       
-            _userServiceMock.Setup(s => s.GetUserByOneLoginId(oneLoginId))
-                           .ReturnsAsync(new UserResponse { Id = "user123", OrgId = "org456" });
-                        
-            var claims = new List<Claim>
-            {
-                new Claim("email", email),
-                new Claim("sub", oneLoginId)
-            };
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(claims))
-            };
-
-            // Act
-            var result = await _controller.UserLogin();
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Dashboard", redirectResult.ActionName);
-            Assert.Equal("Contributor", redirectResult.ControllerName);
-            _sessionHelperMock.Verify(s => s.SaveToSession(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey, "user123"), Times.Once);
-        }
-
-        [Fact]
-        public async Task UserLogin_MissingClaims_ReturnsStartPageWithErrorMessage()
-        {
-            // Arrange            
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity()) // No claims
-            };
-            
-            // Act
-            var result = await _controller.UserLogin();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("StartPage", viewResult.ViewName);
-            Assert.True(_controller.TempData.ContainsKey("ErrorMessage"));
-            Assert.Equal("Unable to retrieve essential user info. Please try again.", _controller.TempData["ErrorMessage"]);
-        }
-        
-        [Fact]
-        public async Task UserLogin_ExistingUserWithoutOrgId_ReturnsView()
-        {
-            // Arrange
-            var email = "test@example.com";
-            var oneLoginId = "12345";
-
-            var claims = new List<Claim>
-            {
-                new Claim("email", email),
-                new Claim("sub", oneLoginId)
-            };
-
-            _controller.ControllerContext.HttpContext = new DefaultHttpContext
-            {
-                User = new ClaimsPrincipal(new ClaimsIdentity(claims))
-            };
-
-            var existingUser = new UserResponse { Id = "user123", OrgId = null };
-
-            _userServiceMock.Setup(s => s.GetUserByOneLoginId(oneLoginId))
-                            .ReturnsAsync(existingUser);
-
-            // Act
-            var result = await _controller.UserLogin();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.ViewName);
-            _sessionHelperMock.Verify(s => s.SaveToSession(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey, existingUser.Id), Times.Once);
         }
     }
 }

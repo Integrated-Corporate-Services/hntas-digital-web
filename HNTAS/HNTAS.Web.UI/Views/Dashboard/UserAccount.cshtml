@@ -8,7 +8,7 @@
 }
 
 <div class="govuk-width-container">
-    @if (Model.UserRole == "RegulatoryContact")
+    @if (Model.UserRole == HNTAS.Api.Client.Model.UserRole.ResponsiblePerson.ToString())
     {
         <div><span class="govuk-hint">Your organisation</span></div>
         <h1 class="govuk-heading-l">@Model.OrganisationName</h1>
@@ -58,7 +58,7 @@
         <br />
         <br />       
     }
-    else if (Model.UserRole == "Assessor")
+    else if (Model.UserRole == HNTAS.Api.Client.Model.UserRole.Assessor.ToString())
     {
         <h1 class="govuk-heading-l">My Details</h1>
         
@@ -94,7 +94,7 @@
         <br/>
         <br/>
     }
-    else if (Model.UserRole == "Certifier")
+    else if (Model.UserRole == HNTAS.Api.Client.Model.UserRole.Certifier.ToString())
     {
         <h1 class="govuk-heading-l">My Details</h1>
 

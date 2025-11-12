@@ -63,6 +63,7 @@ docs/models/User.md
 docs/models/UserDetailsResponse.md
 docs/models/UserResponse.md
 docs/models/UserRole.md
+docs/models/UserRoleDetailResponse.md
 docs/models/UserStatus.md
 docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
@@ -152,5 +153,6 @@ src/HNTAS.Api.Client/Model/User.cs
 src/HNTAS.Api.Client/Model/UserDetailsResponse.cs
 src/HNTAS.Api.Client/Model/UserResponse.cs
 src/HNTAS.Api.Client/Model/UserRole.cs
+src/HNTAS.Api.Client/Model/UserRoleDetailResponse.cs
 src/HNTAS.Api.Client/Model/UserStatus.cs
 src/HNTAS.Api.Client/README.md

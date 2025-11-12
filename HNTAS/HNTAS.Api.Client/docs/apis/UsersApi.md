@@ -7,6 +7,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersAcceptInvitationPatch**](UsersApi.md#apiusersacceptinvitationpatch) | **PATCH** /api/Users/accept-invitation |  |
 | [**ApiUsersContributorRolesGet**](UsersApi.md#apiuserscontributorrolesget) | **GET** /api/Users/contributor-roles |  |
 | [**ApiUsersGet**](UsersApi.md#apiusersget) | **GET** /api/Users |  |
+| [**ApiUsersHeatNetworkHnIdRolesGet**](UsersApi.md#apiusersheatnetworkhnidrolesget) | **GET** /api/Users/heat-network/{hnId}/roles |  |
 | [**ApiUsersIdDelete**](UsersApi.md#apiusersiddelete) | **DELETE** /api/Users/{id} |  |
 | [**ApiUsersIdHeatnetworkHeatNetworkIdPatch**](UsersApi.md#apiusersidheatnetworkheatnetworkidpatch) | **PATCH** /api/Users/{id}/heatnetwork/{heatNetworkId} |  |
 | [**ApiUsersIdOrgDetailsPatch**](UsersApi.md#apiusersidorgdetailspatch) | **PATCH** /api/Users/{id}/org-details |  |
@@ -117,6 +118,42 @@ No authorization required
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
 | **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersheatnetworkhnidrolesget"></a>
+# **ApiUsersHeatNetworkHnIdRolesGet**
+> List&lt;UserRoleDetailResponse&gt; ApiUsersHeatNetworkHnIdRolesGet (string hnId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **hnId** | **string** |  |  |
+
+### Return type
+
+[**List&lt;UserRoleDetailResponse&gt;**](UserRoleDetailResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

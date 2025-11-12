@@ -165,10 +165,47 @@ namespace HNTAS.Web.UI.Controllers
             var model = new HeatNetworksViewModel
             {
                 HeatNetworks = heatNetworks,
-                IsRegulatoryContact = user.Roles?.Contains(UserRole.RegulatoryContact) ?? false,
+                IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> HeatNetworkUserRolesAsync(string hnId)
+        {
+            if (string.IsNullOrEmpty(hnId))
+            {
+                _logger.LogError("Heat network ID is null or empty in HeatNetworkUserRoles.");
+                TempData["ErrorMessage"] = "Invalid heat network ID.";
+                return RedirectToAction("HeatNetworks");
+            }
+
+            var heatNetworkResponse = await _heatNetworkService.GetAsync(hnId.ToUpper());
+
+            if (heatNetworkResponse == null)
+            {
+                // Log the ID that wasn't found before returning BadRequest
+                _logger.LogWarning("Heat network not found for ID: {HeatNetworkId}", hnId);
+                return BadRequest();
+            }
+
+            var userRolesDetailsResponse = await _userService.GetHeatNetworkUserRoles(hnId.ToUpper());
+
+
+            var viewModel = new HeatNetworkUserRolesViewModel
+            {
+                HeatNetworkName = heatNetworkResponse.Name,
+                UserRoles = userRolesDetailsResponse?.Select(x => new UserRoles
+                {
+                    RoleName = x.RoleDescription,
+                    FullName = x.FullName,
+                    EmailId = x.EmailId
+                }).ToList() ?? []
+            };
+
+            this.ShowBackButton("HeatNetworks");
+            return View("HeatNetworkUserRoles", viewModel);
         }
     }
 }
