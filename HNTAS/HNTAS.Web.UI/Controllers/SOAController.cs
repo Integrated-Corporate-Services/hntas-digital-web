@@ -5,11 +5,13 @@ using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ApiHeatNetworkType = HNTAS.Api.Client.Model.HeatNetworkType;
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize]
     public class SOAController : Controller
     {
         private readonly ISessionHelper _sessionHelper;

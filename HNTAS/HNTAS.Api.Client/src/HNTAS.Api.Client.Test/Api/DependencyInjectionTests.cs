@@ -66,6 +66,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithAClientTest()
         {
+            var countriesAndTerritoriesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
+            Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 
@@ -88,6 +91,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithoutAClientTest()
         {
+            var countriesAndTerritoriesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
+            Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 
@@ -110,6 +116,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithAClientTest()
         {
+            var countriesAndTerritoriesApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
+            Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
+            
             var heatNetworksApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
             
@@ -132,6 +141,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithoutAClientTest()
         {
+            var countriesAndTerritoriesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
+            Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 

@@ -6,12 +6,12 @@ Create a config.yaml file similar to what is below, then run the following power
 
 ```yaml
 generatorName: csharp
-inputSpec: C:\Users\MohantySushree(Energ\source\repos\hntas-digital-web\HNTAS\HNTAS.Core.Api.json
+inputSpec: C:\Users\ManokaranSivasankar(\source\repos\hntas-digital-web\HNTAS\HNTAS.Core.Api.json
 outputDir: out
 
 # https://openapi-generator.tech/docs/generators/csharp
 additionalProperties:
-  packageGuid: '{D24AA378-2A33-43BC-80DD-1D8BAE31170B}'
+  packageGuid: '{1DBB4429-1767-4593-BBD2-4B485D09137E}'
 
 # https://openapi-generator.tech/docs/integrations/#github-integration
 # gitHost:
@@ -54,9 +54,9 @@ namespace YourProject
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            var api = host.Services.GetRequiredService<IHeatNetworksApi>();
-            IApiHeatNetworksAddHeatNetworkPostApiResponse apiResponse = await api.ApiHeatNetworksAddHeatNetworkPostAsync("todo");
-            HeatNetworkResponse? model = apiResponse.Ok();
+            var api = host.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
+            IApiCountriesAndTerritoriesGetApiResponse apiResponse = await api.ApiCountriesAndTerritoriesGetAsync("todo");
+            List<CountryAndTerritory>? model = apiResponse.Ok();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)

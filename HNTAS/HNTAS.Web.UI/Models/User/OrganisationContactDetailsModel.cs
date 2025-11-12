@@ -10,7 +10,7 @@ namespace HNTAS.Web.UI.Models.User
 
         [Required(ErrorMessage = "Enter your job title.")]
         [MaxLength(100, ErrorMessage = "Job title cannot exceed 100 characters.")]
-        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Job title can only contain letters and spaces.")]
+        [RegularExpression(@"^[a-zA-Z0-9\s\.\,\:\'\&]+$", ErrorMessage = "Enter a valid job title using letters, numbers or common punctuation only.")]
         public string? JobTitle { get; set; }
     }
 }
