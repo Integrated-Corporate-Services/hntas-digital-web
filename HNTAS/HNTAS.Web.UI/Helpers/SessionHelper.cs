@@ -18,7 +18,7 @@ namespace HNTAS.Web.UI.Helpers
             httpContext.Session.SetString(sessionKey, json);
         }
 
-        public T? GetFromSession<T>(HttpContext httpContext, string sessionKey) where T : class
+        public T? GetFromSession<T>(HttpContext httpContext, string sessionKey)
         {
             string? json = httpContext.Session.GetString(sessionKey);
             if (!string.IsNullOrEmpty(json))
@@ -31,10 +31,10 @@ namespace HNTAS.Web.UI.Helpers
                 {
                     // Optionally log the error
                     httpContext.Session.Remove(sessionKey);
-                    return null;
+                    return default;
                 }
             }
-            return null;
+            return default;
         }
 
         public void ClearFromSession(HttpContext httpContext, string sessionKey)

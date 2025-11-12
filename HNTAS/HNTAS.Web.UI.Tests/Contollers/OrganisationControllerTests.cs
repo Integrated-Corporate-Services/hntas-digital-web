@@ -1,5 +1,4 @@
-﻿using HNTAS.Api.Client.Api;
-using HNTAS.Api.Client.Model;
+﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
@@ -25,6 +24,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         private readonly Mock<ISessionHelper> _mockSessionHelper;
         private readonly Mock<IAddressLookupService> _mockAddressLookUpService;
         private readonly Mock<IOrganisationService> _mockOrganisationService;
+        private readonly Mock<ICountriesAndTerritoriesService> _mockCountriesAndTerritoriesService;
         private readonly OrganisationController _controller;
 
         public OrganisationControllerTests()
@@ -35,6 +35,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _mockSessionHelper = new Mock<ISessionHelper>();
             _mockAddressLookUpService = new Mock<IAddressLookupService>();
             _mockOrganisationService = new Mock<IOrganisationService>();
+            _mockCountriesAndTerritoriesService = new Mock<ICountriesAndTerritoriesService>();
             _controller = CreateController();
         }
 
@@ -46,6 +47,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 _mockUserService.Object,
                 _mockSessionHelper.Object,
                 _mockAddressLookUpService.Object,
+                _mockCountriesAndTerritoriesService.Object,
                 _mockOrganisationService.Object
             );
 
@@ -105,7 +107,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _controller.Url = SetUpBackLink("Index", "Home").Object;
 
             var result = _controller.OrganisationType();
-            
+
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<OrganisationModel>(viewResult.Model);
@@ -147,11 +149,11 @@ namespace HNTAS.Web.UI.Tests.Contollers
 
         /* Test cases for DHB-293 only */
         [Fact]
-        public void OrganisationAddress_ReturnsViewWithModel()
+        public async Task OrganisationAddress_ReturnsViewWithModel()
         {
             // Arange & Act
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
-            var result = _controller.OrganisationAddress() as ViewResult;
+            var result = await _controller.OrganisationAddressAsync() as ViewResult;
 
             // Assert
             Assert.NotNull(result);
@@ -167,11 +169,11 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 .ReturnsAsync(new SearchAddressByPostcodeModel
                 {
                     Postcode = "UB3 4JT",
-                    Addresses = [ "10 Downing Street, London, UB3 4JT" ]
+                    Addresses = ["10 Downing Street, London, UB3 4JT"]
                 });
 
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
-            
+
 
             // Act
             var result = await _controller.OrganisationAddressByPostcode("UB3 4JT") as ViewResult;
@@ -291,7 +293,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             // Arrange
 
             var addressModel = new AddressByStreetOrTownModel { Fulladdress = "123 Baker Street, London, NW1 6XE" };
-            var organisationModel = new OrganisationModel { CompanyDetails = new CompanyDetailsModel { RegisteredOfficeAddress = new RegisteredOfficeAddressModel()} };
+            var organisationModel = new OrganisationModel { CompanyDetails = new CompanyDetailsModel { RegisteredOfficeAddress = new RegisteredOfficeAddressModel() } };
 
             _mockSessionHelper
                 .Setup(x => x.GetFromSession<AddressByStreetOrTownModel>(
@@ -301,7 +303,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _mockSessionHelper
                 .Setup(x => x.GetFromSession<OrganisationModel>(
                     It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
-                .Returns(organisationModel);            
+                .Returns(organisationModel);
 
             // Act
             var result = _controller.SaveOrganisationAddressByPostcode();
@@ -350,7 +352,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         }
 
         [Fact]
-        public void SaveOrganisationAddress_ValidPostcode_RedirectsToCompanyConfirm()
+        public async Task SaveOrganisationAddress_ValidPostcode_RedirectsToCompanyConfirm()
         {
             // Arrange
 
@@ -368,9 +370,9 @@ namespace HNTAS.Web.UI.Tests.Contollers
                     It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
                 .Returns(organisationModel);
 
-           
+
             // Act
-            var result = _controller.SaveOrganisationAddress(model);
+            var result = await _controller.SaveOrganisationAddressAsync(model);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
@@ -379,7 +381,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         }
 
         [Fact]
-        public void SaveOrganisationAddress_InvalidPostcode_ReturnsViewWithError()
+        public async Task SaveOrganisationAddress_InvalidPostcode_ReturnsViewWithError()
         {
             // Arrange
             var model = new AddressByStreetOrTownModel
@@ -392,7 +394,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
 
             // Act
-            var result = _controller.SaveOrganisationAddress(model);
+            var result = await _controller.SaveOrganisationAddressAsync(model);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -406,7 +408,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         public async Task UpdateOrganisationDetailsConfirmation_ValidSessionData_ReturnsView()
         {
             // Arrange
-            
+
             var userId = "user123";
             var orgId = "org456";
             var organisationModel = new OrganisationModel

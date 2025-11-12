@@ -12,10 +12,12 @@ using HNTAS.Web.UI.Services.Core;
 using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
 using HNTAS.Web.UI.Workflows.Models.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize]
     public class ExistingContributorController : Controller
     {
         private readonly IWorkflowManager _workflowManager;
