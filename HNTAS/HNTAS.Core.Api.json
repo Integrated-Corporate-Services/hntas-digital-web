@@ -2577,6 +2577,58 @@
           }
         }
       }
+    },
+    "/api/Users/heat-network/{hnId}/roles": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserRoleDetailResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3803,7 +3855,7 @@
       },
       "UserRole": {
         "enum": [
-          "RegulatoryContact",
+          "ResponsiblePerson",
           "Contributor",
           "Designer",
           "Contractor",
@@ -3811,6 +3863,20 @@
           "Assessor",
           "Certifier"
         ]
+      },
+      "UserRoleDetailResponse": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "emailId": {
+            "type": "string"
+          },
+          "roleDescription": {
+            "type": "string"
+          }
+        }
       },
       "UserStatus": {
         "enum": [
