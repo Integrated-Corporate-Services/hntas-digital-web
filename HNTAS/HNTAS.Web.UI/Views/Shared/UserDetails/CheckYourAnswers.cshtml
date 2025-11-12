@@ -28,10 +28,10 @@
         }
     }
 
-    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) &&
-                                ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
+    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmDeclaration)) &&
+                                ViewData.ModelState[nameof(Model.ConfirmDeclaration)].Errors.Any();
 
-    var fieldName = nameof(Model.ConfirmedDeclaration).ToLowerInvariant();
+    var fieldName = nameof(Model.ConfirmDeclaration).ToLowerInvariant();
 }
 
 <div class="govuk-width-container">

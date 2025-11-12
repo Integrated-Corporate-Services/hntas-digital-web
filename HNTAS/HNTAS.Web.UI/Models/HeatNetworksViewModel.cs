@@ -4,7 +4,7 @@
     {
         public List<HeatNetworkModel> HeatNetworks { get; set; } = new List<HeatNetworkModel>();
 
-        public bool IsRegulatoryContact { get; set; }
+        public bool IsResponsiblePerson { get; set; }
     }
 
     public class HeatNetworkModel

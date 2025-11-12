@@ -1,11 +1,8 @@
-﻿using HNTAS.Api.Client.Model;
-using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -131,7 +128,6 @@ namespace HNTAS.Web.UI.Controllers
         }
 
 
-
         [HttpGet]
         public IActionResult StartPage()
         {
@@ -139,71 +135,6 @@ namespace HNTAS.Web.UI.Controllers
             return View();
         }
 
-        [Authorize]
-        public async Task<IActionResult> UserLogin()
-        {
-            var email = User.FindFirstValue("email");
-            var oneLoginId = User.FindFirstValue("sub");
-
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
-            {
-                _logger.LogError("Missing claims. ID: '{Id}'", oneLoginId);
-                TempData["ErrorMessage"] = "Unable to retrieve essential user info. Please try again.";
-                return View("StartPage");
-            }
-
-            try
-            {
-                var existingUser = await _iUserService.GetUserByOneLoginId(oneLoginId);
-
-                if (existingUser == null)
-                {
-                    var registration = new InitialUserRegistrationRequest(oneLoginId: oneLoginId, emailId: email, status: UserStatus.Active);
-                    _logger.LogInformation("Submitting initial user entry. ID: {Id}", oneLoginId);
-
-                    var newUserId = await _iUserService.CreateUser(registration);
-
-                    if (string.IsNullOrWhiteSpace(newUserId))
-                    {
-                        _logger.LogError("API returned no valid user object.");
-                        TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
-                        return View("StartPage");
-                    }
-
-                    _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, newUserId);
-
-                    return View("StartPage");
-                }
-
-                _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
-
-                if (existingUser.OrgId != null)
-                {
-                    return RedirectToAction("Dashboard", "Contributor");
-                }
-
-                return View();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Exception during initial user registration.");
-                TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
-                return View("StartPage");
-            }
-        }
-
-        [HttpGet]
-        public IActionResult Dashboard()
-        {
-            // TODO - hardcoded for now, will be linked to model once we receive value from email invitaion story
-            var model = new ContributorDashboardModel
-            {
-                OrganisationName = "ABC Org",
-                HeatNetwork = "XyZ HN",
-                HNStatus = "Active"
-            };
-            return View(model);
-        }
 
         #endregion
     }

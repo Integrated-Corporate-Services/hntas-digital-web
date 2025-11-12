@@ -3,6 +3,7 @@ HNTAS.Api.Client.sln
 README.md
 api/openapi.yaml
 appveyor.yml
+docs/apis/CountriesAndTerritoriesApi.md
 docs/apis/HeatNetworksApi.md
 docs/apis/InvitationsApi.md
 docs/apis/OrganisationsApi.md
@@ -11,6 +12,7 @@ docs/apis/UsersApi.md
 docs/models/AddInvitationRequest.md
 docs/models/ConnectionType.md
 docs/models/ContributorRole.md
+docs/models/CountryAndTerritory.md
 docs/models/DocumentType.md
 docs/models/EnumItemResponse.md
 docs/models/HeatNetwork.md
@@ -61,12 +63,14 @@ docs/models/User.md
 docs/models/UserDetailsResponse.md
 docs/models/UserResponse.md
 docs/models/UserRole.md
+docs/models/UserRoleDetailResponse.md
 docs/models/UserStatus.md
 docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
 src/HNTAS.Api.Client.Test/README.md
+src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
 src/HNTAS.Api.Client/Api/InvitationsApi.cs
@@ -98,6 +102,7 @@ src/HNTAS.Api.Client/HNTAS.Api.Client.csproj
 src/HNTAS.Api.Client/Model/AddInvitationRequest.cs
 src/HNTAS.Api.Client/Model/ConnectionType.cs
 src/HNTAS.Api.Client/Model/ContributorRole.cs
+src/HNTAS.Api.Client/Model/CountryAndTerritory.cs
 src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetwork.cs
@@ -148,5 +153,6 @@ src/HNTAS.Api.Client/Model/User.cs
 src/HNTAS.Api.Client/Model/UserDetailsResponse.cs
 src/HNTAS.Api.Client/Model/UserResponse.cs
 src/HNTAS.Api.Client/Model/UserRole.cs
+src/HNTAS.Api.Client/Model/UserRoleDetailResponse.cs
 src/HNTAS.Api.Client/Model/UserStatus.cs
 src/HNTAS.Api.Client/README.md

@@ -1,4 +1,5 @@
-﻿using HNTAS.Api.Client.Api;
+﻿
+using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using NuGet.Protocol.Plugins;
@@ -15,7 +16,7 @@ namespace HNTAS.Web.UI.Services.Core
             _logger = logger;
             _organisationsApi = organisationsApi;
         }
-        
+
         public async Task<User?> EditOrganisationDetails(string orgId, OrganisationRequest organisationRequest, string userId)
         {
             try
@@ -36,6 +37,16 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
             return null;
+        }
+
+        public async Task<bool?> GetOrganisationByDetails(string orgName, string postCode, string country)
+        {
+            var response = await _organisationsApi.ApiOrganisationsExistsByDetailsGetAsync(orgName, postCode, country);
+                if (response.IsOk)
+                {
+                    return response.Ok();
+                }
+            throw new Exception($"Failed to fetch OrganisationByDetails with status code: {response.StatusCode}");
         }
     }
 }

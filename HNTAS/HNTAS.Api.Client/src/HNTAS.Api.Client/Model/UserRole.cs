@@ -31,9 +31,9 @@ namespace HNTAS.Api.Client.Model
     public enum UserRole
     {
         /// <summary>
-        /// Enum RegulatoryContact for value: RegulatoryContact
+        /// Enum ResponsiblePerson for value: ResponsiblePerson
         /// </summary>
-        RegulatoryContact = 1,
+        ResponsiblePerson = 1,
 
         /// <summary>
         /// Enum Contributor for value: Contributor
@@ -78,8 +78,8 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static UserRole FromString(string value)
         {
-            if (value.Equals("RegulatoryContact"))
-                return UserRole.RegulatoryContact;
+            if (value.Equals("ResponsiblePerson"))
+                return UserRole.ResponsiblePerson;
 
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
@@ -109,8 +109,8 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static UserRole? FromStringOrDefault(string value)
         {
-            if (value.Equals("RegulatoryContact"))
-                return UserRole.RegulatoryContact;
+            if (value.Equals("ResponsiblePerson"))
+                return UserRole.ResponsiblePerson;
 
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
@@ -141,8 +141,8 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(UserRole value)
         {
-            if (value == UserRole.RegulatoryContact)
-                return "RegulatoryContact";
+            if (value == UserRole.ResponsiblePerson)
+                return "ResponsiblePerson";
 
             if (value == UserRole.Contributor)
                 return "Contributor";
