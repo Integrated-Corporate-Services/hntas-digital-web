@@ -1,0 +1,39 @@
+﻿@model HNTAS.Web.UI.Models.HeatNetworkUserRolesViewModel
+
+<h1 class="govuk-heading-m" style="margin-top: 2rem;">Heat network user roles</h1>
+
+@if (Model.UserRoles != null && Model.UserRoles.Any())
+{
+    // 1. Group the UserRoles collection by RoleName
+    // We order by the role name just for consistency.
+    var groupedAllocations = Model.UserRoles
+        .GroupBy(r => r.RoleName)
+        .OrderBy(g => g.Key);
+
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">Heat Network Roles</th>
+                <th class="govuk-table__header" scope="col">Person Name</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            @foreach (var roleGroup in groupedAllocations)
+            {
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">@roleGroup.Key</td>
+
+                    <td class="govuk-table__cell">
+                        @Html.Raw(string.Join("<br />", roleGroup.Select(u => $"{u.FullName} ({u.EmailId})").OrderBy(n => n)))
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="govuk-body-m">
+        No users mapped to this Heat Network.
+    </div>
+}

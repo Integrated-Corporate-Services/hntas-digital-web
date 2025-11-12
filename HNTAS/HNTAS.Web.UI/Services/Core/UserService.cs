@@ -312,7 +312,7 @@ namespace HNTAS.Web.UI.Services.Core
             {
                 return null;
             }
-            var errorMessage = $"Unable to determine Regulatory Contact status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
+            var errorMessage = $"Unable to determine Responsible Person status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
             _logger.LogError(errorMessage);
             throw new Exception(errorMessage);
         }
@@ -329,9 +329,32 @@ namespace HNTAS.Web.UI.Services.Core
             {
                 return null;
             }
-            var errorMessage = $"Unable to determine Regulatory Contact status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
+            var errorMessage = $"Unable to determine Responsible Person status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
             _logger.LogError(errorMessage);
             throw new Exception(errorMessage);
+        }
+
+        public async Task<List<UserRoleDetailResponse>> GetHeatNetworkUserRoles(string heatNetworkId)
+        {
+            _logger.LogInformation("Retrieving user roles for heat network ID: {HeatNetworkId}", heatNetworkId);
+            try
+            {
+                var response = await _usersApi.ApiUsersHeatNetworkHnIdRolesGetAsync(heatNetworkId);
+                if (response.IsOk)
+                {
+                    return response.Ok();
+                }
+                if (response.IsNotFound)
+                {
+                    return null;
+                }
+                throw new Exception($"Failed to retrieve user roles with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving user roles for heat network ID: {HeatNetworkId}", heatNetworkId);
+                throw;
+            }
         }
 
 

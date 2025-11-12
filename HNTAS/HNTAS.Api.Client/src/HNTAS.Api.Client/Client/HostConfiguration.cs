@@ -110,6 +110,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new UserResponseJsonConverter());
             _jsonOptions.Converters.Add(new UserRoleJsonConverter());
             _jsonOptions.Converters.Add(new UserRoleNullableJsonConverter());
+            _jsonOptions.Converters.Add(new UserRoleDetailResponseJsonConverter());
             _jsonOptions.Converters.Add(new UserStatusJsonConverter());
             _jsonOptions.Converters.Add(new UserStatusNullableJsonConverter());
             JsonSerializerOptionsProvider jsonSerializerOptionsProvider = new(_jsonOptions);

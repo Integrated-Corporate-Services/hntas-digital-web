@@ -38,7 +38,7 @@ namespace HNTAS.Web.UI.Helpers
 
         public static List<SelectItemOption> GetContributorSelectList(string userRole)
         {
-            if (userRole == UserRole.RegulatoryContact.ToString())
+            if (userRole == UserRole.ResponsiblePerson.ToString())
             {
                 return new List<SelectItemOption>
                     {
@@ -88,9 +88,9 @@ namespace HNTAS.Web.UI.Helpers
         public static async Task<string> GetUserRoleByUserHNMapping(UserResponse user, string hnId)
         {
             var userRole = "";
-            if (user?.Roles?.Contains(Api.Client.Model.UserRole.RegulatoryContact) == true)
+            if (user?.Roles?.Contains(UserRole.ResponsiblePerson) == true)
             {
-                userRole = Api.Client.Model.UserRole.RegulatoryContact.ToString();
+                userRole = UserRole.ResponsiblePerson.ToString();
             }
             else
             {

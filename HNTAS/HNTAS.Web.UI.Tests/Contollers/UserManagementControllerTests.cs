@@ -51,7 +51,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var userDetails = new UserDetailsResponse
             {
                 Id = userId,
-                Roles = new List<UserRole> { UserRole.RegulatoryContact },
+                Roles = new List<UserRole> { UserRole.ResponsiblePerson },
                 HeatNetworks = new List<HeatNetworkUserResponse>
                 {
                     new HeatNetworkUserResponse { HnId = "hn-1", Name = "Network 1" }
@@ -88,10 +88,10 @@ namespace HNTAS.Web.UI.Tests.Contollers
             Assert.Single(model.HeatNetworks);
             Assert.Equal("hn-1", model.HeatNetworks[0].HnId);
             Assert.Equal("Network 1", model.HeatNetworks[0].Name);
-            Assert.True(model.IsRegulatoryContact);
+            Assert.True(model.IsResponsiblePerson);
 
             // controller ViewBag should have the user role string set
-            Assert.Equal("RegulatoryContact", controller.ViewBag.UserRole);
+            Assert.Equal(UserRole.ResponsiblePerson.ToString(), controller.ViewBag.UserRole);
         }
     }
 }
