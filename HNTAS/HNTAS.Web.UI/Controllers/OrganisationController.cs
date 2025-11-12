@@ -251,7 +251,6 @@ namespace HNTAS.Web.UI.Controllers
             return View();
         }
 
-
         [HttpGet]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult ConfirmRegulatoryContact()
@@ -307,7 +306,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, model);
                 }
 
-                return RedirectToAction("ContactDetails");
+                return RedirectToAction("UserDetails/ContactDetails");
             }
             return RedirectToAction("CannotContinue");
         }
@@ -332,6 +331,7 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.ShowBackButton = true;
             ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
+            ViewBag.NextActionController = "Organisation";
 
             return View(userModel.ContactDetails);
         }
@@ -779,5 +779,5 @@ namespace HNTAS.Web.UI.Controllers
                 return View();
             }
         }        
-    }
+    }    
 }

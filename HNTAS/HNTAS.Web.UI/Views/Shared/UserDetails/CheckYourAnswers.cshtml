@@ -1,0 +1,94 @@
+﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.Enums
+@using HNTAS.Web.UI.Models.User
+@model CheckYourAnswersModel
+
+@{
+    ViewData["Title"] = "Check your answers";
+    var userModel = Model.User;
+
+    string displayContactNumber = "Not provided";
+    if (userModel?.ContactDetails != null)
+    {
+        if (userModel.ContactDetails.PreferredContactType == PreferredContactType.Landline)
+        {
+            displayContactNumber = $"Landline {userModel.ContactDetails.LandlineNumber}";
+            if (!string.IsNullOrEmpty(userModel.ContactDetails.ContactNumberExtension))
+            {
+                displayContactNumber += $" ext {userModel.ContactDetails.ContactNumberExtension}";
+            }
+        }
+        else if (userModel.ContactDetails.PreferredContactType == PreferredContactType.Mobile)
+        {
+            displayContactNumber = userModel.ContactDetails.MobileNumber;
+        }
+        if (string.IsNullOrEmpty(displayContactNumber))
+        {
+            displayContactNumber = "Not provided";
+        }
+    }
+
+    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) &&
+                                ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
+
+    var fieldName = nameof(Model.ConfirmedDeclaration).ToLowerInvariant();
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <main class="govuk-main-wrapper" id="main-content" role="main">
+                <h1 class="govuk-heading-l">Check your answers</h1>
+
+                <form asp-controller="UserDetails" asp-action="SubmitAnswers" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+
+                    <h2 class="govuk-heading-m">Your details</h2>
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Are you the regulatory contact?</dt>
+                            <dd class="govuk-summary-list__value">
+                                @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
+                            </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("ConfirmRegulatoryContact")">Change<span class="govuk-visually-hidden"> regulatory contact</span></a>
+                            </dd>
+                        </div>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">First name</dt>
+                            <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.FirstName</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> first name</span></a>
+                            </dd>
+                        </div>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Last name</dt>
+                            <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.LastName</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> last name</span></a>
+                            </dd>
+                        </div>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Preferred contact number for work</dt>
+                            <dd class="govuk-summary-list__value">@displayContactNumber</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> preferred contact number for work</span></a>
+                            </dd>
+                        </div>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Job title</dt>
+                            <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.JobTitle</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> job title</span></a>
+                            </dd>
+                        </div>
+                    </dl>                    
+
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Continue
+                    </button>
+                </form>
+            </main>
+        </div>
+    </div>
+</div>
