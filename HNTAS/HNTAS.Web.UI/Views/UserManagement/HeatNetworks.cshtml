@@ -1,6 +1,6 @@
 ﻿@model HNTAS.Web.UI.Models.HeatNetworksViewModel
 
-@if (Model.IsRegulatoryContact)
+@if (Model.IsResponsiblePerson)
 {
     <p class="govuk-!-margin-top-6">
         <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-controller="HeatNetwork" asp-action="EnterHNName">
@@ -20,9 +20,14 @@
                 <th class="govuk-table__header" scope="col">Heat Network Name</th>
                 <th class="govuk-table__header" scope="col">Organisation</th>
                 <th class="govuk-table__header" scope="col">Status</th>
-                @if (!Model.IsRegulatoryContact)
+
+                @if (!Model.IsResponsiblePerson)
                 {
-                    <th class="govuk-table__header" scope="col">Action</th>
+                    <th class="govuk-table__header govuk-!-text-align-centre" scope="col">Action</th>
+                }
+                else
+                {
+                    <th class="govuk-table__header govuk-!-text-align-centre" scope="col">Users</th>
                 }
             </tr>
         </thead>
@@ -55,9 +60,9 @@
                         }
                         <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
                     </td>
-                    @if (!Model.IsRegulatoryContact)
+                    @if (!Model.IsResponsiblePerson)
                     {
-                        <td class="govuk-table__cell">
+                        <td class="govuk-table__cell govuk-!-text-align-centre">
                             @if (ViewBag.UserRole == HNTAS.Api.Client.Model.ContributorRole.Assessor.ToString())
                             {
                                 if (ViewBag.HasDeclaredImpartiality != true)
@@ -78,7 +83,13 @@
                                 <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View/Edit</a>
                             }
 
-                    </td>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="govuk-table__cell govuk-!-text-align-centre" style="white-space: nowrap;">
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("HeatNetworkUserRoles", "UserManagement", new { hnId = @heatNetwork.HnId })">View Users</a>
+                        </td>
                     }
                 </tr>
             }

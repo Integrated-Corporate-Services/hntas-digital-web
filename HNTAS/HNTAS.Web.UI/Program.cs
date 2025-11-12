@@ -97,7 +97,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new UploadedAssessorDocumentResponseJsonConverter(),
         new UploadedCertifierDocumentResponseJsonConverter(),
         new HeatNetworkInfoJsonConverter(),
-        new CountryAndTerritoryJsonConverter()
+        new CountryAndTerritoryJsonConverter(),
+        new UserRoleDetailResponseJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

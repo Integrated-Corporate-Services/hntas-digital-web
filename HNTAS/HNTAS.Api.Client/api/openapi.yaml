@@ -1637,6 +1637,39 @@ paths:
           description: Not Found
       tags:
       - Users
+  /api/Users/heat-network/{hnId}/roles:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserRoleDetailResponse"
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Users
 components:
   schemas:
     AddInvitationRequest:
@@ -2947,7 +2980,7 @@ components:
       example:
         firstName: firstName
         lastName: lastName
-        role: RegulatoryContact
+        role: ResponsiblePerson
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
@@ -3125,8 +3158,8 @@ components:
         mobileNumber: mobileNumber
         jobTitle: jobTitle
         roles:
-        - RegulatoryContact
-        - RegulatoryContact
+        - ResponsiblePerson
+        - ResponsiblePerson
         oneLoginId: oneLoginId
         emailId: emailId
         landlineNumber: landlineNumber
@@ -3191,8 +3224,8 @@ components:
         mobileNumber: mobileNumber
         jobTitle: jobTitle
         roles:
-        - RegulatoryContact
-        - RegulatoryContact
+        - ResponsiblePerson
+        - ResponsiblePerson
         oneLoginId: oneLoginId
         fullName: fullName
         organisation:
@@ -3273,8 +3306,8 @@ components:
         mobileNumber: mobileNumber
         jobTitle: jobTitle
         roles:
-        - RegulatoryContact
-        - RegulatoryContact
+        - ResponsiblePerson
+        - ResponsiblePerson
         oneLoginId: oneLoginId
         fullName: fullName
         emailId: emailId
@@ -3337,7 +3370,7 @@ components:
       type: object
     UserRole:
       enum:
-      - RegulatoryContact
+      - ResponsiblePerson
       - Contributor
       - Designer
       - Contractor
@@ -3345,6 +3378,19 @@ components:
       - Assessor
       - Certifier
       type: string
+    UserRoleDetailResponse:
+      example:
+        fullName: fullName
+        emailId: emailId
+        roleDescription: roleDescription
+      properties:
+        fullName:
+          type: string
+        emailId:
+          type: string
+        roleDescription:
+          type: string
+      type: object
     UserStatus:
       enum:
       - Active

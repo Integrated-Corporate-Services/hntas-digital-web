@@ -70,7 +70,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 OrganisationName = user?.Organisation?.Name,
                 UserRole = user.Roles[0].ToString(),
-                IsRegulatoryContact = user.Roles?.Contains(UserRole.RegulatoryContact) ?? false,
+                IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
                 HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any()
             };
 

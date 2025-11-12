@@ -417,7 +417,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 Organisation = organisationModel,
                 User = userModel,
-                ConfirmedDeclaration = false
+                ConfirmDeclaration = false
             };
 
             ViewBag.ShowBackButton = false;
@@ -474,7 +474,7 @@ namespace HNTAS.Web.UI.Controllers
                     lastName: userModel?.ContactDetails?.LastName,
                     preferredContactType: preferredContactType,
                     jobTitle: userModel?.ContactDetails?.JobTitle,
-                    role: UserRole.RegulatoryContact,
+                    role: UserRole.ResponsiblePerson,
                     organisation: new OrganisationRequest
                     (
                         name: company?.Title,
