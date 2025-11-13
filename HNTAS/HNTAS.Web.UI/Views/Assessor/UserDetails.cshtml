@@ -1,12 +1,5 @@
-<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/UserManagement/ManageUsers.cshtml
-﻿@using System.Collections.Generic;
-@using HNTAS.Web.UI.Helpers
-@model HNTAS.Web.UI.Models.User.ManageUsersModel
-========
 ﻿@using HNTAS.Web.UI.Helpers
 @model HNTAS.Api.Client.Model.UserDetailsResponse
-
->>>>>>>> dev:HNTAS/HNTAS.Web.UI/Views/Assessor/UserDetails.cshtml
 
 @{
     ViewData["Title"] = "User Details";
@@ -47,19 +40,11 @@
                         </td>
                         <td class="govuk-table__cell">@Model.EmailId</td>
                         <td class="govuk-table__cell">
-<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/UserManagement/ManageUsers.cshtml
-                            <span class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1">@string.Join(", ", user.HeatNetworks)</span>
-                        </td>
-                        <td class="govuk-table__cell">
-                           <strong class="govuk-tag @GovUkTagHelper.GetTagClass(user.Status)">
-                                @user.Status
-========
                             <span class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1">@string.Join(", ", heatNetworkNames)</span>
                         </td>
                         <td class="govuk-table__cell">
                            <strong class="govuk-tag @GovUkTagHelper.GetTagClass(Model.Status)">
                                 @Model.Status
->>>>>>>> dev:HNTAS/HNTAS.Web.UI/Views/Assessor/UserDetails.cshtml
                             </strong>
                         </td>
                       
@@ -69,13 +54,5 @@
                     </tr>
             </tbody>
         </table>
-<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/UserManagement/ManageUsers.cshtml
-        </div>
-      
-           @*  <a href="#" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
-            Add new user
-        </a> *@
-========
->>>>>>>> dev:HNTAS/HNTAS.Web.UI/Views/Assessor/UserDetails.cshtml
     </div>
 </div>
