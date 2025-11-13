@@ -3757,6 +3757,10 @@
             "type": "string",
             "nullable": true
           },
+          "contactNumberExtension": {
+            "type": "string",
+            "nullable": true
+          },
           "mobileNumber": {
             "type": "string",
             "nullable": true

@@ -269,7 +269,6 @@ namespace HNTAS.Web.UI.Controllers
             return View();
         }
 
-
         [HttpGet]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult ConfirmRegulatoryContact()
@@ -325,7 +324,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, model);
                 }
 
-                return RedirectToAction("ContactDetails");
+                return RedirectToAction("ContactDetails", "Organisation");
             }
             return RedirectToAction("CannotContinue");
         }
@@ -350,8 +349,9 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.ShowBackButton = true;
             ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
+            ViewBag.NextActionController = "Organisation";
 
-            return View(userModel.ContactDetails);
+            return View("UserDetails/ContactDetails", userModel.ContactDetails);
         }
 
         [HttpPost]
@@ -851,6 +851,6 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.AddModelError(string.Empty, "An unexpected error occurred while updating organisation details. Please try again later.");
                 return View();
             }
-        }
-    }
+        }        
+    }    
 }

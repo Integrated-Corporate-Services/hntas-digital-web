@@ -3242,6 +3242,7 @@ components:
           orgId: orgId
         emailId: emailId
         landlineNumber: landlineNumber
+        contactNumberExtension: contactNumberExtension
         firstName: firstName
         heatNetworks:
         - hnId: hnId
@@ -3274,6 +3275,9 @@ components:
         preferredContactType:
           $ref: "#/components/schemas/NullableOfPreferredContactType"
         landlineNumber:
+          nullable: true
+          type: string
+        contactNumberExtension:
           nullable: true
           type: string
         mobileNumber:

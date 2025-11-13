@@ -1,7 +1,6 @@
 ﻿@using HNTAS.Web.UI.Helpers
 @model HNTAS.Api.Client.Model.UserDetailsResponse
 
-
 @{
     ViewData["Title"] = "User Details";
     var heatNetworkNames = new List<string> { };
@@ -19,7 +18,8 @@
         </h1>
 
         <h2 class="govuk-heading-m">Users</h2>
-        <table class="govuk-table">
+        <div class="govuk-overflow-container">
+              <table class="govuk-table">
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
                     <th scope="col" class="govuk-table__header">Name</th>
