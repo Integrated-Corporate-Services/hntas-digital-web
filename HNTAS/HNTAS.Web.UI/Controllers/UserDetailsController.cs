@@ -126,6 +126,9 @@ namespace HNTAS.Web.UI.Controllers
                     mobileNumber: userModel.ContactDetails.MobileNumber);
                 var orgId = await _userService.UpdateUserOrganisation(userId, updateModel);
                 _logger.LogInformation("Successfully updated OrgDetails for user {UserId}. Retrieved OrgId: {OrgId}", userId, orgId);
+
+                _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+                _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
                 return RedirectToAction("ManageUsers", "UserManagement");
             }
             catch(Exception ex)
