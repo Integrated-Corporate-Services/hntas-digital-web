@@ -42,13 +42,14 @@ namespace HNTAS.Api.Client.Model
         /// <param name="jobTitle">jobTitle</param>
         /// <param name="preferredContactType">preferredContactType</param>
         /// <param name="landlineNumber">landlineNumber</param>
+        /// <param name="contactNumberExtension">contactNumberExtension</param>
         /// <param name="mobileNumber">mobileNumber</param>
         /// <param name="status">status</param>
         /// <param name="roles">roles</param>
         /// <param name="organisation">organisation</param>
         /// <param name="heatNetworks">heatNetworks</param>
         [JsonConstructor]
-        public UserDetailsResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> emailId = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> status = default, Option<List<UserRole>?> roles = default, Option<OrganisationResponse?> organisation = default, Option<List<HeatNetworkUserResponse>?> heatNetworks = default)
+        public UserDetailsResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> emailId = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, Option<string?> status = default, Option<List<UserRole>?> roles = default, Option<OrganisationResponse?> organisation = default, Option<List<HeatNetworkUserResponse>?> heatNetworks = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
@@ -59,6 +60,7 @@ namespace HNTAS.Api.Client.Model
             JobTitleOption = jobTitle;
             PreferredContactTypeOption = preferredContactType;
             LandlineNumberOption = landlineNumber;
+            ContactNumberExtensionOption = contactNumberExtension;
             MobileNumberOption = mobileNumber;
             StatusOption = status;
             RolesOption = roles;
@@ -187,6 +189,19 @@ namespace HNTAS.Api.Client.Model
         public string? LandlineNumber { get { return this.LandlineNumberOption; } set { this.LandlineNumberOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of ContactNumberExtension
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> ContactNumberExtensionOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ContactNumberExtension
+        /// </summary>
+        [JsonPropertyName("contactNumberExtension")]
+        public string? ContactNumberExtension { get { return this.ContactNumberExtensionOption; } set { this.ContactNumberExtensionOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of MobileNumber
         /// </summary>
         [JsonIgnore]
@@ -268,6 +283,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
             sb.Append("  PreferredContactType: ").Append(PreferredContactType).Append("\n");
             sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
+            sb.Append("  ContactNumberExtension: ").Append(ContactNumberExtension).Append("\n");
             sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  Roles: ").Append(Roles).Append("\n");
@@ -319,6 +335,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> jobTitle = default;
             Option<NullableOfPreferredContactType?> preferredContactType = default;
             Option<string?> landlineNumber = default;
+            Option<string?> contactNumberExtension = default;
             Option<string?> mobileNumber = default;
             Option<string?> status = default;
             Option<List<UserRole>?> roles = default;
@@ -369,6 +386,9 @@ namespace HNTAS.Api.Client.Model
                         case "landlineNumber":
                             landlineNumber = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "contactNumberExtension":
+                            contactNumberExtension = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         case "mobileNumber":
                             mobileNumber = new Option<string?>(utf8JsonReader.GetString());
                             break;
@@ -402,7 +422,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class UserDetailsResponse.");
 
-            return new UserDetailsResponse(id, oneLoginId, firstName, lastName, fullName, emailId, jobTitle, preferredContactType, landlineNumber, mobileNumber, status, roles, organisation, heatNetworks);
+            return new UserDetailsResponse(id, oneLoginId, firstName, lastName, fullName, emailId, jobTitle, preferredContactType, landlineNumber, contactNumberExtension, mobileNumber, status, roles, organisation, heatNetworks);
         }
 
         /// <summary>
@@ -487,6 +507,12 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("landlineNumber", userDetailsResponse.LandlineNumber);
                 else
                     writer.WriteNull("landlineNumber");
+
+            if (userDetailsResponse.ContactNumberExtensionOption.IsSet)
+                if (userDetailsResponse.ContactNumberExtensionOption.Value != null)
+                    writer.WriteString("contactNumberExtension", userDetailsResponse.ContactNumberExtension);
+                else
+                    writer.WriteNull("contactNumberExtension");
 
             if (userDetailsResponse.MobileNumberOption.IsSet)
                 if (userDetailsResponse.MobileNumberOption.Value != null)

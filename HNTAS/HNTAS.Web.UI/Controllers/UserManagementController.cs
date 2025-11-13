@@ -48,13 +48,16 @@ namespace HNTAS.Web.UI.Controllers
                 var userRoles = await _userService.GetUserRolesAsync();
                 var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 var allRoles = contributorRoles.Concat(userRoles).ToList();
-                //var heatNetworks = await _heatNetworkService.GetAllHeatNetworks();
+                var currentUserEmailId = "";
 
                 var displayUsers = new List<UserDisplayModel>();
 
                 foreach (var user in users)
                 {
-
+                    if(user.Id == userId)
+                    {
+                        currentUserEmailId = user.EmailId;
+                    }
                     displayUsers.Add(new UserDisplayModel
                     {
                         Id = user.Id,
@@ -62,9 +65,9 @@ namespace HNTAS.Web.UI.Controllers
                         Name = user.Name,
                         Roles = user.Roles.Select(r => allRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
                         Status = user.Status.ToString(),
+                        IsCurrentUser = user.Id == userId,
                         HeatNetworks = user.HeatNetworks.Select(hn => hn.Name).ToList()
                     });
-
                 }
 
                 var viewModel = new ManageUsersModel

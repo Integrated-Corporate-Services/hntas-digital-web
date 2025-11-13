@@ -64,7 +64,7 @@
 
         <h1 class="govuk-heading-l">Your details</h1>
 
-        <form asp-controller="Organisation" asp-action="SaveContactDetails" method="post" novalidate>
+        <form asp-controller="@ViewBag.NextActionController" asp-action="SaveContactDetails" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             @* Email address - DISPLAY ONLY FIELD *@
