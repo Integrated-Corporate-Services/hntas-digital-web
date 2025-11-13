@@ -48,7 +48,6 @@ namespace HNTAS.Web.UI.Controllers
                 var userRoles = await _userService.GetUserRolesAsync();
                 var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 var allRoles = contributorRoles.Concat(userRoles).ToList();
-                //var heatNetworks = await _heatNetworkService.GetAllHeatNetworks();
                 var currentUserEmailId = "";
 
                 var displayUsers = new List<UserDisplayModel>();
@@ -70,24 +69,6 @@ namespace HNTAS.Web.UI.Controllers
                         HeatNetworks = user.HeatNetworks.Select(hn => hn.Name).ToList()
                     });
                 }
-
-                // Required for Viewing User details
-                var existingUserModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-                var isRegulatoryContact = await _userService.IsRpUserAsync(currentUserEmailId);
-                if (existingUserModel == null || existingUserModel.ContactDetails.EmailAddress == null)
-                {
-                    existingUserModel = new UserModel
-                    {
-                        IsRegulatoryContact = isRegulatoryContact,
-                        OrganisationName = organisationName,
-                        ContactDetails =
-                        {
-                            EmailAddress = currentUserEmailId
-                        }
-                    };
-                    _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, existingUserModel);
-                }
-                // -----------
 
                 var viewModel = new ManageUsersModel
                 {

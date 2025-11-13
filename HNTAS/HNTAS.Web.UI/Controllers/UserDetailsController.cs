@@ -22,10 +22,31 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult ContactDetails()
+        public async Task<IActionResult> ContactDetails()
         {
             this.ShowBackButton("ManageUsers", "UserManagement");
-            var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var userDetails = await _userService.GetUserDetails(userId);
+            var isUserRp = await _userService.IsRpUserAsync(userDetails.EmailId);
+            
+            var preferredContactType = (HNTAS.Api.Client.Model.PreferredContactType)userDetails?.PreferredContactType == HNTAS.Api.Client.Model.PreferredContactType.Landline ? HNTAS.Web.UI.Models.Enums.PreferredContactType.Landline : HNTAS.Web.UI.Models.Enums.PreferredContactType.Mobile;
+
+            var userModel = new UserModel
+            {
+                IsRegulatoryContact = isUserRp,
+                OrganisationName = userDetails.Organisation.Name,
+                ContactDetails = {
+                    FirstName = userDetails.FirstName,
+                    LastName = userDetails.LastName,
+                    PreferredContactType = preferredContactType,
+                    EmailAddress = userDetails.EmailId,
+                    JobTitle = userDetails.JobTitle,
+                    LandlineNumber = userDetails.LandlineNumber,
+                    MobileNumber = userDetails.MobileNumber,
+                    ContactNumberExtension = userDetails.ContactNumberExtension
+                }
+            };
+            _sessionHelper.SaveToSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey, userModel);
             ViewBag.NextActionController = "UserDetails";
             return View("UserDetails/ContactDetails" ,userModel.ContactDetails);
         }
