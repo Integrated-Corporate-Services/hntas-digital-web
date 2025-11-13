@@ -324,7 +324,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, model);
                 }
 
-                return RedirectToAction("UserDetails/ContactDetails");
+                return RedirectToAction("ContactDetails", "Organisation");
             }
             return RedirectToAction("CannotContinue");
         }
@@ -351,7 +351,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
             ViewBag.NextActionController = "Organisation";
 
-            return View(userModel.ContactDetails);
+            return View("UserDetails/ContactDetails", userModel.ContactDetails);
         }
 
         [HttpPost]

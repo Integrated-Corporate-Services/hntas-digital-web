@@ -73,10 +73,13 @@ namespace HNTAS.Web.UI.Controllers
 
                 // Required for Viewing User details
                 var existingUserModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-                if (existingUserModel == null)
+                var isRegulatoryContact = await _userService.IsRpUserAsync(currentUserEmailId);
+                if (existingUserModel == null || existingUserModel.ContactDetails.EmailAddress == null)
                 {
                     existingUserModel = new UserModel
                     {
+                        IsRegulatoryContact = isRegulatoryContact,
+                        OrganisationName = organisationName,
                         ContactDetails =
                         {
                             EmailAddress = currentUserEmailId

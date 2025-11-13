@@ -1,4 +1,5 @@
-﻿using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
@@ -12,10 +13,12 @@ namespace HNTAS.Web.UI.Controllers
     {
         private readonly ISessionHelper _sessionHelper;
         private readonly IUserService _userService;
-        public UserDetailsController(ISessionHelper sessionHelper, IUserService userService)
+        private readonly ILogger<UserDetailsController> _logger = null;
+        public UserDetailsController(ISessionHelper sessionHelper, IUserService userService, ILogger<UserDetailsController> logger)
         {
             _sessionHelper = sessionHelper;
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -76,7 +79,7 @@ namespace HNTAS.Web.UI.Controllers
             userModel.ContactDetails = contactDetails;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, userModel);
 
-            return RedirectToAction("CheckYourAnswers");
+            return RedirectToAction("CheckYourAnswers", "UserDetails");
         }
 
         [HttpGet]
@@ -86,20 +89,56 @@ namespace HNTAS.Web.UI.Controllers
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
             var viewModel = new CheckYourAnswersModel
             {
-                Organisation = null,
+                Organisation = new OrganisationModel(),
                 User = userModel,
-                ConfirmDeclaration = false
+                ConfirmDeclaration = true
             };
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, true);
             return View("UserDetails/CheckYourAnswers", viewModel);
         }
 
         [HttpPost]
-        public IActionResult SubmitAnswers()
+        public async Task<IActionResult> SubmitAnswers()
         {
-            // and the api call tp save it 
-            return RedirectToAction("ManageUsers", "UserManagement");
-        }
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
+            var userDetails = await _userService.GetUserDetails(userId);
+            
+            var preferredContactType = userModel?.ContactDetails?.PreferredContactType == PreferredContactType.Landline ? HNTAS.Api.Client.Model.PreferredContactType.Landline : HNTAS.Api.Client.Model.PreferredContactType.Mobile;
 
+            try 
+            {
+                var updateModel = new UpdateUserOrganisationRequest(
+                    firstName: userModel?.ContactDetails?.FirstName,
+                    lastName: userModel?.ContactDetails?.LastName,
+                    preferredContactType: preferredContactType,
+                    jobTitle: userModel?.ContactDetails?.JobTitle,
+                    role: userDetails.Roles[0],
+                    organisation: new OrganisationRequest
+                    (
+                        name: userDetails.Organisation.Name,
+                        type: (OrganisationType)userDetails.Organisation.Type,
+                        companiesHouseNumber: userDetails.Organisation.CompaniesHouseNumber,
+                        registeredAddress: userDetails.Organisation.RegisteredAddress
+                    ),
+                    landlineNumber: userModel.ContactDetails.LandlineNumber,
+                    contactNumberExtension: userModel.ContactDetails.ContactNumberExtension,
+                    mobileNumber: userModel.ContactDetails.MobileNumber);
+                var orgId = await _userService.UpdateUserOrganisation(userId, updateModel);
+                _logger.LogInformation("Successfully updated OrgDetails for user {UserId}. Retrieved OrgId: {OrgId}", userId, orgId);
+                return RedirectToAction("ManageUsers", "UserManagement");
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error updating OrgDetails for user {UserId}", userId);
+                TempData["ErrorMessage"] = "There was a problem saving your details. Please try again.";
+                return View("UserDetails/CheckYourAnswers", new CheckYourAnswersModel
+                {
+                    Organisation = new OrganisationModel(),
+                    User = userModel,
+                    ConfirmDeclaration = true
+                });
+            }            
+        }
     }
 }
