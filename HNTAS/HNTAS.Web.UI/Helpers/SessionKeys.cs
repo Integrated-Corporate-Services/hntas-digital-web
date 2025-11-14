@@ -49,6 +49,7 @@
         public const string DeclarationOfImpartialityModelKey = "DeclarationOfImpartialityModelKey";
 
         public const string IsEditOrganisationDetailsJourneySessionKey = "IsEditOrganisationDetailsJourney";
+        public const string IsAssessorOrCertifier = "IsAssessorOrCertifier";
 
     }
 }

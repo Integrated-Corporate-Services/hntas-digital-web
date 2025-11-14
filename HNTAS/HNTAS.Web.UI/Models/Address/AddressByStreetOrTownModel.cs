@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HNTAS.Web.UI.Models.CompaniesHouse;
+using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models.Address
 {
@@ -18,5 +19,17 @@ namespace HNTAS.Web.UI.Models.Address
         [Required(ErrorMessage = "Country is required.")]
         public string Country { get; set; } = string.Empty;
         public string Fulladdress { get; set; } = string.Empty;
+
+        public static implicit operator AddressByStreetOrTownModel(RegisteredOfficeAddressModel v)
+        {
+            if (v == null) return null!;
+            return new AddressByStreetOrTownModel
+            {
+                 StreetAddress = v.AddressLine1,
+                 TownOrCity = v.Locality,
+                 Postalcode = v.PostalCode,
+                 Country = v.Country                
+            };
+        }
     }
 }
