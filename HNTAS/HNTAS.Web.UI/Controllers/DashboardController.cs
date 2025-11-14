@@ -62,7 +62,11 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new DashboardModel());
             }
-
+            var isAssessorOrCertifier = "false";
+            if (user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Assessor.ToString() || user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Certifier.ToString()) {
+                isAssessorOrCertifier = "true";
+            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsAssessorOrCertifier, isAssessorOrCertifier);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
 
 
