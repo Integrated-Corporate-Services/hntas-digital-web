@@ -582,6 +582,12 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> OrganisationAddressAsync()
         {
             this.ShowBackButton("OrganisationName", "Organisation");
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+            var viewModel = new AddressByStreetOrTownModel();
+            if (organisationModel.CompanyDetails.RegisteredOfficeAddress != null) 
+            {
+                viewModel = (AddressByStreetOrTownModel)organisationModel.CompanyDetails.RegisteredOfficeAddress;
+            }
             var isOverseasOrganisation = _sessionHelper.GetFromSession<bool?>(HttpContext, "IsOverseasOrganisation") ?? false;
             ViewBag.IsOverseasOrganisation = isOverseasOrganisation;
             ModelState.Clear();
@@ -589,7 +595,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ViewBag.CountryList = await GetCountrySelectListItems();
             }
-            return View("OrganisationAddress", new AddressByStreetOrTownModel());
+            return View("OrganisationAddress", viewModel);
         }
 
 
@@ -806,7 +812,7 @@ namespace HNTAS.Web.UI.Controllers
             RegisteredOfficeAddressModel regAddrModel = company.RegisteredOfficeAddress;
             var regAddress = new RegisteredAddress(
                 addressLine1: regAddrModel?.AddressLine1,
-                addressLine2: null,
+                addressLine2: regAddrModel.AddressLine2,
                 town: regAddrModel?.Locality,
                 postcode: regAddrModel?.PostalCode,
                 country: regAddrModel?.Country
