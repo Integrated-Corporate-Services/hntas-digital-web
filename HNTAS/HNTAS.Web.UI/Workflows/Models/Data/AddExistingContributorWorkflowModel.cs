@@ -11,6 +11,7 @@ namespace HNTAS.Web.UI.Workflows.Models.Data
         public ContributorContactDetailsModel? ContributorContactDetailsModel { get; set; }
         public ChooseHeatNetworkModel? ChooseHeatNetworkModel { get; set; }
         public ChooseRoleModel? ChooseRoleModel { get; set; }
+        public ReplaceUserRoleViewModel? ReplaceUserRoleViewModel { get; set; }
         public HashSet<ExistingContributorWorkflowStep> CompletedSteps { get; set; } = new();
         public ExistingContributorWorkflowStep CurrentStep { get; set; }
 

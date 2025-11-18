@@ -1681,6 +1681,7 @@ components:
         contributorRoles:
         - DesignatedDesigner
         - DesignatedDesigner
+        currentRoleUserId: currentRoleUserId
         status: Invited
       properties:
         emailAddress:
@@ -1696,6 +1697,9 @@ components:
             $ref: "#/components/schemas/ContributorRole"
           minItems: 1
           type: array
+        currentRoleUserId:
+          nullable: true
+          type: string
         status:
           $ref: "#/components/schemas/InvitationStatus"
       required:
@@ -3382,9 +3386,12 @@ components:
       example:
         fullName: fullName
         emailId: emailId
+        userId: userId
         roleDescription: roleDescription
       properties:
         fullName:
+          type: string
+        userId:
           type: string
         emailId:
           type: string
