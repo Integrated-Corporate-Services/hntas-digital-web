@@ -2663,6 +2663,10 @@
               "$ref": "#/components/schemas/ContributorRole"
             }
           },
+          "currentRoleUserId": {
+            "type": "string",
+            "nullable": true
+          },
           "status": {
             "$ref": "#/components/schemas/InvitationStatus"
           }
@@ -3872,6 +3876,9 @@
         "type": "object",
         "properties": {
           "fullName": {
+            "type": "string"
+          },
+          "userId": {
             "type": "string"
           },
           "emailId": {

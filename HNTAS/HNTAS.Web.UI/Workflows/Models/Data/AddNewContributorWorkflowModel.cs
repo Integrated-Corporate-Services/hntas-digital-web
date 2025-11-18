@@ -11,11 +11,9 @@ namespace HNTAS.Web.UI.Workflows.Models.Data
         public ContributorContactDetailsModel? ContributorContactDetailsModel { get; set; }
         public ChooseHeatNetworkModel? ChooseHeatNetworkModel { get; set; }
         public ChooseRoleModel? ChooseRoleModel { get; set; }
-
+        public ReplaceUserRoleViewModel? ReplaceUserRoleViewModel { get; set; }
         public HashSet<ContributorWorkflowStep> CompletedSteps { get; set; } = new();
-
         public ContributorWorkflowStep CurrentStep { get; set; }
-
         public void AdvanceToStep(ContributorWorkflowStep nextStep)
         {
             // Optional: enforce forward-only progression

@@ -358,6 +358,22 @@ namespace HNTAS.Web.UI.Services.Core
         }
 
 
+        public async Task<(bool IsAssigned, string UserId)> IsRoleAlreadyAssigned(string heatNetworkId, string roleName)
+        {
+            var userRolesDetailsResponse = await GetHeatNetworkUserRoles(heatNetworkId.ToUpper());
+            //check the role is present in the list or not
+            if (userRolesDetailsResponse != null && userRolesDetailsResponse.Any())
+            {
+                var existingRole = userRolesDetailsResponse.FirstOrDefault(x => x.RoleDescription.Equals(roleName, StringComparison.OrdinalIgnoreCase));
+                if (existingRole != null)
+                {
+                    return (true, existingRole.UserId);
+                }
+            }
+            return (false, string.Empty);
+        }
+
+
         private string SanitizeForLogging(string input)
         {
             return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;
