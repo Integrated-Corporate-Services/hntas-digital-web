@@ -227,11 +227,27 @@ namespace HNTAS.Web.UI.Controllers
             model.SelectedRoleName = model.Roles
              .FirstOrDefault(hn => hn.Value == model.SelectedRoleId)?.Text;
 
-            // Logic to save details goes here
-            _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
-             m => m.ChooseRoleModel = model,
-             ExistingContributorWorkflowStep.CheckYourAnswers
-            );
+
+            //check if the role is already assigned to another user for the selected heat network
+            var state = _workflowManager.GetState<AddExistingContributorWorkflowModel>();
+            (bool IsAssigned, string UserId) = await _userService.IsRoleAlreadyAssigned(state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId, model.SelectedRoleName);
+            //check the role is present in the list or not
+            if (IsAssigned)
+            {
+                _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
+                    m => m.ChooseRoleModel = model,
+                    ExistingContributorWorkflowStep.ReplaceRoleConfirmation
+                );
+                return RedirectToAction("ReplaceUserRoleConfirmation");
+            }
+            else
+            {
+                // Logic to save details goes here
+                _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
+                 m => m.ChooseRoleModel = model,
+                 ExistingContributorWorkflowStep.CheckYourAnswers
+                );
+            }
 
             return RedirectToAction("CheckYourAnswers");
         }
@@ -283,6 +299,7 @@ namespace HNTAS.Web.UI.Controllers
                          lastName: state.Data.ContributorContactDetailsModel.LastName,
                          hnId: state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId,
                          contributorRoles: new List<ContributorRole> { selectedContributorRole },
+                         currentRoleUserId: state.Data.ReplaceUserRoleViewModel != null ? state.Data.ReplaceUserRoleViewModel.CurrentRoleUserId : null,
                          status: InvitationStatus.Invited
                      )
                  );
@@ -327,6 +344,74 @@ namespace HNTAS.Web.UI.Controllers
             ViewData["OrganisationName"] = organisationName;
 
             return View("Contributor/Confirmation");
+        }
+
+
+        [HttpGet]
+        [ValidateWorkflowStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(ExistingContributorWorkflowStep.ReplaceRoleConfirmation)]
+        public IActionResult ReplaceUserRoleConfirmation()
+        {
+            this.ShowBackButton("ChooseRole");
+            var heatNetworkNameWithId = _workflowManager.GetState<AddExistingContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkName;
+
+            var model = new ReplaceUserRoleViewModel()
+            {
+                HeatNetworkName = heatNetworkNameWithId.Split("-")[1].Trim(),
+                RoleName = _workflowManager.GetState<AddExistingContributorWorkflowModel>().Data.ChooseRoleModel.SelectedRoleName
+            };
+            ViewBag.ContollerName = "ExistingContributor";
+            return View("Contributor/ReplaceUserRoleConfirmation", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmReplaceUserRoleAsync(ReplaceUserRoleViewModel replaceUserRoleViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                this.ShowBackButton("ChooseRole");
+                var heatNetworkNameWithId = _workflowManager.GetState<AddExistingContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkName;
+
+                replaceUserRoleViewModel.HeatNetworkName = heatNetworkNameWithId.Split("-")[1].Trim();
+                replaceUserRoleViewModel.RoleName = _workflowManager.GetState<AddExistingContributorWorkflowModel>().Data.ChooseRoleModel.SelectedRoleName;
+
+                return View("Contributor/ReplaceUserRoleConfirmation", replaceUserRoleViewModel);
+            }
+
+            if (replaceUserRoleViewModel.ReplaceExistingRole.ToUpper() == "YES")
+            {
+                var state = _workflowManager.GetState<AddExistingContributorWorkflowModel>();
+                (bool IsAssigned, string UserId) = await _userService.IsRoleAlreadyAssigned(state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId, state.Data.ChooseRoleModel.SelectedRoleName);
+                replaceUserRoleViewModel.CurrentRoleUserId = UserId;
+
+                // Logic to save details goes here
+                _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
+                 m => m.ReplaceUserRoleViewModel = replaceUserRoleViewModel,
+                 ExistingContributorWorkflowStep.CheckYourAnswers
+                );
+                return RedirectToAction("CheckYourAnswers");
+            }
+            else
+            {
+                //set replaceUserRoleViewModel to null
+                var state = _workflowManager.GetState<AddExistingContributorWorkflowModel>();
+
+                // Logic to save details goes here
+                _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
+                 m => m.ReplaceUserRoleViewModel = null,
+                 ExistingContributorWorkflowStep.CannotContinue
+                );
+
+                return RedirectToAction("CannotContinue");
+            }
+        }
+
+        [HttpGet]
+        [ValidateWorkflowStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(ExistingContributorWorkflowStep.CannotContinue)]
+        public IActionResult CannotContinue()
+        {
+            this.ShowBackButton("ChooseRole");
+            ViewBag.HName = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkName.Split("-")[1].Trim();
+            return View("Contributor/CannotContinue");
         }
 
 

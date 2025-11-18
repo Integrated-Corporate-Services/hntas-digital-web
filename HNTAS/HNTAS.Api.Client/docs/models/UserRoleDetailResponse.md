@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **FullName** | **string** |  | [optional] 
+**UserId** | **string** |  | [optional] 
 **EmailId** | **string** |  | [optional] 
 **RoleDescription** | **string** |  | [optional] 
 

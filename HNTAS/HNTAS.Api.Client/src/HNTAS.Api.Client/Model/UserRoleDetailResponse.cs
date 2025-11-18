@@ -34,12 +34,14 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="UserRoleDetailResponse" /> class.
         /// </summary>
         /// <param name="fullName">fullName</param>
+        /// <param name="userId">userId</param>
         /// <param name="emailId">emailId</param>
         /// <param name="roleDescription">roleDescription</param>
         [JsonConstructor]
-        public UserRoleDetailResponse(Option<string?> fullName = default, Option<string?> emailId = default, Option<string?> roleDescription = default)
+        public UserRoleDetailResponse(Option<string?> fullName = default, Option<string?> userId = default, Option<string?> emailId = default, Option<string?> roleDescription = default)
         {
             FullNameOption = fullName;
+            UserIdOption = userId;
             EmailIdOption = emailId;
             RoleDescriptionOption = roleDescription;
             OnCreated();
@@ -59,6 +61,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("fullName")]
         public string? FullName { get { return this.FullNameOption; } set { this.FullNameOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of UserId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> UserIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets UserId
+        /// </summary>
+        [JsonPropertyName("userId")]
+        public string? UserId { get { return this.UserIdOption; } set { this.UserIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of EmailId
@@ -95,6 +110,7 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class UserRoleDetailResponse {\n");
             sb.Append("  FullName: ").Append(FullName).Append("\n");
+            sb.Append("  UserId: ").Append(UserId).Append("\n");
             sb.Append("  EmailId: ").Append(EmailId).Append("\n");
             sb.Append("  RoleDescription: ").Append(RoleDescription).Append("\n");
             sb.Append("}\n");
@@ -135,6 +151,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> fullName = default;
+            Option<string?> userId = default;
             Option<string?> emailId = default;
             Option<string?> roleDescription = default;
 
@@ -156,6 +173,9 @@ namespace HNTAS.Api.Client.Model
                         case "fullName":
                             fullName = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "userId":
+                            userId = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         case "emailId":
                             emailId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
@@ -171,13 +191,16 @@ namespace HNTAS.Api.Client.Model
             if (fullName.IsSet && fullName.Value == null)
                 throw new ArgumentNullException(nameof(fullName), "Property is not nullable for class UserRoleDetailResponse.");
 
+            if (userId.IsSet && userId.Value == null)
+                throw new ArgumentNullException(nameof(userId), "Property is not nullable for class UserRoleDetailResponse.");
+
             if (emailId.IsSet && emailId.Value == null)
                 throw new ArgumentNullException(nameof(emailId), "Property is not nullable for class UserRoleDetailResponse.");
 
             if (roleDescription.IsSet && roleDescription.Value == null)
                 throw new ArgumentNullException(nameof(roleDescription), "Property is not nullable for class UserRoleDetailResponse.");
 
-            return new UserRoleDetailResponse(fullName, emailId, roleDescription);
+            return new UserRoleDetailResponse(fullName, userId, emailId, roleDescription);
         }
 
         /// <summary>
@@ -207,6 +230,9 @@ namespace HNTAS.Api.Client.Model
             if (userRoleDetailResponse.FullNameOption.IsSet && userRoleDetailResponse.FullName == null)
                 throw new ArgumentNullException(nameof(userRoleDetailResponse.FullName), "Property is required for class UserRoleDetailResponse.");
 
+            if (userRoleDetailResponse.UserIdOption.IsSet && userRoleDetailResponse.UserId == null)
+                throw new ArgumentNullException(nameof(userRoleDetailResponse.UserId), "Property is required for class UserRoleDetailResponse.");
+
             if (userRoleDetailResponse.EmailIdOption.IsSet && userRoleDetailResponse.EmailId == null)
                 throw new ArgumentNullException(nameof(userRoleDetailResponse.EmailId), "Property is required for class UserRoleDetailResponse.");
 
@@ -215,6 +241,9 @@ namespace HNTAS.Api.Client.Model
 
             if (userRoleDetailResponse.FullNameOption.IsSet)
                 writer.WriteString("fullName", userRoleDetailResponse.FullName);
+
+            if (userRoleDetailResponse.UserIdOption.IsSet)
+                writer.WriteString("userId", userRoleDetailResponse.UserId);
 
             if (userRoleDetailResponse.EmailIdOption.IsSet)
                 writer.WriteString("emailId", userRoleDetailResponse.EmailId);
