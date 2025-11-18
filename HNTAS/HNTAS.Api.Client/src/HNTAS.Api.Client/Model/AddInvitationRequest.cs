@@ -39,8 +39,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="hnId">hnId</param>
         /// <param name="contributorRoles">contributorRoles</param>
         /// <param name="status">status</param>
+        /// <param name="currentRoleUserId">currentRoleUserId</param>
         [JsonConstructor]
-        public AddInvitationRequest(string emailAddress, string firstName, string lastName, string hnId, List<ContributorRole> contributorRoles, InvitationStatus status)
+        public AddInvitationRequest(string emailAddress, string firstName, string lastName, string hnId, List<ContributorRole> contributorRoles, InvitationStatus status, Option<string?> currentRoleUserId = default)
         {
             EmailAddress = emailAddress;
             FirstName = firstName;
@@ -48,6 +49,7 @@ namespace HNTAS.Api.Client.Model
             HnId = hnId;
             ContributorRoles = contributorRoles;
             Status = status;
+            CurrentRoleUserIdOption = currentRoleUserId;
             OnCreated();
         }
 
@@ -90,6 +92,19 @@ namespace HNTAS.Api.Client.Model
         public List<ContributorRole> ContributorRoles { get; set; }
 
         /// <summary>
+        /// Used to track the state of CurrentRoleUserId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> CurrentRoleUserIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets CurrentRoleUserId
+        /// </summary>
+        [JsonPropertyName("currentRoleUserId")]
+        public string? CurrentRoleUserId { get { return this.CurrentRoleUserIdOption; } set { this.CurrentRoleUserIdOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -103,6 +118,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  ContributorRoles: ").Append(ContributorRoles).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  CurrentRoleUserId: ").Append(CurrentRoleUserId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -146,6 +162,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> hnId = default;
             Option<List<ContributorRole>?> contributorRoles = default;
             Option<InvitationStatus?> status = default;
+            Option<string?> currentRoleUserId = default;
 
             while (utf8JsonReader.Read())
             {
@@ -181,6 +198,9 @@ namespace HNTAS.Api.Client.Model
                             string? statusRawValue = utf8JsonReader.GetString();
                             if (statusRawValue != null)
                                 status = new Option<InvitationStatus?>(InvitationStatusValueConverter.FromStringOrDefault(statusRawValue));
+                            break;
+                        case "currentRoleUserId":
+                            currentRoleUserId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         default:
                             break;
@@ -224,7 +244,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class AddInvitationRequest.");
 
-            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, hnId.Value!, contributorRoles.Value!, status.Value!.Value!);
+            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, hnId.Value!, contributorRoles.Value!, status.Value!.Value!, currentRoleUserId);
         }
 
         /// <summary>
@@ -278,6 +298,12 @@ namespace HNTAS.Api.Client.Model
             JsonSerializer.Serialize(writer, addInvitationRequest.ContributorRoles, jsonSerializerOptions);
             var statusRawValue = InvitationStatusValueConverter.ToJsonValue(addInvitationRequest.Status);
             writer.WriteString("status", statusRawValue);
+
+            if (addInvitationRequest.CurrentRoleUserIdOption.IsSet)
+                if (addInvitationRequest.CurrentRoleUserIdOption.Value != null)
+                    writer.WriteString("currentRoleUserId", addInvitationRequest.CurrentRoleUserId);
+                else
+                    writer.WriteNull("currentRoleUserId");
         }
     }
 }
