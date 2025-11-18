@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **JobTitle** | **string** |  | [optional] 
 **PreferredContactType** | **NullableOfPreferredContactType** |  | [optional] 
 **LandlineNumber** | **string** |  | [optional] 
+**ContactNumberExtension** | **string** |  | [optional] 
 **MobileNumber** | **string** |  | [optional] 
 **Status** | **string** |  | [optional] 
 **Roles** | [**List&lt;UserRole&gt;**](UserRole.md) |  | [optional] 
