@@ -16,9 +16,7 @@ namespace HNTAS.Web.UI.Models.User
         [MaxLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
         public string? LastName { get; set; }
 
-
-        [Required(ErrorMessage = "Select a preferred contact number type.")]
-        public PreferredContactType PreferredContactType { get; set; }
+        public PreferredContactType? PreferredContactType { get; set; }
 
         [RegularExpression(@"^[\d\s\+\-]+$", ErrorMessage = "Enter a valid landline number — use only numbers, spaces, plus or hyphens.")]
         [MaxLength(20, ErrorMessage = "Landline number cannot exceed 20 characters.")]

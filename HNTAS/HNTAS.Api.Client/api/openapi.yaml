@@ -1396,6 +1396,58 @@ paths:
           description: Internal Server Error
       tags:
       - Users
+  /api/Users/{id}/user-details:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserDetailsRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserDetailsRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
   /api/Users/accept-invitation:
     patch:
       requestBody:
@@ -2351,6 +2403,7 @@ components:
       enum:
       - Landline
       - Mobile
+      - PreferNotToSay
       - null
       nullable: true
       type: string
@@ -2364,6 +2417,18 @@ components:
       - Stage6
       - Stage7
       - Stage8
+      - null
+      nullable: true
+      type: string
+    NullableOfUserRole:
+      enum:
+      - ResponsiblePerson
+      - Contributor
+      - Designer
+      - Contractor
+      - Operator
+      - Assessor
+      - Certifier
       - null
       nullable: true
       type: string
@@ -2426,11 +2491,6 @@ components:
       - UkCompaniesHouse
       - OtherUkOrganisation
       - OverseasOrganisation
-      type: string
-    PreferredContactType:
-      enum:
-      - Landline
-      - Mobile
       type: string
     ProblemDetails:
       example:
@@ -2980,6 +3040,41 @@ components:
         status:
           $ref: "#/components/schemas/SoaStatus"
       type: object
+    UpdateUserDetailsRequest:
+      example:
+        firstName: firstName
+        lastName: lastName
+        role: ResponsiblePerson
+        preferredContactType: Landline
+        mobileNumber: mobileNumber
+        jobTitle: jobTitle
+        landlineNumber: landlineNumber
+        contactNumberExtension: contactNumberExtension
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        preferredContactType:
+          $ref: "#/components/schemas/NullableOfPreferredContactType"
+        landlineNumber:
+          nullable: true
+          type: string
+        contactNumberExtension:
+          nullable: true
+          type: string
+        mobileNumber:
+          nullable: true
+          type: string
+        jobTitle:
+          type: string
+        role:
+          $ref: "#/components/schemas/NullableOfUserRole"
+      required:
+      - firstName
+      - jobTitle
+      - lastName
+      type: object
     UpdateUserOrganisationRequest:
       example:
         firstName: firstName
@@ -3002,12 +3097,16 @@ components:
         landlineNumber: landlineNumber
         contactNumberExtension: contactNumberExtension
       properties:
+        organisation:
+          $ref: "#/components/schemas/OrganisationRequest"
+        role:
+          $ref: "#/components/schemas/UserRole"
         firstName:
           type: string
         lastName:
           type: string
         preferredContactType:
-          $ref: "#/components/schemas/PreferredContactType"
+          $ref: "#/components/schemas/NullableOfPreferredContactType"
         landlineNumber:
           nullable: true
           type: string
@@ -3019,16 +3118,11 @@ components:
           type: string
         jobTitle:
           type: string
-        role:
-          $ref: "#/components/schemas/UserRole"
-        organisation:
-          $ref: "#/components/schemas/OrganisationRequest"
       required:
       - firstName
       - jobTitle
       - lastName
       - organisation
-      - preferredContactType
       - role
       type: object
     UploadedAssessmentDocumentResponse:
