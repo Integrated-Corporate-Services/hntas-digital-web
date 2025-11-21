@@ -11,6 +11,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersIdDelete**](UsersApi.md#apiusersiddelete) | **DELETE** /api/Users/{id} |  |
 | [**ApiUsersIdHeatnetworkHeatNetworkIdPatch**](UsersApi.md#apiusersidheatnetworkheatnetworkidpatch) | **PATCH** /api/Users/{id}/heatnetwork/{heatNetworkId} |  |
 | [**ApiUsersIdOrgDetailsPatch**](UsersApi.md#apiusersidorgdetailspatch) | **PATCH** /api/Users/{id}/org-details |  |
+| [**ApiUsersIdUserDetailsPatch**](UsersApi.md#apiusersiduserdetailspatch) | **PATCH** /api/Users/{id}/user-details |  |
 | [**ApiUsersInitialEntryPost**](UsersApi.md#apiusersinitialentrypost) | **POST** /api/Users/initial-entry |  |
 | [**ApiUsersIsActiveUserEmailIdGet**](UsersApi.md#apiusersisactiveuseremailidget) | **GET** /api/Users/is-active-user/{emailId} |  |
 | [**ApiUsersIsRpUserEmailIdGet**](UsersApi.md#apiusersisrpuseremailidget) | **GET** /api/Users/is-rp-user/{emailId} |  |
@@ -262,6 +263,44 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersiduserdetailspatch"></a>
+# **ApiUsersIdUserDetailsPatch**
+> void ApiUsersIdUserDetailsPatch (string id, UpdateUserDetailsRequest updateUserDetailsRequest)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **id** | **string** |  |  |
+| **updateUserDetailsRequest** | [**UpdateUserDetailsRequest**](UpdateUserDetailsRequest.md) |  |  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **204** | No Content |  -  |
 | **400** | Bad Request |  -  |
 | **404** | Not Found |  -  |
 | **500** | Internal Server Error |  -  |

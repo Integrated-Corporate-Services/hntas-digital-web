@@ -2197,6 +2197,88 @@
         }
       }
     },
+    "/api/Users/{id}/user-details": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maxLength": 24,
+              "minLength": 24,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDetailsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDetailsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/Users/accept-invitation": {
       "patch": {
         "tags": [
@@ -3092,6 +3174,7 @@
         "enum": [
           "Landline",
           "Mobile",
+          "PreferNotToSay",
           null
         ],
         "nullable": true
@@ -3106,6 +3189,19 @@
           "Stage6",
           "Stage7",
           "Stage8",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfUserRole": {
+        "enum": [
+          "ResponsiblePerson",
+          "Contributor",
+          "Designer",
+          "Contractor",
+          "Operator",
+          "Assessor",
+          "Certifier",
           null
         ],
         "nullable": true
@@ -3160,12 +3256,6 @@
           "UkCompaniesHouse",
           "OtherUkOrganisation",
           "OverseasOrganisation"
-        ]
-      },
-      "PreferredContactType": {
-        "enum": [
-          "Landline",
-          "Mobile"
         ]
       },
       "ProblemDetails": {
@@ -3492,14 +3582,11 @@
           }
         }
       },
-      "UpdateUserOrganisationRequest": {
+      "UpdateUserDetailsRequest": {
         "required": [
           "firstName",
           "lastName",
-          "preferredContactType",
-          "jobTitle",
-          "role",
-          "organisation"
+          "jobTitle"
         ],
         "type": "object",
         "properties": {
@@ -3510,7 +3597,7 @@
             "type": "string"
           },
           "preferredContactType": {
-            "$ref": "#/components/schemas/PreferredContactType"
+            "$ref": "#/components/schemas/NullableOfPreferredContactType"
           },
           "landlineNumber": {
             "type": "string",
@@ -3528,10 +3615,49 @@
             "type": "string"
           },
           "role": {
-            "$ref": "#/components/schemas/UserRole"
-          },
+            "$ref": "#/components/schemas/NullableOfUserRole"
+          }
+        }
+      },
+      "UpdateUserOrganisationRequest": {
+        "required": [
+          "organisation",
+          "role",
+          "firstName",
+          "lastName",
+          "jobTitle"
+        ],
+        "type": "object",
+        "properties": {
           "organisation": {
             "$ref": "#/components/schemas/OrganisationRequest"
+          },
+          "role": {
+            "$ref": "#/components/schemas/UserRole"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "preferredContactType": {
+            "$ref": "#/components/schemas/NullableOfPreferredContactType"
+          },
+          "landlineNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactNumberExtension": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobileNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "jobTitle": {
+            "type": "string"
           }
         }
       },
