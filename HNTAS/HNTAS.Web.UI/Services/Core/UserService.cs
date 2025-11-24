@@ -113,6 +113,29 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+
+        public async Task UpdateUserDetails(string id, UpdateUserDetailsRequest request)
+        {
+            _logger.LogInformation("Attempting to update user details for ID: {UserId}", id);
+            try
+            {
+                var response = await _usersApi.ApiUsersIdUserDetailsPatchAsync(id, request);
+
+                if (response.IsNoContent)
+                {
+                    _logger.LogInformation("Successfully updated user details for ID: {UserId}. Status: 204 No Content.", id);
+                    return;
+                }
+
+                throw new Exception($"Failed to update user details for ID '{id}'. Status Code: {response.StatusCode}.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "A critical error occurred during user details update for user ID: {userId}", id);
+                throw;
+            }
+        }
+
         public async Task UpdateUserHeatNetworkId(string id, string heatNetworkId)
         {
             _logger.LogInformation("Updating user heat network for ID: {UserId} heat network : {hnId}", id, heatNetworkId);

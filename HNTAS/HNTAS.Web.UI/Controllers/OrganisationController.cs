@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
@@ -220,11 +221,7 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> ConfirmAndContinue()
         {
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
-            var IsEditJourney = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey);
-            if (IsEditJourney == "true")
-            {
-                return RedirectToAction("UpdateOrganisationDetailsConfirmation");
-            }
+
 
             if (organisationModel?.CompanyDetails == null)
                 return RedirectToAction("CompanyNumber");
@@ -257,6 +254,12 @@ namespace HNTAS.Web.UI.Controllers
             {
                 existingUserModel = new UserModel();
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, existingUserModel);
+            }
+
+            var IsEditJourney = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey);
+            if (IsEditJourney == "true")
+            {
+                return RedirectToAction("UpdateOrganisationDetailsConfirmation");
             }
 
             return RedirectToAction("ConfirmRegulatoryContact");
@@ -350,6 +353,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.ShowBackButton = true;
             ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
             ViewBag.NextActionController = "Organisation";
+            ViewBag.IsRegulatoryContact = true;
 
             return View("UserDetails/ContactDetails", userModel.ContactDetails);
         }
@@ -396,8 +400,8 @@ namespace HNTAS.Web.UI.Controllers
                 ViewBag.ShowBackButton = true;
                 ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
                 TempData["ErrorSummary"] = "CustomErrorSummary";
-
-                return View("ContactDetails", contactDetails);
+                ViewBag.IsRegulatoryContact = true;
+                return View("UserDetails/ContactDetails", contactDetails);
             }
 
             userModel.ContactDetails = contactDetails;
@@ -462,8 +466,8 @@ namespace HNTAS.Web.UI.Controllers
                 postcode: company?.RegisteredOfficeAddress?.PostalCode,
                 country: company?.RegisteredOfficeAddress?.Country);
 
-            var preferredContactType = userModel?.ContactDetails?.PreferredContactType == PreferredContactType.Landline ? HNTAS.Api.Client.Model.PreferredContactType.Landline : HNTAS.Api.Client.Model.PreferredContactType.Mobile;
-            var orgType = (Api.Client.Model.OrganisationType)Enum.Parse(typeof(Models.Enums.OrganisationType), organisationModel.SelectedOrganisationType);
+            var preferredContactType = userModel?.ContactDetails?.PreferredContactType.ToApiModelType();
+            var orgType = (OrganisationType)Enum.Parse(typeof(Models.Enums.OrganisationType), organisationModel.SelectedOrganisationType);
 
 
             try
@@ -584,7 +588,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("OrganisationName", "Organisation");
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var viewModel = new AddressByStreetOrTownModel();
-            if (organisationModel.CompanyDetails.RegisteredOfficeAddress != null) 
+            if (organisationModel.CompanyDetails.RegisteredOfficeAddress != null)
             {
                 viewModel = (AddressByStreetOrTownModel)organisationModel.CompanyDetails.RegisteredOfficeAddress;
             }
@@ -857,6 +861,6 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.AddModelError(string.Empty, "An unexpected error occurred while updating organisation details. Please try again later.");
                 return View();
             }
-        }        
-    }    
+        }
+    }
 }

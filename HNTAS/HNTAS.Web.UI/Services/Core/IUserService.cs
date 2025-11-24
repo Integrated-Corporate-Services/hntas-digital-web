@@ -13,6 +13,7 @@ namespace HNTAS.Web.UI.Services.Core
         Task<string?> CreateUser(InitialUserRegistrationRequest request);
 
         Task<string?> UpdateUserOrganisation(string id, UpdateUserOrganisationRequest request);
+        Task UpdateUserDetails(string id, UpdateUserDetailsRequest request);
 
         Task UpdateUserHeatNetworkId(string id, string heatNetworkId);
 

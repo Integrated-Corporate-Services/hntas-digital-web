@@ -26,15 +26,13 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// UpdateUserOrganisationRequest
+    /// UpdateUserDetailsRequest
     /// </summary>
-    public partial class UpdateUserOrganisationRequest : IValidatableObject
+    public partial class UpdateUserDetailsRequest : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateUserOrganisationRequest" /> class.
+        /// Initializes a new instance of the <see cref="UpdateUserDetailsRequest" /> class.
         /// </summary>
-        /// <param name="organisation">organisation</param>
-        /// <param name="role">role</param>
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
         /// <param name="jobTitle">jobTitle</param>
@@ -42,11 +40,10 @@ namespace HNTAS.Api.Client.Model
         /// <param name="landlineNumber">landlineNumber</param>
         /// <param name="contactNumberExtension">contactNumberExtension</param>
         /// <param name="mobileNumber">mobileNumber</param>
+        /// <param name="role">role</param>
         [JsonConstructor]
-        public UpdateUserOrganisationRequest(OrganisationRequest organisation, UserRole role, string firstName, string lastName, string jobTitle, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default)
+        public UpdateUserDetailsRequest(string firstName, string lastName, string jobTitle, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, Option<NullableOfUserRole?> role = default)
         {
-            Organisation = organisation;
-            Role = role;
             FirstName = firstName;
             LastName = lastName;
             JobTitle = jobTitle;
@@ -54,16 +51,11 @@ namespace HNTAS.Api.Client.Model
             LandlineNumberOption = landlineNumber;
             ContactNumberExtensionOption = contactNumberExtension;
             MobileNumberOption = mobileNumber;
+            RoleOption = role;
             OnCreated();
         }
 
         partial void OnCreated();
-
-        /// <summary>
-        /// Gets or Sets Role
-        /// </summary>
-        [JsonPropertyName("role")]
-        public UserRole Role { get; set; }
 
         /// <summary>
         /// Used to track the state of PreferredContactType
@@ -79,10 +71,17 @@ namespace HNTAS.Api.Client.Model
         public NullableOfPreferredContactType? PreferredContactType { get { return this.PreferredContactTypeOption; } set { this.PreferredContactTypeOption = new(value); } }
 
         /// <summary>
-        /// Gets or Sets Organisation
+        /// Used to track the state of Role
         /// </summary>
-        [JsonPropertyName("organisation")]
-        public OrganisationRequest Organisation { get; set; }
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NullableOfUserRole?> RoleOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Role
+        /// </summary>
+        [JsonPropertyName("role")]
+        public NullableOfUserRole? Role { get { return this.RoleOption; } set { this.RoleOption = new(value); } }
 
         /// <summary>
         /// Gets or Sets FirstName
@@ -148,9 +147,7 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class UpdateUserOrganisationRequest {\n");
-            sb.Append("  Organisation: ").Append(Organisation).Append("\n");
-            sb.Append("  Role: ").Append(Role).Append("\n");
+            sb.Append("class UpdateUserDetailsRequest {\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
             sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
@@ -158,6 +155,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
             sb.Append("  ContactNumberExtension: ").Append(ContactNumberExtension).Append("\n");
             sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
+            sb.Append("  Role: ").Append(Role).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -174,19 +172,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="UpdateUserOrganisationRequest" />
+    /// A Json converter for type <see cref="UpdateUserDetailsRequest" />
     /// </summary>
-    public class UpdateUserOrganisationRequestJsonConverter : JsonConverter<UpdateUserOrganisationRequest>
+    public class UpdateUserDetailsRequestJsonConverter : JsonConverter<UpdateUserDetailsRequest>
     {
         /// <summary>
-        /// Deserializes json to <see cref="UpdateUserOrganisationRequest" />
+        /// Deserializes json to <see cref="UpdateUserDetailsRequest" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override UpdateUserOrganisationRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override UpdateUserDetailsRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -195,8 +193,6 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<OrganisationRequest?> organisation = default;
-            Option<UserRole?> role = default;
             Option<string?> firstName = default;
             Option<string?> lastName = default;
             Option<string?> jobTitle = default;
@@ -204,6 +200,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> landlineNumber = default;
             Option<string?> contactNumberExtension = default;
             Option<string?> mobileNumber = default;
+            Option<NullableOfUserRole?> role = default;
 
             while (utf8JsonReader.Read())
             {
@@ -220,14 +217,6 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "organisation":
-                            organisation = new Option<OrganisationRequest?>(JsonSerializer.Deserialize<OrganisationRequest>(ref utf8JsonReader, jsonSerializerOptions)!);
-                            break;
-                        case "role":
-                            string? roleRawValue = utf8JsonReader.GetString();
-                            if (roleRawValue != null)
-                                role = new Option<UserRole?>(UserRoleValueConverter.FromStringOrDefault(roleRawValue));
-                            break;
                         case "firstName":
                             firstName = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
@@ -251,117 +240,111 @@ namespace HNTAS.Api.Client.Model
                         case "mobileNumber":
                             mobileNumber = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "role":
+                            string? roleRawValue = utf8JsonReader.GetString();
+                            if (roleRawValue != null)
+                                role = new Option<NullableOfUserRole?>(NullableOfUserRoleValueConverter.FromStringOrDefault(roleRawValue));
+                            break;
                         default:
                             break;
                     }
                 }
             }
 
-            if (!organisation.IsSet)
-                throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(organisation));
-
-            if (!role.IsSet)
-                throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(role));
-
             if (!firstName.IsSet)
-                throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(firstName));
+                throw new ArgumentException("Property is required for class UpdateUserDetailsRequest.", nameof(firstName));
 
             if (!lastName.IsSet)
-                throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(lastName));
+                throw new ArgumentException("Property is required for class UpdateUserDetailsRequest.", nameof(lastName));
 
             if (!jobTitle.IsSet)
-                throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(jobTitle));
-
-            if (organisation.IsSet && organisation.Value == null)
-                throw new ArgumentNullException(nameof(organisation), "Property is not nullable for class UpdateUserOrganisationRequest.");
-
-            if (role.IsSet && role.Value == null)
-                throw new ArgumentNullException(nameof(role), "Property is not nullable for class UpdateUserOrganisationRequest.");
+                throw new ArgumentException("Property is required for class UpdateUserDetailsRequest.", nameof(jobTitle));
 
             if (firstName.IsSet && firstName.Value == null)
-                throw new ArgumentNullException(nameof(firstName), "Property is not nullable for class UpdateUserOrganisationRequest.");
+                throw new ArgumentNullException(nameof(firstName), "Property is not nullable for class UpdateUserDetailsRequest.");
 
             if (lastName.IsSet && lastName.Value == null)
-                throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class UpdateUserOrganisationRequest.");
+                throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class UpdateUserDetailsRequest.");
 
             if (jobTitle.IsSet && jobTitle.Value == null)
-                throw new ArgumentNullException(nameof(jobTitle), "Property is not nullable for class UpdateUserOrganisationRequest.");
+                throw new ArgumentNullException(nameof(jobTitle), "Property is not nullable for class UpdateUserDetailsRequest.");
 
-            return new UpdateUserOrganisationRequest(organisation.Value!, role.Value!.Value!, firstName.Value!, lastName.Value!, jobTitle.Value!, preferredContactType, landlineNumber, contactNumberExtension, mobileNumber);
+            return new UpdateUserDetailsRequest(firstName.Value!, lastName.Value!, jobTitle.Value!, preferredContactType, landlineNumber, contactNumberExtension, mobileNumber, role);
         }
 
         /// <summary>
-        /// Serializes a <see cref="UpdateUserOrganisationRequest" />
+        /// Serializes a <see cref="UpdateUserDetailsRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="updateUserOrganisationRequest"></param>
+        /// <param name="updateUserDetailsRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, UpdateUserOrganisationRequest updateUserOrganisationRequest, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, UpdateUserDetailsRequest updateUserDetailsRequest, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, updateUserOrganisationRequest, jsonSerializerOptions);
+            WriteProperties(writer, updateUserDetailsRequest, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="UpdateUserOrganisationRequest" />
+        /// Serializes the properties of <see cref="UpdateUserDetailsRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="updateUserOrganisationRequest"></param>
+        /// <param name="updateUserDetailsRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, UpdateUserOrganisationRequest updateUserOrganisationRequest, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, UpdateUserDetailsRequest updateUserDetailsRequest, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (updateUserOrganisationRequest.Organisation == null)
-                throw new ArgumentNullException(nameof(updateUserOrganisationRequest.Organisation), "Property is required for class UpdateUserOrganisationRequest.");
+            if (updateUserDetailsRequest.FirstName == null)
+                throw new ArgumentNullException(nameof(updateUserDetailsRequest.FirstName), "Property is required for class UpdateUserDetailsRequest.");
 
-            if (updateUserOrganisationRequest.FirstName == null)
-                throw new ArgumentNullException(nameof(updateUserOrganisationRequest.FirstName), "Property is required for class UpdateUserOrganisationRequest.");
+            if (updateUserDetailsRequest.LastName == null)
+                throw new ArgumentNullException(nameof(updateUserDetailsRequest.LastName), "Property is required for class UpdateUserDetailsRequest.");
 
-            if (updateUserOrganisationRequest.LastName == null)
-                throw new ArgumentNullException(nameof(updateUserOrganisationRequest.LastName), "Property is required for class UpdateUserOrganisationRequest.");
+            if (updateUserDetailsRequest.JobTitle == null)
+                throw new ArgumentNullException(nameof(updateUserDetailsRequest.JobTitle), "Property is required for class UpdateUserDetailsRequest.");
 
-            if (updateUserOrganisationRequest.JobTitle == null)
-                throw new ArgumentNullException(nameof(updateUserOrganisationRequest.JobTitle), "Property is required for class UpdateUserOrganisationRequest.");
+            writer.WriteString("firstName", updateUserDetailsRequest.FirstName);
 
-            writer.WritePropertyName("organisation");
-            JsonSerializer.Serialize(writer, updateUserOrganisationRequest.Organisation, jsonSerializerOptions);
-            var roleRawValue = UserRoleValueConverter.ToJsonValue(updateUserOrganisationRequest.Role);
-            writer.WriteString("role", roleRawValue);
+            writer.WriteString("lastName", updateUserDetailsRequest.LastName);
 
-            writer.WriteString("firstName", updateUserOrganisationRequest.FirstName);
+            writer.WriteString("jobTitle", updateUserDetailsRequest.JobTitle);
 
-            writer.WriteString("lastName", updateUserOrganisationRequest.LastName);
-
-            writer.WriteString("jobTitle", updateUserOrganisationRequest.JobTitle);
-
-            if (updateUserOrganisationRequest.PreferredContactTypeOption.IsSet)
-                if (updateUserOrganisationRequest.PreferredContactTypeOption!.Value != null)
+            if (updateUserDetailsRequest.PreferredContactTypeOption.IsSet)
+                if (updateUserDetailsRequest.PreferredContactTypeOption!.Value != null)
                 {
-                    var preferredContactTypeRawValue = NullableOfPreferredContactTypeValueConverter.ToJsonValue(updateUserOrganisationRequest.PreferredContactTypeOption.Value!.Value);
+                    var preferredContactTypeRawValue = NullableOfPreferredContactTypeValueConverter.ToJsonValue(updateUserDetailsRequest.PreferredContactTypeOption.Value!.Value);
                     writer.WriteString("preferredContactType", preferredContactTypeRawValue);
                 }
                 else
                     writer.WriteNull("preferredContactType");
-            if (updateUserOrganisationRequest.LandlineNumberOption.IsSet)
-                if (updateUserOrganisationRequest.LandlineNumberOption.Value != null)
-                    writer.WriteString("landlineNumber", updateUserOrganisationRequest.LandlineNumber);
+            if (updateUserDetailsRequest.LandlineNumberOption.IsSet)
+                if (updateUserDetailsRequest.LandlineNumberOption.Value != null)
+                    writer.WriteString("landlineNumber", updateUserDetailsRequest.LandlineNumber);
                 else
                     writer.WriteNull("landlineNumber");
 
-            if (updateUserOrganisationRequest.ContactNumberExtensionOption.IsSet)
-                if (updateUserOrganisationRequest.ContactNumberExtensionOption.Value != null)
-                    writer.WriteString("contactNumberExtension", updateUserOrganisationRequest.ContactNumberExtension);
+            if (updateUserDetailsRequest.ContactNumberExtensionOption.IsSet)
+                if (updateUserDetailsRequest.ContactNumberExtensionOption.Value != null)
+                    writer.WriteString("contactNumberExtension", updateUserDetailsRequest.ContactNumberExtension);
                 else
                     writer.WriteNull("contactNumberExtension");
 
-            if (updateUserOrganisationRequest.MobileNumberOption.IsSet)
-                if (updateUserOrganisationRequest.MobileNumberOption.Value != null)
-                    writer.WriteString("mobileNumber", updateUserOrganisationRequest.MobileNumber);
+            if (updateUserDetailsRequest.MobileNumberOption.IsSet)
+                if (updateUserDetailsRequest.MobileNumberOption.Value != null)
+                    writer.WriteString("mobileNumber", updateUserDetailsRequest.MobileNumber);
                 else
                     writer.WriteNull("mobileNumber");
+
+            if (updateUserDetailsRequest.RoleOption.IsSet)
+                if (updateUserDetailsRequest.RoleOption!.Value != null)
+                {
+                    var roleRawValue = NullableOfUserRoleValueConverter.ToJsonValue(updateUserDetailsRequest.RoleOption.Value!.Value);
+                    writer.WriteString("role", roleRawValue);
+                }
+                else
+                    writer.WriteNull("role");
         }
     }
 }

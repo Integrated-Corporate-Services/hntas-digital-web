@@ -22,6 +22,10 @@
         {
             displayContactNumber = userModel.ContactDetails.MobileNumber;
         }
+        else if (userModel.ContactDetails.PreferredContactType == PreferredContactType.PreferNotToSay)
+        {
+            displayContactNumber = "Prefer not to say";
+        }
         if (string.IsNullOrEmpty(displayContactNumber))
         {
             displayContactNumber = "Not provided";

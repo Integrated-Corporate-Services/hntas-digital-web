@@ -35,10 +35,10 @@ docs/models/NetworkTypeSelection.md
 docs/models/NetworkTypeSelection2.md
 docs/models/NullableOfPreferredContactType.md
 docs/models/NullableOfSoaStage.md
+docs/models/NullableOfUserRole.md
 docs/models/OrganisationRequest.md
 docs/models/OrganisationResponse.md
 docs/models/OrganisationType.md
-docs/models/PreferredContactType.md
 docs/models/ProblemDetails.md
 docs/models/RegisteredAddress.md
 docs/models/SendInvitationEmailRequest.md
@@ -53,6 +53,7 @@ docs/models/UpdateDocumentRequest.md
 docs/models/UpdateElementDocumentsRequest.md
 docs/models/UpdateElementLocationsRequest.md
 docs/models/UpdateSoaStatusRequest.md
+docs/models/UpdateUserDetailsRequest.md
 docs/models/UpdateUserOrganisationRequest.md
 docs/models/UploadedAssessmentDocumentResponse.md
 docs/models/UploadedAssessorDocumentResponse.md
@@ -125,10 +126,10 @@ src/HNTAS.Api.Client/Model/NetworkTypeSelection.cs
 src/HNTAS.Api.Client/Model/NetworkTypeSelection2.cs
 src/HNTAS.Api.Client/Model/NullableOfPreferredContactType.cs
 src/HNTAS.Api.Client/Model/NullableOfSoaStage.cs
+src/HNTAS.Api.Client/Model/NullableOfUserRole.cs
 src/HNTAS.Api.Client/Model/OrganisationRequest.cs
 src/HNTAS.Api.Client/Model/OrganisationResponse.cs
 src/HNTAS.Api.Client/Model/OrganisationType.cs
-src/HNTAS.Api.Client/Model/PreferredContactType.cs
 src/HNTAS.Api.Client/Model/ProblemDetails.cs
 src/HNTAS.Api.Client/Model/RegisteredAddress.cs
 src/HNTAS.Api.Client/Model/SendInvitationEmailRequest.cs
@@ -143,6 +144,7 @@ src/HNTAS.Api.Client/Model/UpdateDocumentRequest.cs
 src/HNTAS.Api.Client/Model/UpdateElementDocumentsRequest.cs
 src/HNTAS.Api.Client/Model/UpdateElementLocationsRequest.cs
 src/HNTAS.Api.Client/Model/UpdateSoaStatusRequest.cs
+src/HNTAS.Api.Client/Model/UpdateUserDetailsRequest.cs
 src/HNTAS.Api.Client/Model/UpdateUserOrganisationRequest.cs
 src/HNTAS.Api.Client/Model/UploadedAssessmentDocumentResponse.cs
 src/HNTAS.Api.Client/Model/UploadedAssessorDocumentResponse.cs

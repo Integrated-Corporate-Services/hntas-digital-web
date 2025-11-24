@@ -77,12 +77,12 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NullableOfPreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfSoaStageJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfSoaStageNullableJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfUserRoleJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfUserRoleNullableJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationRequestJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationResponseJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationTypeJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationTypeNullableJsonConverter());
-            _jsonOptions.Converters.Add(new PreferredContactTypeJsonConverter());
-            _jsonOptions.Converters.Add(new PreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ProblemDetailsJsonConverter());
             _jsonOptions.Converters.Add(new RegisteredAddressJsonConverter());
             _jsonOptions.Converters.Add(new SendInvitationEmailRequestJsonConverter());
@@ -99,6 +99,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new UpdateElementDocumentsRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateElementLocationsRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateSoaStatusRequestJsonConverter());
+            _jsonOptions.Converters.Add(new UpdateUserDetailsRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateUserOrganisationRequestJsonConverter());
             _jsonOptions.Converters.Add(new UploadedAssessmentDocumentResponseJsonConverter());
             _jsonOptions.Converters.Add(new UploadedAssessorDocumentResponseJsonConverter());
