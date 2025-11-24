@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.User;
@@ -37,30 +38,29 @@ namespace HNTAS.Web.UI.Controllers
                 var userDetails = await _userService.GetUserDetails(userId);
                 var isUserRp = await _userService.IsRpUserAsync(userDetails.EmailId);
 
-                var preferredContactType = (HNTAS.Api.Client.Model.PreferredContactType)userDetails?.PreferredContactType.GetValueOrDefault() == HNTAS.Api.Client.Model.PreferredContactType.Landline
-                ? HNTAS.Web.UI.Models.Enums.PreferredContactType.Landline
-                : HNTAS.Web.UI.Models.Enums.PreferredContactType.Mobile;
+                PreferredContactType? preferredContactType = userDetails?.PreferredContactType.ToViewModelType();
 
                 userModel = new UserModel
                 {
                     IsRegulatoryContact = isUserRp,
                     OrganisationName = userDetails.Organisation.Name,
                     ContactDetails = {
-                    FirstName = userDetails.FirstName,
-                    LastName = userDetails.LastName,
-                    PreferredContactType = preferredContactType,
-                    EmailAddress = userDetails.EmailId,
-                    JobTitle = userDetails.JobTitle,
-                    LandlineNumber = userDetails.LandlineNumber,
-                    MobileNumber = userDetails.MobileNumber,
-                    ContactNumberExtension = userDetails.ContactNumberExtension
+                        FirstName = userDetails.FirstName,
+                        LastName = userDetails.LastName,
+                        PreferredContactType = preferredContactType,
+                        EmailAddress = userDetails.EmailId,
+                        JobTitle = userDetails.JobTitle,
+                        LandlineNumber = userDetails.LandlineNumber,
+                        MobileNumber = userDetails.MobileNumber,
+                        ContactNumberExtension = userDetails.ContactNumberExtension
                     }
                 };
             }
-            
+
             _sessionHelper.SaveToSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey, userModel);
             ViewBag.NextActionController = "UserDetails";
-            return View("UserDetails/ContactDetails" ,userModel.ContactDetails);
+            ViewBag.IsRegulatoryContact = userModel.IsRegulatoryContact;
+            return View("UserDetails/ContactDetails", userModel.ContactDetails);
         }
 
         [HttpPost]
@@ -71,7 +71,16 @@ namespace HNTAS.Web.UI.Controllers
 
             if (string.IsNullOrEmpty(contactDetails.EmailAddress))
                 contactDetails.EmailAddress = userModel.ContactDetails?.EmailAddress;
-            if (isUserRP) 
+
+            if (contactDetails.PreferredContactType == null)
+            {
+                //add model error if preferred contact type is not selected
+                TempData["ErrorSummary"] = "CustomErrorSummary";
+                ModelState.AddModelError(nameof(contactDetails.PreferredContactType), "Select your preferred contact method.");
+                return View("UserDetails/ContactDetails", contactDetails);
+            }
+
+            //if (isUserRP)
             {
                 switch (contactDetails.PreferredContactType)
                 {
@@ -89,7 +98,7 @@ namespace HNTAS.Web.UI.Controllers
                         if (string.IsNullOrWhiteSpace(contactDetails.MobileNumber))
                             ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number.");
                         break;
-                    default:
+                    case PreferredContactType.PreferNotToSay:
                         contactDetails.LandlineNumber = null;
                         contactDetails.ContactNumberExtension = null;
                         contactDetails.MobileNumber = null;
@@ -99,7 +108,7 @@ namespace HNTAS.Web.UI.Controllers
                         break;
                 }
             }
-            
+
 
             if (!ModelState.IsValid)
             {
@@ -116,7 +125,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult CheckYourAnswers() 
+        public IActionResult CheckYourAnswers()
         {
             this.ShowBackButton("ContactDetails", "UserDetails");
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
@@ -136,35 +145,28 @@ namespace HNTAS.Web.UI.Controllers
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
             var userDetails = await _userService.GetUserDetails(userId);
-            
-            var preferredContactType = userModel?.ContactDetails?.PreferredContactType == PreferredContactType.Landline ? HNTAS.Api.Client.Model.PreferredContactType.Landline : HNTAS.Api.Client.Model.PreferredContactType.Mobile;
 
-            try 
+            var preferredContactType = userModel?.ContactDetails?.PreferredContactType.ToApiModelType();
+
+            try
             {
-                var updateModel = new UpdateUserOrganisationRequest(
+                var updateModel = new UpdateUserDetailsRequest(
                     firstName: userModel?.ContactDetails?.FirstName,
                     lastName: userModel?.ContactDetails?.LastName,
                     preferredContactType: preferredContactType,
                     jobTitle: userModel?.ContactDetails?.JobTitle,
-                    role: userDetails.Roles[0],
-                    organisation: new OrganisationRequest
-                    (
-                        name: userDetails.Organisation.Name,
-                        type: (OrganisationType)userDetails.Organisation.Type,
-                        companiesHouseNumber: userDetails.Organisation.CompaniesHouseNumber,
-                        registeredAddress: userDetails.Organisation.RegisteredAddress
-                    ),
                     landlineNumber: userModel.ContactDetails.LandlineNumber,
                     contactNumberExtension: userModel.ContactDetails.ContactNumberExtension,
                     mobileNumber: userModel.ContactDetails.MobileNumber);
-                var orgId = await _userService.UpdateUserOrganisation(userId, updateModel);
-                _logger.LogInformation("Successfully updated OrgDetails for user {UserId}. Retrieved OrgId: {OrgId}", userId, orgId);
+                await _userService.UpdateUserDetails(userId, updateModel);
+
+                _logger.LogInformation("Successfully updated User Details for {UserId}", userId);
 
                 _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
                 _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
                 return RedirectToAction("ManageUsers", "UserManagement");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating OrgDetails for user {UserId}", userId);
                 TempData["ErrorMessage"] = "There was a problem saving your details. Please try again.";
@@ -174,7 +176,7 @@ namespace HNTAS.Web.UI.Controllers
                     User = userModel,
                     ConfirmDeclaration = true
                 });
-            }            
+            }
         }
     }
 }

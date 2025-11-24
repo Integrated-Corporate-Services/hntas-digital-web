@@ -1,11 +1,9 @@
-# HNTAS.Api.Client.Model.UpdateUserOrganisationRequest
+# HNTAS.Api.Client.Model.UpdateUserDetailsRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Organisation** | [**OrganisationRequest**](OrganisationRequest.md) |  | 
-**Role** | **UserRole** |  | 
 **FirstName** | **string** |  | 
 **LastName** | **string** |  | 
 **JobTitle** | **string** |  | 
@@ -13,6 +11,7 @@ Name | Type | Description | Notes
 **LandlineNumber** | **string** |  | [optional] 
 **ContactNumberExtension** | **string** |  | [optional] 
 **MobileNumber** | **string** |  | [optional] 
+**Role** | **NullableOfUserRole** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

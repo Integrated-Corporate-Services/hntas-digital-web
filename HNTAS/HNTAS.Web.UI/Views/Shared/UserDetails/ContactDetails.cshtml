@@ -17,8 +17,13 @@
 
     // Determine if the entire preferred contact number section should show an error state
     bool hasAnyContactNumberSectionError = hasPreferredContactTypeErrors ||
-                                          (Model.PreferredContactType == PreferredContactType.Landline && (hasLandlineNumberErrors || hasContactNumberExtensionErrors)) ||
-                                          (Model.PreferredContactType == PreferredContactType.Mobile && hasMobileNumberErrors);
+                                             (Model.PreferredContactType == PreferredContactType.Landline && (hasLandlineNumberErrors || hasContactNumberExtensionErrors)) ||
+                                             (Model.PreferredContactType == PreferredContactType.Mobile && hasMobileNumberErrors);
+
+    // Custom check for Landline default selection:
+    bool isLandlineSelected = ViewBag.IsRegulatoryContact == true
+     ? (Model.PreferredContactType == PreferredContactType.Landline || Model.PreferredContactType == null) : Model.PreferredContactType == PreferredContactType.Landline;
+    bool isPreferNotToSaySelected = ViewBag.IsRegulatoryContact != true && Model.PreferredContactType == PreferredContactType.PreferNotToSay;
 }
 
 <div class="govuk-grid-row">
@@ -49,7 +54,7 @@
                                 }
                                 else if (fieldName == nameof(Model.PreferredContactType))
                                 {
-                                    targetId = "PreferredContactType-Landline"; // Link to the first radio button in the group
+                                    targetId = "PreferredContactType-Landline"; // Link to the first visible radio button in the group
                                 }
 
                                 <li>
@@ -67,7 +72,7 @@
         <form asp-controller="@ViewBag.NextActionController" asp-action="SaveContactDetails" method="post" novalidate>
             @Html.AntiForgeryToken()
 
-            @* Email address - DISPLAY ONLY FIELD *@
+            @* Email address - DISPLAY ONLY FIELD (No changes needed) *@
             <div class="govuk-form-group @(hasEmailAddressErrors ? "govuk-form-group--error" : "")">
                 <label class="govuk-label" for="EmailAddressDisplay">
                     Email address
@@ -82,7 +87,7 @@
                 <input type="hidden" asp-for="EmailAddress" />
             </div>
 
-            @* First name input *@
+            @* First name input (No changes needed) *@
             <div class="govuk-form-group @(hasFirstNameErrors ? "govuk-form-group--error" : "")">
                 <label class="govuk-label" for="FirstName">
                     First name
@@ -98,7 +103,7 @@
                        aria-describedby="@(hasFirstNameErrors ? "FirstName-error" : "")">
             </div>
 
-            @* Last name input *@
+            @* Last name input (No changes needed) *@
             <div class="govuk-form-group @(hasLastNameErrors ? "govuk-form-group--error" : "")">
                 <label class="govuk-label" for="LastName">
                     Last name
@@ -134,15 +139,17 @@
 
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="PreferredContactType-Landline" name="PreferredContactType" type="radio" value="@PreferredContactType.Landline"
+                            @* Landline radio button - CHECKED LOGIC UPDATED *@
+                            <input class="govuk-radios__input" id="PreferredContactType-Landline" name="PreferredContactType" type="radio"
+                                   value="@PreferredContactType.Landline"
                                    data-aria-controls="conditional-Landline"
-                                   @(Model.PreferredContactType == PreferredContactType.Landline ? "checked" : "")
+                                   @(isLandlineSelected ? "checked" : "")
                                    aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
                             <label class="govuk-label govuk-radios__label" for="PreferredContactType-Landline">
                                 Landline
                             </label>
                         </div>
-                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-Landline">
+                        <div class="govuk-radios__conditional @(!isLandlineSelected ? "govuk-radios__conditional--hidden" : "")" id="conditional-Landline"> @* Conditional visibility logic needs updating too *@
                             <div class="govuk-form-group @(hasLandlineNumberErrors ? "govuk-form-group--error" : "")">
                                 <label class="govuk-label" for="LandlineNumber">
                                     Landline number
@@ -175,7 +182,9 @@
                         </div>
 
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="PreferredContactType-Mobile" name="PreferredContactType" type="radio" value="@PreferredContactType.Mobile"
+                            @* Mobile radio button - CHECKED LOGIC UPDATED *@
+                            <input class="govuk-radios__input" id="PreferredContactType-Mobile" name="PreferredContactType" type="radio"
+                                   value="@PreferredContactType.Mobile"
                                    data-aria-controls="conditional-Mobile"
                                    @(Model.PreferredContactType == PreferredContactType.Mobile ? "checked" : "")
                                    aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
@@ -183,7 +192,8 @@
                                 Mobile
                             </label>
                         </div>
-                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-Mobile">
+                        <div class="govuk-radios__conditional @(Model.PreferredContactType != PreferredContactType.Mobile ? "govuk-radios__conditional--hidden" : "")" id="conditional-Mobile">
+                            @* Conditional visibility logic needs updating too *@
                             <div class="govuk-form-group @(hasMobileNumberErrors ? "govuk-form-group--error" : "")">
                                 <label class="govuk-label" for="MobileNumber">
                                     Mobile number
@@ -199,11 +209,24 @@
                                        aria-describedby="@(hasMobileNumberErrors ? "MobileNumber-error" : "")">
                             </div>
                         </div>
+
+                        @if (ViewBag.IsRegulatoryContact != true)
+                        {
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="PreferredContactType-PreferNotToSay" name="PreferredContactType" type="radio"
+                                       value="@PreferredContactType.PreferNotToSay"
+                                       @(isPreferNotToSaySelected ? "checked" : "")
+                                       aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+                                <label class="govuk-label govuk-radios__label" for="PreferredContactType-PreferNotToSay">
+                                    Prefer not to say
+                                </label>
+                            </div>
+                        }
                     </div>
                 </fieldset>
             </div>
 
-            @* Job title input *@
+            @* Job title input (No changes needed) *@
             <div class="govuk-form-group @(hasJobTitleErrors ? "govuk-form-group--error" : "")">
                 <label class="govuk-label" for="JobTitle">
                     Job title
@@ -219,7 +242,7 @@
                        aria-describedby="@(hasJobTitleErrors ? "JobTitle-error" : "")">
             </div>
 
-            @* Continue button *@
+            @* Continue button (No changes needed) *@
             <button type="submit" class="govuk-button" data-module="govuk-button">
                 Continue
             </button>
