@@ -35,7 +35,7 @@ namespace HNTAS.Web.UI.Controllers
                     throw new Exception("Unable to retrieve user information. Please try again later.");
                 }
 
-                if (user.Organisation == null)
+                if (user.Roles != null && user.Roles.Contains(UserRole.ResponsiblePerson) && user.Organisation == null)
                 {
                     throw new Exception("Your account is not associated with any organisation. Please contact support.");
                 }
@@ -63,11 +63,15 @@ namespace HNTAS.Web.UI.Controllers
                 return View(new DashboardModel());
             }
             var isAssessorOrCertifier = "false";
-            if (user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Assessor.ToString() || user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Certifier.ToString()) {
+            if (user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Assessor.ToString() || user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Certifier.ToString())
+            {
                 isAssessorOrCertifier = "true";
             }
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsAssessorOrCertifier, isAssessorOrCertifier);
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
+            if (user.Organisation?.Name != null)
+            {
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
+            }
 
 
             var dashboardModel = new DashboardModel
@@ -120,7 +124,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult EditOrganisationDetails()
         {
-            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, "true");
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, true);
             return RedirectToAction("OrganisationType", "Organisation");
         }
     }

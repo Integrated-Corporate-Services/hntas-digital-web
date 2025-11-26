@@ -532,6 +532,80 @@ paths:
           description: Not Found
       tags:
       - Organisations
+  /api/Organisations/search:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: term
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Organisations
+  /api/Organisations/{orgId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Organisations
   /api/SOA/heat-network/{hnId}:
     get:
       parameters:
@@ -1396,6 +1470,69 @@ paths:
           description: Internal Server Error
       tags:
       - Users
+  /api/Users/register-org-and-link/{userId}:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrganisationRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/OrganisationRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/OrganisationRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+          description: Created
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
   /api/Users/{id}/user-details:
     patch:
       parameters:
@@ -1717,6 +1854,49 @@ paths:
         "404":
           content:
             application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Users
+  /api/Users/update-orgid:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserOrgIdRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserOrgIdRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserOrgIdRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
@@ -2432,6 +2612,36 @@ components:
       - null
       nullable: true
       type: string
+    Organisation:
+      example:
+        registeredAddress:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        name: name
+        id: id
+        type: UkCompaniesHouse
+        companiesHouseNumber: companiesHouseNumber
+        orgId: orgId
+      properties:
+        id:
+          type: string
+        orgId:
+          nullable: true
+          type: string
+        type:
+          $ref: "#/components/schemas/OrganisationType"
+        companiesHouseNumber:
+          nullable: true
+          type: string
+        name:
+          type: string
+        registeredAddress:
+          $ref: "#/components/schemas/RegisteredAddress"
+      type: object
     OrganisationRequest:
       example:
         registeredAddress:
@@ -3124,6 +3334,21 @@ components:
       - lastName
       - organisation
       - role
+      type: object
+    UpdateUserOrgIdRequest:
+      example:
+        userId: userId
+        orgId: orgId
+      properties:
+        userId:
+          maxLength: 24
+          minLength: 24
+          type: string
+        orgId:
+          type: string
+      required:
+      - orgId
+      - userId
       type: object
     UploadedAssessmentDocumentResponse:
       example:

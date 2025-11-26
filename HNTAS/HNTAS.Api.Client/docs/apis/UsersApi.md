@@ -17,7 +17,9 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersIsRpUserEmailIdGet**](UsersApi.md#apiusersisrpuseremailidget) | **GET** /api/Users/is-rp-user/{emailId} |  |
 | [**ApiUsersManagedUsersGet**](UsersApi.md#apiusersmanagedusersget) | **GET** /api/Users/managed-users |  |
 | [**ApiUsersOrganisationExistsGet**](UsersApi.md#apiusersorganisationexistsget) | **GET** /api/Users/organisation/exists |  |
+| [**ApiUsersRegisterOrgAndLinkUserIdPost**](UsersApi.md#apiusersregisterorgandlinkuseridpost) | **POST** /api/Users/register-org-and-link/{userId} |  |
 | [**ApiUsersRegisteredUsersGet**](UsersApi.md#apiusersregisteredusersget) | **GET** /api/Users/registered-users |  |
+| [**ApiUsersUpdateOrgidPatch**](UsersApi.md#apiusersupdateorgidpatch) | **PATCH** /api/Users/update-orgid |  |
 | [**ApiUsersUserDetailsByIdGet**](UsersApi.md#apiusersuserdetailsbyidget) | **GET** /api/Users/user-details-by-id |  |
 | [**ApiUsersUserRolesGet**](UsersApi.md#apiusersuserrolesget) | **GET** /api/Users/user-roles |  |
 | [**GetUserById**](UsersApi.md#getuserbyid) | **GET** /api/Users/{id} |  |
@@ -486,6 +488,44 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
+<a id="apiusersregisterorgandlinkuseridpost"></a>
+# **ApiUsersRegisterOrgAndLinkUserIdPost**
+> Organisation ApiUsersRegisterOrgAndLinkUserIdPost (string userId, OrganisationRequest organisationRequest)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **userId** | **string** |  |  |
+| **organisationRequest** | [**OrganisationRequest**](OrganisationRequest.md) |  |  |
+
+### Return type
+
+[**Organisation**](Organisation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | Created |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
 <a id="apiusersregisteredusersget"></a>
 # **ApiUsersRegisteredUsersGet**
 > List&lt;UserResponse&gt; ApiUsersRegisteredUsersGet (string userId = null)
@@ -517,6 +557,42 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersupdateorgidpatch"></a>
+# **ApiUsersUpdateOrgidPatch**
+> void ApiUsersUpdateOrgidPatch (UpdateUserOrgIdRequest updateUserOrgIdRequest)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **updateUserOrgIdRequest** | [**UpdateUserOrgIdRequest**](UpdateUserOrgIdRequest.md) |  |  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **204** | No Content |  -  |
+| **400** | Bad Request |  -  |
 | **404** | Not Found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)

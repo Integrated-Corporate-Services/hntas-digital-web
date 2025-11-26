@@ -65,7 +65,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
-            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, "false");
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, false);
             return RedirectToAction("OrganisationType");
         }
 
@@ -256,8 +256,9 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, existingUserModel);
             }
 
-            var IsEditJourney = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey);
-            if (IsEditJourney == "true")
+            var IsEditJourney = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey);
+            var IsAddNonRPOrgJourney = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey);
+            if (IsEditJourney || IsAddNonRPOrgJourney)
             {
                 return RedirectToAction("UpdateOrganisationDetailsConfirmation");
             }
@@ -569,7 +570,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 organisationModel.CompanyDetails = new CompanyDetailsModel
                 {
-                    Title = model.OrganisationName
+                    Title = model.OrganisationName.Trim()
                 };
             }
             else
@@ -797,9 +798,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var userDetails = await _userService.GetUserDetails(userId);
-            var orgId = userDetails?.Organisation.OrgId;
-            var oldAddress = userDetails?.Organisation.RegisteredAddress;
+            var IsAddNonRPOrgJourney = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey);
 
             if (organisationModel?.CompanyDetails == null)
             {
@@ -807,20 +806,22 @@ namespace HNTAS.Web.UI.Controllers
                 // Clear any flow data to ensure clean state and redirect to start of flow
                 _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
                 _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
-                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, "false");
+                _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, false);
                 return BadRequest("Required session data is missing.");
             }
 
             // Build registered address
             CompanyDetailsModel company = organisationModel.CompanyDetails;
             RegisteredOfficeAddressModel regAddrModel = company.RegisteredOfficeAddress;
+
             var regAddress = new RegisteredAddress(
-                addressLine1: regAddrModel?.AddressLine1,
-                addressLine2: regAddrModel.AddressLine2,
-                town: regAddrModel?.Locality,
-                postcode: regAddrModel?.PostalCode,
-                country: regAddrModel?.Country
+                addressLine1: regAddrModel?.AddressLine1?.Trim(),
+                addressLine2: regAddrModel.AddressLine2?.Trim(),
+                town: regAddrModel?.Locality?.Trim(),
+                postcode: regAddrModel?.PostalCode?.Trim(),
+                country: regAddrModel?.Country?.Trim()
             );
+
 
             // Map organisation type (safe parse)
             OrganisationType apiOrgType;
@@ -845,6 +846,23 @@ namespace HNTAS.Web.UI.Controllers
 
             try
             {
+                if (IsAddNonRPOrgJourney)
+                {
+                    //Save the organisation details in session and redirect to add contact details for non RP user
+                    var response = await _userService.UpdateOrganisationLinkUser(userId, orgRequest);
+                    _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+
+                    ViewBag.OrganisationId = response?.OrgId;
+                    ViewBag.ShowBackButton = false;
+                    return View("Organisation/Confirmation");
+                }
+
+
+                var userDetails = await _userService.GetUserDetails(userId);
+                var orgId = userDetails?.Organisation?.OrgId;
+                var oldAddress = userDetails?.Organisation?.RegisteredAddress;
+
+
                 await _organisationService.EditOrganisationDetails(orgId, orgRequest, userId);
 
                 _logger.LogInformation("UpdateOrganisationDetailsConfirmation: Successfully updated organisation for user {UserId}. OrgId: {OrgId}", userId, orgId);
@@ -852,7 +870,7 @@ namespace HNTAS.Web.UI.Controllers
                 // Clear flow session data and reset flags
                 _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
                 _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
-                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, "false");
+                _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, false);
                 return View();
             }
             catch (Exception ex)
