@@ -56,21 +56,37 @@
 
 
         <br />
-        <br />       
+        <br />
     }
     else if (Model.UserRole == HNTAS.Api.Client.Model.UserRole.Assessor.ToString())
     {
         <h1 class="govuk-heading-l">My Details</h1>
-        
+
         <div class="govuk-grid-row" style="display: flex; align-items: stretch;">
-            <div class="govuk-grid-column-one-third">
-                <div class="dashboard-card">
-                    <h3 class="dashboard-card__title govuk-heading-s">
-                        <a asp-controller="Dashboard" asp-action="OrganisationDetails" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
-                    </h3>
-                    <p class="govuk-body-s">View or change your organisation's details.</p>
+            @if (Model.OrganisationName == null)
+            {
+                <div class="govuk-grid-column-one-quarter">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a class="govuk-link govuk-link--no-visited-state" asp-controller="ExistingOrganisation" asp-action="AddOrRegister">
+                                Add Organisation Details
+                            </a>
+                        </h3>
+                        <p class="govuk-body-s">Add or register the organisation you work for.</p>
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="govuk-grid-column-one-quarter">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a asp-controller="Dashboard" asp-action="OrganisationDetails" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
+                        </h3>
+                        <p class="govuk-body-s">View or change your organisation's details.</p>
+                    </div>
+                </div>
+            }
 
             <div class="govuk-grid-column-one-third">
                 <div class="dashboard-card @disabled">
@@ -135,14 +151,31 @@
         <h1 class="govuk-heading-l">My Details</h1>
 
         <div class="govuk-grid-row" style="display: flex; align-items: stretch;">
-            <div class="govuk-grid-column-one-quarter">
-                <div class="dashboard-card">
+
+            @if (Model.OrganisationName == null)
+            {
+                <div class="govuk-grid-column-one-quarter">
+                    <div class="dashboard-card">
                     <h3 class="dashboard-card__title govuk-heading-s">
-                        <a href="#" class="govuk-link govuk-link--no-visited-state">My Profile</a>
+                        <a class="govuk-link govuk-link--no-visited-state" asp-controller="ExistingOrganisation" asp-action="AddOrRegister">
+                            Add Organisation Details
+                        </a>
                     </h3>
-                    <p class="govuk-body-s">View or edit personal details.</p>
+                    <p class="govuk-body-s">Add or register the organisation you work for.</p>
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="govuk-grid-column-one-quarter">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a asp-controller="Dashboard" asp-action="OrganisationDetails" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
+                        </h3>
+                        <p class="govuk-body-s">View or change your organisation's details.</p>
+                    </div>
+                </div>
+            }
 
             <div class="govuk-grid-column-one-quarter">
                 <div class="dashboard-card">

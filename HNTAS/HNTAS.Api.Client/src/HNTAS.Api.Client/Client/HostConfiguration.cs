@@ -79,6 +79,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NullableOfSoaStageNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfUserRoleJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfUserRoleNullableJsonConverter());
+            _jsonOptions.Converters.Add(new OrganisationJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationRequestJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationResponseJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationTypeJsonConverter());
@@ -100,6 +101,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new UpdateElementLocationsRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateSoaStatusRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateUserDetailsRequestJsonConverter());
+            _jsonOptions.Converters.Add(new UpdateUserOrgIdRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateUserOrganisationRequestJsonConverter());
             _jsonOptions.Converters.Add(new UploadedAssessmentDocumentResponseJsonConverter());
             _jsonOptions.Converters.Add(new UploadedAssessorDocumentResponseJsonConverter());

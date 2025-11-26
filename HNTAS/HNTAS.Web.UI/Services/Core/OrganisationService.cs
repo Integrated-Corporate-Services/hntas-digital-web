@@ -1,8 +1,6 @@
 ﻿
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using NuGet.Protocol.Plugins;
 
 namespace HNTAS.Web.UI.Services.Core
 {
@@ -42,11 +40,39 @@ namespace HNTAS.Web.UI.Services.Core
         public async Task<bool?> GetOrganisationByDetails(string orgName, string postCode, string country)
         {
             var response = await _organisationsApi.ApiOrganisationsExistsByDetailsGetAsync(orgName, postCode, country);
-                if (response.IsOk)
-                {
-                    return response.Ok();
-                }
+            if (response.IsOk)
+            {
+                return response.Ok();
+            }
             throw new Exception($"Failed to fetch OrganisationByDetails with status code: {response.StatusCode}");
+        }
+
+        public async Task<Organisation?> GetOrganisationByIdOrName(string searchTerm)
+        {
+            var response = await _organisationsApi.ApiOrganisationsSearchGetAsync(searchTerm);
+            if (response.IsOk)
+            {
+                return response.Ok();
+            }
+            else if (response.IsNotFound)
+            {
+                return null;
+            }
+            throw new Exception($"Failed to fetch OrganisationIdOrName with status code: {response.StatusCode}");
+        }
+
+        public async Task<Organisation?> GetOrganisationById(string orgId)
+        {
+            var response = await _organisationsApi.ApiOrganisationsOrgIdGetAsync(orgId);
+            if (response.IsOk)
+            {
+                return response.Ok();
+            }
+            else if (response.IsNotFound)
+            {
+                return null;
+            }
+            throw new Exception($"Failed to fetch OrganisationById with status code: {response.StatusCode}");
         }
     }
 }

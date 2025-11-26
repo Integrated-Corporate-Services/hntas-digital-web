@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Organisation Added or Registered";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-6">
+            <h1 class="govuk-panel__title">
+                You Organisation is Added or Registered.
+            </h1>
+            <div class="govuk-panel__body">
+                ORG ID: <strong>@ViewBag.OrganisationId</strong>
+            </div>
+        </div>
+
+        <h2 class="govuk-heading-m">What happened next?</h2>
+
+        <p class="govuk-body">
+            <strong>If you added an existing organisation:</strong> Your Organisation details are now linked to your account.
+        </p>
+        <p class="govuk-body">
+            <strong>If you registered a new organisation:</strong> Your Organisation is registered successfully with HNTAS.
+        </p>
+
+        <div class="app-button-wrapper">
+            <a asp-controller="Dashboard" asp-action="UserAccount" role="button" data-module="govuk-button" draggable="false" class="govuk-button">
+                Continue
+            </a>
+        </div>
+
+    </div>
+</div>

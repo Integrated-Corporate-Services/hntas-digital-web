@@ -113,6 +113,38 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+        public async Task UpdateUserWithExistingOrganisationId(string userId, string orgId)
+        {
+            var response = await _usersApi.ApiUsersUpdateOrgidPatchAsync(new UpdateUserOrgIdRequest(userId, orgId));
+
+            if (response.IsNoContent)
+            {
+                _logger.LogInformation("User organisation ID updated successfully for user ID: {userId}", userId);
+                return;
+            }
+            throw new Exception($"Failed to update user organisation ID with status code: {response.StatusCode}");
+        }
+
+        public async Task<Organisation?> UpdateOrganisationLinkUser(string userId, OrganisationRequest organisationRequest)
+        {
+            _logger.LogInformation("Updating organisation link for user ID: {UserId}", userId);
+            try
+            {
+                var response = await _usersApi.ApiUsersRegisterOrgAndLinkUserIdPostAsync(userId, organisationRequest);
+                if (response.IsCreated)
+                {
+                    _logger.LogInformation("Organisation link updated successfully for user ID: {UserId}", userId);
+                    return response.Created();
+                }
+                throw new Exception($"Failed to update organisation link with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating organisation link for user ID: {UserId}", userId);
+                throw;
+            }
+        }
+
 
         public async Task UpdateUserDetails(string id, UpdateUserDetailsRequest request)
         {
