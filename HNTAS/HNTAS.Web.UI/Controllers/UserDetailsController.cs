@@ -43,7 +43,7 @@ namespace HNTAS.Web.UI.Controllers
                 userModel = new UserModel
                 {
                     IsRegulatoryContact = isUserRp,
-                    OrganisationName = userDetails.Organisation.Name,
+                    OrganisationName = userDetails.Organisation?.Name,
                     ContactDetails = {
                         FirstName = userDetails.FirstName,
                         LastName = userDetails.LastName,

@@ -17,7 +17,7 @@
 
         // Session keys for specific models
         public const string WhatDoYouWantToDoViewModelKey = "WhatDoYouWantToDoViewModel";
-        public const string WhereIsTheHeatNetworkModelKey = "whereIsTheHeatNetwork";        
+        public const string WhereIsTheHeatNetworkModelKey = "whereIsTheHeatNetwork";
         public const string IsHNCurrentlyOperatingModelKey = "isHNCurrentlyOperating";
         public const string HaveYouSignedMEContractModelKey = "haveYouSignedMEContract";
 
@@ -49,6 +49,7 @@
         public const string DeclarationOfImpartialityModelKey = "DeclarationOfImpartialityModelKey";
 
         public const string IsEditOrganisationDetailsJourneySessionKey = "IsEditOrganisationDetailsJourney";
+        public const string IsAddOrganisationDetailsNonRPJourneySessionKey = "IsAddOrganisationDetailsNonRPJourneySession";
         public const string IsAssessorOrCertifier = "IsAssessorOrCertifier";
 
     }

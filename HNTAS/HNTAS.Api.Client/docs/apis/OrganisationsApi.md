@@ -6,6 +6,8 @@ All URIs are relative to *https://localhost:7117*
 |--------|--------------|-------------|
 | [**ApiOrganisationsExistsByDetailsGet**](OrganisationsApi.md#apiorganisationsexistsbydetailsget) | **GET** /api/Organisations/exists-by-details |  |
 | [**ApiOrganisationsOrgIdEditOrgDetailsPatch**](OrganisationsApi.md#apiorganisationsorgideditorgdetailspatch) | **PATCH** /api/Organisations/{orgId}/edit-org-details |  |
+| [**ApiOrganisationsOrgIdGet**](OrganisationsApi.md#apiorganisationsorgidget) | **GET** /api/Organisations/{orgId} |  |
+| [**ApiOrganisationsSearchGet**](OrganisationsApi.md#apiorganisationssearchget) | **GET** /api/Organisations/search |  |
 
 <a id="apiorganisationsexistsbydetailsget"></a>
 # **ApiOrganisationsExistsByDetailsGet**
@@ -80,6 +82,76 @@ No authorization required
 | **400** | Bad Request |  -  |
 | **404** | Not Found |  -  |
 | **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiorganisationsorgidget"></a>
+# **ApiOrganisationsOrgIdGet**
+> Organisation ApiOrganisationsOrgIdGet (string orgId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **orgId** | **string** |  |  |
+
+### Return type
+
+[**Organisation**](Organisation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiorganisationssearchget"></a>
+# **ApiOrganisationsSearchGet**
+> Organisation ApiOrganisationsSearchGet (string term = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **term** | **string** |  | [optional]  |
+
+### Return type
+
+[**Organisation**](Organisation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
