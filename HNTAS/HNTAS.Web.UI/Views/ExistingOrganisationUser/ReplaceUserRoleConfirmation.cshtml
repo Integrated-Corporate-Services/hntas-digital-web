@@ -2,7 +2,7 @@
 @model ReplaceUserRoleViewModel
 
 @{
-    ViewData["Title"] = $"{Model.RoleName} for {Model.HeatNetworkName} Heat network";
+    ViewData["Title"] = $"Do you want to replace the existing user effective today";
 
     var fieldOrder = new[] { nameof(Model.ReplaceExistingRole) };
     var elementId = Html.GenerateIdFromName(nameof(Model.ReplaceExistingRole)).ToLowerInvariant();
@@ -10,16 +10,17 @@
     // Create the page data structure for the radio button partial view
     var pageData = new QuestionWithRadiobuttonsModel
     {
-        Controller = ViewBag.ContollerName,
-        Action = "ConfirmReplaceUserRole",
+        Controller = "ExistingOrganisationUser",
+        Action = "SaveReplaceUserRoleConfirmation",
         FieldOrder = fieldOrder,
+        PageHeading = $"Manage users for {@ViewBag.OrganisationName}",
         Questions = new List<Question>
         {
             new Question
             {
                 // The main question remains specific to the Designer role for clarity on the page
                 QId = elementId,
-                QText = $"Do you want to replace the existing {Model.RoleName} for the {Model.HeatNetworkName} Heat network?",
+                QText = $"Do you want to replace the existing user effective today",
 
                 // The required context from your original prompt
                 QDescText = null,

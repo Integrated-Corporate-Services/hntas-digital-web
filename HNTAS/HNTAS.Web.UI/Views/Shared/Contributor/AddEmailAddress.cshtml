@@ -15,7 +15,7 @@
             @ViewData["Title"]
         </h1>
 
-        <form asp-action="SaveEmailAddress" asp-controller="NewContributor" method="post" novalidate>
+        <form asp-action="SaveEmailAddress"  method="post" novalidate>
             <div class="govuk-form-group @(hasEmailAddressErrors ? " govuk-form-group--error" : "")">
                 <label class="govuk-label" for="EmailAddress">
                     Email address

@@ -236,12 +236,11 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("AlreadyRegistered");
                 }
             }
-            var isOverseasOrganisation = _sessionHelper.GetFromSession<bool?>(HttpContext, "IsOverseasOrganisation") ?? false;
-            if (!isOverseasOrganisation)
+            else
             {
-                //Check the company already registered with the same address
-                //Only for UK organisation
-                var orgExists = await _organisationService.GetOrganisationByDetails(organisationModel.CompanyDetails.Title.Trim(), organisationModel.CompanyDetails.RegisteredOfficeAddress.PostalCode.Trim(), organisationModel.CompanyDetails.RegisteredOfficeAddress.Country.Trim());
+                var orgExists = await _organisationService.GetOrganisationByDetails(organisationModel.CompanyDetails.Title.Trim(),
+                    organisationModel.CompanyDetails.RegisteredOfficeAddress.PostalCode.Trim(),
+                    organisationModel.CompanyDetails.RegisteredOfficeAddress.Country.Trim());
                 if (orgExists.HasValue && orgExists.Value == true)
                 {
                     return RedirectToAction("AlreadyRegistered");

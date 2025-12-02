@@ -24,5 +24,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task<bool?> IsActiveUserAsync(string emailId);
         Task<List<UserRoleDetailResponse>?> GetHeatNetworkUserRoles(string heatNetworkId);
         Task<(bool IsAssigned, string UserId)> IsRoleAlreadyAssigned(string heatNetworkId, string roleName);
+        Task<List<UserResponse>> GetUsersByOrganisationIdAsync(string organisationId);
     }
 }

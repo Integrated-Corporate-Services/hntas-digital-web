@@ -1,0 +1,58 @@
+﻿@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Models.OrganisationRole
+@using HNTAS.Web.UI.Models.User
+
+@model ChooseUserModel
+@{
+    ViewData["Title"] = "Select the user from below list";
+    var selectedUserId = Html.LowercaseIdFor(m => m.SelectedUserId);
+    var hasErrors = ViewData.ModelState.TryGetValue(nameof(Model.SelectedUserId), out var entry) && entry.Errors.Any();
+    var errorId = $"{selectedUserId}-error";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">
+            <span class="govuk-caption-l">Manage users for @ViewBag.OrganisationName</span>
+            @ViewData["Title"]
+        </h1>
+
+        <form asp-action="SaveChooseUser" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")" style="overflow-x : auto">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        Choose the user
+                    </legend>
+
+
+                    @if (hasErrors)
+                    {
+                            <p id="@errorId" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span>
+                                @Html.ValidationMessageFor(m => m.SelectedUserId)
+                            </p>
+                    }
+
+                    @await Html.PartialAsync("Components/_GovUkRadioList", new GovUkRadioListModel
+                    {
+                            FieldId = Html.LowercaseIdFor(m => m.SelectedUserId),
+
+                                                FieldName = nameof(Model.SelectedUserId),
+
+                                                SelectedValue = Model.SelectedUserId,
+
+                                                Items = Model.Users
+                                        })
+
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>

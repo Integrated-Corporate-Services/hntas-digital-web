@@ -67,7 +67,7 @@ namespace HNTAS.Web.UI.Controllers
                     return BadRequest("Invalid invitation details.");
                 }
 
-                TempData["OrgName"] = inviterUser.Organisation.Name;
+                TempData["HNName"] = inviterUser.HeatNetworks.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedTokenEmail, invitationEmail);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitationId, invitation.Id);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedInviterUserId, invitation.InviterUserId);
@@ -78,7 +78,6 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = "The invitation token is missing from your request. Please use the link provided in the invitation email to proceed.";
             }
             var model = _sessionHelper.GetFromSession<YouHaveBeenInvitedModel>(HttpContext, SessionKeys.YouHaveBeenInvitedModelKey) ?? new YouHaveBeenInvitedModel();
-            ViewBag.HNName = "[Heat network name]"; // Placeholder until we get the actual value from the invitation email story
             return View(model);
         }
 
@@ -86,13 +85,19 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> YouHaveBeenInvitedAsync(YouHaveBeenInvitedModel model)
         {
+            var invitationId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.InvitationId);
+
             if (!ModelState.IsValid)
             {
+                var inviterUserId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.InvitedInviterUserId);
+                var invitation = await _invitationService.GetInvitationByIdAsync(invitationId);
+                var inviterUser = await _iUserService.GetUserDetails(invitation.InviterUserId);
+
+                TempData["HNName"] = inviterUser.HeatNetworks.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
                 _logger.LogWarning("Invalid model state in invitation response.");
                 return View(model);
             }
 
-            var invitationId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.InvitationId);
             if (string.IsNullOrWhiteSpace(invitationId))
             {
                 _logger.LogWarning("Invitation ID is missing from session during invitation response.");
