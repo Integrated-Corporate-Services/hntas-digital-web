@@ -4,5 +4,7 @@
     {
         AddNewContributor,
         AddExistingContributor,
+        AddOrganisationUser,
+        AddExistingOrganisationUser
     }
 }

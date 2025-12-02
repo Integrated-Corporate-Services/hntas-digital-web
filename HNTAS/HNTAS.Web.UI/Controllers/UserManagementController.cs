@@ -2,6 +2,7 @@
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Enums;
+using HNTAS.Web.UI.Models.OrganisationRole;
 using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
 using HNTAS.Web.UI.Workflows;
@@ -54,7 +55,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 foreach (var user in users)
                 {
-                    if(user.Id == userId)
+                    if (user.Id == userId)
                     {
                         currentUserEmailId = user.EmailId;
                     }
@@ -130,6 +131,39 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             return View(viewModel);
+        }
+
+
+        [HttpGet]
+        public IActionResult ChangeOrganisationUser()
+        {
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SubmitChangeOrganisationUser(OrganisationUserChangeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Redirect based on the selected option
+                if (model.SelectedUserType == UserType.NewUser)
+                {
+                    // Initiate the workflow for adding a new contributor
+                    _workflowManager.StartWorkflow<AddOrganisationUserWorkflowModel>(WorkflowType.AddOrganisationUser, AddOrganisationUserWorkflowStep.AddEmailAddress);
+                    _logger.LogInformation("Created new workflow state for {WorkflowType}", WorkflowType.AddOrganisationUser);
+
+                    return RedirectToAction("AddEmailAddress", "AddOrganisationUser");
+
+                }
+                else if (model.SelectedUserType == UserType.ExistingUser)
+                {
+                    _workflowManager.StartWorkflow<AddExistingOrganisationUserWorkflowModel>(WorkflowType.AddExistingOrganisationUser, ExistingOrganisationUserWorkflowStep.ChooseRole);
+                    _logger.LogInformation("Created new workflow state for {WorkflowType}", WorkflowType.AddExistingOrganisationUser);
+                    return RedirectToAction("ChooseUser", "ExistingOrganisationUser");
+                }
+            }
+            return View(model);
         }
 
         [HttpGet]

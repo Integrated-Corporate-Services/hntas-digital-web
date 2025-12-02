@@ -68,7 +68,17 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Enum Certifier for value: Certifier
         /// </summary>
-        Certifier = 8
+        Certifier = 8,
+
+        /// <summary>
+        /// Enum Coordinator for value: Coordinator
+        /// </summary>
+        Coordinator = 9,
+
+        /// <summary>
+        /// Enum ResponsiblePerson for value: ResponsiblePerson
+        /// </summary>
+        ResponsiblePerson = 10
     }
 
     /// <summary>
@@ -107,6 +117,12 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Certifier"))
                 return ContributorRole.Certifier;
 
+            if (value.Equals("Coordinator"))
+                return ContributorRole.Coordinator;
+
+            if (value.Equals("ResponsiblePerson"))
+                return ContributorRole.ResponsiblePerson;
+
             throw new NotImplementedException($"Could not convert value to type ContributorRole: '{value}'");
         }
 
@@ -140,6 +156,12 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("Certifier"))
                 return ContributorRole.Certifier;
+
+            if (value.Equals("Coordinator"))
+                return ContributorRole.Coordinator;
+
+            if (value.Equals("ResponsiblePerson"))
+                return ContributorRole.ResponsiblePerson;
 
             return null;
         }
@@ -175,6 +197,12 @@ namespace HNTAS.Api.Client.Model
 
             if (value == ContributorRole.Certifier)
                 return "Certifier";
+
+            if (value == ContributorRole.Coordinator)
+                return "Coordinator";
+
+            if (value == ContributorRole.ResponsiblePerson)
+                return "ResponsiblePerson";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }

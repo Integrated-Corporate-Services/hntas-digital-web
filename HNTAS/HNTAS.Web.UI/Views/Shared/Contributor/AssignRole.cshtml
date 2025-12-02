@@ -1,0 +1,58 @@
+﻿@using HNTAS.Web.UI.Models.Enums
+@using HNTAS.Web.UI.Models.OrganisationRole
+@model RoleAssignmentModel
+@{
+    ViewData["Title"] = $"What role do you want to assign to {Model.UserName}?";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-l">Manage roles for @ViewBag.OrganisationName</span>
+
+        <form asp-action="SaveAssignRole" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="govuk-form-group @(ViewData.ModelState["SelectedRoleType"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+
+                <fieldset class="govuk-fieldset" aria-describedby="@(ViewData.ModelState["SelectedRoleType"]?.Errors.Count > 0 ? "RoleAssignmentError" : "")">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            @ViewData["Title"]
+                        </h1>
+                    </legend>
+
+                    @if (ViewData.ModelState.GetValidationState("SelectedRoleType") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                    {
+                        <p id="RoleAssignmentError" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @Html.ValidationMessageFor(m => m.SelectedRoleType)
+                        </p>
+                    }
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+
+                        <div class="govuk-radios__item">
+                            @* Role 1: Assign as a RP *@
+                            @Html.RadioButtonFor(m => m.SelectedRoleType, RoleAssignmentType.ResponsibleParty, new { @class = "govuk-radios__input", id = "SelectedRoleType1" })
+                            <label class="govuk-label govuk-radios__label" for="SelectedRoleType1">
+                                Assign as a RP (@Model.ExistingRPName)
+                            </label>
+                        </div>
+
+                        <div class="govuk-radios__item">
+                            @* Role 2: Assign as a HNTAS coordinator *@
+                            @Html.RadioButtonFor(m => m.SelectedRoleType, RoleAssignmentType.HNTASCoordinator, new { @class = "govuk-radios__input", id = "SelectedRoleType2" })
+                            <label class="govuk-label govuk-radios__label" for="SelectedRoleType2">
+                                Assign as a HNTAS coordinator
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>

@@ -9,6 +9,7 @@ tags:
 - name: HeatNetworks
 - name: Invitations
 - name: Organisations
+- name: OrganisationUser
 - name: SOA
 - name: Users
 paths:
@@ -606,6 +607,45 @@ paths:
           description: Not Found
       tags:
       - Organisations
+  /api/OrganisationUser/responsible-party-user/{orgId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - OrganisationUser
   /api/SOA/heat-network/{hnId}:
     get:
       parameters:
@@ -1902,6 +1942,61 @@ paths:
           description: Not Found
       tags:
       - Users
+  /api/Users/organisation/{organisationId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: organisationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+      tags:
+      - Users
 components:
   schemas:
     AddInvitationRequest:
@@ -1914,6 +2009,7 @@ components:
         - DesignatedDesigner
         - DesignatedDesigner
         currentRoleUserId: currentRoleUserId
+        orgId: orgId
         status: Invited
       properties:
         emailAddress:
@@ -1923,11 +2019,15 @@ components:
         lastName:
           type: string
         hnId:
+          nullable: true
+          type: string
+        orgId:
+          nullable: true
           type: string
         contributorRoles:
           items:
             $ref: "#/components/schemas/ContributorRole"
-          minItems: 1
+          nullable: true
           type: array
         currentRoleUserId:
           nullable: true
@@ -1935,10 +2035,8 @@ components:
         status:
           $ref: "#/components/schemas/InvitationStatus"
       required:
-      - contributorRoles
       - emailAddress
       - firstName
-      - hnId
       - lastName
       - status
       type: object
@@ -1959,6 +2057,8 @@ components:
       - ContributingOperator
       - Assessor
       - Certifier
+      - Coordinator
+      - ResponsiblePerson
       type: string
     CountryAndTerritory:
       example:
@@ -2603,6 +2703,7 @@ components:
     NullableOfUserRole:
       enum:
       - ResponsiblePerson
+      - Coordinator
       - Contributor
       - Designer
       - Contractor
@@ -2621,6 +2722,11 @@ components:
           postcode: postcode
           addressLine1: addressLine1
           addressLine2: addressLine2
+        createdDate: 2000-01-23T04:56:07.000+00:00
+        rpUserId: rpUserId
+        createdBy: createdBy
+        lastModifiedDate: 2000-01-23T04:56:07.000+00:00
+        lastModifiedBy: lastModifiedBy
         name: name
         id: id
         type: UkCompaniesHouse
@@ -2641,6 +2747,21 @@ components:
           type: string
         registeredAddress:
           $ref: "#/components/schemas/RegisteredAddress"
+        createdBy:
+          type: string
+        createdDate:
+          format: date-time
+          type: string
+        lastModifiedBy:
+          nullable: true
+          type: string
+        lastModifiedDate:
+          format: date-time
+          nullable: true
+          type: string
+        rpUserId:
+          nullable: true
+          type: string
       type: object
     OrganisationRequest:
       example:
@@ -3698,6 +3819,7 @@ components:
     UserRole:
       enum:
       - ResponsiblePerson
+      - Coordinator
       - Contributor
       - Designer
       - Contractor

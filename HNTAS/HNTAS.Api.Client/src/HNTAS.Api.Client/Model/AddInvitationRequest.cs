@@ -36,19 +36,21 @@ namespace HNTAS.Api.Client.Model
         /// <param name="emailAddress">emailAddress</param>
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
-        /// <param name="hnId">hnId</param>
-        /// <param name="contributorRoles">contributorRoles</param>
         /// <param name="status">status</param>
+        /// <param name="hnId">hnId</param>
+        /// <param name="orgId">orgId</param>
+        /// <param name="contributorRoles">contributorRoles</param>
         /// <param name="currentRoleUserId">currentRoleUserId</param>
         [JsonConstructor]
-        public AddInvitationRequest(string emailAddress, string firstName, string lastName, string hnId, List<ContributorRole> contributorRoles, InvitationStatus status, Option<string?> currentRoleUserId = default)
+        public AddInvitationRequest(string emailAddress, string firstName, string lastName, InvitationStatus status, Option<string?> hnId = default, Option<string?> orgId = default, Option<List<ContributorRole>?> contributorRoles = default, Option<string?> currentRoleUserId = default)
         {
             EmailAddress = emailAddress;
             FirstName = firstName;
             LastName = lastName;
-            HnId = hnId;
-            ContributorRoles = contributorRoles;
             Status = status;
+            HnIdOption = hnId;
+            OrgIdOption = orgId;
+            ContributorRolesOption = contributorRoles;
             CurrentRoleUserIdOption = currentRoleUserId;
             OnCreated();
         }
@@ -80,16 +82,43 @@ namespace HNTAS.Api.Client.Model
         public string LastName { get; set; }
 
         /// <summary>
+        /// Used to track the state of HnId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> HnIdOption { get; private set; }
+
+        /// <summary>
         /// Gets or Sets HnId
         /// </summary>
         [JsonPropertyName("hnId")]
-        public string HnId { get; set; }
+        public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of OrgId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> OrgIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets OrgId
+        /// </summary>
+        [JsonPropertyName("orgId")]
+        public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ContributorRoles
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<ContributorRole>?> ContributorRolesOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets ContributorRoles
         /// </summary>
         [JsonPropertyName("contributorRoles")]
-        public List<ContributorRole> ContributorRoles { get; set; }
+        public List<ContributorRole>? ContributorRoles { get { return this.ContributorRolesOption; } set { this.ContributorRolesOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CurrentRoleUserId
@@ -115,9 +144,10 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  EmailAddress: ").Append(EmailAddress).Append("\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
-            sb.Append("  HnId: ").Append(HnId).Append("\n");
-            sb.Append("  ContributorRoles: ").Append(ContributorRoles).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  HnId: ").Append(HnId).Append("\n");
+            sb.Append("  OrgId: ").Append(OrgId).Append("\n");
+            sb.Append("  ContributorRoles: ").Append(ContributorRoles).Append("\n");
             sb.Append("  CurrentRoleUserId: ").Append(CurrentRoleUserId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -159,9 +189,10 @@ namespace HNTAS.Api.Client.Model
             Option<string?> emailAddress = default;
             Option<string?> firstName = default;
             Option<string?> lastName = default;
-            Option<string?> hnId = default;
-            Option<List<ContributorRole>?> contributorRoles = default;
             Option<InvitationStatus?> status = default;
+            Option<string?> hnId = default;
+            Option<string?> orgId = default;
+            Option<List<ContributorRole>?> contributorRoles = default;
             Option<string?> currentRoleUserId = default;
 
             while (utf8JsonReader.Read())
@@ -188,16 +219,19 @@ namespace HNTAS.Api.Client.Model
                         case "lastName":
                             lastName = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "hnId":
-                            hnId = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "contributorRoles":
-                            contributorRoles = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions)!);
-                            break;
                         case "status":
                             string? statusRawValue = utf8JsonReader.GetString();
                             if (statusRawValue != null)
                                 status = new Option<InvitationStatus?>(InvitationStatusValueConverter.FromStringOrDefault(statusRawValue));
+                            break;
+                        case "hnId":
+                            hnId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "orgId":
+                            orgId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "contributorRoles":
+                            contributorRoles = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "currentRoleUserId":
                             currentRoleUserId = new Option<string?>(utf8JsonReader.GetString());
@@ -217,12 +251,6 @@ namespace HNTAS.Api.Client.Model
             if (!lastName.IsSet)
                 throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(lastName));
 
-            if (!hnId.IsSet)
-                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(hnId));
-
-            if (!contributorRoles.IsSet)
-                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(contributorRoles));
-
             if (!status.IsSet)
                 throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(status));
 
@@ -235,16 +263,10 @@ namespace HNTAS.Api.Client.Model
             if (lastName.IsSet && lastName.Value == null)
                 throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class AddInvitationRequest.");
 
-            if (hnId.IsSet && hnId.Value == null)
-                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class AddInvitationRequest.");
-
-            if (contributorRoles.IsSet && contributorRoles.Value == null)
-                throw new ArgumentNullException(nameof(contributorRoles), "Property is not nullable for class AddInvitationRequest.");
-
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class AddInvitationRequest.");
 
-            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, hnId.Value!, contributorRoles.Value!, status.Value!.Value!, currentRoleUserId);
+            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, status.Value!.Value!, hnId, orgId, contributorRoles, currentRoleUserId);
         }
 
         /// <summary>
@@ -280,25 +302,35 @@ namespace HNTAS.Api.Client.Model
             if (addInvitationRequest.LastName == null)
                 throw new ArgumentNullException(nameof(addInvitationRequest.LastName), "Property is required for class AddInvitationRequest.");
 
-            if (addInvitationRequest.HnId == null)
-                throw new ArgumentNullException(nameof(addInvitationRequest.HnId), "Property is required for class AddInvitationRequest.");
-
-            if (addInvitationRequest.ContributorRoles == null)
-                throw new ArgumentNullException(nameof(addInvitationRequest.ContributorRoles), "Property is required for class AddInvitationRequest.");
-
             writer.WriteString("emailAddress", addInvitationRequest.EmailAddress);
 
             writer.WriteString("firstName", addInvitationRequest.FirstName);
 
             writer.WriteString("lastName", addInvitationRequest.LastName);
 
-            writer.WriteString("hnId", addInvitationRequest.HnId);
-
-            writer.WritePropertyName("contributorRoles");
-            JsonSerializer.Serialize(writer, addInvitationRequest.ContributorRoles, jsonSerializerOptions);
             var statusRawValue = InvitationStatusValueConverter.ToJsonValue(addInvitationRequest.Status);
             writer.WriteString("status", statusRawValue);
 
+            if (addInvitationRequest.HnIdOption.IsSet)
+                if (addInvitationRequest.HnIdOption.Value != null)
+                    writer.WriteString("hnId", addInvitationRequest.HnId);
+                else
+                    writer.WriteNull("hnId");
+
+            if (addInvitationRequest.OrgIdOption.IsSet)
+                if (addInvitationRequest.OrgIdOption.Value != null)
+                    writer.WriteString("orgId", addInvitationRequest.OrgId);
+                else
+                    writer.WriteNull("orgId");
+
+            if (addInvitationRequest.ContributorRolesOption.IsSet)
+                if (addInvitationRequest.ContributorRolesOption.Value != null)
+                {
+                    writer.WritePropertyName("contributorRoles");
+                    JsonSerializer.Serialize(writer, addInvitationRequest.ContributorRoles, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("contributorRoles");
             if (addInvitationRequest.CurrentRoleUserIdOption.IsSet)
                 if (addInvitationRequest.CurrentRoleUserIdOption.Value != null)
                     writer.WriteString("currentRoleUserId", addInvitationRequest.CurrentRoleUserId);

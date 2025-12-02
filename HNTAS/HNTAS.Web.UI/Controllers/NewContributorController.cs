@@ -56,7 +56,7 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
 
-            return View(state.Data.AddUserEmailAddressModel ?? new AddUserEmailAddressModel());
+            return View("Contributor/AddEmailAddress", state.Data.AddUserEmailAddressModel ?? new AddUserEmailAddressModel());
         }
 
 
@@ -67,7 +67,7 @@ namespace HNTAS.Web.UI.Controllers
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("AddContributor", "UserManagement");
-                return View("AddEmailAddress", model);
+                return View("Contributor/AddEmailAddress", model);
             }
 
             //check for rp user
@@ -77,7 +77,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation.");
                 this.ShowBackButton("AddContributor", "UserManagement");
-                return View("AddEmailAddress", model);
+                return View("Contributor/AddEmailAddress", model);
             }
 
             // if this email address exists in the existing users list then throw error
@@ -86,7 +86,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access.");
                 this.ShowBackButton("AddContributor", "UserManagement");
-                return View("AddEmailAddress", model);
+                return View("Contributor/AddEmailAddress", model);
             }
 
             // Logic to save email address goes here
@@ -104,7 +104,7 @@ namespace HNTAS.Web.UI.Controllers
             var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
             this.ShowBackButton("AddEmailAddress");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-            return View(state.Data.ContributorContactDetailsModel ?? new ContributorContactDetailsModel());
+            return View("Contributor/ContactDetails", state.Data.ContributorContactDetailsModel ?? new ContributorContactDetailsModel());
         }
 
         [HttpPost]
@@ -115,7 +115,7 @@ namespace HNTAS.Web.UI.Controllers
                 this.ShowBackButton("ContactDetails");
                 ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 TempData["ErrorSummary"] = "Custom";
-                return View("ContactDetails", contactDetails);
+                return View("Contributor/ContactDetails", contactDetails);
             }
             // Logic to save contact details goes here
 
