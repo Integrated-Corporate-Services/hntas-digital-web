@@ -17,6 +17,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersIsRpUserEmailIdGet**](UsersApi.md#apiusersisrpuseremailidget) | **GET** /api/Users/is-rp-user/{emailId} |  |
 | [**ApiUsersManagedUsersGet**](UsersApi.md#apiusersmanagedusersget) | **GET** /api/Users/managed-users |  |
 | [**ApiUsersOrganisationExistsGet**](UsersApi.md#apiusersorganisationexistsget) | **GET** /api/Users/organisation/exists |  |
+| [**ApiUsersOrganisationOrganisationIdGet**](UsersApi.md#apiusersorganisationorganisationidget) | **GET** /api/Users/organisation/{organisationId} |  |
 | [**ApiUsersRegisterOrgAndLinkUserIdPost**](UsersApi.md#apiusersregisterorgandlinkuseridpost) | **POST** /api/Users/register-org-and-link/{userId} |  |
 | [**ApiUsersRegisteredUsersGet**](UsersApi.md#apiusersregisteredusersget) | **GET** /api/Users/registered-users |  |
 | [**ApiUsersUpdateOrgidPatch**](UsersApi.md#apiusersupdateorgidpatch) | **PATCH** /api/Users/update-orgid |  |
@@ -485,6 +486,42 @@ No authorization required
 | **200** | OK |  -  |
 | **400** | Bad Request |  -  |
 | **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersorganisationorganisationidget"></a>
+# **ApiUsersOrganisationOrganisationIdGet**
+> List&lt;UserResponse&gt; ApiUsersOrganisationOrganisationIdGet (string organisationId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **organisationId** | **string** |  |  |
+
+### Return type
+
+[**List&lt;UserResponse&gt;**](UserResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+| **400** | Bad Request |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

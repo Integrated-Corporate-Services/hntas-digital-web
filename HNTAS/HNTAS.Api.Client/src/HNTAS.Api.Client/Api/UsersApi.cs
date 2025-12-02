@@ -343,6 +343,29 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="organisationId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationOrganisationIdGetApiResponse"/>&gt;</returns>
+        Task<IApiUsersOrganisationOrganisationIdGetApiResponse> ApiUsersOrganisationOrganisationIdGetAsync(string organisationId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="organisationId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationOrganisationIdGetApiResponse"/>?&gt;</returns>
+        Task<IApiUsersOrganisationOrganisationIdGetApiResponse?> ApiUsersOrganisationOrganisationIdGetOrDefaultAsync(string organisationId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="userId"></param>
         /// <param name="organisationRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
@@ -811,6 +834,30 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiUsersOrganisationOrganisationIdGetApiResponse"/>
+    /// </summary>
+    public interface IApiUsersOrganisationOrganisationIdGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<UserResponse>?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IApiUsersRegisterOrgAndLinkUserIdPostApiResponse"/>
     /// </summary>
     public interface IApiUsersRegisterOrgAndLinkUserIdPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, ICreated<HNTAS.Api.Client.Model.Organisation?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
@@ -1223,6 +1270,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiUsersOrganisationExistsGet(Exception exception)
         {
             OnErrorApiUsersOrganisationExistsGet?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiUsersOrganisationOrganisationIdGet;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiUsersOrganisationOrganisationIdGet;
+
+        internal void ExecuteOnApiUsersOrganisationOrganisationIdGet(UsersApi.ApiUsersOrganisationOrganisationIdGetApiResponse apiResponse)
+        {
+            OnApiUsersOrganisationOrganisationIdGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiUsersOrganisationOrganisationIdGet(Exception exception)
+        {
+            OnErrorApiUsersOrganisationOrganisationIdGet?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -4927,6 +4994,304 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <returns></returns>
             public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiUsersOrganisationOrganisationIdGet(ref string organisationId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="organisationId"></param>
+        /// <returns></returns>
+        private void ValidateApiUsersOrganisationOrganisationIdGet(string organisationId)
+        {
+            if (organisationId == null)
+                throw new ArgumentNullException(nameof(organisationId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="organisationId"></param>
+        private void AfterApiUsersOrganisationOrganisationIdGetDefaultImplementation(IApiUsersOrganisationOrganisationIdGetApiResponse apiResponseLocalVar, string organisationId)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiUsersOrganisationOrganisationIdGet(ref suppressDefaultLog, apiResponseLocalVar, organisationId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="organisationId"></param>
+        partial void AfterApiUsersOrganisationOrganisationIdGet(ref bool suppressDefaultLog, IApiUsersOrganisationOrganisationIdGetApiResponse apiResponseLocalVar, string organisationId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="organisationId"></param>
+        private void OnErrorApiUsersOrganisationOrganisationIdGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string organisationId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiUsersOrganisationOrganisationIdGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, organisationId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="organisationId"></param>
+        partial void OnErrorApiUsersOrganisationOrganisationIdGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string organisationId);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="organisationId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationOrganisationIdGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersOrganisationOrganisationIdGetApiResponse?> ApiUsersOrganisationOrganisationIdGetOrDefaultAsync(string organisationId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiUsersOrganisationOrganisationIdGetAsync(organisationId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="organisationId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersOrganisationOrganisationIdGetApiResponse"/>&gt;</returns>
+        public async Task<IApiUsersOrganisationOrganisationIdGetApiResponse> ApiUsersOrganisationOrganisationIdGetAsync(string organisationId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiUsersOrganisationOrganisationIdGet(organisationId);
+
+                FormatApiUsersOrganisationOrganisationIdGet(ref organisationId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Users/organisation/{organisationId}"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Users/organisation/{organisationId}");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BorganisationId%7D", Uri.EscapeDataString(organisationId.ToString()));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiUsersOrganisationOrganisationIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersOrganisationOrganisationIdGetApiResponse>();
+
+                        ApiUsersOrganisationOrganisationIdGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/organisation/{organisationId}", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiUsersOrganisationOrganisationIdGetDefaultImplementation(apiResponseLocalVar, organisationId);
+
+                        Events.ExecuteOnApiUsersOrganisationOrganisationIdGet(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiUsersOrganisationOrganisationIdGetDefaultImplementation(e, "/api/Users/organisation/{organisationId}", uriBuilderLocalVar.Path, organisationId);
+                Events.ExecuteOnErrorApiUsersOrganisationOrganisationIdGet(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiUsersOrganisationOrganisationIdGetApiResponse"/>
+        /// </summary>
+        public partial class ApiUsersOrganisationOrganisationIdGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiUsersOrganisationOrganisationIdGetApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiUsersOrganisationOrganisationIdGetApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiUsersOrganisationOrganisationIdGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiUsersOrganisationOrganisationIdGetApiResponse(ILogger<ApiUsersOrganisationOrganisationIdGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public List<UserResponse>? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<List<UserResponse>>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out List<UserResponse>? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {

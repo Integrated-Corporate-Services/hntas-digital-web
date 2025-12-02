@@ -71,6 +71,7 @@ namespace HNTAS.Web.UI.Controllers
             if (user.Organisation?.Name != null)
             {
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, user.Organisation.OrgId);
             }
 
 

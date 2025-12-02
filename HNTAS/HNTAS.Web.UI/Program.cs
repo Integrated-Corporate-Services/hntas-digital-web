@@ -155,14 +155,25 @@ builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
 });
 
 
+builder.Services.AddSingleton<OrganisationUserApiEvents>();
+builder.Services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
 builder.Services.AddScoped<IWorkflowManager, WorkflowManager>();
 // Since it's a generic filter, you can register a specific type for each workflow
 builder.Services.AddScoped<WorkflowValidationFilter<AddNewContributorWorkflowModel, ContributorWorkflowStep>>();
 builder.Services.AddScoped<WorkflowValidationFilter<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>>();
+builder.Services.AddScoped<WorkflowValidationFilter<AddOrganisationUserWorkflowModel, AddOrganisationUserWorkflowStep>>();
 builder.Services.AddScoped<IRedirectResolver<AddNewContributorWorkflowModel, ContributorWorkflowStep>, NewContributorRedirectResolver>();
 builder.Services.AddScoped<IRedirectResolver<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>, ExistingContributorRedirectResolver>();
+builder.Services.AddScoped<IRedirectResolver<AddOrganisationUserWorkflowModel, AddOrganisationUserWorkflowStep>, AddOrganisationUserRedirectResolver>();
+builder.Services.AddScoped<IRedirectResolver<AddExistingOrganisationUserWorkflowModel, ExistingOrganisationUserWorkflowStep>, ExistingOrganisationUserRedirectResolver>();
 
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnGetAttribute>();
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
@@ -174,6 +185,7 @@ builder.Services.AddScoped<ISoaService, SoaService>();
 builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
 builder.Services.AddScoped<ICountriesAndTerritoriesService, CountriesAndTerritoriesService>();
 builder.Services.AddScoped<IOrganisationService, OrganisationService>();
+builder.Services.AddScoped<IOrganisationUserService, OrganisationUserService>();
 
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 builder.Services.AddScoped<IAddressLookupService, AddressLookupService>();

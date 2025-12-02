@@ -45,7 +45,7 @@
             @ViewData["Title"]
         </h1>
 
-        <form asp-controller="NewContributor" asp-action="SaveContactDetails" method="post" novalidate>
+        <form  asp-action="SaveContactDetails" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             @* First name input *@

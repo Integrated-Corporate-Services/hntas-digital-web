@@ -24,18 +24,9 @@ namespace HNTAS.Web.UI.Workflows.Models.Data
             CompletedSteps.Add(nextStep);
         }
 
-        //public object? GetStepData(ContributorWorkflowStep step) => step switch
-        //{
-        //    ContributorWorkflowStep.AddEmailAddress => AddUserEmailAddressModel,
-        //    ContributorWorkflowStep.ContactDetails => ContributorContactDetailsModel,
-        //    ContributorWorkflowStep.ChooseHeatNetwork => ChooseHeatNetworkModel,
-        //    ContributorWorkflowStep.ChooseRole => ChooseRoleModel,
-        //    _ => null
-        //};
 
         void IWorkflowModel<ContributorWorkflowStep>.AdvanceToStep(ContributorWorkflowStep nextStep) => AdvanceToStep(nextStep);
 
-        // object? IWorkflowModel<ContributorWorkflowStep>.GetStepData(ContributorWorkflowStep step) => GetStepData(step);
     }
 
 

@@ -428,6 +428,17 @@ namespace HNTAS.Web.UI.Services.Core
             return (false, string.Empty);
         }
 
+        public async Task<List<UserResponse>> GetUsersByOrganisationIdAsync(string organisationId)
+        {
+            var usersResponse = await _usersApi.ApiUsersOrganisationOrganisationIdGetAsync(organisationId);
+            if (usersResponse.IsOk)
+            {
+                return usersResponse.Ok();
+            }
+            _logger.LogError("Failed to retrieve users by organisation ID with status code: {StatusCode}", usersResponse.StatusCode);
+            throw new Exception($"Failed to retrieve users by organisation ID with status code: {usersResponse.StatusCode}");
+        }
+
 
         private string SanitizeForLogging(string input)
         {
