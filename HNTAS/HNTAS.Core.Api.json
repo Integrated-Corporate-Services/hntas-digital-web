@@ -949,6 +949,68 @@
         }
       }
     },
+    "/api/OrganisationUser/responsible-party-user/{orgId}": {
+      "get": {
+        "tags": [
+          "OrganisationUser"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/SOA/heat-network/{hnId}": {
       "get": {
         "tags": [
@@ -3002,6 +3064,94 @@
           }
         }
       }
+    },
+    "/api/Users/organisation/{organisationId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "organisationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3011,8 +3161,6 @@
           "emailAddress",
           "firstName",
           "lastName",
-          "hnId",
-          "contributorRoles",
           "status"
         ],
         "type": "object",
@@ -3027,14 +3175,19 @@
             "type": "string"
           },
           "hnId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "orgId": {
+            "type": "string",
+            "nullable": true
           },
           "contributorRoles": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ContributorRole"
-            }
+            },
+            "nullable": true
           },
           "currentRoleUserId": {
             "type": "string",
@@ -3062,7 +3215,9 @@
           "ContributingContractor",
           "ContributingOperator",
           "Assessor",
-          "Certifier"
+          "Certifier",
+          "Coordinator",
+          "ResponsiblePerson"
         ]
       },
       "CountryAndTerritory": {
@@ -3487,6 +3642,7 @@
       "NullableOfUserRole": {
         "enum": [
           "ResponsiblePerson",
+          "Coordinator",
           "Contributor",
           "Designer",
           "Contractor",
@@ -3519,6 +3675,26 @@
           },
           "registeredAddress": {
             "$ref": "#/components/schemas/RegisteredAddress"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastModifiedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "rpUserId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4323,6 +4499,7 @@
       "UserRole": {
         "enum": [
           "ResponsiblePerson",
+          "Coordinator",
           "Contributor",
           "Designer",
           "Contractor",
@@ -4371,6 +4548,9 @@
     },
     {
       "name": "Organisations"
+    },
+    {
+      "name": "OrganisationUser"
     },
     {
       "name": "SOA"

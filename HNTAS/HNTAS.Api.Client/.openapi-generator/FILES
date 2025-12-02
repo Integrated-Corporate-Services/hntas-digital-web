@@ -6,6 +6,7 @@ appveyor.yml
 docs/apis/CountriesAndTerritoriesApi.md
 docs/apis/HeatNetworksApi.md
 docs/apis/InvitationsApi.md
+docs/apis/OrganisationUserApi.md
 docs/apis/OrganisationsApi.md
 docs/apis/SOAApi.md
 docs/apis/UsersApi.md
@@ -77,6 +78,7 @@ src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
 src/HNTAS.Api.Client/Api/InvitationsApi.cs
+src/HNTAS.Api.Client/Api/OrganisationUserApi.cs
 src/HNTAS.Api.Client/Api/OrganisationsApi.cs
 src/HNTAS.Api.Client/Api/SOAApi.cs
 src/HNTAS.Api.Client/Api/UsersApi.cs
