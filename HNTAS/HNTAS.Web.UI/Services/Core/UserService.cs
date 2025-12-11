@@ -168,26 +168,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task UpdateUserHeatNetworkId(string id, string heatNetworkId)
-        {
-            _logger.LogInformation("Updating user heat network for ID: {UserId} heat network : {hnId}", id, heatNetworkId);
-            try
-            {
-                var response = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
 
-                if (response.IsNoContent)
-                {
-                    _logger.LogInformation("User heat network ID updated successfully for user ID: {userId}", id);
-                    return;
-                }
-                throw new Exception($"Failed to update user heat network ID with status code: {response.StatusCode}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating user heat network ID for user ID: {userId}", id);
-                throw;
-            }
-        }
 
         public async Task<bool?> IsOrganisationExists(string companiesHouseNumber)
         {
@@ -208,30 +189,12 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<List<HeatNetworkResponse>?> GetUserHeatNetworks(string id)
+        public async Task<List<HeatNetworkUserResponse>?> GetUserHeatNetworks(string id)
         {
-            var user = await GetUserById(id);
-            if (user?.HnIds == null || !user.HnIds.Any())
-            {
-                _logger.LogInformation("User with ID {UserId} has no heat networks assigned.", id);
-                return null;
-            }
-            _logger.LogInformation("User with ID {UserId} has heat networks assigned: {HeatNetworkIds}", id, string.Join(", ", user.HnIds));
+            var user = await GetUserDetails(id);
 
-            try
-            {
-                var heatNetworkResponse = await _heatNetworksApi.ApiHeatNetworksHnIdsGetAsync(string.Join(",", user?.HnIds));
-                if (heatNetworkResponse.IsOk)
-                {
-                    return heatNetworkResponse.Ok();
-                }
-                throw new Exception($"Failed to retrieve heat network with status code: {heatNetworkResponse.StatusCode}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving heat networks for user ID: {UserId}", id);
-                throw;
-            }
+            return user.HeatNetworks;
+
         }
 
         public async Task<List<EnumItemResponse>> GetContributorRolesAsync()

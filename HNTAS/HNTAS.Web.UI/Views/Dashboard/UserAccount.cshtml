@@ -1,4 +1,5 @@
-﻿@using HNTAS.Web.UI.Models
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models
 
 @model DashboardModel
 
@@ -8,7 +9,7 @@
 }
 
 <div class="govuk-width-container">
-    @if (Model.UserRole == HNTAS.Api.Client.Model.UserRole.ResponsiblePerson.ToString())
+    @if (Model.UserRole == UserRole.ResponsiblePerson.ToString() || Model.UserRole == UserRole.Coordinator.ToString())
     {
         <div><span class="govuk-hint">Your organisation</span></div>
         <h1 class="govuk-heading-l">@Model.OrganisationName</h1>

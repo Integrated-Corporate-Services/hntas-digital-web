@@ -1,4 +1,3 @@
-using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
@@ -20,6 +19,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<ISessionHelper> _sessionHelperMock;
         private readonly Mock<IHeatNetworkService> _heatNetworkServiceMock;
         private readonly Mock<IUserService> _userServiceMock;
+        private readonly Mock<IOrganisationService> _organisationServiceMock;
         private readonly HeatNetworkController _controller;
 
         public HeatNetworkControllerTests()
@@ -28,6 +28,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _sessionHelperMock = new Mock<ISessionHelper>();
             _heatNetworkServiceMock = new Mock<IHeatNetworkService>();
             _userServiceMock = new Mock<IUserService>();
+            _organisationServiceMock = new Mock<IOrganisationService>();
             _controller = CreateController();
         }
 
@@ -37,7 +38,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 _loggerMock.Object,
                 _heatNetworkServiceMock.Object,
                 _userServiceMock.Object,
-                _sessionHelperMock.Object
+                _sessionHelperMock.Object,
+                _organisationServiceMock.Object
             );
             var httpContext = new DefaultHttpContext();
             httpContext.Session = new MockHttpSession();
@@ -68,7 +70,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             // Arrange
             var model = new HeatNetworkNameModel { HeatNetworkName = "mock-hnname" };
-            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkNameModelKey)).Returns(model);            
+            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkNameModelKey)).Returns(model);
             _controller.Url = SetUpBackLink("UserAccount", "Dashboard").Object;
 
             // Act
@@ -137,12 +139,12 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 It.IsAny<string>(),
                 It.IsAny<HeatNetworkLocationModel>()), Times.Never);
         }
-        
+
         [Fact]
         public void EnterHNPhase_Get_ReturnsViewWithModelFromSession()
         {
             // Arrange
-            var model = new HeatNetworkPhaseModel ();
+            var model = new HeatNetworkPhaseModel();
             _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkPhaseModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkPhaseModelKey)).Returns(model);
             _controller.Url = SetUpBackLink("EnterHNLocation", "HeatNetwork").Object;
             // Act
@@ -335,7 +337,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var model = new HasPlanningApplicationBeenSubmittedModel();
             _sessionHelperMock.Setup(x => x.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(It.IsAny<HttpContext>(), SessionKeys.HasPlanningApplicationBeenSubmittedModelKey)).Returns(model);
             _controller.Url = SetUpBackLink("HasElementBeenRegistered", "HeatNetwork").Object;
-            
+
             // Act
             var result = _controller.HasPlanningApplicationBeenSubmitted();
             // Assert
@@ -461,10 +463,10 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _sessionHelperMock.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
                 .Returns(hnId);
 
-            _heatNetworkServiceMock.Setup(x => x.AddHeatNetwork(It.IsAny<HeatNetwork>(), hnId))
+            _heatNetworkServiceMock.Setup(x => x.AddHeatNetwork(It.IsAny<HeatNetwork>()))
                 .ReturnsAsync(new HeatNetworkResponse { HnId = "hn456", Name = "Test Network" });
 
-            _userServiceMock.Setup(x => x.UpdateUserHeatNetworkId(hnId, "hn456")).Returns(Task.CompletedTask);
+            _organisationServiceMock.Setup(x => x.UpdateOrgHeatNetworkId(hnId, It.IsAny<string>(), It.IsAny<string>())).Returns(Task.CompletedTask);
 
             // Act
             var result = await _controller.SubmitAnswers(viewModel);
@@ -496,7 +498,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Returns(hnId);
 
             // Simulate AddHeatNetwork returning a response with null HnId
-            _heatNetworkServiceMock.Setup(x => x.AddHeatNetwork(It.IsAny<HeatNetwork>(), hnId))
+            _heatNetworkServiceMock.Setup(x => x.AddHeatNetwork(It.IsAny<HeatNetwork>()))
                 .ReturnsAsync(new HeatNetworkResponse { HnId = null, Name = "Test Network" });
 
             // Act

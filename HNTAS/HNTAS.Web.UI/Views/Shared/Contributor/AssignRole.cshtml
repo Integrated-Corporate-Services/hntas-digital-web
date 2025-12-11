@@ -1,8 +1,10 @@
-﻿@using HNTAS.Web.UI.Models.Enums
+﻿@using HNTAS.Web.UI.Models.Components
 @using HNTAS.Web.UI.Models.OrganisationRole
 @model RoleAssignmentModel
 @{
-    ViewData["Title"] = $"What role do you want to assign to {Model.UserName}?";
+    ViewData["Title"] = $"What role do you want to assign to {Model.InvitedUserName}?";
+    var hasErrors = ViewData.ModelState["SelectedRoleName"]?.Errors.Count > 0; // Use SelectedRoleName
+    var selectedRoleNameId = Html.LowercaseIdFor(m => m.SelectedRoleName);
 }
 
 <div class="govuk-grid-row">
@@ -12,41 +14,32 @@
         <form asp-action="SaveAssignRole" method="post">
             @Html.AntiForgeryToken()
 
-            <div class="govuk-form-group @(ViewData.ModelState["SelectedRoleType"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")">
 
-                <fieldset class="govuk-fieldset" aria-describedby="@(ViewData.ModelState["SelectedRoleType"]?.Errors.Count > 0 ? "RoleAssignmentError" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="@(hasErrors ? "RoleAssignmentError" : "")">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             @ViewData["Title"]
                         </h1>
                     </legend>
 
-                    @if (ViewData.ModelState.GetValidationState("SelectedRoleType") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                    @if (hasErrors)
                     {
                         <p id="RoleAssignmentError" class="govuk-error-message">
                             <span class="govuk-visually-hidden">Error:</span>
-                            @Html.ValidationMessageFor(m => m.SelectedRoleType)
+                            @Html.ValidationMessageFor(m => m.SelectedRoleName)
                         </p>
                     }
 
-                    <div class="govuk-radios" data-module="govuk-radios">
 
-                        <div class="govuk-radios__item">
-                            @* Role 1: Assign as a RP *@
-                            @Html.RadioButtonFor(m => m.SelectedRoleType, RoleAssignmentType.ResponsibleParty, new { @class = "govuk-radios__input", id = "SelectedRoleType1" })
-                            <label class="govuk-label govuk-radios__label" for="SelectedRoleType1">
-                                Assign as a RP (@Model.ExistingRPName)
-                            </label>
-                        </div>
+                    @await Html.PartialAsync("Components/_GovUkRadioList", new GovUkRadioListModel
+                    {
+                        FieldId = selectedRoleNameId,
+                                        FieldName = nameof(Model.SelectedRoleName),
+                                        SelectedValue = Model.SelectedRoleName,
+                                        Items = Model.AvailableRoles // Use the dynamically loaded roles
+                                        })
 
-                        <div class="govuk-radios__item">
-                            @* Role 2: Assign as a HNTAS coordinator *@
-                            @Html.RadioButtonFor(m => m.SelectedRoleType, RoleAssignmentType.HNTASCoordinator, new { @class = "govuk-radios__input", id = "SelectedRoleType2" })
-                            <label class="govuk-label govuk-radios__label" for="SelectedRoleType2">
-                                Assign as a HNTAS coordinator
-                            </label>
-                        </div>
-                    </div>
                 </fieldset>
             </div>
 
