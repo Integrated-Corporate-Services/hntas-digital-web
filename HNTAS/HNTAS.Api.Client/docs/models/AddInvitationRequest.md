@@ -11,7 +11,8 @@ Name | Type | Description | Notes
 **HnId** | **string** |  | [optional] 
 **OrgId** | **string** |  | [optional] 
 **ContributorRoles** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | [optional] 
-**CurrentRoleUserId** | **string** |  | [optional] 
+**ReplacedUserId** | **string** |  | [optional] 
+**RolesToReplace** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

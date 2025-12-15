@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **LastName** | **string** |  | [optional] 
 **FullName** | **string** |  | [optional] 
 **InvitedHnId** | **string** |  | [optional] 
+**InvitedOrgId** | **string** |  | [optional] 
 **Roles** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | [optional] 
 **Status** | **InvitationStatus** |  | [optional] 
 **InvitedAt** | **DateTimeOffset** |  | [optional] 

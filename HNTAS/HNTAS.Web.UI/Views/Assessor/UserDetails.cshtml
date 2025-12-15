@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "User Details";
     var heatNetworkNames = new List<string> { };
-    foreach(var hn in Model.HeatNetworks)
+    foreach(var hn in Model?.HeatNetworks)
     {
         heatNetworkNames.Add(hn.Name);
     }
@@ -43,7 +43,7 @@
                             <span class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-1">@string.Join(", ", heatNetworkNames)</span>
                         </td>
                         <td class="govuk-table__cell">
-                           <strong class="govuk-tag @GovUkTagHelper.GetTagClass(Model.Status)">
+                           <strong class="govuk-tag @GovUkTagHelper.GetTagClass(Model.Status.ToString())">
                                 @Model.Status
                             </strong>
                         </td>

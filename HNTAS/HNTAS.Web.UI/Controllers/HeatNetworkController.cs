@@ -17,13 +17,15 @@ namespace HNTAS.Web.UI.Controllers
         private readonly IHeatNetworkService _heatNetworkService;
         private readonly IUserService _userService;
         private readonly ISessionHelper _sessionHelper;
+        private readonly IOrganisationService _organisationService;
 
-        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworkService heatNetworkService, IUserService userService, ISessionHelper sessionHelper)
+        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworkService heatNetworkService, IUserService userService, ISessionHelper sessionHelper, IOrganisationService organisationService)
         {
             _logger = logger;
             _heatNetworkService = heatNetworkService;
             _userService = userService;
             _sessionHelper = sessionHelper;
+            _organisationService = organisationService;
         }
 
 
@@ -293,18 +295,31 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View("CheckYourAnswers", viewModel);
             }
+
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
+
+            if (userId == null || orgId == null)
+            {
+                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
+                return View("CheckYourAnswers", viewModel);
+            }
+
+
             var model = new HeatNetwork
             {
-                Name = viewModel.HeatNetworkNameModel.HeatNetworkName,
-                Location = viewModel.HeatNetworkLocationModel.HeatNetworkLocation,
-                Pathway = viewModel.PathwayModel.Pathway
+                Name = viewModel?.HeatNetworkNameModel?.HeatNetworkName,
+                Location = viewModel?.HeatNetworkLocationModel?.HeatNetworkLocation,
+                Pathway = viewModel?.PathwayModel?.Pathway,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = userId
             };
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            var userResponse = await _heatNetworkService.AddHeatNetwork(model, hnId);
+            var userResponse = await _heatNetworkService.AddHeatNetwork(model);
+
             if (userResponse.HnId != null)
             {
-                await _userService.UpdateUserHeatNetworkId(hnId, userResponse.HnId);
+                await _organisationService.UpdateOrgHeatNetworkId(orgId, userId, userResponse.HnId);
                 TempData["Confirmation_HN_Id"] = userResponse.HnId;
                 TempData["HNName"] = userResponse.Name;
             }

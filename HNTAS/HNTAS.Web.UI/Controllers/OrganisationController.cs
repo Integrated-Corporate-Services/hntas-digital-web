@@ -469,6 +469,7 @@ namespace HNTAS.Web.UI.Controllers
             var preferredContactType = userModel?.ContactDetails?.PreferredContactType.ToApiModelType();
             var orgType = (OrganisationType)Enum.Parse(typeof(Models.Enums.OrganisationType), organisationModel.SelectedOrganisationType);
 
+            var OrgId = string.Empty;
 
             try
             {
@@ -491,7 +492,7 @@ namespace HNTAS.Web.UI.Controllers
                     mobileNumber: userModel.ContactDetails.MobileNumber);
 
 
-                var OrgId = await _userService.UpdateUserOrganisation(userId, updateModel);
+                OrgId = await _userService.UpdateUserOrganisation(userId, updateModel);
 
                 TempData["Confirmation_Organisation_Id"] = OrgId;
                 _logger.LogInformation("Successfully updated OrgDetails for user {UserId}. Retrieved OrgId: {OrgId}", userId, OrgId);
@@ -513,7 +514,6 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Confirmation()
         {
-
             var companyName = TempData["Confirmation_CompanyName"] as string;
             var emailAddress = TempData["Confirmation_EmailAddress"] as string;
             var orgId = TempData["Confirmation_Organisation_Id"] as string;
@@ -525,6 +525,9 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
                 return RedirectToAction("Start", "Organisation"); // Redirect to the very beginning of the flow
             }
+
+            //required for adding heat networks after org creation
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.OrganisationId, orgId);
 
             ViewBag.CompanyName = companyName;
             ViewBag.EmailAddress = emailAddress;

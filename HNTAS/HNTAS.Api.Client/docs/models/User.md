@@ -15,10 +15,10 @@ Name | Type | Description | Notes
 **LandlineNumber** | **string** |  | [optional] 
 **MobileNumber** | **string** |  | [optional] 
 **ContactNumberExtension** | **string** |  | [optional] 
-**HnIds** | **List&lt;string&gt;** |  | [optional] 
 **Roles** | [**List&lt;UserRole&gt;**](UserRole.md) |  | [optional] 
 **HnRoleMappings** | [**List&lt;HnRoleMapping&gt;**](HnRoleMapping.md) |  | [optional] 
 **Status** | **UserStatus** |  | [optional] 
+**CreatedAt** | **DateTimeOffset** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

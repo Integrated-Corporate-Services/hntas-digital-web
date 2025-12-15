@@ -39,8 +39,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="status">status</param>
         /// <param name="heatNetworks">heatNetworks</param>
         /// <param name="roles">roles</param>
+        /// <param name="invitedAt">invitedAt</param>
         [JsonConstructor]
-        public ManagedUserResponse(Option<string?> id = default, Option<string?> name = default, Option<string?> emailId = default, Option<string?> status = default, Option<List<HeatNetworkInfo>?> heatNetworks = default, Option<List<string>?> roles = default)
+        public ManagedUserResponse(Option<string?> id = default, Option<string?> name = default, Option<string?> emailId = default, Option<string?> status = default, Option<List<HeatNetworkInfo>?> heatNetworks = default, Option<List<string>?> roles = default, Option<DateTimeOffset?> invitedAt = default)
         {
             IdOption = id;
             NameOption = name;
@@ -48,6 +49,7 @@ namespace HNTAS.Api.Client.Model
             StatusOption = status;
             HeatNetworksOption = heatNetworks;
             RolesOption = roles;
+            InvitedAtOption = invitedAt;
             OnCreated();
         }
 
@@ -132,6 +134,19 @@ namespace HNTAS.Api.Client.Model
         public List<string>? Roles { get { return this.RolesOption; } set { this.RolesOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of InvitedAt
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<DateTimeOffset?> InvitedAtOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets InvitedAt
+        /// </summary>
+        [JsonPropertyName("invitedAt")]
+        public DateTimeOffset? InvitedAt { get { return this.InvitedAtOption; } set { this.InvitedAtOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -145,6 +160,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  HeatNetworks: ").Append(HeatNetworks).Append("\n");
             sb.Append("  Roles: ").Append(Roles).Append("\n");
+            sb.Append("  InvitedAt: ").Append(InvitedAt).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -165,6 +181,11 @@ namespace HNTAS.Api.Client.Model
     /// </summary>
     public class ManagedUserResponseJsonConverter : JsonConverter<ManagedUserResponse>
     {
+        /// <summary>
+        /// The format to use to serialize InvitedAt
+        /// </summary>
+        public static string InvitedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+
         /// <summary>
         /// Deserializes json to <see cref="ManagedUserResponse" />
         /// </summary>
@@ -188,6 +209,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> status = default;
             Option<List<HeatNetworkInfo>?> heatNetworks = default;
             Option<List<string>?> roles = default;
+            Option<DateTimeOffset?> invitedAt = default;
 
             while (utf8JsonReader.Read())
             {
@@ -222,6 +244,9 @@ namespace HNTAS.Api.Client.Model
                         case "roles":
                             roles = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "invitedAt":
+                            invitedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         default:
                             break;
                     }
@@ -240,7 +265,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class ManagedUserResponse.");
 
-            return new ManagedUserResponse(id, name, emailId, status, heatNetworks, roles);
+            return new ManagedUserResponse(id, name, emailId, status, heatNetworks, roles, invitedAt);
         }
 
         /// <summary>
@@ -307,6 +332,11 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("roles");
+            if (managedUserResponse.InvitedAtOption.IsSet)
+                if (managedUserResponse.InvitedAtOption.Value != null)
+                    writer.WriteString("invitedAt", managedUserResponse.InvitedAtOption.Value!.Value.ToString(InvitedAtFormat));
+                else
+                    writer.WriteNull("invitedAt");
         }
     }
 }

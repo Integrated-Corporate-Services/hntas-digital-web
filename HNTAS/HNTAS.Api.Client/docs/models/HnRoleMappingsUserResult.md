@@ -1,12 +1,11 @@
-# HNTAS.Api.Client.Model.InvitedUserRequest
+# HNTAS.Api.Client.Model.HnRoleMappingsUserResult
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**InvitedEmail** | **string** |  | 
-**InvitationId** | **string** |  | 
-**OneLoginId** | **string** |  | 
+**HeatNetwork** | [**HeatNetworkUserResponse**](HeatNetworkUserResponse.md) |  | [optional] 
+**Role** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

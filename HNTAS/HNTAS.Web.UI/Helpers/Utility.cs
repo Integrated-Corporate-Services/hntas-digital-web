@@ -105,7 +105,7 @@ namespace HNTAS.Web.UI.Helpers
             return userRole;
         }
 
-        public static async Task<List<SelectItemOption>?> GetHeatNetworkSelectListAsync(List<HeatNetworkResponse> response)
+        public static async Task<List<SelectItemOption>?> GetHeatNetworkSelectListAsync(List<HeatNetworkUserResponse> response)
         {
             //var response = await _userService.GetUserHeatNetworks(userId);
             if (response == null) return null;
