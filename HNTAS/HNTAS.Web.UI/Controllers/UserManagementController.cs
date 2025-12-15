@@ -67,7 +67,7 @@ namespace HNTAS.Web.UI.Controllers
                         Roles = user.Roles.Select(r => allRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
                         Status = user.Status.ToString(),
                         IsCurrentUser = user.Id == userId,
-                        HeatNetworks = user.HeatNetworks.Select(hn => hn.Name).ToList()
+                        HeatNetworks = user.HeatNetworks?.Select(hn => hn.Name).ToList()
                     });
                 }
 
@@ -137,6 +137,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult ChangeOrganisationUser()
         {
+            this.ShowBackButton("UserAccount", "Dashboard");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             return View();
         }
@@ -144,6 +145,13 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         public IActionResult SubmitChangeOrganisationUser(OrganisationUserChangeViewModel model)
         {
+            if (model.SelectedUserType == UserType.None)
+            {
+                ModelState.AddModelError("SelectedUserType", "Please select an option.");
+                ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+                return View("ChangeOrganisationUser");
+            }
+
             if (ModelState.IsValid)
             {
                 // Redirect based on the selected option
@@ -185,9 +193,9 @@ namespace HNTAS.Web.UI.Controllers
 
             var heatNetworks = new List<HeatNetworkModel>();
 
-            if (user.HeatNetworks != null && user.HeatNetworks?.Count > 0)
+            if (user?.HeatNetworks != null && user.HeatNetworks?.Count > 0)
             {
-                foreach (var network in user.HeatNetworks)
+                foreach (var network in user?.HeatNetworks)
                 {
                     heatNetworks.Add(new HeatNetworkModel
                     {

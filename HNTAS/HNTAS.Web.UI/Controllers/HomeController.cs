@@ -87,8 +87,7 @@ public class HomeController : Controller
                     var userId = await _iUserService.AcceptUserInvitation(new InvitedUserRequest(
                         invitedEmail: invitedEmail,
                         invitationId: invitationId,
-                        oneLoginId: oneLoginId,
-                        inviterOrgId: inviterOrgId));
+                        oneLoginId: oneLoginId));
 
                     if (string.IsNullOrWhiteSpace(userId))
                     {
@@ -102,8 +101,6 @@ public class HomeController : Controller
 
                     return RedirectToAction("UserAccount", "Dashboard");
                 }
-
-
             }
 
             var existingUser = await _iUserService.GetUserByOneLoginId(oneLoginId);
