@@ -74,5 +74,28 @@ namespace HNTAS.Web.UI.Services.Core
             }
             throw new Exception($"Failed to fetch OrganisationById with status code: {response.StatusCode}");
         }
+
+        public async Task UpdateOrgHeatNetworkId(string orgId, string userId, string heatNetworkId)
+        {
+            _logger.LogInformation("Attempting to update heat network {heatNetworkId} for user {userId} in organisation {orgId}.", heatNetworkId, userId, orgId);
+
+            try
+            {
+                var response = await _organisationsApi.ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchAsync(orgId, userId, heatNetworkId);
+
+                if (response.IsNoContent)
+                {
+                    _logger.LogInformation("Heat network ID {heatNetworkId} updated successfully for user {userId}.", heatNetworkId, userId);
+                    return;
+                }
+
+                throw new Exception($"Failed to update user heat network ID with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating heat network {heatNetworkId} for user {userId} in organisation {orgId}.", heatNetworkId, userId, orgId);
+                throw;
+            }
+        }
     }
 }

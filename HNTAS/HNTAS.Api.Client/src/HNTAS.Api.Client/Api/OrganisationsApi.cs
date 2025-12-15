@@ -119,6 +119,33 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="orgId"></param>
+        /// <param name="userId"></param>
+        /// <param name="heatNetworkId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse"/>&gt;</returns>
+        Task<IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse> ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchAsync(string orgId, string userId, string heatNetworkId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="orgId"></param>
+        /// <param name="userId"></param>
+        /// <param name="heatNetworkId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse"/>?&gt;</returns>
+        Task<IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse?> ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchOrDefaultAsync(string orgId, string userId, string heatNetworkId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="term"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiOrganisationsSearchGetApiResponse"/>&gt;</returns>
@@ -203,6 +230,30 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse"/>
+    /// </summary>
+    public interface IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 204 NoContent
+        /// </summary>
+        /// <returns></returns>
+        bool IsNoContent { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IApiOrganisationsSearchGetApiResponse"/>
     /// </summary>
     public interface IApiOrganisationsSearchGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.Organisation?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
@@ -283,6 +334,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiOrganisationsOrgIdGet(Exception exception)
         {
             OnErrorApiOrganisationsOrgIdGet?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch;
+
+        internal void ExecuteOnApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(OrganisationsApi.ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse apiResponse)
+        {
+            OnApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(Exception exception)
+        {
+            OnErrorApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -1231,6 +1302,262 @@ namespace HNTAS.Api.Client.Api
 
                 return result != null;
             }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(ref string orgId, ref string userId, ref string heatNetworkId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="orgId"></param>
+        /// <param name="userId"></param>
+        /// <param name="heatNetworkId"></param>
+        /// <returns></returns>
+        private void ValidateApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(string orgId, string userId, string heatNetworkId)
+        {
+            if (orgId == null)
+                throw new ArgumentNullException(nameof(orgId));
+
+            if (userId == null)
+                throw new ArgumentNullException(nameof(userId));
+
+            if (heatNetworkId == null)
+                throw new ArgumentNullException(nameof(heatNetworkId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="orgId"></param>
+        /// <param name="userId"></param>
+        /// <param name="heatNetworkId"></param>
+        private void AfterApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchDefaultImplementation(IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse apiResponseLocalVar, string orgId, string userId, string heatNetworkId)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(ref suppressDefaultLog, apiResponseLocalVar, orgId, userId, heatNetworkId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="orgId"></param>
+        /// <param name="userId"></param>
+        /// <param name="heatNetworkId"></param>
+        partial void AfterApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(ref bool suppressDefaultLog, IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse apiResponseLocalVar, string orgId, string userId, string heatNetworkId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="orgId"></param>
+        /// <param name="userId"></param>
+        /// <param name="heatNetworkId"></param>
+        private void OnErrorApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string orgId, string userId, string heatNetworkId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, orgId, userId, heatNetworkId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="orgId"></param>
+        /// <param name="userId"></param>
+        /// <param name="heatNetworkId"></param>
+        partial void OnErrorApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string orgId, string userId, string heatNetworkId);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="orgId"></param>
+        /// <param name="userId"></param>
+        /// <param name="heatNetworkId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse"/>&gt;</returns>
+        public async Task<IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse?> ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchOrDefaultAsync(string orgId, string userId, string heatNetworkId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchAsync(orgId, userId, heatNetworkId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="orgId"></param>
+        /// <param name="userId"></param>
+        /// <param name="heatNetworkId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse"/>&gt;</returns>
+        public async Task<IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse> ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchAsync(string orgId, string userId, string heatNetworkId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(orgId, userId, heatNetworkId);
+
+                FormatApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(ref orgId, ref userId, ref heatNetworkId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Organisations/{orgId}/user/{userId}/heatnetwork/{heatNetworkId}"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Organisations/{orgId}/user/{userId}/heatnetwork/{heatNetworkId}");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BorgId%7D", Uri.EscapeDataString(orgId.ToString()));
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BuserId%7D", Uri.EscapeDataString(userId.ToString()));
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BheatNetworkId%7D", Uri.EscapeDataString(heatNetworkId.ToString()));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Patch;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse>();
+
+                        ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Organisations/{orgId}/user/{userId}/heatnetwork/{heatNetworkId}", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchDefaultImplementation(apiResponseLocalVar, orgId, userId, heatNetworkId);
+
+                        Events.ExecuteOnApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchDefaultImplementation(e, "/api/Organisations/{orgId}/user/{userId}/heatnetwork/{heatNetworkId}", uriBuilderLocalVar.Path, orgId, userId, heatNetworkId);
+                Events.ExecuteOnErrorApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse"/>
+        /// </summary>
+        public partial class ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse(ILogger<ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 204 NoContent
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNoContent => 204 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {

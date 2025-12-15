@@ -67,7 +67,7 @@ namespace HNTAS.Web.UI.Controllers
                     return BadRequest("Invalid invitation details.");
                 }
 
-                TempData["HNName"] = inviterUser.HeatNetworks.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
+                TempData["HNName"] = inviterUser?.HeatNetworks?.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedTokenEmail, invitationEmail);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitationId, invitation.Id);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedInviterUserId, invitation.InviterUserId);
@@ -93,7 +93,7 @@ namespace HNTAS.Web.UI.Controllers
                 var invitation = await _invitationService.GetInvitationByIdAsync(invitationId);
                 var inviterUser = await _iUserService.GetUserDetails(invitation.InviterUserId);
 
-                TempData["HNName"] = inviterUser.HeatNetworks.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
+                TempData["HNName"] = inviterUser?.HeatNetworks?.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
                 _logger.LogWarning("Invalid model state in invitation response.");
                 return View(model);
             }

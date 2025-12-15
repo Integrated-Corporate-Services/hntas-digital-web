@@ -39,13 +39,14 @@ namespace HNTAS.Api.Client.Model
         /// <param name="companiesHouseNumber">companiesHouseNumber</param>
         /// <param name="name">name</param>
         /// <param name="registeredAddress">registeredAddress</param>
+        /// <param name="hnIds">hnIds</param>
         /// <param name="createdBy">createdBy</param>
-        /// <param name="createdDate">createdDate</param>
+        /// <param name="createdAt">createdAt</param>
         /// <param name="lastModifiedBy">lastModifiedBy</param>
-        /// <param name="lastModifiedDate">lastModifiedDate</param>
+        /// <param name="lastModifiedAt">lastModifiedAt</param>
         /// <param name="rpUserId">rpUserId</param>
         [JsonConstructor]
-        public Organisation(Option<string?> id = default, Option<string?> orgId = default, Option<OrganisationType?> type = default, Option<string?> companiesHouseNumber = default, Option<string?> name = default, Option<RegisteredAddress?> registeredAddress = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdDate = default, Option<string?> lastModifiedBy = default, Option<DateTimeOffset?> lastModifiedDate = default, Option<string?> rpUserId = default)
+        public Organisation(Option<string?> id = default, Option<string?> orgId = default, Option<OrganisationType?> type = default, Option<string?> companiesHouseNumber = default, Option<string?> name = default, Option<RegisteredAddress?> registeredAddress = default, Option<List<string>?> hnIds = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> lastModifiedBy = default, Option<DateTimeOffset?> lastModifiedAt = default, Option<string?> rpUserId = default)
         {
             IdOption = id;
             OrgIdOption = orgId;
@@ -53,10 +54,11 @@ namespace HNTAS.Api.Client.Model
             CompaniesHouseNumberOption = companiesHouseNumber;
             NameOption = name;
             RegisteredAddressOption = registeredAddress;
+            HnIdsOption = hnIds;
             CreatedByOption = createdBy;
-            CreatedDateOption = createdDate;
+            CreatedAtOption = createdAt;
             LastModifiedByOption = lastModifiedBy;
-            LastModifiedDateOption = lastModifiedDate;
+            LastModifiedAtOption = lastModifiedAt;
             RpUserIdOption = rpUserId;
             OnCreated();
         }
@@ -142,6 +144,19 @@ namespace HNTAS.Api.Client.Model
         public RegisteredAddress? RegisteredAddress { get { return this.RegisteredAddressOption; } set { this.RegisteredAddressOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of HnIds
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<string>?> HnIdsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HnIds
+        /// </summary>
+        [JsonPropertyName("hnIds")]
+        public List<string>? HnIds { get { return this.HnIdsOption; } set { this.HnIdsOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of CreatedBy
         /// </summary>
         [JsonIgnore]
@@ -155,17 +170,17 @@ namespace HNTAS.Api.Client.Model
         public string? CreatedBy { get { return this.CreatedByOption; } set { this.CreatedByOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of CreatedDate
+        /// Used to track the state of CreatedAt
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<DateTimeOffset?> CreatedDateOption { get; private set; }
+        public Option<DateTimeOffset?> CreatedAtOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets CreatedDate
+        /// Gets or Sets CreatedAt
         /// </summary>
-        [JsonPropertyName("createdDate")]
-        public DateTimeOffset? CreatedDate { get { return this.CreatedDateOption; } set { this.CreatedDateOption = new(value); } }
+        [JsonPropertyName("createdAt")]
+        public DateTimeOffset? CreatedAt { get { return this.CreatedAtOption; } set { this.CreatedAtOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of LastModifiedBy
@@ -181,17 +196,17 @@ namespace HNTAS.Api.Client.Model
         public string? LastModifiedBy { get { return this.LastModifiedByOption; } set { this.LastModifiedByOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of LastModifiedDate
+        /// Used to track the state of LastModifiedAt
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<DateTimeOffset?> LastModifiedDateOption { get; private set; }
+        public Option<DateTimeOffset?> LastModifiedAtOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets LastModifiedDate
+        /// Gets or Sets LastModifiedAt
         /// </summary>
-        [JsonPropertyName("lastModifiedDate")]
-        public DateTimeOffset? LastModifiedDate { get { return this.LastModifiedDateOption; } set { this.LastModifiedDateOption = new(value); } }
+        [JsonPropertyName("lastModifiedAt")]
+        public DateTimeOffset? LastModifiedAt { get { return this.LastModifiedAtOption; } set { this.LastModifiedAtOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of RpUserId
@@ -220,10 +235,11 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  CompaniesHouseNumber: ").Append(CompaniesHouseNumber).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  RegisteredAddress: ").Append(RegisteredAddress).Append("\n");
+            sb.Append("  HnIds: ").Append(HnIds).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
-            sb.Append("  CreatedDate: ").Append(CreatedDate).Append("\n");
+            sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  LastModifiedBy: ").Append(LastModifiedBy).Append("\n");
-            sb.Append("  LastModifiedDate: ").Append(LastModifiedDate).Append("\n");
+            sb.Append("  LastModifiedAt: ").Append(LastModifiedAt).Append("\n");
             sb.Append("  RpUserId: ").Append(RpUserId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -246,14 +262,14 @@ namespace HNTAS.Api.Client.Model
     public class OrganisationJsonConverter : JsonConverter<Organisation>
     {
         /// <summary>
-        /// The format to use to serialize CreatedDate
+        /// The format to use to serialize CreatedAt
         /// </summary>
-        public static string CreatedDateFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+        public static string CreatedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
         /// <summary>
-        /// The format to use to serialize LastModifiedDate
+        /// The format to use to serialize LastModifiedAt
         /// </summary>
-        public static string LastModifiedDateFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+        public static string LastModifiedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
         /// <summary>
         /// Deserializes json to <see cref="Organisation" />
@@ -278,10 +294,11 @@ namespace HNTAS.Api.Client.Model
             Option<string?> companiesHouseNumber = default;
             Option<string?> name = default;
             Option<RegisteredAddress?> registeredAddress = default;
+            Option<List<string>?> hnIds = default;
             Option<string?> createdBy = default;
-            Option<DateTimeOffset?> createdDate = default;
+            Option<DateTimeOffset?> createdAt = default;
             Option<string?> lastModifiedBy = default;
-            Option<DateTimeOffset?> lastModifiedDate = default;
+            Option<DateTimeOffset?> lastModifiedAt = default;
             Option<string?> rpUserId = default;
 
             while (utf8JsonReader.Read())
@@ -319,17 +336,20 @@ namespace HNTAS.Api.Client.Model
                         case "registeredAddress":
                             registeredAddress = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
+                        case "hnIds":
+                            hnIds = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
                         case "createdBy":
                             createdBy = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "createdDate":
-                            createdDate = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
+                        case "createdAt":
+                            createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "lastModifiedBy":
                             lastModifiedBy = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "lastModifiedDate":
-                            lastModifiedDate = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
+                        case "lastModifiedAt":
+                            lastModifiedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "rpUserId":
                             rpUserId = new Option<string?>(utf8JsonReader.GetString());
@@ -352,13 +372,16 @@ namespace HNTAS.Api.Client.Model
             if (registeredAddress.IsSet && registeredAddress.Value == null)
                 throw new ArgumentNullException(nameof(registeredAddress), "Property is not nullable for class Organisation.");
 
+            if (hnIds.IsSet && hnIds.Value == null)
+                throw new ArgumentNullException(nameof(hnIds), "Property is not nullable for class Organisation.");
+
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class Organisation.");
 
-            if (createdDate.IsSet && createdDate.Value == null)
-                throw new ArgumentNullException(nameof(createdDate), "Property is not nullable for class Organisation.");
+            if (createdAt.IsSet && createdAt.Value == null)
+                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class Organisation.");
 
-            return new Organisation(id, orgId, type, companiesHouseNumber, name, registeredAddress, createdBy, createdDate, lastModifiedBy, lastModifiedDate, rpUserId);
+            return new Organisation(id, orgId, type, companiesHouseNumber, name, registeredAddress, hnIds, createdBy, createdAt, lastModifiedBy, lastModifiedAt, rpUserId);
         }
 
         /// <summary>
@@ -394,6 +417,9 @@ namespace HNTAS.Api.Client.Model
             if (organisation.RegisteredAddressOption.IsSet && organisation.RegisteredAddress == null)
                 throw new ArgumentNullException(nameof(organisation.RegisteredAddress), "Property is required for class Organisation.");
 
+            if (organisation.HnIdsOption.IsSet && organisation.HnIds == null)
+                throw new ArgumentNullException(nameof(organisation.HnIds), "Property is required for class Organisation.");
+
             if (organisation.CreatedByOption.IsSet && organisation.CreatedBy == null)
                 throw new ArgumentNullException(nameof(organisation.CreatedBy), "Property is required for class Organisation.");
 
@@ -425,11 +451,16 @@ namespace HNTAS.Api.Client.Model
                 writer.WritePropertyName("registeredAddress");
                 JsonSerializer.Serialize(writer, organisation.RegisteredAddress, jsonSerializerOptions);
             }
+            if (organisation.HnIdsOption.IsSet)
+            {
+                writer.WritePropertyName("hnIds");
+                JsonSerializer.Serialize(writer, organisation.HnIds, jsonSerializerOptions);
+            }
             if (organisation.CreatedByOption.IsSet)
                 writer.WriteString("createdBy", organisation.CreatedBy);
 
-            if (organisation.CreatedDateOption.IsSet)
-                writer.WriteString("createdDate", organisation.CreatedDateOption.Value!.Value.ToString(CreatedDateFormat));
+            if (organisation.CreatedAtOption.IsSet)
+                writer.WriteString("createdAt", organisation.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
 
             if (organisation.LastModifiedByOption.IsSet)
                 if (organisation.LastModifiedByOption.Value != null)
@@ -437,11 +468,11 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("lastModifiedBy");
 
-            if (organisation.LastModifiedDateOption.IsSet)
-                if (organisation.LastModifiedDateOption.Value != null)
-                    writer.WriteString("lastModifiedDate", organisation.LastModifiedDateOption.Value!.Value.ToString(LastModifiedDateFormat));
+            if (organisation.LastModifiedAtOption.IsSet)
+                if (organisation.LastModifiedAtOption.Value != null)
+                    writer.WriteString("lastModifiedAt", organisation.LastModifiedAtOption.Value!.Value.ToString(LastModifiedAtFormat));
                 else
-                    writer.WriteNull("lastModifiedDate");
+                    writer.WriteNull("lastModifiedAt");
 
             if (organisation.RpUserIdOption.IsSet)
                 if (organisation.RpUserIdOption.Value != null)

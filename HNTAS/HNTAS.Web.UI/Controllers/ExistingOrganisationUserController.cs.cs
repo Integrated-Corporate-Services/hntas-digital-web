@@ -5,6 +5,7 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.OrganisationRole;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
@@ -22,6 +23,7 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ILogger<ExistingOrganisationUserController> _logger;
         private readonly IInvitationService _invitationService;
         private readonly IOrganisationUserService _organisationUserService;
+        private readonly IInvitationTokenService _invitationTokenService;
 
         public ExistingOrganisationUserController(
             ISessionHelper sessionHelper,
@@ -29,7 +31,8 @@ namespace HNTAS.Web.UI.Controllers
             IUserService userService,
             ILogger<ExistingOrganisationUserController> logger,
             IInvitationService invitationService,
-            IOrganisationUserService organisationUserService)
+            IOrganisationUserService organisationUserService,
+            IInvitationTokenService invitationTokenService)
         {
             _sessionHelper = sessionHelper;
             _workflowManager = workflowManager;
@@ -37,18 +40,21 @@ namespace HNTAS.Web.UI.Controllers
             _logger = logger;
             _invitationService = invitationService;
             _organisationUserService = organisationUserService;
+            _invitationTokenService = invitationTokenService;
         }
 
         [HttpGet]
         public async Task<IActionResult> ChooseUser()
         {
-            this.ShowBackButton("ChangeOrganisationUser", "UserManagment");
+            this.ShowBackButton("ChangeOrganisationUser", "UserManagement");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
 
             // In a real application, you would retrieve the list of users from a database or service.
 
+            var loggedInUserId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var users = await _userService.GetUsersByOrganisationIdAsync(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId) ?? string.Empty);
             var userRoles = await _userService.GetUserRolesAsync();
+
             if (users == null || !users.Any())
             {
                 _logger.LogWarning("No users found for organisation ID: {OrganisationId}", _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId));
@@ -58,24 +64,23 @@ namespace HNTAS.Web.UI.Controllers
 
             var userOptions = new List<SelectItemOption>();
 
-            foreach (var user in users.Where(u => u.Roles.Contains(Api.Client.Model.UserRole.ResponsiblePerson) || u.Roles.Contains(Api.Client.Model.UserRole.Coordinator)))
+            foreach (var user in users.Where(u => u.Roles.Contains(Api.Client.Model.UserRole.Coordinator)))
             {
                 var roles = user.Roles?.Select(r => userRoles.FirstOrDefault(cr => cr.Name == r.ToString())?.Description).ToList();
+
                 userOptions.Add(new SelectItemOption
                 {
                     Value = user.Id,
                     Text = $"{user.FullName} - ({string.Join(", ", roles)})"
                 });
+
             }
 
-            var model = new ChooseUserModel()
-            {
-                Users = userOptions
-            };
+            var state = _workflowManager.GetState<AddExistingOrganisationUserWorkflowModel>();
+            state.Data.ChooseUserModel ??= new ChooseUserModel();
+            state.Data.ChooseUserModel.Users = userOptions;
 
-
-
-            return View("ChooseUser", model);
+            return View("ChooseUser", state.Data.ChooseUserModel);
         }
 
         [HttpPost]
@@ -99,37 +104,57 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateWorkflowStep<AddExistingOrganisationUserWorkflowModel, ExistingOrganisationUserWorkflowStep>(ExistingOrganisationUserWorkflowStep.AssignRole)]
         public async Task<IActionResult> AssignRole()
         {
-            this.ShowBackButton("ContactDetails");
-            var state = _workflowManager.GetState<AddExistingOrganisationUserWorkflowModel>();
-            //Get RP UserName for display
+            this.ShowBackButton("ChooseUser");
             var rpUser = await _organisationUserService.GetResponsiblePartyDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId));
             if (rpUser == null)
             {
                 return BadRequest("Responsible Party details not found.");
             }
 
-            //get selected user details
+            var state = _workflowManager.GetState<AddExistingOrganisationUserWorkflowModel>();
+
+            state.Data.RoleAssignmentModel ??= new RoleAssignmentModel();
+
             var selectedUserId = state.Data.ChooseUserModel?.SelectedUserId;
             var selectedUser = await _userService.GetUserById(selectedUserId ?? string.Empty);
-            if (selectedUser == null)
-            {
-                return BadRequest("Selected user details not found.");
-            }
-            var model = state.Data.RoleAssignmentModel ?? new RoleAssignmentModel()
-            {
-                ExistingRPName = rpUser?.FullName,
-                UserName = $"{selectedUser?.FirstName} {selectedUser?.LastName}",
-            };
+
+            state.Data.RoleAssignmentModel.InvitedUserName = selectedUser?.FullName;
+
+            state.Data.RoleAssignmentModel.AvailableRoles = [
+                new SelectItemOption
+                {
+                    Value = ContributorRole.ResponsiblePerson.ToString(),
+                    Text = $"Assign as RP ({rpUser.FullName})"
+                },
+            ]; ;
+
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-            return View("Contributor/AssignRole", state.Data.RoleAssignmentModel ?? model);
+
+            return View("Contributor/AssignRole", state.Data.RoleAssignmentModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> SaveAssignRole(RoleAssignmentModel model)
         {
+
+            var state = _workflowManager.GetState<AddExistingOrganisationUserWorkflowModel>();
             if (!ModelState.IsValid)
             {
-                this.ShowBackButton("ContactDetails");
+                var rpUser = await _organisationUserService.GetResponsiblePartyDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId));
+
+                model.AvailableRoles = [
+                    new SelectItemOption
+                    {
+                        Value = ContributorRole.ResponsiblePerson.ToString(),
+                        Text = $"Assign as RP ({rpUser.FullName})"
+                    },
+                ];
+
+                var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+                var selectedUserId = state.Data.ChooseUserModel?.SelectedUserId;
+                var selectedUser = await _userService.GetUserById(selectedUserId ?? string.Empty);
+                model.InvitedUserName = selectedUser?.FullName;
+                this.ShowBackButton("ChooseUser");
                 ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 return View("Contributor/AssignRole", model);
             }
@@ -147,7 +172,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateWorkflowStep<AddExistingOrganisationUserWorkflowModel, ExistingOrganisationUserWorkflowStep>(ExistingOrganisationUserWorkflowStep.ReplaceRoleConfirmation)]
         public IActionResult ReplaceUserRoleConfirmation()
         {
-            this.ShowBackButton("ChooseUser");
+            this.ShowBackButton("AssignRole");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             return View("ReplaceUserRoleConfirmation", new ReplaceUserRoleViewModel());
         }
@@ -173,29 +198,34 @@ namespace HNTAS.Web.UI.Controllers
                 return View("ReplaceUserRoleConfirmation", model);
             }
 
+            var selectedUserId = state.Data.ChooseUserModel?.SelectedUserId;
+            var selectedUser = await _userService.GetUserById(selectedUserId ?? string.Empty);
+            if (selectedUser == null)
+            {
+                return BadRequest("Selected user details not found.");
+            }
+
             if (model.ReplaceExistingRole.ToUpper() == "YES")
             {
-
                 try
                 {
                     //Get selected user details
-
                     var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey) ?? string.Empty;
-                    var selectedUserId = state.Data.ChooseUserModel?.SelectedUserId;
-                    var selectedUser = await _userService.GetUserById(selectedUserId ?? string.Empty);
-                    if (selectedUser == null)
-                    {
-                        return BadRequest("Selected user details not found.");
-                    }
+
                     var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId) ?? string.Empty;
 
-                    var selectedContributorRole = state.Data.RoleAssignmentModel?.SelectedRoleType == Models.Enums.RoleAssignmentType.HNTASCoordinator
+                    //get rp user id 
+                    var rpuser = await _organisationUserService.GetResponsiblePartyDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId));
+
+                    var roleToReplace = selectedUser.Roles.Contains(UserRole.ResponsiblePerson) ? ContributorRole.ResponsiblePerson : ContributorRole.Coordinator;
+
+                    var selectedContributorRole = state.Data.RoleAssignmentModel?.SelectedRoleName == ContributorRole.Coordinator.ToString()
                         ? ContributorRole.Coordinator
                         : ContributorRole.ResponsiblePerson;
 
                     TempData["UserName"] = $"{selectedUser?.FirstName} {selectedUser?.LastName}";
                     TempData["OrganisationName"] = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-                    TempData["AssignedRole"] = state.Data.RoleAssignmentModel?.SelectedRoleType == Models.Enums.RoleAssignmentType.HNTASCoordinator ? "HNTAS Coordinator" : "Responsible Party";
+                    TempData["AssignedRole"] = state.Data.RoleAssignmentModel?.SelectedRoleName == ContributorRole.Coordinator.ToString() ? "HNTAS Coordinator" : "Responsible Party";
 
                     var invitationId = await _invitationService.AddInvitedUserAsync(
                            userId,
@@ -205,7 +235,8 @@ namespace HNTAS.Web.UI.Controllers
                                lastName: selectedUser?.LastName,
                                contributorRoles: new List<ContributorRole> { selectedContributorRole },
                                orgId: orgId,
-                               currentRoleUserId: null,
+                               replacedUserId: rpuser.Id,
+                               rolesToReplace: new List<ContributorRole> { roleToReplace },
                                status: InvitationStatus.Invited
                            )
                        );
@@ -218,6 +249,10 @@ namespace HNTAS.Web.UI.Controllers
 
                     _logger.LogInformation("Successfully submitted new organisation user details.");
 
+                    var token = _invitationTokenService.GenerateToken(invitationId, selectedUser.EmailId);
+
+                    //send invitation email
+                    await _invitationService.SendInvitationEmailAsync(invitationId, new SendInvitationEmailRequest(token));
                 }
                 catch (Exception ex)
                 {
@@ -236,7 +271,6 @@ namespace HNTAS.Web.UI.Controllers
             }
             else
             {
-
                 _workflowManager.UpdateStep<AddExistingOrganisationUserWorkflowModel, ExistingOrganisationUserWorkflowStep>(
                 ExistingOrganisationUserWorkflowStep.CannotContinue
                 );

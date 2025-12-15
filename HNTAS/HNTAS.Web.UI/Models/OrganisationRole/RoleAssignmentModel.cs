@@ -1,15 +1,14 @@
-﻿using HNTAS.Web.UI.Models.Enums;
+﻿using HNTAS.Web.UI.Models.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models.OrganisationRole
 {
     public class RoleAssignmentModel
     {
-        public string? UserName { get; set; }
-        public string? ExistingRPName { get; set; }
+        public List<SelectItemOption> AvailableRoles { get; set; } = new List<SelectItemOption>();
 
-        // Data captured from the radio buttons
-        [Required(ErrorMessage = "Select the role you want to assign to this user.")]
-        public RoleAssignmentType SelectedRoleType { get; set; }
+        [Required(ErrorMessage = "Please select role.")]
+        public string SelectedRoleName { get; set; } = null!;
+        public string? InvitedUserName { get; set; }
     }
 }

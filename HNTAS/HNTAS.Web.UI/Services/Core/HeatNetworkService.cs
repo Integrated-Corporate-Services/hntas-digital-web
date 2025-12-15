@@ -36,7 +36,7 @@ namespace HNTAS.Web.UI.Services.Core
         }
 
 
-        public async Task<HeatNetworkResponse> AddHeatNetwork(HeatNetwork heatNetwork, string hnId)
+        public async Task<HeatNetworkResponse> AddHeatNetwork(HeatNetwork heatNetwork)
         {
             // Implementation for adding a heat network
             // _logger.LogInformation("Adding heat network: {HeatNetworkName}", heatNetwork.Name);
