@@ -36,7 +36,7 @@
             }
 
             @Html.AntiForgeryToken()
-            <form asp-controller="CarbonCalculator" asp-action="Calculate" asp-method="post">
+            <form asp-controller="CarbonCalculator" asp-method="post" asp-action="Result" asp-method="post">
 
                 <!-- Background/meta -->
                 <div id="background-section" class="repeater-section govuk-!-margin-top-4">
@@ -124,7 +124,7 @@
                     <input class="govuk-input" id="StartYear" name="Request.Energy.StartYear" type="number" value="@Model?.Request.Energy.StartYear" required />
                     <span asp-validation-for="Request.Energy.StartYear" class="govuk-error-message"></span>
 
-                    <label class="govuk-label" for="EnergyHeatNetworkPrimaryLossesCsv">Energy Heat Network Primary losses per year (comma-separated)</label>
+                    <label class="govuk-label" for="EnergyHeatNetworkPrimaryLossesCsv">Energy Heat Network Primary losses per year (comma-separated) *</label>
                     <input class="govuk-input" id="EnergyHeatNetworkPrimaryLossesCsv" name="Request.Energy.EnergyHeatNetworkPrimaryLossesCsv" type="text" value="@Model?.Request.Energy.EnergyHeatNetworkPrimaryLossesCsv" />
 
                     <!-- Counts -->
@@ -496,7 +496,7 @@
 
                 </div>
 
-                <hr class="govuk-section-break govuk-section-break--m govuk"/>
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
 
                 <!-- Boilers -->
                 <!-- Boilers (repeater-enabled) -->
@@ -628,29 +628,11 @@
                     </div>
                 </div>
 
-                <hr class="govuk-section-break govuk-section-break--m govuk"/>
-
                 <!-- Submit & Calculate -->
-                <button type="submit" class="govuk-button govuk-!-margin-top-4" data-module="govuk-button">
+                <button type="submit" class="govuk-button" data-module="govuk-button">
                     Calculate Total Carbon Emission
                 </button>
-            </form>
-
-            <!-- Show result or errors -->
-            @if (Model?.Error is not null)
-            {
-                <div class="govuk-error-summary govuk-!-margin-top-4" role="alert">
-                    <h2 class="govuk-error-summary__title">There is a problem</h2>
-                    <div class="govuk-error-summary__body">@Model.Error</div>
-                </div>
-            }
-
-            @if (Model?.TotalCarbonEmission is not null)
-            {
-                <h2 class="govuk-heading-m govuk-!-margin-top-6">
-                    Total Carbon Emission: @Model.TotalCarbonEmission
-                </h2>
-            }            
+            </form>            
         </div>
     </div>
 </div>

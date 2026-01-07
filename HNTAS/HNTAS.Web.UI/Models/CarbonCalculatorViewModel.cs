@@ -58,8 +58,8 @@ namespace HNTAS.Web.UI.Models
         [Required] public int? StartYear { get; set; } = 2024;
 
         // Arrays: accept comma-separated numbers (we’ll parse server-side)
-        public string? EnergyHeatNetworkPrimaryLossesCsv { get; set; } // array[number]
-        public List<decimal>? EnergyHeatNetworkPrimaryLosses { get; set; } = new();
+        [Required] public string? EnergyHeatNetworkPrimaryLossesCsv { get; set; } // array[number]
+        [Required] public List<decimal>? EnergyHeatNetworkPrimaryLosses { get; set; } = new();
 
         //// Plant counts & inputs
         [Required] public int? ChpCount { get; set; } = 1;
