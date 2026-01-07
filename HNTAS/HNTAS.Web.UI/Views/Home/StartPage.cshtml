@@ -1,41 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Register your new heat network with Heat Networks Technical Assurance Scheme (HNTAS)";
 }
-<style>
-    .govuk-blue-bar {
-        background-color: #1d70b8;
-        height: 8px;
-    }
 
-    .govuk-button--start-green {
-        background-color: #00703c;
-        color: #fff;
-        border: none;
-    }
-
-    .govuk-button--start-green:hover,
-    .govuk-button--start-green:focus {
-        background-color: #005a30;
-        color: #fff;
-    }
-
-    .govuk-related-items {
-        margin-top: 0;
-    }
-</style>
 
 <div class="govuk-width-container">
-    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
-        <ol class="govuk-breadcrumbs__list">
-            <li class="govuk-breadcrumbs__list-item">
-                <a class="govuk-breadcrumbs__link" href="#">Home</a>
-            </li>
-            <li class="govuk-breadcrumbs__list-item">
-                <a class="govuk-breadcrumbs__link" href="#">Heat networks</a>
-            </li>
-        </ol>
-    </nav>
-    
+   
     <main class="govuk-main-wrapper" id="main-content" role="main">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
@@ -93,13 +62,21 @@
                 </p>
             </div>
             <div class="govuk-grid-column-one-third">
-                <aside class="govuk-related-items">
-                    <hr class="govuk-blue-bar" />
-                    <h2 class="govuk-heading-m">Related content</h2>
-                    <ul class="govuk-list govuk-list--bullet">
-                        <li><a class="govuk-link" href="#">Ofgem</a></li>
-                        <li><a class="govuk-link" href="#">Zoning</a></li>
-                    </ul>
+                <aside class="app-related-items" role="complementary">
+                    <h2 class="govuk-heading-s govuk-!-margin-top-0" id="related-content-heading"
+                        style="border-top: 2px solid #1d70b8; padding-top: 10px;">
+                        Related content
+                    </h2>
+                    <nav role="navigation" aria-labelledby="related-content-heading">
+                        <ul class="govuk-list govuk-!-font-size-16">
+                            <li>
+                                <a href="#" class="govuk-link">Ofgem</a>
+                            </li>
+                            <li>
+                                <a href="#" class="govuk-link">Zoning</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </aside>
             </div>
         </div>
