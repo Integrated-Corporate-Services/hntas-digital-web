@@ -177,6 +177,13 @@ public class HomeController : Controller
         return View();
     }
 
+
+    [HttpGet]
+    public IActionResult DocumentLibrary()
+    {
+        return View();
+    }
+
     [HttpGet]
     public IActionResult WhatDoYouWantToDo()
     {

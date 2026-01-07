@@ -70,15 +70,45 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult OrganisationType()
+        public async Task<IActionResult> OrganisationType()
         {
             var model = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey) ?? new OrganisationModel();
-            model.OrganisationTypes = GetOrganisationTypeOptions();
+            model.OrganisationTypes = OrganisationHelper.GetOrganisationTypeOptions();
+
+            //check if the org id is present in session if so bind the data in OrganisationModel
+            var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
+            if (orgId != null)
+            {
+                var org = await _organisationService.GetOrganisationById(orgId);
+
+                model.SelectedOrganisationType = org?.Type.ToString();
+                model.CompanyNumber = org?.CompaniesHouseNumber;
+                model.CompanyDetails = new CompanyDetailsModel
+                {
+                    Title = org?.Name,
+                    RegisteredOfficeAddress = new RegisteredOfficeAddressModel
+                    {
+                        AddressLine1 = org.RegisteredAddress?.AddressLine1,
+                        AddressLine2 = org.RegisteredAddress?.AddressLine2,
+                        Locality = org.RegisteredAddress?.Town,
+                        Country = org.RegisteredAddress?.Country,
+                        PostalCode = org.RegisteredAddress?.Postcode
+                    }
+                };
+
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, model);
+            }
+
 
             bool isCheckAnswerFlow = _sessionHelper.GetIsCheckAnswerFlow(HttpContext);
-            if (!isCheckAnswerFlow)
+            bool isEditOrganisationFlow = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey);
+            if (!isCheckAnswerFlow && !isEditOrganisationFlow)
             {
                 this.ShowBackButton("Index", "Home");
+            }
+            if (isEditOrganisationFlow)
+            {
+                this.ShowBackButton("OrganisationDetails", "Dashboard");
             }
 
             return View(model);
@@ -109,13 +139,13 @@ namespace HNTAS.Web.UI.Controllers
                     };
                 }
 
-                string? selectedOrganisationTypeText = GetOrganisationTypeOptions()
+                string? selectedOrganisationTypeText = OrganisationHelper.GetOrganisationTypeOptions()
                     .FirstOrDefault(item => item.Value == model.SelectedOrganisationType)?.Text;
 
                 if (selectedOrganisationTypeText == null)
                 {
                     ModelState.AddModelError(nameof(model.SelectedOrganisationType), "Please select a valid organisation type.");
-                    model.OrganisationTypes = GetOrganisationTypeOptions();
+                    model.OrganisationTypes = OrganisationHelper.GetOrganisationTypeOptions();
                     return View("OrganisationType", model);
                 }
 
@@ -137,7 +167,7 @@ namespace HNTAS.Web.UI.Controllers
                 return RedirectToAction("CompanyNumber");
             }
 
-            model.OrganisationTypes = GetOrganisationTypeOptions();
+            model.OrganisationTypes = OrganisationHelper.GetOrganisationTypeOptions();
             return View("OrganisationType", model);
         }
 
@@ -597,10 +627,12 @@ namespace HNTAS.Web.UI.Controllers
             }
             var isOverseasOrganisation = _sessionHelper.GetFromSession<bool?>(HttpContext, "IsOverseasOrganisation") ?? false;
             ViewBag.IsOverseasOrganisation = isOverseasOrganisation;
-            ModelState.Clear();
             if (isOverseasOrganisation)
             {
-                ViewBag.CountryList = await GetCountrySelectListItems();
+                //convert country text to value to bind back
+                var countries = await GetCountrySelectListItems();
+                viewModel.Country = countries.FirstOrDefault(c => c.Text == viewModel.Country)?.Value ?? viewModel.Country;
+                ViewBag.CountryList = countries;
             }
             return View("OrganisationAddress", viewModel);
         }
@@ -612,12 +644,6 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveOrganisationAddressAsync(AddressByStreetOrTownModel model)
         {
-            if (!string.IsNullOrWhiteSpace(model.Postalcode) &&
-                !Regex.IsMatch(model.Postalcode.Trim().ToUpper(), "^(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|[A-HK-Y][0-9]{1,2}|[0-9][A-HJKS-UW]|[A-HK-Y][0-9][ABEHMNPRV-Y]) ?[0-9][ABD-HJLNP-UW-Z]{2})$"))
-            {
-                ModelState.AddModelError(nameof(model.Postalcode), "Please enter a valid UK postcode.");
-            }
-
             var isOverseasOrganisation = _sessionHelper.GetFromSession<bool?>(HttpContext, "IsOverseasOrganisation") ?? false;
 
             var countries = new List<SelectListItem>();
@@ -634,6 +660,14 @@ namespace HNTAS.Web.UI.Controllers
                 else
                 {
                     model.Country = countries.FirstOrDefault(c => c.Value == model.Country)?.Text ?? model.Country;
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(model.Postalcode) &&
+                               !Regex.IsMatch(model.Postalcode.Trim().ToUpper(), "^(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|[A-HK-Y][0-9]{1,2}|[0-9][A-HJKS-UW]|[A-HK-Y][0-9][ABEHMNPRV-Y]) ?[0-9][ABD-HJLNP-UW-Z]{2})$"))
+                {
+                    ModelState.AddModelError(nameof(model.Postalcode), "Please enter a valid UK postcode.");
                 }
             }
 
@@ -785,16 +819,6 @@ namespace HNTAS.Web.UI.Controllers
             return countryListItems;
         }
 
-        private static List<SelectListItem> GetOrganisationTypeOptions()
-        {
-            return
-            [
-                new SelectListItem { Value = Models.Enums.OrganisationType.UkCompaniesHouse.ToString(), Text = "UK company registered with Companies House" },
-                new SelectListItem { Value = Models.Enums.OrganisationType.OtherUkOrganisation.ToString(), Text = "Other UK organisation" },
-                new SelectListItem { Value = Models.Enums.OrganisationType.OverseasOrganisation.ToString(), Text = "Overseas organisation" }
-            ];
-        }
-
         [HttpGet]
         public async Task<IActionResult> UpdateOrganisationDetailsConfirmation()
         {
@@ -862,7 +886,6 @@ namespace HNTAS.Web.UI.Controllers
 
                 var userDetails = await _userService.GetUserDetails(userId);
                 var orgId = userDetails?.Organisation?.OrgId;
-                var oldAddress = userDetails?.Organisation?.RegisteredAddress;
 
 
                 await _organisationService.EditOrganisationDetails(orgId, orgRequest, userId);

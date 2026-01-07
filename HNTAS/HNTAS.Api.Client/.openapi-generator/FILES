@@ -3,6 +3,7 @@ HNTAS.Api.Client.sln
 README.md
 api/openapi.yaml
 appveyor.yml
+docs/apis/CarbonCalculatorApi.md
 docs/apis/CountriesAndTerritoriesApi.md
 docs/apis/HeatNetworksApi.md
 docs/apis/InvitationsApi.md
@@ -11,10 +12,16 @@ docs/apis/OrganisationsApi.md
 docs/apis/SOAApi.md
 docs/apis/UsersApi.md
 docs/models/AddInvitationRequest.md
+docs/models/Background.md
+docs/models/BoilerInput.md
+docs/models/CarbonCalculatorRequest.md
+docs/models/CarbonCalculatorResponse.md
+docs/models/ChpInput.md
 docs/models/ConnectionType.md
 docs/models/ContributorRole.md
 docs/models/CountryAndTerritory.md
 docs/models/DocumentType.md
+docs/models/Energy.md
 docs/models/EnumItemResponse.md
 docs/models/HeatNetwork.md
 docs/models/HeatNetworkElement.md
@@ -24,6 +31,7 @@ docs/models/HeatNetworkInfo.md
 docs/models/HeatNetworkResponse.md
 docs/models/HeatNetworkType.md
 docs/models/HeatNetworkUserResponse.md
+docs/models/HeatPumpInput.md
 docs/models/HnRoleMapping.md
 docs/models/InitialUserRegistrationRequest.md
 docs/models/InvitationStatus.md
@@ -42,6 +50,7 @@ docs/models/OrganisationRequest.md
 docs/models/OrganisationResponse.md
 docs/models/OrganisationType.md
 docs/models/ProblemDetails.md
+docs/models/RecoveredInput.md
 docs/models/RegisteredAddress.md
 docs/models/SendInvitationEmailRequest.md
 docs/models/Soa.md
@@ -74,6 +83,7 @@ docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
 src/HNTAS.Api.Client.Test/README.md
+src/HNTAS.Api.Client/Api/CarbonCalculatorApi.cs
 src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
@@ -105,10 +115,16 @@ src/HNTAS.Api.Client/Extensions/IHttpClientBuilderExtensions.cs
 src/HNTAS.Api.Client/Extensions/IServiceCollectionExtensions.cs
 src/HNTAS.Api.Client/HNTAS.Api.Client.csproj
 src/HNTAS.Api.Client/Model/AddInvitationRequest.cs
+src/HNTAS.Api.Client/Model/Background.cs
+src/HNTAS.Api.Client/Model/BoilerInput.cs
+src/HNTAS.Api.Client/Model/CarbonCalculatorRequest.cs
+src/HNTAS.Api.Client/Model/CarbonCalculatorResponse.cs
+src/HNTAS.Api.Client/Model/ChpInput.cs
 src/HNTAS.Api.Client/Model/ConnectionType.cs
 src/HNTAS.Api.Client/Model/ContributorRole.cs
 src/HNTAS.Api.Client/Model/CountryAndTerritory.cs
 src/HNTAS.Api.Client/Model/DocumentType.cs
+src/HNTAS.Api.Client/Model/Energy.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetwork.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElement.cs
@@ -118,6 +134,7 @@ src/HNTAS.Api.Client/Model/HeatNetworkInfo.cs
 src/HNTAS.Api.Client/Model/HeatNetworkResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetworkType.cs
 src/HNTAS.Api.Client/Model/HeatNetworkUserResponse.cs
+src/HNTAS.Api.Client/Model/HeatPumpInput.cs
 src/HNTAS.Api.Client/Model/HnRoleMapping.cs
 src/HNTAS.Api.Client/Model/InitialUserRegistrationRequest.cs
 src/HNTAS.Api.Client/Model/InvitationStatus.cs
@@ -136,6 +153,7 @@ src/HNTAS.Api.Client/Model/OrganisationRequest.cs
 src/HNTAS.Api.Client/Model/OrganisationResponse.cs
 src/HNTAS.Api.Client/Model/OrganisationType.cs
 src/HNTAS.Api.Client/Model/ProblemDetails.cs
+src/HNTAS.Api.Client/Model/RecoveredInput.cs
 src/HNTAS.Api.Client/Model/RegisteredAddress.cs
 src/HNTAS.Api.Client/Model/SendInvitationEmailRequest.cs
 src/HNTAS.Api.Client/Model/Soa.cs
