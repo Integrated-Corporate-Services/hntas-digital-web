@@ -87,7 +87,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 EmailId = "test@email.com",
                 JobTitle = "Assessor",
                 MobileNumber = "1234567890",
-                Status = "Active",
+                Status = UserStatus.Active,
                 Roles = new List<UserRole> { UserRole.Assessor },
                 Organisation = new OrganisationResponse
                 {

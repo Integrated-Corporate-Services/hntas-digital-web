@@ -2,11 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace HNTAS.Web.UI.Tests.Helpers
@@ -35,7 +30,7 @@ namespace HNTAS.Web.UI.Tests.Helpers
                 EmailId = "test@email.com",
                 JobTitle = "Assessor",
                 MobileNumber = "1234567890",
-                Status = "Active",
+                Status = UserStatus.Active,
                 Roles = new List<UserRole> { UserRole.Assessor },
                 Organisation = new OrganisationResponse
                 {
@@ -193,7 +188,6 @@ namespace HNTAS.Web.UI.Tests.Helpers
                         UserRole.Assessor
                     },
                     OrgId = "org-1",
-                    HnIds = new List<string> { "hn-1", "hn-2" },
                     HnRoleMappings = new List<HnRoleMapping>
                     {
                         new HnRoleMapping
@@ -219,7 +213,6 @@ namespace HNTAS.Web.UI.Tests.Helpers
                         UserRole.Contractor
                     },
                     OrgId = "org-1",
-                    HnIds = new List<string> { "hn-1", "hn-2" },
                     HnRoleMappings = new List<HnRoleMapping>
                     {
                         new HnRoleMapping
@@ -251,7 +244,6 @@ namespace HNTAS.Web.UI.Tests.Helpers
                     UserRole.Assessor
                 },
                 OrgId = "org-1",
-                HnIds = new List<string> { "hn-1", "hn-2" },
                 HnRoleMappings = new List<HnRoleMapping>
                 {
                     new HnRoleMapping

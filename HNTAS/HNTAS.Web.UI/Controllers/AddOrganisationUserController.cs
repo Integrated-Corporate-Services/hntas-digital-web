@@ -2,8 +2,10 @@
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.OrganisationRole;
 using HNTAS.Web.UI.Models.User;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
@@ -20,13 +22,15 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ILogger<AddOrganisationUserController> _logger;
         private readonly IOrganisationUserService _organisationUserService;
         private readonly IInvitationService _invitationService;
+        private readonly IInvitationTokenService _iInvitationTokenService;
 
         public AddOrganisationUserController(IWorkflowManager workflowManager,
             ISessionHelper sessionHelper,
             IUserService userService,
             ILogger<AddOrganisationUserController> logger,
             IOrganisationUserService organisationUserService,
-            IInvitationService invitationService)
+            IInvitationService invitationService,
+            IInvitationTokenService iInvitationTokenService)
         {
             _workflowManager = workflowManager;
             _sessionHelper = sessionHelper;
@@ -34,6 +38,7 @@ namespace HNTAS.Web.UI.Controllers
             _logger = logger;
             _organisationUserService = organisationUserService;
             _invitationService = invitationService;
+            _iInvitationTokenService = iInvitationTokenService;
         }
 
         [HttpGet]
@@ -124,27 +129,50 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> AssignRole()
         {
             this.ShowBackButton("ContactDetails");
+
             var state = _workflowManager.GetState<AddOrganisationUserWorkflowModel>();
-            //Get RP UserName for display
-            var rpUser = await _organisationUserService.GetResponsiblePartyDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId));
-            if (rpUser == null)
-            {
-                return BadRequest("Responsible Party details not found.");
-            }
-            var model = state.Data.RoleAssignmentModel ?? new RoleAssignmentModel()
-            {
-                ExistingRPName = rpUser?.FullName,
-                UserName = $"{state.Data.ContributorContactDetailsModel?.FirstName} {state.Data.ContributorContactDetailsModel?.LastName}",
-            };
+
+            List<SelectItemOption> availableRoles =
+            [
+                new SelectItemOption
+                {
+                    Value = ContributorRole.Coordinator.ToString(),
+                    Text = "Assign as a HNTAS Coordinator"
+                },
+            ];
+
+            state.Data.RoleAssignmentModel ??= new RoleAssignmentModel();
+
+            state.Data.RoleAssignmentModel.AvailableRoles = availableRoles;
+
+            state.Data.RoleAssignmentModel.InvitedUserName = $"{state.Data.ContributorContactDetailsModel.FirstName} {state.Data.ContributorContactDetailsModel.LastName}";
+
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-            return View("Contributor/AssignRole", state.Data.RoleAssignmentModel ?? model);
+
+            return View("Contributor/AssignRole", state.Data.RoleAssignmentModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> SaveAssignRole(RoleAssignmentModel model)
         {
-
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var state = _workflowManager.GetState<AddOrganisationUserWorkflowModel>();
+
+            //check model state error
+            if (!ModelState.IsValid)
+            {
+                model.AvailableRoles = [
+                       new SelectItemOption
+                        {
+                             Value = ContributorRole.Coordinator.ToString(),
+                             Text = "Assign as a HNTAS Coordinator"
+                        },
+                    ];
+                model.InvitedUserName = $"{state.Data.ContributorContactDetailsModel.FirstName} {state.Data.ContributorContactDetailsModel.LastName}";
+                ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+                this.ShowBackButton("AssignRole");
+                return View("Contributor/AssignRole", model);
+            }
 
             if (state == null || state.Data == null)
             {
@@ -155,30 +183,12 @@ namespace HNTAS.Web.UI.Controllers
 
             TempData["UserName"] = $"{state.Data.ContributorContactDetailsModel?.FirstName} {state.Data.ContributorContactDetailsModel?.LastName}";
             TempData["OrganisationName"] = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-            TempData["AssignedRole"] = model?.SelectedRoleType == Models.Enums.RoleAssignmentType.HNTASCoordinator ? "HNTAS Coordinator" : "Responsible Party";
+            TempData["AssignedRole"] = model?.SelectedRoleName == ContributorRole.Coordinator.ToString() ? "HNTAS Coordinator" : "Responsible Party";
 
-
-            //Get RP UserName for display
-            var rpUser = await _organisationUserService.GetResponsiblePartyDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId));
-            if (rpUser == null)
-            {
-                return BadRequest("Responsible Party details not found.");
-            }
-
-            model.ExistingRPName = rpUser?.FullName;
-            model.UserName = $"{state?.Data.ContributorContactDetailsModel?.FirstName} {state?.Data.ContributorContactDetailsModel?.LastName}";
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-                this.ShowBackButton("AssignRole");
-                return View("Contributor/AssignRole", model);
-            }
-
-            var selectedContributorRole = model.SelectedRoleType == Models.Enums.RoleAssignmentType.HNTASCoordinator
+            var selectedContributorRole = model.SelectedRoleName == ContributorRole.Coordinator.ToString()
                 ? ContributorRole.Coordinator
                 : ContributorRole.ResponsiblePerson;
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+
             var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
 
             try
@@ -191,7 +201,6 @@ namespace HNTAS.Web.UI.Controllers
                            lastName: state.Data.ContributorContactDetailsModel.LastName,
                            contributorRoles: new List<ContributorRole> { selectedContributorRole },
                            orgId: orgId,
-                           currentRoleUserId: null,
                            status: InvitationStatus.Invited
                        )
                    );
@@ -203,7 +212,10 @@ namespace HNTAS.Web.UI.Controllers
                 }
 
                 _logger.LogInformation("Successfully submitted new organisation user details.");
+                var token = _iInvitationTokenService.GenerateToken(invitationId, state.Data.AddUserEmailAddressModel.EmailAddress);
 
+                //send invitation email
+                await _invitationService.SendInvitationEmailAsync(invitationId, new SendInvitationEmailRequest(token));
             }
             catch (Exception ex)
             {

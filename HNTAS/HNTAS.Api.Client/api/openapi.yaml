@@ -637,6 +637,49 @@ paths:
           description: Not Found
       tags:
       - Organisations
+  /api/Organisations/{orgId}/user/{userId}/heatnetwork/{heatNetworkId}:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: heatNetworkId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Organisations
   /api/OrganisationUser/responsible-party-user/{orgId}:
     get:
       parameters:
@@ -1765,44 +1808,6 @@ paths:
           description: OK
       tags:
       - Users
-  /api/Users/{id}/heatnetwork/{heatNetworkId}:
-    patch:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          maxLength: 24
-          minLength: 24
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: heatNetworkId
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "204":
-          description: No Content
-        "404":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Not Found
-        "500":
-          description: Internal Server Error
-      tags:
-      - Users
   /api/Users/organisation/exists:
     get:
       parameters:
@@ -2038,9 +2043,12 @@ components:
         contributorRoles:
         - DesignatedDesigner
         - DesignatedDesigner
-        currentRoleUserId: currentRoleUserId
+        rolesToReplace:
+        - null
+        - null
         orgId: orgId
         status: Invited
+        replacedUserId: replacedUserId
       properties:
         emailAddress:
           type: string
@@ -2059,11 +2067,16 @@ components:
             $ref: "#/components/schemas/ContributorRole"
           nullable: true
           type: array
-        currentRoleUserId:
-          nullable: true
-          type: string
         status:
           $ref: "#/components/schemas/InvitationStatus"
+        replacedUserId:
+          nullable: true
+          type: string
+        rolesToReplace:
+          items:
+            $ref: "#/components/schemas/ContributorRole"
+          nullable: true
+          type: array
       required:
       - emailAddress
       - firstName
@@ -2799,6 +2812,7 @@ components:
     HeatNetwork:
       example:
         hnId: hnId
+        createdAt: 2000-01-23T04:56:07.000+00:00
         soa:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -2858,6 +2872,7 @@ components:
             - ChildConnections
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        createdBy: createdBy
         name: name
         pathway: pathway
         location: location
@@ -2877,6 +2892,11 @@ components:
           type: string
         soa:
           $ref: "#/components/schemas/Soa"
+        createdBy:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
       type: object
     HeatNetworkElement:
       example:
@@ -3200,7 +3220,6 @@ components:
       type: string
     InvitedUserRequest:
       example:
-        inviterOrgId: inviterOrgId
         oneLoginId: oneLoginId
         invitationId: invitationId
         invitedEmail: invitedEmail
@@ -3211,27 +3230,25 @@ components:
           type: string
         oneLoginId:
           type: string
-        inviterOrgId:
-          type: string
       required:
       - invitationId
       - invitedEmail
-      - inviterOrgId
       - oneLoginId
       type: object
     InvitedUserResponse:
       example:
-        firstName: firstName
         lastName: lastName
         inviterUserId: inviterUserId
-        rejectedAt: 2000-01-23T04:56:07.000+00:00
         roles:
         - DesignatedDesigner
         - DesignatedDesigner
         fullName: fullName
+        invitedHnId: invitedHnId
+        firstName: firstName
+        rejectedAt: 2000-01-23T04:56:07.000+00:00
+        invitedOrgId: invitedOrgId
         id: id
         email: email
-        invitedHnId: invitedHnId
         status: Invited
         invitedAt: 2000-01-23T04:56:07.000+00:00
         acceptedAt: 2000-01-23T04:56:07.000+00:00
@@ -3250,6 +3267,10 @@ components:
           nullable: true
           type: string
         invitedHnId:
+          nullable: true
+          type: string
+        invitedOrgId:
+          nullable: true
           type: string
         roles:
           items:
@@ -3393,6 +3414,7 @@ components:
         emailId: emailId
         id: id
         status: status
+        invitedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         id:
           type: string
@@ -3412,6 +3434,10 @@ components:
             type: string
           nullable: true
           type: array
+        invitedAt:
+          format: date-time
+          nullable: true
+          type: string
       type: object
     NetworkTypeResponse:
       example:
@@ -3484,6 +3510,7 @@ components:
       type: string
     Organisation:
       example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
         registeredAddress:
           country: country
           town: town
@@ -3491,16 +3518,18 @@ components:
           postcode: postcode
           addressLine1: addressLine1
           addressLine2: addressLine2
-        createdDate: 2000-01-23T04:56:07.000+00:00
+        lastModifiedAt: 2000-01-23T04:56:07.000+00:00
         rpUserId: rpUserId
         createdBy: createdBy
-        lastModifiedDate: 2000-01-23T04:56:07.000+00:00
         lastModifiedBy: lastModifiedBy
         name: name
         id: id
         type: UkCompaniesHouse
         companiesHouseNumber: companiesHouseNumber
         orgId: orgId
+        hnIds:
+        - hnIds
+        - hnIds
       properties:
         id:
           type: string
@@ -3516,15 +3545,19 @@ components:
           type: string
         registeredAddress:
           $ref: "#/components/schemas/RegisteredAddress"
+        hnIds:
+          items:
+            type: string
+          type: array
         createdBy:
           type: string
-        createdDate:
+        createdAt:
           format: date-time
           type: string
         lastModifiedBy:
           nullable: true
           type: string
-        lastModifiedDate:
+        lastModifiedAt:
           format: date-time
           nullable: true
           type: string
@@ -4432,10 +4465,8 @@ components:
         orgId: orgId
         contactNumberExtension: contactNumberExtension
         firstName: firstName
+        createdAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        hnIds:
-        - hnIds
-        - hnIds
         status: Active
       properties:
         id:
@@ -4468,10 +4499,6 @@ components:
         contactNumberExtension:
           nullable: true
           type: string
-        hnIds:
-          items:
-            type: string
-          type: array
         roles:
           items:
             $ref: "#/components/schemas/UserRole"
@@ -4482,6 +4509,9 @@ components:
           type: array
         status:
           $ref: "#/components/schemas/UserStatus"
+        createdAt:
+          format: date-time
+          type: string
       type: object
     UserDetailsResponse:
       example:
@@ -4518,11 +4548,13 @@ components:
           name: name
           location: location
         id: id
-        status: status
+        status: Active
       properties:
         id:
           type: string
         oneLoginId:
+          type: string
+        emailId:
           type: string
         firstName:
           nullable: true
@@ -4532,8 +4564,6 @@ components:
           type: string
         fullName:
           nullable: true
-          type: string
-        emailId:
           type: string
         jobTitle:
           nullable: true
@@ -4550,7 +4580,7 @@ components:
           nullable: true
           type: string
         status:
-          type: string
+          $ref: "#/components/schemas/UserStatus"
         roles:
           items:
             $ref: "#/components/schemas/UserRole"
@@ -4586,9 +4616,6 @@ components:
         orgId: orgId
         firstName: firstName
         id: id
-        hnIds:
-        - hnIds
-        - hnIds
         status: Active
       properties:
         id:
@@ -4626,16 +4653,14 @@ components:
         roles:
           items:
             $ref: "#/components/schemas/UserRole"
+          nullable: true
           type: array
         status:
           $ref: "#/components/schemas/UserStatus"
-        hnIds:
-          items:
-            type: string
-          type: array
         hnRoleMappings:
           items:
             $ref: "#/components/schemas/HnRoleMapping"
+          nullable: true
           type: array
       type: object
     UserRole:

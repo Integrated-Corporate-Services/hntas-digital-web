@@ -40,9 +40,10 @@ namespace HNTAS.Api.Client.Model
         /// <param name="hnId">hnId</param>
         /// <param name="orgId">orgId</param>
         /// <param name="contributorRoles">contributorRoles</param>
-        /// <param name="currentRoleUserId">currentRoleUserId</param>
+        /// <param name="replacedUserId">replacedUserId</param>
+        /// <param name="rolesToReplace">rolesToReplace</param>
         [JsonConstructor]
-        public AddInvitationRequest(string emailAddress, string firstName, string lastName, InvitationStatus status, Option<string?> hnId = default, Option<string?> orgId = default, Option<List<ContributorRole>?> contributorRoles = default, Option<string?> currentRoleUserId = default)
+        public AddInvitationRequest(string emailAddress, string firstName, string lastName, InvitationStatus status, Option<string?> hnId = default, Option<string?> orgId = default, Option<List<ContributorRole>?> contributorRoles = default, Option<string?> replacedUserId = default, Option<List<ContributorRole>?> rolesToReplace = default)
         {
             EmailAddress = emailAddress;
             FirstName = firstName;
@@ -51,7 +52,8 @@ namespace HNTAS.Api.Client.Model
             HnIdOption = hnId;
             OrgIdOption = orgId;
             ContributorRolesOption = contributorRoles;
-            CurrentRoleUserIdOption = currentRoleUserId;
+            ReplacedUserIdOption = replacedUserId;
+            RolesToReplaceOption = rolesToReplace;
             OnCreated();
         }
 
@@ -121,17 +123,30 @@ namespace HNTAS.Api.Client.Model
         public List<ContributorRole>? ContributorRoles { get { return this.ContributorRolesOption; } set { this.ContributorRolesOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of CurrentRoleUserId
+        /// Used to track the state of ReplacedUserId
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> CurrentRoleUserIdOption { get; private set; }
+        public Option<string?> ReplacedUserIdOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets CurrentRoleUserId
+        /// Gets or Sets ReplacedUserId
         /// </summary>
-        [JsonPropertyName("currentRoleUserId")]
-        public string? CurrentRoleUserId { get { return this.CurrentRoleUserIdOption; } set { this.CurrentRoleUserIdOption = new(value); } }
+        [JsonPropertyName("replacedUserId")]
+        public string? ReplacedUserId { get { return this.ReplacedUserIdOption; } set { this.ReplacedUserIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of RolesToReplace
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<ContributorRole>?> RolesToReplaceOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets RolesToReplace
+        /// </summary>
+        [JsonPropertyName("rolesToReplace")]
+        public List<ContributorRole>? RolesToReplace { get { return this.RolesToReplaceOption; } set { this.RolesToReplaceOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -148,7 +163,8 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  OrgId: ").Append(OrgId).Append("\n");
             sb.Append("  ContributorRoles: ").Append(ContributorRoles).Append("\n");
-            sb.Append("  CurrentRoleUserId: ").Append(CurrentRoleUserId).Append("\n");
+            sb.Append("  ReplacedUserId: ").Append(ReplacedUserId).Append("\n");
+            sb.Append("  RolesToReplace: ").Append(RolesToReplace).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -193,7 +209,8 @@ namespace HNTAS.Api.Client.Model
             Option<string?> hnId = default;
             Option<string?> orgId = default;
             Option<List<ContributorRole>?> contributorRoles = default;
-            Option<string?> currentRoleUserId = default;
+            Option<string?> replacedUserId = default;
+            Option<List<ContributorRole>?> rolesToReplace = default;
 
             while (utf8JsonReader.Read())
             {
@@ -233,8 +250,11 @@ namespace HNTAS.Api.Client.Model
                         case "contributorRoles":
                             contributorRoles = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
-                        case "currentRoleUserId":
-                            currentRoleUserId = new Option<string?>(utf8JsonReader.GetString());
+                        case "replacedUserId":
+                            replacedUserId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "rolesToReplace":
+                            rolesToReplace = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -266,7 +286,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class AddInvitationRequest.");
 
-            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, status.Value!.Value!, hnId, orgId, contributorRoles, currentRoleUserId);
+            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, status.Value!.Value!, hnId, orgId, contributorRoles, replacedUserId, rolesToReplace);
         }
 
         /// <summary>
@@ -331,11 +351,20 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("contributorRoles");
-            if (addInvitationRequest.CurrentRoleUserIdOption.IsSet)
-                if (addInvitationRequest.CurrentRoleUserIdOption.Value != null)
-                    writer.WriteString("currentRoleUserId", addInvitationRequest.CurrentRoleUserId);
+            if (addInvitationRequest.ReplacedUserIdOption.IsSet)
+                if (addInvitationRequest.ReplacedUserIdOption.Value != null)
+                    writer.WriteString("replacedUserId", addInvitationRequest.ReplacedUserId);
                 else
-                    writer.WriteNull("currentRoleUserId");
+                    writer.WriteNull("replacedUserId");
+
+            if (addInvitationRequest.RolesToReplaceOption.IsSet)
+                if (addInvitationRequest.RolesToReplaceOption.Value != null)
+                {
+                    writer.WritePropertyName("rolesToReplace");
+                    JsonSerializer.Serialize(writer, addInvitationRequest.RolesToReplace, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("rolesToReplace");
         }
     }
 }

@@ -998,6 +998,67 @@
         }
       }
     },
+    "/api/Organisations/{orgId}/user/{userId}/heatnetwork/{heatNetworkId}": {
+      "patch": {
+        "tags": [
+          "Organisations"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "heatNetworkId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/OrganisationUser/responsible-party-user/{orgId}": {
       "get": {
         "tags": [
@@ -2792,61 +2853,6 @@
         }
       }
     },
-    "/api/Users/{id}/heatnetwork/{heatNetworkId}": {
-      "patch": {
-        "tags": [
-          "Users"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "maxLength": 24,
-              "minLength": 24,
-              "type": "string"
-            }
-          },
-          {
-            "name": "heatNetworkId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
     "/api/Users/organisation/exists": {
       "get": {
         "tags": [
@@ -3238,12 +3244,19 @@
             },
             "nullable": true
           },
-          "currentRoleUserId": {
+          "status": {
+            "$ref": "#/components/schemas/InvitationStatus"
+          },
+          "replacedUserId": {
             "type": "string",
             "nullable": true
           },
-          "status": {
-            "$ref": "#/components/schemas/InvitationStatus"
+          "rolesToReplace": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContributorRole"
+            },
+            "nullable": true
           }
         }
       },
@@ -3664,6 +3677,13 @@
           },
           "soa": {
             "$ref": "#/components/schemas/Soa"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -3887,8 +3907,7 @@
         "required": [
           "invitedEmail",
           "invitationId",
-          "oneLoginId",
-          "inviterOrgId"
+          "oneLoginId"
         ],
         "type": "object",
         "properties": {
@@ -3899,9 +3918,6 @@
             "type": "string"
           },
           "oneLoginId": {
-            "type": "string"
-          },
-          "inviterOrgId": {
             "type": "string"
           }
         }
@@ -3929,7 +3945,12 @@
             "nullable": true
           },
           "invitedHnId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "invitedOrgId": {
+            "type": "string",
+            "nullable": true
           },
           "roles": {
             "type": "array",
@@ -4023,6 +4044,11 @@
             "items": {
               "type": "string"
             },
+            "nullable": true
+          },
+          "invitedAt": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         }
@@ -4125,10 +4151,16 @@
           "registeredAddress": {
             "$ref": "#/components/schemas/RegisteredAddress"
           },
+          "hnIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "createdBy": {
             "type": "string"
           },
-          "createdDate": {
+          "createdAt": {
             "type": "string",
             "format": "date-time"
           },
@@ -4136,7 +4168,7 @@
             "type": "string",
             "nullable": true
           },
-          "lastModifiedDate": {
+          "lastModifiedAt": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -4838,12 +4870,6 @@
             "type": "string",
             "nullable": true
           },
-          "hnIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "roles": {
             "type": "array",
             "items": {
@@ -4858,6 +4884,10 @@
           },
           "status": {
             "$ref": "#/components/schemas/UserStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -4868,6 +4898,9 @@
             "type": "string"
           },
           "oneLoginId": {
+            "type": "string"
+          },
+          "emailId": {
             "type": "string"
           },
           "firstName": {
@@ -4881,9 +4914,6 @@
           "fullName": {
             "type": "string",
             "nullable": true
-          },
-          "emailId": {
-            "type": "string"
           },
           "jobTitle": {
             "type": "string",
@@ -4905,7 +4935,7 @@
             "nullable": true
           },
           "status": {
-            "type": "string"
+            "$ref": "#/components/schemas/UserStatus"
           },
           "roles": {
             "type": "array",
@@ -4977,22 +5007,18 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UserRole"
-            }
+            },
+            "nullable": true
           },
           "status": {
             "$ref": "#/components/schemas/UserStatus"
-          },
-          "hnIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           },
           "hnRoleMappings": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/HnRoleMapping"
-            }
+            },
+            "nullable": true
           }
         }
       },
