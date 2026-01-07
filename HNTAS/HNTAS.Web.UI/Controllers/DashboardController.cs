@@ -108,8 +108,9 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new OrganisationDetailsModel
             {
-                OrganisationId = user.Organisation.OrgId,
-                OrganisationName = user.Organisation.Name,
+                OrganisationId = user.Organisation?.OrgId,
+                OrganisationName = user.Organisation?.Name,
+                OrganisationType = OrganisationHelper.GetOrganisationTypeOptions().FirstOrDefault(x => x.Value == user.Organisation?.Type.ToString())?.Text,
                 RPEmail = user.EmailId,
                 AddressLine1 = user.Organisation?.RegisteredAddress?.AddressLine1,
                 AddressLine2 = user.Organisation?.RegisteredAddress?.AddressLine2,

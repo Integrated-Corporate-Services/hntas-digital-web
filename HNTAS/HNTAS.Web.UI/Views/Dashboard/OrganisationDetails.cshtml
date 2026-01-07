@@ -1,55 +1,65 @@
 ﻿@using HNTAS.Web.UI.Models
 @model OrganisationDetailsModel
 
-@{  
+@{
     ViewData["Title"] = "Organisation Details";
-    string RenderLine(string value, string suffix = "<br>") =>
-            !string.IsNullOrEmpty(value) ? $"{value}{suffix}" : "";
 
-}  
+    // Helper to filter out empty address lines and join them with line breaks
+    var addressLines = new[] {
+        Model.AddressLine1,
+        Model.AddressLine2,
+        Model.Town,
+        Model.County,
+        Model.Postcode,
+        Model.Country
+    }.Where(line => !string.IsNullOrWhiteSpace(line));
+}
 
-<div class="govuk-width-container">  
-    <div class="govuk-grid-row">  
-        <div class="govuk-grid-column-two-thirds">
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            
             <span class="govuk-hint">@Model.OrganisationName</span>
-            <h1 class="govuk-heading-l">Organisation details</h1>  
+            <h1 class="govuk-heading-l">Organisation details</h1>
 
-            <h2 class="govuk-heading-m">Heat networks</h2>  
+            <h2 class="govuk-heading-m">Heat networks</h2>
 
-            <dl class="govuk-summary-list">  
-                <div class="govuk-summary-list__row">  
-                    <dt class="govuk-summary-list__key">Name</dt>  
-                    <dd class="govuk-summary-list__value">@Model.OrganisationName</dd>  
-                </div>  
+            <dl class="govuk-summary-list govuk-!-margin-bottom-7">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Name</dt>
+                    <dd class="govuk-summary-list__value">@Model.OrganisationName</dd>
+                </div>
+                 <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Type</dt>
+                    <dd class="govuk-summary-list__value">@Model.OrganisationType</dd>
+                </div>
 
-                <div class="govuk-summary-list__row">  
-                    <dt class="govuk-summary-list__key">Address</dt>  
-                    <dd class="govuk-summary-list__value"> 
-                        @ViewBag.OrganisationName <br />
-                        @Html.Raw(RenderLine(Model.AddressLine1 as string, ",<br>"))
-                        @Html.Raw(RenderLine(Model.AddressLine2 as string, ",<br>"))
-                        @Html.Raw(RenderLine(Model.Town as string, ",<br>"))
-                        @Html.Raw(RenderLine(Model.County as string, ",<br>"))
-                        @Html.Raw(RenderLine(Model.Postcode as string))
-                        @Html.Raw(RenderLine(Model.Country as string))
-                    </dd>  
-                </div>  
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Address</dt>
+                    <dd class="govuk-summary-list__value">
+                        @foreach (var line in addressLines)
+                        {
+                            @line <br />
+                        }
+                    </dd>
+                </div>
 
-                <div class="govuk-summary-list__row">  
-                    <dt class="govuk-summary-list__key">Responsible Person's Email address</dt>  
-                    <dd class="govuk-summary-list__value">  
-                        <span>@Model.RPEmail</span>
-                    </dd>  
-                </div>  
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Responsible Person's <br/> Email address</dt>
+                    <dd class="govuk-summary-list__value">@Model.RPEmail</dd>
+                </div>
 
-                <div class="govuk-summary-list__row">  
-                    <dt class="govuk-summary-list__key">HNTAS Organisation ID</dt>  
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">HNTAS Organisation ID</dt>
                     <dd class="govuk-summary-list__value">@Model.OrganisationId</dd>
-                </div>  
-            </dl>  
+                </div>
+            </dl>
 
-            @* check if rp then only let edit *@
-            <a class="govuk-link" data-module="govuk-button" asp-action="EditOrganisationDetails" asp-controller="Dashboard">Edit organisation details</a>
-        </div>  
-    </div>  
+            @* Logic for RP check should wrap this link if required *@
+            <a href="@Url.Action("EditOrganisationDetails", "Dashboard")" class="govuk-button" data-module="govuk-button">
+                Edit organisation details
+            </a>
+            
+        </div>
+    </div>
 </div>

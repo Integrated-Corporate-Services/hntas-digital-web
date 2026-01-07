@@ -66,6 +66,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithAClientTest()
         {
+            var carbonCalculatorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
+            Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
+
             var countriesAndTerritoriesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
@@ -94,6 +97,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithoutAClientTest()
         {
+            var carbonCalculatorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
+            Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
+
             var countriesAndTerritoriesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
@@ -122,6 +128,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithAClientTest()
         {
+            var carbonCalculatorApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
+            Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
+            
             var countriesAndTerritoriesApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
             
@@ -150,6 +159,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithoutAClientTest()
         {
+            var carbonCalculatorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
+            Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
+
             var countriesAndTerritoriesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 

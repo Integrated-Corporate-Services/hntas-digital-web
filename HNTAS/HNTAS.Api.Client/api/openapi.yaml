@@ -5,6 +5,7 @@ info:
 servers:
 - url: https://localhost:7117/
 tags:
+- name: CarbonCalculator
 - name: CountriesAndTerritories
 - name: HeatNetworks
 - name: Invitations
@@ -13,6 +14,35 @@ tags:
 - name: SOA
 - name: Users
 paths:
+  /api/CarbonCalculator/run:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarbonCalculatorRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/CarbonCalculatorRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/CarbonCalculatorRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/CarbonCalculatorResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CarbonCalculatorResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/CarbonCalculatorResponse"
+          description: OK
+      tags:
+      - CarbonCalculator
   /api/CountriesAndTerritories:
     get:
       responses:
@@ -2053,6 +2083,445 @@ components:
       - lastName
       - status
       type: object
+    Background:
+      example:
+        networkNamePrevious: networkNamePrevious
+        heatNetworkZone: heatNetworkZone
+        contactTelephone: contactTelephone
+        networkOperator: networkOperator
+        contactEmail: contactEmail
+        networkStatus: networkStatus
+        networkName: networkName
+        commissioningDate: commissioningDate
+        postcodeOfThePrimaryEnergyCentre: postcodeOfThePrimaryEnergyCentre
+        descriptionOfNetwork: descriptionOfNetwork
+        addressOfThePrimaryEnergyCentre: addressOfThePrimaryEnergyCentre
+        dateWorkbookCompleted: dateWorkbookCompleted
+        name: name
+        networkID: networkID
+        networkServiceProvision: networkServiceProvision
+        dateOfInitialOperation: dateOfInitialOperation
+        networkOperatorContact: networkOperatorContact
+      properties:
+        dateWorkbookCompleted:
+          nullable: true
+          type: string
+        networkStatus:
+          nullable: true
+          type: string
+        networkServiceProvision:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        networkID:
+          nullable: true
+          type: string
+        networkName:
+          nullable: true
+          type: string
+        networkNamePrevious:
+          nullable: true
+          type: string
+        heatNetworkZone:
+          nullable: true
+          type: string
+        addressOfThePrimaryEnergyCentre:
+          nullable: true
+          type: string
+        postcodeOfThePrimaryEnergyCentre:
+          nullable: true
+          type: string
+        networkOperator:
+          nullable: true
+          type: string
+        networkOperatorContact:
+          nullable: true
+          type: string
+        contactTelephone:
+          nullable: true
+          type: string
+        contactEmail:
+          nullable: true
+          type: string
+        descriptionOfNetwork:
+          nullable: true
+          type: string
+        dateOfInitialOperation:
+          nullable: true
+          type: string
+        commissioningDate:
+          nullable: true
+          type: string
+      type: object
+    BoilerInput:
+      example:
+        blrFuelUsedByNotes: blrFuelUsedByNotes
+        blrUsefulHeatGeneratedValue:
+        - 6
+        - 6
+        blrTypeFuelUsedInput: 3
+        blrSleevingPCentValue:
+        - 6
+        - 6
+        blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
+        blrFuelUsedByValue:
+        - 1
+        - 1
+        blrMaxHeatOutput: 6
+        blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
+        blrHeatUsedForCoolingProductionValue:
+        - 2
+        - 2
+        blrSleevingPCentNotes: blrSleevingPCentNotes
+      properties:
+        blrTypeFuelUsedInput:
+          format: int32
+          nullable: true
+          type: integer
+        blrUsefulHeatGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        blrUsefulHeatGeneratedNotes:
+          nullable: true
+          type: string
+        blrFuelUsedByValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        blrFuelUsedByNotes:
+          nullable: true
+          type: string
+        blrHeatUsedForCoolingProductionValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        blrHeatUsedForCoolingProductionNotes:
+          nullable: true
+          type: string
+        blrSleevingPCentValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        blrSleevingPCentNotes:
+          nullable: true
+          type: string
+        blrMaxHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
+      type: object
+    CarbonCalculatorRequest:
+      example:
+        background:
+          networkNamePrevious: networkNamePrevious
+          heatNetworkZone: heatNetworkZone
+          contactTelephone: contactTelephone
+          networkOperator: networkOperator
+          contactEmail: contactEmail
+          networkStatus: networkStatus
+          networkName: networkName
+          commissioningDate: commissioningDate
+          postcodeOfThePrimaryEnergyCentre: postcodeOfThePrimaryEnergyCentre
+          descriptionOfNetwork: descriptionOfNetwork
+          addressOfThePrimaryEnergyCentre: addressOfThePrimaryEnergyCentre
+          dateWorkbookCompleted: dateWorkbookCompleted
+          name: name
+          networkID: networkID
+          networkServiceProvision: networkServiceProvision
+          dateOfInitialOperation: dateOfInitialOperation
+          networkOperatorContact: networkOperatorContact
+        energy:
+          heatPumpCount: 5
+          boilerCount: 7
+          heatPumpInputs:
+          - hpmUsefulHeatGeneratedValue:
+            - 7
+            - 7
+            hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+            hpmEnergyUsedNotes: hpmEnergyUsedNotes
+            hpmSleevingPCentNotes: hpmSleevingPCentNotes
+            hpmTypeFuelUsedInput: 6
+            hpmUsefulCoolingGeneratedValue:
+            - 4
+            - 4
+            hpmEnergyUsedValue:
+            - 1
+            - 1
+            hpmSleevingPCentValue:
+            - 5
+            - 5
+            hpmMaxHeatOutput: 9
+            hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+          - hpmUsefulHeatGeneratedValue:
+            - 7
+            - 7
+            hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+            hpmEnergyUsedNotes: hpmEnergyUsedNotes
+            hpmSleevingPCentNotes: hpmSleevingPCentNotes
+            hpmTypeFuelUsedInput: 6
+            hpmUsefulCoolingGeneratedValue:
+            - 4
+            - 4
+            hpmEnergyUsedValue:
+            - 1
+            - 1
+            hpmSleevingPCentValue:
+            - 5
+            - 5
+            hpmMaxHeatOutput: 9
+            hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+          startYear: 6
+          yearCount: 0
+          chpInputs:
+          - chpElectricityGeneratedValue:
+            - 2
+            - 2
+            chpFuelUsedValue:
+            - 4
+            - 4
+            chpHeatCoolingNotes: chpHeatCoolingNotes
+            chpUsefulHeatValue:
+            - 3
+            - 3
+            chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
+            chpOperationalModeInput: chpOperationalModeInput
+            chpUsefulHeatNotes: chpUsefulHeatNotes
+            chpMaxHeatOutput: 1
+            chpFuelUsedNotes: chpFuelUsedNotes
+            chpInstallationDateInput: chpInstallationDateInput
+            chpFuelTypeInput: 9
+            chpSleevingPCentValue:
+            - 1
+            - 1
+            chpMaxElectricityOutput: 1
+            chpSleevingPCentNotes: chpSleevingPCentNotes
+            chpHeatCoolingValue:
+            - 7
+            - 7
+          - chpElectricityGeneratedValue:
+            - 2
+            - 2
+            chpFuelUsedValue:
+            - 4
+            - 4
+            chpHeatCoolingNotes: chpHeatCoolingNotes
+            chpUsefulHeatValue:
+            - 3
+            - 3
+            chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
+            chpOperationalModeInput: chpOperationalModeInput
+            chpUsefulHeatNotes: chpUsefulHeatNotes
+            chpMaxHeatOutput: 1
+            chpFuelUsedNotes: chpFuelUsedNotes
+            chpInstallationDateInput: chpInstallationDateInput
+            chpFuelTypeInput: 9
+            chpSleevingPCentValue:
+            - 1
+            - 1
+            chpMaxElectricityOutput: 1
+            chpSleevingPCentNotes: chpSleevingPCentNotes
+            chpHeatCoolingValue:
+            - 7
+            - 7
+          eppElectricityUsedForPumpingValue:
+          - 5.944895607614016
+          - 5.944895607614016
+          energyHeatNetworkPrimaryLosses:
+          - 1.4658129805029452
+          - 1.4658129805029452
+          recoveredInputs:
+          - hrwSleevingPCentValue:
+            - 9
+            - 9
+            hrwHeatUsedByCoolingProductionValue:
+            - 8
+            - 8
+            hrwSleevingPCentNotes: hrwSleevingPCentNotes
+            hrwUsefulHeatGeneratedValue:
+            - 6
+            - 6
+            hrwMaxHeatOutput: 6
+            hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+            hrwHeatRecoverySourceInput: 9
+            hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+          - hrwSleevingPCentValue:
+            - 9
+            - 9
+            hrwHeatUsedByCoolingProductionValue:
+            - 8
+            - 8
+            hrwSleevingPCentNotes: hrwSleevingPCentNotes
+            hrwUsefulHeatGeneratedValue:
+            - 6
+            - 6
+            hrwMaxHeatOutput: 6
+            hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+            hrwHeatRecoverySourceInput: 9
+            hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+          chpCount: 5
+          eppElectricityUsedForPumpingNotes: eppElectricityUsedForPumpingNotes
+          eppSleevingPCentNotes: eppSleevingPCentNotes
+          recoveredCount: 2
+          boilerInputs:
+          - blrFuelUsedByNotes: blrFuelUsedByNotes
+            blrUsefulHeatGeneratedValue:
+            - 6
+            - 6
+            blrTypeFuelUsedInput: 3
+            blrSleevingPCentValue:
+            - 6
+            - 6
+            blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
+            blrFuelUsedByValue:
+            - 1
+            - 1
+            blrMaxHeatOutput: 6
+            blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
+            blrHeatUsedForCoolingProductionValue:
+            - 2
+            - 2
+            blrSleevingPCentNotes: blrSleevingPCentNotes
+          - blrFuelUsedByNotes: blrFuelUsedByNotes
+            blrUsefulHeatGeneratedValue:
+            - 6
+            - 6
+            blrTypeFuelUsedInput: 3
+            blrSleevingPCentValue:
+            - 6
+            - 6
+            blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
+            blrFuelUsedByValue:
+            - 1
+            - 1
+            blrMaxHeatOutput: 6
+            blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
+            blrHeatUsedForCoolingProductionValue:
+            - 2
+            - 2
+            blrSleevingPCentNotes: blrSleevingPCentNotes
+      properties:
+        background:
+          $ref: "#/components/schemas/Background"
+        energy:
+          $ref: "#/components/schemas/Energy"
+      type: object
+    CarbonCalculatorResponse:
+      example:
+        hnId: hnId
+        totalCarbonEmission: 0.8008281904610115
+        uuid: uuid
+      properties:
+        hnId:
+          type: string
+        uuid:
+          type: string
+        totalCarbonEmission:
+          format: double
+          type: number
+      type: object
+    ChpInput:
+      example:
+        chpElectricityGeneratedValue:
+        - 2
+        - 2
+        chpFuelUsedValue:
+        - 4
+        - 4
+        chpHeatCoolingNotes: chpHeatCoolingNotes
+        chpUsefulHeatValue:
+        - 3
+        - 3
+        chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
+        chpOperationalModeInput: chpOperationalModeInput
+        chpUsefulHeatNotes: chpUsefulHeatNotes
+        chpMaxHeatOutput: 1
+        chpFuelUsedNotes: chpFuelUsedNotes
+        chpInstallationDateInput: chpInstallationDateInput
+        chpFuelTypeInput: 9
+        chpSleevingPCentValue:
+        - 1
+        - 1
+        chpMaxElectricityOutput: 1
+        chpSleevingPCentNotes: chpSleevingPCentNotes
+        chpHeatCoolingValue:
+        - 7
+        - 7
+      properties:
+        chpFuelTypeInput:
+          format: int32
+          nullable: true
+          type: integer
+        chpInstallationDateInput:
+          nullable: true
+          type: string
+        chpOperationalModeInput:
+          nullable: true
+          type: string
+        chpUsefulHeatValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        chpUsefulHeatNotes:
+          nullable: true
+          type: string
+        chpElectricityGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        chpElectricityGeneratedNotes:
+          nullable: true
+          type: string
+        chpFuelUsedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        chpFuelUsedNotes:
+          nullable: true
+          type: string
+        chpHeatCoolingValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        chpHeatCoolingNotes:
+          nullable: true
+          type: string
+        chpSleevingPCentValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        chpSleevingPCentNotes:
+          nullable: true
+          type: string
+        chpMaxHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
+        chpMaxElectricityOutput:
+          format: int32
+          nullable: true
+          type: integer
+      type: object
     ConnectionType:
       enum:
       - ChildConnections
@@ -2092,6 +2561,240 @@ components:
       - Assessor
       - Certifier
       type: string
+    Energy:
+      example:
+        heatPumpCount: 5
+        boilerCount: 7
+        heatPumpInputs:
+        - hpmUsefulHeatGeneratedValue:
+          - 7
+          - 7
+          hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+          hpmEnergyUsedNotes: hpmEnergyUsedNotes
+          hpmSleevingPCentNotes: hpmSleevingPCentNotes
+          hpmTypeFuelUsedInput: 6
+          hpmUsefulCoolingGeneratedValue:
+          - 4
+          - 4
+          hpmEnergyUsedValue:
+          - 1
+          - 1
+          hpmSleevingPCentValue:
+          - 5
+          - 5
+          hpmMaxHeatOutput: 9
+          hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+        - hpmUsefulHeatGeneratedValue:
+          - 7
+          - 7
+          hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+          hpmEnergyUsedNotes: hpmEnergyUsedNotes
+          hpmSleevingPCentNotes: hpmSleevingPCentNotes
+          hpmTypeFuelUsedInput: 6
+          hpmUsefulCoolingGeneratedValue:
+          - 4
+          - 4
+          hpmEnergyUsedValue:
+          - 1
+          - 1
+          hpmSleevingPCentValue:
+          - 5
+          - 5
+          hpmMaxHeatOutput: 9
+          hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+        startYear: 6
+        yearCount: 0
+        chpInputs:
+        - chpElectricityGeneratedValue:
+          - 2
+          - 2
+          chpFuelUsedValue:
+          - 4
+          - 4
+          chpHeatCoolingNotes: chpHeatCoolingNotes
+          chpUsefulHeatValue:
+          - 3
+          - 3
+          chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
+          chpOperationalModeInput: chpOperationalModeInput
+          chpUsefulHeatNotes: chpUsefulHeatNotes
+          chpMaxHeatOutput: 1
+          chpFuelUsedNotes: chpFuelUsedNotes
+          chpInstallationDateInput: chpInstallationDateInput
+          chpFuelTypeInput: 9
+          chpSleevingPCentValue:
+          - 1
+          - 1
+          chpMaxElectricityOutput: 1
+          chpSleevingPCentNotes: chpSleevingPCentNotes
+          chpHeatCoolingValue:
+          - 7
+          - 7
+        - chpElectricityGeneratedValue:
+          - 2
+          - 2
+          chpFuelUsedValue:
+          - 4
+          - 4
+          chpHeatCoolingNotes: chpHeatCoolingNotes
+          chpUsefulHeatValue:
+          - 3
+          - 3
+          chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
+          chpOperationalModeInput: chpOperationalModeInput
+          chpUsefulHeatNotes: chpUsefulHeatNotes
+          chpMaxHeatOutput: 1
+          chpFuelUsedNotes: chpFuelUsedNotes
+          chpInstallationDateInput: chpInstallationDateInput
+          chpFuelTypeInput: 9
+          chpSleevingPCentValue:
+          - 1
+          - 1
+          chpMaxElectricityOutput: 1
+          chpSleevingPCentNotes: chpSleevingPCentNotes
+          chpHeatCoolingValue:
+          - 7
+          - 7
+        eppElectricityUsedForPumpingValue:
+        - 5.944895607614016
+        - 5.944895607614016
+        energyHeatNetworkPrimaryLosses:
+        - 1.4658129805029452
+        - 1.4658129805029452
+        recoveredInputs:
+        - hrwSleevingPCentValue:
+          - 9
+          - 9
+          hrwHeatUsedByCoolingProductionValue:
+          - 8
+          - 8
+          hrwSleevingPCentNotes: hrwSleevingPCentNotes
+          hrwUsefulHeatGeneratedValue:
+          - 6
+          - 6
+          hrwMaxHeatOutput: 6
+          hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+          hrwHeatRecoverySourceInput: 9
+          hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+        - hrwSleevingPCentValue:
+          - 9
+          - 9
+          hrwHeatUsedByCoolingProductionValue:
+          - 8
+          - 8
+          hrwSleevingPCentNotes: hrwSleevingPCentNotes
+          hrwUsefulHeatGeneratedValue:
+          - 6
+          - 6
+          hrwMaxHeatOutput: 6
+          hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+          hrwHeatRecoverySourceInput: 9
+          hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+        chpCount: 5
+        eppElectricityUsedForPumpingNotes: eppElectricityUsedForPumpingNotes
+        eppSleevingPCentNotes: eppSleevingPCentNotes
+        recoveredCount: 2
+        boilerInputs:
+        - blrFuelUsedByNotes: blrFuelUsedByNotes
+          blrUsefulHeatGeneratedValue:
+          - 6
+          - 6
+          blrTypeFuelUsedInput: 3
+          blrSleevingPCentValue:
+          - 6
+          - 6
+          blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
+          blrFuelUsedByValue:
+          - 1
+          - 1
+          blrMaxHeatOutput: 6
+          blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
+          blrHeatUsedForCoolingProductionValue:
+          - 2
+          - 2
+          blrSleevingPCentNotes: blrSleevingPCentNotes
+        - blrFuelUsedByNotes: blrFuelUsedByNotes
+          blrUsefulHeatGeneratedValue:
+          - 6
+          - 6
+          blrTypeFuelUsedInput: 3
+          blrSleevingPCentValue:
+          - 6
+          - 6
+          blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
+          blrFuelUsedByValue:
+          - 1
+          - 1
+          blrMaxHeatOutput: 6
+          blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
+          blrHeatUsedForCoolingProductionValue:
+          - 2
+          - 2
+          blrSleevingPCentNotes: blrSleevingPCentNotes
+      properties:
+        yearCount:
+          format: int32
+          nullable: true
+          type: integer
+        startYear:
+          format: int32
+          nullable: true
+          type: integer
+        energyHeatNetworkPrimaryLosses:
+          items:
+            format: double
+            type: number
+          nullable: true
+          type: array
+        chpCount:
+          format: int32
+          nullable: true
+          type: integer
+        heatPumpCount:
+          format: int32
+          nullable: true
+          type: integer
+        recoveredCount:
+          format: int32
+          nullable: true
+          type: integer
+        boilerCount:
+          format: int32
+          nullable: true
+          type: integer
+        chpInputs:
+          items:
+            $ref: "#/components/schemas/ChpInput"
+          nullable: true
+          type: array
+        heatPumpInputs:
+          items:
+            $ref: "#/components/schemas/HeatPumpInput"
+          nullable: true
+          type: array
+        recoveredInputs:
+          items:
+            $ref: "#/components/schemas/RecoveredInput"
+          nullable: true
+          type: array
+        boilerInputs:
+          items:
+            $ref: "#/components/schemas/BoilerInput"
+          nullable: true
+          type: array
+        eppElectricityUsedForPumpingValue:
+          items:
+            format: double
+            type: number
+          nullable: true
+          type: array
+        eppElectricityUsedForPumpingNotes:
+          nullable: true
+          type: string
+        eppSleevingPCentNotes:
+          nullable: true
+          type: string
+      type: object
     EnumItemResponse:
       example:
         name: name
@@ -2415,6 +3118,72 @@ components:
           type: string
         location:
           type: string
+      type: object
+    HeatPumpInput:
+      example:
+        hpmUsefulHeatGeneratedValue:
+        - 7
+        - 7
+        hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+        hpmEnergyUsedNotes: hpmEnergyUsedNotes
+        hpmSleevingPCentNotes: hpmSleevingPCentNotes
+        hpmTypeFuelUsedInput: 6
+        hpmUsefulCoolingGeneratedValue:
+        - 4
+        - 4
+        hpmEnergyUsedValue:
+        - 1
+        - 1
+        hpmSleevingPCentValue:
+        - 5
+        - 5
+        hpmMaxHeatOutput: 9
+        hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+      properties:
+        hpmTypeFuelUsedInput:
+          format: int32
+          nullable: true
+          type: integer
+        hpmUsefulHeatGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmUsefulHeatGeneratedNotes:
+          nullable: true
+          type: string
+        hpmEnergyUsedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmEnergyUsedNotes:
+          nullable: true
+          type: string
+        hpmUsefulCoolingGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmUsefulCoolingGeneratedNotes:
+          nullable: true
+          type: string
+        hpmSleevingPCentValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmSleevingPCentNotes:
+          nullable: true
+          type: string
+        hpmMaxHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
       type: object
     HnRoleMapping:
       example:
@@ -2880,6 +3649,59 @@ components:
         instance:
           nullable: true
           type: string
+      type: object
+    RecoveredInput:
+      example:
+        hrwSleevingPCentValue:
+        - 9
+        - 9
+        hrwHeatUsedByCoolingProductionValue:
+        - 8
+        - 8
+        hrwSleevingPCentNotes: hrwSleevingPCentNotes
+        hrwUsefulHeatGeneratedValue:
+        - 6
+        - 6
+        hrwMaxHeatOutput: 6
+        hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+        hrwHeatRecoverySourceInput: 9
+        hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+      properties:
+        hrwHeatRecoverySourceInput:
+          format: int32
+          nullable: true
+          type: integer
+        hrwUsefulHeatGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hrwUsefulHeatGeneratedNotes:
+          nullable: true
+          type: string
+        hrwHeatUsedByCoolingProductionValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hrwHeatUsedByCoolingProductionNotes:
+          nullable: true
+          type: string
+        hrwSleevingPCentValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hrwSleevingPCentNotes:
+          nullable: true
+          type: string
+        hrwMaxHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
       type: object
     RegisteredAddress:
       example:
