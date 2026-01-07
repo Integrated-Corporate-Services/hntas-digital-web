@@ -162,6 +162,13 @@ builder.Services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddSingleton<CarbonCalculatorApiEvents>();
+builder.Services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
@@ -186,7 +193,7 @@ builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
 builder.Services.AddScoped<ICountriesAndTerritoriesService, CountriesAndTerritoriesService>();
 builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 builder.Services.AddScoped<IOrganisationUserService, OrganisationUserService>();
-
+builder.Services.AddScoped<ICarbonCalculatorService, CarbonCalculatorService>();
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 builder.Services.AddScoped<IAddressLookupService, AddressLookupService>();
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();

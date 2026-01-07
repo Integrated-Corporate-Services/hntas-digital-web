@@ -10,6 +10,55 @@
     }
   ],
   "paths": {
+    "/api/CarbonCalculator/run": {
+      "post": {
+        "tags": [
+          "CarbonCalculator"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarbonCalculatorRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarbonCalculatorRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarbonCalculatorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarbonCalculatorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarbonCalculatorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarbonCalculatorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/CountriesAndTerritories": {
       "get": {
         "tags": [
@@ -3211,6 +3260,256 @@
           }
         }
       },
+      "Background": {
+        "type": "object",
+        "properties": {
+          "dateWorkbookCompleted": {
+            "type": "string",
+            "nullable": true
+          },
+          "networkStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "networkServiceProvision": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "networkID": {
+            "type": "string",
+            "nullable": true
+          },
+          "networkName": {
+            "type": "string",
+            "nullable": true
+          },
+          "networkNamePrevious": {
+            "type": "string",
+            "nullable": true
+          },
+          "heatNetworkZone": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressOfThePrimaryEnergyCentre": {
+            "type": "string",
+            "nullable": true
+          },
+          "postcodeOfThePrimaryEnergyCentre": {
+            "type": "string",
+            "nullable": true
+          },
+          "networkOperator": {
+            "type": "string",
+            "nullable": true
+          },
+          "networkOperatorContact": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactTelephone": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "descriptionOfNetwork": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfInitialOperation": {
+            "type": "string",
+            "nullable": true
+          },
+          "commissioningDate": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "BoilerInput": {
+        "type": "object",
+        "properties": {
+          "blrTypeFuelUsedInput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "blrUsefulHeatGeneratedValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "blrUsefulHeatGeneratedNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "blrFuelUsedByValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "blrFuelUsedByNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "blrHeatUsedForCoolingProductionValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "blrHeatUsedForCoolingProductionNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "blrSleevingPCentValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "blrSleevingPCentNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "blrMaxHeatOutput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "CarbonCalculatorRequest": {
+        "type": "object",
+        "properties": {
+          "background": {
+            "$ref": "#/components/schemas/Background"
+          },
+          "energy": {
+            "$ref": "#/components/schemas/Energy"
+          }
+        }
+      },
+      "CarbonCalculatorResponse": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "totalCarbonEmission": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "ChpInput": {
+        "type": "object",
+        "properties": {
+          "chpFuelTypeInput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "chpInstallationDateInput": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpOperationalModeInput": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpUsefulHeatValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "chpUsefulHeatNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpElectricityGeneratedValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "chpElectricityGeneratedNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpFuelUsedValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "chpFuelUsedNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpHeatCoolingValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "chpHeatCoolingNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpSleevingPCentValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "chpSleevingPCentNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpMaxHeatOutput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "chpMaxElectricityOutput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
       "ConnectionType": {
         "enum": [
           "ChildConnections",
@@ -3253,6 +3552,93 @@
           "Assessor",
           "Certifier"
         ]
+      },
+      "Energy": {
+        "type": "object",
+        "properties": {
+          "yearCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "startYear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "energyHeatNetworkPrimaryLosses": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "nullable": true
+          },
+          "chpCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "heatPumpCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "recoveredCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "boilerCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "chpInputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChpInput"
+            },
+            "nullable": true
+          },
+          "heatPumpInputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HeatPumpInput"
+            },
+            "nullable": true
+          },
+          "recoveredInputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecoveredInput"
+            },
+            "nullable": true
+          },
+          "boilerInputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BoilerInput"
+            },
+            "nullable": true
+          },
+          "eppElectricityUsedForPumpingValue": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "nullable": true
+          },
+          "eppElectricityUsedForPumpingNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "eppSleevingPCentNotes": {
+            "type": "string",
+            "nullable": true
+          }
+        }
       },
       "EnumItemResponse": {
         "type": "object",
@@ -3414,6 +3800,69 @@
           },
           "location": {
             "type": "string"
+          }
+        }
+      },
+      "HeatPumpInput": {
+        "type": "object",
+        "properties": {
+          "hpmTypeFuelUsedInput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "hpmUsefulHeatGeneratedValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "hpmUsefulHeatGeneratedNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "hpmEnergyUsedValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "hpmEnergyUsedNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "hpmUsefulCoolingGeneratedValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "hpmUsefulCoolingGeneratedNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "hpmSleevingPCentValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "hpmSleevingPCentNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "hpmMaxHeatOutput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         }
       },
@@ -3804,6 +4253,57 @@
           },
           "instance": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RecoveredInput": {
+        "type": "object",
+        "properties": {
+          "hrwHeatRecoverySourceInput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "hrwUsefulHeatGeneratedValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "hrwUsefulHeatGeneratedNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "hrwHeatUsedByCoolingProductionValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "hrwHeatUsedByCoolingProductionNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "hrwSleevingPCentValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "hrwSleevingPCentNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "hrwMaxHeatOutput": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         }
@@ -4563,6 +5063,9 @@
     }
   },
   "tags": [
+    {
+      "name": "CarbonCalculator"
+    },
     {
       "name": "CountriesAndTerritories"
     },
