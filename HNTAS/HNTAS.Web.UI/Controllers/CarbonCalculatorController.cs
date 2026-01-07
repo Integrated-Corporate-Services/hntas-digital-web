@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            this.ShowBackButton("UserAccount", "Dashboard");
             var vm = new CarbonCalculatorViewModel();
             // ensure at least one item for each repeater so view can safely access [0]
             vm.Request.Energy.ChpInputs = new List<Models.ChpInput> { new Models.ChpInput() };
@@ -29,12 +31,12 @@ namespace HNTAS.Web.UI.Controllers
             vm.Request.Energy.RecoveredInputs = new List<Models.RecoveredInput> { new Models.RecoveredInput() };
             vm.Request.Energy.BoilerInputs = new List<Models.BoilerInput> { new Models.BoilerInput() };
             return View("Index", vm);
-
         }
 
         [HttpPost]
         public async Task<IActionResult> Result(CarbonCalculatorViewModel model)
         {
+            this.ShowBackButton("Index");
             ValidateAllArrays(model, ModelState);
             if (!ModelState.IsValid)
             {
