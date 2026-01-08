@@ -35,7 +35,7 @@ namespace HNTAS.Web.UI.Controllers
                     throw new Exception("Unable to retrieve user information. Please try again later.");
                 }
 
-                if (user.Organisation == null)
+                if (user.Roles != null && user.Roles.Contains(UserRole.ResponsiblePerson) && user.Organisation == null)
                 {
                     throw new Exception("Your account is not associated with any organisation. Please contact support.");
                 }
@@ -62,53 +62,25 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new DashboardModel());
             }
-
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
-
-            ViewBag.IsRegulatoryContact = user.Roles?.Contains(UserRole.RegulatoryContact);
-
-            ViewBag.UserRole = user.Roles[0].ToString();
-
-            //switch (user.Roles[0])
-            //{
-            //    case Api.Client.Model.UserRole.RegulatoryContact:
-            //        ViewBag.UserRole = "RegulatoryContact";
-            //        break;
-            //    case Api.Client.Model.UserRole.Designer:
-            //        ViewBag.UserRole = "Designer";
-            //        break;
-            //    case Api.Client.Model.UserRole.Contractor:
-            //        ViewBag.UserRole = "Contractor";
-            //        break;
-            //    case Api.Client.Model.UserRole.Assessor:
-            //        ViewBag.UserRole = "Assessor";
-            //        break;
-            //    case Api.Client.Model.UserRole.Contributor:
-            //    default:
-            //        ViewBag.UserRole = "Contributor";
-            //        break;
-            //}
-
-
-            var heatNetworks = new List<HeatNetworkModel>();
-
-            if (user.HeatNetworks != null && user.HeatNetworks?.Count > 0)
+            var isAssessorOrCertifier = "false";
+            if (user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Assessor.ToString() || user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Certifier.ToString())
             {
-                foreach (var network in user.HeatNetworks)
-                {
-                    heatNetworks.Add(new HeatNetworkModel
-                    {
-                        Name = network.Name,
-                        OrganisationName = user.Organisation?.Name,
-                        Status = "Active"
-                    });
-                }
+                isAssessorOrCertifier = "true";
             }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsAssessorOrCertifier, isAssessorOrCertifier);
+            if (user.Organisation?.Name != null)
+            {
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, user.Organisation.OrgId);
+            }
+
 
             var dashboardModel = new DashboardModel
             {
                 OrganisationName = user?.Organisation?.Name,
-                HeatNetworks = heatNetworks
+                UserRole = user.Roles[0].ToString(),
+                IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
+                HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any()
             };
 
             return View(dashboardModel);
@@ -121,18 +93,24 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("UserAccount");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             UserDetailsResponse user;
+            bool isUserAnRP;
             try
             {
                 user = await RetrieveUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+                isUserAnRP = await _userService.IsRpUserAsync(user.EmailId) ?? false;
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new OrganisationDetailsModel());
             }
+            _sessionHelper.SaveToSession<string>(HttpContext, "IsUserAnRP", isUserAnRP.ToString());
+
             var model = new OrganisationDetailsModel
             {
-                OrganisationName = user.Organisation.Name,
+                OrganisationId = user.Organisation?.OrgId,
+                OrganisationName = user.Organisation?.Name,
+                OrganisationType = OrganisationHelper.GetOrganisationTypeOptions().FirstOrDefault(x => x.Value == user.Organisation?.Type.ToString())?.Text,
                 RPEmail = user.EmailId,
                 AddressLine1 = user.Organisation?.RegisteredAddress?.AddressLine1,
                 AddressLine2 = user.Organisation?.RegisteredAddress?.AddressLine2,
@@ -143,6 +121,13 @@ namespace HNTAS.Web.UI.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult EditOrganisationDetails()
+        {
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, true);
+            return RedirectToAction("OrganisationType", "Organisation");
         }
     }
 }

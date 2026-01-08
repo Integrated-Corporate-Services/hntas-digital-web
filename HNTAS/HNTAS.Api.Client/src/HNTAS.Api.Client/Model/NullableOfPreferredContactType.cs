@@ -38,7 +38,12 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Enum Mobile for value: Mobile
         /// </summary>
-        Mobile = 2
+        Mobile = 2,
+
+        /// <summary>
+        /// Enum PreferNotToSay for value: PreferNotToSay
+        /// </summary>
+        PreferNotToSay = 3
     }
 
     /// <summary>
@@ -59,6 +64,9 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Mobile"))
                 return NullableOfPreferredContactType.Mobile;
 
+            if (value.Equals("PreferNotToSay"))
+                return NullableOfPreferredContactType.PreferNotToSay;
+
             throw new NotImplementedException($"Could not convert value to type NullableOfPreferredContactType: '{value}'");
         }
 
@@ -74,6 +82,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("Mobile"))
                 return NullableOfPreferredContactType.Mobile;
+
+            if (value.Equals("PreferNotToSay"))
+                return NullableOfPreferredContactType.PreferNotToSay;
 
             return null;
         }
@@ -91,6 +102,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value == NullableOfPreferredContactType.Mobile)
                 return "Mobile";
+
+            if (value == NullableOfPreferredContactType.PreferNotToSay)
+                return "PreferNotToSay";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }

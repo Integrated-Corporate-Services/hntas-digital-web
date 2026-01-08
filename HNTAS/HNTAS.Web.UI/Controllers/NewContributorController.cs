@@ -4,7 +4,6 @@ using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
-using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Models.Review;
 using HNTAS.Web.UI.Models.User;
@@ -13,12 +12,13 @@ using HNTAS.Web.UI.Services.Core;
 using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
 using HNTAS.Web.UI.Workflows.Models.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize]
     public class NewContributorController : Controller
     {
         private readonly IWorkflowManager _workflowManager;
@@ -56,36 +56,10 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
 
-            return View(state.Data.AddUserEmailAddressModel ?? new AddUserEmailAddressModel());
+            return View("Contributor/AddEmailAddress", state.Data.AddUserEmailAddressModel ?? new AddUserEmailAddressModel());
         }
 
-        private async Task<bool> DoesUserAlreadyExist(string newUserEmailID)
-        {
-            // Call API to get list of contributors
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var contributors = await _userService.GetRegisteredUsersAsync(userId);
 
-            // Check for null or empty list and return an empty list if necessary
-            if (contributors == null || !contributors.Any())
-            {
-                _logger.LogWarning("No contributors found for the current user ID {UserId}.", userId);
-                return false;
-            }
-
-            // Map contributors to a list of SelectListItem
-            var contributorEmailIds = contributors.Select(item => item.EmailId).ToList();
-
-            bool isExistingUser = false;
-            foreach (var email in contributorEmailIds)
-            {
-                if (email.ToLower() == newUserEmailID.ToLower())
-                {
-                    isExistingUser = true;
-                }
-            }
-
-            return isExistingUser;
-        }
 
         [HttpPost]
         public async Task<IActionResult> SaveEmailAddress(AddUserEmailAddressModel model)
@@ -93,18 +67,28 @@ namespace HNTAS.Web.UI.Controllers
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("AddContributor", "UserManagement");
-                return View("AddEmailAddress", model);
+                return View("Contributor/AddEmailAddress", model);
+            }
+
+            //check for rp user
+            bool? isRpUser = await _userService.IsRpUserAsync(model.EmailAddress);
+
+            if (isRpUser.HasValue && isRpUser.Value == true)
+            {
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation.");
+                this.ShowBackButton("AddContributor", "UserManagement");
+                return View("Contributor/AddEmailAddress", model);
             }
 
             // if this email address exists in the existing users list then throw error
-            bool isExistingUser = await DoesUserAlreadyExist(model.EmailAddress);
-            if (isExistingUser)
+            bool? isExistingUser = await _userService.IsActiveUserAsync(model.EmailAddress);
+            if (isExistingUser.HasValue && isExistingUser.Value == true)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "User already exists.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access.");
                 this.ShowBackButton("AddContributor", "UserManagement");
-                return View("AddEmailAddress", model);
+                return View("Contributor/AddEmailAddress", model);
             }
-            
+
             // Logic to save email address goes here
             _workflowManager.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
                 m => m.AddUserEmailAddressModel = model,
@@ -120,45 +104,18 @@ namespace HNTAS.Web.UI.Controllers
             var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
             this.ShowBackButton("AddEmailAddress");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-            return View(state.Data.ContributorContactDetailsModel ?? new ContributorContactDetailsModel());
+            return View("Contributor/ContactDetails", state.Data.ContributorContactDetailsModel ?? new ContributorContactDetailsModel());
         }
 
         [HttpPost]
         public IActionResult SaveContactDetails(ContributorContactDetailsModel contactDetails)
         {
-
-            switch (contactDetails.PreferredContactType)
-            {
-                case PreferredContactType.Landline:
-                    contactDetails.MobileNumber = null;
-                    ModelState.Remove(nameof(contactDetails.MobileNumber));
-                    if (string.IsNullOrWhiteSpace(contactDetails.LandlineNumber))
-                        ModelState.AddModelError(nameof(contactDetails.LandlineNumber), "Enter your landline number.");
-                    break;
-                case PreferredContactType.Mobile:
-                    contactDetails.LandlineNumber = null;
-                    contactDetails.ContactNumberExtension = null;
-                    ModelState.Remove(nameof(contactDetails.LandlineNumber));
-                    ModelState.Remove(nameof(contactDetails.ContactNumberExtension));
-                    if (string.IsNullOrWhiteSpace(contactDetails.MobileNumber))
-                        ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number.");
-                    break;
-                default:
-                    contactDetails.LandlineNumber = null;
-                    contactDetails.ContactNumberExtension = null;
-                    contactDetails.MobileNumber = null;
-                    ModelState.Remove(nameof(contactDetails.LandlineNumber));
-                    ModelState.Remove(nameof(contactDetails.ContactNumberExtension));
-                    ModelState.Remove(nameof(contactDetails.MobileNumber));
-                    break;
-            }
-
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("ContactDetails");
                 ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 TempData["ErrorSummary"] = "Custom";
-                return View("ContactDetails", contactDetails);
+                return View("Contributor/ContactDetails", contactDetails);
             }
             // Logic to save contact details goes here
 
@@ -188,7 +145,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View("Contributors/ChooseHeatNetwork");
             }
 
-            
+
             var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
 
             var model = new ChooseHeatNetworkModel
@@ -242,7 +199,7 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("ChooseRole");
         }
 
-        
+
         [HttpGet]
         [ValidateWorkflowStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(ContributorWorkflowStep.ChooseRole)]
         public async Task<IActionResult> ChooseRole()
@@ -261,7 +218,7 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later.";
                 return View("Contributor/ChooseRole", model);
             }
-            
+
             var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
             model.SelectedRoleId = state.Data?.ChooseRoleModel?.SelectedRoleId ?? null;
             model.Roles = roles;
@@ -298,11 +255,26 @@ namespace HNTAS.Web.UI.Controllers
             model.SelectedRoleName = model.Roles
              .FirstOrDefault(hn => hn.Value == model.SelectedRoleId)?.Text;
 
-            // Logic to save details goes here
-            _workflowManager.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
-             m => m.ChooseRoleModel = model,
-             ContributorWorkflowStep.Review
-            );
+            //check if the role is already assigned to another user for the selected heat network
+            var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
+            (bool IsAssigned, string UserId) = await _userService.IsRoleAlreadyAssigned(state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId, model.SelectedRoleName);
+            //check the role is present in the list or not
+            if (IsAssigned)
+            {
+                _workflowManager.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
+                    m => m.ChooseRoleModel = model,
+                    ContributorWorkflowStep.ReplaceRoleConfirmation
+                );
+                return RedirectToAction("ReplaceUserRoleConfirmation");
+            }
+            else
+            {
+                // Logic to save details goes here
+                _workflowManager.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
+                 m => m.ChooseRoleModel = model,
+                 ContributorWorkflowStep.Review
+                );
+            }
 
             return RedirectToAction("CheckYourAnswers");
         }
@@ -340,7 +312,6 @@ namespace HNTAS.Web.UI.Controllers
 
             _logger.LogInformation("Submitting new contributor details for user: {UserId}", state.Data.AddUserEmailAddressModel?.EmailAddress);
 
-            var selectedPreferredContactType = state.Data.ContributorContactDetailsModel.PreferredContactType == PreferredContactType.Landline ? HNTAS.Api.Client.Model.PreferredContactType.Landline : HNTAS.Api.Client.Model.PreferredContactType.Mobile;
             var selectedContributorRole = (ContributorRole)Convert.ToInt32(state.Data.ChooseRoleModel.SelectedRoleId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
@@ -352,13 +323,11 @@ namespace HNTAS.Web.UI.Controllers
                            emailAddress: state.Data.AddUserEmailAddressModel.EmailAddress,
                            firstName: state.Data.ContributorContactDetailsModel.FirstName,
                            lastName: state.Data.ContributorContactDetailsModel.LastName,
-                           preferredContactType: selectedPreferredContactType,
                            hnId: state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId,
                            contributorRoles: new List<ContributorRole> { selectedContributorRole },
-                           status: InvitationStatus.Invited,
-                           landlineNumber: state.Data.ContributorContactDetailsModel.LandlineNumber,
-                           mobileNumber: state.Data.ContributorContactDetailsModel.MobileNumber,
-                           contactNumberExtension: state.Data.ContributorContactDetailsModel.ContactNumberExtension
+                           replacedUserId: state.Data.ReplaceUserRoleViewModel != null ? state.Data.ReplaceUserRoleViewModel.CurrentRoleUserId : null,
+                           rolesToReplace: new List<ContributorRole> { selectedContributorRole },
+                           status: InvitationStatus.Invited
                        )
                    );
 
@@ -405,8 +374,74 @@ namespace HNTAS.Web.UI.Controllers
             return View("Contributor/Confirmation");
         }
 
+        [HttpGet]
+        [ValidateWorkflowStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(ContributorWorkflowStep.ReplaceRoleConfirmation)]
+        public IActionResult ReplaceUserRoleConfirmation()
+        {
+            this.ShowBackButton("ChooseRole");
+            var heatNetworkNameWithId = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkName;
 
-        
+            var model = new ReplaceUserRoleViewModel()
+            {
+                HeatNetworkName = heatNetworkNameWithId.Split("-")[1].Trim(),
+                RoleName = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseRoleModel.SelectedRoleName
+            };
+            ViewBag.ContollerName = "NewContributor";
+            return View("Contributor/ReplaceUserRoleConfirmation", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmReplaceUserRoleAsync(ReplaceUserRoleViewModel replaceUserRoleViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                this.ShowBackButton("ChooseRole");
+                var heatNetworkNameWithId = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkName;
+
+                replaceUserRoleViewModel.HeatNetworkName = heatNetworkNameWithId.Split("-")[1].Trim();
+                replaceUserRoleViewModel.RoleName = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseRoleModel.SelectedRoleName;
+
+                return View("Contributor/ReplaceUserRoleConfirmation", replaceUserRoleViewModel);
+            }
+
+            if (replaceUserRoleViewModel.ReplaceExistingRole.ToUpper() == "YES")
+            {
+                var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
+                (bool IsAssigned, string UserId) = await _userService.IsRoleAlreadyAssigned(state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId, state.Data.ChooseRoleModel.SelectedRoleName);
+                replaceUserRoleViewModel.CurrentRoleUserId = UserId;
+
+                // Logic to save details goes here
+                _workflowManager.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
+                 m => m.ReplaceUserRoleViewModel = replaceUserRoleViewModel,
+                 ContributorWorkflowStep.Review
+                );
+                return RedirectToAction("CheckYourAnswers");
+            }
+            else
+            {
+                //set replaceUserRoleViewModel to null
+                var state = _workflowManager.GetState<AddNewContributorWorkflowModel>();
+
+                // Logic to save details goes here
+                _workflowManager.UpdateStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(
+                 m => m.ReplaceUserRoleViewModel = null,
+                 ContributorWorkflowStep.CannotContinue
+                );
+
+                return RedirectToAction("CannotContinue");
+            }
+        }
+
+        [HttpGet]
+        [ValidateWorkflowStep<AddNewContributorWorkflowModel, ContributorWorkflowStep>(ContributorWorkflowStep.CannotContinue)]
+        public IActionResult CannotContinue()
+        {
+            this.ShowBackButton("ChooseRole");
+            ViewBag.HName = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkName.Split("-")[1].Trim();
+            return View("Contributor/CannotContinue");
+        }
+
+
 
         private List<ReviewSection> BuildReviewSections(AddNewContributorWorkflowModel model)
         {
@@ -426,8 +461,7 @@ namespace HNTAS.Web.UI.Controllers
                     Heading = "Contact details",
                     Items = new List<ReviewItem>
                     {
-                        new ReviewItem { Key = "Email address", Value = model.AddUserEmailAddressModel?.EmailAddress, ChangeLink = Url.Action("AddEmailAddress"), ChangeLinkText = "Change" },
-                        new ReviewItem { Key = "Phone number", Value = model.ContributorContactDetailsModel.GetDisplayContactNumber(), ChangeLink = Url.Action("ContactDetails"), ChangeLinkText = "Change" }
+                        new ReviewItem { Key = "Email address", Value = model.AddUserEmailAddressModel?.EmailAddress, ChangeLink = Url.Action("AddEmailAddress"), ChangeLinkText = "Change" }
                     }
                 },
                 new ReviewSection

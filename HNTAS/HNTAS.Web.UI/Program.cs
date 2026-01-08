@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -95,6 +96,10 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new UploadedAssessmentDocumentResponseJsonConverter(),
         new UploadedAssessorDocumentResponseJsonConverter(),
         new UploadedCertifierDocumentResponseJsonConverter(),
+        new HeatNetworkInfoJsonConverter(),
+        new CountryAndTerritoryJsonConverter(),
+        new UserRoleDetailResponseJsonConverter(),
+        new OrganisationJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -106,6 +111,12 @@ builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddSingleton<OrganisationsApiEvents>();
+builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
 
 builder.Services.AddSingleton<HeatNetworksApiEvents>();
 builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
@@ -129,6 +140,35 @@ builder.Services.AddHttpClient<ISOAApi, SOAApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddSingleton<CountriesAndTerritoriesApiEvents>();
+builder.Services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<OrganisationsApiEvents>();
+builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
+builder.Services.AddSingleton<OrganisationUserApiEvents>();
+builder.Services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<CarbonCalculatorApiEvents>();
+builder.Services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
@@ -136,22 +176,27 @@ builder.Services.AddScoped<IWorkflowManager, WorkflowManager>();
 // Since it's a generic filter, you can register a specific type for each workflow
 builder.Services.AddScoped<WorkflowValidationFilter<AddNewContributorWorkflowModel, ContributorWorkflowStep>>();
 builder.Services.AddScoped<WorkflowValidationFilter<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>>();
+builder.Services.AddScoped<WorkflowValidationFilter<AddOrganisationUserWorkflowModel, AddOrganisationUserWorkflowStep>>();
 builder.Services.AddScoped<IRedirectResolver<AddNewContributorWorkflowModel, ContributorWorkflowStep>, NewContributorRedirectResolver>();
 builder.Services.AddScoped<IRedirectResolver<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>, ExistingContributorRedirectResolver>();
+builder.Services.AddScoped<IRedirectResolver<AddOrganisationUserWorkflowModel, AddOrganisationUserWorkflowStep>, AddOrganisationUserRedirectResolver>();
+builder.Services.AddScoped<IRedirectResolver<AddExistingOrganisationUserWorkflowModel, ExistingOrganisationUserWorkflowStep>, ExistingOrganisationUserRedirectResolver>();
 
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnGetAttribute>();
 builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<ISoaService, SoaService>();
-
 builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
-
+builder.Services.AddScoped<ICountriesAndTerritoriesService, CountriesAndTerritoriesService>();
+builder.Services.AddScoped<IOrganisationService, OrganisationService>();
+builder.Services.AddScoped<IOrganisationUserService, OrganisationUserService>();
+builder.Services.AddScoped<ICarbonCalculatorService, CarbonCalculatorService>();
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
-
+builder.Services.AddScoped<IAddressLookupService, AddressLookupService>();
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
-
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
 
@@ -162,6 +207,18 @@ builder.Services.AddSingleton<IAmazonS3>(sp =>
 });
 
 builder.Services.AddSingleton<IS3UploadService, S3UploadService>();
+
+
+builder.Services.AddSingleton(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+
+    var client = new HttpClient();
+    client.DefaultRequestHeaders.UserAgent.Clear();
+    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("HNTAS", "1.0"));
+
+    return client;
+});
 
 // Decide which authentication to use based on the environment variable
 var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
@@ -306,8 +363,9 @@ else
                     SecurityAlgorithms.RsaSha256);
             }
 
-            options.VectorsOfTrust = ["Cl.Cm"];
+            options.VectorsOfTrust = [builder.Configuration.GetValue<string>("OneLogin:VectorsOfTrust")];
         });
+
 }
 
 builder.Services.AddSession(options =>
@@ -317,8 +375,6 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-
-builder.Services.AddHttpClient<AddressLookupService>();
 
 var app = builder.Build();
 

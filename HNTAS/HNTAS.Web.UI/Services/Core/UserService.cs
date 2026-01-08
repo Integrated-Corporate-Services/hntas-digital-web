@@ -113,26 +113,62 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task UpdateUserHeatNetworkId(string id, string heatNetworkId)
+        public async Task UpdateUserWithExistingOrganisationId(string userId, string orgId)
         {
-            _logger.LogInformation("Updating user heat network for ID: {UserId} heat network : {hnId}", id, heatNetworkId);
+            var response = await _usersApi.ApiUsersUpdateOrgidPatchAsync(new UpdateUserOrgIdRequest(userId, orgId));
+
+            if (response.IsNoContent)
+            {
+                _logger.LogInformation("User organisation ID updated successfully for user ID: {userId}", userId);
+                return;
+            }
+            throw new Exception($"Failed to update user organisation ID with status code: {response.StatusCode}");
+        }
+
+        public async Task<Organisation?> UpdateOrganisationLinkUser(string userId, OrganisationRequest organisationRequest)
+        {
+            _logger.LogInformation("Updating organisation link for user ID: {UserId}", userId);
             try
             {
-                var response = await _usersApi.ApiUsersIdHeatnetworkHeatNetworkIdPatchAsync(id, heatNetworkId);
-
-                if (response.IsNoContent)
+                var response = await _usersApi.ApiUsersRegisterOrgAndLinkUserIdPostAsync(userId, organisationRequest);
+                if (response.IsCreated)
                 {
-                    _logger.LogInformation("User heat network ID updated successfully for user ID: {userId}", id);
-                    return;
+                    _logger.LogInformation("Organisation link updated successfully for user ID: {UserId}", userId);
+                    return response.Created();
                 }
-                throw new Exception($"Failed to update user heat network ID with status code: {response.StatusCode}");
+                throw new Exception($"Failed to update organisation link with status code: {response.StatusCode}");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating user heat network ID for user ID: {userId}", id);
+                _logger.LogError(ex, "Error updating organisation link for user ID: {UserId}", userId);
                 throw;
             }
         }
+
+
+        public async Task UpdateUserDetails(string id, UpdateUserDetailsRequest request)
+        {
+            _logger.LogInformation("Attempting to update user details for ID: {UserId}", id);
+            try
+            {
+                var response = await _usersApi.ApiUsersIdUserDetailsPatchAsync(id, request);
+
+                if (response.IsNoContent)
+                {
+                    _logger.LogInformation("Successfully updated user details for ID: {UserId}. Status: 204 No Content.", id);
+                    return;
+                }
+
+                throw new Exception($"Failed to update user details for ID '{id}'. Status Code: {response.StatusCode}.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "A critical error occurred during user details update for user ID: {userId}", id);
+                throw;
+            }
+        }
+
+
 
         public async Task<bool?> IsOrganisationExists(string companiesHouseNumber)
         {
@@ -153,30 +189,12 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<List<HeatNetworkResponse>?> GetUserHeatNetworks(string id)
+        public async Task<List<HeatNetworkUserResponse>?> GetUserHeatNetworks(string id)
         {
-            var user = await GetUserById(id);
-            if (user?.HnIds == null || !user.HnIds.Any())
-            {
-                _logger.LogInformation("User with ID {UserId} has no heat networks assigned.", id);
-                return null;
-            }
-            _logger.LogInformation("User with ID {UserId} has heat networks assigned: {HeatNetworkIds}", id, string.Join(", ", user.HnIds));
+            var user = await GetUserDetails(id);
 
-            try
-            {
-                var heatNetworkResponse = await _heatNetworksApi.ApiHeatNetworksHnIdsGetAsync(string.Join(",", user?.HnIds));
-                if (heatNetworkResponse.IsOk)
-                {
-                    return heatNetworkResponse.Ok();
-                }
-                throw new Exception($"Failed to retrieve heat network with status code: {heatNetworkResponse.StatusCode}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving heat networks for user ID: {UserId}", id);
-                throw;
-            }
+            return user.HeatNetworks;
+
         }
 
         public async Task<List<EnumItemResponse>> GetContributorRolesAsync()
@@ -237,7 +255,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<ManagedUserResponse> GetManagedUsers(string userId)
+        public async Task<List<ManagedUserResponse>> GetManagedUsers(string userId)
         {
             _logger.LogInformation("Getting managed users for user ID: {UserId}", userId);
             if (string.IsNullOrWhiteSpace(userId))
@@ -300,6 +318,96 @@ namespace HNTAS.Web.UI.Services.Core
             throw new Exception($"Failed to retrieve registered users with status code: {users.StatusCode}");
 
         }
+
+        public async Task<bool?> IsRpUserAsync(string emailId)
+        {
+            var users = await _usersApi.ApiUsersIsRpUserEmailIdGetAsync(emailId);
+            if (users.IsOk)
+            {
+                return users.Ok();
+            }
+            else if (users.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+            var errorMessage = $"Unable to determine Responsible Person status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
+            _logger.LogError(errorMessage);
+            throw new Exception(errorMessage);
+        }
+
+
+        public async Task<bool?> IsActiveUserAsync(string emailId)
+        {
+            var users = await _usersApi.ApiUsersIsActiveUserEmailIdGetAsync(emailId);
+            if (users.IsOk)
+            {
+                return users.Ok();
+            }
+            else if (users.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+            var errorMessage = $"Unable to determine Responsible Person status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
+            _logger.LogError(errorMessage);
+            throw new Exception(errorMessage);
+        }
+
+        public async Task<List<UserRoleDetailResponse>> GetHeatNetworkUserRoles(string heatNetworkId)
+        {
+            _logger.LogInformation("Retrieving user roles for heat network ID: {HeatNetworkId}", heatNetworkId);
+            try
+            {
+                var response = await _usersApi.ApiUsersHeatNetworkHnIdRolesGetAsync(heatNetworkId);
+                if (response.IsOk)
+                {
+                    return response.Ok();
+                }
+                if (response.IsNotFound)
+                {
+                    return null;
+                }
+                throw new Exception($"Failed to retrieve user roles with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving user roles for heat network ID: {HeatNetworkId}", heatNetworkId);
+                throw;
+            }
+        }
+
+
+        public async Task<(bool IsAssigned, string UserId)> IsRoleAlreadyAssigned(string heatNetworkId, string roleName)
+        {
+            var userRolesDetailsResponse = await GetHeatNetworkUserRoles(heatNetworkId.ToUpper());
+            //check the role is present in the list or not
+            if (userRolesDetailsResponse != null && userRolesDetailsResponse.Any())
+            {
+                var existingRole = userRolesDetailsResponse.FirstOrDefault(x => x.RoleDescription.Equals(roleName, StringComparison.OrdinalIgnoreCase));
+                if (existingRole != null)
+                {
+                    return (true, existingRole.UserId);
+                }
+            }
+            return (false, string.Empty);
+        }
+
+        public async Task<List<UserResponse>> GetUsersByOrganisationIdAsync(string organisationId)
+        {
+            var usersResponse = await _usersApi.ApiUsersOrganisationOrganisationIdGetAsync(organisationId);
+            if (usersResponse.IsOk)
+            {
+                return usersResponse.Ok();
+            }
+            _logger.LogError("Failed to retrieve users by organisation ID with status code: {StatusCode}", usersResponse.StatusCode);
+            throw new Exception($"Failed to retrieve users by organisation ID with status code: {usersResponse.StatusCode}");
+        }
+
+
+        private string SanitizeForLogging(string input)
+        {
+            return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;
+        }
+
     }
 }
 

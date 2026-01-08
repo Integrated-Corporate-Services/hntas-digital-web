@@ -4,12 +4,12 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Organisation** | [**OrganisationRequest**](OrganisationRequest.md) |  | 
+**Role** | **UserRole** |  | 
 **FirstName** | **string** |  | 
 **LastName** | **string** |  | 
-**PreferredContactType** | **PreferredContactType** |  | 
 **JobTitle** | **string** |  | 
-**Role** | **UserRole** |  | 
-**Organisation** | [**OrganisationRequest**](OrganisationRequest.md) |  | 
+**PreferredContactType** | **NullableOfPreferredContactType** |  | [optional] 
 **LandlineNumber** | **string** |  | [optional] 
 **ContactNumberExtension** | **string** |  | [optional] 
 **MobileNumber** | **string** |  | [optional] 

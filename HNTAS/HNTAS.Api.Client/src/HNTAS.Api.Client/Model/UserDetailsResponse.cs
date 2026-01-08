@@ -35,30 +35,32 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="id">id</param>
         /// <param name="oneLoginId">oneLoginId</param>
+        /// <param name="emailId">emailId</param>
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
         /// <param name="fullName">fullName</param>
-        /// <param name="emailId">emailId</param>
         /// <param name="jobTitle">jobTitle</param>
         /// <param name="preferredContactType">preferredContactType</param>
         /// <param name="landlineNumber">landlineNumber</param>
+        /// <param name="contactNumberExtension">contactNumberExtension</param>
         /// <param name="mobileNumber">mobileNumber</param>
         /// <param name="status">status</param>
         /// <param name="roles">roles</param>
         /// <param name="organisation">organisation</param>
         /// <param name="heatNetworks">heatNetworks</param>
         [JsonConstructor]
-        public UserDetailsResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> emailId = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> status = default, Option<List<UserRole>?> roles = default, Option<OrganisationResponse?> organisation = default, Option<List<HeatNetworkUserResponse>?> heatNetworks = default)
+        public UserDetailsResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, Option<UserStatus?> status = default, Option<List<UserRole>?> roles = default, Option<OrganisationResponse?> organisation = default, Option<List<HeatNetworkUserResponse>?> heatNetworks = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
+            EmailIdOption = emailId;
             FirstNameOption = firstName;
             LastNameOption = lastName;
             FullNameOption = fullName;
-            EmailIdOption = emailId;
             JobTitleOption = jobTitle;
             PreferredContactTypeOption = preferredContactType;
             LandlineNumberOption = landlineNumber;
+            ContactNumberExtensionOption = contactNumberExtension;
             MobileNumberOption = mobileNumber;
             StatusOption = status;
             RolesOption = roles;
@@ -81,6 +83,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("preferredContactType")]
         public NullableOfPreferredContactType? PreferredContactType { get { return this.PreferredContactTypeOption; } set { this.PreferredContactTypeOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Status
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<UserStatus?> StatusOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Status
+        /// </summary>
+        [JsonPropertyName("status")]
+        public UserStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Id
@@ -107,6 +122,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("oneLoginId")]
         public string? OneLoginId { get { return this.OneLoginIdOption; } set { this.OneLoginIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of EmailId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> EmailIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets EmailId
+        /// </summary>
+        [JsonPropertyName("emailId")]
+        public string? EmailId { get { return this.EmailIdOption; } set { this.EmailIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of FirstName
@@ -148,19 +176,6 @@ namespace HNTAS.Api.Client.Model
         public string? FullName { get { return this.FullNameOption; } set { this.FullNameOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of EmailId
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> EmailIdOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets EmailId
-        /// </summary>
-        [JsonPropertyName("emailId")]
-        public string? EmailId { get { return this.EmailIdOption; } set { this.EmailIdOption = new(value); } }
-
-        /// <summary>
         /// Used to track the state of JobTitle
         /// </summary>
         [JsonIgnore]
@@ -187,6 +202,19 @@ namespace HNTAS.Api.Client.Model
         public string? LandlineNumber { get { return this.LandlineNumberOption; } set { this.LandlineNumberOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of ContactNumberExtension
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> ContactNumberExtensionOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ContactNumberExtension
+        /// </summary>
+        [JsonPropertyName("contactNumberExtension")]
+        public string? ContactNumberExtension { get { return this.ContactNumberExtensionOption; } set { this.ContactNumberExtensionOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of MobileNumber
         /// </summary>
         [JsonIgnore]
@@ -198,19 +226,6 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("mobileNumber")]
         public string? MobileNumber { get { return this.MobileNumberOption; } set { this.MobileNumberOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of Status
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> StatusOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Status
-        /// </summary>
-        [JsonPropertyName("status")]
-        public string? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Roles
@@ -261,13 +276,14 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class UserDetailsResponse {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  OneLoginId: ").Append(OneLoginId).Append("\n");
+            sb.Append("  EmailId: ").Append(EmailId).Append("\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
             sb.Append("  FullName: ").Append(FullName).Append("\n");
-            sb.Append("  EmailId: ").Append(EmailId).Append("\n");
             sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
             sb.Append("  PreferredContactType: ").Append(PreferredContactType).Append("\n");
             sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
+            sb.Append("  ContactNumberExtension: ").Append(ContactNumberExtension).Append("\n");
             sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  Roles: ").Append(Roles).Append("\n");
@@ -312,15 +328,16 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> id = default;
             Option<string?> oneLoginId = default;
+            Option<string?> emailId = default;
             Option<string?> firstName = default;
             Option<string?> lastName = default;
             Option<string?> fullName = default;
-            Option<string?> emailId = default;
             Option<string?> jobTitle = default;
             Option<NullableOfPreferredContactType?> preferredContactType = default;
             Option<string?> landlineNumber = default;
+            Option<string?> contactNumberExtension = default;
             Option<string?> mobileNumber = default;
-            Option<string?> status = default;
+            Option<UserStatus?> status = default;
             Option<List<UserRole>?> roles = default;
             Option<OrganisationResponse?> organisation = default;
             Option<List<HeatNetworkUserResponse>?> heatNetworks = default;
@@ -346,6 +363,9 @@ namespace HNTAS.Api.Client.Model
                         case "oneLoginId":
                             oneLoginId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "emailId":
+                            emailId = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         case "firstName":
                             firstName = new Option<string?>(utf8JsonReader.GetString());
                             break;
@@ -354,9 +374,6 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "fullName":
                             fullName = new Option<string?>(utf8JsonReader.GetString());
-                            break;
-                        case "emailId":
-                            emailId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "jobTitle":
                             jobTitle = new Option<string?>(utf8JsonReader.GetString());
@@ -369,11 +386,16 @@ namespace HNTAS.Api.Client.Model
                         case "landlineNumber":
                             landlineNumber = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "contactNumberExtension":
+                            contactNumberExtension = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         case "mobileNumber":
                             mobileNumber = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "status":
-                            status = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? statusRawValue = utf8JsonReader.GetString();
+                            if (statusRawValue != null)
+                                status = new Option<UserStatus?>(UserStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
                         case "roles":
                             roles = new Option<List<UserRole>?>(JsonSerializer.Deserialize<List<UserRole>>(ref utf8JsonReader, jsonSerializerOptions));
@@ -402,7 +424,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class UserDetailsResponse.");
 
-            return new UserDetailsResponse(id, oneLoginId, firstName, lastName, fullName, emailId, jobTitle, preferredContactType, landlineNumber, mobileNumber, status, roles, organisation, heatNetworks);
+            return new UserDetailsResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, contactNumberExtension, mobileNumber, status, roles, organisation, heatNetworks);
         }
 
         /// <summary>
@@ -438,14 +460,14 @@ namespace HNTAS.Api.Client.Model
             if (userDetailsResponse.EmailIdOption.IsSet && userDetailsResponse.EmailId == null)
                 throw new ArgumentNullException(nameof(userDetailsResponse.EmailId), "Property is required for class UserDetailsResponse.");
 
-            if (userDetailsResponse.StatusOption.IsSet && userDetailsResponse.Status == null)
-                throw new ArgumentNullException(nameof(userDetailsResponse.Status), "Property is required for class UserDetailsResponse.");
-
             if (userDetailsResponse.IdOption.IsSet)
                 writer.WriteString("id", userDetailsResponse.Id);
 
             if (userDetailsResponse.OneLoginIdOption.IsSet)
                 writer.WriteString("oneLoginId", userDetailsResponse.OneLoginId);
+
+            if (userDetailsResponse.EmailIdOption.IsSet)
+                writer.WriteString("emailId", userDetailsResponse.EmailId);
 
             if (userDetailsResponse.FirstNameOption.IsSet)
                 if (userDetailsResponse.FirstNameOption.Value != null)
@@ -464,9 +486,6 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("fullName", userDetailsResponse.FullName);
                 else
                     writer.WriteNull("fullName");
-
-            if (userDetailsResponse.EmailIdOption.IsSet)
-                writer.WriteString("emailId", userDetailsResponse.EmailId);
 
             if (userDetailsResponse.JobTitleOption.IsSet)
                 if (userDetailsResponse.JobTitleOption.Value != null)
@@ -488,6 +507,12 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("landlineNumber");
 
+            if (userDetailsResponse.ContactNumberExtensionOption.IsSet)
+                if (userDetailsResponse.ContactNumberExtensionOption.Value != null)
+                    writer.WriteString("contactNumberExtension", userDetailsResponse.ContactNumberExtension);
+                else
+                    writer.WriteNull("contactNumberExtension");
+
             if (userDetailsResponse.MobileNumberOption.IsSet)
                 if (userDetailsResponse.MobileNumberOption.Value != null)
                     writer.WriteString("mobileNumber", userDetailsResponse.MobileNumber);
@@ -495,8 +520,10 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("mobileNumber");
 
             if (userDetailsResponse.StatusOption.IsSet)
-                writer.WriteString("status", userDetailsResponse.Status);
-
+            {
+                var statusRawValue = UserStatusValueConverter.ToJsonValue(userDetailsResponse.Status!.Value);
+                writer.WriteString("status", statusRawValue);
+            }
             if (userDetailsResponse.RolesOption.IsSet)
                 if (userDetailsResponse.RolesOption.Value != null)
                 {

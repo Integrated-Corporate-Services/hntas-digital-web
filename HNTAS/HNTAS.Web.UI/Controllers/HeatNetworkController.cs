@@ -3,11 +3,13 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize]
     public class HeatNetworkController : Controller
     {
 
@@ -15,13 +17,15 @@ namespace HNTAS.Web.UI.Controllers
         private readonly IHeatNetworkService _heatNetworkService;
         private readonly IUserService _userService;
         private readonly ISessionHelper _sessionHelper;
+        private readonly IOrganisationService _organisationService;
 
-        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworkService heatNetworkService, IUserService userService, ISessionHelper sessionHelper)
+        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworkService heatNetworkService, IUserService userService, ISessionHelper sessionHelper, IOrganisationService organisationService)
         {
             _logger = logger;
             _heatNetworkService = heatNetworkService;
             _userService = userService;
             _sessionHelper = sessionHelper;
+            _organisationService = organisationService;
         }
 
 
@@ -41,12 +45,6 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkName) && model.HeatNetworkName.Length > 100)
-            {
-                ModelState.AddModelError(nameof(model.HeatNetworkName), "The heat network name cannot exceed 100 characters.");
-                return View(model);
-            }
-
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
             return RedirectToAction("EnterHNLocation");
         }
@@ -71,26 +69,6 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            else if (!string.IsNullOrWhiteSpace(model.HeatNetworkLocation) && !model.HeatNetworkLocation.StartsWith("https://what3words.com/"))
-            {
-                ModelState.AddModelError(nameof(model.HeatNetworkLocation), "Invalid url. Please enter the correct url.");
-                return View(model);
-            }
-            else
-            {
-                // Extract the part after "https://what3words.com/"
-                var prefix = "https://what3words.com/";
-                var urlPart = model.HeatNetworkLocation.Substring(prefix.Length);
-
-                // Validate: 3 words, joined by 2 dots, no whitespace
-                // Regex: ^([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)$
-                if (string.IsNullOrWhiteSpace(urlPart) ||
-                    !System.Text.RegularExpressions.Regex.IsMatch(urlPart, @"^([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)$"))
-                {
-                    ModelState.AddModelError(nameof(model.HeatNetworkLocation), "Invalid url. Please enter the correct url.");
-                }
-            }
-
             _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
             return RedirectToAction("EnterHNPhase");
         }
@@ -271,6 +249,11 @@ namespace HNTAS.Web.UI.Controllers
         {
             ViewBag.ShowBackButton = false;
 
+            if (_sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) == null)
+            {
+                return RedirectToAction("UserAccount", "Dashboard");
+            }
+
             var model = new CheckYourAnswersHeatNetworkModel
             {
                 HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey),
@@ -312,18 +295,31 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View("CheckYourAnswers", viewModel);
             }
+
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
+
+            if (userId == null || orgId == null)
+            {
+                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
+                return View("CheckYourAnswers", viewModel);
+            }
+
+
             var model = new HeatNetwork
             {
-                Name = viewModel.HeatNetworkNameModel.HeatNetworkName,
-                Location = viewModel.HeatNetworkLocationModel.HeatNetworkLocation,
-                Pathway = viewModel.PathwayModel.Pathway
+                Name = viewModel?.HeatNetworkNameModel?.HeatNetworkName,
+                Location = viewModel?.HeatNetworkLocationModel?.HeatNetworkLocation,
+                Pathway = viewModel?.PathwayModel?.Pathway,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = userId
             };
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            var userResponse = await _heatNetworkService.AddHeatNetwork(model, hnId);
+            var userResponse = await _heatNetworkService.AddHeatNetwork(model);
+
             if (userResponse.HnId != null)
             {
-                await _userService.UpdateUserHeatNetworkId(hnId, userResponse.HnId);
+                await _organisationService.UpdateOrgHeatNetworkId(orgId, userId, userResponse.HnId);
                 TempData["Confirmation_HN_Id"] = userResponse.HnId;
                 TempData["HNName"] = userResponse.Name;
             }

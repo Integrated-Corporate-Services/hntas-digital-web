@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Add or Register your Organisation";
+}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">Add or Register your Organisation</h1>
+
+        <p class="govuk-body">
+            If your Organisation is already registered, please enter the ORG ID of the organisation to add your organisation details.
+        </p>
+        <p class="govuk-body">
+            If you do not have the ORG ID of your organisation, then please enter the Organisation name to add your organisation details.
+        </p>
+        <p class="govuk-body">
+            If your organisation is not registered, then please enter your Organisation Name, Organisation details and Address to Register your Organisation.
+        </p>
+
+        <a asp-controller="ExistingOrganisation" asp-action="Search" role="button" data-module="govuk-button" draggable="false" class="govuk-button">
+            Add your organisation
+        </a>     
+        <a asp-controller="Organisation" asp-action="OrganisationType" role="button" data-module="govuk-button" draggable="false" class="govuk-button govuk-button--secondary" style="margin-left:15px">
+            Register a new Organisation
+        </a>
+    </div>
+</div>

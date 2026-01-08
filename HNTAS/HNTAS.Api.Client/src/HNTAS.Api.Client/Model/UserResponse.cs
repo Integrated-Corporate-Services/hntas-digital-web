@@ -47,10 +47,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="orgId">orgId</param>
         /// <param name="roles">roles</param>
         /// <param name="status">status</param>
-        /// <param name="hnIds">hnIds</param>
         /// <param name="hnRoleMappings">hnRoleMappings</param>
         [JsonConstructor]
-        public UserResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<string?> orgId = default, Option<List<UserRole>?> roles = default, Option<UserStatus?> status = default, Option<List<string>?> hnIds = default, Option<List<HnRoleMapping>?> hnRoleMappings = default)
+        public UserResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<string?> orgId = default, Option<List<UserRole>?> roles = default, Option<UserStatus?> status = default, Option<List<HnRoleMapping>?> hnRoleMappings = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
@@ -66,7 +65,6 @@ namespace HNTAS.Api.Client.Model
             OrgIdOption = orgId;
             RolesOption = roles;
             StatusOption = status;
-            HnIdsOption = hnIds;
             HnRoleMappingsOption = hnRoleMappings;
             OnCreated();
         }
@@ -256,19 +254,6 @@ namespace HNTAS.Api.Client.Model
         public List<UserRole>? Roles { get { return this.RolesOption; } set { this.RolesOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of HnIds
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<string>?> HnIdsOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets HnIds
-        /// </summary>
-        [JsonPropertyName("hnIds")]
-        public List<string>? HnIds { get { return this.HnIdsOption; } set { this.HnIdsOption = new(value); } }
-
-        /// <summary>
         /// Used to track the state of HnRoleMappings
         /// </summary>
         [JsonIgnore]
@@ -303,7 +288,6 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  OrgId: ").Append(OrgId).Append("\n");
             sb.Append("  Roles: ").Append(Roles).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
-            sb.Append("  HnIds: ").Append(HnIds).Append("\n");
             sb.Append("  HnRoleMappings: ").Append(HnRoleMappings).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -356,7 +340,6 @@ namespace HNTAS.Api.Client.Model
             Option<string?> orgId = default;
             Option<List<UserRole>?> roles = default;
             Option<UserStatus?> status = default;
-            Option<List<string>?> hnIds = default;
             Option<List<HnRoleMapping>?> hnRoleMappings = default;
 
             while (utf8JsonReader.Read())
@@ -413,18 +396,15 @@ namespace HNTAS.Api.Client.Model
                             orgId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "roles":
-                            roles = new Option<List<UserRole>?>(JsonSerializer.Deserialize<List<UserRole>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            roles = new Option<List<UserRole>?>(JsonSerializer.Deserialize<List<UserRole>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "status":
                             string? statusRawValue = utf8JsonReader.GetString();
                             if (statusRawValue != null)
                                 status = new Option<UserStatus?>(UserStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
-                        case "hnIds":
-                            hnIds = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
-                            break;
                         case "hnRoleMappings":
-                            hnRoleMappings = new Option<List<HnRoleMapping>?>(JsonSerializer.Deserialize<List<HnRoleMapping>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            hnRoleMappings = new Option<List<HnRoleMapping>?>(JsonSerializer.Deserialize<List<HnRoleMapping>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -441,19 +421,10 @@ namespace HNTAS.Api.Client.Model
             if (emailId.IsSet && emailId.Value == null)
                 throw new ArgumentNullException(nameof(emailId), "Property is not nullable for class UserResponse.");
 
-            if (roles.IsSet && roles.Value == null)
-                throw new ArgumentNullException(nameof(roles), "Property is not nullable for class UserResponse.");
-
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class UserResponse.");
 
-            if (hnIds.IsSet && hnIds.Value == null)
-                throw new ArgumentNullException(nameof(hnIds), "Property is not nullable for class UserResponse.");
-
-            if (hnRoleMappings.IsSet && hnRoleMappings.Value == null)
-                throw new ArgumentNullException(nameof(hnRoleMappings), "Property is not nullable for class UserResponse.");
-
-            return new UserResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, orgId, roles, status, hnIds, hnRoleMappings);
+            return new UserResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, orgId, roles, status, hnRoleMappings);
         }
 
         /// <summary>
@@ -488,15 +459,6 @@ namespace HNTAS.Api.Client.Model
 
             if (userResponse.EmailIdOption.IsSet && userResponse.EmailId == null)
                 throw new ArgumentNullException(nameof(userResponse.EmailId), "Property is required for class UserResponse.");
-
-            if (userResponse.RolesOption.IsSet && userResponse.Roles == null)
-                throw new ArgumentNullException(nameof(userResponse.Roles), "Property is required for class UserResponse.");
-
-            if (userResponse.HnIdsOption.IsSet && userResponse.HnIds == null)
-                throw new ArgumentNullException(nameof(userResponse.HnIds), "Property is required for class UserResponse.");
-
-            if (userResponse.HnRoleMappingsOption.IsSet && userResponse.HnRoleMappings == null)
-                throw new ArgumentNullException(nameof(userResponse.HnRoleMappings), "Property is required for class UserResponse.");
 
             if (userResponse.IdOption.IsSet)
                 writer.WriteString("id", userResponse.Id);
@@ -564,25 +526,26 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("orgId");
 
             if (userResponse.RolesOption.IsSet)
-            {
-                writer.WritePropertyName("roles");
-                JsonSerializer.Serialize(writer, userResponse.Roles, jsonSerializerOptions);
-            }
+                if (userResponse.RolesOption.Value != null)
+                {
+                    writer.WritePropertyName("roles");
+                    JsonSerializer.Serialize(writer, userResponse.Roles, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("roles");
             if (userResponse.StatusOption.IsSet)
             {
                 var statusRawValue = UserStatusValueConverter.ToJsonValue(userResponse.Status!.Value);
                 writer.WriteString("status", statusRawValue);
             }
-            if (userResponse.HnIdsOption.IsSet)
-            {
-                writer.WritePropertyName("hnIds");
-                JsonSerializer.Serialize(writer, userResponse.HnIds, jsonSerializerOptions);
-            }
             if (userResponse.HnRoleMappingsOption.IsSet)
-            {
-                writer.WritePropertyName("hnRoleMappings");
-                JsonSerializer.Serialize(writer, userResponse.HnRoleMappings, jsonSerializerOptions);
-            }
+                if (userResponse.HnRoleMappingsOption.Value != null)
+                {
+                    writer.WritePropertyName("hnRoleMappings");
+                    JsonSerializer.Serialize(writer, userResponse.HnRoleMappings, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("hnRoleMappings");
         }
     }
 }

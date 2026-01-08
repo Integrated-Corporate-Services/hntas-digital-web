@@ -4,10 +4,12 @@ using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize]
     public class CertifierController : Controller
     {
         private readonly ILogger<CertifierController> _logger;
@@ -43,12 +45,13 @@ namespace HNTAS.Web.UI.Controllers
             {
                 var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
                 var hnDetails = await _heatNetworkService.GetAsync(hnid?.ToUpper());
-                _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnDetails.Name);
+                
 
-                if (user == null || hnDetails.Soa == null || hnDetails == null)
+                if (user == null || hnDetails == null || hnDetails.Soa == null)
                 {
                     return BadRequest();
                 }
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnDetails.Name);
                 var phaseIndex = 0;
 
 
@@ -97,6 +100,12 @@ namespace HNTAS.Web.UI.Controllers
             var elementItems = new List<ElementItem>();
             var elementDocuments = new List<DocumentItem>();
             var assessmentPlanDocument = new DocumentItem();
+            if (heatNetworkResponse == null || heatNetworkResponse?.Soa?.JourneyData?.HeatNetworkElements == null)
+            {
+                _logger.LogWarning("Could not retrieve Heat Network details for ID: {HnId}", hnId);
+                ModelState.AddModelError("HeatNetworkDetailsNotFound", "We couldn't retrieve the Heat Network details for the provided ID. Please try again or contact support.");
+                return View(phase);
+            }
 
 
             foreach (var element in heatNetworkResponse?.Soa?.JourneyData?.HeatNetworkElements)

@@ -66,11 +66,23 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithAClientTest()
         {
+            var carbonCalculatorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
+            Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
+
+            var countriesAndTerritoriesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
+            Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 
             var invitationsApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+
+            var organisationUserApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IOrganisationUserApi>();
+            Assert.True(organisationUserApi.HttpClient.BaseAddress != null);
+
+            var organisationsApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IOrganisationsApi>();
+            Assert.True(organisationsApi.HttpClient.BaseAddress != null);
 
             var sOAApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);
@@ -85,11 +97,23 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithoutAClientTest()
         {
+            var carbonCalculatorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
+            Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
+
+            var countriesAndTerritoriesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
+            Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 
             var invitationsApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+
+            var organisationUserApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IOrganisationUserApi>();
+            Assert.True(organisationUserApi.HttpClient.BaseAddress != null);
+
+            var organisationsApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IOrganisationsApi>();
+            Assert.True(organisationsApi.HttpClient.BaseAddress != null);
 
             var sOAApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);
@@ -104,11 +128,23 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithAClientTest()
         {
+            var carbonCalculatorApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
+            Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
+            
+            var countriesAndTerritoriesApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
+            Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
+            
             var heatNetworksApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
             
             var invitationsApi = _hostUsingAddWithAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+            
+            var organisationUserApi = _hostUsingAddWithAClient.Services.GetRequiredService<IOrganisationUserApi>();
+            Assert.True(organisationUserApi.HttpClient.BaseAddress != null);
+            
+            var organisationsApi = _hostUsingAddWithAClient.Services.GetRequiredService<IOrganisationsApi>();
+            Assert.True(organisationsApi.HttpClient.BaseAddress != null);
             
             var sOAApi = _hostUsingAddWithAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);
@@ -123,11 +159,23 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithoutAClientTest()
         {
+            var carbonCalculatorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
+            Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
+
+            var countriesAndTerritoriesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
+            Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 
             var invitationsApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+
+            var organisationUserApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IOrganisationUserApi>();
+            Assert.True(organisationUserApi.HttpClient.BaseAddress != null);
+
+            var organisationsApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IOrganisationsApi>();
+            Assert.True(organisationsApi.HttpClient.BaseAddress != null);
 
             var sOAApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);

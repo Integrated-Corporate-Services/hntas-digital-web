@@ -1,0 +1,47 @@
+﻿@using HNTAS.Web.UI.Models
+@model ReplaceUserRoleViewModel
+
+@{
+    ViewData["Title"] = $"{Model.RoleName} for {Model.HeatNetworkName} Heat network";
+
+    var fieldOrder = new[] { nameof(Model.ReplaceExistingRole) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.ReplaceExistingRole)).ToLowerInvariant();
+
+    // Create the page data structure for the radio button partial view
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = ViewBag.ContollerName,
+        Action = "ConfirmReplaceUserRole",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                // The main question remains specific to the Designer role for clarity on the page
+                QId = elementId,
+                QText = $"Do you want to replace the existing {Model.RoleName} for the {Model.HeatNetworkName} Heat network?",
+
+                // The required context from your original prompt
+                QDescText = null,
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    // Options as requested
+                    new Option { OptId = $"{elementId}-yes", OptValue = "yes", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = $"{elementId}-no", OptValue = "no", OptText = "No", OptHintText = null }
+                },
+
+                // Updated property name for selected option
+                SeletedOption = Model.ReplaceExistingRole
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div>

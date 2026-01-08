@@ -4,9 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ResponsibleUser** | [**UserResponse**](UserResponse.md) |  | [optional] 
-**RegisteredUsers** | [**List&lt;UserResponse&gt;**](UserResponse.md) |  | [optional] 
-**InvitedUsers** | [**List&lt;InvitedUserResponse&gt;**](InvitedUserResponse.md) |  | [optional] 
+**Id** | **string** |  | [optional] 
+**Name** | **string** |  | [optional] 
+**EmailId** | **string** |  | [optional] 
+**Status** | **string** |  | [optional] 
+**HeatNetworks** | [**List&lt;HeatNetworkInfo&gt;**](HeatNetworkInfo.md) |  | [optional] 
+**Roles** | **List&lt;string&gt;** |  | [optional] 
+**InvitedAt** | **DateTimeOffset** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

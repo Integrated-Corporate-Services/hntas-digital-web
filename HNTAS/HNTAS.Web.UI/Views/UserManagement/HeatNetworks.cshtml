@@ -1,5 +1,14 @@
 ﻿@model HNTAS.Web.UI.Models.HeatNetworksViewModel
 
+@if (Model.IsResponsiblePerson)
+{
+    <p class="govuk-!-margin-top-6">
+        <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-controller="HeatNetwork" asp-action="EnterHNName">
+            Add a new heat network
+        </a>
+    </p>
+}
+
 
 @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
 {
@@ -7,16 +16,26 @@
     <table class="govuk-table">
         <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-                <th class="govuk-table__header" scope="col">Heat network name</th>
+                <th class="govuk-table__header" scope="col">Heat Network Id</th>
+                <th class="govuk-table__header" scope="col">Heat Network Name</th>
                 <th class="govuk-table__header" scope="col">Organisation</th>
                 <th class="govuk-table__header" scope="col">Status</th>
-                <th class="govuk-table__header" scope="col">Action</th>
+
+                @if (!Model.IsResponsiblePerson)
+                {
+                    <th class="govuk-table__header govuk-!-text-align-centre" scope="col">Action</th>
+                }
+                else
+                {
+                    <th class="govuk-table__header govuk-!-text-align-centre" scope="col">Users</th>
+                }
             </tr>
         </thead>
         <tbody class="govuk-table__body">
             @foreach (var heatNetwork in Model.HeatNetworks)
             {
                 <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">@heatNetwork.HnId</td>
                     <td class="govuk-table__cell">@heatNetwork.Name</td>
                     <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
                     <td class="govuk-table__cell">
@@ -41,28 +60,37 @@
                         }
                         <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
                     </td>
-                    <td class="govuk-table__cell">
-                        @if (ViewBag.UserRole == HNTAS.Api.Client.Model.ContributorRole.Assessor.ToString())
-                        {
-                            if(ViewBag.HasDeclaredImpartiality != true)
+                    @if (!Model.IsResponsiblePerson)
+                    {
+                        <td class="govuk-table__cell govuk-!-text-align-centre">
+                            @if (ViewBag.UserRole == HNTAS.Api.Client.Model.ContributorRole.Assessor.ToString())
                             {
-                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("DeclarationOfImpartiality", "Assessor", new { hnId = @heatNetwork.HnId })">View or Update</a>
+                                if (ViewBag.HasDeclaredImpartiality != true)
+                                {
+                                    <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("DeclarationOfImpartiality", "Assessor", new { hnId = @heatNetwork.HnId })">View or Update</a>
+                                }
+                                else
+                                {
+                                    <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View or Update</a>
+                                }
+                            }
+                            else if (ViewBag.UserRole == HNTAS.Api.Client.Model.ContributorRole.Certifier.ToString())
+                            {
+                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("HeatNetworkDetails", "Certifier", new { hnId = @heatNetwork.HnId })">Certify</a>
                             }
                             else
                             {
-                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View or Update</a>
+                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View/Edit</a>
                             }
-                        }
-                        else if(ViewBag.UserRole == HNTAS.Api.Client.Model.ContributorRole.Certifier.ToString())
-                        {
-                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("HeatNetworkDetails", "Certifier", new { hnId = @heatNetwork.HnId })">Certify</a>
-                        }
-                        else
-                        {
-                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Details", "HeatNetwork", new { hnId = @heatNetwork.HnId })">View/Edit</a>
-                        }
 
-                    </td>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="govuk-table__cell govuk-!-text-align-centre" style="white-space: nowrap;">
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("HeatNetworkUserRoles", "UserManagement", new { hnId = @heatNetwork.HnId })">View Users</a>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

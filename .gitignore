@@ -406,3 +406,4 @@ FodyWeavers.xsd
 *.sln.iml
 /HNTAS/HNTAS.Web.UI/appsettings.local.json
 /HNTAS/HNTAS.Web.UI/aws-logger-errors.txt
+/HNTAS/cloc.exe.exe

@@ -33,58 +33,118 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="ManagedUserResponse" /> class.
         /// </summary>
-        /// <param name="responsibleUser">responsibleUser</param>
-        /// <param name="registeredUsers">registeredUsers</param>
-        /// <param name="invitedUsers">invitedUsers</param>
+        /// <param name="id">id</param>
+        /// <param name="name">name</param>
+        /// <param name="emailId">emailId</param>
+        /// <param name="status">status</param>
+        /// <param name="heatNetworks">heatNetworks</param>
+        /// <param name="roles">roles</param>
+        /// <param name="invitedAt">invitedAt</param>
         [JsonConstructor]
-        public ManagedUserResponse(Option<UserResponse?> responsibleUser = default, Option<List<UserResponse>?> registeredUsers = default, Option<List<InvitedUserResponse>?> invitedUsers = default)
+        public ManagedUserResponse(Option<string?> id = default, Option<string?> name = default, Option<string?> emailId = default, Option<string?> status = default, Option<List<HeatNetworkInfo>?> heatNetworks = default, Option<List<string>?> roles = default, Option<DateTimeOffset?> invitedAt = default)
         {
-            ResponsibleUserOption = responsibleUser;
-            RegisteredUsersOption = registeredUsers;
-            InvitedUsersOption = invitedUsers;
+            IdOption = id;
+            NameOption = name;
+            EmailIdOption = emailId;
+            StatusOption = status;
+            HeatNetworksOption = heatNetworks;
+            RolesOption = roles;
+            InvitedAtOption = invitedAt;
             OnCreated();
         }
 
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of ResponsibleUser
+        /// Used to track the state of Id
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<UserResponse?> ResponsibleUserOption { get; private set; }
+        public Option<string?> IdOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets ResponsibleUser
+        /// Gets or Sets Id
         /// </summary>
-        [JsonPropertyName("responsibleUser")]
-        public UserResponse? ResponsibleUser { get { return this.ResponsibleUserOption; } set { this.ResponsibleUserOption = new(value); } }
+        [JsonPropertyName("id")]
+        public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of RegisteredUsers
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<UserResponse>?> RegisteredUsersOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets RegisteredUsers
-        /// </summary>
-        [JsonPropertyName("registeredUsers")]
-        public List<UserResponse>? RegisteredUsers { get { return this.RegisteredUsersOption; } set { this.RegisteredUsersOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of InvitedUsers
+        /// Used to track the state of Name
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<InvitedUserResponse>?> InvitedUsersOption { get; private set; }
+        public Option<string?> NameOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets InvitedUsers
+        /// Gets or Sets Name
         /// </summary>
-        [JsonPropertyName("invitedUsers")]
-        public List<InvitedUserResponse>? InvitedUsers { get { return this.InvitedUsersOption; } set { this.InvitedUsersOption = new(value); } }
+        [JsonPropertyName("name")]
+        public string? Name { get { return this.NameOption; } set { this.NameOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of EmailId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> EmailIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets EmailId
+        /// </summary>
+        [JsonPropertyName("emailId")]
+        public string? EmailId { get { return this.EmailIdOption; } set { this.EmailIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Status
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> StatusOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Status
+        /// </summary>
+        [JsonPropertyName("status")]
+        public string? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of HeatNetworks
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<HeatNetworkInfo>?> HeatNetworksOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HeatNetworks
+        /// </summary>
+        [JsonPropertyName("heatNetworks")]
+        public List<HeatNetworkInfo>? HeatNetworks { get { return this.HeatNetworksOption; } set { this.HeatNetworksOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Roles
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<string>?> RolesOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Roles
+        /// </summary>
+        [JsonPropertyName("roles")]
+        public List<string>? Roles { get { return this.RolesOption; } set { this.RolesOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of InvitedAt
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<DateTimeOffset?> InvitedAtOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets InvitedAt
+        /// </summary>
+        [JsonPropertyName("invitedAt")]
+        public DateTimeOffset? InvitedAt { get { return this.InvitedAtOption; } set { this.InvitedAtOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -94,9 +154,13 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class ManagedUserResponse {\n");
-            sb.Append("  ResponsibleUser: ").Append(ResponsibleUser).Append("\n");
-            sb.Append("  RegisteredUsers: ").Append(RegisteredUsers).Append("\n");
-            sb.Append("  InvitedUsers: ").Append(InvitedUsers).Append("\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  EmailId: ").Append(EmailId).Append("\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  HeatNetworks: ").Append(HeatNetworks).Append("\n");
+            sb.Append("  Roles: ").Append(Roles).Append("\n");
+            sb.Append("  InvitedAt: ").Append(InvitedAt).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -118,6 +182,11 @@ namespace HNTAS.Api.Client.Model
     public class ManagedUserResponseJsonConverter : JsonConverter<ManagedUserResponse>
     {
         /// <summary>
+        /// The format to use to serialize InvitedAt
+        /// </summary>
+        public static string InvitedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+
+        /// <summary>
         /// Deserializes json to <see cref="ManagedUserResponse" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
@@ -134,9 +203,13 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<UserResponse?> responsibleUser = default;
-            Option<List<UserResponse>?> registeredUsers = default;
-            Option<List<InvitedUserResponse>?> invitedUsers = default;
+            Option<string?> id = default;
+            Option<string?> name = default;
+            Option<string?> emailId = default;
+            Option<string?> status = default;
+            Option<List<HeatNetworkInfo>?> heatNetworks = default;
+            Option<List<string>?> roles = default;
+            Option<DateTimeOffset?> invitedAt = default;
 
             while (utf8JsonReader.Read())
             {
@@ -153,14 +226,26 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "responsibleUser":
-                            responsibleUser = new Option<UserResponse?>(JsonSerializer.Deserialize<UserResponse>(ref utf8JsonReader, jsonSerializerOptions)!);
+                        case "id":
+                            id = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "registeredUsers":
-                            registeredUsers = new Option<List<UserResponse>?>(JsonSerializer.Deserialize<List<UserResponse>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                        case "name":
+                            name = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "invitedUsers":
-                            invitedUsers = new Option<List<InvitedUserResponse>?>(JsonSerializer.Deserialize<List<InvitedUserResponse>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                        case "emailId":
+                            emailId = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "status":
+                            status = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "heatNetworks":
+                            heatNetworks = new Option<List<HeatNetworkInfo>?>(JsonSerializer.Deserialize<List<HeatNetworkInfo>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "roles":
+                            roles = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "invitedAt":
+                            invitedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -168,16 +253,19 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (responsibleUser.IsSet && responsibleUser.Value == null)
-                throw new ArgumentNullException(nameof(responsibleUser), "Property is not nullable for class ManagedUserResponse.");
+            if (id.IsSet && id.Value == null)
+                throw new ArgumentNullException(nameof(id), "Property is not nullable for class ManagedUserResponse.");
 
-            if (registeredUsers.IsSet && registeredUsers.Value == null)
-                throw new ArgumentNullException(nameof(registeredUsers), "Property is not nullable for class ManagedUserResponse.");
+            if (name.IsSet && name.Value == null)
+                throw new ArgumentNullException(nameof(name), "Property is not nullable for class ManagedUserResponse.");
 
-            if (invitedUsers.IsSet && invitedUsers.Value == null)
-                throw new ArgumentNullException(nameof(invitedUsers), "Property is not nullable for class ManagedUserResponse.");
+            if (emailId.IsSet && emailId.Value == null)
+                throw new ArgumentNullException(nameof(emailId), "Property is not nullable for class ManagedUserResponse.");
 
-            return new ManagedUserResponse(responsibleUser, registeredUsers, invitedUsers);
+            if (status.IsSet && status.Value == null)
+                throw new ArgumentNullException(nameof(status), "Property is not nullable for class ManagedUserResponse.");
+
+            return new ManagedUserResponse(id, name, emailId, status, heatNetworks, roles, invitedAt);
         }
 
         /// <summary>
@@ -204,30 +292,51 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, ManagedUserResponse managedUserResponse, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (managedUserResponse.ResponsibleUserOption.IsSet && managedUserResponse.ResponsibleUser == null)
-                throw new ArgumentNullException(nameof(managedUserResponse.ResponsibleUser), "Property is required for class ManagedUserResponse.");
+            if (managedUserResponse.IdOption.IsSet && managedUserResponse.Id == null)
+                throw new ArgumentNullException(nameof(managedUserResponse.Id), "Property is required for class ManagedUserResponse.");
 
-            if (managedUserResponse.RegisteredUsersOption.IsSet && managedUserResponse.RegisteredUsers == null)
-                throw new ArgumentNullException(nameof(managedUserResponse.RegisteredUsers), "Property is required for class ManagedUserResponse.");
+            if (managedUserResponse.NameOption.IsSet && managedUserResponse.Name == null)
+                throw new ArgumentNullException(nameof(managedUserResponse.Name), "Property is required for class ManagedUserResponse.");
 
-            if (managedUserResponse.InvitedUsersOption.IsSet && managedUserResponse.InvitedUsers == null)
-                throw new ArgumentNullException(nameof(managedUserResponse.InvitedUsers), "Property is required for class ManagedUserResponse.");
+            if (managedUserResponse.EmailIdOption.IsSet && managedUserResponse.EmailId == null)
+                throw new ArgumentNullException(nameof(managedUserResponse.EmailId), "Property is required for class ManagedUserResponse.");
 
-            if (managedUserResponse.ResponsibleUserOption.IsSet)
-            {
-                writer.WritePropertyName("responsibleUser");
-                JsonSerializer.Serialize(writer, managedUserResponse.ResponsibleUser, jsonSerializerOptions);
-            }
-            if (managedUserResponse.RegisteredUsersOption.IsSet)
-            {
-                writer.WritePropertyName("registeredUsers");
-                JsonSerializer.Serialize(writer, managedUserResponse.RegisteredUsers, jsonSerializerOptions);
-            }
-            if (managedUserResponse.InvitedUsersOption.IsSet)
-            {
-                writer.WritePropertyName("invitedUsers");
-                JsonSerializer.Serialize(writer, managedUserResponse.InvitedUsers, jsonSerializerOptions);
-            }
+            if (managedUserResponse.StatusOption.IsSet && managedUserResponse.Status == null)
+                throw new ArgumentNullException(nameof(managedUserResponse.Status), "Property is required for class ManagedUserResponse.");
+
+            if (managedUserResponse.IdOption.IsSet)
+                writer.WriteString("id", managedUserResponse.Id);
+
+            if (managedUserResponse.NameOption.IsSet)
+                writer.WriteString("name", managedUserResponse.Name);
+
+            if (managedUserResponse.EmailIdOption.IsSet)
+                writer.WriteString("emailId", managedUserResponse.EmailId);
+
+            if (managedUserResponse.StatusOption.IsSet)
+                writer.WriteString("status", managedUserResponse.Status);
+
+            if (managedUserResponse.HeatNetworksOption.IsSet)
+                if (managedUserResponse.HeatNetworksOption.Value != null)
+                {
+                    writer.WritePropertyName("heatNetworks");
+                    JsonSerializer.Serialize(writer, managedUserResponse.HeatNetworks, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("heatNetworks");
+            if (managedUserResponse.RolesOption.IsSet)
+                if (managedUserResponse.RolesOption.Value != null)
+                {
+                    writer.WritePropertyName("roles");
+                    JsonSerializer.Serialize(writer, managedUserResponse.Roles, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("roles");
+            if (managedUserResponse.InvitedAtOption.IsSet)
+                if (managedUserResponse.InvitedAtOption.Value != null)
+                    writer.WriteString("invitedAt", managedUserResponse.InvitedAtOption.Value!.Value.ToString(InvitedAtFormat));
+                else
+                    writer.WriteNull("invitedAt");
         }
     }
 }

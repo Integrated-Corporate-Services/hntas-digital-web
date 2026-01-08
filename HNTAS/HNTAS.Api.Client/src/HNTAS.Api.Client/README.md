@@ -11,7 +11,7 @@ outputDir: out
 
 # https://openapi-generator.tech/docs/generators/csharp
 additionalProperties:
-  packageGuid: '{8C5D89E9-DCDB-4ED8-8D3C-B8F8587E8029}'
+  packageGuid: '{793411CA-66A4-4D83-8D8C-CD1C16CA7183}'
 
 # https://openapi-generator.tech/docs/integrations/#github-integration
 # gitHost:
@@ -54,9 +54,9 @@ namespace YourProject
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            var api = host.Services.GetRequiredService<IHeatNetworksApi>();
-            IApiHeatNetworksAddHeatNetworkPostApiResponse apiResponse = await api.ApiHeatNetworksAddHeatNetworkPostAsync("todo");
-            HeatNetworkResponse? model = apiResponse.Ok();
+            var api = host.Services.GetRequiredService<ICarbonCalculatorApi>();
+            IApiCarbonCalculatorRunPostApiResponse apiResponse = await api.ApiCarbonCalculatorRunPostAsync("todo");
+            CarbonCalculatorResponse? model = apiResponse.Ok();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)

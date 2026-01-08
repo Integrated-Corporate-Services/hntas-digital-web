@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = $"Confirmation";
+}
+
+@if (string.IsNullOrEmpty(TempData["ErrorSummary"]?.ToString()) && ViewData.ModelState.IsValid)
+{
+    <div class="govuk-width-container">
+        <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-l">
+                        Your Organisation details are updated
+                    </h1>
+
+                    <p class="govuk-body">
+                        We have sent an email confirmation.
+                    </p>                
+                </div>
+            </div>
+        </main>
+    </div>
+}

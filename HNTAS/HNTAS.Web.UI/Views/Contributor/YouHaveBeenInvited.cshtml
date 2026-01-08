@@ -15,7 +15,7 @@
             new Question
             {
                 QId = elementId,
-                QText = "You have been invited to join [Heat network name] heat network",
+                QText = $"You have been invited to join {TempData["HNName"]} heat network",
                 QDescText = null,
                 QHintText = null,
                 Options = new List<Option>
@@ -32,9 +32,6 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <p class="govuk-hint">
-                @TempData["OrgName"]
-            </p>
             @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
         </div>
     </div>

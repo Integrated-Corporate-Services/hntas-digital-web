@@ -87,8 +87,7 @@ public class HomeController : Controller
                     var userId = await _iUserService.AcceptUserInvitation(new InvitedUserRequest(
                         invitedEmail: invitedEmail,
                         invitationId: invitationId,
-                        oneLoginId: oneLoginId,
-                        inviterOrgId: inviterOrgId));
+                        oneLoginId: oneLoginId));
 
                     if (string.IsNullOrWhiteSpace(userId))
                     {
@@ -102,8 +101,6 @@ public class HomeController : Controller
 
                     return RedirectToAction("UserAccount", "Dashboard");
                 }
-
-
             }
 
             var existingUser = await _iUserService.GetUserByOneLoginId(oneLoginId);
@@ -150,8 +147,6 @@ public class HomeController : Controller
             TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
             return BadRequest();
         }
-
-
     }
 
     public IActionResult Error(int code)
@@ -179,6 +174,13 @@ public class HomeController : Controller
             ViewBag.NavigateUrl = Url.Action("WhatDoYouWantToDo");
         }
 
+        return View();
+    }
+
+
+    [HttpGet]
+    public IActionResult DocumentLibrary()
+    {
         return View();
     }
 

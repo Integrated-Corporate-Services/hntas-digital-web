@@ -41,13 +41,14 @@
                         </p>
                     }
 
-                    @await Html.PartialAsync("Components/_GovUkRadioList",new GovUkRadioListModel
-                    {
-                        FieldId = Html.LowercaseIdFor(m => m.SelectedHeatNetworkId),
-                        FieldName = nameof(Model.SelectedHeatNetworkId),
-                        SelectedValue = Model.SelectedHeatNetworkId,
-                        Items = Model.HeatNetworks
-                    })
+                    <select class="govuk-select" id="@selectedHeatNetworkId" name="@nameof(Model.SelectedHeatNetworkId)" aria-describedby="@ariaDescribedBy">
+                        <option value="">Select a heat network</option>
+                    
+                        @foreach (var network in Model.HeatNetworks)
+                        {
+                            <option value="@network.Value" selected="@(network.Value == Model.SelectedHeatNetworkId ? "selected" : null)"> @network.Text</option>
+                        }
+                     </select>
                 </fieldset>
             </div>
 

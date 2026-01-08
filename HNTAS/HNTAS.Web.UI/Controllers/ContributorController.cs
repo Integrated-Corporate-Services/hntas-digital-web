@@ -1,11 +1,8 @@
-﻿using HNTAS.Api.Client.Model;
-using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -70,7 +67,7 @@ namespace HNTAS.Web.UI.Controllers
                     return BadRequest("Invalid invitation details.");
                 }
 
-                TempData["OrgName"] = inviterUser.Organisation.Name;
+                TempData["HNName"] = inviterUser?.HeatNetworks?.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedTokenEmail, invitationEmail);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitationId, invitation.Id);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedInviterUserId, invitation.InviterUserId);
@@ -81,7 +78,6 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = "The invitation token is missing from your request. Please use the link provided in the invitation email to proceed.";
             }
             var model = _sessionHelper.GetFromSession<YouHaveBeenInvitedModel>(HttpContext, SessionKeys.YouHaveBeenInvitedModelKey) ?? new YouHaveBeenInvitedModel();
-            ViewBag.HNName = "[Heat network name]"; // Placeholder until we get the actual value from the invitation email story
             return View(model);
         }
 
@@ -89,13 +85,19 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> YouHaveBeenInvitedAsync(YouHaveBeenInvitedModel model)
         {
+            var invitationId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.InvitationId);
+
             if (!ModelState.IsValid)
             {
+                var inviterUserId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.InvitedInviterUserId);
+                var invitation = await _invitationService.GetInvitationByIdAsync(invitationId);
+                var inviterUser = await _iUserService.GetUserDetails(invitation.InviterUserId);
+
+                TempData["HNName"] = inviterUser?.HeatNetworks?.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
                 _logger.LogWarning("Invalid model state in invitation response.");
                 return View(model);
             }
 
-            var invitationId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.InvitationId);
             if (string.IsNullOrWhiteSpace(invitationId))
             {
                 _logger.LogWarning("Invitation ID is missing from session during invitation response.");
@@ -131,7 +133,6 @@ namespace HNTAS.Web.UI.Controllers
         }
 
 
-
         [HttpGet]
         public IActionResult StartPage()
         {
@@ -139,71 +140,6 @@ namespace HNTAS.Web.UI.Controllers
             return View();
         }
 
-        [Authorize]
-        public async Task<IActionResult> UserLogin()
-        {
-            var email = User.FindFirstValue("email");
-            var oneLoginId = User.FindFirstValue("sub");
-
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
-            {
-                _logger.LogError("Missing claims. ID: '{Id}'", oneLoginId);
-                TempData["ErrorMessage"] = "Unable to retrieve essential user info. Please try again.";
-                return View("StartPage");
-            }
-
-            try
-            {
-                var existingUser = await _iUserService.GetUserByOneLoginId(oneLoginId);
-
-                if (existingUser == null)
-                {
-                    var registration = new InitialUserRegistrationRequest(oneLoginId: oneLoginId, emailId: email, status: UserStatus.Active);
-                    _logger.LogInformation("Submitting initial user entry. ID: {Id}", oneLoginId);
-
-                    var newUserId = await _iUserService.CreateUser(registration);
-
-                    if (string.IsNullOrWhiteSpace(newUserId))
-                    {
-                        _logger.LogError("API returned no valid user object.");
-                        TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
-                        return View("StartPage");
-                    }
-
-                    _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, newUserId);
-
-                    return View("StartPage");
-                }
-
-                _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
-
-                if (existingUser.OrgId != null)
-                {
-                    return RedirectToAction("Dashboard", "Contributor");
-                }
-
-                return View();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Exception during initial user registration.");
-                TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
-                return View("StartPage");
-            }
-        }
-
-        [HttpGet]
-        public IActionResult Dashboard()
-        {
-            // TODO - hardcoded for now, will be linked to model once we receive value from email invitaion story
-            var model = new ContributorDashboardModel
-            {
-                OrganisationName = "ABC Org",
-                HeatNetwork = "XyZ HN",
-                HNStatus = "Active"
-            };
-            return View(model);
-        }
 
         #endregion
     }

@@ -36,36 +36,28 @@ namespace HNTAS.Api.Client.Model
         /// <param name="emailAddress">emailAddress</param>
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
-        /// <param name="preferredContactType">preferredContactType</param>
-        /// <param name="hnId">hnId</param>
-        /// <param name="contributorRoles">contributorRoles</param>
         /// <param name="status">status</param>
-        /// <param name="landlineNumber">landlineNumber</param>
-        /// <param name="mobileNumber">mobileNumber</param>
-        /// <param name="contactNumberExtension">contactNumberExtension</param>
+        /// <param name="hnId">hnId</param>
+        /// <param name="orgId">orgId</param>
+        /// <param name="contributorRoles">contributorRoles</param>
+        /// <param name="replacedUserId">replacedUserId</param>
+        /// <param name="rolesToReplace">rolesToReplace</param>
         [JsonConstructor]
-        public AddInvitationRequest(string emailAddress, string firstName, string lastName, PreferredContactType preferredContactType, string hnId, List<ContributorRole> contributorRoles, InvitationStatus status, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default)
+        public AddInvitationRequest(string emailAddress, string firstName, string lastName, InvitationStatus status, Option<string?> hnId = default, Option<string?> orgId = default, Option<List<ContributorRole>?> contributorRoles = default, Option<string?> replacedUserId = default, Option<List<ContributorRole>?> rolesToReplace = default)
         {
             EmailAddress = emailAddress;
             FirstName = firstName;
             LastName = lastName;
-            PreferredContactType = preferredContactType;
-            HnId = hnId;
-            ContributorRoles = contributorRoles;
             Status = status;
-            LandlineNumberOption = landlineNumber;
-            MobileNumberOption = mobileNumber;
-            ContactNumberExtensionOption = contactNumberExtension;
+            HnIdOption = hnId;
+            OrgIdOption = orgId;
+            ContributorRolesOption = contributorRoles;
+            ReplacedUserIdOption = replacedUserId;
+            RolesToReplaceOption = rolesToReplace;
             OnCreated();
         }
 
         partial void OnCreated();
-
-        /// <summary>
-        /// Gets or Sets PreferredContactType
-        /// </summary>
-        [JsonPropertyName("preferredContactType")]
-        public PreferredContactType PreferredContactType { get; set; }
 
         /// <summary>
         /// Gets or Sets Status
@@ -92,55 +84,69 @@ namespace HNTAS.Api.Client.Model
         public string LastName { get; set; }
 
         /// <summary>
+        /// Used to track the state of HnId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> HnIdOption { get; private set; }
+
+        /// <summary>
         /// Gets or Sets HnId
         /// </summary>
         [JsonPropertyName("hnId")]
-        public string HnId { get; set; }
+        public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of OrgId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> OrgIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets OrgId
+        /// </summary>
+        [JsonPropertyName("orgId")]
+        public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ContributorRoles
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<ContributorRole>?> ContributorRolesOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets ContributorRoles
         /// </summary>
         [JsonPropertyName("contributorRoles")]
-        public List<ContributorRole> ContributorRoles { get; set; }
+        public List<ContributorRole>? ContributorRoles { get { return this.ContributorRolesOption; } set { this.ContributorRolesOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of LandlineNumber
+        /// Used to track the state of ReplacedUserId
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> LandlineNumberOption { get; private set; }
+        public Option<string?> ReplacedUserIdOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets LandlineNumber
+        /// Gets or Sets ReplacedUserId
         /// </summary>
-        [JsonPropertyName("landlineNumber")]
-        public string? LandlineNumber { get { return this.LandlineNumberOption; } set { this.LandlineNumberOption = new(value); } }
+        [JsonPropertyName("replacedUserId")]
+        public string? ReplacedUserId { get { return this.ReplacedUserIdOption; } set { this.ReplacedUserIdOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of MobileNumber
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> MobileNumberOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets MobileNumber
-        /// </summary>
-        [JsonPropertyName("mobileNumber")]
-        public string? MobileNumber { get { return this.MobileNumberOption; } set { this.MobileNumberOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of ContactNumberExtension
+        /// Used to track the state of RolesToReplace
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ContactNumberExtensionOption { get; private set; }
+        public Option<List<ContributorRole>?> RolesToReplaceOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets ContactNumberExtension
+        /// Gets or Sets RolesToReplace
         /// </summary>
-        [JsonPropertyName("contactNumberExtension")]
-        public string? ContactNumberExtension { get { return this.ContactNumberExtensionOption; } set { this.ContactNumberExtensionOption = new(value); } }
+        [JsonPropertyName("rolesToReplace")]
+        public List<ContributorRole>? RolesToReplace { get { return this.RolesToReplaceOption; } set { this.RolesToReplaceOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -153,13 +159,12 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  EmailAddress: ").Append(EmailAddress).Append("\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
-            sb.Append("  PreferredContactType: ").Append(PreferredContactType).Append("\n");
-            sb.Append("  HnId: ").Append(HnId).Append("\n");
-            sb.Append("  ContributorRoles: ").Append(ContributorRoles).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
-            sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
-            sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
-            sb.Append("  ContactNumberExtension: ").Append(ContactNumberExtension).Append("\n");
+            sb.Append("  HnId: ").Append(HnId).Append("\n");
+            sb.Append("  OrgId: ").Append(OrgId).Append("\n");
+            sb.Append("  ContributorRoles: ").Append(ContributorRoles).Append("\n");
+            sb.Append("  ReplacedUserId: ").Append(ReplacedUserId).Append("\n");
+            sb.Append("  RolesToReplace: ").Append(RolesToReplace).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -171,54 +176,6 @@ namespace HNTAS.Api.Client.Model
         /// <returns>Validation Result</returns>
         IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
-            // LandlineNumber (string) maxLength
-            if (this.LandlineNumber != null && this.LandlineNumber.Length > 20)
-            {
-                yield return new ValidationResult("Invalid value for LandlineNumber, length must be less than 20.", new [] { "LandlineNumber" });
-            }
-
-            if (this.LandlineNumberOption.Value != null) {
-                // LandlineNumber (string) pattern
-                Regex regexLandlineNumber = new Regex(@"^\+?\d{1,3}[\s-]?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$", RegexOptions.CultureInvariant);
-
-                if (this.LandlineNumberOption.Value != null &&!regexLandlineNumber.Match(this.LandlineNumberOption.Value).Success)
-                {
-                    yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for LandlineNumber, must match a pattern of " + regexLandlineNumber, new [] { "LandlineNumber" });
-                }
-            }
-
-            // MobileNumber (string) maxLength
-            if (this.MobileNumber != null && this.MobileNumber.Length > 13)
-            {
-                yield return new ValidationResult("Invalid value for MobileNumber, length must be less than 13.", new [] { "MobileNumber" });
-            }
-
-            if (this.MobileNumberOption.Value != null) {
-                // MobileNumber (string) pattern
-                Regex regexMobileNumber = new Regex(@"^\+?\d{1,3}[\s-]?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$", RegexOptions.CultureInvariant);
-
-                if (this.MobileNumberOption.Value != null &&!regexMobileNumber.Match(this.MobileNumberOption.Value).Success)
-                {
-                    yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for MobileNumber, must match a pattern of " + regexMobileNumber, new [] { "MobileNumber" });
-                }
-            }
-
-            // ContactNumberExtension (string) maxLength
-            if (this.ContactNumberExtension != null && this.ContactNumberExtension.Length > 10)
-            {
-                yield return new ValidationResult("Invalid value for ContactNumberExtension, length must be less than 10.", new [] { "ContactNumberExtension" });
-            }
-
-            if (this.ContactNumberExtensionOption.Value != null) {
-                // ContactNumberExtension (string) pattern
-                Regex regexContactNumberExtension = new Regex(@"^\d*$", RegexOptions.CultureInvariant);
-
-                if (this.ContactNumberExtensionOption.Value != null &&!regexContactNumberExtension.Match(this.ContactNumberExtensionOption.Value).Success)
-                {
-                    yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for ContactNumberExtension, must match a pattern of " + regexContactNumberExtension, new [] { "ContactNumberExtension" });
-                }
-            }
-
             yield break;
         }
     }
@@ -248,13 +205,12 @@ namespace HNTAS.Api.Client.Model
             Option<string?> emailAddress = default;
             Option<string?> firstName = default;
             Option<string?> lastName = default;
-            Option<PreferredContactType?> preferredContactType = default;
-            Option<string?> hnId = default;
-            Option<List<ContributorRole>?> contributorRoles = default;
             Option<InvitationStatus?> status = default;
-            Option<string?> landlineNumber = default;
-            Option<string?> mobileNumber = default;
-            Option<string?> contactNumberExtension = default;
+            Option<string?> hnId = default;
+            Option<string?> orgId = default;
+            Option<List<ContributorRole>?> contributorRoles = default;
+            Option<string?> replacedUserId = default;
+            Option<List<ContributorRole>?> rolesToReplace = default;
 
             while (utf8JsonReader.Read())
             {
@@ -280,30 +236,25 @@ namespace HNTAS.Api.Client.Model
                         case "lastName":
                             lastName = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "preferredContactType":
-                            string? preferredContactTypeRawValue = utf8JsonReader.GetString();
-                            if (preferredContactTypeRawValue != null)
-                                preferredContactType = new Option<PreferredContactType?>(PreferredContactTypeValueConverter.FromStringOrDefault(preferredContactTypeRawValue));
-                            break;
-                        case "hnId":
-                            hnId = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "contributorRoles":
-                            contributorRoles = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions)!);
-                            break;
                         case "status":
                             string? statusRawValue = utf8JsonReader.GetString();
                             if (statusRawValue != null)
                                 status = new Option<InvitationStatus?>(InvitationStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
-                        case "landlineNumber":
-                            landlineNumber = new Option<string?>(utf8JsonReader.GetString());
+                        case "hnId":
+                            hnId = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "mobileNumber":
-                            mobileNumber = new Option<string?>(utf8JsonReader.GetString());
+                        case "orgId":
+                            orgId = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "contactNumberExtension":
-                            contactNumberExtension = new Option<string?>(utf8JsonReader.GetString());
+                        case "contributorRoles":
+                            contributorRoles = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "replacedUserId":
+                            replacedUserId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "rolesToReplace":
+                            rolesToReplace = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -320,15 +271,6 @@ namespace HNTAS.Api.Client.Model
             if (!lastName.IsSet)
                 throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(lastName));
 
-            if (!preferredContactType.IsSet)
-                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(preferredContactType));
-
-            if (!hnId.IsSet)
-                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(hnId));
-
-            if (!contributorRoles.IsSet)
-                throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(contributorRoles));
-
             if (!status.IsSet)
                 throw new ArgumentException("Property is required for class AddInvitationRequest.", nameof(status));
 
@@ -341,19 +283,10 @@ namespace HNTAS.Api.Client.Model
             if (lastName.IsSet && lastName.Value == null)
                 throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class AddInvitationRequest.");
 
-            if (preferredContactType.IsSet && preferredContactType.Value == null)
-                throw new ArgumentNullException(nameof(preferredContactType), "Property is not nullable for class AddInvitationRequest.");
-
-            if (hnId.IsSet && hnId.Value == null)
-                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class AddInvitationRequest.");
-
-            if (contributorRoles.IsSet && contributorRoles.Value == null)
-                throw new ArgumentNullException(nameof(contributorRoles), "Property is not nullable for class AddInvitationRequest.");
-
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class AddInvitationRequest.");
 
-            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, preferredContactType.Value!.Value!, hnId.Value!, contributorRoles.Value!, status.Value!.Value!, landlineNumber, mobileNumber, contactNumberExtension);
+            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, status.Value!.Value!, hnId, orgId, contributorRoles, replacedUserId, rolesToReplace);
         }
 
         /// <summary>
@@ -389,45 +322,49 @@ namespace HNTAS.Api.Client.Model
             if (addInvitationRequest.LastName == null)
                 throw new ArgumentNullException(nameof(addInvitationRequest.LastName), "Property is required for class AddInvitationRequest.");
 
-            if (addInvitationRequest.HnId == null)
-                throw new ArgumentNullException(nameof(addInvitationRequest.HnId), "Property is required for class AddInvitationRequest.");
-
-            if (addInvitationRequest.ContributorRoles == null)
-                throw new ArgumentNullException(nameof(addInvitationRequest.ContributorRoles), "Property is required for class AddInvitationRequest.");
-
             writer.WriteString("emailAddress", addInvitationRequest.EmailAddress);
 
             writer.WriteString("firstName", addInvitationRequest.FirstName);
 
             writer.WriteString("lastName", addInvitationRequest.LastName);
 
-            var preferredContactTypeRawValue = PreferredContactTypeValueConverter.ToJsonValue(addInvitationRequest.PreferredContactType);
-            writer.WriteString("preferredContactType", preferredContactTypeRawValue);
-
-            writer.WriteString("hnId", addInvitationRequest.HnId);
-
-            writer.WritePropertyName("contributorRoles");
-            JsonSerializer.Serialize(writer, addInvitationRequest.ContributorRoles, jsonSerializerOptions);
             var statusRawValue = InvitationStatusValueConverter.ToJsonValue(addInvitationRequest.Status);
             writer.WriteString("status", statusRawValue);
 
-            if (addInvitationRequest.LandlineNumberOption.IsSet)
-                if (addInvitationRequest.LandlineNumberOption.Value != null)
-                    writer.WriteString("landlineNumber", addInvitationRequest.LandlineNumber);
+            if (addInvitationRequest.HnIdOption.IsSet)
+                if (addInvitationRequest.HnIdOption.Value != null)
+                    writer.WriteString("hnId", addInvitationRequest.HnId);
                 else
-                    writer.WriteNull("landlineNumber");
+                    writer.WriteNull("hnId");
 
-            if (addInvitationRequest.MobileNumberOption.IsSet)
-                if (addInvitationRequest.MobileNumberOption.Value != null)
-                    writer.WriteString("mobileNumber", addInvitationRequest.MobileNumber);
+            if (addInvitationRequest.OrgIdOption.IsSet)
+                if (addInvitationRequest.OrgIdOption.Value != null)
+                    writer.WriteString("orgId", addInvitationRequest.OrgId);
                 else
-                    writer.WriteNull("mobileNumber");
+                    writer.WriteNull("orgId");
 
-            if (addInvitationRequest.ContactNumberExtensionOption.IsSet)
-                if (addInvitationRequest.ContactNumberExtensionOption.Value != null)
-                    writer.WriteString("contactNumberExtension", addInvitationRequest.ContactNumberExtension);
+            if (addInvitationRequest.ContributorRolesOption.IsSet)
+                if (addInvitationRequest.ContributorRolesOption.Value != null)
+                {
+                    writer.WritePropertyName("contributorRoles");
+                    JsonSerializer.Serialize(writer, addInvitationRequest.ContributorRoles, jsonSerializerOptions);
+                }
                 else
-                    writer.WriteNull("contactNumberExtension");
+                    writer.WriteNull("contributorRoles");
+            if (addInvitationRequest.ReplacedUserIdOption.IsSet)
+                if (addInvitationRequest.ReplacedUserIdOption.Value != null)
+                    writer.WriteString("replacedUserId", addInvitationRequest.ReplacedUserId);
+                else
+                    writer.WriteNull("replacedUserId");
+
+            if (addInvitationRequest.RolesToReplaceOption.IsSet)
+                if (addInvitationRequest.RolesToReplaceOption.Value != null)
+                {
+                    writer.WritePropertyName("rolesToReplace");
+                    JsonSerializer.Serialize(writer, addInvitationRequest.RolesToReplace, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("rolesToReplace");
         }
     }
 }

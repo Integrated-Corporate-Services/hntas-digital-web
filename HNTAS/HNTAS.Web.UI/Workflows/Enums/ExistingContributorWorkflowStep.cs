@@ -6,7 +6,9 @@
         ChooseUser = 1,
         ChooseHeatNetwork = 2,
         ChooseRole = 3,
-        CheckYourAnswers = 4,
-        Confirmation = 5
+        ReplaceRoleConfirmation = 4,
+        CannotContinue = 5,
+        CheckYourAnswers = 6,
+        Confirmation = 7
     }
 }

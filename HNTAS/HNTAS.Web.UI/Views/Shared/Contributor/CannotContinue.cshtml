@@ -1,0 +1,22 @@
+﻿@{
+    // Set the page title which will be used in the _Layout.cshtml
+    ViewData["Title"] = "Review the role to be assigned to the new user";
+    // You might pass the organisation name via ViewBag or a Model
+    string HNName = ViewBag.HName;
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">
+                Review the role to be assigned to the new user
+            </h1>
+
+            <p class="govuk-body">
+                Review the users currently assigned to the roles for the @HNName heat network.
+
+                As an existing user is assigned to this role. You may go back and review the alternate roles this user can be assigned to.
+            </p>
+        </div>
+    </div>
+</div>

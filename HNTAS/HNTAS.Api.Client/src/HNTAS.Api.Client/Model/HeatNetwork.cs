@@ -39,8 +39,10 @@ namespace HNTAS.Api.Client.Model
         /// <param name="name">name</param>
         /// <param name="pathway">pathway</param>
         /// <param name="soa">soa</param>
+        /// <param name="createdBy">createdBy</param>
+        /// <param name="createdAt">createdAt</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> location = default, Option<string?> name = default, Option<string?> pathway = default, Option<Soa?> soa = default)
+        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> location = default, Option<string?> name = default, Option<string?> pathway = default, Option<Soa?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default)
         {
             IdOption = id;
             HnIdOption = hnId;
@@ -48,6 +50,8 @@ namespace HNTAS.Api.Client.Model
             NameOption = name;
             PathwayOption = pathway;
             SoaOption = soa;
+            CreatedByOption = createdBy;
+            CreatedAtOption = createdAt;
             OnCreated();
         }
 
@@ -132,6 +136,32 @@ namespace HNTAS.Api.Client.Model
         public Soa? Soa { get { return this.SoaOption; } set { this.SoaOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of CreatedBy
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> CreatedByOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets CreatedBy
+        /// </summary>
+        [JsonPropertyName("createdBy")]
+        public string? CreatedBy { get { return this.CreatedByOption; } set { this.CreatedByOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of CreatedAt
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<DateTimeOffset?> CreatedAtOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets CreatedAt
+        /// </summary>
+        [JsonPropertyName("createdAt")]
+        public DateTimeOffset? CreatedAt { get { return this.CreatedAtOption; } set { this.CreatedAtOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -145,6 +175,8 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Pathway: ").Append(Pathway).Append("\n");
             sb.Append("  Soa: ").Append(Soa).Append("\n");
+            sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
+            sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -165,6 +197,11 @@ namespace HNTAS.Api.Client.Model
     /// </summary>
     public class HeatNetworkJsonConverter : JsonConverter<HeatNetwork>
     {
+        /// <summary>
+        /// The format to use to serialize CreatedAt
+        /// </summary>
+        public static string CreatedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+
         /// <summary>
         /// Deserializes json to <see cref="HeatNetwork" />
         /// </summary>
@@ -188,6 +225,8 @@ namespace HNTAS.Api.Client.Model
             Option<string?> name = default;
             Option<string?> pathway = default;
             Option<Soa?> soa = default;
+            Option<string?> createdBy = default;
+            Option<DateTimeOffset?> createdAt = default;
 
             while (utf8JsonReader.Read())
             {
@@ -222,6 +261,12 @@ namespace HNTAS.Api.Client.Model
                         case "soa":
                             soa = new Option<Soa?>(JsonSerializer.Deserialize<Soa>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "createdBy":
+                            createdBy = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "createdAt":
+                            createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         default:
                             break;
                     }
@@ -237,7 +282,13 @@ namespace HNTAS.Api.Client.Model
             if (pathway.IsSet && pathway.Value == null)
                 throw new ArgumentNullException(nameof(pathway), "Property is not nullable for class HeatNetwork.");
 
-            return new HeatNetwork(id, hnId, location, name, pathway, soa);
+            if (createdBy.IsSet && createdBy.Value == null)
+                throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class HeatNetwork.");
+
+            if (createdAt.IsSet && createdAt.Value == null)
+                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class HeatNetwork.");
+
+            return new HeatNetwork(id, hnId, location, name, pathway, soa, createdBy, createdAt);
         }
 
         /// <summary>
@@ -273,6 +324,9 @@ namespace HNTAS.Api.Client.Model
             if (heatNetwork.PathwayOption.IsSet && heatNetwork.Pathway == null)
                 throw new ArgumentNullException(nameof(heatNetwork.Pathway), "Property is required for class HeatNetwork.");
 
+            if (heatNetwork.CreatedByOption.IsSet && heatNetwork.CreatedBy == null)
+                throw new ArgumentNullException(nameof(heatNetwork.CreatedBy), "Property is required for class HeatNetwork.");
+
             if (heatNetwork.IdOption.IsSet)
                 if (heatNetwork.IdOption.Value != null)
                     writer.WriteString("id", heatNetwork.Id);
@@ -302,6 +356,11 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("soa");
+            if (heatNetwork.CreatedByOption.IsSet)
+                writer.WriteString("createdBy", heatNetwork.CreatedBy);
+
+            if (heatNetwork.CreatedAtOption.IsSet)
+                writer.WriteString("createdAt", heatNetwork.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
         }
     }
 }

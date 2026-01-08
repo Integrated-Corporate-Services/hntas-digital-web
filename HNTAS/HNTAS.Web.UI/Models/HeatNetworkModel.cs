@@ -3,16 +3,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
 {
+    
     public class HeatNetworkNameModel
     {
         [Required(ErrorMessage = "Please enter the heat network name.")]
         [StringLength(100, ErrorMessage = "The heat network name cannot exceed 100 characters.")]
+        [RegularExpression(@"^[A-Za-z0-9 :;\-]+$", ErrorMessage = "The heat network name contains invalid characters.")]
+        [Display(Name = "HeatNetwork Name")]
         public string HeatNetworkName { get; set; }
     }
 
     public class HeatNetworkLocationModel
     {
         [Required(ErrorMessage = "Please enter the What3words url.")]
+        [RegularExpression(@"^\/\/\/\p{L}+\.\p{L}+\.\p{L}+$", ErrorMessage = "The heat network location contains invalid characters.")]
+        [Display(Name = "HeatNetwork Location")]
         public string HeatNetworkLocation { get; set; }
     }
 

@@ -5,11 +5,69 @@ info:
 servers:
 - url: https://localhost:7117/
 tags:
+- name: CarbonCalculator
+- name: CountriesAndTerritories
 - name: HeatNetworks
 - name: Invitations
+- name: Organisations
+- name: OrganisationUser
 - name: SOA
 - name: Users
 paths:
+  /api/CarbonCalculator/run:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarbonCalculatorRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/CarbonCalculatorRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/CarbonCalculatorRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/CarbonCalculatorResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CarbonCalculatorResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/CarbonCalculatorResponse"
+          description: OK
+      tags:
+      - CarbonCalculator
+  /api/CountriesAndTerritories:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/CountryAndTerritory"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/CountryAndTerritory"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/CountryAndTerritory"
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - CountriesAndTerritories
   /api/HeatNetworks:
     get:
       responses:
@@ -387,6 +445,280 @@ paths:
           description: Bad Request
       tags:
       - Invitations
+  /api/Organisations/{orgId}/edit-org-details:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrganisationRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/OrganisationRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/User"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Organisations
+  /api/Organisations/exists-by-details:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: postCode
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Organisations
+  /api/Organisations/search:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: term
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Organisations
+  /api/Organisations/{orgId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Organisations
+  /api/Organisations/{orgId}/user/{userId}/heatnetwork/{heatNetworkId}:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: heatNetworkId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Organisations
+  /api/OrganisationUser/responsible-party-user/{orgId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - OrganisationUser
   /api/SOA/heat-network/{hnId}:
     get:
       parameters:
@@ -1033,6 +1365,70 @@ paths:
           description: Internal Server Error
       tags:
       - Users
+  /api/Users/is-rp-user/{emailId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: emailId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/is-active-user/{emailId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: emailId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: Not Found
+      tags:
+      - Users
   /api/Users/onelogin/{oneLoginId}:
     get:
       operationId: GetUserByOneLoginId
@@ -1187,6 +1583,121 @@ paths:
           description: Internal Server Error
       tags:
       - Users
+  /api/Users/register-org-and-link/{userId}:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrganisationRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/OrganisationRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/OrganisationRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+          description: Created
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
+  /api/Users/{id}/user-details:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserDetailsRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserDetailsRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
   /api/Users/accept-invitation:
     patch:
       requestBody:
@@ -1297,44 +1808,6 @@ paths:
           description: OK
       tags:
       - Users
-  /api/Users/{id}/heatnetwork/{heatNetworkId}:
-    patch:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          maxLength: 24
-          minLength: 24
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: heatNetworkId
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "204":
-          description: No Content
-        "404":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Not Found
-        "500":
-          description: Internal Server Error
-      tags:
-      - Users
   /api/Users/organisation/exists:
     get:
       parameters:
@@ -1389,7 +1862,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ManagedUserResponse"
+                items:
+                  $ref: "#/components/schemas/ManagedUserResponse"
+                type: array
           description: OK
         "404":
           content:
@@ -1426,6 +1901,137 @@ paths:
           description: Not Found
       tags:
       - Users
+  /api/Users/heat-network/{hnId}/roles:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserRoleDetailResponse"
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Users
+  /api/Users/update-orgid:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserOrgIdRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserOrgIdRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserOrgIdRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Users
+  /api/Users/organisation/{organisationId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: organisationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+      tags:
+      - Users
 components:
   schemas:
     AddInvitationRequest:
@@ -1437,11 +2043,12 @@ components:
         contributorRoles:
         - DesignatedDesigner
         - DesignatedDesigner
-        preferredContactType: Landline
-        mobileNumber: mobileNumber
-        landlineNumber: landlineNumber
-        contactNumberExtension: contactNumberExtension
+        rolesToReplace:
+        - null
+        - null
+        orgId: orgId
         status: Invited
+        replacedUserId: replacedUserId
       properties:
         emailAddress:
           type: string
@@ -1449,42 +2056,471 @@ components:
           type: string
         lastName:
           type: string
-        preferredContactType:
-          $ref: "#/components/schemas/PreferredContactType"
-        landlineNumber:
-          maxLength: 20
-          nullable: true
-          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
-            s-]?\\d{1,9}$"
-          type: string
-        mobileNumber:
-          maxLength: 13
-          nullable: true
-          pattern: "^\\+?\\d{1,3}[\\s-]?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,4}[\\\
-            s-]?\\d{1,9}$"
-          type: string
-        contactNumberExtension:
-          maxLength: 10
-          nullable: true
-          pattern: ^\d*$
-          type: string
         hnId:
+          nullable: true
+          type: string
+        orgId:
+          nullable: true
           type: string
         contributorRoles:
           items:
             $ref: "#/components/schemas/ContributorRole"
-          minItems: 1
+          nullable: true
           type: array
         status:
           $ref: "#/components/schemas/InvitationStatus"
+        replacedUserId:
+          nullable: true
+          type: string
+        rolesToReplace:
+          items:
+            $ref: "#/components/schemas/ContributorRole"
+          nullable: true
+          type: array
       required:
-      - contributorRoles
       - emailAddress
       - firstName
-      - hnId
       - lastName
-      - preferredContactType
       - status
+      type: object
+    Background:
+      example:
+        networkNamePrevious: networkNamePrevious
+        heatNetworkZone: heatNetworkZone
+        contactTelephone: contactTelephone
+        networkOperator: networkOperator
+        contactEmail: contactEmail
+        networkStatus: networkStatus
+        networkName: networkName
+        commissioningDate: commissioningDate
+        postcodeOfThePrimaryEnergyCentre: postcodeOfThePrimaryEnergyCentre
+        descriptionOfNetwork: descriptionOfNetwork
+        addressOfThePrimaryEnergyCentre: addressOfThePrimaryEnergyCentre
+        dateWorkbookCompleted: dateWorkbookCompleted
+        name: name
+        networkID: networkID
+        networkServiceProvision: networkServiceProvision
+        dateOfInitialOperation: dateOfInitialOperation
+        networkOperatorContact: networkOperatorContact
+      properties:
+        dateWorkbookCompleted:
+          nullable: true
+          type: string
+        networkStatus:
+          nullable: true
+          type: string
+        networkServiceProvision:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        networkID:
+          nullable: true
+          type: string
+        networkName:
+          nullable: true
+          type: string
+        networkNamePrevious:
+          nullable: true
+          type: string
+        heatNetworkZone:
+          nullable: true
+          type: string
+        addressOfThePrimaryEnergyCentre:
+          nullable: true
+          type: string
+        postcodeOfThePrimaryEnergyCentre:
+          nullable: true
+          type: string
+        networkOperator:
+          nullable: true
+          type: string
+        networkOperatorContact:
+          nullable: true
+          type: string
+        contactTelephone:
+          nullable: true
+          type: string
+        contactEmail:
+          nullable: true
+          type: string
+        descriptionOfNetwork:
+          nullable: true
+          type: string
+        dateOfInitialOperation:
+          nullable: true
+          type: string
+        commissioningDate:
+          nullable: true
+          type: string
+      type: object
+    BoilerInput:
+      example:
+        blrFuelUsedByNotes: blrFuelUsedByNotes
+        blrUsefulHeatGeneratedValue:
+        - 6
+        - 6
+        blrTypeFuelUsedInput: 3
+        blrSleevingPCentValue:
+        - 6
+        - 6
+        blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
+        blrFuelUsedByValue:
+        - 1
+        - 1
+        blrMaxHeatOutput: 6
+        blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
+        blrHeatUsedForCoolingProductionValue:
+        - 2
+        - 2
+        blrSleevingPCentNotes: blrSleevingPCentNotes
+      properties:
+        blrTypeFuelUsedInput:
+          format: int32
+          nullable: true
+          type: integer
+        blrUsefulHeatGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        blrUsefulHeatGeneratedNotes:
+          nullable: true
+          type: string
+        blrFuelUsedByValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        blrFuelUsedByNotes:
+          nullable: true
+          type: string
+        blrHeatUsedForCoolingProductionValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        blrHeatUsedForCoolingProductionNotes:
+          nullable: true
+          type: string
+        blrSleevingPCentValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        blrSleevingPCentNotes:
+          nullable: true
+          type: string
+        blrMaxHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
+      type: object
+    CarbonCalculatorRequest:
+      example:
+        background:
+          networkNamePrevious: networkNamePrevious
+          heatNetworkZone: heatNetworkZone
+          contactTelephone: contactTelephone
+          networkOperator: networkOperator
+          contactEmail: contactEmail
+          networkStatus: networkStatus
+          networkName: networkName
+          commissioningDate: commissioningDate
+          postcodeOfThePrimaryEnergyCentre: postcodeOfThePrimaryEnergyCentre
+          descriptionOfNetwork: descriptionOfNetwork
+          addressOfThePrimaryEnergyCentre: addressOfThePrimaryEnergyCentre
+          dateWorkbookCompleted: dateWorkbookCompleted
+          name: name
+          networkID: networkID
+          networkServiceProvision: networkServiceProvision
+          dateOfInitialOperation: dateOfInitialOperation
+          networkOperatorContact: networkOperatorContact
+        energy:
+          heatPumpCount: 5
+          boilerCount: 7
+          heatPumpInputs:
+          - hpmUsefulHeatGeneratedValue:
+            - 7
+            - 7
+            hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+            hpmEnergyUsedNotes: hpmEnergyUsedNotes
+            hpmSleevingPCentNotes: hpmSleevingPCentNotes
+            hpmTypeFuelUsedInput: 6
+            hpmUsefulCoolingGeneratedValue:
+            - 4
+            - 4
+            hpmEnergyUsedValue:
+            - 1
+            - 1
+            hpmSleevingPCentValue:
+            - 5
+            - 5
+            hpmMaxHeatOutput: 9
+            hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+          - hpmUsefulHeatGeneratedValue:
+            - 7
+            - 7
+            hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+            hpmEnergyUsedNotes: hpmEnergyUsedNotes
+            hpmSleevingPCentNotes: hpmSleevingPCentNotes
+            hpmTypeFuelUsedInput: 6
+            hpmUsefulCoolingGeneratedValue:
+            - 4
+            - 4
+            hpmEnergyUsedValue:
+            - 1
+            - 1
+            hpmSleevingPCentValue:
+            - 5
+            - 5
+            hpmMaxHeatOutput: 9
+            hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+          startYear: 6
+          yearCount: 0
+          chpInputs:
+          - chpElectricityGeneratedValue:
+            - 2
+            - 2
+            chpFuelUsedValue:
+            - 4
+            - 4
+            chpHeatCoolingNotes: chpHeatCoolingNotes
+            chpUsefulHeatValue:
+            - 3
+            - 3
+            chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
+            chpOperationalModeInput: chpOperationalModeInput
+            chpUsefulHeatNotes: chpUsefulHeatNotes
+            chpMaxHeatOutput: 1
+            chpFuelUsedNotes: chpFuelUsedNotes
+            chpInstallationDateInput: chpInstallationDateInput
+            chpFuelTypeInput: 9
+            chpSleevingPCentValue:
+            - 1
+            - 1
+            chpMaxElectricityOutput: 1
+            chpSleevingPCentNotes: chpSleevingPCentNotes
+            chpHeatCoolingValue:
+            - 7
+            - 7
+          - chpElectricityGeneratedValue:
+            - 2
+            - 2
+            chpFuelUsedValue:
+            - 4
+            - 4
+            chpHeatCoolingNotes: chpHeatCoolingNotes
+            chpUsefulHeatValue:
+            - 3
+            - 3
+            chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
+            chpOperationalModeInput: chpOperationalModeInput
+            chpUsefulHeatNotes: chpUsefulHeatNotes
+            chpMaxHeatOutput: 1
+            chpFuelUsedNotes: chpFuelUsedNotes
+            chpInstallationDateInput: chpInstallationDateInput
+            chpFuelTypeInput: 9
+            chpSleevingPCentValue:
+            - 1
+            - 1
+            chpMaxElectricityOutput: 1
+            chpSleevingPCentNotes: chpSleevingPCentNotes
+            chpHeatCoolingValue:
+            - 7
+            - 7
+          eppElectricityUsedForPumpingValue:
+          - 5.944895607614016
+          - 5.944895607614016
+          energyHeatNetworkPrimaryLosses:
+          - 1.4658129805029452
+          - 1.4658129805029452
+          recoveredInputs:
+          - hrwSleevingPCentValue:
+            - 9
+            - 9
+            hrwHeatUsedByCoolingProductionValue:
+            - 8
+            - 8
+            hrwSleevingPCentNotes: hrwSleevingPCentNotes
+            hrwUsefulHeatGeneratedValue:
+            - 6
+            - 6
+            hrwMaxHeatOutput: 6
+            hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+            hrwHeatRecoverySourceInput: 9
+            hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+          - hrwSleevingPCentValue:
+            - 9
+            - 9
+            hrwHeatUsedByCoolingProductionValue:
+            - 8
+            - 8
+            hrwSleevingPCentNotes: hrwSleevingPCentNotes
+            hrwUsefulHeatGeneratedValue:
+            - 6
+            - 6
+            hrwMaxHeatOutput: 6
+            hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+            hrwHeatRecoverySourceInput: 9
+            hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+          chpCount: 5
+          eppElectricityUsedForPumpingNotes: eppElectricityUsedForPumpingNotes
+          eppSleevingPCentNotes: eppSleevingPCentNotes
+          recoveredCount: 2
+          boilerInputs:
+          - blrFuelUsedByNotes: blrFuelUsedByNotes
+            blrUsefulHeatGeneratedValue:
+            - 6
+            - 6
+            blrTypeFuelUsedInput: 3
+            blrSleevingPCentValue:
+            - 6
+            - 6
+            blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
+            blrFuelUsedByValue:
+            - 1
+            - 1
+            blrMaxHeatOutput: 6
+            blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
+            blrHeatUsedForCoolingProductionValue:
+            - 2
+            - 2
+            blrSleevingPCentNotes: blrSleevingPCentNotes
+          - blrFuelUsedByNotes: blrFuelUsedByNotes
+            blrUsefulHeatGeneratedValue:
+            - 6
+            - 6
+            blrTypeFuelUsedInput: 3
+            blrSleevingPCentValue:
+            - 6
+            - 6
+            blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
+            blrFuelUsedByValue:
+            - 1
+            - 1
+            blrMaxHeatOutput: 6
+            blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
+            blrHeatUsedForCoolingProductionValue:
+            - 2
+            - 2
+            blrSleevingPCentNotes: blrSleevingPCentNotes
+      properties:
+        background:
+          $ref: "#/components/schemas/Background"
+        energy:
+          $ref: "#/components/schemas/Energy"
+      type: object
+    CarbonCalculatorResponse:
+      example:
+        hnId: hnId
+        totalCarbonEmission: 0.8008281904610115
+        uuid: uuid
+      properties:
+        hnId:
+          type: string
+        uuid:
+          type: string
+        totalCarbonEmission:
+          format: double
+          type: number
+      type: object
+    ChpInput:
+      example:
+        chpElectricityGeneratedValue:
+        - 2
+        - 2
+        chpFuelUsedValue:
+        - 4
+        - 4
+        chpHeatCoolingNotes: chpHeatCoolingNotes
+        chpUsefulHeatValue:
+        - 3
+        - 3
+        chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
+        chpOperationalModeInput: chpOperationalModeInput
+        chpUsefulHeatNotes: chpUsefulHeatNotes
+        chpMaxHeatOutput: 1
+        chpFuelUsedNotes: chpFuelUsedNotes
+        chpInstallationDateInput: chpInstallationDateInput
+        chpFuelTypeInput: 9
+        chpSleevingPCentValue:
+        - 1
+        - 1
+        chpMaxElectricityOutput: 1
+        chpSleevingPCentNotes: chpSleevingPCentNotes
+        chpHeatCoolingValue:
+        - 7
+        - 7
+      properties:
+        chpFuelTypeInput:
+          format: int32
+          nullable: true
+          type: integer
+        chpInstallationDateInput:
+          nullable: true
+          type: string
+        chpOperationalModeInput:
+          nullable: true
+          type: string
+        chpUsefulHeatValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        chpUsefulHeatNotes:
+          nullable: true
+          type: string
+        chpElectricityGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        chpElectricityGeneratedNotes:
+          nullable: true
+          type: string
+        chpFuelUsedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        chpFuelUsedNotes:
+          nullable: true
+          type: string
+        chpHeatCoolingValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        chpHeatCoolingNotes:
+          nullable: true
+          type: string
+        chpSleevingPCentValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        chpSleevingPCentNotes:
+          nullable: true
+          type: string
+        chpMaxHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
+        chpMaxElectricityOutput:
+          format: int32
+          nullable: true
+          type: integer
       type: object
     ConnectionType:
       enum:
@@ -1503,13 +2539,262 @@ components:
       - ContributingOperator
       - Assessor
       - Certifier
+      - Coordinator
+      - ResponsiblePerson
       type: string
+    CountryAndTerritory:
+      example:
+        fullValue: fullValue
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        fullValue:
+          type: string
+      type: object
     DocumentType:
       enum:
       - Assessment
       - Assessor
       - Certifier
       type: string
+    Energy:
+      example:
+        heatPumpCount: 5
+        boilerCount: 7
+        heatPumpInputs:
+        - hpmUsefulHeatGeneratedValue:
+          - 7
+          - 7
+          hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+          hpmEnergyUsedNotes: hpmEnergyUsedNotes
+          hpmSleevingPCentNotes: hpmSleevingPCentNotes
+          hpmTypeFuelUsedInput: 6
+          hpmUsefulCoolingGeneratedValue:
+          - 4
+          - 4
+          hpmEnergyUsedValue:
+          - 1
+          - 1
+          hpmSleevingPCentValue:
+          - 5
+          - 5
+          hpmMaxHeatOutput: 9
+          hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+        - hpmUsefulHeatGeneratedValue:
+          - 7
+          - 7
+          hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+          hpmEnergyUsedNotes: hpmEnergyUsedNotes
+          hpmSleevingPCentNotes: hpmSleevingPCentNotes
+          hpmTypeFuelUsedInput: 6
+          hpmUsefulCoolingGeneratedValue:
+          - 4
+          - 4
+          hpmEnergyUsedValue:
+          - 1
+          - 1
+          hpmSleevingPCentValue:
+          - 5
+          - 5
+          hpmMaxHeatOutput: 9
+          hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+        startYear: 6
+        yearCount: 0
+        chpInputs:
+        - chpElectricityGeneratedValue:
+          - 2
+          - 2
+          chpFuelUsedValue:
+          - 4
+          - 4
+          chpHeatCoolingNotes: chpHeatCoolingNotes
+          chpUsefulHeatValue:
+          - 3
+          - 3
+          chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
+          chpOperationalModeInput: chpOperationalModeInput
+          chpUsefulHeatNotes: chpUsefulHeatNotes
+          chpMaxHeatOutput: 1
+          chpFuelUsedNotes: chpFuelUsedNotes
+          chpInstallationDateInput: chpInstallationDateInput
+          chpFuelTypeInput: 9
+          chpSleevingPCentValue:
+          - 1
+          - 1
+          chpMaxElectricityOutput: 1
+          chpSleevingPCentNotes: chpSleevingPCentNotes
+          chpHeatCoolingValue:
+          - 7
+          - 7
+        - chpElectricityGeneratedValue:
+          - 2
+          - 2
+          chpFuelUsedValue:
+          - 4
+          - 4
+          chpHeatCoolingNotes: chpHeatCoolingNotes
+          chpUsefulHeatValue:
+          - 3
+          - 3
+          chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
+          chpOperationalModeInput: chpOperationalModeInput
+          chpUsefulHeatNotes: chpUsefulHeatNotes
+          chpMaxHeatOutput: 1
+          chpFuelUsedNotes: chpFuelUsedNotes
+          chpInstallationDateInput: chpInstallationDateInput
+          chpFuelTypeInput: 9
+          chpSleevingPCentValue:
+          - 1
+          - 1
+          chpMaxElectricityOutput: 1
+          chpSleevingPCentNotes: chpSleevingPCentNotes
+          chpHeatCoolingValue:
+          - 7
+          - 7
+        eppElectricityUsedForPumpingValue:
+        - 5.944895607614016
+        - 5.944895607614016
+        energyHeatNetworkPrimaryLosses:
+        - 1.4658129805029452
+        - 1.4658129805029452
+        recoveredInputs:
+        - hrwSleevingPCentValue:
+          - 9
+          - 9
+          hrwHeatUsedByCoolingProductionValue:
+          - 8
+          - 8
+          hrwSleevingPCentNotes: hrwSleevingPCentNotes
+          hrwUsefulHeatGeneratedValue:
+          - 6
+          - 6
+          hrwMaxHeatOutput: 6
+          hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+          hrwHeatRecoverySourceInput: 9
+          hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+        - hrwSleevingPCentValue:
+          - 9
+          - 9
+          hrwHeatUsedByCoolingProductionValue:
+          - 8
+          - 8
+          hrwSleevingPCentNotes: hrwSleevingPCentNotes
+          hrwUsefulHeatGeneratedValue:
+          - 6
+          - 6
+          hrwMaxHeatOutput: 6
+          hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+          hrwHeatRecoverySourceInput: 9
+          hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+        chpCount: 5
+        eppElectricityUsedForPumpingNotes: eppElectricityUsedForPumpingNotes
+        eppSleevingPCentNotes: eppSleevingPCentNotes
+        recoveredCount: 2
+        boilerInputs:
+        - blrFuelUsedByNotes: blrFuelUsedByNotes
+          blrUsefulHeatGeneratedValue:
+          - 6
+          - 6
+          blrTypeFuelUsedInput: 3
+          blrSleevingPCentValue:
+          - 6
+          - 6
+          blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
+          blrFuelUsedByValue:
+          - 1
+          - 1
+          blrMaxHeatOutput: 6
+          blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
+          blrHeatUsedForCoolingProductionValue:
+          - 2
+          - 2
+          blrSleevingPCentNotes: blrSleevingPCentNotes
+        - blrFuelUsedByNotes: blrFuelUsedByNotes
+          blrUsefulHeatGeneratedValue:
+          - 6
+          - 6
+          blrTypeFuelUsedInput: 3
+          blrSleevingPCentValue:
+          - 6
+          - 6
+          blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
+          blrFuelUsedByValue:
+          - 1
+          - 1
+          blrMaxHeatOutput: 6
+          blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
+          blrHeatUsedForCoolingProductionValue:
+          - 2
+          - 2
+          blrSleevingPCentNotes: blrSleevingPCentNotes
+      properties:
+        yearCount:
+          format: int32
+          nullable: true
+          type: integer
+        startYear:
+          format: int32
+          nullable: true
+          type: integer
+        energyHeatNetworkPrimaryLosses:
+          items:
+            format: double
+            type: number
+          nullable: true
+          type: array
+        chpCount:
+          format: int32
+          nullable: true
+          type: integer
+        heatPumpCount:
+          format: int32
+          nullable: true
+          type: integer
+        recoveredCount:
+          format: int32
+          nullable: true
+          type: integer
+        boilerCount:
+          format: int32
+          nullable: true
+          type: integer
+        chpInputs:
+          items:
+            $ref: "#/components/schemas/ChpInput"
+          nullable: true
+          type: array
+        heatPumpInputs:
+          items:
+            $ref: "#/components/schemas/HeatPumpInput"
+          nullable: true
+          type: array
+        recoveredInputs:
+          items:
+            $ref: "#/components/schemas/RecoveredInput"
+          nullable: true
+          type: array
+        boilerInputs:
+          items:
+            $ref: "#/components/schemas/BoilerInput"
+          nullable: true
+          type: array
+        eppElectricityUsedForPumpingValue:
+          items:
+            format: double
+            type: number
+          nullable: true
+          type: array
+        eppElectricityUsedForPumpingNotes:
+          nullable: true
+          type: string
+        eppSleevingPCentNotes:
+          nullable: true
+          type: string
+      type: object
     EnumItemResponse:
       example:
         name: name
@@ -1527,6 +2812,7 @@ components:
     HeatNetwork:
       example:
         hnId: hnId
+        createdAt: 2000-01-23T04:56:07.000+00:00
         soa:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -1586,6 +2872,7 @@ components:
             - ChildConnections
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        createdBy: createdBy
         name: name
         pathway: pathway
         location: location
@@ -1605,6 +2892,11 @@ components:
           type: string
         soa:
           $ref: "#/components/schemas/Soa"
+        createdBy:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
       type: object
     HeatNetworkElement:
       example:
@@ -1685,6 +2977,16 @@ components:
       - ConsumerConnections
       - ConsumerHeatSystems
       type: string
+    HeatNetworkInfo:
+      example:
+        hnId: hnId
+        name: name
+      properties:
+        hnId:
+          type: string
+        name:
+          type: string
+      type: object
     HeatNetworkResponse:
       example:
         hnId: hnId
@@ -1817,6 +3119,72 @@ components:
         location:
           type: string
       type: object
+    HeatPumpInput:
+      example:
+        hpmUsefulHeatGeneratedValue:
+        - 7
+        - 7
+        hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+        hpmEnergyUsedNotes: hpmEnergyUsedNotes
+        hpmSleevingPCentNotes: hpmSleevingPCentNotes
+        hpmTypeFuelUsedInput: 6
+        hpmUsefulCoolingGeneratedValue:
+        - 4
+        - 4
+        hpmEnergyUsedValue:
+        - 1
+        - 1
+        hpmSleevingPCentValue:
+        - 5
+        - 5
+        hpmMaxHeatOutput: 9
+        hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+      properties:
+        hpmTypeFuelUsedInput:
+          format: int32
+          nullable: true
+          type: integer
+        hpmUsefulHeatGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmUsefulHeatGeneratedNotes:
+          nullable: true
+          type: string
+        hpmEnergyUsedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmEnergyUsedNotes:
+          nullable: true
+          type: string
+        hpmUsefulCoolingGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmUsefulCoolingGeneratedNotes:
+          nullable: true
+          type: string
+        hpmSleevingPCentValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmSleevingPCentNotes:
+          nullable: true
+          type: string
+        hpmMaxHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
+      type: object
     HnRoleMapping:
       example:
         hnId: hnId
@@ -1852,7 +3220,6 @@ components:
       type: string
     InvitedUserRequest:
       example:
-        inviterOrgId: inviterOrgId
         oneLoginId: oneLoginId
         invitationId: invitationId
         invitedEmail: invitedEmail
@@ -1863,27 +3230,25 @@ components:
           type: string
         oneLoginId:
           type: string
-        inviterOrgId:
-          type: string
       required:
       - invitationId
       - invitedEmail
-      - inviterOrgId
       - oneLoginId
       type: object
     InvitedUserResponse:
       example:
-        firstName: firstName
         lastName: lastName
         inviterUserId: inviterUserId
-        rejectedAt: 2000-01-23T04:56:07.000+00:00
         roles:
         - DesignatedDesigner
         - DesignatedDesigner
         fullName: fullName
+        invitedHnId: invitedHnId
+        firstName: firstName
+        rejectedAt: 2000-01-23T04:56:07.000+00:00
+        invitedOrgId: invitedOrgId
         id: id
         email: email
-        invitedHnId: invitedHnId
         status: Invited
         invitedAt: 2000-01-23T04:56:07.000+00:00
         acceptedAt: 2000-01-23T04:56:07.000+00:00
@@ -1902,6 +3267,10 @@ components:
           nullable: true
           type: string
         invitedHnId:
+          nullable: true
+          type: string
+        invitedOrgId:
+          nullable: true
           type: string
         roles:
           items:
@@ -2033,120 +3402,42 @@ components:
       type: object
     ManagedUserResponse:
       example:
-        responsibleUser:
-          lastName: lastName
-          hnRoleMappings:
-          - hnId: hnId
-            role: DesignatedDesigner
-          - hnId: hnId
-            role: DesignatedDesigner
-          preferredContactType: Landline
-          mobileNumber: mobileNumber
-          jobTitle: jobTitle
-          roles:
-          - RegulatoryContact
-          - RegulatoryContact
-          oneLoginId: oneLoginId
-          fullName: fullName
-          emailId: emailId
-          landlineNumber: landlineNumber
-          contactNumberExtension: contactNumberExtension
-          orgId: orgId
-          firstName: firstName
-          id: id
-          hnIds:
-          - hnIds
-          - hnIds
-          status: Active
-        registeredUsers:
-        - lastName: lastName
-          hnRoleMappings:
-          - hnId: hnId
-            role: DesignatedDesigner
-          - hnId: hnId
-            role: DesignatedDesigner
-          preferredContactType: Landline
-          mobileNumber: mobileNumber
-          jobTitle: jobTitle
-          roles:
-          - RegulatoryContact
-          - RegulatoryContact
-          oneLoginId: oneLoginId
-          fullName: fullName
-          emailId: emailId
-          landlineNumber: landlineNumber
-          contactNumberExtension: contactNumberExtension
-          orgId: orgId
-          firstName: firstName
-          id: id
-          hnIds:
-          - hnIds
-          - hnIds
-          status: Active
-        - lastName: lastName
-          hnRoleMappings:
-          - hnId: hnId
-            role: DesignatedDesigner
-          - hnId: hnId
-            role: DesignatedDesigner
-          preferredContactType: Landline
-          mobileNumber: mobileNumber
-          jobTitle: jobTitle
-          roles:
-          - RegulatoryContact
-          - RegulatoryContact
-          oneLoginId: oneLoginId
-          fullName: fullName
-          emailId: emailId
-          landlineNumber: landlineNumber
-          contactNumberExtension: contactNumberExtension
-          orgId: orgId
-          firstName: firstName
-          id: id
-          hnIds:
-          - hnIds
-          - hnIds
-          status: Active
-        invitedUsers:
-        - firstName: firstName
-          lastName: lastName
-          inviterUserId: inviterUserId
-          rejectedAt: 2000-01-23T04:56:07.000+00:00
-          roles:
-          - DesignatedDesigner
-          - DesignatedDesigner
-          fullName: fullName
-          id: id
-          email: email
-          invitedHnId: invitedHnId
-          status: Invited
-          invitedAt: 2000-01-23T04:56:07.000+00:00
-          acceptedAt: 2000-01-23T04:56:07.000+00:00
-        - firstName: firstName
-          lastName: lastName
-          inviterUserId: inviterUserId
-          rejectedAt: 2000-01-23T04:56:07.000+00:00
-          roles:
-          - DesignatedDesigner
-          - DesignatedDesigner
-          fullName: fullName
-          id: id
-          email: email
-          invitedHnId: invitedHnId
-          status: Invited
-          invitedAt: 2000-01-23T04:56:07.000+00:00
-          acceptedAt: 2000-01-23T04:56:07.000+00:00
+        heatNetworks:
+        - hnId: hnId
+          name: name
+        - hnId: hnId
+          name: name
+        roles:
+        - roles
+        - roles
+        name: name
+        emailId: emailId
+        id: id
+        status: status
+        invitedAt: 2000-01-23T04:56:07.000+00:00
       properties:
-        responsibleUser:
-          $ref: "#/components/schemas/UserResponse"
-        registeredUsers:
+        id:
+          type: string
+        name:
+          type: string
+        emailId:
+          type: string
+        status:
+          type: string
+        heatNetworks:
           items:
-            $ref: "#/components/schemas/UserResponse"
+            $ref: "#/components/schemas/HeatNetworkInfo"
+          nullable: true
           type: array
-        invitedUsers:
+        roles:
           items:
-            $ref: "#/components/schemas/InvitedUserResponse"
+            type: string
+          nullable: true
           type: array
+        invitedAt:
+          format: date-time
+          nullable: true
+          type: string
       type: object
     NetworkTypeResponse:
       example:
@@ -2187,6 +3478,7 @@ components:
       enum:
       - Landline
       - Mobile
+      - PreferNotToSay
       - null
       nullable: true
       type: string
@@ -2203,6 +3495,76 @@ components:
       - null
       nullable: true
       type: string
+    NullableOfUserRole:
+      enum:
+      - ResponsiblePerson
+      - Coordinator
+      - Contributor
+      - Designer
+      - Contractor
+      - Operator
+      - Assessor
+      - Certifier
+      - null
+      nullable: true
+      type: string
+    Organisation:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        registeredAddress:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        lastModifiedAt: 2000-01-23T04:56:07.000+00:00
+        rpUserId: rpUserId
+        createdBy: createdBy
+        lastModifiedBy: lastModifiedBy
+        name: name
+        id: id
+        type: UkCompaniesHouse
+        companiesHouseNumber: companiesHouseNumber
+        orgId: orgId
+        hnIds:
+        - hnIds
+        - hnIds
+      properties:
+        id:
+          type: string
+        orgId:
+          nullable: true
+          type: string
+        type:
+          $ref: "#/components/schemas/OrganisationType"
+        companiesHouseNumber:
+          nullable: true
+          type: string
+        name:
+          type: string
+        registeredAddress:
+          $ref: "#/components/schemas/RegisteredAddress"
+        hnIds:
+          items:
+            type: string
+          type: array
+        createdBy:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        lastModifiedBy:
+          nullable: true
+          type: string
+        lastModifiedAt:
+          format: date-time
+          nullable: true
+          type: string
+        rpUserId:
+          nullable: true
+          type: string
+      type: object
     OrganisationRequest:
       example:
         registeredAddress:
@@ -2263,11 +3625,6 @@ components:
       - OtherUkOrganisation
       - OverseasOrganisation
       type: string
-    PreferredContactType:
-      enum:
-      - Landline
-      - Mobile
-      type: string
     ProblemDetails:
       example:
         instance: instance
@@ -2292,6 +3649,59 @@ components:
         instance:
           nullable: true
           type: string
+      type: object
+    RecoveredInput:
+      example:
+        hrwSleevingPCentValue:
+        - 9
+        - 9
+        hrwHeatUsedByCoolingProductionValue:
+        - 8
+        - 8
+        hrwSleevingPCentNotes: hrwSleevingPCentNotes
+        hrwUsefulHeatGeneratedValue:
+        - 6
+        - 6
+        hrwMaxHeatOutput: 6
+        hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+        hrwHeatRecoverySourceInput: 9
+        hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+      properties:
+        hrwHeatRecoverySourceInput:
+          format: int32
+          nullable: true
+          type: integer
+        hrwUsefulHeatGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hrwUsefulHeatGeneratedNotes:
+          nullable: true
+          type: string
+        hrwHeatUsedByCoolingProductionValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hrwHeatUsedByCoolingProductionNotes:
+          nullable: true
+          type: string
+        hrwSleevingPCentValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hrwSleevingPCentNotes:
+          nullable: true
+          type: string
+        hrwMaxHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
       type: object
     RegisteredAddress:
       example:
@@ -2816,11 +4226,46 @@ components:
         status:
           $ref: "#/components/schemas/SoaStatus"
       type: object
+    UpdateUserDetailsRequest:
+      example:
+        firstName: firstName
+        lastName: lastName
+        role: ResponsiblePerson
+        preferredContactType: Landline
+        mobileNumber: mobileNumber
+        jobTitle: jobTitle
+        landlineNumber: landlineNumber
+        contactNumberExtension: contactNumberExtension
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        preferredContactType:
+          $ref: "#/components/schemas/NullableOfPreferredContactType"
+        landlineNumber:
+          nullable: true
+          type: string
+        contactNumberExtension:
+          nullable: true
+          type: string
+        mobileNumber:
+          nullable: true
+          type: string
+        jobTitle:
+          type: string
+        role:
+          $ref: "#/components/schemas/NullableOfUserRole"
+      required:
+      - firstName
+      - jobTitle
+      - lastName
+      type: object
     UpdateUserOrganisationRequest:
       example:
         firstName: firstName
         lastName: lastName
-        role: RegulatoryContact
+        role: ResponsiblePerson
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
@@ -2838,12 +4283,16 @@ components:
         landlineNumber: landlineNumber
         contactNumberExtension: contactNumberExtension
       properties:
+        organisation:
+          $ref: "#/components/schemas/OrganisationRequest"
+        role:
+          $ref: "#/components/schemas/UserRole"
         firstName:
           type: string
         lastName:
           type: string
         preferredContactType:
-          $ref: "#/components/schemas/PreferredContactType"
+          $ref: "#/components/schemas/NullableOfPreferredContactType"
         landlineNumber:
           nullable: true
           type: string
@@ -2855,17 +4304,27 @@ components:
           type: string
         jobTitle:
           type: string
-        role:
-          $ref: "#/components/schemas/UserRole"
-        organisation:
-          $ref: "#/components/schemas/OrganisationRequest"
       required:
       - firstName
       - jobTitle
       - lastName
       - organisation
-      - preferredContactType
       - role
+      type: object
+    UpdateUserOrgIdRequest:
+      example:
+        userId: userId
+        orgId: orgId
+      properties:
+        userId:
+          maxLength: 24
+          minLength: 24
+          type: string
+        orgId:
+          type: string
+      required:
+      - orgId
+      - userId
       type: object
     UploadedAssessmentDocumentResponse:
       example:
@@ -2998,18 +4457,16 @@ components:
         mobileNumber: mobileNumber
         jobTitle: jobTitle
         roles:
-        - RegulatoryContact
-        - RegulatoryContact
+        - ResponsiblePerson
+        - ResponsiblePerson
         oneLoginId: oneLoginId
         emailId: emailId
         landlineNumber: landlineNumber
         orgId: orgId
         contactNumberExtension: contactNumberExtension
         firstName: firstName
+        createdAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        hnIds:
-        - hnIds
-        - hnIds
         status: Active
       properties:
         id:
@@ -3042,10 +4499,6 @@ components:
         contactNumberExtension:
           nullable: true
           type: string
-        hnIds:
-          items:
-            type: string
-          type: array
         roles:
           items:
             $ref: "#/components/schemas/UserRole"
@@ -3056,6 +4509,9 @@ components:
           type: array
         status:
           $ref: "#/components/schemas/UserStatus"
+        createdAt:
+          format: date-time
+          type: string
       type: object
     UserDetailsResponse:
       example:
@@ -3064,8 +4520,8 @@ components:
         mobileNumber: mobileNumber
         jobTitle: jobTitle
         roles:
-        - RegulatoryContact
-        - RegulatoryContact
+        - ResponsiblePerson
+        - ResponsiblePerson
         oneLoginId: oneLoginId
         fullName: fullName
         organisation:
@@ -3082,6 +4538,7 @@ components:
           orgId: orgId
         emailId: emailId
         landlineNumber: landlineNumber
+        contactNumberExtension: contactNumberExtension
         firstName: firstName
         heatNetworks:
         - hnId: hnId
@@ -3091,11 +4548,13 @@ components:
           name: name
           location: location
         id: id
-        status: status
+        status: Active
       properties:
         id:
           type: string
         oneLoginId:
+          type: string
+        emailId:
           type: string
         firstName:
           nullable: true
@@ -3106,8 +4565,6 @@ components:
         fullName:
           nullable: true
           type: string
-        emailId:
-          type: string
         jobTitle:
           nullable: true
           type: string
@@ -3116,11 +4573,14 @@ components:
         landlineNumber:
           nullable: true
           type: string
+        contactNumberExtension:
+          nullable: true
+          type: string
         mobileNumber:
           nullable: true
           type: string
         status:
-          type: string
+          $ref: "#/components/schemas/UserStatus"
         roles:
           items:
             $ref: "#/components/schemas/UserRole"
@@ -3146,8 +4606,8 @@ components:
         mobileNumber: mobileNumber
         jobTitle: jobTitle
         roles:
-        - RegulatoryContact
-        - RegulatoryContact
+        - ResponsiblePerson
+        - ResponsiblePerson
         oneLoginId: oneLoginId
         fullName: fullName
         emailId: emailId
@@ -3156,9 +4616,6 @@ components:
         orgId: orgId
         firstName: firstName
         id: id
-        hnIds:
-        - hnIds
-        - hnIds
         status: Active
       properties:
         id:
@@ -3196,21 +4653,20 @@ components:
         roles:
           items:
             $ref: "#/components/schemas/UserRole"
+          nullable: true
           type: array
         status:
           $ref: "#/components/schemas/UserStatus"
-        hnIds:
-          items:
-            type: string
-          type: array
         hnRoleMappings:
           items:
             $ref: "#/components/schemas/HnRoleMapping"
+          nullable: true
           type: array
       type: object
     UserRole:
       enum:
-      - RegulatoryContact
+      - ResponsiblePerson
+      - Coordinator
       - Contributor
       - Designer
       - Contractor
@@ -3218,6 +4674,22 @@ components:
       - Assessor
       - Certifier
       type: string
+    UserRoleDetailResponse:
+      example:
+        fullName: fullName
+        emailId: emailId
+        userId: userId
+        roleDescription: roleDescription
+      properties:
+        fullName:
+          type: string
+        userId:
+          type: string
+        emailId:
+          type: string
+        roleDescription:
+          type: string
+      type: object
     UserStatus:
       enum:
       - Active
