@@ -18,7 +18,6 @@ Name | Type | Description | Notes
 **OrgId** | **string** |  | [optional] 
 **Roles** | [**List&lt;UserRole&gt;**](UserRole.md) |  | [optional] 
 **Status** | **UserStatus** |  | [optional] 
-**HnIds** | **List&lt;string&gt;** |  | [optional] 
 **HnRoleMappings** | [**List&lt;HnRoleMapping&gt;**](HnRoleMapping.md) |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)

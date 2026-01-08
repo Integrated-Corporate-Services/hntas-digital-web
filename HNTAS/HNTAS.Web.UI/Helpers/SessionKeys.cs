@@ -8,6 +8,8 @@
         public const string OrganisationName = "OrganisationNameKey";
         public const string OrganisationId = "OrganisationIdKey";
         public const string OrganisationAddress = "OrganisationAddressKey";
+        public const string SearchAddressByPostcodeModelSessionKey = "SearchAddressByPostcodeModel";
+        public const string AddressByStreetOrTownModelSessionKey = "AddressByStreetOrTownModel";
         public const string UserRoleKey = "UserRoleKey";
 
         // Session key for the boolean flow state
@@ -15,7 +17,7 @@
 
         // Session keys for specific models
         public const string WhatDoYouWantToDoViewModelKey = "WhatDoYouWantToDoViewModel";
-        public const string WhereIsTheHeatNetworkModelKey = "whereIsTheHeatNetwork";        
+        public const string WhereIsTheHeatNetworkModelKey = "whereIsTheHeatNetwork";
         public const string IsHNCurrentlyOperatingModelKey = "isHNCurrentlyOperating";
         public const string HaveYouSignedMEContractModelKey = "haveYouSignedMEContract";
 
@@ -45,6 +47,10 @@
         public const string SoaProjectId = "SoaProjectIdKey";
 
         public const string DeclarationOfImpartialityModelKey = "DeclarationOfImpartialityModelKey";
+
+        public const string IsEditOrganisationDetailsJourneySessionKey = "IsEditOrganisationDetailsJourney";
+        public const string IsAddOrganisationDetailsNonRPJourneySessionKey = "IsAddOrganisationDetailsNonRPJourneySession";
+        public const string IsAssessorOrCertifier = "IsAssessorOrCertifier";
 
     }
 }

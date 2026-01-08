@@ -5,8 +5,10 @@ namespace HNTAS.Web.UI.Models.Enums
     public enum PreferredContactType
     {
         [Display(Name = "Landline")]
-        Landline = 0,
+        Landline = 1,
         [Display(Name = "Mobile")]
-        Mobile = 1
+        Mobile = 2,
+        [Display(Name = "Prefer not to say")]
+        PreferNotToSay = 3
     }
 }

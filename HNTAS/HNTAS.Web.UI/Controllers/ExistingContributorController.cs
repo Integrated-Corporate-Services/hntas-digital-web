@@ -12,10 +12,12 @@ using HNTAS.Web.UI.Services.Core;
 using HNTAS.Web.UI.Workflows;
 using HNTAS.Web.UI.Workflows.Enums;
 using HNTAS.Web.UI.Workflows.Models.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize]
     public class ExistingContributorController : Controller
     {
         private readonly IWorkflowManager _workflowManager;
@@ -85,18 +87,10 @@ namespace HNTAS.Web.UI.Controllers
 
             var selectedUserData = await _userService.GetUserById(model.SelectedContributorId);
 
-            Models.Enums.PreferredContactType? preferredContactType = selectedUserData.PreferredContactType.Value == NullableOfPreferredContactType.Landline
-                ? Models.Enums.PreferredContactType.Landline : Models.Enums.PreferredContactType.Mobile;
-
-
             var contactDetailsModel = new ContributorContactDetailsModel
             {
                 FirstName = selectedUserData?.FirstName,
-                LastName = selectedUserData?.LastName,
-                MobileNumber = selectedUserData?.MobileNumber,
-                LandlineNumber = selectedUserData?.LandlineNumber,
-                ContactNumberExtension = selectedUserData?.ContactNumberExtension,
-                PreferredContactType = preferredContactType.Value
+                LastName = selectedUserData?.LastName
             };
 
             _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
@@ -233,11 +227,27 @@ namespace HNTAS.Web.UI.Controllers
             model.SelectedRoleName = model.Roles
              .FirstOrDefault(hn => hn.Value == model.SelectedRoleId)?.Text;
 
-            // Logic to save details goes here
-            _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
-             m => m.ChooseRoleModel = model,
-             ExistingContributorWorkflowStep.CheckYourAnswers
-            );
+
+            //check if the role is already assigned to another user for the selected heat network
+            var state = _workflowManager.GetState<AddExistingContributorWorkflowModel>();
+            (bool IsAssigned, string UserId) = await _userService.IsRoleAlreadyAssigned(state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId, model.SelectedRoleName);
+            //check the role is present in the list or not
+            if (IsAssigned)
+            {
+                _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
+                    m => m.ChooseRoleModel = model,
+                    ExistingContributorWorkflowStep.ReplaceRoleConfirmation
+                );
+                return RedirectToAction("ReplaceUserRoleConfirmation");
+            }
+            else
+            {
+                // Logic to save details goes here
+                _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
+                 m => m.ChooseRoleModel = model,
+                 ExistingContributorWorkflowStep.CheckYourAnswers
+                );
+            }
 
             return RedirectToAction("CheckYourAnswers");
         }
@@ -277,9 +287,6 @@ namespace HNTAS.Web.UI.Controllers
 
             _logger.LogInformation("Submitting new contributor details for user: {UserId}", state.Data.ChooseContributorModel?.SelectedContributorEmail);
 
-            var selectedPreferredContactType = state.Data.ContributorContactDetailsModel.PreferredContactType == Models.Enums.PreferredContactType.Landline
-                ? PreferredContactType.Landline : PreferredContactType.Mobile;
-
             var selectedContributorRole = (ContributorRole)Convert.ToInt32(state.Data.ChooseRoleModel.SelectedRoleId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             try
@@ -290,13 +297,11 @@ namespace HNTAS.Web.UI.Controllers
                          emailAddress: state.Data.ChooseContributorModel?.SelectedContributorEmail,
                          firstName: state.Data.ContributorContactDetailsModel.FirstName,
                          lastName: state.Data.ContributorContactDetailsModel.LastName,
-                         preferredContactType: selectedPreferredContactType,
                          hnId: state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId,
                          contributorRoles: new List<ContributorRole> { selectedContributorRole },
-                         status: InvitationStatus.Invited,
-                         landlineNumber: state.Data.ContributorContactDetailsModel.LandlineNumber,
-                         mobileNumber: state.Data.ContributorContactDetailsModel.MobileNumber,
-                         contactNumberExtension: state.Data.ContributorContactDetailsModel.ContactNumberExtension
+                         replacedUserId: state.Data.ReplaceUserRoleViewModel != null ? state.Data.ReplaceUserRoleViewModel.CurrentRoleUserId : null,
+                         rolesToReplace: new List<ContributorRole> { selectedContributorRole },
+                         status: InvitationStatus.Invited
                      )
                  );
 
@@ -343,6 +348,74 @@ namespace HNTAS.Web.UI.Controllers
         }
 
 
+        [HttpGet]
+        [ValidateWorkflowStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(ExistingContributorWorkflowStep.ReplaceRoleConfirmation)]
+        public IActionResult ReplaceUserRoleConfirmation()
+        {
+            this.ShowBackButton("ChooseRole");
+            var heatNetworkNameWithId = _workflowManager.GetState<AddExistingContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkName;
+
+            var model = new ReplaceUserRoleViewModel()
+            {
+                HeatNetworkName = heatNetworkNameWithId.Split("-")[1].Trim(),
+                RoleName = _workflowManager.GetState<AddExistingContributorWorkflowModel>().Data.ChooseRoleModel.SelectedRoleName
+            };
+            ViewBag.ContollerName = "ExistingContributor";
+            return View("Contributor/ReplaceUserRoleConfirmation", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmReplaceUserRoleAsync(ReplaceUserRoleViewModel replaceUserRoleViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                this.ShowBackButton("ChooseRole");
+                var heatNetworkNameWithId = _workflowManager.GetState<AddExistingContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkName;
+
+                replaceUserRoleViewModel.HeatNetworkName = heatNetworkNameWithId.Split("-")[1].Trim();
+                replaceUserRoleViewModel.RoleName = _workflowManager.GetState<AddExistingContributorWorkflowModel>().Data.ChooseRoleModel.SelectedRoleName;
+
+                return View("Contributor/ReplaceUserRoleConfirmation", replaceUserRoleViewModel);
+            }
+
+            if (replaceUserRoleViewModel.ReplaceExistingRole.ToUpper() == "YES")
+            {
+                var state = _workflowManager.GetState<AddExistingContributorWorkflowModel>();
+                (bool IsAssigned, string UserId) = await _userService.IsRoleAlreadyAssigned(state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId, state.Data.ChooseRoleModel.SelectedRoleName);
+                replaceUserRoleViewModel.CurrentRoleUserId = UserId;
+
+                // Logic to save details goes here
+                _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
+                 m => m.ReplaceUserRoleViewModel = replaceUserRoleViewModel,
+                 ExistingContributorWorkflowStep.CheckYourAnswers
+                );
+                return RedirectToAction("CheckYourAnswers");
+            }
+            else
+            {
+                //set replaceUserRoleViewModel to null
+                var state = _workflowManager.GetState<AddExistingContributorWorkflowModel>();
+
+                // Logic to save details goes here
+                _workflowManager.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
+                 m => m.ReplaceUserRoleViewModel = null,
+                 ExistingContributorWorkflowStep.CannotContinue
+                );
+
+                return RedirectToAction("CannotContinue");
+            }
+        }
+
+        [HttpGet]
+        [ValidateWorkflowStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(ExistingContributorWorkflowStep.CannotContinue)]
+        public IActionResult CannotContinue()
+        {
+            this.ShowBackButton("ChooseRole");
+            ViewBag.HName = _workflowManager.GetState<AddNewContributorWorkflowModel>().Data.ChooseHeatNetworkModel.SelectedHeatNetworkName.Split("-")[1].Trim();
+            return View("Contributor/CannotContinue");
+        }
+
+
         private List<ReviewSection> BuildReviewSections(AddExistingContributorWorkflowModel model)
         {
             var reviewSections = new List<ReviewSection>
@@ -362,7 +435,6 @@ namespace HNTAS.Web.UI.Controllers
                     Items = new List<ReviewItem>
                     {
                         new ReviewItem { Key = "Email address", Value = model.ChooseContributorModel.SelectedContributorEmail, ChangeLink = Url.Action("ChooseUser"), ChangeLinkText = "Change" },
-                        new ReviewItem { Key = "Phone number", Value = model.ContributorContactDetailsModel.GetDisplayContactNumber() }
                     }
                 },
                 new ReviewSection
@@ -384,6 +456,9 @@ namespace HNTAS.Web.UI.Controllers
             // Call API to get list of contributors
             var contributors = await _userService.GetRegisteredUsersAsync(userId);
 
+            //remove hntas coordinator users
+            contributors = contributors.Where(u => !u.Roles.Contains(UserRole.Coordinator)).ToList();
+
             // Check for null or empty list and return an empty list if necessary
             if (contributors == null || !contributors.Any())
             {
@@ -401,7 +476,7 @@ namespace HNTAS.Web.UI.Controllers
             return selectedItems;
         }
 
-        
+
         private async Task<List<SelectItemOption>?> GetContributorRolesSelectListAsync()
         {
             var response = await _userService.GetContributorRolesAsync();

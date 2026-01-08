@@ -31,39 +31,44 @@ namespace HNTAS.Api.Client.Model
     public enum UserRole
     {
         /// <summary>
-        /// Enum RegulatoryContact for value: RegulatoryContact
+        /// Enum ResponsiblePerson for value: ResponsiblePerson
         /// </summary>
-        RegulatoryContact = 1,
+        ResponsiblePerson = 1,
+
+        /// <summary>
+        /// Enum Coordinator for value: Coordinator
+        /// </summary>
+        Coordinator = 2,
 
         /// <summary>
         /// Enum Contributor for value: Contributor
         /// </summary>
-        Contributor = 2,
+        Contributor = 3,
 
         /// <summary>
         /// Enum Designer for value: Designer
         /// </summary>
-        Designer = 3,
+        Designer = 4,
 
         /// <summary>
         /// Enum Contractor for value: Contractor
         /// </summary>
-        Contractor = 4,
+        Contractor = 5,
 
         /// <summary>
         /// Enum Operator for value: Operator
         /// </summary>
-        Operator = 5,
+        Operator = 6,
 
         /// <summary>
         /// Enum Assessor for value: Assessor
         /// </summary>
-        Assessor = 6,
+        Assessor = 7,
 
         /// <summary>
         /// Enum Certifier for value: Certifier
         /// </summary>
-        Certifier = 7
+        Certifier = 8
     }
 
     /// <summary>
@@ -78,8 +83,11 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static UserRole FromString(string value)
         {
-            if (value.Equals("RegulatoryContact"))
-                return UserRole.RegulatoryContact;
+            if (value.Equals("ResponsiblePerson"))
+                return UserRole.ResponsiblePerson;
+
+            if (value.Equals("Coordinator"))
+                return UserRole.Coordinator;
 
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
@@ -109,8 +117,11 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static UserRole? FromStringOrDefault(string value)
         {
-            if (value.Equals("RegulatoryContact"))
-                return UserRole.RegulatoryContact;
+            if (value.Equals("ResponsiblePerson"))
+                return UserRole.ResponsiblePerson;
+
+            if (value.Equals("Coordinator"))
+                return UserRole.Coordinator;
 
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
@@ -141,8 +152,11 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(UserRole value)
         {
-            if (value == UserRole.RegulatoryContact)
-                return "RegulatoryContact";
+            if (value == UserRole.ResponsiblePerson)
+                return "ResponsiblePerson";
+
+            if (value == UserRole.Coordinator)
+                return "Coordinator";
 
             if (value == UserRole.Contributor)
                 return "Contributor";

@@ -11,11 +11,9 @@ namespace HNTAS.Web.UI.Workflows.Models.Data
         public ContributorContactDetailsModel? ContributorContactDetailsModel { get; set; }
         public ChooseHeatNetworkModel? ChooseHeatNetworkModel { get; set; }
         public ChooseRoleModel? ChooseRoleModel { get; set; }
-
+        public ReplaceUserRoleViewModel? ReplaceUserRoleViewModel { get; set; }
         public HashSet<ContributorWorkflowStep> CompletedSteps { get; set; } = new();
-
         public ContributorWorkflowStep CurrentStep { get; set; }
-
         public void AdvanceToStep(ContributorWorkflowStep nextStep)
         {
             // Optional: enforce forward-only progression
@@ -26,18 +24,9 @@ namespace HNTAS.Web.UI.Workflows.Models.Data
             CompletedSteps.Add(nextStep);
         }
 
-        //public object? GetStepData(ContributorWorkflowStep step) => step switch
-        //{
-        //    ContributorWorkflowStep.AddEmailAddress => AddUserEmailAddressModel,
-        //    ContributorWorkflowStep.ContactDetails => ContributorContactDetailsModel,
-        //    ContributorWorkflowStep.ChooseHeatNetwork => ChooseHeatNetworkModel,
-        //    ContributorWorkflowStep.ChooseRole => ChooseRoleModel,
-        //    _ => null
-        //};
 
         void IWorkflowModel<ContributorWorkflowStep>.AdvanceToStep(ContributorWorkflowStep nextStep) => AdvanceToStep(nextStep);
 
-        // object? IWorkflowModel<ContributorWorkflowStep>.GetStepData(ContributorWorkflowStep step) => GetStepData(step);
     }
 
 

@@ -4,11 +4,13 @@ using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize]
     public class AssessorController : Controller
     {
         private readonly ILogger<AssessorController> _logger;
@@ -381,13 +383,9 @@ namespace HNTAS.Web.UI.Controllers
                            emailAddress: email,
                            firstName: "Certifier",
                            lastName: "Agent",
-                           preferredContactType: PreferredContactType.Landline,
                            hnId: hnId,
                            contributorRoles: new List<ContributorRole> { ContributorRole.Certifier },
-                           status: InvitationStatus.Invited,
-                           landlineNumber: "24723842378",
-                           mobileNumber: null,
-                           contactNumberExtension: null
+                           status: InvitationStatus.Invited
                        )
                    );
 

@@ -36,14 +36,12 @@ namespace HNTAS.Api.Client.Model
         /// <param name="invitedEmail">invitedEmail</param>
         /// <param name="invitationId">invitationId</param>
         /// <param name="oneLoginId">oneLoginId</param>
-        /// <param name="inviterOrgId">inviterOrgId</param>
         [JsonConstructor]
-        public InvitedUserRequest(string invitedEmail, string invitationId, string oneLoginId, string inviterOrgId)
+        public InvitedUserRequest(string invitedEmail, string invitationId, string oneLoginId)
         {
             InvitedEmail = invitedEmail;
             InvitationId = invitationId;
             OneLoginId = oneLoginId;
-            InviterOrgId = inviterOrgId;
             OnCreated();
         }
 
@@ -68,12 +66,6 @@ namespace HNTAS.Api.Client.Model
         public string OneLoginId { get; set; }
 
         /// <summary>
-        /// Gets or Sets InviterOrgId
-        /// </summary>
-        [JsonPropertyName("inviterOrgId")]
-        public string InviterOrgId { get; set; }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -84,7 +76,6 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  InvitedEmail: ").Append(InvitedEmail).Append("\n");
             sb.Append("  InvitationId: ").Append(InvitationId).Append("\n");
             sb.Append("  OneLoginId: ").Append(OneLoginId).Append("\n");
-            sb.Append("  InviterOrgId: ").Append(InviterOrgId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -125,7 +116,6 @@ namespace HNTAS.Api.Client.Model
             Option<string?> invitedEmail = default;
             Option<string?> invitationId = default;
             Option<string?> oneLoginId = default;
-            Option<string?> inviterOrgId = default;
 
             while (utf8JsonReader.Read())
             {
@@ -151,9 +141,6 @@ namespace HNTAS.Api.Client.Model
                         case "oneLoginId":
                             oneLoginId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "inviterOrgId":
-                            inviterOrgId = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
                         default:
                             break;
                     }
@@ -169,9 +156,6 @@ namespace HNTAS.Api.Client.Model
             if (!oneLoginId.IsSet)
                 throw new ArgumentException("Property is required for class InvitedUserRequest.", nameof(oneLoginId));
 
-            if (!inviterOrgId.IsSet)
-                throw new ArgumentException("Property is required for class InvitedUserRequest.", nameof(inviterOrgId));
-
             if (invitedEmail.IsSet && invitedEmail.Value == null)
                 throw new ArgumentNullException(nameof(invitedEmail), "Property is not nullable for class InvitedUserRequest.");
 
@@ -181,10 +165,7 @@ namespace HNTAS.Api.Client.Model
             if (oneLoginId.IsSet && oneLoginId.Value == null)
                 throw new ArgumentNullException(nameof(oneLoginId), "Property is not nullable for class InvitedUserRequest.");
 
-            if (inviterOrgId.IsSet && inviterOrgId.Value == null)
-                throw new ArgumentNullException(nameof(inviterOrgId), "Property is not nullable for class InvitedUserRequest.");
-
-            return new InvitedUserRequest(invitedEmail.Value!, invitationId.Value!, oneLoginId.Value!, inviterOrgId.Value!);
+            return new InvitedUserRequest(invitedEmail.Value!, invitationId.Value!, oneLoginId.Value!);
         }
 
         /// <summary>
@@ -220,16 +201,11 @@ namespace HNTAS.Api.Client.Model
             if (invitedUserRequest.OneLoginId == null)
                 throw new ArgumentNullException(nameof(invitedUserRequest.OneLoginId), "Property is required for class InvitedUserRequest.");
 
-            if (invitedUserRequest.InviterOrgId == null)
-                throw new ArgumentNullException(nameof(invitedUserRequest.InviterOrgId), "Property is required for class InvitedUserRequest.");
-
             writer.WriteString("invitedEmail", invitedUserRequest.InvitedEmail);
 
             writer.WriteString("invitationId", invitedUserRequest.InvitationId);
 
             writer.WriteString("oneLoginId", invitedUserRequest.OneLoginId);
-
-            writer.WriteString("inviterOrgId", invitedUserRequest.InviterOrgId);
         }
     }
 }

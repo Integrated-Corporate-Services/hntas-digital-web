@@ -33,24 +33,24 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateUserOrganisationRequest" /> class.
         /// </summary>
+        /// <param name="organisation">organisation</param>
+        /// <param name="role">role</param>
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
-        /// <param name="preferredContactType">preferredContactType</param>
         /// <param name="jobTitle">jobTitle</param>
-        /// <param name="role">role</param>
-        /// <param name="organisation">organisation</param>
+        /// <param name="preferredContactType">preferredContactType</param>
         /// <param name="landlineNumber">landlineNumber</param>
         /// <param name="contactNumberExtension">contactNumberExtension</param>
         /// <param name="mobileNumber">mobileNumber</param>
         [JsonConstructor]
-        public UpdateUserOrganisationRequest(string firstName, string lastName, PreferredContactType preferredContactType, string jobTitle, UserRole role, OrganisationRequest organisation, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default)
+        public UpdateUserOrganisationRequest(OrganisationRequest organisation, UserRole role, string firstName, string lastName, string jobTitle, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default)
         {
+            Organisation = organisation;
+            Role = role;
             FirstName = firstName;
             LastName = lastName;
-            PreferredContactType = preferredContactType;
             JobTitle = jobTitle;
-            Role = role;
-            Organisation = organisation;
+            PreferredContactTypeOption = preferredContactType;
             LandlineNumberOption = landlineNumber;
             ContactNumberExtensionOption = contactNumberExtension;
             MobileNumberOption = mobileNumber;
@@ -60,16 +60,29 @@ namespace HNTAS.Api.Client.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Gets or Sets PreferredContactType
-        /// </summary>
-        [JsonPropertyName("preferredContactType")]
-        public PreferredContactType PreferredContactType { get; set; }
-
-        /// <summary>
         /// Gets or Sets Role
         /// </summary>
         [JsonPropertyName("role")]
         public UserRole Role { get; set; }
+
+        /// <summary>
+        /// Used to track the state of PreferredContactType
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NullableOfPreferredContactType?> PreferredContactTypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets PreferredContactType
+        /// </summary>
+        [JsonPropertyName("preferredContactType")]
+        public NullableOfPreferredContactType? PreferredContactType { get { return this.PreferredContactTypeOption; } set { this.PreferredContactTypeOption = new(value); } }
+
+        /// <summary>
+        /// Gets or Sets Organisation
+        /// </summary>
+        [JsonPropertyName("organisation")]
+        public OrganisationRequest Organisation { get; set; }
 
         /// <summary>
         /// Gets or Sets FirstName
@@ -88,12 +101,6 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("jobTitle")]
         public string JobTitle { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Organisation
-        /// </summary>
-        [JsonPropertyName("organisation")]
-        public OrganisationRequest Organisation { get; set; }
 
         /// <summary>
         /// Used to track the state of LandlineNumber
@@ -142,12 +149,12 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class UpdateUserOrganisationRequest {\n");
+            sb.Append("  Organisation: ").Append(Organisation).Append("\n");
+            sb.Append("  Role: ").Append(Role).Append("\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
-            sb.Append("  PreferredContactType: ").Append(PreferredContactType).Append("\n");
             sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
-            sb.Append("  Role: ").Append(Role).Append("\n");
-            sb.Append("  Organisation: ").Append(Organisation).Append("\n");
+            sb.Append("  PreferredContactType: ").Append(PreferredContactType).Append("\n");
             sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
             sb.Append("  ContactNumberExtension: ").Append(ContactNumberExtension).Append("\n");
             sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
@@ -188,12 +195,12 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
+            Option<OrganisationRequest?> organisation = default;
+            Option<UserRole?> role = default;
             Option<string?> firstName = default;
             Option<string?> lastName = default;
-            Option<PreferredContactType?> preferredContactType = default;
             Option<string?> jobTitle = default;
-            Option<UserRole?> role = default;
-            Option<OrganisationRequest?> organisation = default;
+            Option<NullableOfPreferredContactType?> preferredContactType = default;
             Option<string?> landlineNumber = default;
             Option<string?> contactNumberExtension = default;
             Option<string?> mobileNumber = default;
@@ -213,27 +220,27 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "firstName":
-                            firstName = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "lastName":
-                            lastName = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "preferredContactType":
-                            string? preferredContactTypeRawValue = utf8JsonReader.GetString();
-                            if (preferredContactTypeRawValue != null)
-                                preferredContactType = new Option<PreferredContactType?>(PreferredContactTypeValueConverter.FromStringOrDefault(preferredContactTypeRawValue));
-                            break;
-                        case "jobTitle":
-                            jobTitle = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "organisation":
+                            organisation = new Option<OrganisationRequest?>(JsonSerializer.Deserialize<OrganisationRequest>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "role":
                             string? roleRawValue = utf8JsonReader.GetString();
                             if (roleRawValue != null)
                                 role = new Option<UserRole?>(UserRoleValueConverter.FromStringOrDefault(roleRawValue));
                             break;
-                        case "organisation":
-                            organisation = new Option<OrganisationRequest?>(JsonSerializer.Deserialize<OrganisationRequest>(ref utf8JsonReader, jsonSerializerOptions)!);
+                        case "firstName":
+                            firstName = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "lastName":
+                            lastName = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "jobTitle":
+                            jobTitle = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "preferredContactType":
+                            string? preferredContactTypeRawValue = utf8JsonReader.GetString();
+                            if (preferredContactTypeRawValue != null)
+                                preferredContactType = new Option<NullableOfPreferredContactType?>(NullableOfPreferredContactTypeValueConverter.FromStringOrDefault(preferredContactTypeRawValue));
                             break;
                         case "landlineNumber":
                             landlineNumber = new Option<string?>(utf8JsonReader.GetString());
@@ -250,23 +257,26 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
+            if (!organisation.IsSet)
+                throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(organisation));
+
+            if (!role.IsSet)
+                throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(role));
+
             if (!firstName.IsSet)
                 throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(firstName));
 
             if (!lastName.IsSet)
                 throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(lastName));
 
-            if (!preferredContactType.IsSet)
-                throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(preferredContactType));
-
             if (!jobTitle.IsSet)
                 throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(jobTitle));
 
-            if (!role.IsSet)
-                throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(role));
+            if (organisation.IsSet && organisation.Value == null)
+                throw new ArgumentNullException(nameof(organisation), "Property is not nullable for class UpdateUserOrganisationRequest.");
 
-            if (!organisation.IsSet)
-                throw new ArgumentException("Property is required for class UpdateUserOrganisationRequest.", nameof(organisation));
+            if (role.IsSet && role.Value == null)
+                throw new ArgumentNullException(nameof(role), "Property is not nullable for class UpdateUserOrganisationRequest.");
 
             if (firstName.IsSet && firstName.Value == null)
                 throw new ArgumentNullException(nameof(firstName), "Property is not nullable for class UpdateUserOrganisationRequest.");
@@ -274,19 +284,10 @@ namespace HNTAS.Api.Client.Model
             if (lastName.IsSet && lastName.Value == null)
                 throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class UpdateUserOrganisationRequest.");
 
-            if (preferredContactType.IsSet && preferredContactType.Value == null)
-                throw new ArgumentNullException(nameof(preferredContactType), "Property is not nullable for class UpdateUserOrganisationRequest.");
-
             if (jobTitle.IsSet && jobTitle.Value == null)
                 throw new ArgumentNullException(nameof(jobTitle), "Property is not nullable for class UpdateUserOrganisationRequest.");
 
-            if (role.IsSet && role.Value == null)
-                throw new ArgumentNullException(nameof(role), "Property is not nullable for class UpdateUserOrganisationRequest.");
-
-            if (organisation.IsSet && organisation.Value == null)
-                throw new ArgumentNullException(nameof(organisation), "Property is not nullable for class UpdateUserOrganisationRequest.");
-
-            return new UpdateUserOrganisationRequest(firstName.Value!, lastName.Value!, preferredContactType.Value!.Value!, jobTitle.Value!, role.Value!.Value!, organisation.Value!, landlineNumber, contactNumberExtension, mobileNumber);
+            return new UpdateUserOrganisationRequest(organisation.Value!, role.Value!.Value!, firstName.Value!, lastName.Value!, jobTitle.Value!, preferredContactType, landlineNumber, contactNumberExtension, mobileNumber);
         }
 
         /// <summary>
@@ -313,6 +314,9 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, UpdateUserOrganisationRequest updateUserOrganisationRequest, JsonSerializerOptions jsonSerializerOptions)
         {
+            if (updateUserOrganisationRequest.Organisation == null)
+                throw new ArgumentNullException(nameof(updateUserOrganisationRequest.Organisation), "Property is required for class UpdateUserOrganisationRequest.");
+
             if (updateUserOrganisationRequest.FirstName == null)
                 throw new ArgumentNullException(nameof(updateUserOrganisationRequest.FirstName), "Property is required for class UpdateUserOrganisationRequest.");
 
@@ -322,23 +326,25 @@ namespace HNTAS.Api.Client.Model
             if (updateUserOrganisationRequest.JobTitle == null)
                 throw new ArgumentNullException(nameof(updateUserOrganisationRequest.JobTitle), "Property is required for class UpdateUserOrganisationRequest.");
 
-            if (updateUserOrganisationRequest.Organisation == null)
-                throw new ArgumentNullException(nameof(updateUserOrganisationRequest.Organisation), "Property is required for class UpdateUserOrganisationRequest.");
+            writer.WritePropertyName("organisation");
+            JsonSerializer.Serialize(writer, updateUserOrganisationRequest.Organisation, jsonSerializerOptions);
+            var roleRawValue = UserRoleValueConverter.ToJsonValue(updateUserOrganisationRequest.Role);
+            writer.WriteString("role", roleRawValue);
 
             writer.WriteString("firstName", updateUserOrganisationRequest.FirstName);
 
             writer.WriteString("lastName", updateUserOrganisationRequest.LastName);
 
-            var preferredContactTypeRawValue = PreferredContactTypeValueConverter.ToJsonValue(updateUserOrganisationRequest.PreferredContactType);
-            writer.WriteString("preferredContactType", preferredContactTypeRawValue);
-
             writer.WriteString("jobTitle", updateUserOrganisationRequest.JobTitle);
 
-            var roleRawValue = UserRoleValueConverter.ToJsonValue(updateUserOrganisationRequest.Role);
-            writer.WriteString("role", roleRawValue);
-
-            writer.WritePropertyName("organisation");
-            JsonSerializer.Serialize(writer, updateUserOrganisationRequest.Organisation, jsonSerializerOptions);
+            if (updateUserOrganisationRequest.PreferredContactTypeOption.IsSet)
+                if (updateUserOrganisationRequest.PreferredContactTypeOption!.Value != null)
+                {
+                    var preferredContactTypeRawValue = NullableOfPreferredContactTypeValueConverter.ToJsonValue(updateUserOrganisationRequest.PreferredContactTypeOption.Value!.Value);
+                    writer.WriteString("preferredContactType", preferredContactTypeRawValue);
+                }
+                else
+                    writer.WriteNull("preferredContactType");
             if (updateUserOrganisationRequest.LandlineNumberOption.IsSet)
                 if (updateUserOrganisationRequest.LandlineNumberOption.Value != null)
                     writer.WriteString("landlineNumber", updateUserOrganisationRequest.LandlineNumber);

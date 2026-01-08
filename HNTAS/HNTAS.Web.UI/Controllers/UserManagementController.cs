@@ -1,6 +1,8 @@
-﻿using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Enums;
+using HNTAS.Web.UI.Models.OrganisationRole;
 using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
 using HNTAS.Web.UI.Workflows;
@@ -42,57 +44,31 @@ namespace HNTAS.Web.UI.Controllers
             {
                 var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-                var user = await _userService.GetManagedUsers(userId);
+                var users = await _userService.GetManagedUsers(userId);
                 var contributorRoles = await _userService.GetContributorRolesAsync();
                 var userRoles = await _userService.GetUserRolesAsync();
                 var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-                var heatNetworks = await _heatNetworkService.GetAllHeatNetworks();
+                var allRoles = contributorRoles.Concat(userRoles).ToList();
+                var currentUserEmailId = "";
 
                 var displayUsers = new List<UserDisplayModel>();
 
-                if (user.ResponsibleUser != null)
+                foreach (var user in users)
                 {
+                    if (user.Id == userId)
+                    {
+                        currentUserEmailId = user.EmailId;
+                    }
                     displayUsers.Add(new UserDisplayModel
                     {
-                        Id = user.ResponsibleUser.Id,
-                        EmailAddress = user.ResponsibleUser.EmailId,
-                        Name = user.ResponsibleUser.FullName,
-                        Roles = user.ResponsibleUser.Roles.Select(r => userRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
-                        Status = user.ResponsibleUser.Status.ToString(),
-                        HeatNetworks = heatNetworks.Where(hn => user.ResponsibleUser.HnIds.Any(hnId => hnId == hn.HnId)).Select(h => h.Name).ToList()
+                        Id = user.Id,
+                        EmailAddress = user.EmailId,
+                        Name = user.Name,
+                        Roles = user.Roles.Select(r => allRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
+                        Status = user.Status.ToString(),
+                        IsCurrentUser = user.Id == userId,
+                        HeatNetworks = user.HeatNetworks?.Select(hn => hn.Name).ToList()
                     });
-                }
-
-                if (user.RegisteredUsers != null && user.RegisteredUsers.Count > 0)
-                {
-                    foreach (var contributor in user.RegisteredUsers)
-                    {
-                        displayUsers.Add(new UserDisplayModel
-                        {
-                            Id = contributor.Id,
-                            EmailAddress = contributor.EmailId,
-                            Name = contributor.FullName,
-                            Roles = contributor.Roles.Select(r => userRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
-                            Status = contributor.Status.ToString(),
-                            HeatNetworks = heatNetworks.Where(hn => contributor.HnRoleMappings.Any(hr => hr.HnId == hn.HnId)).Select(h => h.Name).ToList()
-                        });
-                    }
-                }
-
-                if (user.InvitedUsers != null && user.InvitedUsers.Count > 0)
-                {
-                    foreach (var invited in user.InvitedUsers)
-                    {
-                        displayUsers.Add(new UserDisplayModel
-                        {
-                            Id = invited.Id,
-                            EmailAddress = invited.Email,
-                            Name = invited.FullName,
-                            Roles = invited.Roles.Select(r => contributorRoles.FirstOrDefault(cr => cr.Name == r.ToString()).Description).ToList(),
-                            Status = invited.Status.ToString(),
-                            HeatNetworks = [heatNetworks.FirstOrDefault(x => x.HnId == invited.InvitedHnId)?.Name]
-                        });
-                    }
                 }
 
                 var viewModel = new ManageUsersModel
@@ -157,6 +133,47 @@ namespace HNTAS.Web.UI.Controllers
             return View(viewModel);
         }
 
+
+        [HttpGet]
+        public IActionResult ChangeOrganisationUser()
+        {
+            this.ShowBackButton("UserAccount", "Dashboard");
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SubmitChangeOrganisationUser(OrganisationUserChangeViewModel model)
+        {
+            if (model.SelectedUserType == UserType.None)
+            {
+                ModelState.AddModelError("SelectedUserType", "Please select an option.");
+                ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+                return View("ChangeOrganisationUser");
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Redirect based on the selected option
+                if (model.SelectedUserType == UserType.NewUser)
+                {
+                    // Initiate the workflow for adding a new contributor
+                    _workflowManager.StartWorkflow<AddOrganisationUserWorkflowModel>(WorkflowType.AddOrganisationUser, AddOrganisationUserWorkflowStep.AddEmailAddress);
+                    _logger.LogInformation("Created new workflow state for {WorkflowType}", WorkflowType.AddOrganisationUser);
+
+                    return RedirectToAction("AddEmailAddress", "AddOrganisationUser");
+
+                }
+                else if (model.SelectedUserType == UserType.ExistingUser)
+                {
+                    _workflowManager.StartWorkflow<AddExistingOrganisationUserWorkflowModel>(WorkflowType.AddExistingOrganisationUser, ExistingOrganisationUserWorkflowStep.ChooseRole);
+                    _logger.LogInformation("Created new workflow state for {WorkflowType}", WorkflowType.AddExistingOrganisationUser);
+                    return RedirectToAction("ChooseUser", "ExistingOrganisationUser");
+                }
+            }
+            return View(model);
+        }
+
         [HttpGet]
         public async Task<IActionResult> HeatNetworksAsync()
         {
@@ -176,9 +193,9 @@ namespace HNTAS.Web.UI.Controllers
 
             var heatNetworks = new List<HeatNetworkModel>();
 
-            if (user.HeatNetworks != null && user.HeatNetworks?.Count > 0)
+            if (user?.HeatNetworks != null && user.HeatNetworks?.Count > 0)
             {
-                foreach (var network in user.HeatNetworks)
+                foreach (var network in user?.HeatNetworks)
                 {
                     heatNetworks.Add(new HeatNetworkModel
                     {
@@ -192,10 +209,48 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new HeatNetworksViewModel
             {
-                HeatNetworks = heatNetworks
+                HeatNetworks = heatNetworks,
+                IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> HeatNetworkUserRolesAsync(string hnId)
+        {
+            if (string.IsNullOrEmpty(hnId))
+            {
+                _logger.LogError("Heat network ID is null or empty in HeatNetworkUserRoles.");
+                TempData["ErrorMessage"] = "Invalid heat network ID.";
+                return RedirectToAction("HeatNetworks");
+            }
+
+            var heatNetworkResponse = await _heatNetworkService.GetAsync(hnId.ToUpper());
+
+            if (heatNetworkResponse == null)
+            {
+                // Log the ID that wasn't found before returning BadRequest
+                _logger.LogWarning("Heat network not found for ID: {HeatNetworkId}", hnId);
+                return BadRequest();
+            }
+
+            var userRolesDetailsResponse = await _userService.GetHeatNetworkUserRoles(hnId.ToUpper());
+
+
+            var viewModel = new HeatNetworkUserRolesViewModel
+            {
+                HeatNetworkName = heatNetworkResponse.Name,
+                UserRoles = userRolesDetailsResponse?.Select(x => new UserRoles
+                {
+                    RoleName = x.RoleDescription,
+                    FullName = x.FullName,
+                    EmailId = x.EmailId
+                }).ToList() ?? []
+            };
+
+            this.ShowBackButton("HeatNetworks");
+            return View("HeatNetworkUserRoles", viewModel);
         }
     }
 }

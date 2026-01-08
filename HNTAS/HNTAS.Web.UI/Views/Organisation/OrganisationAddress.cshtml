@@ -1,90 +1,123 @@
-﻿@using HNTAS.Web.UI.Models
-@model ManualOfficeAddressModel
+﻿@using HNTAS.Web.UI.Models.Address
+@model AddressByStreetOrTownModel
 
 @{
     ViewData["Title"] = "Organisation Address";
 
-    bool HasError(string key) =>
-        ViewData.ModelState.TryGetValue(key, out var entry) && entry.Errors.Count > 0;
+    bool HasError(string key) => ViewData.ModelState.TryGetValue(key, out var entry) && entry.Errors.Count > 0;
+    var StreetAddressId = Html.GenerateIdFromName(nameof(Model.StreetAddress)).ToLowerInvariant();
+    var TownOrCityId = Html.GenerateIdFromName(nameof(Model.TownOrCity)).ToLowerInvariant();
+    var PostalcodeId = Html.GenerateIdFromName(nameof(Model.Postalcode)).ToLowerInvariant();
+    var CountryId = Html.GenerateIdFromName(nameof(Model.Country)).ToLowerInvariant();
+
 }
 
-<form asp-controller="Organisation" asp-action="SaveOrganisationAddress" method="post" novalidate>
-    @Html.AntiForgeryToken()
-    <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading">
-                What is your organisation's address?
-            </h1>
-        </legend>
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
 
-        <div id="organisation-address-hint" class="govuk-hint">
-            Enter the address used for official correspondence, such as government or legal documents.
+            @* The form for manual address entry, targeting the ManualAddressEntry action in the AddressController *@
+            <form asp-controller="Organisation" asp-action="SaveOrganisationAddress" method="post" novalidate>
+                @Html.AntiForgeryToken()
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            What is your organisation's address?
+                        </h1>
+                    </legend>
+
+                    <div id="organisation-address-hint" class="govuk-hint">
+                        Enter the address used for official correspondence, such as government or legal documents.
+                    </div>
+
+                    @* Street Address Field *@
+                    <div class="govuk-form-group @(HasError(nameof(Model.StreetAddress)) ? "govuk-form-group--error" : "")">
+                        <label class="govuk-label" for="@StreetAddressId">Street address</label>
+                        @if (HasError(nameof(Model.StreetAddress)))
+                        {
+                            <span asp-validation-for="StreetAddress" class="govuk-error-message"></span>
+                        }
+                        <input class="govuk-input"
+                               asp-for="StreetAddress" type="text" autocomplete="streetaddress" id="@StreetAddressId"
+                               name="@StreetAddressId"
+                               value="@Model.StreetAddress"
+                               aria-describedby="organisation-address-hint">
+                    </div>
+
+                    @* Town or City Field *@
+                    <div class="govuk-form-group @(HasError(nameof(Model.TownOrCity)) ? "govuk-form-group--error" : "")">
+                        <label class="govuk-label" for="@TownOrCityId">Town Or City</label>
+                        @if (HasError(nameof(Model.TownOrCity)))
+                        {
+                            <span asp-validation-for="TownOrCity" class="govuk-error-message"></span>
+                        }
+                        <input class="govuk-input"
+                               asp-for="TownOrCity" type="text" autocomplete="townorcity" id="@TownOrCityId"
+                               name="@TownOrCityId"
+                               value="@Model.TownOrCity"
+                               aria-describedby="organisation-address-hint">
+                    </div>
+                    
+                    @* Postal Code or Zip code Field *@
+                    <div class="govuk-form-group @(HasError(nameof(Model.Postalcode)) ? "govuk-form-group--error" : "")">
+                        <label class="govuk-label" for="@PostalcodeId">Postal Code or Zip code</label>
+                        @if (HasError(nameof(Model.Postalcode)))
+                        {
+                            <span asp-validation-for="Postalcode" class="govuk-error-message"></span>
+                        }
+                        <input class="govuk-input"
+                               asp-for="Postalcode" type="text" autocomplete="postalcode" id="@PostalcodeId"
+                               name="@PostalcodeId"
+                               value="@Model.Postalcode"
+                               aria-describedby="organisation-address-hint">
+                    </div>
+                    
+                    @if (!ViewBag.IsOverseasOrganisation)
+                    {
+                        // Set the default country if it hasn't been set, which will be rendered in the input below.
+                        if (string.IsNullOrEmpty(Model.Country))
+                        {
+                            Model.Country = "United Kingdom";
+                        }
+                    }
+
+                    @if (!ViewBag.IsOverseasOrganisation)
+                    {
+                        @* Country Field *@
+                        <div class="govuk-form-group @(HasError(nameof(Model.Country)) ? "govuk-form-group--error" : "")">
+                            <label class="govuk-label" for="@CountryId">Country</label>
+                            @if (HasError(nameof(Model.Country)))
+                            {
+                                <span asp-validation-for="Country" class="govuk-error-message"></span>
+                            }
+                            <input class="govuk-input"
+                            asp-for="Country" type="text" autocomplete="country" id="@CountryId"
+                            name="@CountryId"
+                            value="@Model.Country"
+                            aria-describedby="organisation-address-hint">
+                        </div>
+                    }
+                    else
+                    {
+                        <select class="govuk-select"
+                                asp-for="Country"
+                                id="@CountryId"
+                                name="@CountryId"
+                                aria-describedby="organisation-address-hint"
+                                asp-items="ViewBag.CountryList">
+                            <option value="">Select a country</option>
+                        </select>
+                    }
+
+                </fieldset><br />
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button><br />
+                @if (!ViewBag.IsOverseasOrganisation)
+                {
+                    <a href="@Url.Action("OrganisationAddressByPostcode", "Organisation")" class="govuk-link">Search by postcode</a>
+                }                
+            </form>
         </div>
-
-        <!-- Address Line 1 -->
-        @{
-            var addressLine1Id = Html.LowercaseIdFor(m => m.AddressLine1);
-        }
-        <div class="govuk-form-group @(HasError(nameof(Model.AddressLine1)) ? "govuk-form-group--error" : "")">
-            <label class="govuk-label" for="@addressLine1Id">Street address</label>
-            <span asp-validation-for="AddressLine1" class="govuk-error-message"></span>
-            <input class="govuk-input"
-                   id="@addressLine1Id"
-                   name="@addressLine1Id"
-                   value="@Model.AddressLine1"
-                   type="text"
-                   autocomplete="address-line1"
-                   aria-describedby="organisation-address-hint" />
-        </div>
-
-        <!-- Locality -->
-        @{
-            var localityId = Html.LowercaseIdFor(m => m.Locality);
-        }
-        <div class="govuk-form-group @(HasError(nameof(Model.Locality)) ? "govuk-form-group--error" : "")">
-            <label class="govuk-label" for="@localityId">Town or city</label>
-            <span asp-validation-for="Locality" class="govuk-error-message"></span>
-            <input class="govuk-input"
-                   id="@localityId"
-                   name="@localityId"
-                   value="@Model.Locality"
-                   type="text"
-                   autocomplete="address-level2" />
-        </div>
-
-        <!-- Postal Code -->
-        @{
-            var postalCodeId = Html.LowercaseIdFor(m => m.PostalCode);
-        }
-        <div class="govuk-form-group @(HasError(nameof(Model.PostalCode)) ? "govuk-form-group--error" : "")">
-            <label class="govuk-label" for="@postalCodeId">Postal code or zip code</label>
-            <span asp-validation-for="PostalCode" class="govuk-error-message"></span>
-            <input class="govuk-input"
-                   id="@postalCodeId"
-                   name="@postalCodeId"
-                   value="@Model.PostalCode"
-                   type="text"
-                   autocomplete="postal-code" />
-        </div>
-
-        <!-- Country -->
-        @{
-            var countryId = Html.LowercaseIdFor(m => m.Country);
-        }
-        <div class="govuk-form-group @(HasError(nameof(Model.Country)) ? "govuk-form-group--error" : "")">
-            <label class="govuk-label" for="@countryId">Country</label>
-            <span asp-validation-for="Country" class="govuk-error-message"></span>
-            <input class="govuk-input"
-                   id="@countryId"
-                   name="@countryId"
-                   value="@Model.Country"
-                   type="text"
-                   autocomplete="address-level1" />
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" class="govuk-button" data-module="govuk-button">
-            Continue
-        </button>
-    </fieldset>
-</form>
+    </div>
+</div>
