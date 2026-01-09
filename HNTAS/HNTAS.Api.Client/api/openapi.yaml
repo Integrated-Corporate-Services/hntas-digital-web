@@ -5,6 +5,7 @@ info:
 servers:
 - url: https://localhost:7117/
 tags:
+- name: Assessor
 - name: CarbonCalculator
 - name: CountriesAndTerritories
 - name: HeatNetworks
@@ -14,6 +15,37 @@ tags:
 - name: SOA
 - name: Users
 paths:
+  /api/Assessor/search:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessorSearchResult"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessorSearchResult"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessorSearchResult"
+                type: array
+          description: OK
+      tags:
+      - Assessor
   /api/CarbonCalculator/run:
     post:
       requestBody:
@@ -2082,6 +2114,16 @@ components:
       - firstName
       - lastName
       - status
+      type: object
+    AssessorSearchResult:
+      example:
+        fullName: fullName
+        id: id
+      properties:
+        id:
+          type: string
+        fullName:
+          type: string
       type: object
     Background:
       example:
