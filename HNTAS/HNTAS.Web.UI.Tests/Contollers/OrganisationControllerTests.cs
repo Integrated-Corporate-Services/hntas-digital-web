@@ -119,11 +119,10 @@ namespace HNTAS.Web.UI.Tests.Contollers
         [Fact]
         public void Type_InvalidModel_ReturnsViewWithModel()
         {
-            var controller = CreateController();
-            controller.ModelState.AddModelError("SelectedOrganisationType", "Required");
+            _controller.ModelState.AddModelError("SelectedOrganisationType", "Required");
 
             var model = new OrganisationModel();
-            var result = controller.OrganisationType(model);
+            var result = _controller.OrganisationType(model);
 
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal("OrganisationType", viewResult.ViewName);
@@ -152,6 +151,23 @@ namespace HNTAS.Web.UI.Tests.Contollers
         public async Task OrganisationAddress_ReturnsViewWithModel()
         {
             // Arange & Act
+            var organisation = new OrganisationModel
+            {
+                SelectedOrganisationType = "test-type",
+                CompanyNumber = "org123",
+                CompanyDetails = new CompanyDetailsModel
+                {
+                    Title = "Org123",
+                    RegisteredOfficeAddress = new RegisteredOfficeAddressModel
+                    {
+                        AddressLine1 = "ABC Street",
+                        Locality = "Some Town",
+                        PostalCode = "AB001A",
+                        Country = "United Kingdom"
+                    }
+                }
+            };
+            _mockSessionHelper.Setup(s => s.GetFromSession<OrganisationModel>(It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey)).Returns(organisation);
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
             var result = await _controller.OrganisationAddressAsync() as ViewResult;
 

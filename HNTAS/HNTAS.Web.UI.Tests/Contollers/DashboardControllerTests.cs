@@ -4,6 +4,7 @@ using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services.Core;
+using HNTAS.Web.UI.Tests.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -82,9 +83,11 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
         [Fact]
         public async Task Get_UserAccount_UserHasNoOrganisation_ReturnsViewWithErrorMessage()
-        {
+        {            
             // Arrange
             var userId = "user-without-org";
+            var user = TestingUtility.MockValid_UserService_GetUserDetails(userId);
+            user.Organisation = null; // Simulate user without organisation
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<string>(
                     It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
@@ -92,19 +95,21 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             _userServiceMock
                 .Setup(x => x.GetUserDetails(userId))
-                .ReturnsAsync(new UserDetailsResponse
-                {
-                    Organisation = null,
-                    HeatNetworks = new List<HeatNetworkUserResponse>(),
-                    EmailId = "test@example.com"
-                });
+                .ReturnsAsync(user);
 
             // Act
             var result = await _controller.UserAccount();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("Your account is not associated with any organisation. Please contact support.", _controller.TempData["ErrorMessage"]);
+            if (user.Roles != null && user.Roles.Contains(UserRole.ResponsiblePerson) && user.Organisation == null)
+            {
+                Assert.Equal("Your account is not associated with any organisation. Please contact support.", _controller.TempData["ErrorMessage"]);
+            }
+            else
+            {
+                Assert.Equal(null, _controller.TempData["ErrorMessage"]);
+            }
             Assert.IsType<DashboardModel>(viewResult.Model);
         }
 

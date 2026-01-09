@@ -108,11 +108,13 @@ namespace HNTAS.Web.UI.Tests.Controllers
             //_controller.ModelState.Clear(); // Ensure model is valid
 
             // Act
-            var result = _controller.EnterHNLocation(validModel) as ViewResult;
+            var result = _controller.EnterHNLocation(validModel);
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("EnterHNPhase", result.ViewName);
+            Assert.Equal("EnterHNPhase", redirectResult.ActionName);
+            //Assert.Equal("EnterHNPhase", result.ViewName);
             _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(
                 It.IsAny<HttpContext>(),
                 SessionKeys.HeatNetworkLocationModelKey,
@@ -433,12 +435,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var result = _controller.CheckYourAnswers();
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsType<CheckYourAnswersHeatNetworkModel>(viewResult.Model);
-
-            Assert.Null(model.HeatNetworkNameModel);
-            Assert.Null(model.HeatNetworkLocationModel);
-            Assert.False(model.ConfirmedDeclaration);
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("UserAccount", redirectResult.ActionName);
             Assert.False((bool)_controller.ViewBag.ShowBackButton);
         }
 
@@ -446,10 +444,11 @@ namespace HNTAS.Web.UI.Tests.Controllers
         [Fact]
         public async Task SubmitAnswers_ValidModelState_ReturnsRedirectToConfirmation()
         {
-            // Arrange            
+            // Arrange
             var viewModel = new CheckYourAnswersHeatNetworkModel();
 
-            var hnId = "user123";
+            var userId = "user123";
+            var orgId = "org123";
             var heatNetworkNameModel = new HeatNetworkNameModel { HeatNetworkName = "Test Network" };
             var heatNetworkLocationModel = new HeatNetworkLocationModel { HeatNetworkLocation = "Test Location" };
             var pathwayModel = new PathwayModel { Pathway = "Test Pathway" };
@@ -461,12 +460,14 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _sessionHelperMock.Setup(x => x.GetFromSession<PathwayModel>(It.IsAny<HttpContext>(), SessionKeys.PathwayModelKey))
                 .Returns(pathwayModel);
             _sessionHelperMock.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
-                .Returns(hnId);
+                .Returns(userId);
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.OrganisationId))
+                .Returns(orgId);
 
             _heatNetworkServiceMock.Setup(x => x.AddHeatNetwork(It.IsAny<HeatNetwork>()))
                 .ReturnsAsync(new HeatNetworkResponse { HnId = "hn456", Name = "Test Network" });
 
-            _organisationServiceMock.Setup(x => x.UpdateOrgHeatNetworkId(hnId, It.IsAny<string>(), It.IsAny<string>())).Returns(Task.CompletedTask);
+            _organisationServiceMock.Setup(x => x.UpdateOrgHeatNetworkId(userId, It.IsAny<string>(), It.IsAny<string>())).Returns(Task.CompletedTask);
 
             // Act
             var result = await _controller.SubmitAnswers(viewModel);

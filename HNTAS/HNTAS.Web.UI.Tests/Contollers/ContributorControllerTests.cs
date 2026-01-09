@@ -4,7 +4,9 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
+using HNTAS.Web.UI.Tests.Helpers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -184,7 +186,18 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task Post_YouHaveBeenInvitedAsync_InvalidModelState_ReturnsViewWithModel()
         {
             // Arrange
-            var model = new YouHaveBeenInvitedModel { AcceptInvitation = "accept" };
+            var model = new YouHaveBeenInvitedModel { AcceptInvitation = "mockaccept" };
+            var invitationId = "validid";
+            var inviterUser = TestingUtility.MockValid_UserService_GetUserDetails("valid-user-id");
+            var invitation = new InvitedUserResponse
+            {
+                Id = invitationId,
+                InviterUserId = "valid-user-id",
+                Email = "test@email.com"
+            };
+            _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.InvitationId)).Returns(invitationId);
+            _invitationServiceMock.Setup(s => s.GetInvitationByIdAsync(invitationId)).ReturnsAsync(invitation);
+            _userServiceMock.Setup(s => s.GetUserDetails(invitation.InviterUserId)).ReturnsAsync(inviterUser);
             _controller.ModelState.AddModelError("AcceptInvitation", "Required");
 
             // Act
