@@ -114,7 +114,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             Assert.NotNull(result);
             Assert.Equal("EnterHNPhase", redirectResult.ActionName);
-            //Assert.Equal("EnterHNPhase", result.ViewName);
             _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(
                 It.IsAny<HttpContext>(),
                 SessionKeys.HeatNetworkLocationModelKey,
