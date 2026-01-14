@@ -57,7 +57,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult DoesHNHaveAPostcode()
         {
             this.ShowBackButton("EnterHNName", "HeatNetwork");
-            var model = new DoesHNHaveAPostcodeViewModel { HasPostcode = false };
+            var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey) ?? new DoesHNHaveAPostcodeViewModel { HasPostcode = false };
             return View(model);
         }        
 
@@ -69,6 +69,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
+            _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
             if (!model.HasPostcode)
             {
                 return RedirectToAction("HNAddressByCoordinates");
@@ -84,6 +85,7 @@ namespace HNTAS.Web.UI.Controllers
                 .Select(address => Utility.CapitalizeCommaSeparated(address))
                 .ToArray();
             _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "HeatNetwork");
             return RedirectToAction("SearchByPostcodeResults", "Address");
         }
 

@@ -22,13 +22,9 @@
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
-                            What is your address of your Heat Network?
+                            What is the address of your Heat Network?
                         </h1>
-                    </legend>
-
-                    @* <div id="organisation-address-hint" class="govuk-hint">
-                        Enter the address used for official correspondence, such as government or legal documents.
-                    </div> *@
+                    </legend>                   
 
                     @* Street Address Field *@
                     <div class="govuk-form-group @(HasError(nameof(Model.StreetAddress)) ? "govuk-form-group--error" : "")">

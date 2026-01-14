@@ -18,12 +18,28 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult SearchByPostcodeResults()
         {
-            this.ShowBackButton("DoesHNHaveAPostcode", "Address");
+            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
+            if (previousStep == "HeatNetwork")
+            {
+                this.ShowBackButton("DoesHNHaveAPostcode", "HeatNetwork");
+            }else
+            {
+                this.ShowBackButton("OrganisationAddressByPostcode", "Organisation");
+            }
+
             SearchAddressByPostcodeModel model = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
+
             if (model == null)
             {
                 _logger.LogError("SearchAddressByPostcodeModel is null.");
-                return View("DoesHNHaveAPostcode", "HeatNetwork");
+                if (previousStep == "heatnetwork")
+                {
+                    return View("DoesHNHaveAPostcode", "HeatNetwork");
+                }
+                else
+                {
+                    return View("OrganisationAddressByPostcode", "Organisation");
+                }
             }
             return View(model);
         }
@@ -41,7 +57,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (addressParts.Length < 3)
             {
-                _logger.LogWarning("Malformed address received: {Address}", selectedAddress);
+                _logger.LogError("Malformed address received: {Address}", selectedAddress);
                 return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");
             }
 
@@ -55,8 +71,24 @@ namespace HNTAS.Web.UI.Controllers
             };            
             // Save the new model to session
             _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, model);
+            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
+            if (previousStep == "HeatNetwork")
+            {
+                return RedirectToAction("ConfirmAddress", "Address");
+            }
+            else
+            {                
+                var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
 
-            return RedirectToAction("ConfirmAddress", "Address");
+                if (model == null || organisationModel?.CompanyDetails == null)
+                {
+                    _logger.LogWarning("Missing session data : Required session data is missing or invalid. Address model and Organisation model with CompanyDetails must be present.");
+                    return BadRequest("Missing session data");
+                }
+                organisationModel.CompanyDetails.RegisteredOfficeAddress = model;
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, organisationModel);
+                return RedirectToAction("CompanyConfirm", "Organisation");
+            }            
         }
 
         [HttpGet]

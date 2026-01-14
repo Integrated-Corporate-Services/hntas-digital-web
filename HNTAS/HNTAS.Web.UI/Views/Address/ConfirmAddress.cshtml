@@ -12,7 +12,7 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-l">
-            Is this is the correct address?
+            Is this the correct address?
         </h1>
         <div class="govuk-body govuk-!-margin-bottom-6">
             <pre class="govuk-body">
@@ -23,7 +23,7 @@
             <a href="@Url.Action("DoesHNHaveAPostcode", "HeatNetwork")" class="govuk-link govuk-link--no-visited-state">Change</a>
         </p>
         
-        <form asp-controller="Address" asp-action="ConfirmAdress" method="post" novalidate>
+        <form asp-controller="Address" asp-action="ConfirmAddress" method="post" novalidate>
             @Html.AntiForgeryToken()
             <button type="submit" class="govuk-button" data-module="govuk-button">
                 Confirm and continue
