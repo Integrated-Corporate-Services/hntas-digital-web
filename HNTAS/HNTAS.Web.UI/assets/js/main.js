@@ -1,12 +1,9 @@
-﻿// const GOVUKFrontend = require('./govuk-frontend-all.js');
-import "../scss/main.scss";
+﻿import { initAll } from 'govuk-frontend'
+import accessibleAutocomplete from 'accessible-autocomplete';
 
-import { initAll } from 'govuk-frontend'
-initAll()
 
-// // overriding to allow js on mobile, this must run before the initAll() method  
-// GOVUKFrontend.Tabs.prototype.setupResponsiveChecks = function () {
-//     this.setup();
-// };
+// Initialize GOV.UK Frontend (Accordions, Tabs, etc.)
+initAll();
 
-// GOVUKFrontend.initAll();
+// Expose the autocomplete to the global window object
+window.accessibleAutocomplete = accessibleAutocomplete;
