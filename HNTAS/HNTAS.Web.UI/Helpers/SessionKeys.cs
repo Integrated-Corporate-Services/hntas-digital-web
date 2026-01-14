@@ -31,7 +31,7 @@
         public const string HnName = "HnNameKey";
 
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
-        public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
+        public const string HeatNetworkLocationModelKey = "HNLocationByWhat3Words";
         public const string HeatNetworkPhaseModelKey = "HeatNetworkPhase";
         public const string HasElementBeenRegisteredModelKey = "HasElementBeenRegistered";
         public const string HasPlanningApplicationBeenSubmittedModelKey = "HasPlanningApplicationBeenSubmitted";
