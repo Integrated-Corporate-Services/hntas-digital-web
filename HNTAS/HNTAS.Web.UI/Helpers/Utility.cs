@@ -25,6 +25,21 @@ namespace HNTAS.Web.UI.Helpers
             controller.ViewBag.BackLinkUrl = controller.Url.Action(action, controllerName, routeValues);
         }
 
+        public static string CapitalizeCommaSeparated(string input)
+        {
+
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            var words = input.Split(',')
+                             .Select(w => w.Trim())
+                             .Where(w => !string.IsNullOrEmpty(w))
+                             .Select(w => char.ToUpper(w[0]) + w.Substring(1).ToLower());
+
+            return string.Join(", ", words);
+
+        }
+
         public static List<HeatNetworkElementOption> GetElementOptions()
         {
             return new List<HeatNetworkElementOption>

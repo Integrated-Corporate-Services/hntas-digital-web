@@ -249,9 +249,8 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
         public async Task<IActionResult> ConfirmAndContinue()
-        {
+        {            
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
-
 
             if (organisationModel?.CompanyDetails == null)
                 return RedirectToAction("CompanyNumber");
@@ -637,9 +636,6 @@ namespace HNTAS.Web.UI.Controllers
             return View("OrganisationAddress", viewModel);
         }
 
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveOrganisationAddressAsync(AddressByStreetOrTownModel model)
@@ -706,96 +702,37 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-
-
         [HttpPost]
-        public async Task<IActionResult> OrganisationAddressByPostcode(string postcode)
+        public async Task<IActionResult> OrganisationAddressByPostcode(SearchAddressByPostcodeModel model)
         {
             this.ShowBackButton("OrganisationName", "Organisation");
-            if (string.IsNullOrEmpty(postcode))
+            if (!ModelState.IsValid)
             {
-                return View("OrganisationAddressByPostcode");
+                return View(model);
             }
-            if (!string.IsNullOrWhiteSpace(postcode) &&
-                !Regex.IsMatch(postcode.Trim().ToUpper(), "^(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|[A-HK-Y][0-9]{1,2}|[0-9][A-HJKS-UW]|[A-HK-Y][0-9][ABEHMNPRV-Y]) ?[0-9][ABD-HJLNP-UW-Z]{2})$"))
-            {
-                ModelState.Remove("Postcode");
-                ModelState.AddModelError("postcode", "Please enter a valid UK postcode.");
-                return View("OrganisationAddressByPostcode");
-            }
-
             try
             {
-                var model = await _addressLookUpService.PostcodeLookupAsync(postcode);
-
-                model.Addresses = model.Addresses
+                var results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
+                model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
+                if (results == null || results.Addresses == null || results.Addresses.Length == 0)
+                {
+                    ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
+                    return View(model);
+                }
+                results.Addresses = results.Addresses
                     .Select(address => CapitalizeCommaSeparated(address))
                     .ToArray();
 
-                _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, model);
-                if (model == null || model.Addresses == null || model.Addresses.Length == 0)
-                {
-                    ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
-                }
-                return View("OrganisationAddressSearchResults", model);
+                _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
+                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "Organisation");
+                return RedirectToAction("SearchByPostcodeResults", "Address");
             }
             catch (HttpRequestException)
             {
                 ModelState.AddModelError(string.Empty, "Unable to retrieve address data.");
-                return View("OrganisationAddressByPostcode");
+                return View(model);
             }
-        }
-
-        [HttpGet]
-        public IActionResult OrganisationAddressSearchResults(SearchAddressByPostcodeModel model)
-        {
-            this.ShowBackButton("OrganisationAddressByPostcode", "Organisation");
-            return View(model);
-        }
-
-        [HttpGet]
-        public IActionResult SelectAddress(string selectedAddress)
-        {
-            var addressmodel = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
-            addressmodel.SelectedFullAddress = CapitalizeCommaSeparated(selectedAddress);
-            var addressParts = addressmodel.SelectedFullAddress.Split(",");
-
-            if (addressParts.Length < 3)
-            {
-                _logger.LogWarning("Malformed address received: {Address}", selectedAddress);
-                return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");
-            }
-
-            var model = new AddressByStreetOrTownModel
-            {
-                StreetAddress = string.Join(",", addressParts.Take(addressParts.Length - 2)) ?? string.Empty,
-                TownOrCity = addressParts[addressParts.Length - 2] ?? string.Empty,
-                Postalcode = (addressParts[addressParts.Length - 1]).ToUpper() ?? string.Empty,
-                Country = "United Kingdom" ?? string.Empty,
-                Fulladdress = addressmodel.SelectedFullAddress
-            };
-            _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, model);
-            return RedirectToAction("SaveOrganisationAddressByPostcode");
-        }
-
-        [HttpGet]
-        public IActionResult SaveOrganisationAddressByPostcode()
-        {
-            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
-            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
-
-            if (model == null || organisationModel?.CompanyDetails == null)
-            {
-                _logger.LogWarning("Missing session data : Required session data is missing or invalid. Address model and Organisation model with CompanyDetails must be present.");
-                return BadRequest("Missing session data");
-            }
-
-
-            organisationModel.CompanyDetails.RegisteredOfficeAddress = model;
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, organisationModel);
-
-            return RedirectToAction("CompanyConfirm");
-        }
+        }        
 
         public async Task<List<SelectListItem>> GetCountrySelectListItems()
         {

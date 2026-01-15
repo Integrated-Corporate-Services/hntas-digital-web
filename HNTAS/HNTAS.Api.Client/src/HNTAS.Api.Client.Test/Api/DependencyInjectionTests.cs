@@ -66,6 +66,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithAClientTest()
         {
+            var assessorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAssessorApi>();
+            Assert.True(assessorApi.HttpClient.BaseAddress != null);
+
             var carbonCalculatorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 
@@ -97,6 +100,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithoutAClientTest()
         {
+            var assessorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAssessorApi>();
+            Assert.True(assessorApi.HttpClient.BaseAddress != null);
+
             var carbonCalculatorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 
@@ -128,6 +134,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithAClientTest()
         {
+            var assessorApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAssessorApi>();
+            Assert.True(assessorApi.HttpClient.BaseAddress != null);
+            
             var carbonCalculatorApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
             
@@ -159,6 +168,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithoutAClientTest()
         {
+            var assessorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAssessorApi>();
+            Assert.True(assessorApi.HttpClient.BaseAddress != null);
+
             var carbonCalculatorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 

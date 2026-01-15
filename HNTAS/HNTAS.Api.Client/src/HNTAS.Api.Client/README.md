@@ -6,12 +6,12 @@ Create a config.yaml file similar to what is below, then run the following power
 
 ```yaml
 generatorName: csharp
-inputSpec: C:\Users\MohantySushree(Energ\source\repos\hntas-digital-web\HNTAS\HNTAS.Core.Api.json
+inputSpec: C:\Users\ManokaranSivasankar(\source\repos\hntas-digital-web\HNTAS\HNTAS.Core.Api.json
 outputDir: out
 
 # https://openapi-generator.tech/docs/generators/csharp
 additionalProperties:
-  packageGuid: '{A2FC4D4C-9AB2-461E-AC84-A96183F482A0}'
+  packageGuid: '{656AE3D0-CDA5-4E33-B300-7C26C1A2823F}'
 
 # https://openapi-generator.tech/docs/integrations/#github-integration
 # gitHost:
@@ -54,9 +54,9 @@ namespace YourProject
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            var api = host.Services.GetRequiredService<ICarbonCalculatorApi>();
-            IApiCarbonCalculatorRunPostApiResponse apiResponse = await api.ApiCarbonCalculatorRunPostAsync("todo");
-            CarbonCalculatorResponse? model = apiResponse.Ok();
+            var api = host.Services.GetRequiredService<IAssessorApi>();
+            IApiAssessorSearchGetApiResponse apiResponse = await api.ApiAssessorSearchGetAsync("todo");
+            List<AssessorSearchResult>? model = apiResponse.Ok();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)

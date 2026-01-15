@@ -176,7 +176,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
 
 
             // Act
-            var result = await _controller.OrganisationAddressByPostcode("UB3 4JT") as ViewResult;
+            var result = await _controller.OrganisationAddressByPostcode(new SearchAddressByPostcodeModel { Postcode = "UB3 4JT" }) as ViewResult;
 
             // Assert
             Assert.NotNull(result);
@@ -212,144 +212,14 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 .ThrowsAsync(new HttpRequestException("API failure"));
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
             // Act
-            var result = await _controller.OrganisationAddressByPostcode("UB3 4JT") as ViewResult;
+            var result = await _controller.OrganisationAddressByPostcode(new SearchAddressByPostcodeModel { Postcode = "UB3 4JT" }) as ViewResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal("OrganisationAddressByPostcode", result.ViewName);
             Assert.True(_controller.ModelState.ContainsKey(string.Empty));
             Assert.Equal("Unable to retrieve address data.", _controller.ModelState[string.Empty].Errors[0].ErrorMessage);
-        }
-
-        [Fact]
-        public void OrganisationAddressSearchResults_ReturnsViewWithModel()
-        {
-            // Arrange
-            var model = new SearchAddressByPostcodeModel
-            {
-                Postcode = "UB3 4JT",
-                Addresses = new[] { "10 Downing Street, London" }
-            };
-            _controller.Url = SetUpBackLink("OrganisationAddressByPostcode", "Organisation").Object;
-
-            // Act
-            var result = _controller.OrganisationAddressSearchResults(model) as ViewResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(model, result.Model);
-        }
-
-        [Fact]
-        public void SelectAddress_ValidAddress_RedirectsToSaveOrganisationAddress()
-        {
-            // Arrange
-            var selectedAddress = "123 Baker Street, London, NW1 6XE";
-            var sessionModel = new SearchAddressByPostcodeModel();
-
-            _mockSessionHelper
-                .Setup(x => x.GetFromSession<SearchAddressByPostcodeModel>(
-                    It.IsAny<HttpContext>(),
-                    SessionKeys.SearchAddressByPostcodeModelSessionKey))
-                .Returns(sessionModel);
-
-            // Act
-            var result = _controller.SelectAddress(selectedAddress);
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("SaveOrganisationAddressByPostcode", redirectResult.ActionName);
-
-            _mockSessionHelper.Verify(x => x.SaveToSession<AddressByStreetOrTownModel>(
-                It.IsAny<HttpContext>(),
-                SessionKeys.AddressByStreetOrTownModelSessionKey,
-                It.IsAny<AddressByStreetOrTownModel>()), Times.Once);
-        }
-
-        [Fact]
-        public void SelectAddress_MalformedAddress_ThrowsArgumentException()
-        {
-            // Arrange
-            var malformedAddress = "OnlyStreet"; // Not enough parts
-            var sessionModel = new SearchAddressByPostcodeModel();
-
-            _mockSessionHelper
-                .Setup(x => x.GetFromSession<SearchAddressByPostcodeModel>(
-                    It.IsAny<HttpContext>(),
-                    SessionKeys.SearchAddressByPostcodeModelSessionKey))
-                .Returns(sessionModel);
-
-            // Act & Assert
-            var result = _controller.SelectAddress(malformedAddress);
-
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.", badRequestResult.Value);
-        }
-
-        [Fact]
-        public void SaveOrganisationAddressByPostcode_ValidSession_RedirectsToCompanyConfirm()
-        {
-            // Arrange
-
-            var addressModel = new AddressByStreetOrTownModel { Fulladdress = "123 Baker Street, London, NW1 6XE" };
-            var organisationModel = new OrganisationModel { CompanyDetails = new CompanyDetailsModel { RegisteredOfficeAddress = new RegisteredOfficeAddressModel() } };
-
-            _mockSessionHelper
-                .Setup(x => x.GetFromSession<AddressByStreetOrTownModel>(
-                    It.IsAny<HttpContext>(), SessionKeys.AddressByStreetOrTownModelSessionKey))
-                .Returns(addressModel);
-
-            _mockSessionHelper
-                .Setup(x => x.GetFromSession<OrganisationModel>(
-                    It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
-                .Returns(organisationModel);
-
-            // Act
-            var result = _controller.SaveOrganisationAddressByPostcode();
-
-            // Assert
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("CompanyConfirm", redirectResult.ActionName);
-
-            _mockSessionHelper.Verify(x => x.SaveToSession(
-                It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey, organisationModel), Times.Once);
-
-
-            Assert.Equal(addressModel.StreetAddress, organisationModel.CompanyDetails.RegisteredOfficeAddress.AddressLine1);
-            Assert.Equal(addressModel.Postalcode, organisationModel.CompanyDetails.RegisteredOfficeAddress.PostalCode);
-            Assert.Equal(addressModel.Country, organisationModel.CompanyDetails.RegisteredOfficeAddress.Country);
-        }
-
-        [Fact]
-        public void SaveOrganisationAddressByPostcode_MissingOrganisationModel_ReturnsBadRequest()
-        {
-            // Arrange
-
-            var addressModel = new AddressByStreetOrTownModel { Fulladdress = "123 Baker Street, London, NW1 6XE" };
-
-            _mockSessionHelper
-                .Setup(x => x.GetFromSession<AddressByStreetOrTownModel>(
-                    It.IsAny<HttpContext>(), SessionKeys.AddressByStreetOrTownModelSessionKey))
-                .Returns(addressModel);
-
-            _mockSessionHelper
-                .Setup(x => x.GetFromSession<OrganisationModel>(
-                    It.IsAny<HttpContext>(), SessionKeys.OrganisationCreation_SessionKey))
-                .Returns((OrganisationModel)null); // Simulate missing organisation model
-
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-            };
-
-            // Act
-            var result = _controller.SaveOrganisationAddressByPostcode();
-
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Missing session data", badRequestResult.Value);
-        }
+        }        
 
         [Fact]
         public async Task SaveOrganisationAddress_ValidPostcode_RedirectsToCompanyConfirm()

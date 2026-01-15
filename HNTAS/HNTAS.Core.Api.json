@@ -10,6 +10,53 @@
     }
   ],
   "paths": {
+    "/api/Assessor/search": {
+      "get": {
+        "tags": [
+          "Assessor"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssessorSearchResult"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssessorSearchResult"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssessorSearchResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/CarbonCalculator/run": {
       "post": {
         "tags": [
@@ -3260,6 +3307,17 @@
           }
         }
       },
+      "AssessorSearchResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          }
+        }
+      },
       "Background": {
         "type": "object",
         "properties": {
@@ -5063,6 +5121,9 @@
     }
   },
   "tags": [
+    {
+      "name": "Assessor"
+    },
     {
       "name": "CarbonCalculator"
     },
