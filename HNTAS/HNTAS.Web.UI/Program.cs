@@ -99,7 +99,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new HeatNetworkInfoJsonConverter(),
         new CountryAndTerritoryJsonConverter(),
         new UserRoleDetailResponseJsonConverter(),
-        new OrganisationJsonConverter()
+        new OrganisationJsonConverter(),
+        new AssessorSearchResultJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -164,6 +165,13 @@ builder.Services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client
 
 builder.Services.AddSingleton<CarbonCalculatorApiEvents>();
 builder.Services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<AssessorApiEvents>();
+builder.Services.AddHttpClient<IAssessorApi, AssessorApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");

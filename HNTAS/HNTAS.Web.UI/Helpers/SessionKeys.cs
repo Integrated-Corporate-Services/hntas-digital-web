@@ -26,16 +26,17 @@
         public const string IsHNLocatedInEnglandScotlandWalesModelKey = "IsHNLocatedInEnglandScotlandWales";
         public const string HowManyDwellingsIncludedModelKey = "HowManyDwellingsIncluded";
 
-
         public const string HnId = "HnIdkey";
         public const string HnName = "HnNameKey";
 
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
-        public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
+        public const string HeatNetworkLocationModelKey = "HNLocationByWhat3Words";
         public const string HeatNetworkPhaseModelKey = "HeatNetworkPhase";
         public const string HasElementBeenRegisteredModelKey = "HasElementBeenRegistered";
         public const string HasPlanningApplicationBeenSubmittedModelKey = "HasPlanningApplicationBeenSubmitted";
+        public const string DoesHNHaveAPostcodeViewModelSessionKey = "DoesHNHaveAPostcodeViewModel";
         public const string PathwayModelKey = "Pathway";
+        public const string PreviousStepKey = "PreviousStep";
 
         public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";
 

@@ -1,11 +1,13 @@
 ﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.HeatNetwork;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Globalization;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -18,14 +20,16 @@ namespace HNTAS.Web.UI.Controllers
         private readonly IUserService _userService;
         private readonly ISessionHelper _sessionHelper;
         private readonly IOrganisationService _organisationService;
+        private readonly IAddressLookupService _addressLookUpService;
 
-        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworkService heatNetworkService, IUserService userService, ISessionHelper sessionHelper, IOrganisationService organisationService)
+        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworkService heatNetworkService, IUserService userService, ISessionHelper sessionHelper, IOrganisationService organisationService, IAddressLookupService addressLookupService)
         {
             _logger = logger;
             _heatNetworkService = heatNetworkService;
             _userService = userService;
             _sessionHelper = sessionHelper;
             _organisationService = organisationService;
+            _addressLookUpService = addressLookupService;
         }
 
 
@@ -46,37 +50,132 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
-            return RedirectToAction("EnterHNLocation");
+            return RedirectToAction("DoesHNHaveAPostcode");
         }
-
 
         [HttpGet]
-        public IActionResult EnterHNLocation()
+        public IActionResult DoesHNHaveAPostcode()
         {
             this.ShowBackButton("EnterHNName", "HeatNetwork");
-            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
-            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
-            ViewBag.HNName = heatNetworkNameModel.HeatNetworkName;
-            return View("EnterHNLocation", heatNetworkLocationModel);
-        }
+            var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey) ?? new DoesHNHaveAPostcodeViewModel { HasPostcode = false };
+            return View(model);
+        }        
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
+        public async Task<IActionResult> DoesHNHaveAPostcode(DoesHNHaveAPostcodeViewModel model)
         {
             this.ShowBackButton("EnterHNName", "HeatNetwork");
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
-            return RedirectToAction("EnterHNPhase");
+            _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
+            if (!model.HasPostcode)
+            {
+                return RedirectToAction("HNAddressByCoordinates");
+            }            
+            SearchAddressByPostcodeModel results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
+            model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
+            if (results == null || results.Addresses == null || results.Addresses.Length == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
+                return View(model);
+            }            
+            results.Addresses = results.Addresses
+                .Select(address => Utility.CapitalizeCommaSeparated(address))
+                .ToArray();
+            _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "HeatNetwork");
+            return RedirectToAction("SearchByPostcodeResults", "Address");
         }
+
+        // -- Flow switching to AddressController for postcode search results -- //
+        // -- Flow switching back from AddressController after address selection -- //
+
+        [HttpGet]
+        public IActionResult SaveHNAddressByPostcode()
+        {
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
+            if (model == null)
+            {                
+                return BadRequest("Missing session data");
+            }
+
+            heatNetworkLocationModel.HNAddressByStreet = model;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
+            return RedirectToAction("HNAddressByCoordinates", "HeatNetwork");
+        }
+
+        [HttpGet]
+        public IActionResult AddressManualEntry()
+        {
+            this.ShowBackButton("EnterHNName", "HeatNetwork");
+            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey) ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult AddressManualEntry(AddressByStreetOrTownModel model)
+        {
+            this.ShowBackButton("EnterHNName", "HeatNetwork");
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
+                .Where(part => !string.IsNullOrWhiteSpace(part));
+            model.Fulladdress = string.Join(", ", addressParts);
+            heatNetworkLocationModel.HNAddressByStreet = model;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
+            return RedirectToAction("HNAddressByCoordinates", "HeatNetwork");
+        }
+
+        [HttpGet]
+        public IActionResult HNAddressByCoordinates()
+        {
+            this.ShowBackButton("DoesHNHaveAPostcode");
+            var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult HNAddressByCoordinates(HeatNetworkLocationModel model)
+        {
+            // Re-create nested container if null so view rendering doesn't NRE
+            if (model?.HNAddressByLatLong == null)
+            {
+                model ??= new HeatNetworkLocationModel();
+                model.HNAddressByLatLong = new AddressByLatLongModel();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Try to split and parse the LatitudeLongitude value
+            var raw = model.LatitudeLongitude ?? string.Empty;
+            var parts = raw.Split(',', System.StringSplitOptions.RemoveEmptyEntries | System.StringSplitOptions.TrimEntries);
+
+            if (parts.Length != 2
+                || !decimal.TryParse(parts[0], NumberStyles.Float | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var lat)
+                || !decimal.TryParse(parts[1], NumberStyles.Float | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var lon))
+            {
+                ModelState.AddModelError(nameof(model.LatitudeLongitude),
+                    "Enter latitude and longitude in the format: 'latitude, longitude' (for example 52.93430970409369, -1.2522174890632065).");
+                return View("HNAddressByCoordinates", model);
+            }
+
+            // Populate nested AddressByLatLongModel
+            model.HNAddressByLatLong.Latitude = lat;
+            model.HNAddressByLatLong.Longitude = lon;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
+            return RedirectToAction("EnterHNPhase");
+        }        
 
         [HttpGet]
         public IActionResult EnterHNPhase()
         {
-            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
+            this.ShowBackButton("HNAddressByCoordinates", "HeatNetwork");
             var heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey) ?? new HeatNetworkPhaseModel();
             var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
             ViewBag.HNName = heatNetworkNameModel.HeatNetworkName;
@@ -87,7 +186,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnterHNPhase(HeatNetworkPhaseModel model)
         {
-            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
+            this.ShowBackButton("HNAddressByCoordinates", "HeatNetwork");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -309,7 +408,7 @@ namespace HNTAS.Web.UI.Controllers
             var model = new HeatNetwork
             {
                 Name = viewModel?.HeatNetworkNameModel?.HeatNetworkName,
-                Location = viewModel?.HeatNetworkLocationModel?.HeatNetworkLocation,
+                Location = viewModel?.HeatNetworkLocationModel?.LatitudeLongitude,
                 Pathway = viewModel?.PathwayModel?.Pathway,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId

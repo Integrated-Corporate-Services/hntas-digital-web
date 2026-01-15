@@ -15,18 +15,8 @@
     <link rel="stylesheet" href="/assets/css/main.min.css">
     <meta property="og:image" content="YOUR-DOMAIN/images/govuk-opengraph-image.png">
 </head>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5SWB2T5S');</script>
-<!-- End Google Tag Manager -->
+
 <body class="govuk-template__body app-body-class">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5SWB2T5S"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
     <script>
         document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
     </script>
@@ -97,7 +87,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <li class="govuk-service-navigation__item @(currentAction == "StartPage" && currentController == "Home" ? "govuk-service-navigation__item--active" : "")">
                             <a class="govuk-service-navigation__link" href="@Url.Action("StartPage", "Home")"
                                @(currentAction == "StartPage" && currentController == "Home" ? "aria-current=page" : "")>
-                                <strong>Home</strong>
+                                <strong>HNTAS</strong>
                             </a>
                         </li>
                         <li class="govuk-service-navigation__item @(currentAction == "DocumentLibrary" && currentController == "Home" ? "govuk-service-navigation__item--active" : "")">
@@ -215,6 +205,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </footer>
     <script type="module" src="~/assets/js/main.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>
