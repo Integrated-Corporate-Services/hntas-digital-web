@@ -7,12 +7,15 @@
     "sass": "sass assets/scss/main.scss:wwwroot/assets/css/main.css",
     "minify": "postcss wwwroot/assets/css/main.css -o wwwroot/assets/css/main.min.css",
     "build-css": "npm run sass && npm run minify",
-    "sass:watch": "sass --watch src/styles:public/styles"
+    "sass:watch": "sass --watch src/styles:public/styles",
+    "build-js": "webpack --mode production",
+    "watch-js": "webpack --watch --mode development"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "accessible-autocomplete": "^3.0.1",
     "govuk-frontend": "^5.11.0"
   },
   "devDependencies": {

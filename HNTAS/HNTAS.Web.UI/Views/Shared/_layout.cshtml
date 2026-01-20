@@ -2,6 +2,7 @@
 <html lang="en" class="govuk-template govuk-template--rebranded app-html-class">
 
 <head>
+    <meta name="robots" content="noindex, nofollow">
     <meta charset="utf-8">
     <title>GOV.UK - Heat network technical assurance scheme</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -70,6 +71,53 @@
             </div>
         </div>
     </header>
+    <div class="govuk-service-navigation"
+         data-module="govuk-service-navigation">
+        <div class="govuk-width-container">
+            <div class="govuk-service-navigation__container">
+                @{
+                    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+                    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+                }
+                <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+                    <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden>
+                        Menu
+                    </button>
+                    <ul class="govuk-service-navigation__list" id="navigation">
+                        <li class="govuk-service-navigation__item @(currentAction == "StartPage" && currentController == "Home" ? "govuk-service-navigation__item--active" : "")">
+                            <a class="govuk-service-navigation__link" href="@Url.Action("StartPage", "Home")"
+                               @(currentAction == "StartPage" && currentController == "Home" ? "aria-current=page" : "")>
+                                <strong>HNTAS</strong>
+                            </a>
+                        </li>
+                        <li class="govuk-service-navigation__item @(currentAction == "DocumentLibrary" && currentController == "Home" ? "govuk-service-navigation__item--active" : "")">
+                            <a class="govuk-service-navigation__link" href="@Url.Action("DocumentLibrary", "Home")"
+                               @(currentAction == "DocumentLibrary" && currentController == "Home" ? "aria-current=page" : "")>
+                                <strong>Document library</strong>
+                            </a>
+                        </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="govuk-service-navigation__item @(currentAction == "UserAccount" && currentController == "Dashboard" ? "govuk-service-navigation__item--active" : "")">
+                                <a class="govuk-service-navigation__link" href="@Url.Action("UserAccount", "Dashboard")"
+                                   @(currentAction == "UserAccount" && currentController == "Dashboard" ? "aria-current=page" : "")>
+                                    <strong>Dashboard</strong>
+                                </a>
+                            </li>
+
+                            <li class="govuk-service-navigation__item @(currentAction == "Index" && currentController == "Notification" ? "govuk-service-navigation__item--active" : "")">
+                                <a class="govuk-service-navigation__link" href="@Url.Action("Index", "Notification")"
+                                   @(currentAction == "Index" && currentController == "Notification" ? "aria-current=page" : "")>
+                                    <strong>Notifications</strong>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
     <div class="govuk-width-container app-width-container">
         <div class="govuk-phase-banner">
             <p class="govuk-phase-banner__content">
@@ -81,6 +129,11 @@
                 </span>
             </p>
         </div>
+
+        @if (IsSectionDefined("BeforeMain"))
+        {
+            @RenderSection("BeforeMain", required: false)
+        }
 
         @{
             bool showBackButton = ViewBag.ShowBackButton ?? false; // Your condition
@@ -152,6 +205,7 @@
         </div>
     </footer>
     <script type="module" src="~/assets/js/main.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

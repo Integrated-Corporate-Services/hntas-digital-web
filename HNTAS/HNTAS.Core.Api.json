@@ -10,6 +10,53 @@
     }
   ],
   "paths": {
+    "/api/Assessor/search": {
+      "get": {
+        "tags": [
+          "Assessor"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssessorSearchResult"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssessorSearchResult"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssessorSearchResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/CarbonCalculator/run": {
       "post": {
         "tags": [
@@ -3260,6 +3307,17 @@
           }
         }
       },
+      "AssessorSearchResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          }
+        }
+      },
       "Background": {
         "type": "object",
         "properties": {
@@ -3419,6 +3477,94 @@
           "totalCarbonEmission": {
             "type": "number",
             "format": "double"
+          }
+        }
+      },
+      "ChpInput": {
+        "type": "object",
+        "properties": {
+          "chpFuelTypeInput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "chpInstallationDateInput": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpOperationalModeInput": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpUsefulHeatValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "chpUsefulHeatNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpElectricityGeneratedValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "chpElectricityGeneratedNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpFuelUsedValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "chpFuelUsedNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpHeatCoolingValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "chpHeatCoolingNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpSleevingPCentValue": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "chpSleevingPCentNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chpMaxHeatOutput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "chpMaxElectricityOutput": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         }
       },
@@ -5063,6 +5209,9 @@
     }
   },
   "tags": [
+    {
+      "name": "Assessor"
+    },
     {
       "name": "CarbonCalculator"
     },

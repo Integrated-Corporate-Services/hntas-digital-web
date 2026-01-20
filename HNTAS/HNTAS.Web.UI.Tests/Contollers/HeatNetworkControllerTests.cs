@@ -3,6 +3,7 @@ using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.HeatNetwork;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<ISessionHelper> _sessionHelperMock;
         private readonly Mock<IHeatNetworkService> _heatNetworkServiceMock;
         private readonly Mock<IUserService> _userServiceMock;
+        private readonly Mock<IAddressLookupService> _addressLookupServiceMock;
         private readonly Mock<IOrganisationService> _organisationServiceMock;
         private readonly HeatNetworkController _controller;
 
@@ -28,6 +30,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _sessionHelperMock = new Mock<ISessionHelper>();
             _heatNetworkServiceMock = new Mock<IHeatNetworkService>();
             _userServiceMock = new Mock<IUserService>();
+            _addressLookupServiceMock = new Mock<IAddressLookupService>();
             _organisationServiceMock = new Mock<IOrganisationService>();
             _controller = CreateController();
         }
@@ -39,7 +42,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 _heatNetworkServiceMock.Object,
                 _userServiceMock.Object,
                 _sessionHelperMock.Object,
-                _organisationServiceMock.Object
+                _organisationServiceMock.Object,
+                _addressLookupServiceMock.Object
             );
             var httpContext = new DefaultHttpContext();
             httpContext.Session = new MockHttpSession();
@@ -93,52 +97,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkNameModel>(_controller.HttpContext, SessionKeys.HeatNetworkNameModelKey, model), Times.Once);
             Assert.Equal("EnterHNLocation", redirectResult.ActionName);
-        }
-
-        [Fact]
-        public void EnterHNLocation_Post_ValidModel_ReturnsEnterHNPhaseView()
-        {
-            // Arrange
-            var validModel = new HeatNetworkLocationModel
-            {
-                HeatNetworkLocation = "///word1.word2.word3"
-            };
-            _controller.Url = SetUpBackLink("EnterHNName", "HeatNetwork").Object;
-
-            //_controller.ModelState.Clear(); // Ensure model is valid
-
-            // Act
-            var result = _controller.EnterHNLocation(validModel) as ViewResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("EnterHNPhase", result.ViewName);
-            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(
-                It.IsAny<HttpContext>(),
-                SessionKeys.HeatNetworkLocationModelKey,
-                validModel), Times.Once);
-        }
-
-        [Fact]
-        public void EnterHNLocation_Post_InvalidModel_ReturnsSameViewWithModel()
-        {
-            // Arrange
-            var invalidModel = new HeatNetworkLocationModel(); // Missing required fields
-            _controller.Url = SetUpBackLink("EnterHNName", "HeatNetwork").Object;
-            _controller.ModelState.AddModelError("HeatNetworkLocation", "Required");
-
-            // Act
-            var result = _controller.EnterHNLocation(invalidModel) as ViewResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(invalidModel, result.Model);
-            Assert.Null(result.ViewName); // Returns default view
-            _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkLocationModel>(
-                It.IsAny<HttpContext>(),
-                It.IsAny<string>(),
-                It.IsAny<HeatNetworkLocationModel>()), Times.Never);
-        }
+        }        
 
         [Fact]
         public void EnterHNPhase_Get_ReturnsViewWithModelFromSession()
@@ -396,7 +355,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             // Arrange
             var nameModel = new HeatNetworkNameModel { HeatNetworkName = "Test Network" };
-            var locationModel = new HeatNetworkLocationModel { HeatNetworkLocation = "https://what3words.com/word1.word2.word3" };
+            var locationModel = new HeatNetworkLocationModel { LatitudeLongitude = "56.123, -14.90" };
             var phaseModel = new HeatNetworkPhaseModel { HeatNetworkPhase = "design" };
             var pathwayModel = new PathwayModel { Pathway = "1" };
 
@@ -451,7 +410,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             var hnId = "user123";
             var heatNetworkNameModel = new HeatNetworkNameModel { HeatNetworkName = "Test Network" };
-            var heatNetworkLocationModel = new HeatNetworkLocationModel { HeatNetworkLocation = "Test Location" };
+            var heatNetworkLocationModel = new HeatNetworkLocationModel { LatitudeLongitude = "Test Location" };
             var pathwayModel = new PathwayModel { Pathway = "Test Pathway" };
 
             _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkNameModelKey))
@@ -485,7 +444,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             var hnId = "user123";
             var heatNetworkNameModel = new HeatNetworkNameModel { HeatNetworkName = "Test Network" };
-            var heatNetworkLocationModel = new HeatNetworkLocationModel { HeatNetworkLocation = "Test Location" };
+            var heatNetworkLocationModel = new HeatNetworkLocationModel { LatitudeLongitude = "Test Location" };
             var pathwayModel = new PathwayModel { Pathway = "Test Pathway" };
 
             _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(It.IsAny<HttpContext>(), SessionKeys.HeatNetworkNameModelKey))

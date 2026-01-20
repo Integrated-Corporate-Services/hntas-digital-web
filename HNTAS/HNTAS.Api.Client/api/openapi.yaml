@@ -5,6 +5,7 @@ info:
 servers:
 - url: https://localhost:7117/
 tags:
+- name: Assessor
 - name: CarbonCalculator
 - name: CountriesAndTerritories
 - name: HeatNetworks
@@ -14,6 +15,37 @@ tags:
 - name: SOA
 - name: Users
 paths:
+  /api/Assessor/search:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessorSearchResult"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessorSearchResult"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessorSearchResult"
+                type: array
+          description: OK
+      tags:
+      - Assessor
   /api/CarbonCalculator/run:
     post:
       requestBody:
@@ -2083,6 +2115,16 @@ components:
       - lastName
       - status
       type: object
+    AssessorSearchResult:
+      example:
+        fullName: fullName
+        id: id
+      properties:
+        id:
+          type: string
+        fullName:
+          type: string
+      type: object
     Background:
       example:
         networkNamePrevious: networkNamePrevious
@@ -3185,6 +3227,72 @@ components:
           nullable: true
           type: integer
       type: object
+    HeatPumpInput:
+      example:
+        hpmUsefulHeatGeneratedValue:
+        - 7
+        - 7
+        hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
+        hpmEnergyUsedNotes: hpmEnergyUsedNotes
+        hpmSleevingPCentNotes: hpmSleevingPCentNotes
+        hpmTypeFuelUsedInput: 6
+        hpmUsefulCoolingGeneratedValue:
+        - 4
+        - 4
+        hpmEnergyUsedValue:
+        - 1
+        - 1
+        hpmSleevingPCentValue:
+        - 5
+        - 5
+        hpmMaxHeatOutput: 9
+        hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
+      properties:
+        hpmTypeFuelUsedInput:
+          format: int32
+          nullable: true
+          type: integer
+        hpmUsefulHeatGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmUsefulHeatGeneratedNotes:
+          nullable: true
+          type: string
+        hpmEnergyUsedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmEnergyUsedNotes:
+          nullable: true
+          type: string
+        hpmUsefulCoolingGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmUsefulCoolingGeneratedNotes:
+          nullable: true
+          type: string
+        hpmSleevingPCentValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hpmSleevingPCentNotes:
+          nullable: true
+          type: string
+        hpmMaxHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
+      type: object
     HnRoleMapping:
       example:
         hnId: hnId
@@ -3647,6 +3755,37 @@ components:
           nullable: true
           type: string
         instance:
+          nullable: true
+          type: string
+      type: object
+    RecoveredInput:
+      example:
+        hrwSleevingPCentValue:
+        - 9
+        - 9
+        hrwHeatUsedByCoolingProductionValue:
+        - 8
+        - 8
+        hrwSleevingPCentNotes: hrwSleevingPCentNotes
+        hrwUsefulHeatGeneratedValue:
+        - 6
+        - 6
+        hrwMaxHeatOutput: 6
+        hrwHeatUsedByCoolingProductionNotes: hrwHeatUsedByCoolingProductionNotes
+        hrwHeatRecoverySourceInput: 9
+        hrwUsefulHeatGeneratedNotes: hrwUsefulHeatGeneratedNotes
+      properties:
+        hrwHeatRecoverySourceInput:
+          format: int32
+          nullable: true
+          type: integer
+        hrwUsefulHeatGeneratedValue:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        hrwUsefulHeatGeneratedNotes:
           nullable: true
           type: string
       type: object
