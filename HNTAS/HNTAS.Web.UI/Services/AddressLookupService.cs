@@ -7,15 +7,18 @@ namespace HNTAS.Web.UI.Services
     {
         private readonly HttpClient _httpClient;
         private readonly string? _apiKey;
+        private readonly ILogger<AddressLookupService> _logger;
 
-        public AddressLookupService(HttpClient httpClient, IConfiguration config)
+        public AddressLookupService(HttpClient httpClient, IConfiguration config, ILogger<AddressLookupService> logger)
         {
             _httpClient = httpClient;
             _apiKey = Environment.GetEnvironmentVariable("OS_API_KEY");
+            _logger = logger;
         }
 
         public async Task<SearchAddressByPostcodeModel?> PostcodeLookupAsync(string postcode)
         {
+            _logger.LogInformation("OS_Apikey : {_apiKey}", _apiKey);
             var request = new HttpRequestMessage(
                 HttpMethod.Get,
                 $"https://api.os.uk/search/places/v1/postcode?postcode={postcode}&key={_apiKey}");
