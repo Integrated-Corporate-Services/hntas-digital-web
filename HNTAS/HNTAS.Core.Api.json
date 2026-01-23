@@ -401,6 +401,86 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/external/heat-networks": {
+      "get": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/heat-network/{hnId}": {
+      "get": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
           "200": {
             "description": "OK",
             "content": {
@@ -417,6 +497,82 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HeatNetworkResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/heat-networks/search": {
+      "get": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "parameters": [
+          {
+            "name": "from_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                  }
                 }
               }
             }
@@ -440,29 +596,6 @@
                 }
               }
             }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -3611,6 +3744,37 @@
           "Certifier"
         ]
       },
+      "ECDetails": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        }
+      },
+      "ECDetails2": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
       "Energy": {
         "type": "object",
         "properties": {
@@ -3724,11 +3888,14 @@
             "type": "string",
             "nullable": true
           },
-          "location": {
-            "type": "string"
-          },
           "name": {
             "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/RegisteredAddress"
+          },
+          "ecDetails": {
+            "$ref": "#/components/schemas/ECDetails2"
           },
           "pathway": {
             "type": "string"
@@ -3823,8 +3990,11 @@
           "hnId": {
             "type": "string"
           },
-          "location": {
-            "type": "string"
+          "ecDetails": {
+            "$ref": "#/components/schemas/ECDetails"
+          },
+          "address": {
+            "$ref": "#/components/schemas/RegisteredAddress"
           },
           "name": {
             "type": "string"
@@ -3834,6 +4004,13 @@
           },
           "soa": {
             "$ref": "#/components/schemas/SoaResponse"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -3856,8 +4033,11 @@
           "name": {
             "type": "string"
           },
-          "location": {
-            "type": "string"
+          "ecDetails": {
+            "$ref": "#/components/schemas/ECDetails2"
+          },
+          "address": {
+            "$ref": "#/components/schemas/RegisteredAddress"
           }
         }
       },
@@ -4207,7 +4387,7 @@
             "type": "string"
           },
           "registeredAddress": {
-            "$ref": "#/components/schemas/RegisteredAddress"
+            "$ref": "#/components/schemas/RegisteredAddress2"
           },
           "hnIds": {
             "type": "array",
@@ -4256,7 +4436,7 @@
             "$ref": "#/components/schemas/OrganisationType"
           },
           "registeredAddress": {
-            "$ref": "#/components/schemas/RegisteredAddress"
+            "$ref": "#/components/schemas/RegisteredAddress2"
           }
         }
       },
@@ -4277,7 +4457,7 @@
             "$ref": "#/components/schemas/OrganisationType"
           },
           "registeredAddress": {
-            "$ref": "#/components/schemas/RegisteredAddress"
+            "$ref": "#/components/schemas/RegisteredAddress2"
           }
         },
         "nullable": true
@@ -4367,6 +4547,38 @@
         }
       },
       "RegisteredAddress": {
+        "required": [
+          "addressLine1",
+          "postcode"
+        ],
+        "type": "object",
+        "properties": {
+          "addressLine1": {
+            "type": "string"
+          },
+          "addressLine2": {
+            "type": "string",
+            "nullable": true
+          },
+          "town": {
+            "type": "string",
+            "nullable": true
+          },
+          "county": {
+            "type": "string",
+            "nullable": true
+          },
+          "postcode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "RegisteredAddress2": {
         "required": [
           "addressLine1",
           "postcode"

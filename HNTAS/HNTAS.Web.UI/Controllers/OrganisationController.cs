@@ -514,7 +514,14 @@ namespace HNTAS.Web.UI.Controllers
                         name: company?.Title,
                         type: orgType,
                         companiesHouseNumber: organisationModel.CompanyNumber,
-                        registeredAddress: regAddress
+                        registeredAddress: new RegisteredAddress2
+                        (
+                            addressLine1: regAddress.AddressLine1,
+                            addressLine2: regAddress.AddressLine2,
+                            town: regAddress.Town,
+                            postcode: regAddress.Postcode,
+                            country: regAddress.Country
+                        )
                     ),
                     landlineNumber: userModel.ContactDetails.LandlineNumber,
                     contactNumberExtension: userModel.ContactDetails.ContactNumberExtension,
@@ -804,7 +811,14 @@ namespace HNTAS.Web.UI.Controllers
                 name: company.Title,
                 type: apiOrgType,
                 companiesHouseNumber: organisationModel.CompanyNumber,
-                registeredAddress: regAddress
+                registeredAddress: new RegisteredAddress2
+                (
+                    addressLine1: regAddress.AddressLine1,
+                    addressLine2: regAddress.AddressLine2,
+                    town: regAddress.Town,
+                    postcode: regAddress.Postcode,
+                    country: regAddress.Country
+                )
             );
 
             try

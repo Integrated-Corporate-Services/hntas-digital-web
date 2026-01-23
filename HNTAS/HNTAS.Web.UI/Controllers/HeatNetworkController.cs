@@ -2,6 +2,7 @@
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
+using HNTAS.Web.UI.Models.CompaniesHouse;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
@@ -72,7 +73,7 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
             if (!model.HasPostcode)
             {
-                return RedirectToAction("HNAddressByCoordinates");
+                return RedirectToAction("ECCoordinates");
             }            
             SearchAddressByPostcodeModel results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
             model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
@@ -104,7 +105,7 @@ namespace HNTAS.Web.UI.Controllers
 
             heatNetworkLocationModel.HNAddressByStreet = model;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
-            return RedirectToAction("HNAddressByCoordinates", "HeatNetwork");
+            return RedirectToAction("ECCoordinates", "HeatNetwork");
         }
 
         [HttpGet]
@@ -125,26 +126,26 @@ namespace HNTAS.Web.UI.Controllers
             model.Fulladdress = string.Join(", ", addressParts);
             heatNetworkLocationModel.HNAddressByStreet = model;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
-            return RedirectToAction("HNAddressByCoordinates", "HeatNetwork");
+            return RedirectToAction("ECCoordinates", "HeatNetwork");
         }
 
         [HttpGet]
-        public IActionResult HNAddressByCoordinates()
+        public IActionResult ECCoordinates()
         {
             this.ShowBackButton("DoesHNHaveAPostcode");
-            var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult HNAddressByCoordinates(HeatNetworkLocationModel model)
+        public IActionResult ECCoordinates(ECDetailsModel model)
         {
             // Re-create nested container if null so view rendering doesn't NRE
-            if (model?.HNAddressByLatLong == null)
+            if (model.LatitudeLongitude == null)
             {
-                model ??= new HeatNetworkLocationModel();
-                model.HNAddressByLatLong = new AddressByLatLongModel();
+                model ??= new ECDetailsModel();
+                model.ECAddressByLatLong = new AddressByLatLongModel();
             }
 
             if (!ModelState.IsValid)
@@ -162,20 +163,20 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError(nameof(model.LatitudeLongitude),
                     "Enter latitude and longitude in the format: 'latitude, longitude' (for example 52.93430970409369, -1.2522174890632065).");
-                return View("HNAddressByCoordinates", model);
+                return View("ECCoordinates", model);
             }
 
             // Populate nested AddressByLatLongModel
-            model.HNAddressByLatLong.Latitude = lat;
-            model.HNAddressByLatLong.Longitude = lon;
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
+            model.ECAddressByLatLong.Latitude = lat;
+            model.ECAddressByLatLong.Longitude = lon;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.ECDetailsModelSessionKey, model);
             return RedirectToAction("EnterHNPhase");
         }        
 
         [HttpGet]
         public IActionResult EnterHNPhase()
         {
-            this.ShowBackButton("HNAddressByCoordinates", "HeatNetwork");
+            this.ShowBackButton("ECCoordinates", "HeatNetwork");
             var heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey) ?? new HeatNetworkPhaseModel();
             var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
             ViewBag.HNName = heatNetworkNameModel.HeatNetworkName;
@@ -186,7 +187,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnterHNPhase(HeatNetworkPhaseModel model)
         {
-            this.ShowBackButton("HNAddressByCoordinates", "HeatNetwork");
+            this.ShowBackButton("ECCoordinates", "HeatNetwork");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -356,7 +357,8 @@ namespace HNTAS.Web.UI.Controllers
             var model = new CheckYourAnswersHeatNetworkModel
             {
                 HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey),
-                HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey),
+                HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey).HNAddressByStreet,
+                ECDetailsModel = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey),
                 HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey),
                 HaveYouSignedMEContractModel = _sessionHelper.GetFromSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? new HaveYouSignedMEContractModel(),
                 HasElementBeenRegisteredModel = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? null,
@@ -374,7 +376,8 @@ namespace HNTAS.Web.UI.Controllers
         {
 
             viewModel.HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey);
-            viewModel.HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
+            viewModel.HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey).HNAddressByStreet;
+            viewModel.ECDetailsModel = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey);
             viewModel.PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey);
             viewModel.HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey);
             viewModel.HaveYouSignedMEContractModel = _sessionHelper.GetFromSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? null;
@@ -383,6 +386,7 @@ namespace HNTAS.Web.UI.Controllers
 
             ModelState.Remove(nameof(viewModel.HeatNetworkNameModel));
             ModelState.Remove(nameof(viewModel.HeatNetworkLocationModel));
+            ModelState.Remove(nameof(viewModel.ECDetailsModel));
             ModelState.Remove(nameof(viewModel.PathwayModel));
             ModelState.Remove(nameof(viewModel.HeatNetworkPhaseModel));
             ModelState.Remove(nameof(viewModel.HaveYouSignedMEContractModel));
@@ -404,11 +408,25 @@ namespace HNTAS.Web.UI.Controllers
                 return View("CheckYourAnswers", viewModel);
             }
 
+            var hnAddress = viewModel?.HeatNetworkLocationModel;
 
+            var ecDetails = new ECDetails2(
+                latitude: (double?)(viewModel?.ECDetailsModel.ECAddressByLatLong.Latitude),
+                    longitude: (double?)(viewModel?.ECDetailsModel.ECAddressByLatLong.Longitude)
+                );
+            var address = new RegisteredAddress(
+                    addressLine1: hnAddress?.StreetAddress,
+                    postcode: hnAddress?.Postalcode,
+                    addressLine2: default,
+                    town: hnAddress?.TownOrCity,
+                    county: default,
+                    country: hnAddress?.Country
+                );
             var model = new HeatNetwork
             {
                 Name = viewModel?.HeatNetworkNameModel?.HeatNetworkName,
-                Location = viewModel?.HeatNetworkLocationModel?.LatitudeLongitude,
+                Address = address,
+                EcDetails = ecDetails,
                 Pathway = viewModel?.PathwayModel?.Pathway,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId
@@ -460,7 +478,12 @@ namespace HNTAS.Web.UI.Controllers
             var model = new HNDetailsViewModel
             {
                 Name = response?.Name,
-                LocationUrl = response?.Location,
+                Address = new AddressByStreetOrTownModel { 
+                    StreetAddress = response?.Address?.AddressLine1,
+                    TownOrCity = response?.Address?.Town,
+                    Postalcode = response?.Address?.Postcode,
+                    Country = response?.Address?.Country
+                },
                 OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName),
                 PathWay = response.Pathway,
                 UHNID = response?.HnId

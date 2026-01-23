@@ -38,7 +38,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="registeredAddress">registeredAddress</param>
         /// <param name="companiesHouseNumber">companiesHouseNumber</param>
         [JsonConstructor]
-        public OrganisationRequest(string name, OrganisationType type, RegisteredAddress registeredAddress, Option<string?> companiesHouseNumber = default)
+        public OrganisationRequest(string name, OrganisationType type, RegisteredAddress2 registeredAddress, Option<string?> companiesHouseNumber = default)
         {
             Name = name;
             Type = type;
@@ -65,7 +65,7 @@ namespace HNTAS.Api.Client.Model
         /// Gets or Sets RegisteredAddress
         /// </summary>
         [JsonPropertyName("registeredAddress")]
-        public RegisteredAddress RegisteredAddress { get; set; }
+        public RegisteredAddress2 RegisteredAddress { get; set; }
 
         /// <summary>
         /// Used to track the state of CompaniesHouseNumber
@@ -131,7 +131,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> name = default;
             Option<OrganisationType?> type = default;
-            Option<RegisteredAddress?> registeredAddress = default;
+            Option<RegisteredAddress2?> registeredAddress = default;
             Option<string?> companiesHouseNumber = default;
 
             while (utf8JsonReader.Read())
@@ -158,7 +158,7 @@ namespace HNTAS.Api.Client.Model
                                 type = new Option<OrganisationType?>(OrganisationTypeValueConverter.FromStringOrDefault(typeRawValue));
                             break;
                         case "registeredAddress":
-                            registeredAddress = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            registeredAddress = new Option<RegisteredAddress2?>(JsonSerializer.Deserialize<RegisteredAddress2>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "companiesHouseNumber":
                             companiesHouseNumber = new Option<string?>(utf8JsonReader.GetString());

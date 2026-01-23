@@ -35,13 +35,15 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="hnId">hnId</param>
         /// <param name="name">name</param>
-        /// <param name="location">location</param>
+        /// <param name="ecDetails">ecDetails</param>
+        /// <param name="address">address</param>
         [JsonConstructor]
-        public HeatNetworkUserResponse(Option<string?> hnId = default, Option<string?> name = default, Option<string?> location = default)
+        public HeatNetworkUserResponse(Option<string?> hnId = default, Option<string?> name = default, Option<ECDetails2?> ecDetails = default, Option<RegisteredAddress?> address = default)
         {
             HnIdOption = hnId;
             NameOption = name;
-            LocationOption = location;
+            EcDetailsOption = ecDetails;
+            AddressOption = address;
             OnCreated();
         }
 
@@ -74,17 +76,30 @@ namespace HNTAS.Api.Client.Model
         public string? Name { get { return this.NameOption; } set { this.NameOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Location
+        /// Used to track the state of EcDetails
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> LocationOption { get; private set; }
+        public Option<ECDetails2?> EcDetailsOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Location
+        /// Gets or Sets EcDetails
         /// </summary>
-        [JsonPropertyName("location")]
-        public string? Location { get { return this.LocationOption; } set { this.LocationOption = new(value); } }
+        [JsonPropertyName("ecDetails")]
+        public ECDetails2? EcDetails { get { return this.EcDetailsOption; } set { this.EcDetailsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Address
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<RegisteredAddress?> AddressOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Address
+        /// </summary>
+        [JsonPropertyName("address")]
+        public RegisteredAddress? Address { get { return this.AddressOption; } set { this.AddressOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -96,7 +111,8 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class HeatNetworkUserResponse {\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Location: ").Append(Location).Append("\n");
+            sb.Append("  EcDetails: ").Append(EcDetails).Append("\n");
+            sb.Append("  Address: ").Append(Address).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -136,7 +152,8 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> hnId = default;
             Option<string?> name = default;
-            Option<string?> location = default;
+            Option<ECDetails2?> ecDetails = default;
+            Option<RegisteredAddress?> address = default;
 
             while (utf8JsonReader.Read())
             {
@@ -159,8 +176,11 @@ namespace HNTAS.Api.Client.Model
                         case "name":
                             name = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "location":
-                            location = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "ecDetails":
+                            ecDetails = new Option<ECDetails2?>(JsonSerializer.Deserialize<ECDetails2>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "address":
+                            address = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -174,10 +194,7 @@ namespace HNTAS.Api.Client.Model
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetworkUserResponse.");
 
-            if (location.IsSet && location.Value == null)
-                throw new ArgumentNullException(nameof(location), "Property is not nullable for class HeatNetworkUserResponse.");
-
-            return new HeatNetworkUserResponse(hnId, name, location);
+            return new HeatNetworkUserResponse(hnId, name, ecDetails, address);
         }
 
         /// <summary>
@@ -210,17 +227,28 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkUserResponse.NameOption.IsSet && heatNetworkUserResponse.Name == null)
                 throw new ArgumentNullException(nameof(heatNetworkUserResponse.Name), "Property is required for class HeatNetworkUserResponse.");
 
-            if (heatNetworkUserResponse.LocationOption.IsSet && heatNetworkUserResponse.Location == null)
-                throw new ArgumentNullException(nameof(heatNetworkUserResponse.Location), "Property is required for class HeatNetworkUserResponse.");
-
             if (heatNetworkUserResponse.HnIdOption.IsSet)
                 writer.WriteString("hnId", heatNetworkUserResponse.HnId);
 
             if (heatNetworkUserResponse.NameOption.IsSet)
                 writer.WriteString("name", heatNetworkUserResponse.Name);
 
-            if (heatNetworkUserResponse.LocationOption.IsSet)
-                writer.WriteString("location", heatNetworkUserResponse.Location);
+            if (heatNetworkUserResponse.EcDetailsOption.IsSet)
+                if (heatNetworkUserResponse.EcDetailsOption.Value != null)
+                {
+                    writer.WritePropertyName("ecDetails");
+                    JsonSerializer.Serialize(writer, heatNetworkUserResponse.EcDetails, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("ecDetails");
+            if (heatNetworkUserResponse.AddressOption.IsSet)
+                if (heatNetworkUserResponse.AddressOption.Value != null)
+                {
+                    writer.WritePropertyName("address");
+                    JsonSerializer.Serialize(writer, heatNetworkUserResponse.Address, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("address");
         }
     }
 }

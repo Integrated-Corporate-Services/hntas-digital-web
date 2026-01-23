@@ -257,6 +257,56 @@ paths:
               schema:
                 $ref: "#/components/schemas/HeatNetworkResponse"
           description: Created
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - HeatNetworks
+  /api/external/heat-networks:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkResponse"
+                type: array
+          description: OK
+      tags:
+      - HeatNetworks
+  /api/external/heat-network/{hnId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
         "200":
           content:
             text/plain:
@@ -268,6 +318,58 @@ paths:
             text/json:
               schema:
                 $ref: "#/components/schemas/HeatNetworkResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - HeatNetworks
+  /api/external/heat-networks/search:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: from_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkResponse"
+                type: array
           description: OK
         "400":
           content:
@@ -281,20 +383,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Bad Request
-        "409":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Conflict
-        "500":
-          description: Internal Server Error
       tags:
       - HeatNetworks
   /api/Invitations/{id}:
@@ -2603,6 +2691,35 @@ components:
       - Assessor
       - Certifier
       type: string
+    ECDetails:
+      example:
+        latitude: 0.8008281904610115
+        longitude: 6.027456183070403
+      properties:
+        latitude:
+          format: double
+          nullable: true
+          type: number
+        longitude:
+          format: double
+          nullable: true
+          type: number
+      type: object
+    ECDetails2:
+      example:
+        latitude: 0.8008281904610115
+        longitude: 6.027456183070403
+      nullable: true
+      properties:
+        latitude:
+          format: double
+          nullable: true
+          type: number
+        longitude:
+          format: double
+          nullable: true
+          type: number
+      type: object
     Energy:
       example:
         heatPumpCount: 5
@@ -2854,7 +2971,17 @@ components:
     HeatNetwork:
       example:
         hnId: hnId
+        ecDetails:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
         createdAt: 2000-01-23T04:56:07.000+00:00
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
         soa:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -2878,7 +3005,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 0
+              count: 1
               locations:
               - locations
               - locations
@@ -2896,7 +3023,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 0
+              count: 1
               locations:
               - locations
               - locations
@@ -2917,7 +3044,6 @@ components:
         createdBy: createdBy
         name: name
         pathway: pathway
-        location: location
         id: id
       properties:
         id:
@@ -2926,10 +3052,12 @@ components:
         hnId:
           nullable: true
           type: string
-        location:
-          type: string
         name:
           type: string
+        address:
+          $ref: "#/components/schemas/RegisteredAddress"
+        ecDetails:
+          $ref: "#/components/schemas/ECDetails2"
         pathway:
           type: string
         soa:
@@ -2956,7 +3084,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         name: EnergyCentre
-        count: 0
+        count: 1
         locations:
         - locations
         - locations
@@ -2991,7 +3119,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         name: name
-        count: 0
+        count: 1
         locations:
         - locations
         - locations
@@ -3032,6 +3160,17 @@ components:
     HeatNetworkResponse:
       example:
         hnId: hnId
+        ecDetails:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
         soa:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -3065,7 +3204,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: name
-              count: 0
+              count: 1
               locations:
               - locations
               - locations
@@ -3083,7 +3222,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: name
-              count: 0
+              count: 1
               locations:
               - locations
               - locations
@@ -3121,23 +3260,30 @@ components:
             - connectionTypes
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        createdBy: createdBy
         name: name
         pathway: pathway
-        location: location
         id: id
       properties:
         id:
           type: string
         hnId:
           type: string
-        location:
-          type: string
+        ecDetails:
+          $ref: "#/components/schemas/ECDetails"
+        address:
+          $ref: "#/components/schemas/RegisteredAddress"
         name:
           type: string
         pathway:
           type: string
         soa:
           $ref: "#/components/schemas/SoaResponse"
+        createdBy:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
       type: object
     HeatNetworkType:
       enum:
@@ -3151,15 +3297,26 @@ components:
     HeatNetworkUserResponse:
       example:
         hnId: hnId
+        ecDetails:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
         name: name
-        location: location
       properties:
         hnId:
           type: string
         name:
           type: string
-        location:
-          type: string
+        ecDetails:
+          $ref: "#/components/schemas/ECDetails2"
+        address:
+          $ref: "#/components/schemas/RegisteredAddress"
       type: object
     HeatPumpInput:
       example:
@@ -3362,7 +3519,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: name
-          count: 0
+          count: 1
           locations:
           - locations
           - locations
@@ -3380,7 +3537,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: name
-          count: 0
+          count: 1
           locations:
           - locations
           - locations
@@ -3586,7 +3743,7 @@ components:
         name:
           type: string
         registeredAddress:
-          $ref: "#/components/schemas/RegisteredAddress"
+          $ref: "#/components/schemas/RegisteredAddress2"
         hnIds:
           items:
             type: string
@@ -3628,7 +3785,7 @@ components:
         type:
           $ref: "#/components/schemas/OrganisationType"
         registeredAddress:
-          $ref: "#/components/schemas/RegisteredAddress"
+          $ref: "#/components/schemas/RegisteredAddress2"
       required:
       - name
       - registeredAddress
@@ -3659,7 +3816,7 @@ components:
         type:
           $ref: "#/components/schemas/OrganisationType"
         registeredAddress:
-          $ref: "#/components/schemas/RegisteredAddress"
+          $ref: "#/components/schemas/RegisteredAddress2"
       type: object
     OrganisationType:
       enum:
@@ -3753,6 +3910,36 @@ components:
         postcode: postcode
         addressLine1: addressLine1
         addressLine2: addressLine2
+      nullable: true
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          nullable: true
+          type: string
+        town:
+          nullable: true
+          type: string
+        county:
+          nullable: true
+          type: string
+        postcode:
+          type: string
+        country:
+          nullable: true
+          type: string
+      required:
+      - addressLine1
+      - postcode
+      type: object
+    RegisteredAddress2:
+      example:
+        country: country
+        town: town
+        county: county
+        postcode: postcode
+        addressLine1: addressLine1
+        addressLine2: addressLine2
       properties:
         addressLine1:
           type: string
@@ -3807,7 +3994,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -3825,7 +4012,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -3886,7 +4073,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -3904,7 +4091,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -3960,7 +4147,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 0
+          count: 1
           locations:
           - locations
           - locations
@@ -3978,7 +4165,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 0
+          count: 1
           locations:
           - locations
           - locations
@@ -4059,7 +4246,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: name
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -4077,7 +4264,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: name
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -4584,11 +4771,29 @@ components:
         firstName: firstName
         heatNetworks:
         - hnId: hnId
+          ecDetails:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
           name: name
-          location: location
         - hnId: hnId
+          ecDetails:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
           name: name
-          location: location
         id: id
         status: Active
       properties:

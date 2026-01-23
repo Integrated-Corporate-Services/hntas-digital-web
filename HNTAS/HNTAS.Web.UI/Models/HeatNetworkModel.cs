@@ -15,10 +15,14 @@ namespace HNTAS.Web.UI.Models
 
     public class HeatNetworkLocationModel
     {        
-        public AddressByStreetOrTownModel? HNAddressByStreet { get; set; }
+        public AddressByStreetOrTownModel? HNAddressByStreet { get; set; }               
+    }
+
+    public class ECDetailsModel
+    {
         [Required(ErrorMessage = "Please enter the latitude and longitude.")]
         public string LatitudeLongitude { get; set; }
-        public AddressByLatLongModel HNAddressByLatLong { get; set; } = new AddressByLatLongModel();
+        public AddressByLatLongModel ECAddressByLatLong { get; set; } = new AddressByLatLongModel();
     }
 
     public class HeatNetworkPhaseModel
@@ -53,7 +57,8 @@ namespace HNTAS.Web.UI.Models
     public class CheckYourAnswersHeatNetworkModel
     {
         public HeatNetworkNameModel HeatNetworkNameModel { get; set; }
-        public HeatNetworkLocationModel HeatNetworkLocationModel { get; set; }
+        public AddressByStreetOrTownModel HeatNetworkLocationModel { get; set; }
+        public ECDetailsModel? ECDetailsModel { get; set; }
         public HeatNetworkPhaseModel HeatNetworkPhaseModel { get; set; }
         public HasElementBeenRegisteredModel? HasElementBeenRegisteredModel { get; set; }
         public HasPlanningApplicationBeenSubmittedModel? HasPlanningApplicationBeenSubmittedModel { get; set; }

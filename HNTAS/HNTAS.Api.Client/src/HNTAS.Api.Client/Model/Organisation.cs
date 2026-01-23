@@ -46,7 +46,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="lastModifiedAt">lastModifiedAt</param>
         /// <param name="rpUserId">rpUserId</param>
         [JsonConstructor]
-        public Organisation(Option<string?> id = default, Option<string?> orgId = default, Option<OrganisationType?> type = default, Option<string?> companiesHouseNumber = default, Option<string?> name = default, Option<RegisteredAddress?> registeredAddress = default, Option<List<string>?> hnIds = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> lastModifiedBy = default, Option<DateTimeOffset?> lastModifiedAt = default, Option<string?> rpUserId = default)
+        public Organisation(Option<string?> id = default, Option<string?> orgId = default, Option<OrganisationType?> type = default, Option<string?> companiesHouseNumber = default, Option<string?> name = default, Option<RegisteredAddress2?> registeredAddress = default, Option<List<string>?> hnIds = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> lastModifiedBy = default, Option<DateTimeOffset?> lastModifiedAt = default, Option<string?> rpUserId = default)
         {
             IdOption = id;
             OrgIdOption = orgId;
@@ -135,13 +135,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<RegisteredAddress?> RegisteredAddressOption { get; private set; }
+        public Option<RegisteredAddress2?> RegisteredAddressOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets RegisteredAddress
         /// </summary>
         [JsonPropertyName("registeredAddress")]
-        public RegisteredAddress? RegisteredAddress { get { return this.RegisteredAddressOption; } set { this.RegisteredAddressOption = new(value); } }
+        public RegisteredAddress2? RegisteredAddress { get { return this.RegisteredAddressOption; } set { this.RegisteredAddressOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of HnIds
@@ -293,7 +293,7 @@ namespace HNTAS.Api.Client.Model
             Option<OrganisationType?> type = default;
             Option<string?> companiesHouseNumber = default;
             Option<string?> name = default;
-            Option<RegisteredAddress?> registeredAddress = default;
+            Option<RegisteredAddress2?> registeredAddress = default;
             Option<List<string>?> hnIds = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> createdAt = default;
@@ -334,7 +334,7 @@ namespace HNTAS.Api.Client.Model
                             name = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "registeredAddress":
-                            registeredAddress = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            registeredAddress = new Option<RegisteredAddress2?>(JsonSerializer.Deserialize<RegisteredAddress2>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "hnIds":
                             hnIds = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
