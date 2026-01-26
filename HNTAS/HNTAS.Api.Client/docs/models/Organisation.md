@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **Type** | **OrganisationType** |  | [optional] 
 **CompaniesHouseNumber** | **string** |  | [optional] 
 **Name** | **string** |  | [optional] 
-**RegisteredAddress** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 
+**RegisteredAddress** | [**RegisteredAddress2**](RegisteredAddress2.md) |  | [optional] 
 **HnIds** | **List&lt;string&gt;** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 

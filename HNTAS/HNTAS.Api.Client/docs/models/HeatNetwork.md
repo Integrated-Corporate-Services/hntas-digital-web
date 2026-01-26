@@ -6,8 +6,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** |  | [optional] 
 **HnId** | **string** |  | [optional] 
-**Location** | **string** |  | [optional] 
 **Name** | **string** |  | [optional] 
+**Address** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 
+**EcDetails** | [**ECDetails2**](ECDetails2.md) |  | [optional] 
 **Pathway** | **string** |  | [optional] 
 **Soa** | [**Soa**](Soa.md) |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 

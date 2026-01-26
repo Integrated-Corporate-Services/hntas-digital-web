@@ -155,9 +155,22 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     HnId = hnDetails.HnId,
                     HnName = hnDetails.Name,
-                    HnLocation = hnDetails.Location,
-                    OrganisationName = user.Organisation.Name,
-                    OrganisationAddress = user.Organisation.RegisteredAddress,
+                    Address = new Models.Address.AddressByStreetOrTownModel
+                    {
+                        StreetAddress = hnDetails.Address.AddressLine1,
+                        TownOrCity = hnDetails.Address.Town,
+                        Postalcode = hnDetails.Address.Postcode,
+                        Country = hnDetails.Address.Country
+                    },
+                    OrganisationName = user.Organisation.Name,                    
+                    OrganisationAddress = new RegisteredAddress(
+                        user.Organisation?.RegisteredAddress?.AddressLine1 ?? string.Empty,
+                        user.Organisation?.RegisteredAddress?.AddressLine2 ?? string.Empty,
+                        user.Organisation?.RegisteredAddress?.Town ?? string.Empty,
+                        user.Organisation?.RegisteredAddress?.County ?? string.Empty,
+                        user.Organisation?.RegisteredAddress?.Postcode ?? string.Empty,
+                        user.Organisation?.RegisteredAddress?.Country ?? string.Empty
+                    ),
                     Pathway = hnDetails.Pathway,
                     CurrentPhaseIndex = phaseIndex,
                     Phases = SoaPhaseStageMapping.Phases.Skip(Convert.ToInt32(hnDetails.Pathway) - 1).ToList().Select((phase, index) => new PhaseViewModel

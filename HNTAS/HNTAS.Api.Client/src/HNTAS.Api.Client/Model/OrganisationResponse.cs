@@ -39,7 +39,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="type">type</param>
         /// <param name="registeredAddress">registeredAddress</param>
         [JsonConstructor]
-        public OrganisationResponse(Option<string?> orgId = default, Option<string?> name = default, Option<string?> companiesHouseNumber = default, Option<OrganisationType?> type = default, Option<RegisteredAddress?> registeredAddress = default)
+        public OrganisationResponse(Option<string?> orgId = default, Option<string?> name = default, Option<string?> companiesHouseNumber = default, Option<OrganisationType?> type = default, Option<RegisteredAddress2?> registeredAddress = default)
         {
             OrgIdOption = orgId;
             NameOption = name;
@@ -108,13 +108,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<RegisteredAddress?> RegisteredAddressOption { get; private set; }
+        public Option<RegisteredAddress2?> RegisteredAddressOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets RegisteredAddress
         /// </summary>
         [JsonPropertyName("registeredAddress")]
-        public RegisteredAddress? RegisteredAddress { get { return this.RegisteredAddressOption; } set { this.RegisteredAddressOption = new(value); } }
+        public RegisteredAddress2? RegisteredAddress { get { return this.RegisteredAddressOption; } set { this.RegisteredAddressOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -170,7 +170,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> name = default;
             Option<string?> companiesHouseNumber = default;
             Option<OrganisationType?> type = default;
-            Option<RegisteredAddress?> registeredAddress = default;
+            Option<RegisteredAddress2?> registeredAddress = default;
 
             while (utf8JsonReader.Read())
             {
@@ -202,7 +202,7 @@ namespace HNTAS.Api.Client.Model
                                 type = new Option<OrganisationType?>(OrganisationTypeValueConverter.FromStringOrDefault(typeRawValue));
                             break;
                         case "registeredAddress":
-                            registeredAddress = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            registeredAddress = new Option<RegisteredAddress2?>(JsonSerializer.Deserialize<RegisteredAddress2>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;

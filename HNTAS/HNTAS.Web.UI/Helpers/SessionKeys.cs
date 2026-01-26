@@ -37,6 +37,7 @@
         public const string DoesHNHaveAPostcodeViewModelSessionKey = "DoesHNHaveAPostcodeViewModel";
         public const string PathwayModelKey = "Pathway";
         public const string PreviousStepKey = "PreviousStep";
+        public const string ECDetailsModelSessionKey = "ECDetailsModelSessionKey";
 
         public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";
 
