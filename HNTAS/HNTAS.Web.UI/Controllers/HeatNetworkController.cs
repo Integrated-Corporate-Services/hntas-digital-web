@@ -2,7 +2,6 @@
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
-using HNTAS.Web.UI.Models.CompaniesHouse;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
@@ -60,7 +59,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("EnterHNName", "HeatNetwork");
             var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey) ?? new DoesHNHaveAPostcodeViewModel { HasPostcode = false };
             return View(model);
-        }        
+        }
 
         [HttpPost]
         public async Task<IActionResult> DoesHNHaveAPostcode(DoesHNHaveAPostcodeViewModel model)
@@ -74,14 +73,14 @@ namespace HNTAS.Web.UI.Controllers
             if (!model.HasPostcode)
             {
                 return RedirectToAction("ECCoordinates");
-            }            
+            }
             SearchAddressByPostcodeModel results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
             model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
             if (results == null || results.Addresses == null || results.Addresses.Length == 0)
             {
                 ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
                 return View(model);
-            }            
+            }
             results.Addresses = results.Addresses
                 .Select(address => Utility.CapitalizeCommaSeparated(address))
                 .ToArray();
@@ -99,7 +98,7 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
             var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
             if (model == null)
-            {                
+            {
                 return BadRequest("Missing session data");
             }
 
@@ -171,7 +170,7 @@ namespace HNTAS.Web.UI.Controllers
             model.ECAddressByLatLong.Longitude = lon;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ECDetailsModelSessionKey, model);
             return RedirectToAction("EnterHNPhase");
-        }        
+        }
 
         [HttpGet]
         public IActionResult EnterHNPhase()
@@ -415,12 +414,12 @@ namespace HNTAS.Web.UI.Controllers
                     longitude: (double?)(viewModel?.ECDetailsModel.ECAddressByLatLong.Longitude)
                 );
             var address = new RegisteredAddress(
-                    addressLine1: hnAddress?.StreetAddress,
-                    postcode: hnAddress?.Postalcode,
+                    addressLine1: hnAddress?.StreetAddress?.Trim(),
+                    postcode: hnAddress?.Postalcode?.Trim(),
                     addressLine2: default,
-                    town: hnAddress?.TownOrCity,
+                    town: hnAddress?.TownOrCity?.Trim(),
                     county: default,
-                    country: hnAddress?.Country
+                    country: hnAddress?.Country?.Trim()
                 );
             var model = new HeatNetwork
             {
@@ -478,7 +477,8 @@ namespace HNTAS.Web.UI.Controllers
             var model = new HNDetailsViewModel
             {
                 Name = response?.Name,
-                Address = new AddressByStreetOrTownModel { 
+                Address = new AddressByStreetOrTownModel
+                {
                     StreetAddress = response?.Address?.AddressLine1,
                     TownOrCity = response?.Address?.Town,
                     Postalcode = response?.Address?.Postcode,
