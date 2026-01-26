@@ -1,11 +1,11 @@
 ﻿using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
-using Microsoft.Extensions.Logging;
-using Moq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace HNTAS.Web.UI.Tests.Contollers
 {
@@ -30,11 +30,12 @@ namespace HNTAS.Web.UI.Tests.Contollers
             {
                 HttpContext = httpContext
             };
-            
+
             return controller;
         }
 
-        private Mock<IUrlHelper> setUpURL(string controller, string action) {
+        private Mock<IUrlHelper> SetUpURL(string controller, string action)
+        {
             var urlHelperMock = new Mock<IUrlHelper>();
             urlHelperMock
                 .Setup(u => u.Action(It.Is<UrlActionContext>(ctx =>
@@ -51,7 +52,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var model = new AreYouTheRPModel { AreYouTheRP = "yes" };
             _sessionHelperMock.Setup(x => x.GetFromSession<AreYouTheRPModel>(It.IsAny<HttpContext>(), SessionKeys.AreYouTheRPModelKey)).Returns(model);
             var urlHelperMock = new Mock<IUrlHelper>();
-            controller.Url = setUpURL("Home", "WhatDoYouWantToDo").Object;
+            controller.Url = SetUpURL("Home", "WhatDoYouWantToDo").Object;
             // Act
             var result = controller.AreYouTheRP() as ViewResult;
             // Assert
@@ -67,8 +68,8 @@ namespace HNTAS.Web.UI.Tests.Contollers
             // Arrange
             var controller = CreateController();
             var model = new AreYouTheRPModel { AreYouTheRP = "yes" };
-            
-            controller.Url = setUpURL("HeatNetworkEligibility", "IsYourOrgWorkingOnANewHN").Object;
+
+            controller.Url = SetUpURL("HeatNetworkEligibility", "IsYourOrgWorkingOnANewHN").Object;
             // Act
             var result = controller.AreYouTheRP(model);
             // Assert
@@ -84,7 +85,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var controller = CreateController();
             var model = new AreYouTheRPModel { AreYouTheRP = "no" };
 
-            controller.Url = setUpURL("HeatNetworkEligibility", "UserIsNotRP").Object;
+            controller.Url = SetUpURL("HeatNetworkEligibility", "UserIsNotRP").Object;
             // Act
             var result = controller.AreYouTheRP(model);
             // Assert
@@ -100,7 +101,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var controller = CreateController();
             var model = new AreYouTheRPModel { AreYouTheRP = "maybe" }; // Invalid value
             controller.ModelState.Clear(); // Ensure model state is valid
-            controller.Url = setUpURL("HeatNetworkEligibility", "AreYouTheRP").Object;
+            controller.Url = SetUpURL("HeatNetworkEligibility", "AreYouTheRP").Object;
 
             // Act
             var result = controller.AreYouTheRP(model) as ViewResult;
@@ -122,7 +123,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var model = new IsYourOrgWorkingOnANewHNModel { IsYourOrgWorkingOnANewHN = "yes" };
             _sessionHelperMock.Setup(x => x.GetFromSession<IsYourOrgWorkingOnANewHNModel>(It.IsAny<HttpContext>(), SessionKeys.IsYourOrgWorkingOnANewHNModelKey)).Returns(model);
             var urlHelperMock = new Mock<IUrlHelper>();
-            controller.Url = setUpURL("HeatNetworkEligibility", "AreYouTheRP").Object;
+            controller.Url = SetUpURL("HeatNetworkEligibility", "AreYouTheRP").Object;
             // Act
             var result = controller.IsYourOrgWorkingOnANewHN() as ViewResult;
             // Assert
@@ -138,7 +139,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             // Arrange
             var controller = CreateController();
             var model = new IsYourOrgWorkingOnANewHNModel { IsYourOrgWorkingOnANewHN = "yes" };
-            controller.Url = setUpURL("HeatNetworkEligibility", "IsHNLocatedInEnglandScotlandWales").Object;
+            controller.Url = SetUpURL("HeatNetworkEligibility", "IsHNLocatedInEnglandScotlandWales").Object;
             // Act
             var result = controller.IsYourOrgWorkingOnANewHN(model);
             // Assert
@@ -153,7 +154,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             // Arrange
             var controller = CreateController();
             var model = new IsYourOrgWorkingOnANewHNModel { IsYourOrgWorkingOnANewHN = "no" };
-            controller.Url = setUpURL("EndOfJourney", "HNIsOperationalRegisterLater").Object;
+            controller.Url = SetUpURL("EndOfJourney", "HNIsOperationalRegisterLater").Object;
             // Act
             var result = controller.IsYourOrgWorkingOnANewHN(model);
             // Assert
@@ -169,7 +170,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var controller = CreateController();
             var model = new IsYourOrgWorkingOnANewHNModel { IsYourOrgWorkingOnANewHN = "maybe" }; // Invalid value
             controller.ModelState.Clear(); // Ensure model state is valid
-            controller.Url = setUpURL("HeatNetworkEligibility", "IsYourOrgWorkingOnANewHN").Object;
+            controller.Url = SetUpURL("HeatNetworkEligibility", "IsYourOrgWorkingOnANewHN").Object;
             // Act
             var result = controller.IsYourOrgWorkingOnANewHN(model) as ViewResult;
             // Assert
@@ -188,7 +189,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var model = new IsHNLocatedInEnglandScotlandWalesModel { IsHNLocatedInEnglandScotlandWales = "yes" };
             _sessionHelperMock.Setup(x => x.GetFromSession<IsHNLocatedInEnglandScotlandWalesModel>(It.IsAny<HttpContext>(), SessionKeys.IsHNLocatedInEnglandScotlandWalesModelKey)).Returns(model);
             var urlHelperMock = new Mock<IUrlHelper>();
-            controller.Url = setUpURL("HeatNetworkEligibility", "IsYourOrgWorkingOnANewHN").Object;
+            controller.Url = SetUpURL("HeatNetworkEligibility", "IsYourOrgWorkingOnANewHN").Object;
             // Act
             var result = controller.IsHNLocatedInEnglandScotlandWales() as ViewResult;
             // Assert
@@ -204,7 +205,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             // Arrange
             var controller = CreateController();
             var model = new IsHNLocatedInEnglandScotlandWalesModel { IsHNLocatedInEnglandScotlandWales = "yes" };
-            controller.Url = setUpURL("HeatNetworkEligibility", "HowManyDwellingsIncluded").Object;
+            controller.Url = SetUpURL("HeatNetworkEligibility", "HowManyDwellingsIncluded").Object;
             // Act
             var result = controller.IsHNLocatedInEnglandScotlandWales(model);
             // Assert
@@ -219,7 +220,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             // Arrange
             var controller = CreateController();
             var model = new IsHNLocatedInEnglandScotlandWalesModel { IsHNLocatedInEnglandScotlandWales = "no" };
-            controller.Url = setUpURL("EndOfJourney", "HNNotINEnglandScotlandWales").Object;
+            controller.Url = SetUpURL("EndOfJourney", "HNNotINEnglandScotlandWales").Object;
             // Act
             var result = controller.IsHNLocatedInEnglandScotlandWales(model);
             // Assert
@@ -236,7 +237,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var controller = CreateController();
             var model = new IsHNLocatedInEnglandScotlandWalesModel { IsHNLocatedInEnglandScotlandWales = "maybe" }; // Invalid value
             controller.ModelState.Clear(); // Ensure model state is valid
-            controller.Url = setUpURL("HeatNetworkEligibility", "IsHNLocatedInEnglandScotlandWales").Object;
+            controller.Url = SetUpURL("HeatNetworkEligibility", "IsHNLocatedInEnglandScotlandWales").Object;
             // Act
             var result = controller.IsHNLocatedInEnglandScotlandWales(model) as ViewResult;
             // Assert
@@ -256,7 +257,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var model = new HowManyDwellingsIncludedModel { HowManyDwellingsIncluded = "yes" };
             _sessionHelperMock.Setup(x => x.GetFromSession<HowManyDwellingsIncludedModel>(It.IsAny<HttpContext>(), SessionKeys.HowManyDwellingsIncludedModelKey)).Returns(model);
             var urlHelperMock = new Mock<IUrlHelper>();
-            controller.Url = setUpURL("HeatNetworkEligibility", "IsHNLocatedInEnglandScotlandWales").Object;
+            controller.Url = SetUpURL("HeatNetworkEligibility", "IsHNLocatedInEnglandScotlandWales").Object;
             // Act
             var result = controller.HowManyDwellingsIncluded() as ViewResult;
             // Assert
@@ -264,7 +265,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             Assert.True(controller.ViewBag.ShowBackButton);
             Assert.Equal(model, viewResult.Model);
             Assert.Equal("HeatNetworkEligibility/IsHNLocatedInEnglandScotlandWales", controller.ViewBag.BackLinkUrl);
-        }        
+        }
 
         [Fact]
         public void HowManyDwellingsIncluded_Post_ValidUrl_RedirectsToEnterYourDetails()
@@ -272,7 +273,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             // Arrange
             var controller = CreateController();
             var model = new HowManyDwellingsIncludedModel { HowManyDwellingsIncluded = "yes" };
-            controller.Url = setUpURL("UserDetails", "YouAreEligible").Object;
+            controller.Url = SetUpURL("UserDetails", "YouAreEligible").Object;
             // Act
             var result = controller.HowManyDwellingsIncluded(model);
             // Assert
@@ -287,7 +288,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             // Arrange
             var controller = CreateController();
             var model = new HowManyDwellingsIncludedModel { HowManyDwellingsIncluded = "no" };
-            controller.Url = setUpURL("EndOfJourney", "LessThan10Dwellings").Object;
+            controller.Url = SetUpURL("EndOfJourney", "LessThan10Dwellings").Object;
             // Act
             var result = controller.HowManyDwellingsIncluded(model);
             // Assert
@@ -303,7 +304,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var controller = CreateController();
             var model = new HowManyDwellingsIncludedModel { HowManyDwellingsIncluded = "maybe" }; // Invalid value
             controller.ModelState.Clear(); // Ensure model state is valid
-            controller.Url = setUpURL("HeatNetworkEligibility", "HowManyDwellingsIncluded").Object;
+            controller.Url = SetUpURL("HeatNetworkEligibility", "HowManyDwellingsIncluded").Object;
             // Act
             var result = controller.HowManyDwellingsIncluded(model) as ViewResult;
             // Assert

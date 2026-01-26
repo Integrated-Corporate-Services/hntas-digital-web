@@ -38,7 +38,7 @@ namespace HNTAS.Web.UI.Tests.Helpers
                     Name = "Test Organisation",
                     CompaniesHouseNumber = "12345678",
                     Type = OrganisationType.UkCompaniesHouse,
-                    RegisteredAddress = new RegisteredAddress("123 Test St", "TE1 1ST", "Test Area", "Test Town", "Test County", "Test Country")
+                    RegisteredAddress = new RegisteredAddress2("123 Test St", "TE1 1ST", "Test Area", "Test Town", "Test County", "Test Country")
                 },
                 HeatNetworks = new List<HeatNetworkUserResponse>()
                 {
@@ -46,13 +46,13 @@ namespace HNTAS.Web.UI.Tests.Helpers
                     {
                         HnId = "hn-1",
                         Name = "Heat Network 1",
-                        Location = "Location 1"
+                        //Location = "Location 1"
                     },
                     new HeatNetworkUserResponse
                     {
                         HnId = "hn-2",
                         Name = "Heat Network 2",
-                        Location = "Location 2"
+                       // Location = "Location 2"
                     }
                 }
             };
@@ -66,7 +66,7 @@ namespace HNTAS.Web.UI.Tests.Helpers
             {
                 Id = "heat-network-id",
                 HnId = hnId,
-                Location = "///pretty.nice.stuff",
+                //Location = "///pretty.nice.stuff",
                 Name = "Test Network",
                 Pathway = "1",
                 Soa = new SoaResponse
