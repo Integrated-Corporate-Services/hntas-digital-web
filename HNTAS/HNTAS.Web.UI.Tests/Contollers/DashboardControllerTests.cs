@@ -21,7 +21,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<ISessionHelper> _sessionHelperMock;
 
         private readonly DashboardController _controller;
-                
+
         public DashboardControllerTests()
         {
             _loggerMock = new Mock<ILogger<DashboardController>>();
@@ -124,7 +124,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 Organisation = new OrganisationResponse
                 {
                     Name = "Test Org",
-                    RegisteredAddress = new RegisteredAddress(addressLine1: "Line1", addressLine2: "Line2", town: "town", county: "county", postcode: "e23rt", country: "country"),
+                    RegisteredAddress = new RegisteredAddress2(addressLine1: "Line1", addressLine2: "Line2", town: "town", county: "county", postcode: "e23rt", country: "country"),
                 },
                 EmailId = "test@example.com"
             };

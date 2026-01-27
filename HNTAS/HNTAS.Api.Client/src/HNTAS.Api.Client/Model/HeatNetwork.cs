@@ -35,20 +35,24 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="id">id</param>
         /// <param name="hnId">hnId</param>
-        /// <param name="location">location</param>
         /// <param name="name">name</param>
+        /// <param name="address">address</param>
+        /// <param name="ecDetails">ecDetails</param>
         /// <param name="pathway">pathway</param>
+        /// <param name="registrationSource">registrationSource</param>
         /// <param name="soa">soa</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="createdAt">createdAt</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> location = default, Option<string?> name = default, Option<string?> pathway = default, Option<Soa?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default)
+        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> name = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<Soa?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default)
         {
             IdOption = id;
             HnIdOption = hnId;
-            LocationOption = location;
             NameOption = name;
+            AddressOption = address;
+            EcDetailsOption = ecDetails;
             PathwayOption = pathway;
+            RegistrationSourceOption = registrationSource;
             SoaOption = soa;
             CreatedByOption = createdBy;
             CreatedAtOption = createdAt;
@@ -56,6 +60,19 @@ namespace HNTAS.Api.Client.Model
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Used to track the state of RegistrationSource
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<RegistrationSource?> RegistrationSourceOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets RegistrationSource
+        /// </summary>
+        [JsonPropertyName("registrationSource")]
+        public RegistrationSource? RegistrationSource { get { return this.RegistrationSourceOption; } set { this.RegistrationSourceOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Id
@@ -84,19 +101,6 @@ namespace HNTAS.Api.Client.Model
         public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Location
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> LocationOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Location
-        /// </summary>
-        [JsonPropertyName("location")]
-        public string? Location { get { return this.LocationOption; } set { this.LocationOption = new(value); } }
-
-        /// <summary>
         /// Used to track the state of Name
         /// </summary>
         [JsonIgnore]
@@ -108,6 +112,32 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("name")]
         public string? Name { get { return this.NameOption; } set { this.NameOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Address
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<RegisteredAddress?> AddressOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Address
+        /// </summary>
+        [JsonPropertyName("address")]
+        public RegisteredAddress? Address { get { return this.AddressOption; } set { this.AddressOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of EcDetails
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<ECDetails2?> EcDetailsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets EcDetails
+        /// </summary>
+        [JsonPropertyName("ecDetails")]
+        public ECDetails2? EcDetails { get { return this.EcDetailsOption; } set { this.EcDetailsOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Pathway
@@ -171,9 +201,11 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class HeatNetwork {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
-            sb.Append("  Location: ").Append(Location).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  Address: ").Append(Address).Append("\n");
+            sb.Append("  EcDetails: ").Append(EcDetails).Append("\n");
             sb.Append("  Pathway: ").Append(Pathway).Append("\n");
+            sb.Append("  RegistrationSource: ").Append(RegistrationSource).Append("\n");
             sb.Append("  Soa: ").Append(Soa).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
@@ -221,9 +253,11 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> id = default;
             Option<string?> hnId = default;
-            Option<string?> location = default;
             Option<string?> name = default;
+            Option<RegisteredAddress?> address = default;
+            Option<ECDetails2?> ecDetails = default;
             Option<string?> pathway = default;
+            Option<RegistrationSource?> registrationSource = default;
             Option<Soa?> soa = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> createdAt = default;
@@ -249,14 +283,22 @@ namespace HNTAS.Api.Client.Model
                         case "hnId":
                             hnId = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "location":
-                            location = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
                         case "name":
                             name = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "address":
+                            address = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "ecDetails":
+                            ecDetails = new Option<ECDetails2?>(JsonSerializer.Deserialize<ECDetails2>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         case "pathway":
                             pathway = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "registrationSource":
+                            string? registrationSourceRawValue = utf8JsonReader.GetString();
+                            if (registrationSourceRawValue != null)
+                                registrationSource = new Option<RegistrationSource?>(RegistrationSourceValueConverter.FromStringOrDefault(registrationSourceRawValue));
                             break;
                         case "soa":
                             soa = new Option<Soa?>(JsonSerializer.Deserialize<Soa>(ref utf8JsonReader, jsonSerializerOptions));
@@ -273,14 +315,14 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (location.IsSet && location.Value == null)
-                throw new ArgumentNullException(nameof(location), "Property is not nullable for class HeatNetwork.");
-
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetwork.");
 
             if (pathway.IsSet && pathway.Value == null)
                 throw new ArgumentNullException(nameof(pathway), "Property is not nullable for class HeatNetwork.");
+
+            if (registrationSource.IsSet && registrationSource.Value == null)
+                throw new ArgumentNullException(nameof(registrationSource), "Property is not nullable for class HeatNetwork.");
 
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class HeatNetwork.");
@@ -288,7 +330,7 @@ namespace HNTAS.Api.Client.Model
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class HeatNetwork.");
 
-            return new HeatNetwork(id, hnId, location, name, pathway, soa, createdBy, createdAt);
+            return new HeatNetwork(id, hnId, name, address, ecDetails, pathway, registrationSource, soa, createdBy, createdAt);
         }
 
         /// <summary>
@@ -315,9 +357,6 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, HeatNetwork heatNetwork, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (heatNetwork.LocationOption.IsSet && heatNetwork.Location == null)
-                throw new ArgumentNullException(nameof(heatNetwork.Location), "Property is required for class HeatNetwork.");
-
             if (heatNetwork.NameOption.IsSet && heatNetwork.Name == null)
                 throw new ArgumentNullException(nameof(heatNetwork.Name), "Property is required for class HeatNetwork.");
 
@@ -339,15 +378,33 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("hnId");
 
-            if (heatNetwork.LocationOption.IsSet)
-                writer.WriteString("location", heatNetwork.Location);
-
             if (heatNetwork.NameOption.IsSet)
                 writer.WriteString("name", heatNetwork.Name);
 
+            if (heatNetwork.AddressOption.IsSet)
+                if (heatNetwork.AddressOption.Value != null)
+                {
+                    writer.WritePropertyName("address");
+                    JsonSerializer.Serialize(writer, heatNetwork.Address, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("address");
+            if (heatNetwork.EcDetailsOption.IsSet)
+                if (heatNetwork.EcDetailsOption.Value != null)
+                {
+                    writer.WritePropertyName("ecDetails");
+                    JsonSerializer.Serialize(writer, heatNetwork.EcDetails, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("ecDetails");
             if (heatNetwork.PathwayOption.IsSet)
                 writer.WriteString("pathway", heatNetwork.Pathway);
 
+            if (heatNetwork.RegistrationSourceOption.IsSet)
+            {
+                var registrationSourceRawValue = RegistrationSourceValueConverter.ToJsonValue(heatNetwork.RegistrationSource!.Value);
+                writer.WriteString("registrationSource", registrationSourceRawValue);
+            }
             if (heatNetwork.SoaOption.IsSet)
                 if (heatNetwork.SoaOption.Value != null)
                 {

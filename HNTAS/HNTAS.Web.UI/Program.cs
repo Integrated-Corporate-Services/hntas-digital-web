@@ -100,7 +100,9 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new CountryAndTerritoryJsonConverter(),
         new UserRoleDetailResponseJsonConverter(),
         new OrganisationJsonConverter(),
-        new AssessorSearchResultJsonConverter()
+        new AssessorSearchResultJsonConverter(),
+        new RegisteredAddress2JsonConverter(),
+        new ECDetailsJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
