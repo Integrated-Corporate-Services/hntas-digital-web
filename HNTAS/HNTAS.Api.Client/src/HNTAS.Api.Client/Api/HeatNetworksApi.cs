@@ -198,7 +198,7 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// The <see cref="IApiExternalHeatNetworkHnIdGetApiResponse"/>
     /// </summary>
-    public interface IApiExternalHeatNetworkHnIdGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.HeatNetworkResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IApiExternalHeatNetworkHnIdGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.HeatNetworkExternalResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -216,7 +216,7 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// The <see cref="IApiExternalHeatNetworksGetApiResponse"/>
     /// </summary>
-    public interface IApiExternalHeatNetworksGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<HeatNetworkResponse>?>
+    public interface IApiExternalHeatNetworksGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<HeatNetworkExternalResponse>?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -228,7 +228,7 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// The <see cref="IApiExternalHeatNetworksSearchGetApiResponse"/>
     /// </summary>
-    public interface IApiExternalHeatNetworksSearchGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<HeatNetworkResponse>?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IApiExternalHeatNetworksSearchGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<HeatNetworkExternalResponse>?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -714,11 +714,11 @@ namespace HNTAS.Api.Client.Api
             /// Deserializes the response if the response is 200 Ok
             /// </summary>
             /// <returns></returns>
-            public HNTAS.Api.Client.Model.HeatNetworkResponse? Ok()
+            public HNTAS.Api.Client.Model.HeatNetworkExternalResponse? Ok()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.HeatNetworkResponse>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.HeatNetworkExternalResponse>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -727,7 +727,7 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.HeatNetworkResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.HeatNetworkExternalResponse? result)
             {
                 result = null;
 
@@ -950,11 +950,11 @@ namespace HNTAS.Api.Client.Api
             /// Deserializes the response if the response is 200 Ok
             /// </summary>
             /// <returns></returns>
-            public List<HeatNetworkResponse>? Ok()
+            public List<HeatNetworkExternalResponse>? Ok()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<List<HeatNetworkResponse>>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<List<HeatNetworkExternalResponse>>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -963,7 +963,7 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out List<HeatNetworkResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<HeatNetworkExternalResponse>? result)
             {
                 result = null;
 
@@ -1174,11 +1174,11 @@ namespace HNTAS.Api.Client.Api
             /// Deserializes the response if the response is 200 Ok
             /// </summary>
             /// <returns></returns>
-            public List<HeatNetworkResponse>? Ok()
+            public List<HeatNetworkExternalResponse>? Ok()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<List<HeatNetworkResponse>>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<List<HeatNetworkExternalResponse>>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -1187,7 +1187,7 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out List<HeatNetworkResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<HeatNetworkExternalResponse>? result)
             {
                 result = null;
 

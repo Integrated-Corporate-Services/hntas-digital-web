@@ -281,17 +281,17 @@ paths:
             text/plain:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetworkResponse"
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
                 type: array
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetworkResponse"
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
                 type: array
             text/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetworkResponse"
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
                 type: array
           description: OK
       tags:
@@ -311,13 +311,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/HeatNetworkResponse"
+                $ref: "#/components/schemas/HeatNetworkExternalResponse"
             application/json:
               schema:
-                $ref: "#/components/schemas/HeatNetworkResponse"
+                $ref: "#/components/schemas/HeatNetworkExternalResponse"
             text/json:
               schema:
-                $ref: "#/components/schemas/HeatNetworkResponse"
+                $ref: "#/components/schemas/HeatNetworkExternalResponse"
           description: OK
         "404":
           content:
@@ -358,17 +358,17 @@ paths:
             text/plain:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetworkResponse"
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
                 type: array
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetworkResponse"
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
                 type: array
             text/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/HeatNetworkResponse"
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
                 type: array
           description: OK
         "400":
@@ -2203,6 +2203,32 @@ components:
       - lastName
       - status
       type: object
+    Address:
+      example:
+        country: country
+        town: town
+        county: county
+        postcode: postcode
+        addressLine1: addressLine1
+        addressLine2: addressLine2
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          nullable: true
+          type: string
+        town:
+          nullable: true
+          type: string
+        county:
+          nullable: true
+          type: string
+        postcode:
+          type: string
+        country:
+          nullable: true
+          type: string
+      type: object
     AssessorSearchResult:
       example:
         fullName: fullName
@@ -2954,6 +2980,25 @@ components:
           nullable: true
           type: string
       type: object
+    EnergyCentreDetails:
+      example:
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        latitude: latitude
+        longitude: longitude
+      properties:
+        latitude:
+          type: string
+        longitude:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+      type: object
     EnumItemResponse:
       example:
         name: name
@@ -3043,6 +3088,7 @@ components:
           updatedAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
         name: name
+        registrationSource: HNTAS
         pathway: pathway
         id: id
       properties:
@@ -3060,6 +3106,8 @@ components:
           $ref: "#/components/schemas/ECDetails2"
         pathway:
           type: string
+        registrationSource:
+          $ref: "#/components/schemas/RegistrationSource"
         soa:
           $ref: "#/components/schemas/Soa"
         createdBy:
@@ -3147,6 +3195,61 @@ components:
       - ConsumerConnections
       - ConsumerHeatSystems
       type: string
+    HeatNetworkExternalResponse:
+      example:
+        hnId: hnId
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        energyCentre:
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          latitude: latitude
+          longitude: longitude
+        soa:
+          status: status
+        createdBy: createdBy
+        registrationSource: HNTAS
+        pathway: pathway
+        hnName: hnName
+        rpDetails:
+          orgName: orgName
+          emailId: emailId
+          orgAddress:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          orgId: orgId
+        id: id
+      properties:
+        id:
+          type: string
+        hnId:
+          type: string
+        hnName:
+          type: string
+        registrationSource:
+          $ref: "#/components/schemas/RegistrationSource"
+        energyCentre:
+          $ref: "#/components/schemas/EnergyCentreDetails"
+        pathway:
+          type: string
+        soa:
+          $ref: "#/components/schemas/SoaResponse2"
+        createdBy:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        rpDetails:
+          $ref: "#/components/schemas/OrgDetails"
+      type: object
     HeatNetworkInfo:
       example:
         hnId: hnId
@@ -3824,6 +3927,28 @@ components:
       - OtherUkOrganisation
       - OverseasOrganisation
       type: string
+    OrgDetails:
+      example:
+        orgName: orgName
+        emailId: emailId
+        orgAddress:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        orgId: orgId
+      properties:
+        orgId:
+          type: string
+        orgName:
+          type: string
+        emailId:
+          type: string
+        orgAddress:
+          $ref: "#/components/schemas/Address"
+      type: object
     ProblemDetails:
       example:
         instance: instance
@@ -3961,6 +4086,11 @@ components:
       - addressLine1
       - postcode
       type: object
+    RegistrationSource:
+      enum:
+      - HNTAS
+      - OFGEM
+      type: string
     SendInvitationEmailRequest:
       example:
         token: token
@@ -4321,6 +4451,13 @@ components:
           type: string
         journeyData:
           $ref: "#/components/schemas/JourneyDataResponse"
+      type: object
+    SoaResponse2:
+      example:
+        status: status
+      properties:
+        status:
+          type: string
       type: object
     SoaStatus:
       enum:

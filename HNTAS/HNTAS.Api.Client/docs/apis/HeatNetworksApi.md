@@ -14,7 +14,7 @@ All URIs are relative to *https://localhost:7117*
 
 <a id="apiexternalheatnetworkhnidget"></a>
 # **ApiExternalHeatNetworkHnIdGet**
-> HeatNetworkResponse ApiExternalHeatNetworkHnIdGet (string hnId)
+> HeatNetworkExternalResponse ApiExternalHeatNetworkHnIdGet (string hnId)
 
 
 
@@ -27,7 +27,7 @@ All URIs are relative to *https://localhost:7117*
 
 ### Return type
 
-[**HeatNetworkResponse**](HeatNetworkResponse.md)
+[**HeatNetworkExternalResponse**](HeatNetworkExternalResponse.md)
 
 ### Authorization
 
@@ -49,7 +49,7 @@ No authorization required
 
 <a id="apiexternalheatnetworksget"></a>
 # **ApiExternalHeatNetworksGet**
-> List&lt;HeatNetworkResponse&gt; ApiExternalHeatNetworksGet ()
+> List&lt;HeatNetworkExternalResponse&gt; ApiExternalHeatNetworksGet ()
 
 
 
@@ -58,7 +58,7 @@ No authorization required
 This endpoint does not need any parameter.
 ### Return type
 
-[**List&lt;HeatNetworkResponse&gt;**](HeatNetworkResponse.md)
+[**List&lt;HeatNetworkExternalResponse&gt;**](HeatNetworkExternalResponse.md)
 
 ### Authorization
 
@@ -79,7 +79,7 @@ No authorization required
 
 <a id="apiexternalheatnetworkssearchget"></a>
 # **ApiExternalHeatNetworksSearchGet**
-> List&lt;HeatNetworkResponse&gt; ApiExternalHeatNetworksSearchGet (DateTimeOffset fromDate = null, DateTimeOffset toDate = null)
+> List&lt;HeatNetworkExternalResponse&gt; ApiExternalHeatNetworksSearchGet (DateTimeOffset fromDate = null, DateTimeOffset toDate = null)
 
 
 
@@ -93,7 +93,7 @@ No authorization required
 
 ### Return type
 
-[**List&lt;HeatNetworkResponse&gt;**](HeatNetworkResponse.md)
+[**List&lt;HeatNetworkExternalResponse&gt;**](HeatNetworkExternalResponse.md)
 
 ### Authorization
 

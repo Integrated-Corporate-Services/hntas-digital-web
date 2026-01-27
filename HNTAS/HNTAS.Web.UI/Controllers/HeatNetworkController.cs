@@ -428,7 +428,8 @@ namespace HNTAS.Web.UI.Controllers
                 EcDetails = ecDetails,
                 Pathway = viewModel?.PathwayModel?.Pathway,
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = userId
+                CreatedBy = userId,
+                RegistrationSource = RegistrationSource.HNTAS
             };
 
             var userResponse = await _heatNetworkService.AddHeatNetwork(model);

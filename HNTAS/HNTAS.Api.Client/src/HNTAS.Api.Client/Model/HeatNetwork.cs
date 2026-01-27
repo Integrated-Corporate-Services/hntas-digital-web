@@ -39,11 +39,12 @@ namespace HNTAS.Api.Client.Model
         /// <param name="address">address</param>
         /// <param name="ecDetails">ecDetails</param>
         /// <param name="pathway">pathway</param>
+        /// <param name="registrationSource">registrationSource</param>
         /// <param name="soa">soa</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="createdAt">createdAt</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> name = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> pathway = default, Option<Soa?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default)
+        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> name = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<Soa?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default)
         {
             IdOption = id;
             HnIdOption = hnId;
@@ -51,6 +52,7 @@ namespace HNTAS.Api.Client.Model
             AddressOption = address;
             EcDetailsOption = ecDetails;
             PathwayOption = pathway;
+            RegistrationSourceOption = registrationSource;
             SoaOption = soa;
             CreatedByOption = createdBy;
             CreatedAtOption = createdAt;
@@ -58,6 +60,19 @@ namespace HNTAS.Api.Client.Model
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Used to track the state of RegistrationSource
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<RegistrationSource?> RegistrationSourceOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets RegistrationSource
+        /// </summary>
+        [JsonPropertyName("registrationSource")]
+        public RegistrationSource? RegistrationSource { get { return this.RegistrationSourceOption; } set { this.RegistrationSourceOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Id
@@ -190,6 +205,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Address: ").Append(Address).Append("\n");
             sb.Append("  EcDetails: ").Append(EcDetails).Append("\n");
             sb.Append("  Pathway: ").Append(Pathway).Append("\n");
+            sb.Append("  RegistrationSource: ").Append(RegistrationSource).Append("\n");
             sb.Append("  Soa: ").Append(Soa).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
@@ -241,6 +257,7 @@ namespace HNTAS.Api.Client.Model
             Option<RegisteredAddress?> address = default;
             Option<ECDetails2?> ecDetails = default;
             Option<string?> pathway = default;
+            Option<RegistrationSource?> registrationSource = default;
             Option<Soa?> soa = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> createdAt = default;
@@ -278,6 +295,11 @@ namespace HNTAS.Api.Client.Model
                         case "pathway":
                             pathway = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "registrationSource":
+                            string? registrationSourceRawValue = utf8JsonReader.GetString();
+                            if (registrationSourceRawValue != null)
+                                registrationSource = new Option<RegistrationSource?>(RegistrationSourceValueConverter.FromStringOrDefault(registrationSourceRawValue));
+                            break;
                         case "soa":
                             soa = new Option<Soa?>(JsonSerializer.Deserialize<Soa>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -299,13 +321,16 @@ namespace HNTAS.Api.Client.Model
             if (pathway.IsSet && pathway.Value == null)
                 throw new ArgumentNullException(nameof(pathway), "Property is not nullable for class HeatNetwork.");
 
+            if (registrationSource.IsSet && registrationSource.Value == null)
+                throw new ArgumentNullException(nameof(registrationSource), "Property is not nullable for class HeatNetwork.");
+
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class HeatNetwork.");
 
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class HeatNetwork.");
 
-            return new HeatNetwork(id, hnId, name, address, ecDetails, pathway, soa, createdBy, createdAt);
+            return new HeatNetwork(id, hnId, name, address, ecDetails, pathway, registrationSource, soa, createdBy, createdAt);
         }
 
         /// <summary>
@@ -375,6 +400,11 @@ namespace HNTAS.Api.Client.Model
             if (heatNetwork.PathwayOption.IsSet)
                 writer.WriteString("pathway", heatNetwork.Pathway);
 
+            if (heatNetwork.RegistrationSourceOption.IsSet)
+            {
+                var registrationSourceRawValue = RegistrationSourceValueConverter.ToJsonValue(heatNetwork.RegistrationSource!.Value);
+                writer.WriteString("registrationSource", registrationSourceRawValue);
+            }
             if (heatNetwork.SoaOption.IsSet)
                 if (heatNetwork.SoaOption.Value != null)
                 {
