@@ -13,6 +13,7 @@ docs/apis/OrganisationsApi.md
 docs/apis/SOAApi.md
 docs/apis/UsersApi.md
 docs/models/AddInvitationRequest.md
+docs/models/Address.md
 docs/models/AssessorSearchResult.md
 docs/models/Background.md
 docs/models/BoilerInput.md
@@ -26,11 +27,13 @@ docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
 docs/models/Energy.md
+docs/models/EnergyCentreDetails.md
 docs/models/EnumItemResponse.md
 docs/models/HeatNetwork.md
 docs/models/HeatNetworkElement.md
 docs/models/HeatNetworkElementResponse.md
 docs/models/HeatNetworkElementType.md
+docs/models/HeatNetworkExternalResponse.md
 docs/models/HeatNetworkInfo.md
 docs/models/HeatNetworkResponse.md
 docs/models/HeatNetworkType.md
@@ -49,6 +52,7 @@ docs/models/NetworkTypeSelection2.md
 docs/models/NullableOfPreferredContactType.md
 docs/models/NullableOfSoaStage.md
 docs/models/NullableOfUserRole.md
+docs/models/OrgDetails.md
 docs/models/Organisation.md
 docs/models/OrganisationRequest.md
 docs/models/OrganisationResponse.md
@@ -57,12 +61,14 @@ docs/models/ProblemDetails.md
 docs/models/RecoveredInput.md
 docs/models/RegisteredAddress.md
 docs/models/RegisteredAddress2.md
+docs/models/RegistrationSource.md
 docs/models/SendInvitationEmailRequest.md
 docs/models/Soa.md
 docs/models/Soa2.md
 docs/models/SoaJourneyData.md
 docs/models/SoaPhase.md
 docs/models/SoaResponse.md
+docs/models/SoaResponse2.md
 docs/models/SoaStatus.md
 docs/models/UpdateConnectionsRequest.md
 docs/models/UpdateDocumentRequest.md
@@ -87,6 +93,7 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/RegistrationSourceTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/AssessorApi.cs
 src/HNTAS.Api.Client/Api/CarbonCalculatorApi.cs
@@ -121,6 +128,7 @@ src/HNTAS.Api.Client/Extensions/IHttpClientBuilderExtensions.cs
 src/HNTAS.Api.Client/Extensions/IServiceCollectionExtensions.cs
 src/HNTAS.Api.Client/HNTAS.Api.Client.csproj
 src/HNTAS.Api.Client/Model/AddInvitationRequest.cs
+src/HNTAS.Api.Client/Model/Address.cs
 src/HNTAS.Api.Client/Model/AssessorSearchResult.cs
 src/HNTAS.Api.Client/Model/Background.cs
 src/HNTAS.Api.Client/Model/BoilerInput.cs
@@ -134,11 +142,13 @@ src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs
 src/HNTAS.Api.Client/Model/Energy.cs
+src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetwork.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElement.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElementResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElementType.cs
+src/HNTAS.Api.Client/Model/HeatNetworkExternalResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetworkInfo.cs
 src/HNTAS.Api.Client/Model/HeatNetworkResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetworkType.cs
@@ -157,6 +167,7 @@ src/HNTAS.Api.Client/Model/NetworkTypeSelection2.cs
 src/HNTAS.Api.Client/Model/NullableOfPreferredContactType.cs
 src/HNTAS.Api.Client/Model/NullableOfSoaStage.cs
 src/HNTAS.Api.Client/Model/NullableOfUserRole.cs
+src/HNTAS.Api.Client/Model/OrgDetails.cs
 src/HNTAS.Api.Client/Model/Organisation.cs
 src/HNTAS.Api.Client/Model/OrganisationRequest.cs
 src/HNTAS.Api.Client/Model/OrganisationResponse.cs
@@ -165,12 +176,14 @@ src/HNTAS.Api.Client/Model/ProblemDetails.cs
 src/HNTAS.Api.Client/Model/RecoveredInput.cs
 src/HNTAS.Api.Client/Model/RegisteredAddress.cs
 src/HNTAS.Api.Client/Model/RegisteredAddress2.cs
+src/HNTAS.Api.Client/Model/RegistrationSource.cs
 src/HNTAS.Api.Client/Model/SendInvitationEmailRequest.cs
 src/HNTAS.Api.Client/Model/Soa.cs
 src/HNTAS.Api.Client/Model/Soa2.cs
 src/HNTAS.Api.Client/Model/SoaJourneyData.cs
 src/HNTAS.Api.Client/Model/SoaPhase.cs
 src/HNTAS.Api.Client/Model/SoaResponse.cs
+src/HNTAS.Api.Client/Model/SoaResponse2.cs
 src/HNTAS.Api.Client/Model/SoaStatus.cs
 src/HNTAS.Api.Client/Model/UpdateConnectionsRequest.cs
 src/HNTAS.Api.Client/Model/UpdateDocumentRequest.cs

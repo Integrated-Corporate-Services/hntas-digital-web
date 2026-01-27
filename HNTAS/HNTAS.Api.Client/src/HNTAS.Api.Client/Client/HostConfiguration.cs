@@ -44,6 +44,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new DateOnlyJsonConverter());
             _jsonOptions.Converters.Add(new DateOnlyNullableJsonConverter());
             _jsonOptions.Converters.Add(new AddInvitationRequestJsonConverter());
+            _jsonOptions.Converters.Add(new AddressJsonConverter());
             _jsonOptions.Converters.Add(new AssessorSearchResultJsonConverter());
             _jsonOptions.Converters.Add(new BackgroundJsonConverter());
             _jsonOptions.Converters.Add(new BoilerInputJsonConverter());
@@ -60,12 +61,14 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());
             _jsonOptions.Converters.Add(new ECDetails2JsonConverter());
             _jsonOptions.Converters.Add(new EnergyJsonConverter());
+            _jsonOptions.Converters.Add(new EnergyCentreDetailsJsonConverter());
             _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementTypeJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementTypeNullableJsonConverter());
+            _jsonOptions.Converters.Add(new HeatNetworkExternalResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkInfoJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkTypeJsonConverter());
@@ -89,6 +92,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NullableOfSoaStageNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfUserRoleJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfUserRoleNullableJsonConverter());
+            _jsonOptions.Converters.Add(new OrgDetailsJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationRequestJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationResponseJsonConverter());
@@ -98,6 +102,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new RecoveredInputJsonConverter());
             _jsonOptions.Converters.Add(new RegisteredAddressJsonConverter());
             _jsonOptions.Converters.Add(new RegisteredAddress2JsonConverter());
+            _jsonOptions.Converters.Add(new RegistrationSourceJsonConverter());
+            _jsonOptions.Converters.Add(new RegistrationSourceNullableJsonConverter());
             _jsonOptions.Converters.Add(new SendInvitationEmailRequestJsonConverter());
             _jsonOptions.Converters.Add(new SoaJsonConverter());
             _jsonOptions.Converters.Add(new Soa2JsonConverter());
@@ -105,6 +111,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new SoaPhaseJsonConverter());
             _jsonOptions.Converters.Add(new SoaPhaseNullableJsonConverter());
             _jsonOptions.Converters.Add(new SoaResponseJsonConverter());
+            _jsonOptions.Converters.Add(new SoaResponse2JsonConverter());
             _jsonOptions.Converters.Add(new SoaStatusJsonConverter());
             _jsonOptions.Converters.Add(new SoaStatusNullableJsonConverter());
             _jsonOptions.Converters.Add(new UpdateConnectionsRequestJsonConverter());

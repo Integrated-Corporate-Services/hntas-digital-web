@@ -440,7 +440,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
                   }
                 }
               },
@@ -448,7 +448,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
                   }
                 }
               },
@@ -456,7 +456,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
                   }
                 }
               }
@@ -486,17 +486,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                  "$ref": "#/components/schemas/HeatNetworkExternalResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                  "$ref": "#/components/schemas/HeatNetworkExternalResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                  "$ref": "#/components/schemas/HeatNetworkExternalResponse"
                 }
               }
             }
@@ -555,7 +555,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
                   }
                 }
               },
@@ -563,7 +563,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
                   }
                 }
               },
@@ -571,7 +571,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
                   }
                 }
               }
@@ -3440,6 +3440,33 @@
           }
         }
       },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "addressLine1": {
+            "type": "string"
+          },
+          "addressLine2": {
+            "type": "string",
+            "nullable": true
+          },
+          "town": {
+            "type": "string",
+            "nullable": true
+          },
+          "county": {
+            "type": "string",
+            "nullable": true
+          },
+          "postcode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "AssessorSearchResult": {
         "type": "object",
         "properties": {
@@ -3862,6 +3889,20 @@
           }
         }
       },
+      "EnergyCentreDetails": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "string"
+          },
+          "longitude": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
       "EnumItemResponse": {
         "type": "object",
         "properties": {
@@ -3899,6 +3940,9 @@
           },
           "pathway": {
             "type": "string"
+          },
+          "registrationSource": {
+            "$ref": "#/components/schemas/RegistrationSource"
           },
           "soa": {
             "$ref": "#/components/schemas/Soa"
@@ -3969,6 +4013,42 @@
           "ConsumerConnections",
           "ConsumerHeatSystems"
         ]
+      },
+      "HeatNetworkExternalResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "hnId": {
+            "type": "string"
+          },
+          "hnName": {
+            "type": "string"
+          },
+          "registrationSource": {
+            "$ref": "#/components/schemas/RegistrationSource"
+          },
+          "energyCentre": {
+            "$ref": "#/components/schemas/EnergyCentreDetails"
+          },
+          "pathway": {
+            "type": "string"
+          },
+          "soa": {
+            "$ref": "#/components/schemas/SoaResponse2"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "rpDetails": {
+            "$ref": "#/components/schemas/OrgDetails"
+          }
+        }
       },
       "HeatNetworkInfo": {
         "type": "object",
@@ -4469,6 +4549,23 @@
           "OverseasOrganisation"
         ]
       },
+      "OrgDetails": {
+        "type": "object",
+        "properties": {
+          "orgId": {
+            "type": "string"
+          },
+          "orgName": {
+            "type": "string"
+          },
+          "emailId": {
+            "type": "string"
+          },
+          "orgAddress": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
       "ProblemDetails": {
         "type": "object",
         "properties": {
@@ -4609,6 +4706,12 @@
           }
         }
       },
+      "RegistrationSource": {
+        "enum": [
+          "HNTAS",
+          "OFGEM"
+        ]
+      },
       "SendInvitationEmailRequest": {
         "required": [
           "token"
@@ -4746,6 +4849,14 @@
           }
         },
         "nullable": true
+      },
+      "SoaResponse2": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        }
       },
       "SoaStatus": {
         "enum": [
