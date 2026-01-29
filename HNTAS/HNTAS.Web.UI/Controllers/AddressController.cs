@@ -63,9 +63,9 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new AddressByStreetOrTownModel
             {
-                StreetAddress = string.Join(",", addressParts.Take(addressParts.Length - 2)) ?? string.Empty,
-                TownOrCity = addressParts[addressParts.Length - 2] ?? string.Empty,
-                Postalcode = (addressParts[addressParts.Length - 1]).ToUpper() ?? string.Empty,
+                StreetAddress = string.Join(",", addressParts.Take(addressParts.Length - 2)).Trim() ?? string.Empty,
+                TownOrCity = addressParts[addressParts.Length - 2].Trim() ?? string.Empty,
+                Postalcode = (addressParts[addressParts.Length - 1]).ToUpper().Trim() ?? string.Empty,
                 Country = "United Kingdom" ?? string.Empty,
                 Fulladdress = addressmodel.SelectedFullAddress
             };            

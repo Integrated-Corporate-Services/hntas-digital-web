@@ -119,6 +119,10 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult AddressManualEntry(AddressByStreetOrTownModel model)
         {
             this.ShowBackButton("EnterHNName", "HeatNetwork");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
             var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
                 .Where(part => !string.IsNullOrWhiteSpace(part));
@@ -132,7 +136,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult ECCoordinates()
         {
             this.ShowBackButton("DoesHNHaveAPostcode");
-            var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel();
+            var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
             return View(model);
         }
 
@@ -140,13 +144,6 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ECCoordinates(ECDetailsModel model)
         {
-            // Re-create nested container if null so view rendering doesn't NRE
-            if (model.LatitudeLongitude == null)
-            {
-                model ??= new ECDetailsModel();
-                model.ECAddressByLatLong = new AddressByLatLongModel();
-            }
-
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -161,7 +158,7 @@ namespace HNTAS.Web.UI.Controllers
                 || !decimal.TryParse(parts[1], NumberStyles.Float | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var lon))
             {
                 ModelState.AddModelError(nameof(model.LatitudeLongitude),
-                    "Enter latitude and longitude in the format: 'latitude, longitude' (for example 52.93430970409369, -1.2522174890632065).");
+                    "Enter latitude and longitude in correct format.");
                 return View("ECCoordinates", model);
             }
 
