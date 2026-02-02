@@ -164,7 +164,16 @@ namespace HNTAS.Web.UI.Tests.Helpers
                                 UploadedBy = "user"
                             }, },
                     }
-                } // assuming this is a valid populated object
+                },
+                Address = new RegisteredAddress
+                (
+                    "AddressLine1",
+                    "Postalcode1",
+                    "AddressLine2",
+                    "Town1",
+                    "County1",
+                    "Countrry1"
+                )// assuming this is a valid populated object
             };
         }
 

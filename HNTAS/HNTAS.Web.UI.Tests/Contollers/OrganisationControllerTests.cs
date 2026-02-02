@@ -89,7 +89,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
         }
 
         [Fact]
-        public void OrganisationType_ReturnsView_WithExpectedModelAndViewBag()
+        public async Task OrganisationType_ReturnsView_WithExpectedModelAndViewBag()
         {
             var expectedModel = new OrganisationModel
             {
@@ -106,7 +106,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 .Returns(false);
             _controller.Url = SetUpBackLink("Index", "Home").Object;
 
-            var result = _controller.OrganisationType();
+            var result = await _controller.OrganisationType();
 
 
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -152,7 +152,16 @@ namespace HNTAS.Web.UI.Tests.Contollers
         public async Task OrganisationAddress_ReturnsViewWithModel()
         {
             // Arange & Act
+            var expectedModel = new OrganisationModel
+            {
+                OrganisationTypes = new List<SelectListItem>(),
+                SelectedOrganisationType = "UkCompaniesHouse",
+                CompanyDetails = new CompanyDetailsModel() { RegisteredOfficeAddress = new RegisteredOfficeAddressModel() { Country = "country1"} }
+            };
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
+            _mockSessionHelper
+                .Setup(x => x.GetFromSession<OrganisationModel>(_controller.ControllerContext.HttpContext, SessionKeys.OrganisationCreation_SessionKey))
+                .Returns(expectedModel);
             var result = await _controller.OrganisationAddressAsync() as ViewResult;
 
             // Assert
@@ -176,14 +185,14 @@ namespace HNTAS.Web.UI.Tests.Contollers
 
 
             // Act
-            var result = await _controller.OrganisationAddressByPostcode(new SearchAddressByPostcodeModel { Postcode = "UB3 4JT" }) as ViewResult;
+            var result = await _controller.OrganisationAddressByPostcode(new SearchAddressByPostcodeModel { Postcode = "UB3 4JT" });
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("OrganisationAddressSearchResults", result.ViewName);
-            var model = Assert.IsType<SearchAddressByPostcodeModel>(result.Model);
-            Assert.Single(model.Addresses);
-            Assert.Equal(model.Postcode, "UB3 4JT");
+            Assert.IsType<RedirectToActionResult>(result);
+            var redirectResult = result as RedirectToActionResult;
+            Assert.Equal("SearchByPostcodeResults", redirectResult?.ActionName);
+            Assert.Equal("Address", redirectResult?.ControllerName);
         }
 
         [Fact]
@@ -216,7 +225,6 @@ namespace HNTAS.Web.UI.Tests.Contollers
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("OrganisationAddressByPostcode", result.ViewName);
             Assert.True(_controller.ModelState.ContainsKey(string.Empty));
             Assert.Equal("Unable to retrieve address data.", _controller.ModelState[string.Empty].Errors[0].ErrorMessage);
         }        
