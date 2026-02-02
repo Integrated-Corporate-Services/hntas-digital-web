@@ -110,7 +110,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult AddressManualEntry()
         {
             this.ShowBackButton("EnterHNName", "HeatNetwork");
-            var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey).HNAddressByStreet ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
+            var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey)?.HNAddressByStreet ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
             return View(model);
         }
 
