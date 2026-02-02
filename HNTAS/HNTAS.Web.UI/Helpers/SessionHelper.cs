@@ -53,6 +53,10 @@ namespace HNTAS.Web.UI.Helpers
 
             ClearFromSession(context, SessionKeys.UserCreation_SessionKey);
             ClearFromSession(context, SessionKeys.OrganisationCreation_SessionKey);
+            ClearFromSession(context, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.AddressByStreetOrTownModelSessionKey);
+            ClearFromSession(context, SessionKeys.ECDetailsModelSessionKey);
+            ClearFromSession(context, SessionKeys.HeatNetworkPhaseModelKey);
 
             ClearFromSession(context, SessionKeys.HeatNetworkLocationModelKey);
             ClearFromSession(context, SessionKeys.HeatNetworkNameModelKey);
