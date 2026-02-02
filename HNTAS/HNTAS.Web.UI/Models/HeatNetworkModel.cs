@@ -57,12 +57,12 @@ namespace HNTAS.Web.UI.Models
     public class CheckYourAnswersHeatNetworkModel
     {
         public HeatNetworkNameModel HeatNetworkNameModel { get; set; }
-        public AddressByStreetOrTownModel HeatNetworkLocationModel { get; set; }
-        public ECDetailsModel? ECDetailsModel { get; set; }
+        public AddressByStreetOrTownModel? HeatNetworkAddressModel { get; set; }
+        public ECDetailsModel ECDetailsModel { get; set; }
         public HeatNetworkPhaseModel HeatNetworkPhaseModel { get; set; }
         public HasElementBeenRegisteredModel? HasElementBeenRegisteredModel { get; set; }
         public HasPlanningApplicationBeenSubmittedModel? HasPlanningApplicationBeenSubmittedModel { get; set; }
-        public HaveYouSignedMEContractModel HaveYouSignedMEContractModel { get; set; }
+        public HaveYouSignedMEContractModel? HaveYouSignedMEContractModel { get; set; }
         public PathwayModel PathwayModel { get; set; }
 
         // The ConfirmedDeclaration property, now part of this specific ViewModel

@@ -94,14 +94,13 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpGet]
         public IActionResult SaveHNAddressByPostcode()
-        {
-            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
-            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
+        {            
+            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey) ?? new AddressByStreetOrTownModel();
             if (model == null)
             {
                 return BadRequest("Missing session data");
             }
-
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel { HNAddressByStreet = new AddressByStreetOrTownModel() };
             heatNetworkLocationModel.HNAddressByStreet = model;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
             return RedirectToAction("ECCoordinates", "HeatNetwork");
@@ -111,7 +110,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult AddressManualEntry()
         {
             this.ShowBackButton("EnterHNName", "HeatNetwork");
-            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey) ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
+            var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey).HNAddressByStreet ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
             return View(model);
         }
 
@@ -122,11 +121,11 @@ namespace HNTAS.Web.UI.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
-            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            }            
             var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
                 .Where(part => !string.IsNullOrWhiteSpace(part));
             model.Fulladdress = string.Join(", ", addressParts);
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
             heatNetworkLocationModel.HNAddressByStreet = model;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
             return RedirectToAction("ECCoordinates", "HeatNetwork");
@@ -150,7 +149,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             // Try to split and parse the LatitudeLongitude value
-            var raw = model.LatitudeLongitude ?? string.Empty;
+            var raw = model.LatitudeLongitude;
             var parts = raw.Split(',', System.StringSplitOptions.RemoveEmptyEntries | System.StringSplitOptions.TrimEntries);
 
             if (parts.Length != 2
@@ -342,26 +341,33 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpGet]
         public IActionResult CheckYourAnswers()
-        {
+        {   
             ViewBag.ShowBackButton = false;
-
-            if (_sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) == null)
+            var heatNetworkName = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey);
+            if (heatNetworkName == null)
             {
                 return RedirectToAction("UserAccount", "Dashboard");
             }
 
+            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey);
+            var heatNetworkLocation = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
+            var ecDetails = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey);
+            var heatNetworkPhase = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey);                 
+
             var model = new CheckYourAnswersHeatNetworkModel
             {
-                HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey),
-                HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey).HNAddressByStreet,
-                ECDetailsModel = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey),
-                HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey),
-                HaveYouSignedMEContractModel = _sessionHelper.GetFromSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? new HaveYouSignedMEContractModel(),
+                HeatNetworkNameModel = heatNetworkNameModel,
+                HeatNetworkAddressModel = heatNetworkLocation?.HNAddressByStreet ?? new AddressByStreetOrTownModel(),
+                ECDetailsModel = ecDetails,
+                HeatNetworkPhaseModel = heatNetworkPhase,
+                HaveYouSignedMEContractModel = _sessionHelper.GetFromSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? null,
                 HasElementBeenRegisteredModel = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? null,
                 HasPlanningApplicationBeenSubmittedModel = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? null,
                 PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey) ?? new PathwayModel() { Pathway = "1" },
                 ConfirmedDeclaration = false
             };
+
+            _sessionHelper.SaveToSession<CheckYourAnswersHeatNetworkModel>(HttpContext, "CheckYourAnswersHeatNetworkModel", model);
 
             return View(model);
         }
@@ -371,8 +377,9 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> SubmitAnswers(CheckYourAnswersHeatNetworkModel viewModel)
         {
 
+            var hnLocation = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
             viewModel.HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey);
-            viewModel.HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey).HNAddressByStreet;
+            viewModel.HeatNetworkAddressModel = hnLocation?.HNAddressByStreet ?? null;
             viewModel.ECDetailsModel = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey);
             viewModel.PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey);
             viewModel.HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey);
@@ -381,14 +388,13 @@ namespace HNTAS.Web.UI.Controllers
             viewModel.HasPlanningApplicationBeenSubmittedModel = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? null;
 
             ModelState.Remove(nameof(viewModel.HeatNetworkNameModel));
-            ModelState.Remove(nameof(viewModel.HeatNetworkLocationModel));
+            ModelState.Remove(nameof(viewModel.HeatNetworkAddressModel));
             ModelState.Remove(nameof(viewModel.ECDetailsModel));
             ModelState.Remove(nameof(viewModel.PathwayModel));
             ModelState.Remove(nameof(viewModel.HeatNetworkPhaseModel));
             ModelState.Remove(nameof(viewModel.HaveYouSignedMEContractModel));
             ModelState.Remove(nameof(viewModel.HasElementBeenRegisteredModel));
             ModelState.Remove(nameof(viewModel.HasPlanningApplicationBeenSubmittedModel));
-
 
             if (!ModelState.IsValid)
             {
@@ -404,20 +410,29 @@ namespace HNTAS.Web.UI.Controllers
                 return View("CheckYourAnswers", viewModel);
             }
 
-            var hnAddress = viewModel?.HeatNetworkLocationModel;
+            var hnAddress = viewModel?.HeatNetworkAddressModel;
 
-            var ecDetails = new ECDetails2(
-                latitude: (double?)(viewModel?.ECDetailsModel.ECAddressByLatLong.Latitude),
-                    longitude: (double?)(viewModel?.ECDetailsModel.ECAddressByLatLong.Longitude)
-                );
-            var address = new RegisteredAddress(
+            double? latitude = null;
+            double? longitude = null;
+            if (viewModel?.ECDetailsModel?.ECAddressByLatLong != null)
+            {
+                latitude = (double?)viewModel.ECDetailsModel.ECAddressByLatLong.Latitude;
+                longitude = (double?)viewModel.ECDetailsModel.ECAddressByLatLong.Longitude;
+            }
+
+            ECDetails2? ecDetails = (latitude.HasValue || longitude.HasValue)
+                ? new ECDetails2(latitude: latitude, longitude: longitude)
+                : null;
+
+            var address = viewModel.HeatNetworkAddressModel != null ? new RegisteredAddress(
                     addressLine1: hnAddress?.StreetAddress?.Trim(),
                     postcode: hnAddress?.Postalcode?.Trim(),
                     addressLine2: default,
                     town: hnAddress?.TownOrCity?.Trim(),
                     county: default,
                     country: hnAddress?.Country?.Trim()
-                );
+                ) : null;
+
             var model = new HeatNetwork
             {
                 Name = viewModel?.HeatNetworkNameModel?.HeatNetworkName,
@@ -431,7 +446,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var userResponse = await _heatNetworkService.AddHeatNetwork(model);
 
-            if (userResponse.HnId != null)
+            if (userResponse?.HnId != null)
             {
                 await _organisationService.UpdateOrgHeatNetworkId(orgId, userId, userResponse.HnId);
                 TempData["Confirmation_HN_Id"] = userResponse.HnId;
