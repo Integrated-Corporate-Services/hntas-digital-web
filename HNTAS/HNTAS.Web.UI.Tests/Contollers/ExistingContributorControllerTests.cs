@@ -183,11 +183,9 @@ namespace HNTAS.Web.UI.Tests.Contollers
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("ChooseHeatNetwork", redirectResult.ActionName);
-            _mockWorkflowManager.Verify(w =>
-                w.UpdateStep<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>(
-                    It.IsAny<Action<AddExistingContributorWorkflowModel>>(),
-                    It.IsAny<ExistingContributorWorkflowStep>()),
+            Assert.Equal("ChooseHeatNetwork", redirectResult.ActionName);            
+            _mockWorkflowManager.Verify(m =>
+                m.SaveState(It.IsAny<WorkflowState<AddExistingContributorWorkflowModel>>()),
                 Times.Exactly(2));
 
         }
