@@ -32,10 +32,16 @@ namespace HNTAS.Web.UI.Controllers
             _addressLookUpService = addressLookupService;
         }
 
+        [HttpGet]
+        public IActionResult Index()
+        {
+            _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+            return RedirectToAction("EnterHNName", "HeatNetwork");
+        }
 
         [HttpGet]
         public IActionResult EnterHNName()
-        {
+        {            
             this.ShowBackButton("UserAccount", "Dashboard");
             var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
             return View(heatNetworkNameModel);
