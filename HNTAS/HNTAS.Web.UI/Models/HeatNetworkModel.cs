@@ -15,7 +15,7 @@ namespace HNTAS.Web.UI.Models
 
     public class HeatNetworkLocationModel
     {        
-        public AddressByStreetOrTownModel? HNAddressByStreet { get; set; }
+        public AddressByStreetOrTownModel? HNAddressByStreet { get; set; }               
     }
 
     public class ECDetailsModel

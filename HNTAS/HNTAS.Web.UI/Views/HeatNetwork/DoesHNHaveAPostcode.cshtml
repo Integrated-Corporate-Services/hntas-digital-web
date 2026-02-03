@@ -9,7 +9,7 @@
     <form method="post" novalidate>
         @Html.AntiForgeryToken()
 
-        <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.HasPostcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
+        <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
             <fieldset class="govuk-fieldset" aria-describedby="has-postcode-hint">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                     <h1 class="govuk-fieldset__heading">Does your heat network have a postcode?</h1>
@@ -17,7 +17,7 @@
 
                 <div id="has-postcode-hint" class="govuk-hint">Select one option</div>
 
-                @if (ViewData.ModelState[nameof(Model.HasPostcode)]?.Errors?.Count > 0)
+                @if (ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0)
                 {
                     <p class="govuk-error-message">
                         <span class="govuk-visually-hidden">Error:</span>

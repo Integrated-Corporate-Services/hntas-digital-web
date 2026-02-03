@@ -96,7 +96,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 {
                     Organisation = null,
                     HeatNetworks = new List<HeatNetworkUserResponse>(),
-                    EmailId = "test@example.com"
+                    EmailId = "test@example.com",
+                    Roles = new List<UserRole>() { UserRole.ResponsiblePerson }
                 });
 
             // Act
