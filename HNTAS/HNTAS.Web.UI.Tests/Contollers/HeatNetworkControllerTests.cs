@@ -85,7 +85,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void EnterHNName_Post_ValidUrl_RedirectsToEnterHNLocation()
+        public void EnterHNName_Post_ValidUrl_RedirectsToDoesHNHaveAPostcode()
         {
             // Arrange
             var model = new HeatNetworkNameModel { HeatNetworkName = "mock-hnname" };
@@ -95,7 +95,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkNameModel>(_controller.HttpContext, SessionKeys.HeatNetworkNameModelKey, model), Times.Once);
-            Assert.Equal("EnterHNLocation", redirectResult.ActionName);
+            Assert.Equal("DoesHNHaveAPostcode", redirectResult.ActionName);
         }
 
         [Fact]

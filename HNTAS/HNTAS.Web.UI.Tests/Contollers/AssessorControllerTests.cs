@@ -2,6 +2,7 @@
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Moq;
 
 namespace HNTAS.Web.UI.Tests.Contollers
@@ -221,7 +223,17 @@ namespace HNTAS.Web.UI.Tests.Contollers
                                 UploadedBy = "user"
                             }, },
                     }
-                } // assuming this is a valid populated object
+                },
+                Address = new RegisteredAddress
+                (
+                    "AddressLine1",
+                    "Postalcode1",
+                    "AddressLine2",
+                    "Town1",
+                    "County1",
+                    "Countrry1"
+                )
+                // assuming this is a valid populated object
             };
         }
 
