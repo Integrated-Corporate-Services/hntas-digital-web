@@ -145,7 +145,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, DocumentType documentType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(documentType.ToString());
+            writer.WriteStringValue(DocumentTypeValueConverter.ToJsonValue(documentType).ToString());
         }
     }
 
@@ -176,14 +176,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the DocumentType to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="documentType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, DocumentType? documentType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(documentType?.ToString() ?? "null");
+            writer.WriteStringValue(documentType.HasValue ? DocumentTypeValueConverter.ToJsonValue(documentType.Value).ToString() : "null");
         }
     }
 }

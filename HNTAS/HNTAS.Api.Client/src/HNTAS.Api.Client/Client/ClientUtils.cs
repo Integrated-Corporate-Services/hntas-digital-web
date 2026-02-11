@@ -111,10 +111,14 @@ namespace HNTAS.Api.Client.Client
                 return boolean
                     ? "true"
                     : "false";
+            if (obj is AssessmentPlanStatus assessmentPlanStatus)
+                return AssessmentPlanStatusValueConverter.ToJsonValue(assessmentPlanStatus);
             if (obj is ConnectionType connectionType)
                 return ConnectionTypeValueConverter.ToJsonValue(connectionType);
             if (obj is ContributorRole contributorRole)
                 return ContributorRoleValueConverter.ToJsonValue(contributorRole);
+            if (obj is DesignConstructionLogStatus designConstructionLogStatus)
+                return DesignConstructionLogStatusValueConverter.ToJsonValue(designConstructionLogStatus);
             if (obj is DocumentType documentType)
                 return DocumentTypeValueConverter.ToJsonValue(documentType);
             if (obj is HeatNetworkElementType heatNetworkElementType)
@@ -123,6 +127,12 @@ namespace HNTAS.Api.Client.Client
                 return HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType);
             if (obj is InvitationStatus invitationStatus)
                 return InvitationStatusValueConverter.ToJsonValue(invitationStatus);
+            if (obj is MeteringAndMonitoringStrategyStatus meteringAndMonitoringStrategyStatus)
+                return MeteringAndMonitoringStrategyStatusValueConverter.ToJsonValue(meteringAndMonitoringStrategyStatus);
+            if (obj is NetworkCharacteristicsStatus networkCharacteristicsStatus)
+                return NetworkCharacteristicsStatusValueConverter.ToJsonValue(networkCharacteristicsStatus);
+            if (obj is NetworkElementsStatus networkElementsStatus)
+                return NetworkElementsStatusValueConverter.ToJsonValue(networkElementsStatus);
             if (obj is NullableOfPreferredContactType nullableOfPreferredContactType)
                 return NullableOfPreferredContactTypeValueConverter.ToJsonValue(nullableOfPreferredContactType);
             if (obj is NullableOfSoaStage nullableOfSoaStage)

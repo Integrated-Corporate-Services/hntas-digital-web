@@ -48,7 +48,22 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Enum Archived for value: Archived
         /// </summary>
-        Archived = 4
+        Archived = 4,
+
+        /// <summary>
+        /// Enum ReadyToStart for value: ReadyToStart
+        /// </summary>
+        ReadyToStart = 5,
+
+        /// <summary>
+        /// Enum CannotStartYet for value: CannotStartYet
+        /// </summary>
+        CannotStartYet = 6,
+
+        /// <summary>
+        /// Enum Incomplete for value: Incomplete
+        /// </summary>
+        Incomplete = 7
     }
 
     /// <summary>
@@ -75,6 +90,15 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Archived"))
                 return SoaStatus.Archived;
 
+            if (value.Equals("ReadyToStart"))
+                return SoaStatus.ReadyToStart;
+
+            if (value.Equals("CannotStartYet"))
+                return SoaStatus.CannotStartYet;
+
+            if (value.Equals("Incomplete"))
+                return SoaStatus.Incomplete;
+
             throw new NotImplementedException($"Could not convert value to type SoaStatus: '{value}'");
         }
 
@@ -96,6 +120,15 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("Archived"))
                 return SoaStatus.Archived;
+
+            if (value.Equals("ReadyToStart"))
+                return SoaStatus.ReadyToStart;
+
+            if (value.Equals("CannotStartYet"))
+                return SoaStatus.CannotStartYet;
+
+            if (value.Equals("Incomplete"))
+                return SoaStatus.Incomplete;
 
             return null;
         }
@@ -119,6 +152,15 @@ namespace HNTAS.Api.Client.Model
 
             if (value == SoaStatus.Archived)
                 return "Archived";
+
+            if (value == SoaStatus.ReadyToStart)
+                return "ReadyToStart";
+
+            if (value == SoaStatus.CannotStartYet)
+                return "CannotStartYet";
+
+            if (value == SoaStatus.Incomplete)
+                return "Incomplete";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
@@ -159,7 +201,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, SoaStatus soaStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(soaStatus.ToString());
+            writer.WriteStringValue(SoaStatusValueConverter.ToJsonValue(soaStatus).ToString());
         }
     }
 
@@ -190,14 +232,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the SoaStatus to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="soaStatus"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, SoaStatus? soaStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(soaStatus?.ToString() ?? "null");
+            writer.WriteStringValue(soaStatus.HasValue ? SoaStatusValueConverter.ToJsonValue(soaStatus.Value).ToString() : "null");
         }
     }
 }

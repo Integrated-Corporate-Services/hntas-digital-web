@@ -44,7 +44,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="createdAt">createdAt</param>
         /// <param name="rpDetails">rpDetails</param>
         [JsonConstructor]
-        public HeatNetworkExternalResponse(Option<string?> id = default, Option<string?> hnId = default, Option<string?> hnName = default, Option<RegistrationSource?> registrationSource = default, Option<EnergyCentreDetails?> energyCentre = default, Option<string?> pathway = default, Option<SoaResponse2?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<OrgDetails?> rpDetails = default)
+        public HeatNetworkExternalResponse(Option<string?> id = default, Option<string?> hnId = default, Option<string?> hnName = default, Option<string?> registrationSource = default, Option<EnergyCentreDetails?> energyCentre = default, Option<string?> pathway = default, Option<SoaResponse2?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<OrgDetails?> rpDetails = default)
         {
             IdOption = id;
             HnIdOption = hnId;
@@ -60,19 +60,6 @@ namespace HNTAS.Api.Client.Model
         }
 
         partial void OnCreated();
-
-        /// <summary>
-        /// Used to track the state of RegistrationSource
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<RegistrationSource?> RegistrationSourceOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets RegistrationSource
-        /// </summary>
-        [JsonPropertyName("registrationSource")]
-        public RegistrationSource? RegistrationSource { get { return this.RegistrationSourceOption; } set { this.RegistrationSourceOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Id
@@ -112,6 +99,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("hnName")]
         public string? HnName { get { return this.HnNameOption; } set { this.HnNameOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of RegistrationSource
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> RegistrationSourceOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets RegistrationSource
+        /// </summary>
+        [JsonPropertyName("registrationSource")]
+        public string? RegistrationSource { get { return this.RegistrationSourceOption; } set { this.RegistrationSourceOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of EnergyCentre
@@ -254,7 +254,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> id = default;
             Option<string?> hnId = default;
             Option<string?> hnName = default;
-            Option<RegistrationSource?> registrationSource = default;
+            Option<string?> registrationSource = default;
             Option<EnergyCentreDetails?> energyCentre = default;
             Option<string?> pathway = default;
             Option<SoaResponse2?> soa = default;
@@ -287,9 +287,7 @@ namespace HNTAS.Api.Client.Model
                             hnName = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "registrationSource":
-                            string? registrationSourceRawValue = utf8JsonReader.GetString();
-                            if (registrationSourceRawValue != null)
-                                registrationSource = new Option<RegistrationSource?>(RegistrationSourceValueConverter.FromStringOrDefault(registrationSourceRawValue));
+                            registrationSource = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "energyCentre":
                             energyCentre = new Option<EnergyCentreDetails?>(JsonSerializer.Deserialize<EnergyCentreDetails>(ref utf8JsonReader, jsonSerializerOptions)!);
@@ -381,6 +379,9 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkExternalResponse.HnNameOption.IsSet && heatNetworkExternalResponse.HnName == null)
                 throw new ArgumentNullException(nameof(heatNetworkExternalResponse.HnName), "Property is required for class HeatNetworkExternalResponse.");
 
+            if (heatNetworkExternalResponse.RegistrationSourceOption.IsSet && heatNetworkExternalResponse.RegistrationSource == null)
+                throw new ArgumentNullException(nameof(heatNetworkExternalResponse.RegistrationSource), "Property is required for class HeatNetworkExternalResponse.");
+
             if (heatNetworkExternalResponse.EnergyCentreOption.IsSet && heatNetworkExternalResponse.EnergyCentre == null)
                 throw new ArgumentNullException(nameof(heatNetworkExternalResponse.EnergyCentre), "Property is required for class HeatNetworkExternalResponse.");
 
@@ -406,10 +407,8 @@ namespace HNTAS.Api.Client.Model
                 writer.WriteString("hnName", heatNetworkExternalResponse.HnName);
 
             if (heatNetworkExternalResponse.RegistrationSourceOption.IsSet)
-            {
-                var registrationSourceRawValue = RegistrationSourceValueConverter.ToJsonValue(heatNetworkExternalResponse.RegistrationSource!.Value);
-                writer.WriteString("registrationSource", registrationSourceRawValue);
-            }
+                writer.WriteString("registrationSource", heatNetworkExternalResponse.RegistrationSource);
+
             if (heatNetworkExternalResponse.EnergyCentreOption.IsSet)
             {
                 writer.WritePropertyName("energyCentre");
