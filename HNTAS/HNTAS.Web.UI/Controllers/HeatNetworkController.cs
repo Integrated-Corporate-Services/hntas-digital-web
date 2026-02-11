@@ -496,6 +496,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SubmitDetails(HNDetailsViewModel model)
         {
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
