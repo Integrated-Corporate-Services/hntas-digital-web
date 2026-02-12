@@ -54,5 +54,12 @@
         public const string IsAddOrganisationDetailsNonRPJourneySessionKey = "IsAddOrganisationDetailsNonRPJourneySession";
         public const string IsAssessorOrCertifier = "IsAssessorOrCertifier";
 
+        public const string HeatNetworkTypeViewModelSessionKey = "HeatNetworkTypeViewModelSessionKey";
+        public const string WhatIsTheHeatGenerationSourceForViewModelSessionKey =  "WhatIsTheHeatGenerationSourceForViewModelSessionKey";
+        public const string CommunalFloorsViewModelSessionKey = "CommunalFloorsViewModelSessionKey";
+        public const string DoesDistrictNetworkContainPressureBreakViewModelSessionKey = "DoesDistrictNetworkContainPressureBreakViewModelSessionKey";
+        public const string NetworkSupplyViewModelSessionKey = "NetworkSupplyViewModelSessionKey";
+        public const string NetworkOverviewDataModelSessionKey = "NetworkOverviewDataModelSessionKey";
+
     }
 }

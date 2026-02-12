@@ -1,0 +1,26 @@
+﻿@using HNTAS.Web.UI.Models.NetworkCharacteristics
+@model CommunalFloorsViewModel
+
+@{
+    ViewData["Title"] = "How many floors does the communal network serve?";
+    var hasError = !ViewData.ModelState.IsValid;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        @Html.AntiForgeryToken()
+        <span class="govuk-caption-l">[HnId]</span>
+        <form method="post" asp-action="HowManyFloorsDoesTheCommunalHNServe" asp-controller="NetworkCharacteristics">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">How many floors does the communal network serve?</legend>
+                    <input class="govuk-input govuk-input--width-3" maxlength="2" type="number" name="NumberOfCommunalFloors" value="@Model.NumberOfCommunalFloors"/>
+                </fieldset>
+            </div>
+
+            <button class="govuk-button" data-module="govuk-button" type="submit">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>

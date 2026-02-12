@@ -45,6 +45,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new DateOnlyNullableJsonConverter());
             _jsonOptions.Converters.Add(new AddInvitationRequestJsonConverter());
             _jsonOptions.Converters.Add(new AddressJsonConverter());
+            _jsonOptions.Converters.Add(new AssessmentPlanJsonConverter());
+            _jsonOptions.Converters.Add(new AssessmentPlanResponseJsonConverter());
             _jsonOptions.Converters.Add(new AssessorSearchResultJsonConverter());
             _jsonOptions.Converters.Add(new BackgroundJsonConverter());
             _jsonOptions.Converters.Add(new BoilerInputJsonConverter());
@@ -56,6 +58,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ContributorRoleJsonConverter());
             _jsonOptions.Converters.Add(new ContributorRoleNullableJsonConverter());
             _jsonOptions.Converters.Add(new CountryAndTerritoryJsonConverter());
+            _jsonOptions.Converters.Add(new DesignConstructionLogJsonConverter());
+            _jsonOptions.Converters.Add(new DesignConstructionLogResponseJsonConverter());
             _jsonOptions.Converters.Add(new DocumentTypeJsonConverter());
             _jsonOptions.Converters.Add(new DocumentTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());
@@ -83,6 +87,15 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new InvitedUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new JourneyDataResponseJsonConverter());
             _jsonOptions.Converters.Add(new ManagedUserResponseJsonConverter());
+            _jsonOptions.Converters.Add(new MeteringAndMonitoringStrategyJsonConverter());
+            _jsonOptions.Converters.Add(new MeteringAndMonitoringStrategyResponseJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkCharacteristicsJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkCharacteristics2JsonConverter());
+            _jsonOptions.Converters.Add(new NetworkCharacteristicsResponseJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkDetailsStatusJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkDetailsStatusNullableJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkElementsJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkElementsResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkTypeResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkTypeSelectionJsonConverter());
             _jsonOptions.Converters.Add(new NetworkTypeSelection2JsonConverter());
@@ -141,7 +154,9 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<AssessorApiEvents>();
             _services.AddSingleton<CarbonCalculatorApiEvents>();
             _services.AddSingleton<CountriesAndTerritoriesApiEvents>();
+            _services.AddSingleton<HNDataImportExportApiEvents>();
             _services.AddSingleton<HeatNetworksApiEvents>();
+            _services.AddSingleton<ImportApiEvents>();
             _services.AddSingleton<InvitationsApiEvents>();
             _services.AddSingleton<OrganisationUserApiEvents>();
             _services.AddSingleton<OrganisationsApiEvents>();
@@ -167,7 +182,9 @@ namespace HNTAS.Api.Client.Client
             builders.Add(_services.AddHttpClient<IAssessorApi, AssessorApi>(client));
             builders.Add(_services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client));
             builders.Add(_services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client));
+            builders.Add(_services.AddHttpClient<IHNDataImportExportApi, HNDataImportExportApi>(client));
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
+            builders.Add(_services.AddHttpClient<IImportApi, ImportApi>(client));
             builders.Add(_services.AddHttpClient<IInvitationsApi, InvitationsApi>(client));
             builders.Add(_services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client));
             builders.Add(_services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client));

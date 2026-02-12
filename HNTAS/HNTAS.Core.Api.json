@@ -147,6 +147,55 @@
         }
       }
     },
+    "/api/Import/upload-csv": {
+      "post": {
+        "tags": [
+          "Import"
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ContentType": {
+                    "type": "string"
+                  },
+                  "ContentDisposition": {
+                    "type": "string"
+                  },
+                  "Headers": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "Length": {
+                    "type": "integer",
+                    "format": "int64"
+                  },
+                  "Name": {
+                    "type": "string"
+                  },
+                  "FileName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/HeatNetworks": {
       "get": {
         "tags": [
@@ -427,6 +476,102 @@
         }
       }
     },
+    "/api/HeatNetworks/network-characteristics": {
+      "put": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkCharacteristics2"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkCharacteristics2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/external/heat-networks": {
       "get": {
         "tags": [
@@ -596,6 +741,41 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/HNDataImportExport/hn-users-orgs": {
+      "get": {
+        "tags": [
+          "HNDataImportExport"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/HNDataImportExport/hn-users-orgs.csv": {
+      "get": {
+        "tags": [
+          "HNDataImportExport"
+        ],
+        "parameters": [
+          {
+            "name": "take",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -3467,6 +3647,57 @@
           }
         }
       },
+      "AssessmentPlan": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "AssessmentPlanResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
       "AssessorSearchResult": {
         "type": "object",
         "properties": {
@@ -3764,6 +3995,57 @@
           }
         }
       },
+      "DesignConstructionLog": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "DesignConstructionLogResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
       "DocumentType": {
         "enum": [
           "Assessment",
@@ -3944,8 +4226,23 @@
           "registrationSource": {
             "$ref": "#/components/schemas/RegistrationSource"
           },
+          "networkCharacteristics": {
+            "$ref": "#/components/schemas/NetworkCharacteristics"
+          },
+          "networkElements": {
+            "$ref": "#/components/schemas/NetworkElements"
+          },
           "soa": {
             "$ref": "#/components/schemas/Soa"
+          },
+          "meteringAndMonitoringStrategy": {
+            "$ref": "#/components/schemas/MeteringAndMonitoringStrategy"
+          },
+          "assessmentPlan": {
+            "$ref": "#/components/schemas/AssessmentPlan"
+          },
+          "designConstructionLog": {
+            "$ref": "#/components/schemas/DesignConstructionLog"
           },
           "createdBy": {
             "type": "string"
@@ -3953,6 +4250,9 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "phase": {
+            "type": "string"
           }
         }
       },
@@ -4027,7 +4327,7 @@
             "type": "string"
           },
           "registrationSource": {
-            "$ref": "#/components/schemas/RegistrationSource"
+            "type": "string"
           },
           "energyCentre": {
             "$ref": "#/components/schemas/EnergyCentreDetails"
@@ -4091,6 +4391,25 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "phase": {
+            "type": "string",
+            "nullable": true
+          },
+          "networkCharacteristics": {
+            "$ref": "#/components/schemas/NetworkCharacteristicsResponse"
+          },
+          "networkElements": {
+            "$ref": "#/components/schemas/NetworkElementsResponse"
+          },
+          "meteringAndMonitoringStrategy": {
+            "$ref": "#/components/schemas/MeteringAndMonitoringStrategyResponse"
+          },
+          "assessmentPlan": {
+            "$ref": "#/components/schemas/AssessmentPlanResponse"
+          },
+          "designConstructionLog": {
+            "$ref": "#/components/schemas/DesignConstructionLogResponse"
           }
         }
       },
@@ -4101,6 +4420,10 @@
           "LargeCommunalHeatNetwork",
           "MediumCommunalHeatNetwork",
           "SmallCommunalHeatNetwork",
+          "NetworkLedDistrictHeatNetwork",
+          "DeveloperLedDistrictHeatNetworkMorL",
+          "DeveloperLedDistrictHeatNetworkSm",
+          "CommunalHeatNetwork",
           "Other"
         ]
       },
@@ -4370,6 +4693,252 @@
             "nullable": true
           }
         }
+      },
+      "MeteringAndMonitoringStrategy": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "MeteringAndMonitoringStrategyResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkCharacteristics": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "heatNetworkType": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "heatGenerationSourceFor": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberOfCommunalFloors": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "containsPressureBreak": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isSupplyingOtherHeatNetworks": {
+            "type": "boolean"
+          },
+          "hasCommercialConnections": {
+            "type": "boolean"
+          },
+          "isSuppliedByADistrictHeatNetwork": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkCharacteristics2": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "heatNetworkType": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "heatGenerationSourceFor": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberOfCommunalFloors": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "containsPressureBreak": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isSupplyingOtherHeatNetworks": {
+            "type": "boolean"
+          },
+          "hasCommercialConnections": {
+            "type": "boolean"
+          },
+          "isSuppliedByADistrictHeatNetwork": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "NetworkCharacteristicsResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkDetailsStatus": {
+        "enum": [
+          "InProgress",
+          "Submitted",
+          "Complete",
+          "Archived",
+          "ReadyToStart",
+          "CannotStartYet",
+          "Incomplete"
+        ]
+      },
+      "NetworkElements": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkElementsResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
       },
       "NetworkTypeResponse": {
         "type": "object",
@@ -4729,6 +5298,9 @@
           "status": {
             "$ref": "#/components/schemas/SoaStatus"
           },
+          "journeyData": {
+            "$ref": "#/components/schemas/SoaJourneyData"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4744,9 +5316,6 @@
           "updatedBy": {
             "type": "string",
             "nullable": true
-          },
-          "journeyData": {
-            "$ref": "#/components/schemas/SoaJourneyData"
           }
         },
         "nullable": true
@@ -4757,6 +5326,9 @@
           "status": {
             "$ref": "#/components/schemas/SoaStatus"
           },
+          "journeyData": {
+            "$ref": "#/components/schemas/SoaJourneyData"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4772,9 +5344,6 @@
           "updatedBy": {
             "type": "string",
             "nullable": true
-          },
-          "journeyData": {
-            "$ref": "#/components/schemas/SoaJourneyData"
           }
         }
       },
@@ -4827,6 +5396,9 @@
           "status": {
             "$ref": "#/components/schemas/SoaStatus"
           },
+          "journeyData": {
+            "$ref": "#/components/schemas/JourneyDataResponse"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4843,9 +5415,6 @@
           "updatedBy": {
             "type": "string",
             "nullable": true
-          },
-          "journeyData": {
-            "$ref": "#/components/schemas/JourneyDataResponse"
           }
         },
         "nullable": true
@@ -4863,7 +5432,10 @@
           "InProgress",
           "Submitted",
           "Complete",
-          "Archived"
+          "Archived",
+          "ReadyToStart",
+          "CannotStartYet",
+          "Incomplete"
         ]
       },
       "UpdateConnectionsRequest": {
@@ -5454,7 +6026,13 @@
       "name": "CountriesAndTerritories"
     },
     {
+      "name": "Import"
+    },
+    {
       "name": "HeatNetworks"
+    },
+    {
+      "name": "HNDataImportExport"
     },
     {
       "name": "Invitations"

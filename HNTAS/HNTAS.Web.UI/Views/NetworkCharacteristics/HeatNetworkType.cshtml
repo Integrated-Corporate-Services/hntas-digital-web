@@ -1,0 +1,53 @@
+﻿@using HNTAS.Web.UI.Models.NetworkCharacteristics
+@model HeatNetworkTypeViewModel
+
+@{
+    ViewData["Title"] = "What is your heat network type?";
+}
+
+<style>
+    .details-text{
+        white-space: pre-line;
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" asp-action="HeatNetworkType" asp-controller="NetworkCharacteristics">
+            <div class="govuk-form-group">
+                <span class="govuk-caption-l">[HnId]</span>
+                <fieldset class="govuk-fieldset">                    
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">What is your heat network type?</legend>
+                    @* @{
+                        var errors = ViewData.ModelState.Values
+                            .SelectMany(v => v.Errors)
+                            .Select(e => e.ErrorMessage)
+                            .Where(m => !string.IsNullOrWhiteSpace(m))
+                            .ToList();
+                    }                     *@
+                    @foreach (var option in Model.HeatNetworkTypes)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="@option.Id" name="SelectedHeatNetworkType" type="radio" value="@option.Value" @( Model.SelectedHeatNetworkType == option.Value ? "checked" : "") >
+                            <label class="govuk-label govuk-radios__label" for="@option.Id">
+                                @option.Text<br/>
+                                <span class="govuk-hint">@option.Hint</span>
+                                <details class="govuk-details">
+                                    <summary class="govuk-details__summary">
+                                        <span class="govuk-details__summary-text">
+                                            @option.SummaryText
+                                        </span>
+                                    </summary>
+                                    <div class="govuk-details__text details-text">
+                                        @option.DetailsText
+                                    </div>
+                                </details>
+                            </label>                           
+                        </div>
+                    }
+                </fieldset>
+            </div>
+            <button type="submit" class="govuk-button">Continue</button>
+        </form>
+    </div>
+</div>

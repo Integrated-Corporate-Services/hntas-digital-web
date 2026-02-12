@@ -1,0 +1,73 @@
+﻿@using HNTAS.Web.UI.Models.NetworkCharacteristics
+@model NetworkOverviewViewModel
+
+@{
+    ViewData["Title"] = "Heat Network Details";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <form asp-action="SubmitDetails" method="post">
+            @Html.AntiForgeryToken()
+            <span class="govuk-caption-l">Network overview</span>
+            <h1 class="govuk-heading-l">
+                @Model.HnId [HnId]
+            </h1>
+
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Network Type
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.SelectedHeatNetworkType
+                    </dd>
+                </div>
+                @if(Model.SelectedHeatGenerationSourceFor != null)
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Heat Generated for
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.SelectedHeatGenerationSourceFor
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Number of communal floors
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.NumberOfCommunalFloors
+                        </dd>
+                    </div>
+                }
+                @if (Model.SelectedHeatGenerationSourceFor != null)
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Has a Pressure break
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.ContainsPressureBreak
+                        </dd>
+                    </div>
+                }
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Network Supply
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @foreach(var ns in Model.NetworkSupply)
+                        {
+                            <span>@ns</span><br/>
+                        }
+                    </dd>
+                </div>                    
+            </dl>
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Submit
+            </button>
+        </form>
+    </div>
+</div>
