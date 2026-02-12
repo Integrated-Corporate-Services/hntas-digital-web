@@ -102,7 +102,13 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new OrganisationJsonConverter(),
         new AssessorSearchResultJsonConverter(),
         new RegisteredAddress2JsonConverter(),
-        new ECDetailsJsonConverter()
+        new ECDetailsJsonConverter(),
+        new NetworkCharacteristicsResponseJsonConverter(),
+        new NetworkElementsResponseJsonConverter(),
+        new MeteringAndMonitoringStrategyResponseJsonConverter(),
+        new AssessmentPlanResponseJsonConverter(),
+        new DesignConstructionLogResponseJsonConverter(),
+
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

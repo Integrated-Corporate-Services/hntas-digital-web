@@ -116,7 +116,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void EnterHNPhase_Post_ValidModel_RedirectsToCheckYourAnswers()
         {
             // Arrange
-            var model = new HeatNetworkPhaseModel { HeatNetworkPhase = "design" };
+            var model = new HeatNetworkPhaseModel { HeatNetworkPhase = "Design" };
             _controller.Url = SetUpBackLink("EnterHNLocation", "HeatNetwork").Object;
             // Act
             var result = _controller.EnterHNPhase(model);
@@ -131,7 +131,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void EnterHNPhase_Post_ValidModel_RedirectsToHaveYouSignedMEContract()
         {
             // Arrange
-            var model = new HeatNetworkPhaseModel { HeatNetworkPhase = "construction" };
+            var model = new HeatNetworkPhaseModel { HeatNetworkPhase = "Construction" };
             _controller.Url = SetUpBackLink("EnterHNLocation", "HeatNetwork").Object;
             // Act
             var result = _controller.EnterHNPhase(model);
@@ -145,7 +145,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public void EnterHNPhase_Post_ValidModel_RedirectsToHNInOperation()
         {
             // Arrange
-            var model = new HeatNetworkPhaseModel { HeatNetworkPhase = "operation" };
+            var model = new HeatNetworkPhaseModel { HeatNetworkPhase = "Operation" };
             _controller.Url = SetUpBackLink("EnterHNLocation", "HeatNetwork").Object;
             // Act
             var result = _controller.EnterHNPhase(model);

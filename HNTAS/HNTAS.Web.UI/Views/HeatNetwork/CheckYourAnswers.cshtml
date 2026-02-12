@@ -20,8 +20,15 @@
         <h1 class="govuk-heading-l">Check your answers</h1>
         <form asp-controller="HeatNetwork" asp-action="SubmitAnswers" method="post" novalidate>
             @Html.AntiForgeryToken()
-            <h2 class="govuk-heading-m">Heat Network details</h2>
-            <dl class="govuk-summary-list">
+            <h2 class="govuk-heading-m">Heat Network registration</h2>
+            <dl class="govuk-summary-list">                
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Latitude and longitude</dt>
+                    <dd class="govuk-summary-list__value">@heatNetworkLocation</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="@Url.Action("EnterHNLocation", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNLocation</span></a>
+                    </dd>
+                </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Heat Network Name</dt>
                     <dd class="govuk-summary-list__value">@heatNetworkName</dd>
@@ -29,19 +36,13 @@
                         <a class="govuk-link" href="@Url.Action("EnterHNName", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNName</span></a>
                     </dd>
                 </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Heat Network Location</dt>
-                    <dd class="govuk-summary-list__value">@heatNetworkLocation</dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("EnterHNLocation", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNLocation</span></a>
-                    </dd>
-                </div>
             </dl>
             <h2 class="govuk-heading-m">Heat Network pathway (new build stage @pathway - 7)</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Feasibility or design phase</dt>
-                    <dd class="govuk-summary-list__value">@(heatNetworkPhase == "design" ? "Yes" : "No")</dd>
+                    <dt class="govuk-summary-list__key">Phase</dt>
+                    
+                    <dd class="govuk-summary-list__value">@heatNetworkPhase</dd>
                     <dd class="govuk-summary-list__actions">
                         <a class="govuk-link" href="@Url.Action("EnterHNPhase", "HeatNetwork")">Change<span class="govuk-visually-hidden">HNName</span></a>
                     </dd>
@@ -103,21 +104,16 @@
                                    type="checkbox"
                                    value="true">
                             <label class="govuk-label govuk-checkboxes__label" for="confirmdeclaration">
-                                I confirm that:
+                                I confirm that the summary above is correct for @heatNetworkName
                             </label>
-                            <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-5 govuk-!-margin-top-2 govuk-!-font-size-16">
-                                <li>I have due authority to enable my organisation for the heat network service</li>
-                                <li>I have read and understood the digital form and the guidance for it, currently published on the GOV.UK website</li>
-                                <li>to the best of my knowledge and belief, all the details provided in this digital form are true and complete</li>
-                                <li>I understand that knowingly or recklessly making a false, incomplete or misleading statement in support of this request may lead to service access being revoked</li>
-                            </ul>
+                            
                         </div>
                     </div>
                 </fieldset>
             </div>
 
-            <button type="submit" class="govuk-button" data-module="govuk-button">
-                Accept and send
+            <button type="submit" class="govuk-button" data-module="govuk-button">                
+                Confirm
             </button>
         </form>
     </main>

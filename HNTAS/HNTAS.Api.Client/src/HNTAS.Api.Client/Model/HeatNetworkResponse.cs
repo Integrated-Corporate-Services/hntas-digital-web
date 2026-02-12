@@ -42,8 +42,14 @@ namespace HNTAS.Api.Client.Model
         /// <param name="soa">soa</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="createdAt">createdAt</param>
+        /// <param name="phase">phase</param>
+        /// <param name="networkCharacteristics">networkCharacteristics</param>
+        /// <param name="networkElements">networkElements</param>
+        /// <param name="meteringAndMonitoringStrategy">meteringAndMonitoringStrategy</param>
+        /// <param name="assessmentPlan">assessmentPlan</param>
+        /// <param name="designConstructionLog">designConstructionLog</param>
         [JsonConstructor]
-        public HeatNetworkResponse(Option<string?> id = default, Option<string?> hnId = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> pathway = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default)
+        public HeatNetworkResponse(Option<string?> id = default, Option<string?> hnId = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> pathway = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<NetworkCharacteristicsResponse?> networkCharacteristics = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default)
         {
             IdOption = id;
             HnIdOption = hnId;
@@ -54,6 +60,12 @@ namespace HNTAS.Api.Client.Model
             SoaOption = soa;
             CreatedByOption = createdBy;
             CreatedAtOption = createdAt;
+            PhaseOption = phase;
+            NetworkCharacteristicsOption = networkCharacteristics;
+            NetworkElementsOption = networkElements;
+            MeteringAndMonitoringStrategyOption = meteringAndMonitoringStrategy;
+            AssessmentPlanOption = assessmentPlan;
+            DesignConstructionLogOption = designConstructionLog;
             OnCreated();
         }
 
@@ -177,6 +189,84 @@ namespace HNTAS.Api.Client.Model
         public DateTimeOffset? CreatedAt { get { return this.CreatedAtOption; } set { this.CreatedAtOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Phase
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> PhaseOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Phase
+        /// </summary>
+        [JsonPropertyName("phase")]
+        public string? Phase { get { return this.PhaseOption; } set { this.PhaseOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NetworkCharacteristics
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NetworkCharacteristicsResponse?> NetworkCharacteristicsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NetworkCharacteristics
+        /// </summary>
+        [JsonPropertyName("networkCharacteristics")]
+        public NetworkCharacteristicsResponse? NetworkCharacteristics { get { return this.NetworkCharacteristicsOption; } set { this.NetworkCharacteristicsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NetworkElements
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NetworkElementsResponse?> NetworkElementsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NetworkElements
+        /// </summary>
+        [JsonPropertyName("networkElements")]
+        public NetworkElementsResponse? NetworkElements { get { return this.NetworkElementsOption; } set { this.NetworkElementsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of MeteringAndMonitoringStrategy
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<MeteringAndMonitoringStrategyResponse?> MeteringAndMonitoringStrategyOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets MeteringAndMonitoringStrategy
+        /// </summary>
+        [JsonPropertyName("meteringAndMonitoringStrategy")]
+        public MeteringAndMonitoringStrategyResponse? MeteringAndMonitoringStrategy { get { return this.MeteringAndMonitoringStrategyOption; } set { this.MeteringAndMonitoringStrategyOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of AssessmentPlan
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<AssessmentPlanResponse?> AssessmentPlanOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets AssessmentPlan
+        /// </summary>
+        [JsonPropertyName("assessmentPlan")]
+        public AssessmentPlanResponse? AssessmentPlan { get { return this.AssessmentPlanOption; } set { this.AssessmentPlanOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of DesignConstructionLog
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<DesignConstructionLogResponse?> DesignConstructionLogOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets DesignConstructionLog
+        /// </summary>
+        [JsonPropertyName("designConstructionLog")]
+        public DesignConstructionLogResponse? DesignConstructionLog { get { return this.DesignConstructionLogOption; } set { this.DesignConstructionLogOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -193,6 +283,12 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Soa: ").Append(Soa).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
+            sb.Append("  Phase: ").Append(Phase).Append("\n");
+            sb.Append("  NetworkCharacteristics: ").Append(NetworkCharacteristics).Append("\n");
+            sb.Append("  NetworkElements: ").Append(NetworkElements).Append("\n");
+            sb.Append("  MeteringAndMonitoringStrategy: ").Append(MeteringAndMonitoringStrategy).Append("\n");
+            sb.Append("  AssessmentPlan: ").Append(AssessmentPlan).Append("\n");
+            sb.Append("  DesignConstructionLog: ").Append(DesignConstructionLog).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -244,6 +340,12 @@ namespace HNTAS.Api.Client.Model
             Option<SoaResponse?> soa = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> createdAt = default;
+            Option<string?> phase = default;
+            Option<NetworkCharacteristicsResponse?> networkCharacteristics = default;
+            Option<NetworkElementsResponse?> networkElements = default;
+            Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default;
+            Option<AssessmentPlanResponse?> assessmentPlan = default;
+            Option<DesignConstructionLogResponse?> designConstructionLog = default;
 
             while (utf8JsonReader.Read())
             {
@@ -287,6 +389,24 @@ namespace HNTAS.Api.Client.Model
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "phase":
+                            phase = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "networkCharacteristics":
+                            networkCharacteristics = new Option<NetworkCharacteristicsResponse?>(JsonSerializer.Deserialize<NetworkCharacteristicsResponse>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "networkElements":
+                            networkElements = new Option<NetworkElementsResponse?>(JsonSerializer.Deserialize<NetworkElementsResponse>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "meteringAndMonitoringStrategy":
+                            meteringAndMonitoringStrategy = new Option<MeteringAndMonitoringStrategyResponse?>(JsonSerializer.Deserialize<MeteringAndMonitoringStrategyResponse>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "assessmentPlan":
+                            assessmentPlan = new Option<AssessmentPlanResponse?>(JsonSerializer.Deserialize<AssessmentPlanResponse>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "designConstructionLog":
+                            designConstructionLog = new Option<DesignConstructionLogResponse?>(JsonSerializer.Deserialize<DesignConstructionLogResponse>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         default:
                             break;
                     }
@@ -314,7 +434,7 @@ namespace HNTAS.Api.Client.Model
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class HeatNetworkResponse.");
 
-            return new HeatNetworkResponse(id, hnId, ecDetails, address, name, pathway, soa, createdBy, createdAt);
+            return new HeatNetworkResponse(id, hnId, ecDetails, address, name, pathway, soa, createdBy, createdAt, phase, networkCharacteristics, networkElements, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog);
         }
 
         /// <summary>
@@ -397,6 +517,53 @@ namespace HNTAS.Api.Client.Model
 
             if (heatNetworkResponse.CreatedAtOption.IsSet)
                 writer.WriteString("createdAt", heatNetworkResponse.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
+
+            if (heatNetworkResponse.PhaseOption.IsSet)
+                if (heatNetworkResponse.PhaseOption.Value != null)
+                    writer.WriteString("phase", heatNetworkResponse.Phase);
+                else
+                    writer.WriteNull("phase");
+
+            if (heatNetworkResponse.NetworkCharacteristicsOption.IsSet)
+                if (heatNetworkResponse.NetworkCharacteristicsOption.Value != null)
+                {
+                    writer.WritePropertyName("networkCharacteristics");
+                    JsonSerializer.Serialize(writer, heatNetworkResponse.NetworkCharacteristics, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("networkCharacteristics");
+            if (heatNetworkResponse.NetworkElementsOption.IsSet)
+                if (heatNetworkResponse.NetworkElementsOption.Value != null)
+                {
+                    writer.WritePropertyName("networkElements");
+                    JsonSerializer.Serialize(writer, heatNetworkResponse.NetworkElements, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("networkElements");
+            if (heatNetworkResponse.MeteringAndMonitoringStrategyOption.IsSet)
+                if (heatNetworkResponse.MeteringAndMonitoringStrategyOption.Value != null)
+                {
+                    writer.WritePropertyName("meteringAndMonitoringStrategy");
+                    JsonSerializer.Serialize(writer, heatNetworkResponse.MeteringAndMonitoringStrategy, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("meteringAndMonitoringStrategy");
+            if (heatNetworkResponse.AssessmentPlanOption.IsSet)
+                if (heatNetworkResponse.AssessmentPlanOption.Value != null)
+                {
+                    writer.WritePropertyName("assessmentPlan");
+                    JsonSerializer.Serialize(writer, heatNetworkResponse.AssessmentPlan, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("assessmentPlan");
+            if (heatNetworkResponse.DesignConstructionLogOption.IsSet)
+                if (heatNetworkResponse.DesignConstructionLogOption.Value != null)
+                {
+                    writer.WritePropertyName("designConstructionLog");
+                    JsonSerializer.Serialize(writer, heatNetworkResponse.DesignConstructionLog, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("designConstructionLog");
         }
     }
 }
