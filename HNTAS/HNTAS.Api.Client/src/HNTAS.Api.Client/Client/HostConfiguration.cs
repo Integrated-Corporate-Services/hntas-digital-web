@@ -46,6 +46,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new AddInvitationRequestJsonConverter());
             _jsonOptions.Converters.Add(new AddressJsonConverter());
             _jsonOptions.Converters.Add(new AssessorSearchResultJsonConverter());
+            _jsonOptions.Converters.Add(new AuditLogResponseJsonConverter());
             _jsonOptions.Converters.Add(new BackgroundJsonConverter());
             _jsonOptions.Converters.Add(new BoilerInputJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorRequestJsonConverter());
@@ -139,9 +140,12 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton(jsonSerializerOptionsProvider);
             _services.AddSingleton<IApiFactory, ApiFactory>();
             _services.AddSingleton<AssessorApiEvents>();
+            _services.AddSingleton<AuditApiEvents>();
             _services.AddSingleton<CarbonCalculatorApiEvents>();
             _services.AddSingleton<CountriesAndTerritoriesApiEvents>();
+            _services.AddSingleton<HNDataImportExportApiEvents>();
             _services.AddSingleton<HeatNetworksApiEvents>();
+            _services.AddSingleton<ImportApiEvents>();
             _services.AddSingleton<InvitationsApiEvents>();
             _services.AddSingleton<OrganisationUserApiEvents>();
             _services.AddSingleton<OrganisationsApiEvents>();
@@ -165,9 +169,12 @@ namespace HNTAS.Api.Client.Client
             List<IHttpClientBuilder> builders = new List<IHttpClientBuilder>();
 
             builders.Add(_services.AddHttpClient<IAssessorApi, AssessorApi>(client));
+            builders.Add(_services.AddHttpClient<IAuditApi, AuditApi>(client));
             builders.Add(_services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client));
             builders.Add(_services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client));
+            builders.Add(_services.AddHttpClient<IHNDataImportExportApi, HNDataImportExportApi>(client));
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
+            builders.Add(_services.AddHttpClient<IImportApi, ImportApi>(client));
             builders.Add(_services.AddHttpClient<IInvitationsApi, InvitationsApi>(client));
             builders.Add(_services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client));
             builders.Add(_services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client));

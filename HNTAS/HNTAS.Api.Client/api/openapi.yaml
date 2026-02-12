@@ -6,9 +6,12 @@ servers:
 - url: https://localhost:7117/
 tags:
 - name: Assessor
+- name: Audit
 - name: CarbonCalculator
 - name: CountriesAndTerritories
+- name: Import
 - name: HeatNetworks
+- name: HNDataImportExport
 - name: Invitations
 - name: Organisations
 - name: OrganisationUser
@@ -46,6 +49,49 @@ paths:
           description: OK
       tags:
       - Assessor
+  /api/Audit/heat-network/{hnId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AuditLogResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AuditLogResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AuditLogResponse"
+                type: array
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Audit
   /api/CarbonCalculator/run:
     post:
       requestBody:
@@ -100,6 +146,19 @@ paths:
           description: Internal Server Error
       tags:
       - CountriesAndTerritories
+  /api/Import/upload-csv:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/_api_Import_upload_csv_post_request"
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - Import
   /api/HeatNetworks:
     get:
       responses:
@@ -385,6 +444,30 @@ paths:
           description: Bad Request
       tags:
       - HeatNetworks
+  /api/HNDataImportExport/hn-users-orgs:
+    get:
+      responses:
+        "200":
+          description: OK
+      tags:
+      - HNDataImportExport
+  /api/HNDataImportExport/hn-users-orgs.csv:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: take
+        required: false
+        schema:
+          default: 100
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: OK
+      tags:
+      - HNDataImportExport
   /api/Invitations/{id}:
     get:
       parameters:
@@ -2239,6 +2322,22 @@ components:
         fullName:
           type: string
       type: object
+    AuditLogResponse:
+      example:
+        role: role
+        event: event
+        userName: userName
+        timestamp: timestamp
+      properties:
+        event:
+          type: string
+        userName:
+          type: string
+        role:
+          type: string
+        timestamp:
+          type: string
+      type: object
     Background:
       example:
         networkNamePrevious: networkNamePrevious
@@ -3212,7 +3311,7 @@ components:
         soa:
           status: status
         createdBy: createdBy
-        registrationSource: HNTAS
+        registrationSource: registrationSource
         pathway: pathway
         hnName: hnName
         rpDetails:
@@ -3235,7 +3334,7 @@ components:
         hnName:
           type: string
         registrationSource:
-          $ref: "#/components/schemas/RegistrationSource"
+          type: string
         energyCentre:
           $ref: "#/components/schemas/EnergyCentreDetails"
         pathway:
@@ -5082,4 +5181,24 @@ components:
       - InvitationAccepted
       - InvitationDeclined
       type: string
+    _api_Import_upload_csv_post_request:
+      properties:
+        ContentType:
+          type: string
+        ContentDisposition:
+          type: string
+        Headers:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+        Length:
+          format: int64
+          type: integer
+        Name:
+          type: string
+        FileName:
+          type: string
+      type: object
 

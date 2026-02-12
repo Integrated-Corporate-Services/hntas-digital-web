@@ -213,6 +213,10 @@ namespace HNTAS.Web.UI.Controllers
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
             };
 
+            var isRegistrationEnabledString = Environment.GetEnvironmentVariable("IS_REGISTRATION_ENABLE");
+            ViewBag.IsRegistrationEnabled = !string.IsNullOrEmpty(isRegistrationEnabledString) &&
+                                             isRegistrationEnabledString.ToLower() == "true";
+
             return View(model);
         }
 
