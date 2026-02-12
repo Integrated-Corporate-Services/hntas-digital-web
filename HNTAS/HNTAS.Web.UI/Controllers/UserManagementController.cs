@@ -211,6 +211,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 HeatNetworks = heatNetworks,
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
+                IsHntasCoordinator = user.Roles?.Contains(UserRole.Coordinator) ?? false,
             };
 
             var isRegistrationEnabledString = Environment.GetEnvironmentVariable("IS_REGISTRATION_ENABLE");

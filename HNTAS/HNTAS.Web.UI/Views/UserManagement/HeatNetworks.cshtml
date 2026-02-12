@@ -1,6 +1,6 @@
 ﻿@model HNTAS.Web.UI.Models.HeatNetworksViewModel
 
-@if (Model.IsResponsiblePerson)
+@if (Model.IsResponsiblePerson || Model.IsHntasCoordinator)
 {
     <p class="govuk-!-margin-top-6">
         <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-controller="HeatNetwork" asp-action="Index">
@@ -18,21 +18,16 @@
             <tr class="govuk-table__row">
                 <th class="govuk-table__header" scope="col">Heat Network Id</th>
                 <th class="govuk-table__header" scope="col">Heat Network Name</th>
-                <th class="govuk-table__header" scope="col">Organisation</th>
+                
                 <th class="govuk-table__header" scope="col">Status</th>
-
-                @if (!Model.IsResponsiblePerson)
-                {
-                    <th class="govuk-table__header govuk-!-text-align-centre" scope="col">Action</th>
-                }
-                else
-                {
-                    <th class="govuk-table__header govuk-!-text-align-centre" scope="col">Users</th>
-                }
+                <th class="govuk-table__header" scope="col">Action</th>
+                <th class="govuk-table__header" scope="col">Certification history</th>
+                <th class="govuk-table__header" scope="col">Users</th>
                 @if (ViewBag.IsRegistrationEnabled == true)
                 {
                     <th class="govuk-table__header govuk-!-text-align-centre" scope="col">History</th>
                 }
+                
             </tr>
         </thead>
         <tbody class="govuk-table__body">
@@ -41,7 +36,7 @@
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">@heatNetwork.HnId</td>
                     <td class="govuk-table__cell">@heatNetwork.Name</td>
-                    <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
+                    
                     <td class="govuk-table__cell">
                         @{
                             // You can add logic here to dynamically apply classes based on status
@@ -63,8 +58,10 @@
                             }
                         }
                         <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
-                    </td>
-                    @if (!Model.IsResponsiblePerson)
+                    </td>                   
+                    
+                    
+                    @if (!Model.IsResponsiblePerson && !Model.IsHntasCoordinator)
                     {
                         <td class="govuk-table__cell govuk-!-text-align-centre">
                             @if (ViewBag.UserRole == HNTAS.Api.Client.Model.ContributorRole.Assessor.ToString())
@@ -91,17 +88,22 @@
                     }
                     else
                     {
-                        <td class="govuk-table__cell govuk-!-text-align-centre" style="white-space: nowrap;">
-                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("HeatNetworkUserRoles", "UserManagement", new { hnId = @heatNetwork.HnId })">View Users</a>
-                        </td>
-                    }
-
-                    @if (ViewBag.IsRegistrationEnabled == true)
-                    {
+                        
                         <td class="govuk-table__cell govuk-!-text-align-centre">
-                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistoryPOC", new { hnId = heatNetwork.HnId })">View history</a>
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("AddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId })">Add network details</a>
                         </td>
-                    }
+                    } 
+
+                    <td class="govuk-table__cell">Certification history</td>
+                    <td class="govuk-table__cell govuk-!-text-align-centre" style="white-space: nowrap;">
+                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("HeatNetworkUserRoles", "UserManagement", new { hnId = @heatNetwork.HnId })">View Users</a>
+                    </td>
+                        @if (ViewBag.IsRegistrationEnabled == true)
+                        {
+                            <td class="govuk-table__cell govuk-!-text-align-centre">
+                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistoryPOC", new { hnId = heatNetwork.HnId })">View history</a>
+                            </td>
+                        }
                 </tr>
             }
         </tbody>

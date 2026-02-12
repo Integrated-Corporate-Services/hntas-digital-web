@@ -103,6 +103,11 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new AssessorSearchResultJsonConverter(),
         new RegisteredAddress2JsonConverter(),
         new ECDetailsJsonConverter(),
+        new NetworkCharacteristicsResponseJsonConverter(),
+        new NetworkElementsResponseJsonConverter(),
+        new MeteringAndMonitoringStrategyResponseJsonConverter(),
+        new AssessmentPlanResponseJsonConverter(),
+        new DesignConstructionLogResponseJsonConverter(),
         new AuditLogResponseJsonConverter()
     }
 });

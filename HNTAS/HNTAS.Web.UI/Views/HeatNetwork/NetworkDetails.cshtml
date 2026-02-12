@@ -1,0 +1,55 @@
+﻿@using HNTAS.Web.UI.Models.Common
+@using HNTAS.Web.UI.Models.HeatNetwork
+@model NetworkDetailsViewModel
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <span class="govuk-caption-xl">Network details</span>
+            <h1 class="govuk-heading-xl">
+            @ViewBag.HNId @ViewBag.HNName
+            </h1>
+
+            <ul class="govuk-task-list">
+                @foreach (var detail in Model.DetailsOptions)
+                {                    
+                    var statusClass = "";
+                    switch (detail.UiStatus)
+                    {
+                        case StatusConstants.ReadyToStart:
+                            statusClass = "govuk-tag--light-blue";
+                            break;
+                        case StatusConstants.CannotStartYet:
+                        case StatusConstants.InProgress:
+                        case StatusConstants.Incomplete:
+                            statusClass = "govuk-tag--blue";                            
+                            break;
+                        default:
+                            statusClass = "govuk-tag--grey";
+                            break;
+                    }
+                       
+                    <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                        <div class="govuk-task-list__name-and-hint">                            
+                        @if (detail.IsEnabled)
+                        {
+                            //TODO: controller and action to be defined for each link
+                            <a class="govuk-link govuk-task-list__link" href="#" aria-describedby="@detail.Id">
+                                @detail.Label
+                            </a>
+                        }
+                        else
+                        {
+                            <span> @detail.Label</span>
+                        }
+                        </div>
+                        <div class="govuk-task-list__status" id="@detail.Id">
+                        <strong class="govuk-tag @statusClass">
+                                @detail.UiStatus
+                            </strong>                            
+                        </div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+</div>
