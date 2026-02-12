@@ -3619,6 +3619,57 @@
           }
         }
       },
+      "AssessmentPlan": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "AssessmentPlanResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
       "AssessorSearchResult": {
         "type": "object",
         "properties": {
@@ -3933,6 +3984,57 @@
           }
         }
       },
+      "DesignConstructionLog": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "DesignConstructionLogResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
       "DocumentType": {
         "enum": [
           "Assessment",
@@ -4113,8 +4215,23 @@
           "registrationSource": {
             "$ref": "#/components/schemas/RegistrationSource"
           },
+          "networkCharacteristics": {
+            "$ref": "#/components/schemas/NetworkCharacteristics"
+          },
+          "networkElements": {
+            "$ref": "#/components/schemas/NetworkElements"
+          },
           "soa": {
             "$ref": "#/components/schemas/Soa"
+          },
+          "meteringAndMonitoringStrategy": {
+            "$ref": "#/components/schemas/MeteringAndMonitoringStrategy"
+          },
+          "assessmentPlan": {
+            "$ref": "#/components/schemas/AssessmentPlan"
+          },
+          "designConstructionLog": {
+            "$ref": "#/components/schemas/DesignConstructionLog"
           },
           "createdBy": {
             "type": "string"
@@ -4122,6 +4239,9 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "phase": {
+            "type": "string"
           }
         }
       },
@@ -4260,6 +4380,25 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "phase": {
+            "type": "string",
+            "nullable": true
+          },
+          "networkCharacteristics": {
+            "$ref": "#/components/schemas/NetworkCharacteristicsResponse"
+          },
+          "networkElements": {
+            "$ref": "#/components/schemas/NetworkElementsResponse"
+          },
+          "meteringAndMonitoringStrategy": {
+            "$ref": "#/components/schemas/MeteringAndMonitoringStrategyResponse"
+          },
+          "assessmentPlan": {
+            "$ref": "#/components/schemas/AssessmentPlanResponse"
+          },
+          "designConstructionLog": {
+            "$ref": "#/components/schemas/DesignConstructionLogResponse"
           }
         }
       },
@@ -4539,6 +4678,170 @@
             "nullable": true
           }
         }
+      },
+      "MeteringAndMonitoringStrategy": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "MeteringAndMonitoringStrategyResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkCharacteristics": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkCharacteristicsResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkDetailsStatus": {
+        "enum": [
+          "InProgress",
+          "Submitted",
+          "Complete",
+          "Archived",
+          "ReadyToStart",
+          "CannotStartYet",
+          "Incomplete"
+        ]
+      },
+      "NetworkElements": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkElementsResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
       },
       "NetworkTypeResponse": {
         "type": "object",
@@ -4898,6 +5201,9 @@
           "status": {
             "$ref": "#/components/schemas/SoaStatus"
           },
+          "journeyData": {
+            "$ref": "#/components/schemas/SoaJourneyData"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4913,9 +5219,6 @@
           "updatedBy": {
             "type": "string",
             "nullable": true
-          },
-          "journeyData": {
-            "$ref": "#/components/schemas/SoaJourneyData"
           }
         },
         "nullable": true
@@ -4926,6 +5229,9 @@
           "status": {
             "$ref": "#/components/schemas/SoaStatus"
           },
+          "journeyData": {
+            "$ref": "#/components/schemas/SoaJourneyData"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4941,9 +5247,6 @@
           "updatedBy": {
             "type": "string",
             "nullable": true
-          },
-          "journeyData": {
-            "$ref": "#/components/schemas/SoaJourneyData"
           }
         }
       },
@@ -4996,6 +5299,9 @@
           "status": {
             "$ref": "#/components/schemas/SoaStatus"
           },
+          "journeyData": {
+            "$ref": "#/components/schemas/JourneyDataResponse"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -5012,9 +5318,6 @@
           "updatedBy": {
             "type": "string",
             "nullable": true
-          },
-          "journeyData": {
-            "$ref": "#/components/schemas/JourneyDataResponse"
           }
         },
         "nullable": true
@@ -5032,7 +5335,10 @@
           "InProgress",
           "Submitted",
           "Complete",
-          "Archived"
+          "Archived",
+          "ReadyToStart",
+          "CannotStartYet",
+          "Incomplete"
         ]
       },
       "UpdateConnectionsRequest": {

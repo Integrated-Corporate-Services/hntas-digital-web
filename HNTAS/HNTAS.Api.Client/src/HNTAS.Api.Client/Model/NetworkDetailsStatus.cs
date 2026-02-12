@@ -26,9 +26,9 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// Defines SoaStatus
+    /// Defines NetworkDetailsStatus
     /// </summary>
-    public enum SoaStatus
+    public enum NetworkDetailsStatus
     {
         /// <summary>
         /// Enum InProgress for value: InProgress
@@ -67,99 +67,99 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// Converts <see cref="SoaStatus"/> to and from the JSON value
+    /// Converts <see cref="NetworkDetailsStatus"/> to and from the JSON value
     /// </summary>
-    public static class SoaStatusValueConverter
+    public static class NetworkDetailsStatusValueConverter
     {
         /// <summary>
-        /// Parses a given value to <see cref="SoaStatus"/>
+        /// Parses a given value to <see cref="NetworkDetailsStatus"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static SoaStatus FromString(string value)
+        public static NetworkDetailsStatus FromString(string value)
         {
             if (value.Equals("InProgress"))
-                return SoaStatus.InProgress;
+                return NetworkDetailsStatus.InProgress;
 
             if (value.Equals("Submitted"))
-                return SoaStatus.Submitted;
+                return NetworkDetailsStatus.Submitted;
 
             if (value.Equals("Complete"))
-                return SoaStatus.Complete;
+                return NetworkDetailsStatus.Complete;
 
             if (value.Equals("Archived"))
-                return SoaStatus.Archived;
+                return NetworkDetailsStatus.Archived;
 
             if (value.Equals("ReadyToStart"))
-                return SoaStatus.ReadyToStart;
+                return NetworkDetailsStatus.ReadyToStart;
 
             if (value.Equals("CannotStartYet"))
-                return SoaStatus.CannotStartYet;
+                return NetworkDetailsStatus.CannotStartYet;
 
             if (value.Equals("Incomplete"))
-                return SoaStatus.Incomplete;
+                return NetworkDetailsStatus.Incomplete;
 
-            throw new NotImplementedException($"Could not convert value to type SoaStatus: '{value}'");
+            throw new NotImplementedException($"Could not convert value to type NetworkDetailsStatus: '{value}'");
         }
 
         /// <summary>
-        /// Parses a given value to <see cref="SoaStatus"/>
+        /// Parses a given value to <see cref="NetworkDetailsStatus"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static SoaStatus? FromStringOrDefault(string value)
+        public static NetworkDetailsStatus? FromStringOrDefault(string value)
         {
             if (value.Equals("InProgress"))
-                return SoaStatus.InProgress;
+                return NetworkDetailsStatus.InProgress;
 
             if (value.Equals("Submitted"))
-                return SoaStatus.Submitted;
+                return NetworkDetailsStatus.Submitted;
 
             if (value.Equals("Complete"))
-                return SoaStatus.Complete;
+                return NetworkDetailsStatus.Complete;
 
             if (value.Equals("Archived"))
-                return SoaStatus.Archived;
+                return NetworkDetailsStatus.Archived;
 
             if (value.Equals("ReadyToStart"))
-                return SoaStatus.ReadyToStart;
+                return NetworkDetailsStatus.ReadyToStart;
 
             if (value.Equals("CannotStartYet"))
-                return SoaStatus.CannotStartYet;
+                return NetworkDetailsStatus.CannotStartYet;
 
             if (value.Equals("Incomplete"))
-                return SoaStatus.Incomplete;
+                return NetworkDetailsStatus.Incomplete;
 
             return null;
         }
 
         /// <summary>
-        /// Converts the <see cref="SoaStatus"/> to the json value
+        /// Converts the <see cref="NetworkDetailsStatus"/> to the json value
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static string ToJsonValue(SoaStatus value)
+        public static string ToJsonValue(NetworkDetailsStatus value)
         {
-            if (value == SoaStatus.InProgress)
+            if (value == NetworkDetailsStatus.InProgress)
                 return "InProgress";
 
-            if (value == SoaStatus.Submitted)
+            if (value == NetworkDetailsStatus.Submitted)
                 return "Submitted";
 
-            if (value == SoaStatus.Complete)
+            if (value == NetworkDetailsStatus.Complete)
                 return "Complete";
 
-            if (value == SoaStatus.Archived)
+            if (value == NetworkDetailsStatus.Archived)
                 return "Archived";
 
-            if (value == SoaStatus.ReadyToStart)
+            if (value == NetworkDetailsStatus.ReadyToStart)
                 return "ReadyToStart";
 
-            if (value == SoaStatus.CannotStartYet)
+            if (value == NetworkDetailsStatus.CannotStartYet)
                 return "CannotStartYet";
 
-            if (value == SoaStatus.Incomplete)
+            if (value == NetworkDetailsStatus.Incomplete)
                 return "Incomplete";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
@@ -167,10 +167,10 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="SoaStatus"/>
+    /// A Json converter for type <see cref="NetworkDetailsStatus"/>
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
-    public class SoaStatusJsonConverter : JsonConverter<SoaStatus>
+    public class NetworkDetailsStatusJsonConverter : JsonConverter<NetworkDetailsStatus>
     {
         /// <summary>
         /// Returns a  from the Json object
@@ -179,13 +179,13 @@ namespace HNTAS.Api.Client.Model
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override SoaStatus Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override NetworkDetailsStatus Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            SoaStatus? result = rawValue == null
+            NetworkDetailsStatus? result = rawValue == null
                 ? null
-                : SoaStatusValueConverter.FromStringOrDefault(rawValue);
+                : NetworkDetailsStatusValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -194,36 +194,36 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the SoaStatus to the json writer
+        /// Writes the NetworkDetailsStatus to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="soaStatus"></param>
+        /// <param name="networkDetailsStatus"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, SoaStatus soaStatus, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, NetworkDetailsStatus networkDetailsStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(soaStatus.ToString());
+            writer.WriteStringValue(networkDetailsStatus.ToString());
         }
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="SoaStatus"/>
+    /// A Json converter for type <see cref="NetworkDetailsStatus"/>
     /// </summary>
-    public class SoaStatusNullableJsonConverter : JsonConverter<SoaStatus?>
+    public class NetworkDetailsStatusNullableJsonConverter : JsonConverter<NetworkDetailsStatus?>
     {
         /// <summary>
-        /// Returns a SoaStatus from the Json object
+        /// Returns a NetworkDetailsStatus from the Json object
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override SoaStatus? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override NetworkDetailsStatus? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            SoaStatus? result = rawValue == null
+            NetworkDetailsStatus? result = rawValue == null
                 ? null
-                : SoaStatusValueConverter.FromStringOrDefault(rawValue);
+                : NetworkDetailsStatusValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -235,11 +235,11 @@ namespace HNTAS.Api.Client.Model
         /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="soaStatus"></param>
+        /// <param name="networkDetailsStatus"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, SoaStatus? soaStatus, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, NetworkDetailsStatus? networkDetailsStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(soaStatus?.ToString() ?? "null");
+            writer.WriteStringValue(networkDetailsStatus?.ToString() ?? "null");
         }
     }
 }

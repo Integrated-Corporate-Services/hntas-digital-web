@@ -26,24 +26,22 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// Soa
+    /// NetworkElements
     /// </summary>
-    public partial class Soa : IValidatableObject
+    public partial class NetworkElements : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Soa" /> class.
+        /// Initializes a new instance of the <see cref="NetworkElements" /> class.
         /// </summary>
         /// <param name="status">status</param>
-        /// <param name="journeyData">journeyData</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public Soa(Option<SoaStatus?> status = default, Option<SoaJourneyData?> journeyData = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public NetworkElements(Option<NetworkDetailsStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
-            JourneyDataOption = journeyData;
             CreatedAtOption = createdAt;
             CreatedByOption = createdBy;
             UpdatedAtOption = updatedAt;
@@ -58,26 +56,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<SoaStatus?> StatusOption { get; private set; }
+        public Option<NetworkDetailsStatus?> StatusOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Status
         /// </summary>
         [JsonPropertyName("status")]
-        public SoaStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of JourneyData
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<SoaJourneyData?> JourneyDataOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets JourneyData
-        /// </summary>
-        [JsonPropertyName("journeyData")]
-        public SoaJourneyData? JourneyData { get { return this.JourneyDataOption; } set { this.JourneyDataOption = new(value); } }
+        public NetworkDetailsStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedAt
@@ -138,9 +123,8 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class Soa {\n");
+            sb.Append("class NetworkElements {\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
-            sb.Append("  JourneyData: ").Append(JourneyData).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
@@ -161,9 +145,9 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="Soa" />
+    /// A Json converter for type <see cref="NetworkElements" />
     /// </summary>
-    public class SoaJsonConverter : JsonConverter<Soa>
+    public class NetworkElementsJsonConverter : JsonConverter<NetworkElements>
     {
         /// <summary>
         /// The format to use to serialize CreatedAt
@@ -176,14 +160,14 @@ namespace HNTAS.Api.Client.Model
         public static string UpdatedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
         /// <summary>
-        /// Deserializes json to <see cref="Soa" />
+        /// Deserializes json to <see cref="NetworkElements" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override Soa Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override NetworkElements Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -192,8 +176,7 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<SoaStatus?> status = default;
-            Option<SoaJourneyData?> journeyData = default;
+            Option<NetworkDetailsStatus?> status = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
@@ -217,10 +200,7 @@ namespace HNTAS.Api.Client.Model
                         case "status":
                             string? statusRawValue = utf8JsonReader.GetString();
                             if (statusRawValue != null)
-                                status = new Option<SoaStatus?>(SoaStatusValueConverter.FromStringOrDefault(statusRawValue));
-                            break;
-                        case "journeyData":
-                            journeyData = new Option<SoaJourneyData?>(JsonSerializer.Deserialize<SoaJourneyData>(ref utf8JsonReader, jsonSerializerOptions));
+                                status = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
@@ -241,72 +221,64 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class Soa.");
+                throw new ArgumentNullException(nameof(status), "Property is not nullable for class NetworkElements.");
 
             if (createdAt.IsSet && createdAt.Value == null)
-                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class Soa.");
+                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class NetworkElements.");
 
             if (createdBy.IsSet && createdBy.Value == null)
-                throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class Soa.");
+                throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class NetworkElements.");
 
-            return new Soa(status, journeyData, createdAt, createdBy, updatedAt, updatedBy);
+            return new NetworkElements(status, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
-        /// Serializes a <see cref="Soa" />
+        /// Serializes a <see cref="NetworkElements" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="soa"></param>
+        /// <param name="networkElements"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, Soa soa, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, NetworkElements networkElements, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, soa, jsonSerializerOptions);
+            WriteProperties(writer, networkElements, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="Soa" />
+        /// Serializes the properties of <see cref="NetworkElements" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="soa"></param>
+        /// <param name="networkElements"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, Soa soa, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, NetworkElements networkElements, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (soa.CreatedByOption.IsSet && soa.CreatedBy == null)
-                throw new ArgumentNullException(nameof(soa.CreatedBy), "Property is required for class Soa.");
+            if (networkElements.CreatedByOption.IsSet && networkElements.CreatedBy == null)
+                throw new ArgumentNullException(nameof(networkElements.CreatedBy), "Property is required for class NetworkElements.");
 
-            if (soa.StatusOption.IsSet)
+            if (networkElements.StatusOption.IsSet)
             {
-                var statusRawValue = SoaStatusValueConverter.ToJsonValue(soa.Status!.Value);
+                var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkElements.Status!.Value);
                 writer.WriteString("status", statusRawValue);
             }
-            if (soa.JourneyDataOption.IsSet)
-                if (soa.JourneyDataOption.Value != null)
-                {
-                    writer.WritePropertyName("journeyData");
-                    JsonSerializer.Serialize(writer, soa.JourneyData, jsonSerializerOptions);
-                }
-                else
-                    writer.WriteNull("journeyData");
-            if (soa.CreatedAtOption.IsSet)
-                writer.WriteString("createdAt", soa.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
+            if (networkElements.CreatedAtOption.IsSet)
+                writer.WriteString("createdAt", networkElements.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
 
-            if (soa.CreatedByOption.IsSet)
-                writer.WriteString("createdBy", soa.CreatedBy);
+            if (networkElements.CreatedByOption.IsSet)
+                writer.WriteString("createdBy", networkElements.CreatedBy);
 
-            if (soa.UpdatedAtOption.IsSet)
-                if (soa.UpdatedAtOption.Value != null)
-                    writer.WriteString("updatedAt", soa.UpdatedAtOption.Value!.Value.ToString(UpdatedAtFormat));
+            if (networkElements.UpdatedAtOption.IsSet)
+                if (networkElements.UpdatedAtOption.Value != null)
+                    writer.WriteString("updatedAt", networkElements.UpdatedAtOption.Value!.Value.ToString(UpdatedAtFormat));
                 else
                     writer.WriteNull("updatedAt");
 
-            if (soa.UpdatedByOption.IsSet)
-                if (soa.UpdatedByOption.Value != null)
-                    writer.WriteString("updatedBy", soa.UpdatedBy);
+            if (networkElements.UpdatedByOption.IsSet)
+                if (networkElements.UpdatedByOption.Value != null)
+                    writer.WriteString("updatedBy", networkElements.UpdatedBy);
                 else
                     writer.WriteNull("updatedBy");
         }

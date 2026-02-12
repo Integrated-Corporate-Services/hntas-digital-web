@@ -45,6 +45,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new DateOnlyNullableJsonConverter());
             _jsonOptions.Converters.Add(new AddInvitationRequestJsonConverter());
             _jsonOptions.Converters.Add(new AddressJsonConverter());
+            _jsonOptions.Converters.Add(new AssessmentPlanJsonConverter());
+            _jsonOptions.Converters.Add(new AssessmentPlanResponseJsonConverter());
             _jsonOptions.Converters.Add(new AssessorSearchResultJsonConverter());
             _jsonOptions.Converters.Add(new AuditLogResponseJsonConverter());
             _jsonOptions.Converters.Add(new BackgroundJsonConverter());
@@ -57,6 +59,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ContributorRoleJsonConverter());
             _jsonOptions.Converters.Add(new ContributorRoleNullableJsonConverter());
             _jsonOptions.Converters.Add(new CountryAndTerritoryJsonConverter());
+            _jsonOptions.Converters.Add(new DesignConstructionLogJsonConverter());
+            _jsonOptions.Converters.Add(new DesignConstructionLogResponseJsonConverter());
             _jsonOptions.Converters.Add(new DocumentTypeJsonConverter());
             _jsonOptions.Converters.Add(new DocumentTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());
@@ -84,6 +88,14 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new InvitedUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new JourneyDataResponseJsonConverter());
             _jsonOptions.Converters.Add(new ManagedUserResponseJsonConverter());
+            _jsonOptions.Converters.Add(new MeteringAndMonitoringStrategyJsonConverter());
+            _jsonOptions.Converters.Add(new MeteringAndMonitoringStrategyResponseJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkCharacteristicsJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkCharacteristicsResponseJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkDetailsStatusJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkDetailsStatusNullableJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkElementsJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkElementsResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkTypeResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkTypeSelectionJsonConverter());
             _jsonOptions.Converters.Add(new NetworkTypeSelection2JsonConverter());

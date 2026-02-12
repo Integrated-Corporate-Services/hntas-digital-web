@@ -34,20 +34,20 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="Soa2" /> class.
         /// </summary>
         /// <param name="status">status</param>
+        /// <param name="journeyData">journeyData</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
-        /// <param name="journeyData">journeyData</param>
         [JsonConstructor]
-        public Soa2(Option<SoaStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default, Option<SoaJourneyData?> journeyData = default)
+        public Soa2(Option<SoaStatus?> status = default, Option<SoaJourneyData?> journeyData = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
+            JourneyDataOption = journeyData;
             CreatedAtOption = createdAt;
             CreatedByOption = createdBy;
             UpdatedAtOption = updatedAt;
             UpdatedByOption = updatedBy;
-            JourneyDataOption = journeyData;
             OnCreated();
         }
 
@@ -65,6 +65,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("status")]
         public SoaStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of JourneyData
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<SoaJourneyData?> JourneyDataOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets JourneyData
+        /// </summary>
+        [JsonPropertyName("journeyData")]
+        public SoaJourneyData? JourneyData { get { return this.JourneyDataOption; } set { this.JourneyDataOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedAt
@@ -119,19 +132,6 @@ namespace HNTAS.Api.Client.Model
         public string? UpdatedBy { get { return this.UpdatedByOption; } set { this.UpdatedByOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of JourneyData
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<SoaJourneyData?> JourneyDataOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets JourneyData
-        /// </summary>
-        [JsonPropertyName("journeyData")]
-        public SoaJourneyData? JourneyData { get { return this.JourneyDataOption; } set { this.JourneyDataOption = new(value); } }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -140,11 +140,11 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class Soa2 {\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  JourneyData: ").Append(JourneyData).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
             sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
-            sb.Append("  JourneyData: ").Append(JourneyData).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -193,11 +193,11 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<SoaStatus?> status = default;
+            Option<SoaJourneyData?> journeyData = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
             Option<string?> updatedBy = default;
-            Option<SoaJourneyData?> journeyData = default;
 
             while (utf8JsonReader.Read())
             {
@@ -219,6 +219,9 @@ namespace HNTAS.Api.Client.Model
                             if (statusRawValue != null)
                                 status = new Option<SoaStatus?>(SoaStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
+                        case "journeyData":
+                            journeyData = new Option<SoaJourneyData?>(JsonSerializer.Deserialize<SoaJourneyData>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -230,9 +233,6 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "updatedBy":
                             updatedBy = new Option<string?>(utf8JsonReader.GetString());
-                            break;
-                        case "journeyData":
-                            journeyData = new Option<SoaJourneyData?>(JsonSerializer.Deserialize<SoaJourneyData>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -249,7 +249,7 @@ namespace HNTAS.Api.Client.Model
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class Soa2.");
 
-            return new Soa2(status, createdAt, createdBy, updatedAt, updatedBy, journeyData);
+            return new Soa2(status, journeyData, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
@@ -284,6 +284,14 @@ namespace HNTAS.Api.Client.Model
                 var statusRawValue = SoaStatusValueConverter.ToJsonValue(soa2.Status!.Value);
                 writer.WriteString("status", statusRawValue);
             }
+            if (soa2.JourneyDataOption.IsSet)
+                if (soa2.JourneyDataOption.Value != null)
+                {
+                    writer.WritePropertyName("journeyData");
+                    JsonSerializer.Serialize(writer, soa2.JourneyData, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("journeyData");
             if (soa2.CreatedAtOption.IsSet)
                 writer.WriteString("createdAt", soa2.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
 
@@ -301,15 +309,6 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("updatedBy", soa2.UpdatedBy);
                 else
                     writer.WriteNull("updatedBy");
-
-            if (soa2.JourneyDataOption.IsSet)
-                if (soa2.JourneyDataOption.Value != null)
-                {
-                    writer.WritePropertyName("journeyData");
-                    JsonSerializer.Serialize(writer, soa2.JourneyData, jsonSerializerOptions);
-                }
-                else
-                    writer.WriteNull("journeyData");
         }
     }
 }

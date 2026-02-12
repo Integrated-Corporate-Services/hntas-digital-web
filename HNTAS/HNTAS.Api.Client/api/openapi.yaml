@@ -2312,6 +2312,55 @@ components:
           nullable: true
           type: string
       type: object
+    AssessmentPlan:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    AssessmentPlanResponse:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
     AssessorSearchResult:
       example:
         fullName: fullName
@@ -2810,6 +2859,55 @@ components:
         fullValue:
           type: string
       type: object
+    DesignConstructionLog:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    DesignConstructionLogResponse:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
     DocumentType:
       enum:
       - Assessment
@@ -3114,11 +3212,10 @@ components:
       type: object
     HeatNetwork:
       example:
-        hnId: hnId
+        phase: phase
         ecDetails:
           latitude: 0.8008281904610115
           longitude: 6.027456183070403
-        createdAt: 2000-01-23T04:56:07.000+00:00
         address:
           country: country
           town: town
@@ -3185,10 +3282,42 @@ components:
             - ChildConnections
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        networkCharacteristics:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          status: InProgress
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        networkElements:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        meteringAndMonitoringStrategy:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        hnId: hnId
+        createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
+        assessmentPlan:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
         registrationSource: HNTAS
         pathway: pathway
+        designConstructionLog:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
       properties:
         id:
@@ -3207,12 +3336,24 @@ components:
           type: string
         registrationSource:
           $ref: "#/components/schemas/RegistrationSource"
+        networkCharacteristics:
+          $ref: "#/components/schemas/NetworkCharacteristics"
+        networkElements:
+          $ref: "#/components/schemas/NetworkElements"
         soa:
           $ref: "#/components/schemas/Soa"
+        meteringAndMonitoringStrategy:
+          $ref: "#/components/schemas/MeteringAndMonitoringStrategy"
+        assessmentPlan:
+          $ref: "#/components/schemas/AssessmentPlan"
+        designConstructionLog:
+          $ref: "#/components/schemas/DesignConstructionLog"
         createdBy:
           type: string
         createdAt:
           format: date-time
+          type: string
+        phase:
           type: string
       type: object
     HeatNetworkElement:
@@ -3361,11 +3502,10 @@ components:
       type: object
     HeatNetworkResponse:
       example:
-        hnId: hnId
+        phase: phase
         ecDetails:
           latitude: 0.8008281904610115
           longitude: 6.027456183070403
-        createdAt: 2000-01-23T04:56:07.000+00:00
         address:
           country: country
           town: town
@@ -3462,9 +3602,41 @@ components:
             - connectionTypes
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        networkCharacteristics:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          status: InProgress
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        networkElements:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        meteringAndMonitoringStrategy:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        hnId: hnId
+        createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
+        assessmentPlan:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
         pathway: pathway
+        designConstructionLog:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
       properties:
         id:
@@ -3486,6 +3658,19 @@ components:
         createdAt:
           format: date-time
           type: string
+        phase:
+          nullable: true
+          type: string
+        networkCharacteristics:
+          $ref: "#/components/schemas/NetworkCharacteristicsResponse"
+        networkElements:
+          $ref: "#/components/schemas/NetworkElementsResponse"
+        meteringAndMonitoringStrategy:
+          $ref: "#/components/schemas/MeteringAndMonitoringStrategyResponse"
+        assessmentPlan:
+          $ref: "#/components/schemas/AssessmentPlanResponse"
+        designConstructionLog:
+          $ref: "#/components/schemas/DesignConstructionLogResponse"
       type: object
     HeatNetworkType:
       enum:
@@ -3837,6 +4022,163 @@ components:
           type: array
         invitedAt:
           format: date-time
+          nullable: true
+          type: string
+      type: object
+    MeteringAndMonitoringStrategy:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    MeteringAndMonitoringStrategyResponse:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    NetworkCharacteristics:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        status: InProgress
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    NetworkCharacteristicsResponse:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        status: InProgress
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    NetworkDetailsStatus:
+      enum:
+      - InProgress
+      - Submitted
+      - Complete
+      - Archived
+      - ReadyToStart
+      - CannotStartYet
+      - Incomplete
+      type: string
+    NetworkElements:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    NetworkElementsResponse:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
           nullable: true
           type: string
       type: object
@@ -4263,6 +4605,8 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/SoaStatus"
+        journeyData:
+          $ref: "#/components/schemas/SoaJourneyData"
         createdAt:
           format: date-time
           type: string
@@ -4275,8 +4619,6 @@ components:
         updatedBy:
           nullable: true
           type: string
-        journeyData:
-          $ref: "#/components/schemas/SoaJourneyData"
       type: object
     Soa2:
       example:
@@ -4341,6 +4683,8 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/SoaStatus"
+        journeyData:
+          $ref: "#/components/schemas/SoaJourneyData"
         createdAt:
           format: date-time
           type: string
@@ -4353,8 +4697,6 @@ components:
         updatedBy:
           nullable: true
           type: string
-        journeyData:
-          $ref: "#/components/schemas/SoaJourneyData"
       type: object
     SoaJourneyData:
       example:
@@ -4535,6 +4877,8 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/SoaStatus"
+        journeyData:
+          $ref: "#/components/schemas/JourneyDataResponse"
         createdAt:
           format: date-time
           type: string
@@ -4548,8 +4892,6 @@ components:
         updatedBy:
           nullable: true
           type: string
-        journeyData:
-          $ref: "#/components/schemas/JourneyDataResponse"
       type: object
     SoaResponse2:
       example:
@@ -4564,6 +4906,9 @@ components:
       - Submitted
       - Complete
       - Archived
+      - ReadyToStart
+      - CannotStartYet
+      - Incomplete
       type: string
     UpdateConnectionsRequest:
       example:

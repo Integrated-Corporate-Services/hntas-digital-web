@@ -1,11 +1,10 @@
-# HNTAS.Api.Client.Model.Soa
+# HNTAS.Api.Client.Model.NetworkCharacteristicsResponse
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Status** | **SoaStatus** |  | [optional] 
-**JourneyData** | [**SoaJourneyData**](SoaJourneyData.md) |  | [optional] 
+**Status** | **NetworkDetailsStatus** |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **UpdatedAt** | **DateTimeOffset** |  | [optional] 
