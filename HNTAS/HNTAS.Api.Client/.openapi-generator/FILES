@@ -4,6 +4,7 @@ README.md
 api/openapi.yaml
 appveyor.yml
 docs/apis/AssessorApi.md
+docs/apis/AuditApi.md
 docs/apis/CarbonCalculatorApi.md
 docs/apis/CountriesAndTerritoriesApi.md
 docs/apis/HNDataImportExportApi.md
@@ -19,6 +20,7 @@ docs/models/Address.md
 docs/models/AssessmentPlan.md
 docs/models/AssessmentPlanResponse.md
 docs/models/AssessorSearchResult.md
+docs/models/AuditLogResponse.md
 docs/models/Background.md
 docs/models/BoilerInput.md
 docs/models/CarbonCalculatorRequest.md
@@ -106,8 +108,20 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/AssessmentPlanResponseTests.cs
+src/HNTAS.Api.Client.Test/Model/AssessmentPlanTests.cs
+src/HNTAS.Api.Client.Test/Model/DesignConstructionLogResponseTests.cs
+src/HNTAS.Api.Client.Test/Model/DesignConstructionLogTests.cs
+src/HNTAS.Api.Client.Test/Model/MeteringAndMonitoringStrategyResponseTests.cs
+src/HNTAS.Api.Client.Test/Model/MeteringAndMonitoringStrategyTests.cs
+src/HNTAS.Api.Client.Test/Model/NetworkCharacteristicsResponseTests.cs
+src/HNTAS.Api.Client.Test/Model/NetworkCharacteristicsTests.cs
+src/HNTAS.Api.Client.Test/Model/NetworkDetailsStatusTests.cs
+src/HNTAS.Api.Client.Test/Model/NetworkElementsResponseTests.cs
+src/HNTAS.Api.Client.Test/Model/NetworkElementsTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/AssessorApi.cs
+src/HNTAS.Api.Client/Api/AuditApi.cs
 src/HNTAS.Api.Client/Api/CarbonCalculatorApi.cs
 src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
 src/HNTAS.Api.Client/Api/HNDataImportExportApi.cs
@@ -146,6 +160,7 @@ src/HNTAS.Api.Client/Model/Address.cs
 src/HNTAS.Api.Client/Model/AssessmentPlan.cs
 src/HNTAS.Api.Client/Model/AssessmentPlanResponse.cs
 src/HNTAS.Api.Client/Model/AssessorSearchResult.cs
+src/HNTAS.Api.Client/Model/AuditLogResponse.cs
 src/HNTAS.Api.Client/Model/Background.cs
 src/HNTAS.Api.Client/Model/BoilerInput.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorRequest.cs

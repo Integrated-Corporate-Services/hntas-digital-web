@@ -1,0 +1,48 @@
+﻿@using HNTAS.Api.Client.Model
+@model IEnumerable<AuditLogResponse>
+
+@{
+    ViewData["Title"] = "Audit history";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <h1 class="govuk-heading-l">Audit history</h1>
+
+        <table class="govuk-table">
+            <caption class="govuk-table__caption govuk-table__caption--m">Recent network events</caption>
+
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Event</th>
+                    <th scope="col" class="govuk-table__header">User</th>
+                    <th scope="col" class="govuk-table__header">Role</th>
+                    <th scope="col" class="govuk-table__header">Timestamp</th>
+                </tr>
+            </thead>
+
+            <tbody class="govuk-table__body">
+                @foreach (var log in Model)
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">@log.Event</td>
+                        <td class="govuk-table__cell">@log.UserName</td>
+                        <td class="govuk-table__cell">@log.Role</td>
+                        <td class="govuk-table__cell">
+                            @if (DateTime.TryParse(log.Timestamp, out DateTime parsedDate))
+                            {
+                                @parsedDate.ToString("dd MMM yyyy HH:mm:ss")
+                            }
+                            else
+                            {
+                                @log.Timestamp @* Fallback to raw string if parsing fails *@
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
