@@ -39,7 +39,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public MeteringAndMonitoringStrategy(Option<MeteringAndMonitoringStrategyStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public MeteringAndMonitoringStrategy(Option<NetworkDetailsStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
             CreatedAtOption = createdAt;
@@ -56,13 +56,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<MeteringAndMonitoringStrategyStatus?> StatusOption { get; private set; }
+        public Option<NetworkDetailsStatus?> StatusOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Status
         /// </summary>
         [JsonPropertyName("status")]
-        public MeteringAndMonitoringStrategyStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+        public NetworkDetailsStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedAt
@@ -176,7 +176,7 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<MeteringAndMonitoringStrategyStatus?> status = default;
+            Option<NetworkDetailsStatus?> status = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
@@ -200,7 +200,7 @@ namespace HNTAS.Api.Client.Model
                         case "status":
                             string? statusRawValue = utf8JsonReader.GetString();
                             if (statusRawValue != null)
-                                status = new Option<MeteringAndMonitoringStrategyStatus?>(MeteringAndMonitoringStrategyStatusValueConverter.FromStringOrDefault(statusRawValue));
+                                status = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
@@ -261,7 +261,7 @@ namespace HNTAS.Api.Client.Model
 
             if (meteringAndMonitoringStrategy.StatusOption.IsSet)
             {
-                var statusRawValue = MeteringAndMonitoringStrategyStatusValueConverter.ToJsonValue(meteringAndMonitoringStrategy.Status!.Value);
+                var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(meteringAndMonitoringStrategy.Status!.Value);
                 writer.WriteString("status", statusRawValue);
             }
             if (meteringAndMonitoringStrategy.CreatedAtOption.IsSet)

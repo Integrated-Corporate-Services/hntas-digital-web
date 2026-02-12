@@ -39,7 +39,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public NetworkElementsResponse(Option<NetworkElementsStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public NetworkElementsResponse(Option<NetworkDetailsStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
             CreatedAtOption = createdAt;
@@ -56,13 +56,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<NetworkElementsStatus?> StatusOption { get; private set; }
+        public Option<NetworkDetailsStatus?> StatusOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Status
         /// </summary>
         [JsonPropertyName("status")]
-        public NetworkElementsStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+        public NetworkDetailsStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedAt
@@ -176,7 +176,7 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<NetworkElementsStatus?> status = default;
+            Option<NetworkDetailsStatus?> status = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
@@ -200,7 +200,7 @@ namespace HNTAS.Api.Client.Model
                         case "status":
                             string? statusRawValue = utf8JsonReader.GetString();
                             if (statusRawValue != null)
-                                status = new Option<NetworkElementsStatus?>(NetworkElementsStatusValueConverter.FromStringOrDefault(statusRawValue));
+                                status = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
@@ -255,7 +255,7 @@ namespace HNTAS.Api.Client.Model
         {
             if (networkElementsResponse.StatusOption.IsSet)
             {
-                var statusRawValue = NetworkElementsStatusValueConverter.ToJsonValue(networkElementsResponse.Status!.Value);
+                var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkElementsResponse.Status!.Value);
                 writer.WriteString("status", statusRawValue);
             }
             if (networkElementsResponse.CreatedAtOption.IsSet)

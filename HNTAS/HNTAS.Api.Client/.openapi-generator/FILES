@@ -18,7 +18,6 @@ docs/models/AddInvitationRequest.md
 docs/models/Address.md
 docs/models/AssessmentPlan.md
 docs/models/AssessmentPlanResponse.md
-docs/models/AssessmentPlanStatus.md
 docs/models/AssessorSearchResult.md
 docs/models/Background.md
 docs/models/BoilerInput.md
@@ -30,7 +29,6 @@ docs/models/ContributorRole.md
 docs/models/CountryAndTerritory.md
 docs/models/DesignConstructionLog.md
 docs/models/DesignConstructionLogResponse.md
-docs/models/DesignConstructionLogStatus.md
 docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
@@ -56,13 +54,11 @@ docs/models/JourneyDataResponse.md
 docs/models/ManagedUserResponse.md
 docs/models/MeteringAndMonitoringStrategy.md
 docs/models/MeteringAndMonitoringStrategyResponse.md
-docs/models/MeteringAndMonitoringStrategyStatus.md
 docs/models/NetworkCharacteristics.md
 docs/models/NetworkCharacteristicsResponse.md
-docs/models/NetworkCharacteristicsStatus.md
+docs/models/NetworkDetailsStatus.md
 docs/models/NetworkElements.md
 docs/models/NetworkElementsResponse.md
-docs/models/NetworkElementsStatus.md
 docs/models/NetworkTypeResponse.md
 docs/models/NetworkTypeSelection.md
 docs/models/NetworkTypeSelection2.md
@@ -149,7 +145,6 @@ src/HNTAS.Api.Client/Model/AddInvitationRequest.cs
 src/HNTAS.Api.Client/Model/Address.cs
 src/HNTAS.Api.Client/Model/AssessmentPlan.cs
 src/HNTAS.Api.Client/Model/AssessmentPlanResponse.cs
-src/HNTAS.Api.Client/Model/AssessmentPlanStatus.cs
 src/HNTAS.Api.Client/Model/AssessorSearchResult.cs
 src/HNTAS.Api.Client/Model/Background.cs
 src/HNTAS.Api.Client/Model/BoilerInput.cs
@@ -161,7 +156,6 @@ src/HNTAS.Api.Client/Model/ContributorRole.cs
 src/HNTAS.Api.Client/Model/CountryAndTerritory.cs
 src/HNTAS.Api.Client/Model/DesignConstructionLog.cs
 src/HNTAS.Api.Client/Model/DesignConstructionLogResponse.cs
-src/HNTAS.Api.Client/Model/DesignConstructionLogStatus.cs
 src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs
@@ -187,13 +181,11 @@ src/HNTAS.Api.Client/Model/JourneyDataResponse.cs
 src/HNTAS.Api.Client/Model/ManagedUserResponse.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategy.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategyResponse.cs
-src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategyStatus.cs
 src/HNTAS.Api.Client/Model/NetworkCharacteristics.cs
 src/HNTAS.Api.Client/Model/NetworkCharacteristicsResponse.cs
-src/HNTAS.Api.Client/Model/NetworkCharacteristicsStatus.cs
+src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
 src/HNTAS.Api.Client/Model/NetworkElements.cs
 src/HNTAS.Api.Client/Model/NetworkElementsResponse.cs
-src/HNTAS.Api.Client/Model/NetworkElementsStatus.cs
 src/HNTAS.Api.Client/Model/NetworkTypeResponse.cs
 src/HNTAS.Api.Client/Model/NetworkTypeSelection.cs
 src/HNTAS.Api.Client/Model/NetworkTypeSelection2.cs

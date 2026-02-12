@@ -26,9 +26,9 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// Defines AssessmentPlanStatus
+    /// Defines NetworkDetailsStatus
     /// </summary>
-    public enum AssessmentPlanStatus
+    public enum NetworkDetailsStatus
     {
         /// <summary>
         /// Enum InProgress for value: InProgress
@@ -67,99 +67,99 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// Converts <see cref="AssessmentPlanStatus"/> to and from the JSON value
+    /// Converts <see cref="NetworkDetailsStatus"/> to and from the JSON value
     /// </summary>
-    public static class AssessmentPlanStatusValueConverter
+    public static class NetworkDetailsStatusValueConverter
     {
         /// <summary>
-        /// Parses a given value to <see cref="AssessmentPlanStatus"/>
+        /// Parses a given value to <see cref="NetworkDetailsStatus"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static AssessmentPlanStatus FromString(string value)
+        public static NetworkDetailsStatus FromString(string value)
         {
             if (value.Equals("InProgress"))
-                return AssessmentPlanStatus.InProgress;
+                return NetworkDetailsStatus.InProgress;
 
             if (value.Equals("Submitted"))
-                return AssessmentPlanStatus.Submitted;
+                return NetworkDetailsStatus.Submitted;
 
             if (value.Equals("Complete"))
-                return AssessmentPlanStatus.Complete;
+                return NetworkDetailsStatus.Complete;
 
             if (value.Equals("Archived"))
-                return AssessmentPlanStatus.Archived;
+                return NetworkDetailsStatus.Archived;
 
             if (value.Equals("ReadyToStart"))
-                return AssessmentPlanStatus.ReadyToStart;
+                return NetworkDetailsStatus.ReadyToStart;
 
             if (value.Equals("CannotStartYet"))
-                return AssessmentPlanStatus.CannotStartYet;
+                return NetworkDetailsStatus.CannotStartYet;
 
             if (value.Equals("Incomplete"))
-                return AssessmentPlanStatus.Incomplete;
+                return NetworkDetailsStatus.Incomplete;
 
-            throw new NotImplementedException($"Could not convert value to type AssessmentPlanStatus: '{value}'");
+            throw new NotImplementedException($"Could not convert value to type NetworkDetailsStatus: '{value}'");
         }
 
         /// <summary>
-        /// Parses a given value to <see cref="AssessmentPlanStatus"/>
+        /// Parses a given value to <see cref="NetworkDetailsStatus"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static AssessmentPlanStatus? FromStringOrDefault(string value)
+        public static NetworkDetailsStatus? FromStringOrDefault(string value)
         {
             if (value.Equals("InProgress"))
-                return AssessmentPlanStatus.InProgress;
+                return NetworkDetailsStatus.InProgress;
 
             if (value.Equals("Submitted"))
-                return AssessmentPlanStatus.Submitted;
+                return NetworkDetailsStatus.Submitted;
 
             if (value.Equals("Complete"))
-                return AssessmentPlanStatus.Complete;
+                return NetworkDetailsStatus.Complete;
 
             if (value.Equals("Archived"))
-                return AssessmentPlanStatus.Archived;
+                return NetworkDetailsStatus.Archived;
 
             if (value.Equals("ReadyToStart"))
-                return AssessmentPlanStatus.ReadyToStart;
+                return NetworkDetailsStatus.ReadyToStart;
 
             if (value.Equals("CannotStartYet"))
-                return AssessmentPlanStatus.CannotStartYet;
+                return NetworkDetailsStatus.CannotStartYet;
 
             if (value.Equals("Incomplete"))
-                return AssessmentPlanStatus.Incomplete;
+                return NetworkDetailsStatus.Incomplete;
 
             return null;
         }
 
         /// <summary>
-        /// Converts the <see cref="AssessmentPlanStatus"/> to the json value
+        /// Converts the <see cref="NetworkDetailsStatus"/> to the json value
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static string ToJsonValue(AssessmentPlanStatus value)
+        public static string ToJsonValue(NetworkDetailsStatus value)
         {
-            if (value == AssessmentPlanStatus.InProgress)
+            if (value == NetworkDetailsStatus.InProgress)
                 return "InProgress";
 
-            if (value == AssessmentPlanStatus.Submitted)
+            if (value == NetworkDetailsStatus.Submitted)
                 return "Submitted";
 
-            if (value == AssessmentPlanStatus.Complete)
+            if (value == NetworkDetailsStatus.Complete)
                 return "Complete";
 
-            if (value == AssessmentPlanStatus.Archived)
+            if (value == NetworkDetailsStatus.Archived)
                 return "Archived";
 
-            if (value == AssessmentPlanStatus.ReadyToStart)
+            if (value == NetworkDetailsStatus.ReadyToStart)
                 return "ReadyToStart";
 
-            if (value == AssessmentPlanStatus.CannotStartYet)
+            if (value == NetworkDetailsStatus.CannotStartYet)
                 return "CannotStartYet";
 
-            if (value == AssessmentPlanStatus.Incomplete)
+            if (value == NetworkDetailsStatus.Incomplete)
                 return "Incomplete";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
@@ -167,10 +167,10 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="AssessmentPlanStatus"/>
+    /// A Json converter for type <see cref="NetworkDetailsStatus"/>
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
-    public class AssessmentPlanStatusJsonConverter : JsonConverter<AssessmentPlanStatus>
+    public class NetworkDetailsStatusJsonConverter : JsonConverter<NetworkDetailsStatus>
     {
         /// <summary>
         /// Returns a  from the Json object
@@ -179,13 +179,13 @@ namespace HNTAS.Api.Client.Model
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override AssessmentPlanStatus Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override NetworkDetailsStatus Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            AssessmentPlanStatus? result = rawValue == null
+            NetworkDetailsStatus? result = rawValue == null
                 ? null
-                : AssessmentPlanStatusValueConverter.FromStringOrDefault(rawValue);
+                : NetworkDetailsStatusValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -194,36 +194,36 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the AssessmentPlanStatus to the json writer
+        /// Writes the NetworkDetailsStatus to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="assessmentPlanStatus"></param>
+        /// <param name="networkDetailsStatus"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, AssessmentPlanStatus assessmentPlanStatus, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, NetworkDetailsStatus networkDetailsStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(AssessmentPlanStatusValueConverter.ToJsonValue(assessmentPlanStatus).ToString());
+            writer.WriteStringValue(NetworkDetailsStatusValueConverter.ToJsonValue(networkDetailsStatus).ToString());
         }
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="AssessmentPlanStatus"/>
+    /// A Json converter for type <see cref="NetworkDetailsStatus"/>
     /// </summary>
-    public class AssessmentPlanStatusNullableJsonConverter : JsonConverter<AssessmentPlanStatus?>
+    public class NetworkDetailsStatusNullableJsonConverter : JsonConverter<NetworkDetailsStatus?>
     {
         /// <summary>
-        /// Returns a AssessmentPlanStatus from the Json object
+        /// Returns a NetworkDetailsStatus from the Json object
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override AssessmentPlanStatus? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override NetworkDetailsStatus? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            AssessmentPlanStatus? result = rawValue == null
+            NetworkDetailsStatus? result = rawValue == null
                 ? null
-                : AssessmentPlanStatusValueConverter.FromStringOrDefault(rawValue);
+                : NetworkDetailsStatusValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -232,14 +232,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the AssessmentPlanStatus to the json writer
+        /// Writes the NetworkDetailsStatus to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="assessmentPlanStatus"></param>
+        /// <param name="networkDetailsStatus"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, AssessmentPlanStatus? assessmentPlanStatus, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, NetworkDetailsStatus? networkDetailsStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(assessmentPlanStatus.HasValue ? AssessmentPlanStatusValueConverter.ToJsonValue(assessmentPlanStatus.Value).ToString() : "null");
+            writer.WriteStringValue(networkDetailsStatus.HasValue ? NetworkDetailsStatusValueConverter.ToJsonValue(networkDetailsStatus.Value).ToString() : "null");
         }
     }
 }

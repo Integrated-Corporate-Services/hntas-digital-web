@@ -3555,7 +3555,7 @@
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/AssessmentPlanStatus"
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -3580,7 +3580,7 @@
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/AssessmentPlanStatus"
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -3601,17 +3601,6 @@
           }
         },
         "nullable": true
-      },
-      "AssessmentPlanStatus": {
-        "enum": [
-          "InProgress",
-          "Submitted",
-          "Complete",
-          "Archived",
-          "ReadyToStart",
-          "CannotStartYet",
-          "Incomplete"
-        ]
       },
       "AssessorSearchResult": {
         "type": "object",
@@ -3914,7 +3903,7 @@
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/DesignConstructionLogStatus"
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -3939,7 +3928,7 @@
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/DesignConstructionLogStatus"
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -3960,17 +3949,6 @@
           }
         },
         "nullable": true
-      },
-      "DesignConstructionLogStatus": {
-        "enum": [
-          "InProgress",
-          "Submitted",
-          "Complete",
-          "Archived",
-          "ReadyToStart",
-          "CannotStartYet",
-          "Incomplete"
-        ]
       },
       "DocumentType": {
         "enum": [
@@ -4620,7 +4598,7 @@
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/MeteringAndMonitoringStrategyStatus"
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -4645,7 +4623,7 @@
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/MeteringAndMonitoringStrategyStatus"
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -4667,22 +4645,11 @@
         },
         "nullable": true
       },
-      "MeteringAndMonitoringStrategyStatus": {
-        "enum": [
-          "InProgress",
-          "Submitted",
-          "Complete",
-          "Archived",
-          "ReadyToStart",
-          "CannotStartYet",
-          "Incomplete"
-        ]
-      },
       "NetworkCharacteristics": {
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/NetworkCharacteristicsStatus"
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -4707,7 +4674,7 @@
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/NetworkCharacteristicsStatus"
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -4729,7 +4696,7 @@
         },
         "nullable": true
       },
-      "NetworkCharacteristicsStatus": {
+      "NetworkDetailsStatus": {
         "enum": [
           "InProgress",
           "Submitted",
@@ -4744,7 +4711,7 @@
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/NetworkElementsStatus"
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -4769,7 +4736,7 @@
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/NetworkElementsStatus"
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -4790,17 +4757,6 @@
           }
         },
         "nullable": true
-      },
-      "NetworkElementsStatus": {
-        "enum": [
-          "InProgress",
-          "Submitted",
-          "Complete",
-          "Archived",
-          "ReadyToStart",
-          "CannotStartYet",
-          "Incomplete"
-        ]
       },
       "NetworkTypeResponse": {
         "type": "object",

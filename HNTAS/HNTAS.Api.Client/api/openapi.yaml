@@ -2273,12 +2273,12 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
-        status: InProgress
+        status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         status:
-          $ref: "#/components/schemas/AssessmentPlanStatus"
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -2297,12 +2297,12 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
-        status: InProgress
+        status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         status:
-          $ref: "#/components/schemas/AssessmentPlanStatus"
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -2317,16 +2317,6 @@ components:
           nullable: true
           type: string
       type: object
-    AssessmentPlanStatus:
-      enum:
-      - InProgress
-      - Submitted
-      - Complete
-      - Archived
-      - ReadyToStart
-      - CannotStartYet
-      - Incomplete
-      type: string
     AssessorSearchResult:
       example:
         fullName: fullName
@@ -2814,12 +2804,12 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
-        status: InProgress
+        status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         status:
-          $ref: "#/components/schemas/DesignConstructionLogStatus"
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -2838,12 +2828,12 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
-        status: InProgress
+        status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         status:
-          $ref: "#/components/schemas/DesignConstructionLogStatus"
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -2858,16 +2848,6 @@ components:
           nullable: true
           type: string
       type: object
-    DesignConstructionLogStatus:
-      enum:
-      - InProgress
-      - Submitted
-      - Complete
-      - Archived
-      - ReadyToStart
-      - CannotStartYet
-      - Incomplete
-      type: string
     DocumentType:
       enum:
       - Assessment
@@ -3252,13 +3232,13 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           createdBy: createdBy
-          status: InProgress
+          status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           createdBy: createdBy
-          status: InProgress
+          status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -3267,7 +3247,7 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           createdBy: createdBy
-          status: InProgress
+          status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
         registrationSource: HNTAS
@@ -3276,7 +3256,7 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           createdBy: createdBy
-          status: InProgress
+          status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
       properties:
@@ -3572,13 +3552,13 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           createdBy: createdBy
-          status: InProgress
+          status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           createdBy: createdBy
-          status: InProgress
+          status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -3587,7 +3567,7 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           createdBy: createdBy
-          status: InProgress
+          status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
         pathway: pathway
@@ -3595,7 +3575,7 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           createdBy: createdBy
-          status: InProgress
+          status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
       properties:
@@ -3990,12 +3970,12 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
-        status: InProgress
+        status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         status:
-          $ref: "#/components/schemas/MeteringAndMonitoringStrategyStatus"
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -4014,12 +3994,12 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
-        status: InProgress
+        status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         status:
-          $ref: "#/components/schemas/MeteringAndMonitoringStrategyStatus"
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -4034,16 +4014,6 @@ components:
           nullable: true
           type: string
       type: object
-    MeteringAndMonitoringStrategyStatus:
-      enum:
-      - InProgress
-      - Submitted
-      - Complete
-      - Archived
-      - ReadyToStart
-      - CannotStartYet
-      - Incomplete
-      type: string
     NetworkCharacteristics:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4054,7 +4024,7 @@ components:
       nullable: true
       properties:
         status:
-          $ref: "#/components/schemas/NetworkCharacteristicsStatus"
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -4078,7 +4048,7 @@ components:
       nullable: true
       properties:
         status:
-          $ref: "#/components/schemas/NetworkCharacteristicsStatus"
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -4093,7 +4063,7 @@ components:
           nullable: true
           type: string
       type: object
-    NetworkCharacteristicsStatus:
+    NetworkDetailsStatus:
       enum:
       - InProgress
       - Submitted
@@ -4108,12 +4078,12 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
-        status: InProgress
+        status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         status:
-          $ref: "#/components/schemas/NetworkElementsStatus"
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -4132,12 +4102,12 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
-        status: InProgress
+        status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         status:
-          $ref: "#/components/schemas/NetworkElementsStatus"
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -4152,16 +4122,6 @@ components:
           nullable: true
           type: string
       type: object
-    NetworkElementsStatus:
-      enum:
-      - InProgress
-      - Submitted
-      - Complete
-      - Archived
-      - ReadyToStart
-      - CannotStartYet
-      - Incomplete
-      type: string
     NetworkTypeResponse:
       example:
         otherNetworkDescription: otherNetworkDescription
