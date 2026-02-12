@@ -1,0 +1,50 @@
+﻿@using HNTAS.Web.UI.Models.HeatNetwork
+@model HNDetailsViewModel
+
+@{
+    ViewData["Title"] = "Heat Network Details";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+
+        <form asp-action="NetworkDetails" method="get">
+                <span class="govuk-caption-xl">Network overview</span>
+                <h1 class="govuk-heading-xl">
+                    @Model.UHNID @Model.Name
+                </h1>
+
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Address
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.Address.Fulladdress
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Phase
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.Phase
+                        </dd>
+                    </div>                                       
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Pathway
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            New build (@Model.PathWay - 7)
+                        </dd>
+                    </div>
+                </dl>
+
+        <button type="submit" class="govuk-button" data-module="govuk-button">
+            Continue
+        </button>
+            </form>
+
+        </div>
+</div>

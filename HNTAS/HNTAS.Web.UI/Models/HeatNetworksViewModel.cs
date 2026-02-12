@@ -5,6 +5,8 @@
         public List<HeatNetworkModel> HeatNetworks { get; set; } = new List<HeatNetworkModel>();
 
         public bool IsResponsiblePerson { get; set; }
+
+        public bool IsHntasCoordinator { get; set; }
     }
 
     public class HeatNetworkModel

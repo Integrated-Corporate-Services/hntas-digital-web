@@ -1,6 +1,8 @@
 ﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.NetworkCharacteristics;
+using HNTAS.Web.UI.Models.Enums;
+using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Models.Soa;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
@@ -267,5 +269,38 @@ namespace HNTAS.Web.UI.Helpers
 
             return true;
         }
+
+
+        public static List<NetworkDetailsOption> GetDefaultNetworkDetailsOptions()
+        {
+            return new List<NetworkDetailsOption>
+            {
+                new() { Id = NetworkDetailsType.NetworkCharacteristics, Label = "Network characteristics", Hint = "", UiStatus = StatusConstants.ReadyToStart, IsEnabled = true },
+                new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                new() { Id = NetworkDetailsType.Soa, Label = "Element Statement of Applicability", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                new() { Id = NetworkDetailsType.MeteringAndMonitoringStrategy, Label = "Metering and monitoring strategy", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                new() { Id = NetworkDetailsType.AssessmentPlan, Label = "Assessment plan", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                new() { Id = NetworkDetailsType.DesignConstructionLog, Label = "Design and construction log", UiStatus = StatusConstants .CannotStartYet, IsEnabled = false }
+            };
+        }
+
+        public static void UpdateOptionStatus<TStatus>(NetworkDetailsOption option, TStatus? status)
+    where TStatus : struct, Enum
+        {
+            if (status == null)
+                return;
+
+            var statusName = Enum.GetName(typeof(TStatus), status.Value);
+
+            option.UiStatus = statusName switch
+            {
+                "Complete" => StatusConstants.Completed,
+                "InProgress" => StatusConstants.InProgress,
+                "ReadyToStart" => StatusConstants.ReadyToStart,
+                _ => StatusConstants.NotStarted
+            };
+
+            option.IsEnabled = statusName != "Submitted";
+        }        
     }
 }

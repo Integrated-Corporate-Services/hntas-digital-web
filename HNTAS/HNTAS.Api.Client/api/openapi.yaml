@@ -6,6 +6,7 @@ servers:
 - url: https://localhost:7117/
 tags:
 - name: Assessor
+- name: Audit
 - name: CarbonCalculator
 - name: CountriesAndTerritories
 - name: Import
@@ -48,6 +49,49 @@ paths:
           description: OK
       tags:
       - Assessor
+  /api/Audit/heat-network/{hnId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AuditLogResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AuditLogResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AuditLogResponse"
+                type: array
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Audit
   /api/CarbonCalculator/run:
     post:
       requestBody:
@@ -2387,6 +2431,22 @@ components:
         fullName:
           type: string
       type: object
+    AuditLogResponse:
+      example:
+        role: role
+        event: event
+        userName: userName
+        timestamp: timestamp
+      properties:
+        event:
+          type: string
+        userName:
+          type: string
+        role:
+          type: string
+        timestamp:
+          type: string
+      type: object
     Background:
       example:
         networkNamePrevious: networkNamePrevious
@@ -3608,6 +3668,12 @@ components:
             connectionTypes:
             - connectionTypes
             - connectionTypes
+          status: InProgress
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        networkCharacteristics:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkCharacteristics:
