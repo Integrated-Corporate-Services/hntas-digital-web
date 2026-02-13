@@ -123,6 +123,8 @@ namespace HNTAS.Api.Client.Client
                 return HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType);
             if (obj is InvitationStatus invitationStatus)
                 return InvitationStatusValueConverter.ToJsonValue(invitationStatus);
+            if (obj is NetworkDetailsStatus networkDetailsStatus)
+                return NetworkDetailsStatusValueConverter.ToJsonValue(networkDetailsStatus);
             if (obj is NullableOfPreferredContactType nullableOfPreferredContactType)
                 return NullableOfPreferredContactTypeValueConverter.ToJsonValue(nullableOfPreferredContactType);
             if (obj is NullableOfSoaStage nullableOfSoaStage)

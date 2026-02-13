@@ -69,14 +69,23 @@ namespace HNTAS.Api.Client.Test.Api
             var assessorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
+            var auditApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAuditApi>();
+            Assert.True(auditApi.HttpClient.BaseAddress != null);
+
             var carbonCalculatorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 
             var countriesAndTerritoriesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
+            var hNDataImportExportApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHNDataImportExportApi>();
+            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
+            var importApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IImportApi>();
+            Assert.True(importApi.HttpClient.BaseAddress != null);
 
             var invitationsApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
@@ -103,14 +112,23 @@ namespace HNTAS.Api.Client.Test.Api
             var assessorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
+            var auditApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAuditApi>();
+            Assert.True(auditApi.HttpClient.BaseAddress != null);
+
             var carbonCalculatorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 
             var countriesAndTerritoriesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
+            var hNDataImportExportApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHNDataImportExportApi>();
+            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
+            var importApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IImportApi>();
+            Assert.True(importApi.HttpClient.BaseAddress != null);
 
             var invitationsApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
@@ -137,14 +155,23 @@ namespace HNTAS.Api.Client.Test.Api
             var assessorApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
             
+            var auditApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAuditApi>();
+            Assert.True(auditApi.HttpClient.BaseAddress != null);
+            
             var carbonCalculatorApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
             
             var countriesAndTerritoriesApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
             
+            var hNDataImportExportApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHNDataImportExportApi>();
+            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
+            
             var heatNetworksApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+            
+            var importApi = _hostUsingAddWithAClient.Services.GetRequiredService<IImportApi>();
+            Assert.True(importApi.HttpClient.BaseAddress != null);
             
             var invitationsApi = _hostUsingAddWithAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
@@ -171,14 +198,23 @@ namespace HNTAS.Api.Client.Test.Api
             var assessorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
+            var auditApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAuditApi>();
+            Assert.True(auditApi.HttpClient.BaseAddress != null);
+
             var carbonCalculatorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 
             var countriesAndTerritoriesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
+            var hNDataImportExportApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHNDataImportExportApi>();
+            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
+            var importApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IImportApi>();
+            Assert.True(importApi.HttpClient.BaseAddress != null);
 
             var invitationsApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);

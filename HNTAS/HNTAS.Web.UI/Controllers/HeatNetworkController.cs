@@ -2,6 +2,7 @@
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
+using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.HeatNetwork;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
@@ -203,13 +204,14 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model);
                 switch (model.HeatNetworkPhase)
                 {
-                    case "design":
+                    case "Design":
+                    case "Feasibility":
                         // store pathway as 1, navigate to cya
                         _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
                         return RedirectToAction("CheckYourAnswers");
-                    case "construction":
+                    case "Construction":
                         return RedirectToAction("HaveYouSignedMEContract");
-                    case "operation":
+                    case "Operation":
                         return RedirectToAction("HNInOperation");
                     default:
                         ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
@@ -447,7 +449,8 @@ namespace HNTAS.Web.UI.Controllers
                 Pathway = viewModel?.PathwayModel?.Pathway,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId,
-                RegistrationSource = RegistrationSource.HNTAS
+                RegistrationSource = RegistrationSource.HNTAS,
+                Phase = viewModel?.HeatNetworkPhaseModel?.HeatNetworkPhase
             };
 
             var userResponse = await _heatNetworkService.AddHeatNetwork(model);
@@ -484,13 +487,45 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Details([FromQuery] string hnid)
         {
+            var model = await GetNetworkDetails(hnid);
+            if (model == null)
+                return BadRequest();
+
+            return View(model);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitDetails(HNDetailsViewModel model)
+        {
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, model.Name);
+            return RedirectToAction("SOAIntro", "SOA");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddNetworkDetails([FromQuery] string hnid)
+        {
+            hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId) ?? hnid;
+
+            var model = await GetNetworkDetails(hnid);
+            if (model == null) 
+                return BadRequest();
+
+            return View("AddNetworkDetails", model);
+
+        }
+
+        private async Task<HNDetailsViewModel> GetNetworkDetails(string hnid)
+        {
             this.ShowBackButton("HeatNetworks", "UserManagement");
             // get user details
             var response = await _heatNetworkService.GetAsync(hnid?.ToUpper());
 
             if (response == null)
             {
-                return BadRequest();
+                return null;
             }
 
             var model = new HNDetailsViewModel
@@ -501,24 +536,58 @@ namespace HNTAS.Web.UI.Controllers
                     StreetAddress = response?.Address?.AddressLine1,
                     TownOrCity = response?.Address?.Town,
                     Postalcode = response?.Address?.Postcode,
-                    Country = response?.Address?.Country
+                    Country = response?.Address?.Country,
+                    Fulladdress =  string.Join(", ", new[] { response?.Address?.AddressLine1, response?.Address?.Town, response?.Address?.Postcode, response?.Address?.Country }.Where(part => !string.IsNullOrWhiteSpace(part)))
                 },
                 OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName),
                 PathWay = response.Pathway,
-                UHNID = response?.HnId
+                UHNID = response?.HnId,
+                Phase = response?.Phase!
             };
 
-            return View(model);
-
-        }
-
-        [HttpPost]
-        public IActionResult SubmitDetails(HNDetailsViewModel model)
-        {
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, model.Name);
-            return RedirectToAction("SOAIntro", "SOA");
+
+            return model;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> NetworkDetailsAsync()
+        {
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+
+            this.ShowBackButton("AddNetworkDetails", "HeatNetwork", new {hnId});
+
+            var networkDetailsTypeList = Utility.GetDefaultNetworkDetailsOptions();            
+
+            foreach (var option in networkDetailsTypeList)
+            {
+                if (option.Id == NetworkDetailsType.NetworkCharacteristics)
+                {
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkCharacteristics?.Status);
+                }
+                else if (option.Id == NetworkDetailsType.NetworkElements)
+                {
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.Status);
+                }
+                else if (option.Id == NetworkDetailsType.Soa)
+                {
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.Soa?.Status);
+                }
+            }
+
+            var model = new NetworkDetailsViewModel()
+            {
+                DetailsOptions = networkDetailsTypeList
+            };
+            ViewBag.HNId = hnId;
+            ViewBag.HNName = hnName;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
+
+            return View("NetworkDetails", model);
+        }       
 
     }
 }

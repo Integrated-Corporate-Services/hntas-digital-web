@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Id** | **string** |  | [optional] 
 **HnId** | **string** |  | [optional] 
 **HnName** | **string** |  | [optional] 
-**RegistrationSource** | **RegistrationSource** |  | [optional] 
+**RegistrationSource** | **string** |  | [optional] 
 **EnergyCentre** | [**EnergyCentreDetails**](EnergyCentreDetails.md) |  | [optional] 
 **Pathway** | **string** |  | [optional] 
 **Soa** | [**SoaResponse2**](SoaResponse2.md) |  | [optional] 
