@@ -33,7 +33,7 @@
                         @if (detail.IsEnabled)
                         {
                             //TODO: controller and action to be defined for each link
-                            <a class="govuk-link govuk-task-list__link" href="#" aria-describedby="@detail.Id">
+                            <a class="govuk-link govuk-task-list__link" href="@Url.Action("SelectNetworkDetail", "HeatNetwork", new { hnid = ViewBag.HNId, networkDetailId = detail.Id })" aria-describedby="@detail.Id">
                                 @detail.Label
                             </a>
                         }

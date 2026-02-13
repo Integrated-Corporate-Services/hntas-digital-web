@@ -4,6 +4,8 @@ using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.HeatNetwork;
+using HNTAS.Web.UI.Models.NetworkElements;
+using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -587,7 +589,21 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
 
             return View("NetworkDetails", model);
-        }       
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SelectNetworkDetail([FromQuery] string hnid, [FromQuery] NetworkDetailsType networkDetailId)
+        {
+            switch(networkDetailId) {
+                case NetworkDetailsType.NetworkCharacteristics:
+                    return RedirectToAction("", "");
+                case NetworkDetailsType.NetworkElements:
+                    return RedirectToAction("SelectNetworkElements", "NetworkElements", new {hnid});                
+                default:
+                    return BadRequest();
+            }
+
+        }
 
     }
 }

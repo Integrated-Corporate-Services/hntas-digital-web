@@ -2,6 +2,7 @@ using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.HeatNetwork;
+using HNTAS.Web.UI.Models.NetworkElements;
 using HNTAS.Web.UI.Models.Soa;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
@@ -53,7 +54,7 @@ namespace HNTAS.Web.UI.Helpers
                 new() { Id = HeatNetworkElementType.ConsumerConnections, Label = "Consumer connections" },
                 new() { Id = HeatNetworkElementType.ConsumerHeatSystems, Label = "Consumer heat systems" }
             };
-        }
+        }        
 
         public static List<SelectItemOption> GetContributorSelectList(string userRole)
         {
@@ -233,7 +234,7 @@ namespace HNTAS.Web.UI.Helpers
             return new List<NetworkDetailsOption>
             {
                 new() { Id = NetworkDetailsType.NetworkCharacteristics, Label = "Network characteristics", Hint = "", UiStatus = StatusConstants.ReadyToStart, IsEnabled = true },
-                new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = true },
                 new() { Id = NetworkDetailsType.Soa, Label = "Element Statement of Applicability", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
                 new() { Id = NetworkDetailsType.MeteringAndMonitoringStrategy, Label = "Metering and monitoring strategy", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
                 new() { Id = NetworkDetailsType.AssessmentPlan, Label = "Assessment plan", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
@@ -258,6 +259,19 @@ namespace HNTAS.Web.UI.Helpers
             };
 
             option.IsEnabled = statusName != "Submitted";
-        }        
+        }
+
+        public static List<NetworkElementOption> GetDefaultNetworkElementOptions()
+        {
+            return new List<NetworkElementOption>
+            {
+                new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
+                new() { Id = HeatNetworkElementType.DistributionNetwork, Label = "District Distribution Network", Hint = "Only 1 allowed per heat network." },
+                new() { Id = HeatNetworkElementType.ThermalSubStation, Label = "Thermal Substation" },
+                new() { Id = HeatNetworkElementType.CommunalDistributionNetwork, Label = "Communal Distribution Network"},
+                new() { Id = HeatNetworkElementType.ConsumerConnections, Label = "Consumer Connections" },
+                new() { Id = HeatNetworkElementType.ConsumerHeatSystems, Label = "Consumer Heat Systems" }
+            };
+        }
     }
 }
