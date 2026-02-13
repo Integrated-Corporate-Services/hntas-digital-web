@@ -144,7 +144,7 @@ namespace HNTAS.Web.UI.Helpers
             var heatNetworkOptions = new List<HeatNetworkTypeOption>
             {
                 new() {
-                    Id = "network-led-district-heat-network",
+                    Id = "SelectedHeatNetworkType",
                     Value = ApiHeatNetworkType.NetworkLedDistrictHeatNetwork.ToString(),
                     Text = "Network‑led District Heat Network",
                     Hint = "An Energy Centre or District Distribution Network which is being developed as part of a network-led District Heating Network",
@@ -152,7 +152,7 @@ namespace HNTAS.Web.UI.Helpers
                     DetailsText = "A network-led District Heating Network is a heat network which supplies two or more buildings, and that is developed independently of the boundaries of any particular development, with third parties connecting to that heat network.\r\n\r\nThis would cover both District Heating Networks which are connecting to existing buildings and/or pre-existing heat networks (such as city-wide district heating networks constructed with HNIP or GHNF funding connecting to public buildings, campus networks, etc.), and those which serve new building developments developed by plot developers (but developed and constructed independently to the new buildings)."
                 },
                 new() {
-                    Id = "developer-led-district-heat-network-medium-large",
+                    Id = "SelectedHeatNetworkType-2",
                     Value = ApiHeatNetworkType.DeveloperLedDistrictHeatNetworkMorL.ToString(),
                     Text = "Developer‑led District Heat Network(medium‑large)",
                     Hint = "An Energy Centre or District Distribution Network which is being developed as part of a new build medium-large developer-led District Heating Network",
@@ -160,7 +160,7 @@ namespace HNTAS.Web.UI.Helpers
                     DetailsText = "A developer-led District Heating Network refers to a heat network that is built to service a single development, which contains two or more buildings. Normally the heat network would be constructed simultaneously with the wider building works, but this can also include heat networks retrofitted to a single building or estate."
                 },
                 new() {
-                    Id = "developer-led-district-heat-network-small",
+                    Id = "SelectedHeatNetworkType-3",
                     Value = ApiHeatNetworkType.DeveloperLedDistrictHeatNetworkSm.ToString(),
                     Text = "Developer‑led District Heat Network(small)",
                     Hint = "An Energy Centre which is being developed as part of a new build developer-led District Heating Network",
@@ -168,7 +168,7 @@ namespace HNTAS.Web.UI.Helpers
                     DetailsText = "A developer-led District Heating Network refers to a heat network that is applicable where there are only a small number of new build apartment blocks or other Consumer Connections, with small amounts of District Distribution Network pipework. For example, a District Heating System where there are only two buildings, with one small length of buried pipework connecting them together."
                 },
                 new() {
-                    Id = "communal-heat-network",
+                    Id = "SelectedHeatNetworkType-4",
                     Value = ApiHeatNetworkType.CommunalHeatNetwork.ToString(),
                     Text = "Communal Heat Network",
                     Hint = "An Energy Centre which is being developed as part of a new build Communal Heat Network",
@@ -276,7 +276,7 @@ namespace HNTAS.Web.UI.Helpers
             return new List<NetworkDetailsOption>
             {
                 new() { Id = NetworkDetailsType.NetworkCharacteristics, Label = "Network characteristics", Hint = "", UiStatus = StatusConstants.ReadyToStart, IsEnabled = true },
-                new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = true },
                 new() { Id = NetworkDetailsType.Soa, Label = "Element Statement of Applicability", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
                 new() { Id = NetworkDetailsType.MeteringAndMonitoringStrategy, Label = "Metering and monitoring strategy", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
                 new() { Id = NetworkDetailsType.AssessmentPlan, Label = "Assessment plan", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },

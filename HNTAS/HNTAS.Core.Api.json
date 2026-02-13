@@ -4833,6 +4833,9 @@
       "NetworkCharacteristics": {
         "type": "object",
         "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
           "id": {
             "type": "string",
             "nullable": true
@@ -4861,9 +4864,6 @@
           },
           "isSuppliedByADistrictHeatNetwork": {
             "type": "boolean"
-          },
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "createdAt": {
             "type": "string",
@@ -4887,6 +4887,9 @@
       "NetworkCharacteristics2": {
         "type": "object",
         "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
           "id": {
             "type": "string",
             "nullable": true
@@ -4916,9 +4919,6 @@
           "isSuppliedByADistrictHeatNetwork": {
             "type": "boolean"
           },
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4936,143 +4936,6 @@
             "nullable": true
           }
         }
-      },
-      "NetworkCharacteristicsResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string",
-            "nullable": true
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "nullable": true
-      },
-      "NetworkDetailsStatus": {
-        "enum": [
-          "InProgress",
-          "Submitted",
-          "Complete",
-          "Archived",
-          "ReadyToStart",
-          "CannotStartYet",
-          "Incomplete"
-        ]
-      },
-      "NetworkElements": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "MeteringAndMonitoringStrategy": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "nullable": true
-      },
-      "MeteringAndMonitoringStrategyResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string",
-            "nullable": true
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "nullable": true
-      },
-      "NetworkCharacteristics": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "nullable": true
       },
       "NetworkCharacteristicsResponse": {
         "type": "object",

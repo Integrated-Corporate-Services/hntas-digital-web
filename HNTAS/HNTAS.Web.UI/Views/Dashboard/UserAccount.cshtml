@@ -11,25 +11,6 @@
     var userIsCertifier = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Certifier.ToString();
 }
 
-<style>
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.5rem;
-        align-items: stretch;
-        box-sizing: border-box;
-    }
-
-    .dashboard-grid__item {
-        display: flex;
-        flex-direction: column;
-        border: 0.1px solid transparent;
-        height: 100%;
-        margin: 0;
-        box-sizing: border-box;
-    }
-</style>
-
 <div class="govuk-width-container">
     @if (Model.UserRole == UserRole.ResponsiblePerson.ToString() || Model.UserRole == UserRole.Coordinator.ToString())
     {
@@ -42,7 +23,6 @@
     }
 
     <div class="dashboard-grid">
-
         @if (userIsRPOrActingRP)
         {
             <div class="dashboard-grid__item">
@@ -236,15 +216,6 @@
                     <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="CarbonCalculator">Carbon Calculator</a>
                 </h3>
                 <p class="govuk-body-s">Calculate carbon emission for your heat network.</p>
-            </div>
-        </div>
-
-        <div class="dashboard-grid__item">
-            <div class="dashboard-card">
-                <h3 class="dashboard-card__title govuk-heading-s">
-                    <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworkType" asp-controller="NetworkCharacteristics">Network Characteristics</a>
-                </h3>
-                <p class="govuk-body-s">Network Characteristics</p>
             </div>
         </div>
         

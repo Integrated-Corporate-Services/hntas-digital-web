@@ -8,7 +8,7 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-l">[HnId]</span>            
+            <span class="govuk-caption-l">@TempData.Peek("HnId")</span>
             <form asp-action="NetworkSupply" asp-controller="NetworkCharacteristics" method="post">
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">

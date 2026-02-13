@@ -3353,8 +3353,8 @@ components:
           containsPressureBreak: true
           id: id
           heatNetworkType: CityScaleDistrictHeatingNetwork
-          isSuppliedByADistrictHeatNetwork: true
           status: InProgress
+          isSuppliedByADistrictHeatNetwork: true
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkElements:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -3668,12 +3668,6 @@ components:
             connectionTypes:
             - connectionTypes
             - connectionTypes
-          status: InProgress
-          updatedAt: 2000-01-23T04:56:07.000+00:00
-        networkCharacteristics:
-          createdAt: 2000-01-23T04:56:07.000+00:00
-          updatedBy: updatedBy
-          createdBy: createdBy
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkCharacteristics:
@@ -4164,11 +4158,13 @@ components:
         containsPressureBreak: true
         id: id
         heatNetworkType: CityScaleDistrictHeatingNetwork
-        isSuppliedByADistrictHeatNetwork: true
         status: InProgress
+        isSuppliedByADistrictHeatNetwork: true
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         id:
           nullable: true
           type: string
@@ -4190,8 +4186,6 @@ components:
           type: boolean
         isSuppliedByADistrictHeatNetwork:
           type: boolean
-        status:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string
@@ -4217,10 +4211,12 @@ components:
         containsPressureBreak: true
         id: id
         heatNetworkType: CityScaleDistrictHeatingNetwork
-        isSuppliedByADistrictHeatNetwork: true
         status: InProgress
+        isSuppliedByADistrictHeatNetwork: true
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         id:
           nullable: true
           type: string
@@ -4242,8 +4238,6 @@ components:
           type: boolean
         isSuppliedByADistrictHeatNetwork:
           type: boolean
-        status:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
         createdAt:
           format: date-time
           type: string

@@ -16,13 +16,16 @@ namespace HNTAS.Web.UI.Controllers
         public NetworkCharacteristicsController(ISessionHelper sessionHelper, IHeatNetworkService heatNetworkService)
         {
             _sessionHelper = sessionHelper;
-            _heatNetworkService = _heatNetworkService;
+            _heatNetworkService = heatNetworkService;
         }
 
         [HttpGet]
-        public IActionResult HeatNetworkType()
+        public IActionResult HeatNetworkType(string hnid)
         {
-            this.ShowBackButton("UserAccount", "Dashboard");
+            this.ShowBackButton("NetworkDetails", "HeatNetwork");
+
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, hnid.ToUpper());
+            TempData["HnId"] = hnid.ToUpper();
             var model = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelSessionKey) ?? new HeatNetworkTypeViewModel { HeatNetworkTypes = Helpers.Utility.GetHeatNetworkTypeOptions() };
             return View(model);
         }
@@ -214,7 +217,6 @@ namespace HNTAS.Web.UI.Controllers
             if (networkSupply.IsSupplyingOtherHeatNetworks) { networkSupplyList.Add("Child connections(Are you supplying any other networks)"); }
             if (networkSupply.HasCommercialConnections) { networkSupplyList.Add("Commercial connections(hotel, office)"); }
             if (networkSupply.IsSuppliedByADistrictHeatNetwork) { networkSupplyList.Add("Parent connection(Are you being supplied by another network)"); }
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
             var viewModel = new NetworkOverviewViewModel
             {
@@ -223,7 +225,21 @@ namespace HNTAS.Web.UI.Controllers
                 NumberOfCommunalFloors = howManyFloorsDoesTheCommunalNetworkServe?.NumberOfCommunalFloors,
                 ContainsPressureBreak = doesTheDistrictNetworkContainAPressureBreak?.ContainsPressureBreak,
                 NetworkSupply = networkSupplyList
-            };
+            };            
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult NetworkOverView(NetworkOverviewViewModel model)
+        {
+            this.ShowBackButton("NetworkSupply");
+            var heatNetworkType = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelSessionKey);
+            var whatIsTheHeatGenerationSourceFor = _sessionHelper.GetFromSession<WhatIsTheHeatGenerationSourceForViewModel>(HttpContext, SessionKeys.WhatIsTheHeatGenerationSourceForViewModelSessionKey) ?? null;
+            var howManyFloorsDoesTheCommunalNetworkServe = _sessionHelper.GetFromSession<CommunalFloorsViewModel>(HttpContext, SessionKeys.CommunalFloorsViewModelSessionKey) ?? null;
+            var doesTheDistrictNetworkContainAPressureBreak = _sessionHelper.GetFromSession<DoesDistrictNetworkContainPressureBreakViewModel>(HttpContext, SessionKeys.DoesDistrictNetworkContainPressureBreakViewModelSessionKey) ?? null;
+            var networkSupply = _sessionHelper.GetFromSession<NetworkSupplyViewModel>(HttpContext, SessionKeys.NetworkSupplyViewModelSessionKey);            
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var dataModel = new HNTAS.Api.Client.Model.NetworkCharacteristics2
             {
                 HeatNetworkType = heatNetworkType.SelectedHeatNetworkTypeInEnum,
@@ -237,19 +253,8 @@ namespace HNTAS.Web.UI.Controllers
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId
             };
-            _sessionHelper.SaveToSession<NetworkCharacteristics2>(HttpContext, SessionKeys.NetworkOverviewDataModelSessionKey, dataModel);
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public IActionResult NetworkOverView(NetworkOverviewViewModel model)
-        {
-            var dataModel = _sessionHelper.GetFromSession<NetworkCharacteristics2>(HttpContext, SessionKeys.NetworkOverviewDataModelSessionKey);
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             _heatNetworkService.UpdateNetworkCharacteristics(hnId, dataModel);
-            return RedirectToAction("Dashboard", "UserAccount");
+            return RedirectToAction("NetworkDetails", "HeatNetwork");
         }
-
-
     }
 }

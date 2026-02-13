@@ -5,6 +5,23 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
 @import "../../node_modules/accessible-autocomplete/dist/accessible-autocomplete.min";
 @import "_step-by-step-nav.scss";
 
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    align-items: stretch;
+    box-sizing: border-box;
+}
+
+.dashboard-grid__item {
+    display: flex;
+    flex-direction: column;
+    border: 0.1px solid transparent;
+    height: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 .dashboard-card {
     padding: 20px;
     height: 100%;
@@ -62,4 +79,8 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
 .govuk-table__cell,
 .govuk-table__header {
     white-space: normal;
+}
+
+.details-text {
+    white-space: pre-line;
 }

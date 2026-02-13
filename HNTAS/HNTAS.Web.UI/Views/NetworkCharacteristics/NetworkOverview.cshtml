@@ -11,7 +11,7 @@
             @Html.AntiForgeryToken()
             <span class="govuk-caption-l">Network overview</span>
             <h1 class="govuk-heading-l">
-                @Model.HnId [HnId]
+                @TempData.Peek("HnId")
             </h1>
 
             <dl class="govuk-summary-list">

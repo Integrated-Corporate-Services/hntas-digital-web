@@ -587,7 +587,22 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
 
             return View("NetworkDetails", model);
-        }       
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SelectNetworkDetail([FromQuery] string hnid, [FromQuery] NetworkDetailsType networkDetailId)
+        {
+            switch (networkDetailId)
+            {
+                case NetworkDetailsType.NetworkCharacteristics:
+                    return RedirectToAction("HeatNetworkType", "NetworkCharacteristics", new { hnid });
+                case NetworkDetailsType.NetworkElements:
+                    return RedirectToAction("SelectNetworkElements", "NetworkElements", new { hnid });
+                default:
+                    return BadRequest();
+            }
+
+        }
 
     }
 }

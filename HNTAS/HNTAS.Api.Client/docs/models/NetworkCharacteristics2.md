@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Status** | **NetworkDetailsStatus** |  | [optional] 
 **Id** | **string** |  | [optional] 
 **HeatNetworkType** | **HeatNetworkType** |  | [optional] 
 **HeatGenerationSourceFor** | **string** |  | [optional] 
@@ -12,7 +13,6 @@ Name | Type | Description | Notes
 **IsSupplyingOtherHeatNetworks** | **bool** |  | [optional] 
 **HasCommercialConnections** | **bool** |  | [optional] 
 **IsSuppliedByADistrictHeatNetwork** | **bool** |  | [optional] 
-**Status** | **NetworkDetailsStatus** |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **UpdatedAt** | **DateTimeOffset** |  | [optional] 

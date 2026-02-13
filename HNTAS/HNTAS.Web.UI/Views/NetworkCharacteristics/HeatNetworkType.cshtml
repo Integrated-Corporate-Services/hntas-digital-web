@@ -3,28 +3,16 @@
 
 @{
     ViewData["Title"] = "What is your heat network type?";
+    var hasError = ViewData.ModelState.ContainsKey(nameof(Model.SelectedHeatNetworkType)) && ViewData.ModelState[nameof(Model.SelectedHeatNetworkType)].Errors.Any();
 }
-
-<style>
-    .details-text{
-        white-space: pre-line;
-    }
-</style>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <form method="post" asp-action="HeatNetworkType" asp-controller="NetworkCharacteristics">
-            <div class="govuk-form-group">
-                <span class="govuk-caption-l">[HnId]</span>
+            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+                <span class="govuk-caption-l">@TempData.Peek("HnId")</span>
                 <fieldset class="govuk-fieldset">                    
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">What is your heat network type?</legend>
-                    @* @{
-                        var errors = ViewData.ModelState.Values
-                            .SelectMany(v => v.Errors)
-                            .Select(e => e.ErrorMessage)
-                            .Where(m => !string.IsNullOrWhiteSpace(m))
-                            .ToList();
-                    }                     *@
                     @foreach (var option in Model.HeatNetworkTypes)
                     {
                         <div class="govuk-radios__item">
