@@ -31,6 +31,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkType(HeatNetworkTypeViewModel model)
         {
             this.ShowBackButton("UserAccount", "Dashboard");
@@ -86,6 +87,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult WhatIsTheHeatGenerationSourceFor(WhatIsTheHeatGenerationSourceForViewModel model)
         {
             this.ShowBackButton("HeatNetworkType");
@@ -121,6 +123,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult HowManyFloorsDoesTheCommunalHNServe(CommunalFloorsViewModel model)
         {
             this.ShowBackButton("WhatIsTheHeatGenerationSourceFor");
@@ -149,6 +152,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DoesDistrictNetworkContainPressureBreak(DoesDistrictNetworkContainPressureBreakViewModel model)
         {
             var hnType = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelSessionKey)?.SelectedHeatNetworkType;
@@ -185,6 +189,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult NetworkSupply(NetworkSupplyViewModel model)
         {
             var hnType = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelSessionKey)?.SelectedHeatNetworkType;
@@ -230,6 +235,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult NetworkOverView(NetworkOverviewViewModel model)
         {
             this.ShowBackButton("NetworkSupply");
