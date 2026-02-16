@@ -34,7 +34,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkType(HeatNetworkTypeViewModel model)
         {
-            this.ShowBackButton("UserAccount", "Dashboard");
+            this.ShowBackButton("NetworkDetails", "HeatNetwork");
             model.HeatNetworkTypes = Helpers.Utility.GetHeatNetworkTypeOptions();
             if (!ModelState.IsValid)
             {
