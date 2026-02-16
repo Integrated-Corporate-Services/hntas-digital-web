@@ -57,6 +57,7 @@ docs/models/ManagedUserResponse.md
 docs/models/MeteringAndMonitoringStrategy.md
 docs/models/MeteringAndMonitoringStrategyResponse.md
 docs/models/NetworkCharacteristics.md
+docs/models/NetworkCharacteristics2.md
 docs/models/NetworkCharacteristicsResponse.md
 docs/models/NetworkDetailsStatus.md
 docs/models/NetworkElements.md
@@ -108,17 +109,6 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/AssessmentPlanResponseTests.cs
-src/HNTAS.Api.Client.Test/Model/AssessmentPlanTests.cs
-src/HNTAS.Api.Client.Test/Model/DesignConstructionLogResponseTests.cs
-src/HNTAS.Api.Client.Test/Model/DesignConstructionLogTests.cs
-src/HNTAS.Api.Client.Test/Model/MeteringAndMonitoringStrategyResponseTests.cs
-src/HNTAS.Api.Client.Test/Model/MeteringAndMonitoringStrategyTests.cs
-src/HNTAS.Api.Client.Test/Model/NetworkCharacteristicsResponseTests.cs
-src/HNTAS.Api.Client.Test/Model/NetworkCharacteristicsTests.cs
-src/HNTAS.Api.Client.Test/Model/NetworkDetailsStatusTests.cs
-src/HNTAS.Api.Client.Test/Model/NetworkElementsResponseTests.cs
-src/HNTAS.Api.Client.Test/Model/NetworkElementsTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/AssessorApi.cs
 src/HNTAS.Api.Client/Api/AuditApi.cs
@@ -197,6 +187,7 @@ src/HNTAS.Api.Client/Model/ManagedUserResponse.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategy.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategyResponse.cs
 src/HNTAS.Api.Client/Model/NetworkCharacteristics.cs
+src/HNTAS.Api.Client/Model/NetworkCharacteristics2.cs
 src/HNTAS.Api.Client/Model/NetworkCharacteristicsResponse.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
 src/HNTAS.Api.Client/Model/NetworkElements.cs

@@ -56,9 +56,29 @@ namespace HNTAS.Api.Client.Model
         SmallCommunalHeatNetwork = 5,
 
         /// <summary>
+        /// Enum NetworkLedDistrictHeatNetwork for value: NetworkLedDistrictHeatNetwork
+        /// </summary>
+        NetworkLedDistrictHeatNetwork = 6,
+
+        /// <summary>
+        /// Enum DeveloperLedDistrictHeatNetworkMorL for value: DeveloperLedDistrictHeatNetworkMorL
+        /// </summary>
+        DeveloperLedDistrictHeatNetworkMorL = 7,
+
+        /// <summary>
+        /// Enum DeveloperLedDistrictHeatNetworkSm for value: DeveloperLedDistrictHeatNetworkSm
+        /// </summary>
+        DeveloperLedDistrictHeatNetworkSm = 8,
+
+        /// <summary>
+        /// Enum CommunalHeatNetwork for value: CommunalHeatNetwork
+        /// </summary>
+        CommunalHeatNetwork = 9,
+
+        /// <summary>
         /// Enum Other for value: Other
         /// </summary>
-        Other = 6
+        Other = 10
     }
 
     /// <summary>
@@ -88,6 +108,18 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("SmallCommunalHeatNetwork"))
                 return HeatNetworkType.SmallCommunalHeatNetwork;
 
+            if (value.Equals("NetworkLedDistrictHeatNetwork"))
+                return HeatNetworkType.NetworkLedDistrictHeatNetwork;
+
+            if (value.Equals("DeveloperLedDistrictHeatNetworkMorL"))
+                return HeatNetworkType.DeveloperLedDistrictHeatNetworkMorL;
+
+            if (value.Equals("DeveloperLedDistrictHeatNetworkSm"))
+                return HeatNetworkType.DeveloperLedDistrictHeatNetworkSm;
+
+            if (value.Equals("CommunalHeatNetwork"))
+                return HeatNetworkType.CommunalHeatNetwork;
+
             if (value.Equals("Other"))
                 return HeatNetworkType.Other;
 
@@ -115,6 +147,18 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("SmallCommunalHeatNetwork"))
                 return HeatNetworkType.SmallCommunalHeatNetwork;
+
+            if (value.Equals("NetworkLedDistrictHeatNetwork"))
+                return HeatNetworkType.NetworkLedDistrictHeatNetwork;
+
+            if (value.Equals("DeveloperLedDistrictHeatNetworkMorL"))
+                return HeatNetworkType.DeveloperLedDistrictHeatNetworkMorL;
+
+            if (value.Equals("DeveloperLedDistrictHeatNetworkSm"))
+                return HeatNetworkType.DeveloperLedDistrictHeatNetworkSm;
+
+            if (value.Equals("CommunalHeatNetwork"))
+                return HeatNetworkType.CommunalHeatNetwork;
 
             if (value.Equals("Other"))
                 return HeatNetworkType.Other;
@@ -144,6 +188,18 @@ namespace HNTAS.Api.Client.Model
 
             if (value == HeatNetworkType.SmallCommunalHeatNetwork)
                 return "SmallCommunalHeatNetwork";
+
+            if (value == HeatNetworkType.NetworkLedDistrictHeatNetwork)
+                return "NetworkLedDistrictHeatNetwork";
+
+            if (value == HeatNetworkType.DeveloperLedDistrictHeatNetworkMorL)
+                return "DeveloperLedDistrictHeatNetworkMorL";
+
+            if (value == HeatNetworkType.DeveloperLedDistrictHeatNetworkSm)
+                return "DeveloperLedDistrictHeatNetworkSm";
+
+            if (value == HeatNetworkType.CommunalHeatNetwork)
+                return "CommunalHeatNetwork";
 
             if (value == HeatNetworkType.Other)
                 return "Other";
@@ -187,7 +243,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkType heatNetworkType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType).ToString());
+            writer.WriteStringValue(heatNetworkType.ToString());
         }
     }
 
@@ -218,14 +274,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the HeatNetworkType to the json writer
+        /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="heatNetworkType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkType? heatNetworkType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkType.HasValue ? HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType.Value).ToString() : "null");
+            writer.WriteStringValue(heatNetworkType?.ToString() ?? "null");
         }
     }
 }

@@ -332,6 +332,66 @@ paths:
           description: Internal Server Error
       tags:
       - HeatNetworks
+  /api/HeatNetworks/network-characteristics:
+    put:
+      parameters:
+      - explode: true
+        in: query
+        name: hnId
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NetworkCharacteristics2"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/NetworkCharacteristics2"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - HeatNetworks
   /api/external/heat-networks:
     get:
       responses:
@@ -3246,7 +3306,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 1
+              count: 5
               locations:
               - locations
               - locations
@@ -3264,7 +3324,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 1
+              count: 5
               locations:
               - locations
               - locations
@@ -3273,7 +3333,7 @@ components:
             - ""
             networkType:
               otherNetworkDescription: otherNetworkDescription
-              type: CityScaleDistrictHeatingNetwork
+              type: null
             assessorDocs:
             - ""
             - ""
@@ -3283,10 +3343,18 @@ components:
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkCharacteristics:
-          createdAt: 2000-01-23T04:56:07.000+00:00
+          isSupplyingOtherHeatNetworks: true
           updatedBy: updatedBy
+          hasCommercialConnections: true
+          numberOfCommunalFloors: 1
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          heatGenerationSourceFor: heatGenerationSourceFor
           createdBy: createdBy
+          containsPressureBreak: true
+          id: id
+          heatNetworkType: CityScaleDistrictHeatingNetwork
           status: InProgress
+          isSuppliedByADistrictHeatNetwork: true
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkElements:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -3372,7 +3440,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         name: EnergyCentre
-        count: 1
+        count: 5
         locations:
         - locations
         - locations
@@ -3679,6 +3747,10 @@ components:
       - LargeCommunalHeatNetwork
       - MediumCommunalHeatNetwork
       - SmallCommunalHeatNetwork
+      - NetworkLedDistrictHeatNetwork
+      - DeveloperLedDistrictHeatNetworkMorL
+      - DeveloperLedDistrictHeatNetworkSm
+      - CommunalHeatNetwork
       - Other
       type: string
     HeatNetworkUserResponse:
@@ -4076,15 +4148,96 @@ components:
       type: object
     NetworkCharacteristics:
       example:
-        createdAt: 2000-01-23T04:56:07.000+00:00
+        isSupplyingOtherHeatNetworks: true
         updatedBy: updatedBy
+        hasCommercialConnections: true
+        numberOfCommunalFloors: 1
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        heatGenerationSourceFor: heatGenerationSourceFor
         createdBy: createdBy
+        containsPressureBreak: true
+        id: id
+        heatNetworkType: CityScaleDistrictHeatingNetwork
         status: InProgress
+        isSuppliedByADistrictHeatNetwork: true
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
+        id:
+          nullable: true
+          type: string
+        heatNetworkType:
+          $ref: "#/components/schemas/HeatNetworkType"
+        heatGenerationSourceFor:
+          nullable: true
+          type: string
+        numberOfCommunalFloors:
+          format: int32
+          nullable: true
+          type: integer
+        containsPressureBreak:
+          nullable: true
+          type: boolean
+        isSupplyingOtherHeatNetworks:
+          type: boolean
+        hasCommercialConnections:
+          type: boolean
+        isSuppliedByADistrictHeatNetwork:
+          type: boolean
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    NetworkCharacteristics2:
+      example:
+        isSupplyingOtherHeatNetworks: true
+        updatedBy: updatedBy
+        hasCommercialConnections: true
+        numberOfCommunalFloors: 0
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        heatGenerationSourceFor: heatGenerationSourceFor
+        createdBy: createdBy
+        containsPressureBreak: true
+        id: id
+        heatNetworkType: CityScaleDistrictHeatingNetwork
+        status: InProgress
+        isSuppliedByADistrictHeatNetwork: true
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        id:
+          nullable: true
+          type: string
+        heatNetworkType:
+          $ref: "#/components/schemas/HeatNetworkType"
+        heatGenerationSourceFor:
+          nullable: true
+          type: string
+        numberOfCommunalFloors:
+          format: int32
+          nullable: true
+          type: integer
+        containsPressureBreak:
+          nullable: true
+          type: boolean
+        isSupplyingOtherHeatNetworks:
+          type: boolean
+        hasCommercialConnections:
+          type: boolean
+        isSuppliedByADistrictHeatNetwork:
+          type: boolean
         createdAt:
           format: date-time
           type: string
@@ -4197,7 +4350,7 @@ components:
     NetworkTypeSelection:
       example:
         otherNetworkDescription: otherNetworkDescription
-        type: CityScaleDistrictHeatingNetwork
+        type: null
       nullable: true
       properties:
         type:
@@ -4565,7 +4718,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 1
+            count: 5
             locations:
             - locations
             - locations
@@ -4583,7 +4736,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 1
+            count: 5
             locations:
             - locations
             - locations
@@ -4592,7 +4745,7 @@ components:
           - ""
           networkType:
             otherNetworkDescription: otherNetworkDescription
-            type: CityScaleDistrictHeatingNetwork
+            type: null
           assessorDocs:
           - ""
           - ""
@@ -4644,7 +4797,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 1
+            count: 5
             locations:
             - locations
             - locations
@@ -4662,7 +4815,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 1
+            count: 5
             locations:
             - locations
             - locations
@@ -4671,7 +4824,7 @@ components:
           - ""
           networkType:
             otherNetworkDescription: otherNetworkDescription
-            type: CityScaleDistrictHeatingNetwork
+            type: null
           assessorDocs:
           - ""
           - ""
@@ -4718,7 +4871,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 1
+          count: 5
           locations:
           - locations
           - locations
@@ -4736,7 +4889,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 1
+          count: 5
           locations:
           - locations
           - locations
@@ -4745,7 +4898,7 @@ components:
         - ""
         networkType:
           otherNetworkDescription: otherNetworkDescription
-          type: CityScaleDistrictHeatingNetwork
+          type: null
         assessorDocs:
         - ""
         - ""
