@@ -26,12 +26,12 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// NetworkCharacteristics
+    /// NetworkCharacteristics2
     /// </summary>
-    public partial class NetworkCharacteristics : IValidatableObject
+    public partial class NetworkCharacteristics2 : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NetworkCharacteristics" /> class.
+        /// Initializes a new instance of the <see cref="NetworkCharacteristics2" /> class.
         /// </summary>
         /// <param name="status">status</param>
         /// <param name="id">id</param>
@@ -47,7 +47,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public NetworkCharacteristics(Option<NetworkDetailsStatus?> status = default, Option<string?> id = default, Option<HeatNetworkType?> heatNetworkType = default, Option<string?> heatGenerationSourceFor = default, Option<int?> numberOfCommunalFloors = default, Option<bool?> containsPressureBreak = default, Option<bool?> isSupplyingOtherHeatNetworks = default, Option<bool?> hasCommercialConnections = default, Option<bool?> isSuppliedByADistrictHeatNetwork = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public NetworkCharacteristics2(Option<NetworkDetailsStatus?> status = default, Option<string?> id = default, Option<HeatNetworkType?> heatNetworkType = default, Option<string?> heatGenerationSourceFor = default, Option<int?> numberOfCommunalFloors = default, Option<bool?> containsPressureBreak = default, Option<bool?> isSupplyingOtherHeatNetworks = default, Option<bool?> hasCommercialConnections = default, Option<bool?> isSuppliedByADistrictHeatNetwork = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
             IdOption = id;
@@ -243,7 +243,7 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class NetworkCharacteristics {\n");
+            sb.Append("class NetworkCharacteristics2 {\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  HeatNetworkType: ").Append(HeatNetworkType).Append("\n");
@@ -273,9 +273,9 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="NetworkCharacteristics" />
+    /// A Json converter for type <see cref="NetworkCharacteristics2" />
     /// </summary>
-    public class NetworkCharacteristicsJsonConverter : JsonConverter<NetworkCharacteristics>
+    public class NetworkCharacteristics2JsonConverter : JsonConverter<NetworkCharacteristics2>
     {
         /// <summary>
         /// The format to use to serialize CreatedAt
@@ -288,14 +288,14 @@ namespace HNTAS.Api.Client.Model
         public static string UpdatedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
         /// <summary>
-        /// Deserializes json to <see cref="NetworkCharacteristics" />
+        /// Deserializes json to <see cref="NetworkCharacteristics2" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override NetworkCharacteristics Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override NetworkCharacteristics2 Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -383,114 +383,114 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class NetworkCharacteristics.");
+                throw new ArgumentNullException(nameof(status), "Property is not nullable for class NetworkCharacteristics2.");
 
             if (heatNetworkType.IsSet && heatNetworkType.Value == null)
-                throw new ArgumentNullException(nameof(heatNetworkType), "Property is not nullable for class NetworkCharacteristics.");
+                throw new ArgumentNullException(nameof(heatNetworkType), "Property is not nullable for class NetworkCharacteristics2.");
 
             if (isSupplyingOtherHeatNetworks.IsSet && isSupplyingOtherHeatNetworks.Value == null)
-                throw new ArgumentNullException(nameof(isSupplyingOtherHeatNetworks), "Property is not nullable for class NetworkCharacteristics.");
+                throw new ArgumentNullException(nameof(isSupplyingOtherHeatNetworks), "Property is not nullable for class NetworkCharacteristics2.");
 
             if (hasCommercialConnections.IsSet && hasCommercialConnections.Value == null)
-                throw new ArgumentNullException(nameof(hasCommercialConnections), "Property is not nullable for class NetworkCharacteristics.");
+                throw new ArgumentNullException(nameof(hasCommercialConnections), "Property is not nullable for class NetworkCharacteristics2.");
 
             if (isSuppliedByADistrictHeatNetwork.IsSet && isSuppliedByADistrictHeatNetwork.Value == null)
-                throw new ArgumentNullException(nameof(isSuppliedByADistrictHeatNetwork), "Property is not nullable for class NetworkCharacteristics.");
+                throw new ArgumentNullException(nameof(isSuppliedByADistrictHeatNetwork), "Property is not nullable for class NetworkCharacteristics2.");
 
             if (createdAt.IsSet && createdAt.Value == null)
-                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class NetworkCharacteristics.");
+                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class NetworkCharacteristics2.");
 
             if (createdBy.IsSet && createdBy.Value == null)
-                throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class NetworkCharacteristics.");
+                throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class NetworkCharacteristics2.");
 
-            return new NetworkCharacteristics(status, id, heatNetworkType, heatGenerationSourceFor, numberOfCommunalFloors, containsPressureBreak, isSupplyingOtherHeatNetworks, hasCommercialConnections, isSuppliedByADistrictHeatNetwork, createdAt, createdBy, updatedAt, updatedBy);
+            return new NetworkCharacteristics2(status, id, heatNetworkType, heatGenerationSourceFor, numberOfCommunalFloors, containsPressureBreak, isSupplyingOtherHeatNetworks, hasCommercialConnections, isSuppliedByADistrictHeatNetwork, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
-        /// Serializes a <see cref="NetworkCharacteristics" />
+        /// Serializes a <see cref="NetworkCharacteristics2" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="networkCharacteristics"></param>
+        /// <param name="networkCharacteristics2"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, NetworkCharacteristics networkCharacteristics, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, NetworkCharacteristics2 networkCharacteristics2, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, networkCharacteristics, jsonSerializerOptions);
+            WriteProperties(writer, networkCharacteristics2, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="NetworkCharacteristics" />
+        /// Serializes the properties of <see cref="NetworkCharacteristics2" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="networkCharacteristics"></param>
+        /// <param name="networkCharacteristics2"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, NetworkCharacteristics networkCharacteristics, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, NetworkCharacteristics2 networkCharacteristics2, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (networkCharacteristics.CreatedByOption.IsSet && networkCharacteristics.CreatedBy == null)
-                throw new ArgumentNullException(nameof(networkCharacteristics.CreatedBy), "Property is required for class NetworkCharacteristics.");
+            if (networkCharacteristics2.CreatedByOption.IsSet && networkCharacteristics2.CreatedBy == null)
+                throw new ArgumentNullException(nameof(networkCharacteristics2.CreatedBy), "Property is required for class NetworkCharacteristics2.");
 
-            if (networkCharacteristics.StatusOption.IsSet)
+            if (networkCharacteristics2.StatusOption.IsSet)
             {
-                var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkCharacteristics.Status!.Value);
+                var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkCharacteristics2.Status!.Value);
                 writer.WriteString("status", statusRawValue);
             }
-            if (networkCharacteristics.IdOption.IsSet)
-                if (networkCharacteristics.IdOption.Value != null)
-                    writer.WriteString("id", networkCharacteristics.Id);
+            if (networkCharacteristics2.IdOption.IsSet)
+                if (networkCharacteristics2.IdOption.Value != null)
+                    writer.WriteString("id", networkCharacteristics2.Id);
                 else
                     writer.WriteNull("id");
 
-            if (networkCharacteristics.HeatNetworkTypeOption.IsSet)
+            if (networkCharacteristics2.HeatNetworkTypeOption.IsSet)
             {
-                var heatNetworkTypeRawValue = HeatNetworkTypeValueConverter.ToJsonValue(networkCharacteristics.HeatNetworkType!.Value);
+                var heatNetworkTypeRawValue = HeatNetworkTypeValueConverter.ToJsonValue(networkCharacteristics2.HeatNetworkType!.Value);
                 writer.WriteString("heatNetworkType", heatNetworkTypeRawValue);
             }
-            if (networkCharacteristics.HeatGenerationSourceForOption.IsSet)
-                if (networkCharacteristics.HeatGenerationSourceForOption.Value != null)
-                    writer.WriteString("heatGenerationSourceFor", networkCharacteristics.HeatGenerationSourceFor);
+            if (networkCharacteristics2.HeatGenerationSourceForOption.IsSet)
+                if (networkCharacteristics2.HeatGenerationSourceForOption.Value != null)
+                    writer.WriteString("heatGenerationSourceFor", networkCharacteristics2.HeatGenerationSourceFor);
                 else
                     writer.WriteNull("heatGenerationSourceFor");
 
-            if (networkCharacteristics.NumberOfCommunalFloorsOption.IsSet)
-                if (networkCharacteristics.NumberOfCommunalFloorsOption.Value != null)
-                    writer.WriteNumber("numberOfCommunalFloors", networkCharacteristics.NumberOfCommunalFloorsOption.Value!.Value);
+            if (networkCharacteristics2.NumberOfCommunalFloorsOption.IsSet)
+                if (networkCharacteristics2.NumberOfCommunalFloorsOption.Value != null)
+                    writer.WriteNumber("numberOfCommunalFloors", networkCharacteristics2.NumberOfCommunalFloorsOption.Value!.Value);
                 else
                     writer.WriteNull("numberOfCommunalFloors");
 
-            if (networkCharacteristics.ContainsPressureBreakOption.IsSet)
-                if (networkCharacteristics.ContainsPressureBreakOption.Value != null)
-                    writer.WriteBoolean("containsPressureBreak", networkCharacteristics.ContainsPressureBreakOption.Value!.Value);
+            if (networkCharacteristics2.ContainsPressureBreakOption.IsSet)
+                if (networkCharacteristics2.ContainsPressureBreakOption.Value != null)
+                    writer.WriteBoolean("containsPressureBreak", networkCharacteristics2.ContainsPressureBreakOption.Value!.Value);
                 else
                     writer.WriteNull("containsPressureBreak");
 
-            if (networkCharacteristics.IsSupplyingOtherHeatNetworksOption.IsSet)
-                writer.WriteBoolean("isSupplyingOtherHeatNetworks", networkCharacteristics.IsSupplyingOtherHeatNetworksOption.Value!.Value);
+            if (networkCharacteristics2.IsSupplyingOtherHeatNetworksOption.IsSet)
+                writer.WriteBoolean("isSupplyingOtherHeatNetworks", networkCharacteristics2.IsSupplyingOtherHeatNetworksOption.Value!.Value);
 
-            if (networkCharacteristics.HasCommercialConnectionsOption.IsSet)
-                writer.WriteBoolean("hasCommercialConnections", networkCharacteristics.HasCommercialConnectionsOption.Value!.Value);
+            if (networkCharacteristics2.HasCommercialConnectionsOption.IsSet)
+                writer.WriteBoolean("hasCommercialConnections", networkCharacteristics2.HasCommercialConnectionsOption.Value!.Value);
 
-            if (networkCharacteristics.IsSuppliedByADistrictHeatNetworkOption.IsSet)
-                writer.WriteBoolean("isSuppliedByADistrictHeatNetwork", networkCharacteristics.IsSuppliedByADistrictHeatNetworkOption.Value!.Value);
+            if (networkCharacteristics2.IsSuppliedByADistrictHeatNetworkOption.IsSet)
+                writer.WriteBoolean("isSuppliedByADistrictHeatNetwork", networkCharacteristics2.IsSuppliedByADistrictHeatNetworkOption.Value!.Value);
 
-            if (networkCharacteristics.CreatedAtOption.IsSet)
-                writer.WriteString("createdAt", networkCharacteristics.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
+            if (networkCharacteristics2.CreatedAtOption.IsSet)
+                writer.WriteString("createdAt", networkCharacteristics2.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
 
-            if (networkCharacteristics.CreatedByOption.IsSet)
-                writer.WriteString("createdBy", networkCharacteristics.CreatedBy);
+            if (networkCharacteristics2.CreatedByOption.IsSet)
+                writer.WriteString("createdBy", networkCharacteristics2.CreatedBy);
 
-            if (networkCharacteristics.UpdatedAtOption.IsSet)
-                if (networkCharacteristics.UpdatedAtOption.Value != null)
-                    writer.WriteString("updatedAt", networkCharacteristics.UpdatedAtOption.Value!.Value.ToString(UpdatedAtFormat));
+            if (networkCharacteristics2.UpdatedAtOption.IsSet)
+                if (networkCharacteristics2.UpdatedAtOption.Value != null)
+                    writer.WriteString("updatedAt", networkCharacteristics2.UpdatedAtOption.Value!.Value.ToString(UpdatedAtFormat));
                 else
                     writer.WriteNull("updatedAt");
 
-            if (networkCharacteristics.UpdatedByOption.IsSet)
-                if (networkCharacteristics.UpdatedByOption.Value != null)
-                    writer.WriteString("updatedBy", networkCharacteristics.UpdatedBy);
+            if (networkCharacteristics2.UpdatedByOption.IsSet)
+                if (networkCharacteristics2.UpdatedByOption.Value != null)
+                    writer.WriteString("updatedBy", networkCharacteristics2.UpdatedBy);
                 else
                     writer.WriteNull("updatedBy");
         }
