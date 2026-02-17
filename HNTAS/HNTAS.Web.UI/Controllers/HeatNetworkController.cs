@@ -515,7 +515,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> AddNetworkDetails([FromQuery] string hnid)
         {
-            hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId) ?? hnid;
+            hnid = hnid ?? _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
 
             var model = await GetNetworkDetails(hnid);
             if (model == null) 

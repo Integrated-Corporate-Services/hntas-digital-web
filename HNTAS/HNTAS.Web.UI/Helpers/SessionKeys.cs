@@ -56,6 +56,6 @@
         public const string DoesEnergyCentreHaveAPostcodeViewModelSessionKey = "DoesEnergyCentreHaveAPostcodeViewModel";
         public const string EnergyCentreLocationModelKey = "EnergyCentreLocation";
         public const string EnergyCentreDetailsModelSessionKey = "EnergyCentreDetailsModelSessionKey";
-
+        public const string SelectedElementsSessionKey = "SelectedElements";
     }
 }

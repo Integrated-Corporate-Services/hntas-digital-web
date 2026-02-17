@@ -10,7 +10,7 @@
         <h1 class="govuk-heading-xl">
             Network elements
         </h1>
-        <form asp-action="FlowAfterSelectedElements" method="post" novalidate>
+        <form asp-action="SelectNetworkElements" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
