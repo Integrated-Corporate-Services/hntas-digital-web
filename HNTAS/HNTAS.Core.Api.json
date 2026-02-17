@@ -57,6 +57,74 @@
         }
       }
     },
+    "/api/Audit/heat-network/{hnId}": {
+      "get": {
+        "tags": [
+          "Audit"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditLogResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditLogResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditLogResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/CarbonCalculator/run": {
       "post": {
         "tags": [
@@ -452,6 +520,102 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/HeatNetworks/network-characteristics": {
+      "put": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkCharacteristics2"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkCharacteristics2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "text/plain": {
                 "schema": {
@@ -3613,6 +3777,23 @@
           }
         }
       },
+      "AuditLogResponse": {
+        "type": "object",
+        "properties": {
+          "event": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        }
+      },
       "Background": {
         "type": "object",
         "properties": {
@@ -4324,6 +4505,10 @@
           "LargeCommunalHeatNetwork",
           "MediumCommunalHeatNetwork",
           "SmallCommunalHeatNetwork",
+          "NetworkLedDistrictHeatNetwork",
+          "DeveloperLedDistrictHeatNetworkMorL",
+          "DeveloperLedDistrictHeatNetworkSm",
+          "CommunalHeatNetwork",
           "Other"
         ]
       },
@@ -4651,6 +4836,35 @@
           "status": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "heatNetworkType": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "heatGenerationSourceFor": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberOfCommunalFloors": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "containsPressureBreak": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isSupplyingOtherHeatNetworks": {
+            "type": "boolean"
+          },
+          "hasCommercialConnections": {
+            "type": "boolean"
+          },
+          "isSuppliedByADistrictHeatNetwork": {
+            "type": "boolean"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4669,6 +4883,59 @@
           }
         },
         "nullable": true
+      },
+      "NetworkCharacteristics2": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "heatNetworkType": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "heatGenerationSourceFor": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberOfCommunalFloors": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "containsPressureBreak": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isSupplyingOtherHeatNetworks": {
+            "type": "boolean"
+          },
+          "hasCommercialConnections": {
+            "type": "boolean"
+          },
+          "isSuppliedByADistrictHeatNetwork": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        }
       },
       "NetworkCharacteristicsResponse": {
         "type": "object",
@@ -5836,6 +6103,9 @@
   "tags": [
     {
       "name": "Assessor"
+    },
+    {
+      "name": "Audit"
     },
     {
       "name": "CarbonCalculator"

@@ -599,16 +599,14 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SelectNetworkDetail([FromQuery] string hnId, [FromQuery] NetworkDetailsType networkDetailId)
+        public async Task<IActionResult> SelectNetworkDetail([FromQuery] string hnid, [FromQuery] NetworkDetailsType networkDetailId)
         {
-            
-            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
-            switch (networkDetailId) {
+            switch (networkDetailId)
+            {
                 case NetworkDetailsType.NetworkCharacteristics:
-                    return RedirectToAction("", "");
+                    return RedirectToAction("HeatNetworkType", "NetworkCharacteristics", new { hnid });
                 case NetworkDetailsType.NetworkElements:
-                    return RedirectToAction("SelectNetworkElements", "NetworkElements", new {hnId});                
+                    return RedirectToAction("SelectNetworkElements", "NetworkElements", new { hnid });
                 default:
                     return BadRequest();
             }

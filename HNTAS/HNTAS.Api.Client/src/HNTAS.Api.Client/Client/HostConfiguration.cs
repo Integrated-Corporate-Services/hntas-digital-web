@@ -48,6 +48,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new AssessmentPlanJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanResponseJsonConverter());
             _jsonOptions.Converters.Add(new AssessorSearchResultJsonConverter());
+            _jsonOptions.Converters.Add(new AuditLogResponseJsonConverter());
             _jsonOptions.Converters.Add(new BackgroundJsonConverter());
             _jsonOptions.Converters.Add(new BoilerInputJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorRequestJsonConverter());
@@ -90,6 +91,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new MeteringAndMonitoringStrategyJsonConverter());
             _jsonOptions.Converters.Add(new MeteringAndMonitoringStrategyResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkCharacteristicsJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkCharacteristics2JsonConverter());
             _jsonOptions.Converters.Add(new NetworkCharacteristicsResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkDetailsStatusJsonConverter());
             _jsonOptions.Converters.Add(new NetworkDetailsStatusNullableJsonConverter());
@@ -151,6 +153,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton(jsonSerializerOptionsProvider);
             _services.AddSingleton<IApiFactory, ApiFactory>();
             _services.AddSingleton<AssessorApiEvents>();
+            _services.AddSingleton<AuditApiEvents>();
             _services.AddSingleton<CarbonCalculatorApiEvents>();
             _services.AddSingleton<CountriesAndTerritoriesApiEvents>();
             _services.AddSingleton<HNDataImportExportApiEvents>();
@@ -179,6 +182,7 @@ namespace HNTAS.Api.Client.Client
             List<IHttpClientBuilder> builders = new List<IHttpClientBuilder>();
 
             builders.Add(_services.AddHttpClient<IAssessorApi, AssessorApi>(client));
+            builders.Add(_services.AddHttpClient<IAuditApi, AuditApi>(client));
             builders.Add(_services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client));
             builders.Add(_services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client));
             builders.Add(_services.AddHttpClient<IHNDataImportExportApi, HNDataImportExportApi>(client));

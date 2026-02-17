@@ -108,7 +108,7 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new MeteringAndMonitoringStrategyResponseJsonConverter(),
         new AssessmentPlanResponseJsonConverter(),
         new DesignConstructionLogResponseJsonConverter(),
-
+        new AuditLogResponseJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -186,6 +186,14 @@ builder.Services.AddHttpClient<IAssessorApi, AssessorApi>(client =>
 });
 
 
+builder.Services.AddSingleton<AuditApiEvents>();
+builder.Services.AddHttpClient<IAuditApi, AuditApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
 builder.Services.AddScoped<IWorkflowManager, WorkflowManager>();
@@ -213,6 +221,7 @@ builder.Services.AddScoped<ICarbonCalculatorService, CarbonCalculatorService>();
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 builder.Services.AddScoped<IAddressLookupService, AddressLookupService>();
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
 

@@ -69,6 +69,9 @@ namespace HNTAS.Api.Client.Test.Api
             var assessorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
+            var auditApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAuditApi>();
+            Assert.True(auditApi.HttpClient.BaseAddress != null);
+
             var carbonCalculatorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 
@@ -108,6 +111,9 @@ namespace HNTAS.Api.Client.Test.Api
         {
             var assessorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
+
+            var auditApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAuditApi>();
+            Assert.True(auditApi.HttpClient.BaseAddress != null);
 
             var carbonCalculatorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
@@ -149,6 +155,9 @@ namespace HNTAS.Api.Client.Test.Api
             var assessorApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
             
+            var auditApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAuditApi>();
+            Assert.True(auditApi.HttpClient.BaseAddress != null);
+            
             var carbonCalculatorApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
             
@@ -188,6 +197,9 @@ namespace HNTAS.Api.Client.Test.Api
         {
             var assessorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
+
+            var auditApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAuditApi>();
+            Assert.True(auditApi.HttpClient.BaseAddress != null);
 
             var carbonCalculatorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);

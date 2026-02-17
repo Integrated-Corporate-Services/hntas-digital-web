@@ -34,14 +34,30 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="NetworkCharacteristics" /> class.
         /// </summary>
         /// <param name="status">status</param>
+        /// <param name="id">id</param>
+        /// <param name="heatNetworkType">heatNetworkType</param>
+        /// <param name="heatGenerationSourceFor">heatGenerationSourceFor</param>
+        /// <param name="numberOfCommunalFloors">numberOfCommunalFloors</param>
+        /// <param name="containsPressureBreak">containsPressureBreak</param>
+        /// <param name="isSupplyingOtherHeatNetworks">isSupplyingOtherHeatNetworks</param>
+        /// <param name="hasCommercialConnections">hasCommercialConnections</param>
+        /// <param name="isSuppliedByADistrictHeatNetwork">isSuppliedByADistrictHeatNetwork</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public NetworkCharacteristics(Option<NetworkDetailsStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public NetworkCharacteristics(Option<NetworkDetailsStatus?> status = default, Option<string?> id = default, Option<HeatNetworkType?> heatNetworkType = default, Option<string?> heatGenerationSourceFor = default, Option<int?> numberOfCommunalFloors = default, Option<bool?> containsPressureBreak = default, Option<bool?> isSupplyingOtherHeatNetworks = default, Option<bool?> hasCommercialConnections = default, Option<bool?> isSuppliedByADistrictHeatNetwork = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
+            IdOption = id;
+            HeatNetworkTypeOption = heatNetworkType;
+            HeatGenerationSourceForOption = heatGenerationSourceFor;
+            NumberOfCommunalFloorsOption = numberOfCommunalFloors;
+            ContainsPressureBreakOption = containsPressureBreak;
+            IsSupplyingOtherHeatNetworksOption = isSupplyingOtherHeatNetworks;
+            HasCommercialConnectionsOption = hasCommercialConnections;
+            IsSuppliedByADistrictHeatNetworkOption = isSuppliedByADistrictHeatNetwork;
             CreatedAtOption = createdAt;
             CreatedByOption = createdBy;
             UpdatedAtOption = updatedAt;
@@ -63,6 +79,110 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("status")]
         public NetworkDetailsStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of HeatNetworkType
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<HeatNetworkType?> HeatNetworkTypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HeatNetworkType
+        /// </summary>
+        [JsonPropertyName("heatNetworkType")]
+        public HeatNetworkType? HeatNetworkType { get { return this.HeatNetworkTypeOption; } set { this.HeatNetworkTypeOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Id
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> IdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Id
+        /// </summary>
+        [JsonPropertyName("id")]
+        public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of HeatGenerationSourceFor
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> HeatGenerationSourceForOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HeatGenerationSourceFor
+        /// </summary>
+        [JsonPropertyName("heatGenerationSourceFor")]
+        public string? HeatGenerationSourceFor { get { return this.HeatGenerationSourceForOption; } set { this.HeatGenerationSourceForOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NumberOfCommunalFloors
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NumberOfCommunalFloorsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NumberOfCommunalFloors
+        /// </summary>
+        [JsonPropertyName("numberOfCommunalFloors")]
+        public int? NumberOfCommunalFloors { get { return this.NumberOfCommunalFloorsOption; } set { this.NumberOfCommunalFloorsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ContainsPressureBreak
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> ContainsPressureBreakOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ContainsPressureBreak
+        /// </summary>
+        [JsonPropertyName("containsPressureBreak")]
+        public bool? ContainsPressureBreak { get { return this.ContainsPressureBreakOption; } set { this.ContainsPressureBreakOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of IsSupplyingOtherHeatNetworks
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> IsSupplyingOtherHeatNetworksOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets IsSupplyingOtherHeatNetworks
+        /// </summary>
+        [JsonPropertyName("isSupplyingOtherHeatNetworks")]
+        public bool? IsSupplyingOtherHeatNetworks { get { return this.IsSupplyingOtherHeatNetworksOption; } set { this.IsSupplyingOtherHeatNetworksOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of HasCommercialConnections
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> HasCommercialConnectionsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HasCommercialConnections
+        /// </summary>
+        [JsonPropertyName("hasCommercialConnections")]
+        public bool? HasCommercialConnections { get { return this.HasCommercialConnectionsOption; } set { this.HasCommercialConnectionsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of IsSuppliedByADistrictHeatNetwork
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> IsSuppliedByADistrictHeatNetworkOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets IsSuppliedByADistrictHeatNetwork
+        /// </summary>
+        [JsonPropertyName("isSuppliedByADistrictHeatNetwork")]
+        public bool? IsSuppliedByADistrictHeatNetwork { get { return this.IsSuppliedByADistrictHeatNetworkOption; } set { this.IsSuppliedByADistrictHeatNetworkOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedAt
@@ -125,6 +245,14 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class NetworkCharacteristics {\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  HeatNetworkType: ").Append(HeatNetworkType).Append("\n");
+            sb.Append("  HeatGenerationSourceFor: ").Append(HeatGenerationSourceFor).Append("\n");
+            sb.Append("  NumberOfCommunalFloors: ").Append(NumberOfCommunalFloors).Append("\n");
+            sb.Append("  ContainsPressureBreak: ").Append(ContainsPressureBreak).Append("\n");
+            sb.Append("  IsSupplyingOtherHeatNetworks: ").Append(IsSupplyingOtherHeatNetworks).Append("\n");
+            sb.Append("  HasCommercialConnections: ").Append(HasCommercialConnections).Append("\n");
+            sb.Append("  IsSuppliedByADistrictHeatNetwork: ").Append(IsSuppliedByADistrictHeatNetwork).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
@@ -177,6 +305,14 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<NetworkDetailsStatus?> status = default;
+            Option<string?> id = default;
+            Option<HeatNetworkType?> heatNetworkType = default;
+            Option<string?> heatGenerationSourceFor = default;
+            Option<int?> numberOfCommunalFloors = default;
+            Option<bool?> containsPressureBreak = default;
+            Option<bool?> isSupplyingOtherHeatNetworks = default;
+            Option<bool?> hasCommercialConnections = default;
+            Option<bool?> isSuppliedByADistrictHeatNetwork = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
@@ -202,6 +338,32 @@ namespace HNTAS.Api.Client.Model
                             if (statusRawValue != null)
                                 status = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
+                        case "id":
+                            id = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "heatNetworkType":
+                            string? heatNetworkTypeRawValue = utf8JsonReader.GetString();
+                            if (heatNetworkTypeRawValue != null)
+                                heatNetworkType = new Option<HeatNetworkType?>(HeatNetworkTypeValueConverter.FromStringOrDefault(heatNetworkTypeRawValue));
+                            break;
+                        case "heatGenerationSourceFor":
+                            heatGenerationSourceFor = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "numberOfCommunalFloors":
+                            numberOfCommunalFloors = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "containsPressureBreak":
+                            containsPressureBreak = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
+                        case "isSupplyingOtherHeatNetworks":
+                            isSupplyingOtherHeatNetworks = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
+                        case "hasCommercialConnections":
+                            hasCommercialConnections = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
+                        case "isSuppliedByADistrictHeatNetwork":
+                            isSuppliedByADistrictHeatNetwork = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -223,13 +385,25 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class NetworkCharacteristics.");
 
+            if (heatNetworkType.IsSet && heatNetworkType.Value == null)
+                throw new ArgumentNullException(nameof(heatNetworkType), "Property is not nullable for class NetworkCharacteristics.");
+
+            if (isSupplyingOtherHeatNetworks.IsSet && isSupplyingOtherHeatNetworks.Value == null)
+                throw new ArgumentNullException(nameof(isSupplyingOtherHeatNetworks), "Property is not nullable for class NetworkCharacteristics.");
+
+            if (hasCommercialConnections.IsSet && hasCommercialConnections.Value == null)
+                throw new ArgumentNullException(nameof(hasCommercialConnections), "Property is not nullable for class NetworkCharacteristics.");
+
+            if (isSuppliedByADistrictHeatNetwork.IsSet && isSuppliedByADistrictHeatNetwork.Value == null)
+                throw new ArgumentNullException(nameof(isSuppliedByADistrictHeatNetwork), "Property is not nullable for class NetworkCharacteristics.");
+
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class NetworkCharacteristics.");
 
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class NetworkCharacteristics.");
 
-            return new NetworkCharacteristics(status, createdAt, createdBy, updatedAt, updatedBy);
+            return new NetworkCharacteristics(status, id, heatNetworkType, heatGenerationSourceFor, numberOfCommunalFloors, containsPressureBreak, isSupplyingOtherHeatNetworks, hasCommercialConnections, isSuppliedByADistrictHeatNetwork, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
@@ -264,6 +438,44 @@ namespace HNTAS.Api.Client.Model
                 var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkCharacteristics.Status!.Value);
                 writer.WriteString("status", statusRawValue);
             }
+            if (networkCharacteristics.IdOption.IsSet)
+                if (networkCharacteristics.IdOption.Value != null)
+                    writer.WriteString("id", networkCharacteristics.Id);
+                else
+                    writer.WriteNull("id");
+
+            if (networkCharacteristics.HeatNetworkTypeOption.IsSet)
+            {
+                var heatNetworkTypeRawValue = HeatNetworkTypeValueConverter.ToJsonValue(networkCharacteristics.HeatNetworkType!.Value);
+                writer.WriteString("heatNetworkType", heatNetworkTypeRawValue);
+            }
+            if (networkCharacteristics.HeatGenerationSourceForOption.IsSet)
+                if (networkCharacteristics.HeatGenerationSourceForOption.Value != null)
+                    writer.WriteString("heatGenerationSourceFor", networkCharacteristics.HeatGenerationSourceFor);
+                else
+                    writer.WriteNull("heatGenerationSourceFor");
+
+            if (networkCharacteristics.NumberOfCommunalFloorsOption.IsSet)
+                if (networkCharacteristics.NumberOfCommunalFloorsOption.Value != null)
+                    writer.WriteNumber("numberOfCommunalFloors", networkCharacteristics.NumberOfCommunalFloorsOption.Value!.Value);
+                else
+                    writer.WriteNull("numberOfCommunalFloors");
+
+            if (networkCharacteristics.ContainsPressureBreakOption.IsSet)
+                if (networkCharacteristics.ContainsPressureBreakOption.Value != null)
+                    writer.WriteBoolean("containsPressureBreak", networkCharacteristics.ContainsPressureBreakOption.Value!.Value);
+                else
+                    writer.WriteNull("containsPressureBreak");
+
+            if (networkCharacteristics.IsSupplyingOtherHeatNetworksOption.IsSet)
+                writer.WriteBoolean("isSupplyingOtherHeatNetworks", networkCharacteristics.IsSupplyingOtherHeatNetworksOption.Value!.Value);
+
+            if (networkCharacteristics.HasCommercialConnectionsOption.IsSet)
+                writer.WriteBoolean("hasCommercialConnections", networkCharacteristics.HasCommercialConnectionsOption.Value!.Value);
+
+            if (networkCharacteristics.IsSuppliedByADistrictHeatNetworkOption.IsSet)
+                writer.WriteBoolean("isSuppliedByADistrictHeatNetwork", networkCharacteristics.IsSuppliedByADistrictHeatNetworkOption.Value!.Value);
+
             if (networkCharacteristics.CreatedAtOption.IsSet)
                 writer.WriteString("createdAt", networkCharacteristics.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
 

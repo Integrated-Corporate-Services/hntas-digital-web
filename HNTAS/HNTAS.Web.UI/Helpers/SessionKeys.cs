@@ -57,5 +57,13 @@
         public const string EnergyCentreLocationModelKey = "EnergyCentreLocation";
         public const string EnergyCentreDetailsModelSessionKey = "EnergyCentreDetailsModelSessionKey";
         public const string SelectedElementsSessionKey = "SelectedElements";
+
+        public const string HeatNetworkTypeViewModelSessionKey = "HeatNetworkTypeViewModelSessionKey";
+        public const string WhatIsTheHeatGenerationSourceForViewModelSessionKey =  "WhatIsTheHeatGenerationSourceForViewModelSessionKey";
+        public const string CommunalFloorsViewModelSessionKey = "CommunalFloorsViewModelSessionKey";
+        public const string DoesDistrictNetworkContainPressureBreakViewModelSessionKey = "DoesDistrictNetworkContainPressureBreakViewModelSessionKey";
+        public const string NetworkSupplyViewModelSessionKey = "NetworkSupplyViewModelSessionKey";
+        public const string NetworkOverviewDataModelSessionKey = "NetworkOverviewDataModelSessionKey";
+
     }
 }

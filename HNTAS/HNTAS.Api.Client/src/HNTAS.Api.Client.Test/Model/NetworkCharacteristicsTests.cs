@@ -63,21 +63,75 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'HeatNetworkType'
+        /// </summary>
+        [Fact]
+        public void HeatNetworkTypeTest()
+        {
+            // TODO unit test for the property 'HeatNetworkType'
+        }
+
+        /// <summary>
+        /// Test the property 'HeatGenerationSourceFor'
+        /// </summary>
+        [Fact]
+        public void HeatGenerationSourceForTest()
+        {
+            // TODO unit test for the property 'HeatGenerationSourceFor'
+        }
+
+        /// <summary>
+        /// Test the property 'NumberOfCommunalFloors'
+        /// </summary>
+        [Fact]
+        public void NumberOfCommunalFloorsTest()
+        {
+            // TODO unit test for the property 'NumberOfCommunalFloors'
+        }
+
+        /// <summary>
+        /// Test the property 'ContainsPressureBreak'
+        /// </summary>
+        [Fact]
+        public void ContainsPressureBreakTest()
+        {
+            // TODO unit test for the property 'ContainsPressureBreak'
+        }
+
+        /// <summary>
+        /// Test the property 'IsSupplyingOtherHeatNetworks'
+        /// </summary>
+        [Fact]
+        public void IsSupplyingOtherHeatNetworksTest()
+        {
+            // TODO unit test for the property 'IsSupplyingOtherHeatNetworks'
+        }
+
+        /// <summary>
+        /// Test the property 'HasCommercialConnections'
+        /// </summary>
+        [Fact]
+        public void HasCommercialConnectionsTest()
+        {
+            // TODO unit test for the property 'HasCommercialConnections'
+        }
+
+        /// <summary>
+        /// Test the property 'IsSuppliedByADistrictHeatNetwork'
+        /// </summary>
+        [Fact]
+        public void IsSuppliedByADistrictHeatNetworkTest()
+        {
+            // TODO unit test for the property 'IsSuppliedByADistrictHeatNetwork'
+        }
+
+        /// <summary>
         /// Test the property 'Status'
         /// </summary>
         [Fact]
         public void StatusTest()
         {
             // TODO unit test for the property 'Status'
-        }
-
-        /// <summary>
-        /// Test the property 'Type'
-        /// </summary>
-        [Fact]
-        public void TypeTest()
-        {
-            // TODO unit test for the property 'Type'
         }
 
         /// <summary>
@@ -114,15 +168,6 @@ namespace HNTAS.Api.Client.Test.Model
         public void UpdatedByTest()
         {
             // TODO unit test for the property 'UpdatedBy'
-        }
-
-        /// <summary>
-        /// Test the property 'JourneyData'
-        /// </summary>
-        [Fact]
-        public void JourneyDataTest()
-        {
-            // TODO unit test for the property 'JourneyData'
         }
     }
 }
