@@ -1,6 +1,7 @@
 ﻿using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
+using HNTAS.Web.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
@@ -9,20 +10,80 @@ namespace HNTAS.Web.UI.Controllers
     {
         private readonly ILogger<AddressController> _logger;
         private readonly ISessionHelper _sessionHelper;
-        public AddressController(ILogger<AddressController> logger, ISessionHelper sessionHelper)
+        private readonly IAddressLookupService _addressLookUpService;
+        public AddressController(ILogger<AddressController> logger, ISessionHelper sessionHelper, IAddressLookupService addressLookUpService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _sessionHelper = sessionHelper ?? throw new ArgumentNullException(nameof(sessionHelper));
+            _addressLookUpService = addressLookUpService ?? throw new ArgumentNullException(nameof(addressLookUpService));
+        }
+
+        [HttpGet]
+        public IActionResult DoesHNHaveAPostcode()
+        {
+            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
+            if (previousStep == "HeatNetwork")
+            {
+                this.ShowBackButton("EnterHNName", "HeatNetwork");
+            }
+            else if (previousStep == "EnergyCentre")
+            {
+                var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                this.ShowBackButton("SelectNetworkElements", "NetworkElements", hnId!);
+            }
+            
+            var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey) ?? new DoesHNHaveAPostcodeViewModel { HasPostcode = false };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DoesHNHaveAPostcode(DoesHNHaveAPostcodeViewModel model)
+        {
+            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
+            if (previousStep == "HeatNetwork")
+            {
+                this.ShowBackButton("EnterHNName", "HeatNetwork");
+            }
+            else if (previousStep == "EnergyCentre")
+            {
+                var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                this.ShowBackButton("SelectNetworkElements", "NetworkElements", hnId!);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
+            if (!model.HasPostcode)
+            {
+                //return RedirectToAction("ECCoordinates");
+                return RedirectToAction("ECCoordinates", "Coordinates");
+            }
+            SearchAddressByPostcodeModel results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
+            model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
+            if (results == null || results.Addresses == null || results.Addresses.Length == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
+                return View(model);
+            }
+            results.Addresses = results.Addresses
+                .Select(address => Utility.CapitalizeCommaSeparated(address))
+                .ToArray();
+            _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
+            //_sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "HeatNetwork");
+            return RedirectToAction("SearchByPostcodeResults", "Address");
         }
 
         [HttpGet]
         public IActionResult SearchByPostcodeResults()
         {
             string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if (previousStep == "HeatNetwork")
+            if (previousStep == "HeatNetwork" || previousStep == "EnergyCentre")
             {
-                this.ShowBackButton("DoesHNHaveAPostcode", "HeatNetwork");
-            }else
+                this.ShowBackButton("DoesHNHaveAPostcode", "Address");
+            }            
+            else
             {
                 this.ShowBackButton("OrganisationAddressByPostcode", "Organisation");
             }
@@ -35,6 +96,10 @@ namespace HNTAS.Web.UI.Controllers
                 if (previousStep == "heatnetwork")
                 {
                     return View("DoesHNHaveAPostcode", "HeatNetwork");
+                }
+                else if (previousStep == "EnergyCentre")
+                {
+                    this.ShowBackButton("EnergyCentreAddressCheck", "NetworkElements");
                 }
                 else
                 {
@@ -72,7 +137,7 @@ namespace HNTAS.Web.UI.Controllers
             // Save the new model to session
             _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, model);
             string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if (previousStep == "HeatNetwork")
+            if (previousStep == "HeatNetwork" || previousStep == "EnergyCentre")
             {
                 return RedirectToAction("ConfirmAddress", "Address");
             }
@@ -92,6 +157,50 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
+        public IActionResult AddressManualEntry()
+        {
+            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
+            if (previousStep == "HeatNetwork")
+            {
+                this.ShowBackButton("EnterHNName", "HeatNetwork");
+            }
+            else if (previousStep == "EnergyCentre")
+            {
+                var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                this.ShowBackButton("SelectNetworkElements", "NetworkElements", hnId!);
+            }
+            var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey)?.HNAddressByStreet ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult AddressManualEntry(AddressByStreetOrTownModel model)
+        {
+            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
+            if (previousStep == "HeatNetwork")
+            {
+                this.ShowBackButton("EnterHNName", "HeatNetwork");
+            }
+            else if (previousStep == "EnergyCentre")
+            {
+                var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                this.ShowBackButton("SelectNetworkElements", "NetworkElements", hnId!);
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
+                .Where(part => !string.IsNullOrWhiteSpace(part));
+            model.Fulladdress = string.Join(", ", addressParts);
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            heatNetworkLocationModel?.HNAddressByStreet = model;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
+            //return RedirectToAction("ECCoordinates", "HeatNetwork");
+            return RedirectToAction("ECCoordinates", "Coordinates");
+        }
+
+        [HttpGet]
         public IActionResult ConfirmAddress()
         {
             var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
@@ -100,9 +209,18 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         public IActionResult ConfirmAddress(AddressByStreetOrTownModel model)
-        {            
-            // Save the confirmed address to session            
-            return RedirectToAction("SaveHNAddressByPostcode", "HeatNetwork");
+        {
+            // Save the confirmed address to session   
+            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
+            if (previousStep == "EnergyCentre")
+            {
+                return RedirectToAction("SaveEnergyCentreAddressByPostcode", "NetworkElements");
+            }
+            else
+            {
+                return RedirectToAction("SaveHNAddressByPostcode", "HeatNetwork");
+            }
+                
         }
     }
 }

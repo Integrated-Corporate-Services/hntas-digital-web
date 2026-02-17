@@ -53,6 +53,9 @@
         public const string IsEditOrganisationDetailsJourneySessionKey = "IsEditOrganisationDetailsJourney";
         public const string IsAddOrganisationDetailsNonRPJourneySessionKey = "IsAddOrganisationDetailsNonRPJourneySession";
         public const string IsAssessorOrCertifier = "IsAssessorOrCertifier";
+        public const string DoesEnergyCentreHaveAPostcodeViewModelSessionKey = "DoesEnergyCentreHaveAPostcodeViewModel";
+        public const string EnergyCentreLocationModelKey = "EnergyCentreLocation";
+        public const string EnergyCentreDetailsModelSessionKey = "EnergyCentreDetailsModelSessionKey";
 
     }
 }

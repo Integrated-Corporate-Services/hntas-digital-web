@@ -1,10 +1,14 @@
-﻿using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.NetworkElements;
 using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -29,20 +33,160 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult SelectNetworkElements([FromRoute] Guid hnid)
+        public IActionResult SelectNetworkElements([FromQuery] string hnId)
         {
-            this.ShowBackButton("HeatNetworkSOADetails");
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            
+            this.ShowBackButton("NetworkDetails", "HeatNetwork");
             var model = new NetworkElementViewModel()
             {
                 ElementOptions = Utility.GetDefaultNetworkElementOptions()
             };
+            ViewBag.HnId = hnId;
+            //ViewBag.selectedCharacteristics = heatNetworkData.NetworkCharacteristics;
+            ViewBag.selectedCharacteristics = "Communal Heat Network";
+
+            if (ViewBag.selectedCharacteristics == "Communal Heat Network")
+            {
+                // keep HeatNetworkElementType.EnergyCentre and HeatNetworkElementType.ConsumerHeatSystems from the list of options 
+                model.ElementOptions = model.ElementOptions
+                    .Where(e => e.Id == HeatNetworkElementType.EnergyCentre || e.Id == HeatNetworkElementType.ConsumerHeatSystems)
+                    .ToList();
+            }
 
             //var model = new HeatNetworkElementViewModel()
             //{
             //    ElementOptions = Utility.GetElementOptions()
             //};
 
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnName);
+
             return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult FlowAfterSelectedElements(NetworkElementViewModel model)
+        {
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            model.ElementOptions = Utility.GetDefaultNetworkElementOptions();
+
+            if (!ModelState.IsValid)
+            {
+                return View("SelectNetworkElements", model);
+            }
+
+            // Custom validation: ensure quantity is entered for each selected element
+            foreach (var selectedId in model.SelectedElementIds)
+            {
+                if ((selectedId != HeatNetworkElementType.EnergyCentre) && (!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
+                {
+                    var element = Utility.GetDefaultNetworkElementOptions().FirstOrDefault(x => x.Id == selectedId);
+                    if (element == null)
+                    {
+                        return BadRequest();
+                    }
+                    ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter number of {element.Label}.");
+                }
+            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "EnergyCentre");
+            if (model.SelectedElementIds.Contains(HeatNetworkElementType.EnergyCentre))
+            {                
+                return RedirectToAction("DoesHNHaveAPostcode", "Address");
+            }
+
+            return RedirectToAction("DoesHNHaveAPostcode", "Address");
+
+            
+        }       
+
+        [HttpGet]
+        public IActionResult SaveEnergyCentreAddressByPostcode()
+        {
+            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey) ?? new AddressByStreetOrTownModel();
+            if (model == null)
+            {
+                return BadRequest("Missing session data");
+            }
+            var energyCentreLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.EnergyCentreLocationModelKey) ?? new HeatNetworkLocationModel { HNAddressByStreet = new AddressByStreetOrTownModel() };
+            energyCentreLocationModel.HNAddressByStreet = model;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, energyCentreLocationModel);
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "EnergyCentre");
+            return RedirectToAction("ECCoordinates", "Coordinates");
+        }
+
+        
+
+        [HttpGet]
+        public IActionResult NetworkElementsOverView()
+        {
+            this.ShowBackButton("ECCoordinates", "Coordinates");
+
+            var heatNetworkLocation = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
+            var ecDetails = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey);           
+
+            var model = new NetworkElementsOverviewModel
+            {
+                
+                HeatNetworkAddressModel = heatNetworkLocation?.HNAddressByStreet ?? new AddressByStreetOrTownModel(),
+                ECDetailsModel = ecDetails,                
+            };
+
+            //_sessionHelper.SaveToSession<NetworkElementsOverviewModel>(HttpContext, "CheckYourAnswersNetworkElementsModel", model);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult NetworkElementsOverView(NetworkElementsOverviewModel viewModel)
+        {            
+            var hnLocation = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
+            viewModel.HeatNetworkAddressModel = hnLocation?.HNAddressByStreet ?? null;
+            viewModel.ECDetailsModel = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey);
+            
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+
+            ModelState.Remove(nameof(viewModel.HeatNetworkAddressModel));
+            ModelState.Remove(nameof(viewModel.ECDetailsModel));
+
+            if (!ModelState.IsValid)
+            {
+                return View("NetworkElementsOverView", viewModel);
+            }
+
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "An error occurred while saving network elements details. Please try again later.";
+                return View("NetworkElementsOverView", viewModel);
+            }
+
+            var hnAddress = viewModel?.HeatNetworkAddressModel;
+
+            double? latitude = null;
+            double? longitude = null;
+            if (viewModel?.ECDetailsModel?.ECAddressByLatLong != null)
+            {
+                latitude = (double?)viewModel.ECDetailsModel.ECAddressByLatLong.Latitude;
+                longitude = (double?)viewModel.ECDetailsModel.ECAddressByLatLong.Longitude;
+            }
+
+            ECDetails2? ecDetails = (latitude.HasValue || longitude.HasValue)
+                ? new ECDetails2(latitude: latitude, longitude: longitude)
+                : null;
+
+            var address = viewModel.HeatNetworkAddressModel != null ? new RegisteredAddress(
+                    addressLine1: hnAddress?.StreetAddress?.Trim(),
+                    postcode: hnAddress?.Postalcode?.Trim(),
+                    addressLine2: default,
+                    town: hnAddress?.TownOrCity?.Trim(),
+                    county: default,
+                    country: hnAddress?.Country?.Trim()
+                ) : null;
+
+            return RedirectToAction("NetworkDetails", "HeatNetwork");
         }
     }
 }

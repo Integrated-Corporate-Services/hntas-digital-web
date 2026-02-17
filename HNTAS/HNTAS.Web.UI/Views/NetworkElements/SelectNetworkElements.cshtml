@@ -3,32 +3,19 @@
 @using HNTAS.Web.UI.Models.Soa
 @model NetworkElementViewModel
 
-@* <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <div class="dashboard-card">
-            <h3 class="dashboard-card__title govuk-heading-s">
-                <a href="@Url.Action("DefineSOA")" class="govuk-link govuk-link--no-visited-state">Part of define your overall SOA</a>
-            </h3>
-            <p class="govuk-body-s">Choose your elements</p>
-        </div>
-    </div>
-</div> *@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        @* <span class="govuk-caption-l">SOA selection</span> *@
-        <span class="govuk-caption-xl">@ViewBag.HNId</span>
+        <span class="govuk-caption-xl">@ViewBag.HnId</span>
         <h1 class="govuk-heading-xl">
             Network elements
         </h1>
-        <form asp-action="SubmitSelectedElements" method="post" novalidate>
+        <form asp-action="FlowAfterSelectedElements" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
-                    @* <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 class="govuk-fieldset__heading">Which elements are part of your heat network?</h1>
-                    </legend> *@
+                    
                     <div id="soa-elements-hint" class="govuk-hint">
                         Select the elements that this heat network comprises of:
                     </div>
@@ -48,7 +35,8 @@
                             var checkboxId = $"SelectedElementIds_{item.Id.ToString()}";
                             var conditionalId = $"conditional-{item.Id.ToString().ToLowerInvariant()}";
                             var isChecked = Model.SelectedElementIds.Contains(item.Id);
-                            @if (Model.ElementOptions[i].Id == HeatNetworkElementType.EnergyCentre)
+                                
+                                @if (Model.ElementOptions[i].Id == HeatNetworkElementType.EnergyCentre)
                                 {
                                 <div class="govuk-checkboxes__item">
                                     <input class="govuk-checkboxes__input"
