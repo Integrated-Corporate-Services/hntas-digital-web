@@ -1,4 +1,4 @@
-# HNTAS.Api.Client.Model.NetworkCharacteristics
+# HNTAS.Api.Client.Model.NetworkCharacteristics2
 
 ## Properties
 

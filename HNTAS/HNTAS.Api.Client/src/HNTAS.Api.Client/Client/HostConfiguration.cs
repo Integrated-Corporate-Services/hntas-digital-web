@@ -91,6 +91,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new MeteringAndMonitoringStrategyJsonConverter());
             _jsonOptions.Converters.Add(new MeteringAndMonitoringStrategyResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkCharacteristicsJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkCharacteristics2JsonConverter());
             _jsonOptions.Converters.Add(new NetworkCharacteristicsResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkDetailsStatusJsonConverter());
             _jsonOptions.Converters.Add(new NetworkDetailsStatusNullableJsonConverter());
