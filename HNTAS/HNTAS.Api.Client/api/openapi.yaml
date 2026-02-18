@@ -3671,10 +3671,18 @@ components:
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkCharacteristics:
-          createdAt: 2000-01-23T04:56:07.000+00:00
+          isSupplyingOtherHeatNetworks: true
           updatedBy: updatedBy
+          hasCommercialConnections: true
+          numberOfCommunalFloors: 5
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          heatGenerationSourceFor: heatGenerationSourceFor
           createdBy: createdBy
+          containsPressureBreak: true
+          id: id
+          heatNetworkType: CityScaleDistrictHeatingNetwork
           status: InProgress
+          isSuppliedByADistrictHeatNetwork: true
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkElements:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4253,15 +4261,44 @@ components:
       type: object
     NetworkCharacteristicsResponse:
       example:
-        createdAt: 2000-01-23T04:56:07.000+00:00
+        isSupplyingOtherHeatNetworks: true
         updatedBy: updatedBy
+        hasCommercialConnections: true
+        numberOfCommunalFloors: 5
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        heatGenerationSourceFor: heatGenerationSourceFor
         createdBy: createdBy
+        containsPressureBreak: true
+        id: id
+        heatNetworkType: CityScaleDistrictHeatingNetwork
         status: InProgress
+        isSuppliedByADistrictHeatNetwork: true
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
+        id:
+          nullable: true
+          type: string
+        heatNetworkType:
+          $ref: "#/components/schemas/HeatNetworkType"
+        heatGenerationSourceFor:
+          nullable: true
+          type: string
+        numberOfCommunalFloors:
+          format: int32
+          nullable: true
+          type: integer
+        containsPressureBreak:
+          nullable: true
+          type: boolean
+        isSupplyingOtherHeatNetworks:
+          type: boolean
+        hasCommercialConnections:
+          type: boolean
+        isSuppliedByADistrictHeatNetwork:
+          type: boolean
         createdAt:
           format: date-time
           type: string
