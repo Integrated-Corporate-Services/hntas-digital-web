@@ -1,0 +1,39 @@
+﻿@using HNTAS.Web.UI.Models.NetworkCharacteristics
+@model DoesDistrictNetworkContainPressureBreakViewModel
+
+@{
+    ViewData["Title"] = "Does the district network contain a pressure break";
+    var fieldOrder = new[] { nameof(Model.ContainsPressureBreak) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.ContainsPressureBreak)).ToLowerInvariant();
+    var pageData = new HNTAS.Web.UI.Models.QuestionWithRadiobuttonsModel
+    {
+        Controller = "NetworkCharacteristics",
+        Action = "DoesDistrictNetworkContainPressureBreak",
+        FieldOrder = fieldOrder,
+        Questions = new List<HNTAS.Web.UI.Models.Question>
+        {
+            new HNTAS.Web.UI.Models.Question
+            {
+                QId = elementId,
+                QText = "Does the district network contain a pressure break?",
+                QDescText = null,
+                QHintText = null,
+                Options = new List<HNTAS.Web.UI.Models.Option>
+                {
+                    new HNTAS.Web.UI.Models.Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
+                    new HNTAS.Web.UI.Models.Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = null }
+                },
+                SeletedOption = Model.ContainsPressureBreak
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">@TempData.Peek("HnId")</span>
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div
