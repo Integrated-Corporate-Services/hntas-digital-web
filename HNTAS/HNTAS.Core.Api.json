@@ -4943,6 +4943,35 @@
           "status": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "heatNetworkType": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "heatGenerationSourceFor": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberOfCommunalFloors": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "containsPressureBreak": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isSupplyingOtherHeatNetworks": {
+            "type": "boolean"
+          },
+          "hasCommercialConnections": {
+            "type": "boolean"
+          },
+          "isSuppliedByADistrictHeatNetwork": {
+            "type": "boolean"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
