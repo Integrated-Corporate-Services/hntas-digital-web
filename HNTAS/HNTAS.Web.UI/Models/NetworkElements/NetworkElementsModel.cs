@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models.NetworkElements
 { 
-    public class NetworkElementsOverviewModel
+    public class NetworkElementsModel
     {
         public List<Element> Elements { get; set; } = new List<Element>();
         public AddressByStreetOrTownModel? HeatNetworkAddressModel { get; set; }
@@ -13,7 +13,7 @@ namespace HNTAS.Web.UI.Models.NetworkElements
 
     public class Element
     {
-        public HeatNetworkElementType Type { get; set; }
+        public HeatNetworkElementDisplayType Type { get; set; }
         public int? Count { get; set; }
     }
 }

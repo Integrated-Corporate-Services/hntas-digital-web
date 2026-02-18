@@ -9,6 +9,8 @@ using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using System.Linq;
+using Element = HNTAS.Web.UI.Models.NetworkElements.Element;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -36,25 +38,25 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult SelectNetworkElements([FromQuery] string hnId)
         {
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            
+            hnId = hnId ?? _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
             var model = new NetworkElementViewModel()
             {
                 ElementOptions = Utility.GetDefaultNetworkElementOptions()
             };
             ViewBag.HnId = hnId;
-            //ViewBag.selectedCharacteristics = heatNetworkData.NetworkCharacteristics;
-            ViewBag.selectedCharacteristics = "Communal Heat Network";
+            var networkType = _sessionHelper.GetFromSession<HeatNetworkType>(HttpContext, SessionKeys.HeatNetworkTypeSessionKey);
 
-            //if (ViewBag.selectedCharacteristics == "Communal Heat Network")
-            //{
-            //    // keep HeatNetworkElementType.EnergyCentre and HeatNetworkElementType.ConsumerHeatSystems from the list of options 
-            //    model.ElementOptions = model.ElementOptions
-            //        .Where(e => e.Id == HeatNetworkElementType.EnergyCentre || e.Id == HeatNetworkElementType.ConsumerHeatSystems)
-            //        .ToList();
-            //}
 
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
+            if (networkType == HeatNetworkType.CommunalHeatNetwork)
+            {                 
+                model.ElementOptions = model.ElementOptions
+                    .Where(e => e.Id == HeatNetworkElementDisplayType.EnergyCentre || e.Id == HeatNetworkElementDisplayType.ConsumerHeatSystems)
+                    .ToList();
+            }
+
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId.ToUpper());
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnName);
 
             return View(model);
@@ -66,12 +68,21 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             model.ElementOptions = Utility.GetDefaultNetworkElementOptions();
 
+            var networkType = _sessionHelper.GetFromSession<HeatNetworkType>(HttpContext, SessionKeys.HeatNetworkTypeSessionKey);
+
+            if (networkType == HeatNetworkType.CommunalHeatNetwork)
+            {
+                model.ElementOptions = model.ElementOptions
+                    .Where(e => e.Id == HeatNetworkElementDisplayType.EnergyCentre || e.Id == HeatNetworkElementDisplayType.ConsumerHeatSystems)
+                    .ToList();
+            }
+
             if (!ModelState.IsValid)
             {
                 return View("SelectNetworkElements", model);
             }
             var elements = new List<Element>();
-            // Custom validation: ensure quantity is entered for each selected element
+
             foreach (var selectedId in model.SelectedElementIds)
             {
                 var ele = new Element
@@ -80,7 +91,7 @@ namespace HNTAS.Web.UI.Controllers
                     Count = model.ElementCounts.TryGetValue(selectedId, out var cnt) ? cnt : null
                 };
                 elements.Add(ele);
-                if ((selectedId != HeatNetworkElementType.EnergyCentre) && (!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
+                if ((selectedId != HeatNetworkElementDisplayType.EnergyCentre) && (!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
                 {
                     var element = Utility.GetDefaultNetworkElementOptions().FirstOrDefault(x => x.Id == selectedId);
                     if (element == null)
@@ -90,19 +101,16 @@ namespace HNTAS.Web.UI.Controllers
                     ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter number of {element.Label}.");
                 }
             }
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
             _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "EnergyCentre");
             _sessionHelper.SaveToSession<List<Element>>(HttpContext, SessionKeys.SelectedElementsSessionKey, elements);
-            if (model.SelectedElementIds.Contains(HeatNetworkElementType.EnergyCentre))
+            if (model.SelectedElementIds.Contains(HeatNetworkElementDisplayType.EnergyCentre))
             {
                 var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
-                //_sessionHelper.SaveToSession<ECDetails>(HttpContext, SessionKeys.ECDetailsModelSessionKey, new ECDetailsModel { LatitudeLongi });
-                //var latLong = _sessionHelper.GetFromSession<ECDetailsM>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
                 var latlong = heatNetworkData?.EcDetails;
                 var address = heatNetworkData?.Address;
                 var ecDetailsModel = new ECDetailsModel
                 {
-                    LatitudeLongitude = latlong != null ? $"{latlong.Latitude},{latlong.Longitude}" : null                    
+                    LatitudeLongitude = latlong != null ? $"{latlong.Latitude},{latlong.Longitude}" : null
                 };
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.ECDetailsModelSessionKey, ecDetailsModel);
                 if (address != null)
@@ -110,14 +118,12 @@ namespace HNTAS.Web.UI.Controllers
                     var addressByStreetOrTownModel = (AddressByStreetOrTownModel)address!;
                     _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, addressByStreetOrTownModel);
                     return RedirectToAction("ConfirmAddress", "Address");
-                }               
-                
+                }
+
                 return RedirectToAction("DoesHNHaveAPostcode", "Address");
             }
-
-            return RedirectToAction("DoesHNHaveAPostcode", "Address");
-
-            
+            await SaveNetworkElements(new NetworkElementsModel());
+            return RedirectToAction("NetworkDetails", "HeatNetwork");
         }       
 
         [HttpGet]
@@ -135,8 +141,6 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("ECCoordinates", "Coordinates");
         }
 
-        
-
         [HttpGet]
         public IActionResult NetworkElementsOverView()
         {
@@ -146,44 +150,37 @@ namespace HNTAS.Web.UI.Controllers
             var ecDetails = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey);           
             var selectedElements = _sessionHelper.GetFromSession<List<Element>>(HttpContext, SessionKeys.SelectedElementsSessionKey) ?? new List<Element>();
 
-            var model = new NetworkElementsOverviewModel
+            var model = new NetworkElementsModel
             {
                 Elements = selectedElements,
                 HeatNetworkAddressModel = heatNetworkLocation?.HNAddressByStreet ?? new AddressByStreetOrTownModel(),
                 ECDetailsModel = ecDetails,                
             };
 
-            //_sessionHelper.SaveToSession<NetworkElementsOverviewModel>(HttpContext, "CheckYourAnswersNetworkElementsModel", model);
-
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult NetworkElementsOverView(NetworkElementsOverviewModel viewModel)
+        public async Task<IActionResult> NetworkElementsOverView(NetworkElementsModel viewModel)
         {            
+            await SaveNetworkElements(viewModel);
+            return RedirectToAction("NetworkDetails", "HeatNetwork");
+        }
+
+        private async Task SaveNetworkElements(NetworkElementsModel viewModel)
+        {
             var hnLocation = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
             viewModel.HeatNetworkAddressModel = hnLocation?.HNAddressByStreet ?? null;
-            viewModel.ECDetailsModel = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey);
-            
+            viewModel.ECDetailsModel = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? null;
+
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
 
             var elements = _sessionHelper.GetFromSession<List<Element>>(HttpContext, SessionKeys.SelectedElementsSessionKey);
 
             ModelState.Remove(nameof(viewModel.HeatNetworkAddressModel));
-            ModelState.Remove(nameof(viewModel.ECDetailsModel));
-
-            if (!ModelState.IsValid)
-            {
-                return View("NetworkElementsOverView", viewModel);
-            }
-
-            if (userId == null)
-            {
-                TempData["ErrorMessage"] = "An error occurred while saving network elements details. Please try again later.";
-                return View("NetworkElementsOverView", viewModel);
-            }
+            ModelState.Remove(nameof(viewModel.ECDetailsModel));            
 
             var hnAddress = viewModel?.HeatNetworkAddressModel;
 
@@ -208,7 +205,31 @@ namespace HNTAS.Web.UI.Controllers
                     country: hnAddress?.Country?.Trim()
                 ) : null;
 
-            return RedirectToAction("NetworkDetails", "HeatNetwork");
+            var request = new NetworkElements2
+            {
+                Elements = elements?.Select(e => new Api.Client.Model.Element(type: e.Type, count: e.Count)).ToList(),
+                Status = NetworkDetailsStatus.Complete,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = userId
+            };            
+
+            if (request.Elements != null)
+            {
+                request.Elements = request.Elements.Select((element, index) =>
+                {                    
+                    element.ElementId = (index + 1).ToString("D5");
+                    element.ElementType = Utility.GetNetworkElementIdByType(element.Type.ToString()!);
+
+                    if (element.Type == HeatNetworkElementDisplayType.EnergyCentre)
+                    {
+                        element.EcDetails = ecDetails;
+                        element.Address = address;
+                    }
+
+                    return element;
+                }).ToList();
+            }
+            await _heatNetworkService.UpdateNetworkElements(hnId!, request);
         }
     }
 }

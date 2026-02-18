@@ -36,7 +36,7 @@
                             var conditionalId = $"conditional-{item.Id.ToString().ToLowerInvariant()}";
                             var isChecked = Model.SelectedElementIds.Contains(item.Id);
                                 
-                                @if (Model.ElementOptions[i].Id == HeatNetworkElementType.EnergyCentre)
+                            @if (Model.ElementOptions[i].Id == HeatNetworkElementDisplayType.EnergyCentre)
                                 {
                                 <div class="govuk-checkboxes__item">
                                     <input class="govuk-checkboxes__input"

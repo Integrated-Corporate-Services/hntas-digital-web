@@ -29,7 +29,7 @@ namespace HNTAS.Web.UI.Controllers
             else if (previousStep == "EnergyCentre")
             {
                 var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-                this.ShowBackButton("SelectNetworkElements", "NetworkElements", hnId!);
+                this.ShowBackButton("SelectNetworkElements", "NetworkElements", new {hnId});
             }
             
             var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey) ?? new DoesHNHaveAPostcodeViewModel { HasPostcode = false };

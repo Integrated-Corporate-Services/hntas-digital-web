@@ -1,13 +1,15 @@
-# HNTAS.Api.Client.Model.UpdateElementDocumentsRequest
+# HNTAS.Api.Client.Model.NetworkElements2
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**HnId** | **string** |  | [optional] 
-**ElementType** | **HeatNetworkElementDisplayType** |  | [optional] 
+**Status** | **NetworkDetailsStatus** |  | [optional] 
+**Elements** | [**List&lt;Element&gt;**](Element.md) |  | [optional] 
+**CreatedAt** | **DateTimeOffset** |  | [optional] 
+**CreatedBy** | **string** |  | [optional] 
+**UpdatedAt** | **DateTimeOffset** |  | [optional] 
 **UpdatedBy** | **string** |  | [optional] 
-**Documents** | [**List&lt;UploadedDocument&gt;**](UploadedDocument.md) |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

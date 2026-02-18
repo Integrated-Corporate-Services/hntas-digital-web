@@ -566,6 +566,8 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
+            var networkType = heatNetworkData?.NetworkCharacteristics?.HeatNetworkType;
+
             this.ShowBackButton("AddNetworkDetails", "HeatNetwork", new {hnId});
 
             var networkDetailsTypeList = Utility.GetDefaultNetworkDetailsOptions();            
@@ -574,15 +576,15 @@ namespace HNTAS.Web.UI.Controllers
             {
                 if (option.Id == NetworkDetailsType.NetworkCharacteristics)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkCharacteristics?.Status);
+                    Utility.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkCharacteristics?.Status);
                 }
                 else if (option.Id == NetworkDetailsType.NetworkElements)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.Status);
+                    Utility.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkElements?.Status, heatNetworkData?.NetworkCharacteristics?.Status);
                 }
                 else if (option.Id == NetworkDetailsType.Soa)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.Soa?.Status);
+                    Utility.UpdateOptionStatus<SoaStatus, NetworkDetailsStatus>(option, heatNetworkData?.Soa?.Status, heatNetworkData?.NetworkElements?.Status);
                 }
             }
 
@@ -594,6 +596,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HNName = hnName;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnName);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkTypeSessionKey, networkType);
 
             return View("NetworkDetails", model);
         }

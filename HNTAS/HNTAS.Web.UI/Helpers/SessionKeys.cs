@@ -65,5 +65,7 @@
         public const string NetworkSupplyViewModelSessionKey = "NetworkSupplyViewModelSessionKey";
         public const string NetworkOverviewDataModelSessionKey = "NetworkOverviewDataModelSessionKey";
 
+        public const string HeatNetworkTypeSessionKey = "HeatNetworkTypeSessionKey";
+
     }
 }

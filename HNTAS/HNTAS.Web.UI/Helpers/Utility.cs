@@ -49,12 +49,12 @@ namespace HNTAS.Web.UI.Helpers
         {
             return new List<HeatNetworkElementOption>
             {
-                new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
-                new() { Id = HeatNetworkElementType.DistributionNetwork, Label = "Distribution network", Hint = "Only 1 allowed per heat network." },
-                new() { Id = HeatNetworkElementType.ThermalSubStation, Label = "Thermal sub station" },
-                new() { Id = HeatNetworkElementType.CommunalDistributionNetwork, Label = "Communal distribution network"},
-                new() { Id = HeatNetworkElementType.ConsumerConnections, Label = "Consumer connections" },
-                new() { Id = HeatNetworkElementType.ConsumerHeatSystems, Label = "Consumer heat systems" }
+                new() { Id = HeatNetworkElementDisplayType.EnergyCentre, Label = "Energy centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
+                new() { Id = HeatNetworkElementDisplayType.DistributionNetwork, Label = "Distribution network", Hint = "Only 1 allowed per heat network." },
+                new() { Id = HeatNetworkElementDisplayType.ThermalSubStation, Label = "Thermal sub station" },
+                new() { Id = HeatNetworkElementDisplayType.CommunalDistributionNetwork, Label = "Communal distribution network"},
+                new() { Id = HeatNetworkElementDisplayType.ConsumerConnections, Label = "Consumer connections" },
+                new() { Id = HeatNetworkElementDisplayType.ConsumerHeatSystems, Label = "Consumer heat systems" }
             };
         }        
 
@@ -277,7 +277,7 @@ namespace HNTAS.Web.UI.Helpers
             return new List<NetworkDetailsOption>
             {
                 new() { Id = NetworkDetailsType.NetworkCharacteristics, Label = "Network characteristics", Hint = "", UiStatus = StatusConstants.ReadyToStart, IsEnabled = true },
-                new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = true },
+                new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
                 new() { Id = NetworkDetailsType.Soa, Label = "Element Statement of Applicability", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
                 new() { Id = NetworkDetailsType.MeteringAndMonitoringStrategy, Label = "Metering and monitoring strategy", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
                 new() { Id = NetworkDetailsType.AssessmentPlan, Label = "Assessment plan", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
@@ -285,36 +285,76 @@ namespace HNTAS.Web.UI.Helpers
             };
         }
 
-        public static void UpdateOptionStatus<TStatus>(NetworkDetailsOption option, TStatus? status)
+        //    public static void UpdateOptionStatus<TStatus>(NetworkDetailsOption option, TStatus? status)
+        //where TStatus : struct, Enum
+        //    {
+        //        if (status == null)
+        //            return;
+
+        //        var statusName = Enum.GetName(typeof(TStatus), status.Value);
+
+        //        option.UiStatus = statusName switch
+        //        {
+        //            "Complete" => StatusConstants.Completed,
+        //            "InProgress" => StatusConstants.InProgress,
+        //            "ReadyToStart" => StatusConstants.ReadyToStart,
+        //            _ => StatusConstants.NotStarted
+        //        };
+
+        //        option.IsEnabled = statusName != "Submitted";
+        //    }
+
+        public static void UpdateOptionStatus<TStatus, TDependentStatus>(NetworkDetailsOption option, TStatus? status, TDependentStatus? dependentStatus = null)
     where TStatus : struct, Enum
+    where TDependentStatus : struct, Enum
         {
-            if (status == null)
+            //if (status == null)
+            //    return;
+
+            var statusName = status != null ? Enum.GetName(typeof(TStatus), status.Value) : null;
+            var dependentStatusName = dependentStatus != null ? Enum.GetName(typeof(TDependentStatus), dependentStatus!.Value) : null;
+
+            if (dependentStatusName == null && statusName == null)
                 return;
 
-            var statusName = Enum.GetName(typeof(TStatus), status.Value);
-
-            option.UiStatus = statusName switch
+            if (dependentStatusName == "Complete" && statusName == null)
             {
-                "Complete" => StatusConstants.Completed,
-                "InProgress" => StatusConstants.InProgress,
-                "ReadyToStart" => StatusConstants.ReadyToStart,
-                _ => StatusConstants.NotStarted
-            };
-
-            option.IsEnabled = statusName != "Submitted";
+                option.UiStatus = StatusConstants.ReadyToStart;
+                option.IsEnabled = true;
+            }
+            else if (statusName == "Complete")
+            {
+                option.UiStatus = StatusConstants.Completed;
+                option.IsEnabled = false;
+            }            
         }
 
         public static List<NetworkElementOption> GetDefaultNetworkElementOptions()
         {
             return new List<NetworkElementOption>
             {
-                new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
-                new() { Id = HeatNetworkElementType.DistributionNetwork, Label = "District Distribution Network", Hint = "Only 1 allowed per heat network." },
-                new() { Id = HeatNetworkElementType.ThermalSubStation, Label = "Thermal Substation" },
-                new() { Id = HeatNetworkElementType.CommunalDistributionNetwork, Label = "Communal Distribution Network"},
-                new() { Id = HeatNetworkElementType.ConsumerConnections, Label = "Consumer Connections" },
-                new() { Id = HeatNetworkElementType.ConsumerHeatSystems, Label = "Consumer Heat Systems" }
+                new() { Id = HeatNetworkElementDisplayType.EnergyCentre, Label = "Energy Centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
+                new() { Id = HeatNetworkElementDisplayType.DistributionNetwork, Label = "District Distribution Network", Hint = "Only 1 allowed per heat network." },
+                new() { Id = HeatNetworkElementDisplayType.ThermalSubStation, Label = "Thermal Substation" },
+                new() { Id = HeatNetworkElementDisplayType.CommunalDistributionNetwork, Label = "Communal Distribution Network"},
+                new() { Id = HeatNetworkElementDisplayType.ConsumerConnections, Label = "Consumer Connections" },
+                new() { Id = HeatNetworkElementDisplayType.ConsumerHeatSystems, Label = "Consumer Heat Systems" }
             };
+        }
+
+        public static string GetNetworkElementIdByType(string elementType)
+        {
+            return elementType switch
+            {
+                "EnergyCentre" => "EC",
+                "DistributionNetwork" => "DDN",
+                "ThermalSubStation" => "TS",
+                "CommunalDistributionNetwork" => "CDN",
+                "ConsumerConnections" => "CC",
+                "ConsumerHeatSystems" => "CHS",
+                _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element type value: {elementType}")
+            };
+
         }
     }
 }

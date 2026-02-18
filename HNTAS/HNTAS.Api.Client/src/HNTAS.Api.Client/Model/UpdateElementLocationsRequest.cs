@@ -38,7 +38,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="elementType">elementType</param>
         /// <param name="locations">locations</param>
         [JsonConstructor]
-        public UpdateElementLocationsRequest(string hnId, string updatedBy, HeatNetworkElementType elementType, List<string> locations)
+        public UpdateElementLocationsRequest(string hnId, string updatedBy, HeatNetworkElementDisplayType elementType, List<string> locations)
         {
             HnId = hnId;
             UpdatedBy = updatedBy;
@@ -53,7 +53,7 @@ namespace HNTAS.Api.Client.Model
         /// Gets or Sets ElementType
         /// </summary>
         [JsonPropertyName("elementType")]
-        public HeatNetworkElementType ElementType { get; set; }
+        public HeatNetworkElementDisplayType ElementType { get; set; }
 
         /// <summary>
         /// Gets or Sets HnId
@@ -124,7 +124,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> hnId = default;
             Option<string?> updatedBy = default;
-            Option<HeatNetworkElementType?> elementType = default;
+            Option<HeatNetworkElementDisplayType?> elementType = default;
             Option<List<string>?> locations = default;
 
             while (utf8JsonReader.Read())
@@ -151,7 +151,7 @@ namespace HNTAS.Api.Client.Model
                         case "elementType":
                             string? elementTypeRawValue = utf8JsonReader.GetString();
                             if (elementTypeRawValue != null)
-                                elementType = new Option<HeatNetworkElementType?>(HeatNetworkElementTypeValueConverter.FromStringOrDefault(elementTypeRawValue));
+                                elementType = new Option<HeatNetworkElementDisplayType?>(HeatNetworkElementDisplayTypeValueConverter.FromStringOrDefault(elementTypeRawValue));
                             break;
                         case "locations":
                             locations = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
@@ -226,7 +226,7 @@ namespace HNTAS.Api.Client.Model
 
             writer.WriteString("updatedBy", updateElementLocationsRequest.UpdatedBy);
 
-            var elementTypeRawValue = HeatNetworkElementTypeValueConverter.ToJsonValue(updateElementLocationsRequest.ElementType);
+            var elementTypeRawValue = HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(updateElementLocationsRequest.ElementType);
             writer.WriteString("elementType", elementTypeRawValue);
 
             writer.WritePropertyName("locations");

@@ -26,25 +26,23 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// NetworkElementsResponse
+    /// NetworkElements2
     /// </summary>
-    public partial class NetworkElementsResponse : IValidatableObject
+    public partial class NetworkElements2 : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NetworkElementsResponse" /> class.
+        /// Initializes a new instance of the <see cref="NetworkElements2" /> class.
         /// </summary>
         /// <param name="status">status</param>
-        /// <param name="elementType">elementType</param>
         /// <param name="elements">elements</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public NetworkElementsResponse(Option<NetworkDetailsStatus?> status = default, Option<string?> elementType = default, Option<List<Element>?> elements = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public NetworkElements2(Option<NetworkDetailsStatus?> status = default, Option<List<Element>?> elements = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
-            ElementTypeOption = elementType;
             ElementsOption = elements;
             CreatedAtOption = createdAt;
             CreatedByOption = createdBy;
@@ -67,19 +65,6 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("status")]
         public NetworkDetailsStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of ElementType
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ElementTypeOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets ElementType
-        /// </summary>
-        [JsonPropertyName("elementType")]
-        public string? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Elements
@@ -153,9 +138,8 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class NetworkElementsResponse {\n");
+            sb.Append("class NetworkElements2 {\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
-            sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("  Elements: ").Append(Elements).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
@@ -177,9 +161,9 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="NetworkElementsResponse" />
+    /// A Json converter for type <see cref="NetworkElements2" />
     /// </summary>
-    public class NetworkElementsResponseJsonConverter : JsonConverter<NetworkElementsResponse>
+    public class NetworkElements2JsonConverter : JsonConverter<NetworkElements2>
     {
         /// <summary>
         /// The format to use to serialize CreatedAt
@@ -192,14 +176,14 @@ namespace HNTAS.Api.Client.Model
         public static string UpdatedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
         /// <summary>
-        /// Deserializes json to <see cref="NetworkElementsResponse" />
+        /// Deserializes json to <see cref="NetworkElements2" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override NetworkElementsResponse Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override NetworkElements2 Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -209,7 +193,6 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<NetworkDetailsStatus?> status = default;
-            Option<string?> elementType = default;
             Option<List<Element>?> elements = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
@@ -236,9 +219,6 @@ namespace HNTAS.Api.Client.Model
                             if (statusRawValue != null)
                                 status = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
-                        case "elementType":
-                            elementType = new Option<string?>(utf8JsonReader.GetString());
-                            break;
                         case "elements":
                             elements = new Option<List<Element>?>(JsonSerializer.Deserialize<List<Element>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
@@ -246,7 +226,7 @@ namespace HNTAS.Api.Client.Model
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "createdBy":
-                            createdBy = new Option<string?>(utf8JsonReader.GetString());
+                            createdBy = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "updatedAt":
                             updatedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
@@ -261,78 +241,75 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class NetworkElementsResponse.");
+                throw new ArgumentNullException(nameof(status), "Property is not nullable for class NetworkElements2.");
 
             if (elements.IsSet && elements.Value == null)
-                throw new ArgumentNullException(nameof(elements), "Property is not nullable for class NetworkElementsResponse.");
+                throw new ArgumentNullException(nameof(elements), "Property is not nullable for class NetworkElements2.");
 
             if (createdAt.IsSet && createdAt.Value == null)
-                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class NetworkElementsResponse.");
+                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class NetworkElements2.");
 
-            return new NetworkElementsResponse(status, elementType, elements, createdAt, createdBy, updatedAt, updatedBy);
+            if (createdBy.IsSet && createdBy.Value == null)
+                throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class NetworkElements2.");
+
+            return new NetworkElements2(status, elements, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
-        /// Serializes a <see cref="NetworkElementsResponse" />
+        /// Serializes a <see cref="NetworkElements2" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="networkElementsResponse"></param>
+        /// <param name="networkElements2"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, NetworkElementsResponse networkElementsResponse, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, NetworkElements2 networkElements2, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, networkElementsResponse, jsonSerializerOptions);
+            WriteProperties(writer, networkElements2, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="NetworkElementsResponse" />
+        /// Serializes the properties of <see cref="NetworkElements2" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="networkElementsResponse"></param>
+        /// <param name="networkElements2"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, NetworkElementsResponse networkElementsResponse, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, NetworkElements2 networkElements2, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (networkElementsResponse.ElementsOption.IsSet && networkElementsResponse.Elements == null)
-                throw new ArgumentNullException(nameof(networkElementsResponse.Elements), "Property is required for class NetworkElementsResponse.");
+            if (networkElements2.ElementsOption.IsSet && networkElements2.Elements == null)
+                throw new ArgumentNullException(nameof(networkElements2.Elements), "Property is required for class NetworkElements2.");
 
-            if (networkElementsResponse.StatusOption.IsSet)
+            if (networkElements2.CreatedByOption.IsSet && networkElements2.CreatedBy == null)
+                throw new ArgumentNullException(nameof(networkElements2.CreatedBy), "Property is required for class NetworkElements2.");
+
+            if (networkElements2.StatusOption.IsSet)
             {
-                var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkElementsResponse.Status!.Value);
+                var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkElements2.Status!.Value);
                 writer.WriteString("status", statusRawValue);
             }
-            if (networkElementsResponse.ElementTypeOption.IsSet)
-                if (networkElementsResponse.ElementTypeOption.Value != null)
-                    writer.WriteString("elementType", networkElementsResponse.ElementType);
-                else
-                    writer.WriteNull("elementType");
-
-            if (networkElementsResponse.ElementsOption.IsSet)
+            if (networkElements2.ElementsOption.IsSet)
             {
                 writer.WritePropertyName("elements");
-                JsonSerializer.Serialize(writer, networkElementsResponse.Elements, jsonSerializerOptions);
+                JsonSerializer.Serialize(writer, networkElements2.Elements, jsonSerializerOptions);
             }
-            if (networkElementsResponse.CreatedAtOption.IsSet)
-                writer.WriteString("createdAt", networkElementsResponse.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
+            if (networkElements2.CreatedAtOption.IsSet)
+                writer.WriteString("createdAt", networkElements2.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
 
-            if (networkElementsResponse.CreatedByOption.IsSet)
-                if (networkElementsResponse.CreatedByOption.Value != null)
-                    writer.WriteString("createdBy", networkElementsResponse.CreatedBy);
-                else
-                    writer.WriteNull("createdBy");
+            if (networkElements2.CreatedByOption.IsSet)
+                writer.WriteString("createdBy", networkElements2.CreatedBy);
 
-            if (networkElementsResponse.UpdatedAtOption.IsSet)
-                if (networkElementsResponse.UpdatedAtOption.Value != null)
-                    writer.WriteString("updatedAt", networkElementsResponse.UpdatedAtOption.Value!.Value.ToString(UpdatedAtFormat));
+            if (networkElements2.UpdatedAtOption.IsSet)
+                if (networkElements2.UpdatedAtOption.Value != null)
+                    writer.WriteString("updatedAt", networkElements2.UpdatedAtOption.Value!.Value.ToString(UpdatedAtFormat));
                 else
                     writer.WriteNull("updatedAt");
 
-            if (networkElementsResponse.UpdatedByOption.IsSet)
-                if (networkElementsResponse.UpdatedByOption.Value != null)
-                    writer.WriteString("updatedBy", networkElementsResponse.UpdatedBy);
+            if (networkElements2.UpdatedByOption.IsSet)
+                if (networkElements2.UpdatedByOption.Value != null)
+                    writer.WriteString("updatedBy", networkElements2.UpdatedBy);
                 else
                     writer.WriteNull("updatedBy");
         }

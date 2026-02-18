@@ -34,14 +34,16 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="NetworkElements" /> class.
         /// </summary>
         /// <param name="status">status</param>
+        /// <param name="elements">elements</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public NetworkElements(Option<NetworkDetailsStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public NetworkElements(Option<NetworkDetailsStatus?> status = default, Option<List<Element>?> elements = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
+            ElementsOption = elements;
             CreatedAtOption = createdAt;
             CreatedByOption = createdBy;
             UpdatedAtOption = updatedAt;
@@ -63,6 +65,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("status")]
         public NetworkDetailsStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Elements
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<Element>?> ElementsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Elements
+        /// </summary>
+        [JsonPropertyName("elements")]
+        public List<Element>? Elements { get { return this.ElementsOption; } set { this.ElementsOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedAt
@@ -125,6 +140,7 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class NetworkElements {\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  Elements: ").Append(Elements).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
@@ -177,6 +193,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<NetworkDetailsStatus?> status = default;
+            Option<List<Element>?> elements = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
@@ -202,6 +219,9 @@ namespace HNTAS.Api.Client.Model
                             if (statusRawValue != null)
                                 status = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
+                        case "elements":
+                            elements = new Option<List<Element>?>(JsonSerializer.Deserialize<List<Element>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -223,13 +243,16 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class NetworkElements.");
 
+            if (elements.IsSet && elements.Value == null)
+                throw new ArgumentNullException(nameof(elements), "Property is not nullable for class NetworkElements.");
+
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class NetworkElements.");
 
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class NetworkElements.");
 
-            return new NetworkElements(status, createdAt, createdBy, updatedAt, updatedBy);
+            return new NetworkElements(status, elements, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
@@ -256,6 +279,9 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, NetworkElements networkElements, JsonSerializerOptions jsonSerializerOptions)
         {
+            if (networkElements.ElementsOption.IsSet && networkElements.Elements == null)
+                throw new ArgumentNullException(nameof(networkElements.Elements), "Property is required for class NetworkElements.");
+
             if (networkElements.CreatedByOption.IsSet && networkElements.CreatedBy == null)
                 throw new ArgumentNullException(nameof(networkElements.CreatedBy), "Property is required for class NetworkElements.");
 
@@ -263,6 +289,11 @@ namespace HNTAS.Api.Client.Model
             {
                 var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkElements.Status!.Value);
                 writer.WriteString("status", statusRawValue);
+            }
+            if (networkElements.ElementsOption.IsSet)
+            {
+                writer.WritePropertyName("elements");
+                JsonSerializer.Serialize(writer, networkElements.Elements, jsonSerializerOptions);
             }
             if (networkElements.CreatedAtOption.IsSet)
                 writer.WriteString("createdAt", networkElements.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
