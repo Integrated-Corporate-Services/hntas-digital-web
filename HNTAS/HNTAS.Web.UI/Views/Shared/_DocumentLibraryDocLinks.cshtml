@@ -1,0 +1,62 @@
+﻿@using HNTAS.Web.UI.Models
+@model HntasElementDocumentsLinksViewModel
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        @* Element Name *@
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-6">@Model.ElementName</h1>
+
+        @* Description *@
+        <p class="govuk-body">
+            @Model.Description
+        </p>
+
+        @* Constant *@
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Contents</h2>
+
+        <ul class="govuk-list govuk-!-margin-bottom-6">
+            @foreach (var docSection in Model.DocumentListSections)
+            {
+                <li><a class="govuk-link govuk-link--no-visited-state" href="@(" #" + docSection.SectionId)" rel="noreferrer noopener">@docSection.SectionName</a></li>
+            }
+        </ul>
+
+        @foreach (var docSection in Model.DocumentListSections)
+        {
+            <h2 id="@docSection.SectionId" class="govuk-heading-m govuk-!-margin-top-6">@docSection.SectionName</h2>
+            @foreach (var pdfRow in docSection.PdfRows)
+            {
+                <div class="govuk-grid-row govuk-!-margin-top-6">
+                    <div class="govuk-grid-column-one-quarter govuk-!-display-none-print">
+                        <a href="@pdfRow.LinkToPdf" rel="noreferrer noopener" target="_blank">
+                            @HNTAS.Web.UI.Helpers.PdfIconHelper.PdfIcon()
+                        </a>
+                    </div>
+                    <div class="govuk-grid-column-three-quarters">
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+                            <a href="@pdfRow.LinkToPdf" class="govuk-link govuk-body-l govuk-link--no-visited-state" rel="noreferrer noopener" target="_blank">@pdfRow.PdfTitle</a>
+                        </h2>
+                        <div id="file-hint-1" class="govuk-hint govuk-!-margin-top-2">
+                            @pdfRow.UpdatedBy
+                            <br>
+                            PDF, @pdfRow.SizeInKb KB, @pdfRow.NumberOfPages pages
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        <aside class="govuk-related-items" role="complementary" aria-labelledby="related-content-title">
+            <h2 class="govuk-heading-s" id="related-content-title">Related content</h2>
+            <nav role="navigation">
+                <ul class="govuk-list">
+                    <li><a class="govuk-link" href="#">Guidance</a></li>
+                </ul>
+            </nav>
+        </aside>
+    </div>
+</div>
