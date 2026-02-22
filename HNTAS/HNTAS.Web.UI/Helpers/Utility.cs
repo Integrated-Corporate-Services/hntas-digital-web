@@ -283,34 +283,12 @@ namespace HNTAS.Web.UI.Helpers
                 new() { Id = NetworkDetailsType.AssessmentPlan, Label = "Assessment plan", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
                 new() { Id = NetworkDetailsType.DesignConstructionLog, Label = "Design and construction log", UiStatus = StatusConstants .CannotStartYet, IsEnabled = false }
             };
-        }
-
-        //    public static void UpdateOptionStatus<TStatus>(NetworkDetailsOption option, TStatus? status)
-        //where TStatus : struct, Enum
-        //    {
-        //        if (status == null)
-        //            return;
-
-        //        var statusName = Enum.GetName(typeof(TStatus), status.Value);
-
-        //        option.UiStatus = statusName switch
-        //        {
-        //            "Complete" => StatusConstants.Completed,
-        //            "InProgress" => StatusConstants.InProgress,
-        //            "ReadyToStart" => StatusConstants.ReadyToStart,
-        //            _ => StatusConstants.NotStarted
-        //        };
-
-        //        option.IsEnabled = statusName != "Submitted";
-        //    }
+        }        
 
         public static void UpdateOptionStatus<TStatus, TDependentStatus>(NetworkDetailsOption option, TStatus? status, TDependentStatus? dependentStatus = null)
     where TStatus : struct, Enum
     where TDependentStatus : struct, Enum
-        {
-            //if (status == null)
-            //    return;
-
+        {            
             var statusName = status != null ? Enum.GetName(typeof(TStatus), status.Value) : null;
             var dependentStatusName = dependentStatus != null ? Enum.GetName(typeof(TDependentStatus), dependentStatus!.Value) : null;
 
@@ -325,7 +303,7 @@ namespace HNTAS.Web.UI.Helpers
             else if (statusName == "Complete")
             {
                 option.UiStatus = StatusConstants.Completed;
-                option.IsEnabled = false;
+                option.IsEnabled = true;
             }            
         }
 

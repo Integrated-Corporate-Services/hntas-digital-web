@@ -24,11 +24,16 @@ namespace HNTAS.Web.UI.Controllers
             string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
             if (previousStep == "HeatNetwork")
             {
+                ViewBag.Heading = "Does your heat network have a postcode?";
+                ViewBag.Description = "Select one option";
                 this.ShowBackButton("EnterHNName", "HeatNetwork");
             }
             else if (previousStep == "EnergyCentre")
             {
+                ViewBag.Heading = "Does the primary energy centre for have a postcode?";
+                ViewBag.Description = "If the energy centre is located within another building, for example basement, enter the postcode of that building.";
                 var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                ViewBag.HnId = hnId;
                 this.ShowBackButton("SelectNetworkElements", "NetworkElements", new {hnId});
             }
             
@@ -47,7 +52,7 @@ namespace HNTAS.Web.UI.Controllers
             else if (previousStep == "EnergyCentre")
             {
                 var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-                this.ShowBackButton("SelectNetworkElements", "NetworkElements", hnId!);
+                this.ShowBackButton("SelectNetworkElements", "NetworkElements", new { hnId });
             }
 
             if (!ModelState.IsValid)
@@ -56,8 +61,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
             if (!model.HasPostcode)
-            {
-                //return RedirectToAction("ECCoordinates");
+            {                
                 return RedirectToAction("ECCoordinates", "Coordinates");
             }
             SearchAddressByPostcodeModel results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
@@ -71,7 +75,7 @@ namespace HNTAS.Web.UI.Controllers
                 .Select(address => Utility.CapitalizeCommaSeparated(address))
                 .ToArray();
             _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
-            //_sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "HeatNetwork");
+            
             return RedirectToAction("SearchByPostcodeResults", "Address");
         }
 
@@ -167,7 +171,7 @@ namespace HNTAS.Web.UI.Controllers
             else if (previousStep == "EnergyCentre")
             {
                 var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-                this.ShowBackButton("SelectNetworkElements", "NetworkElements", hnId!);
+                this.ShowBackButton("SelectNetworkElements", "NetworkElements", new { hnId });
             }
             var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey)?.HNAddressByStreet ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
             return View(model);
@@ -184,7 +188,7 @@ namespace HNTAS.Web.UI.Controllers
             else if (previousStep == "EnergyCentre")
             {
                 var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-                this.ShowBackButton("SelectNetworkElements", "NetworkElements", hnId!);
+                this.ShowBackButton("SelectNetworkElements", "NetworkElements", new { hnId });
             }
             if (!ModelState.IsValid)
             {
@@ -196,7 +200,7 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
             heatNetworkLocationModel?.HNAddressByStreet = model;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
-            //return RedirectToAction("ECCoordinates", "HeatNetwork");
+            
             return RedirectToAction("ECCoordinates", "Coordinates");
         }
 

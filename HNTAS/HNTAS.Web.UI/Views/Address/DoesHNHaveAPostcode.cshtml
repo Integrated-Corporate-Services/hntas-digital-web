@@ -2,8 +2,8 @@
 @model DoesHNHaveAPostcodeViewModel
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">  
-
+  <div class="govuk-grid-column-two-thirds">      
+      <span class="govuk-caption-xl">@ViewBag.HnId</span>
     @* Error summary *@
 
     <form method="post" novalidate>
@@ -12,10 +12,10 @@
         <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
             <fieldset class="govuk-fieldset" aria-describedby="has-postcode-hint">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                    <h1 class="govuk-fieldset__heading">Does your heat network have a postcode?</h1>
+                        <h1 class="govuk-fieldset__heading">@ViewBag.Heading</h1>
                 </legend>
 
-                <div id="has-postcode-hint" class="govuk-hint">Select one option</div>
+                    <div id="has-postcode-hint" class="govuk-hint">@ViewBag.Description</div>
 
                 @if (ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0)
                 {

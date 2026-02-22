@@ -11,7 +11,6 @@ namespace HNTAS.Web.UI.Models.NetworkElements
 
         [MustHaveOneItem(ErrorMessage = "Select at least one element that is part of your heat network.")]
         public List<HeatNetworkElementDisplayType> SelectedElementIds { get; set; } = new();
-        [Required(ErrorMessage = "Element count is required.")]
         public Dictionary<HeatNetworkElementDisplayType, int?> ElementCounts { get; set; } = new();
     }
 
