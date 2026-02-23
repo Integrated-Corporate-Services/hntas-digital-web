@@ -200,7 +200,7 @@ namespace HNTAS.Web.UI.Controllers
                 .Where(part => !string.IsNullOrWhiteSpace(part));
             model.Fulladdress = string.Join(", ", addressParts);
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
-            heatNetworkLocationModel?.HNAddressByStreet = model;
+            heatNetworkLocationModel.HNAddressByStreet = model;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
             
             return RedirectToAction("ECCoordinates", "Coordinates");
