@@ -26,9 +26,9 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// Defines HeatNetworkElementType
+    /// Defines HeatNetworkElementDisplayType
     /// </summary>
-    public enum HeatNetworkElementType
+    public enum HeatNetworkElementDisplayType
     {
         /// <summary>
         /// Enum EnergyCentre for value: EnergyCentre
@@ -62,90 +62,90 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// Converts <see cref="HeatNetworkElementType"/> to and from the JSON value
+    /// Converts <see cref="HeatNetworkElementDisplayType"/> to and from the JSON value
     /// </summary>
-    public static class HeatNetworkElementTypeValueConverter
+    public static class HeatNetworkElementDisplayTypeValueConverter
     {
         /// <summary>
-        /// Parses a given value to <see cref="HeatNetworkElementType"/>
+        /// Parses a given value to <see cref="HeatNetworkElementDisplayType"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static HeatNetworkElementType FromString(string value)
+        public static HeatNetworkElementDisplayType FromString(string value)
         {
             if (value.Equals("EnergyCentre"))
-                return HeatNetworkElementType.EnergyCentre;
+                return HeatNetworkElementDisplayType.EnergyCentre;
 
             if (value.Equals("DistributionNetwork"))
-                return HeatNetworkElementType.DistributionNetwork;
+                return HeatNetworkElementDisplayType.DistributionNetwork;
 
             if (value.Equals("ThermalSubStation"))
-                return HeatNetworkElementType.ThermalSubStation;
+                return HeatNetworkElementDisplayType.ThermalSubStation;
 
             if (value.Equals("CommunalDistributionNetwork"))
-                return HeatNetworkElementType.CommunalDistributionNetwork;
+                return HeatNetworkElementDisplayType.CommunalDistributionNetwork;
 
             if (value.Equals("ConsumerConnections"))
-                return HeatNetworkElementType.ConsumerConnections;
+                return HeatNetworkElementDisplayType.ConsumerConnections;
 
             if (value.Equals("ConsumerHeatSystems"))
-                return HeatNetworkElementType.ConsumerHeatSystems;
+                return HeatNetworkElementDisplayType.ConsumerHeatSystems;
 
-            throw new NotImplementedException($"Could not convert value to type HeatNetworkElementType: '{value}'");
+            throw new NotImplementedException($"Could not convert value to type HeatNetworkElementDisplayType: '{value}'");
         }
 
         /// <summary>
-        /// Parses a given value to <see cref="HeatNetworkElementType"/>
+        /// Parses a given value to <see cref="HeatNetworkElementDisplayType"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static HeatNetworkElementType? FromStringOrDefault(string value)
+        public static HeatNetworkElementDisplayType? FromStringOrDefault(string value)
         {
             if (value.Equals("EnergyCentre"))
-                return HeatNetworkElementType.EnergyCentre;
+                return HeatNetworkElementDisplayType.EnergyCentre;
 
             if (value.Equals("DistributionNetwork"))
-                return HeatNetworkElementType.DistributionNetwork;
+                return HeatNetworkElementDisplayType.DistributionNetwork;
 
             if (value.Equals("ThermalSubStation"))
-                return HeatNetworkElementType.ThermalSubStation;
+                return HeatNetworkElementDisplayType.ThermalSubStation;
 
             if (value.Equals("CommunalDistributionNetwork"))
-                return HeatNetworkElementType.CommunalDistributionNetwork;
+                return HeatNetworkElementDisplayType.CommunalDistributionNetwork;
 
             if (value.Equals("ConsumerConnections"))
-                return HeatNetworkElementType.ConsumerConnections;
+                return HeatNetworkElementDisplayType.ConsumerConnections;
 
             if (value.Equals("ConsumerHeatSystems"))
-                return HeatNetworkElementType.ConsumerHeatSystems;
+                return HeatNetworkElementDisplayType.ConsumerHeatSystems;
 
             return null;
         }
 
         /// <summary>
-        /// Converts the <see cref="HeatNetworkElementType"/> to the json value
+        /// Converts the <see cref="HeatNetworkElementDisplayType"/> to the json value
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static string ToJsonValue(HeatNetworkElementType value)
+        public static string ToJsonValue(HeatNetworkElementDisplayType value)
         {
-            if (value == HeatNetworkElementType.EnergyCentre)
+            if (value == HeatNetworkElementDisplayType.EnergyCentre)
                 return "EnergyCentre";
 
-            if (value == HeatNetworkElementType.DistributionNetwork)
+            if (value == HeatNetworkElementDisplayType.DistributionNetwork)
                 return "DistributionNetwork";
 
-            if (value == HeatNetworkElementType.ThermalSubStation)
+            if (value == HeatNetworkElementDisplayType.ThermalSubStation)
                 return "ThermalSubStation";
 
-            if (value == HeatNetworkElementType.CommunalDistributionNetwork)
+            if (value == HeatNetworkElementDisplayType.CommunalDistributionNetwork)
                 return "CommunalDistributionNetwork";
 
-            if (value == HeatNetworkElementType.ConsumerConnections)
+            if (value == HeatNetworkElementDisplayType.ConsumerConnections)
                 return "ConsumerConnections";
 
-            if (value == HeatNetworkElementType.ConsumerHeatSystems)
+            if (value == HeatNetworkElementDisplayType.ConsumerHeatSystems)
                 return "ConsumerHeatSystems";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
@@ -153,10 +153,10 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="HeatNetworkElementType"/>
+    /// A Json converter for type <see cref="HeatNetworkElementDisplayType"/>
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
-    public class HeatNetworkElementTypeJsonConverter : JsonConverter<HeatNetworkElementType>
+    public class HeatNetworkElementDisplayTypeJsonConverter : JsonConverter<HeatNetworkElementDisplayType>
     {
         /// <summary>
         /// Returns a  from the Json object
@@ -165,13 +165,13 @@ namespace HNTAS.Api.Client.Model
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override HeatNetworkElementType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override HeatNetworkElementDisplayType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            HeatNetworkElementType? result = rawValue == null
+            HeatNetworkElementDisplayType? result = rawValue == null
                 ? null
-                : HeatNetworkElementTypeValueConverter.FromStringOrDefault(rawValue);
+                : HeatNetworkElementDisplayTypeValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -180,36 +180,36 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the HeatNetworkElementType to the json writer
+        /// Writes the HeatNetworkElementDisplayType to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="heatNetworkElementType"></param>
+        /// <param name="heatNetworkElementDisplayType"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, HeatNetworkElementType heatNetworkElementType, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, HeatNetworkElementDisplayType heatNetworkElementDisplayType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkElementType.ToString());
+            writer.WriteStringValue(HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(heatNetworkElementDisplayType).ToString());
         }
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="HeatNetworkElementType"/>
+    /// A Json converter for type <see cref="HeatNetworkElementDisplayType"/>
     /// </summary>
-    public class HeatNetworkElementTypeNullableJsonConverter : JsonConverter<HeatNetworkElementType?>
+    public class HeatNetworkElementDisplayTypeNullableJsonConverter : JsonConverter<HeatNetworkElementDisplayType?>
     {
         /// <summary>
-        /// Returns a HeatNetworkElementType from the Json object
+        /// Returns a HeatNetworkElementDisplayType from the Json object
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override HeatNetworkElementType? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override HeatNetworkElementDisplayType? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            HeatNetworkElementType? result = rawValue == null
+            HeatNetworkElementDisplayType? result = rawValue == null
                 ? null
-                : HeatNetworkElementTypeValueConverter.FromStringOrDefault(rawValue);
+                : HeatNetworkElementDisplayTypeValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -218,14 +218,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the HeatNetworkElementDisplayType to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="heatNetworkElementType"></param>
+        /// <param name="heatNetworkElementDisplayType"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, HeatNetworkElementType? heatNetworkElementType, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, HeatNetworkElementDisplayType? heatNetworkElementDisplayType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkElementType?.ToString() ?? "null");
+            writer.WriteStringValue(heatNetworkElementDisplayType.HasValue ? HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(heatNetworkElementDisplayType.Value).ToString() : "null");
         }
     }
 }

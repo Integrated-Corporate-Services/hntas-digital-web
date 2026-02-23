@@ -5,6 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Status** | **NetworkDetailsStatus** |  | [optional] 
+**ElementType** | **string** |  | [optional] 
+**Elements** | [**List&lt;Element&gt;**](Element.md) |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **UpdatedAt** | **DateTimeOffset** |  | [optional] 

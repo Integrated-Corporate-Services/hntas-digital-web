@@ -77,6 +77,26 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
         }
+
+        public async Task<HeatNetworkResponse> UpdateNetworkElements(string hnId, NetworkElements2 request)
+        {
+            try
+            {
+                var response = await _heatNetworksApi.ApiHeatNetworksNetworkElementsPutAsync(request, hnId);
+                if (response.IsOk)
+                {
+                    var updatedNetwork = response.Ok();
+                    _logger.LogInformation("Updated network elements for heat network ID: {HnId}", hnId);
+                    return updatedNetwork;
+                }
+                throw new Exception($"Failed to update network elements for heat network '{hnId}' with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating network elements for heat network ID: {HnId}", hnId);
+                throw;
+            }
+        }
         public async Task<List<HeatNetworkResponse>> GetAllHeatNetworks()
         {
             try
