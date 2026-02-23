@@ -142,7 +142,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
                         HeatNetworkElements = new List<HeatNetworkElementResponse>()
                         {
                             new HeatNetworkElementResponse(){
-                                Name = HeatNetworkElementType.EnergyCentre.ToString(),
+                                Name = HeatNetworkElementDisplayType.EnergyCentre.ToString(),
                                 Count = 1,
                                 Locations = new List<string>{ "Location 1" },
                                 Documents = new List<UploadedDocumentResponse>{
@@ -157,7 +157,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
                                 }
                             },
                             new HeatNetworkElementResponse(){
-                                Name = HeatNetworkElementType.DistributionNetwork.ToString(),
+                                Name = HeatNetworkElementDisplayType.DistributionNetwork.ToString(),
                                 Count = 1,
                                 Locations = new List<string>{ "Location 2" },
                                 Documents = new List<UploadedDocumentResponse>{
@@ -172,7 +172,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
                                 }
                             },
                             new HeatNetworkElementResponse(){
-                                Name = HeatNetworkElementType.ThermalSubStation.ToString(),
+                                Name = HeatNetworkElementDisplayType.ThermalSubStation.ToString(),
                                 Count = 2,
                                 Locations = new List<string>{ "Location 3", "Location 4" },
                                 Documents = new List<UploadedDocumentResponse>{

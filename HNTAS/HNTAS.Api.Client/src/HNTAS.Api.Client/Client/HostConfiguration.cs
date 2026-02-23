@@ -65,14 +65,15 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new DocumentTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());
             _jsonOptions.Converters.Add(new ECDetails2JsonConverter());
+            _jsonOptions.Converters.Add(new ElementJsonConverter());
             _jsonOptions.Converters.Add(new EnergyJsonConverter());
             _jsonOptions.Converters.Add(new EnergyCentreDetailsJsonConverter());
             _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementJsonConverter());
+            _jsonOptions.Converters.Add(new HeatNetworkElementDisplayTypeJsonConverter());
+            _jsonOptions.Converters.Add(new HeatNetworkElementDisplayTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementResponseJsonConverter());
-            _jsonOptions.Converters.Add(new HeatNetworkElementTypeJsonConverter());
-            _jsonOptions.Converters.Add(new HeatNetworkElementTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkExternalResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkInfoJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkResponseJsonConverter());
@@ -96,6 +97,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NetworkDetailsStatusJsonConverter());
             _jsonOptions.Converters.Add(new NetworkDetailsStatusNullableJsonConverter());
             _jsonOptions.Converters.Add(new NetworkElementsJsonConverter());
+            _jsonOptions.Converters.Add(new NetworkElements2JsonConverter());
             _jsonOptions.Converters.Add(new NetworkElementsResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkTypeResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkTypeSelectionJsonConverter());

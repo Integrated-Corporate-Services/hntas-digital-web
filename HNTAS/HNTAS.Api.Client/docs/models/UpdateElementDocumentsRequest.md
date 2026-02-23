@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **HnId** | **string** |  | [optional] 
-**ElementType** | **HeatNetworkElementType** |  | [optional] 
+**ElementType** | **HeatNetworkElementDisplayType** |  | [optional] 
 **UpdatedBy** | **string** |  | [optional] 
 **Documents** | [**List&lt;UploadedDocument&gt;**](UploadedDocument.md) |  | [optional] 
 

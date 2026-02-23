@@ -34,13 +34,14 @@ docs/models/DesignConstructionLogResponse.md
 docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
+docs/models/Element.md
 docs/models/Energy.md
 docs/models/EnergyCentreDetails.md
 docs/models/EnumItemResponse.md
 docs/models/HeatNetwork.md
 docs/models/HeatNetworkElement.md
+docs/models/HeatNetworkElementDisplayType.md
 docs/models/HeatNetworkElementResponse.md
-docs/models/HeatNetworkElementType.md
 docs/models/HeatNetworkExternalResponse.md
 docs/models/HeatNetworkInfo.md
 docs/models/HeatNetworkResponse.md
@@ -61,6 +62,7 @@ docs/models/NetworkCharacteristics2.md
 docs/models/NetworkCharacteristicsResponse.md
 docs/models/NetworkDetailsStatus.md
 docs/models/NetworkElements.md
+docs/models/NetworkElements2.md
 docs/models/NetworkElementsResponse.md
 docs/models/NetworkTypeResponse.md
 docs/models/NetworkTypeSelection.md
@@ -164,13 +166,14 @@ src/HNTAS.Api.Client/Model/DesignConstructionLogResponse.cs
 src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs
+src/HNTAS.Api.Client/Model/Element.cs
 src/HNTAS.Api.Client/Model/Energy.cs
 src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetwork.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElement.cs
+src/HNTAS.Api.Client/Model/HeatNetworkElementDisplayType.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElementResponse.cs
-src/HNTAS.Api.Client/Model/HeatNetworkElementType.cs
 src/HNTAS.Api.Client/Model/HeatNetworkExternalResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetworkInfo.cs
 src/HNTAS.Api.Client/Model/HeatNetworkResponse.cs
@@ -191,6 +194,7 @@ src/HNTAS.Api.Client/Model/NetworkCharacteristics2.cs
 src/HNTAS.Api.Client/Model/NetworkCharacteristicsResponse.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
 src/HNTAS.Api.Client/Model/NetworkElements.cs
+src/HNTAS.Api.Client/Model/NetworkElements2.cs
 src/HNTAS.Api.Client/Model/NetworkElementsResponse.cs
 src/HNTAS.Api.Client/Model/NetworkTypeResponse.cs
 src/HNTAS.Api.Client/Model/NetworkTypeSelection.cs

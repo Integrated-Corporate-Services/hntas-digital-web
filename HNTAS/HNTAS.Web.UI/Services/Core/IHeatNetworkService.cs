@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Models.NetworkElements;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Services.Core
@@ -9,5 +10,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task<HeatNetworkResponse> AddHeatNetwork(HeatNetwork heatNetwork);
         Task<HeatNetworkResponse> UpdateNetworkCharacteristics(string hnId, NetworkCharacteristics2 request);
         Task<List<HeatNetworkResponse>> GetAllHeatNetworks();
+        Task<HeatNetworkResponse> UpdateNetworkElements(string hnId, NetworkElements2 request);
     }
 }
