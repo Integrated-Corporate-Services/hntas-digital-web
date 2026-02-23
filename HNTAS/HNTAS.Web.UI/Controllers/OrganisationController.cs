@@ -175,11 +175,8 @@ namespace HNTAS.Web.UI.Controllers
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult CompanyNumber()
         {
+            this.ShowBackButton("OrganisationType");
             var model = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
-
-            ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("OrganisationType");
-
             return View("CompanyNumber", model);
         }
 
@@ -188,6 +185,7 @@ namespace HNTAS.Web.UI.Controllers
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
         public async Task<IActionResult> CompanyNumberAsync(OrganisationModel model)
         {
+            this.ShowBackButton("OrganisationType");
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
 
             orgModel.CompanyNumber = model.CompanyNumber;
@@ -221,10 +219,6 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, orgModel);
                 return RedirectToAction("CompanyConfirm");
             }
-
-            ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("OrganisationType");
-
             return View("CompanyNumber", orgModel);
         }
 
@@ -233,15 +227,15 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult CompanyConfirm()
         {
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
-
             if (organisationModel?.CompanyDetails == null)
                 return RedirectToAction("CompanyNumber");
-
-            ViewBag.ShowBackButton = true;
-            string backPageUrl = !string.IsNullOrEmpty(organisationModel.CompanyNumber) ? Url.Action("CompanyNumber") : Url.Action("OrganisationAddress");
-
-            ViewBag.BackLinkUrl = ViewBag.ChangeUrl = backPageUrl;
-
+            if (!string.IsNullOrEmpty(organisationModel.CompanyNumber)) { 
+                this.ShowBackButton("CompanyNumber");
+            }
+            else
+            {
+                this.ShowBackButton("OrganisationAddress");
+            }
             return View("CompanyConfirm", organisationModel.CompanyDetails);
         }
 
@@ -291,7 +285,7 @@ namespace HNTAS.Web.UI.Controllers
                 return RedirectToAction("UpdateOrganisationDetailsConfirmation");
             }
 
-            return RedirectToAction("ConfirmRegulatoryContact");
+            return RedirectToAction("ConfirmResponsibility");
         }
 
         public IActionResult AlreadyRegistered()
@@ -303,87 +297,102 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpGet]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
-        public IActionResult ConfirmRegulatoryContact()
+        public IActionResult ConfirmResponsibility()
         {
+            this.ShowBackButton("CompanyConfirm");
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey) ?? new UserModel();
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
-
             userModel.OrganisationName = orgModel?.CompanyDetails?.Title ?? string.Empty;
-
-            ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("CompanyConfirm");
-
             return View(userModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
-        public IActionResult ConfirmRegulatoryContact(UserModel model)
+        public IActionResult ConfirmResponsibility(UserModel model)
         {
-            var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey) ?? new UserModel();
+            this.ShowBackButton("CompanyConfirm");
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
-
+            model.OrganisationName = orgModel?.CompanyDetails?.Title ?? string.Empty;
             foreach (var field in new[] { "EmailAddress", "FirstName", "LastName", "PreferredContactType", "JobTitle" })
             {
-                ModelState.Remove($"{nameof(model.ContactDetails)}.{field}");
+                ModelState.Remove($"{nameof(model.ContactDetails)}.{field}");                
             }
-
             if (!ModelState.IsValid)
-            {
-                model.OrganisationName = orgModel?.CompanyDetails?.Title ?? string.Empty;
-
-                ViewBag.ShowBackButton = true;
-                ViewBag.BackLinkUrl = Url.Action("CompanyConfirm");
-
+            {                
                 return View(model);
             }
-
-            var sessionUserModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey) ?? new UserModel();
-
-            if (sessionUserModel != null)
-            {
-                model.ContactDetails = sessionUserModel.ContactDetails;
-            }
-
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, model);
-
             if (model.IsRegulatoryContact == true)
-            {
-                if (string.IsNullOrEmpty(model.ContactDetails.EmailAddress))
-                {
-                    model.ContactDetails.EmailAddress = User.FindFirstValue("email");
-                    _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, model);
-                }
+            {                
+                return RedirectToAction("DeedPoll");
+            }
+            return RedirectToAction("CannotContinue");
+        }        
 
-                return RedirectToAction("ContactDetails", "Organisation");
+        [HttpGet]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
+        public IActionResult DeedPoll()
+        {
+            this.ShowBackButton("ConfirmResponsibility");
+            var model = _sessionHelper.GetFromSession<DeedPollViewModel>(HttpContext, "DeedPollViewModel") ?? new DeedPollViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
+        public IActionResult DeedPoll(DeedPollViewModel model)
+        {
+            this.ShowBackButton("ConfirmResponsibility");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            _sessionHelper.SaveToSession<DeedPollViewModel>(HttpContext, "DeedPollViewModel", model);
+            if (model.IsDeedPollAccepted == true)
+            {                
+                var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey) ?? new UserModel();
+                foreach (var field in new[] { "EmailAddress", "FirstName", "LastName", "PreferredContactType", "JobTitle" })
+                {
+                    ModelState.Remove($"{nameof(userModel.ContactDetails)}.{field}");
+                }                
+                if (string.IsNullOrEmpty(userModel.ContactDetails.EmailAddress))
+                {
+                    userModel.ContactDetails.EmailAddress = User.FindFirstValue("email");
+                }
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserCreation_SessionKey, userModel);
+                return RedirectToAction("ContactDetails");
             }
             return RedirectToAction("CannotContinue");
         }
 
-
-
+        [HttpGet]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult CannotContinue()
         {
-            ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
-            ViewBag.OrganisationName = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey)?.CompanyDetails?.Title;
+            var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
+            if (userModel.IsRegulatoryContact == false)
+            {
+                this.ShowBackButton("ConfirmResponsibility");
+            }
+            else
+            {
+                this.ShowBackButton("DeedPoll");
+            }
+
+                ViewBag.OrganisationName = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey)?.CompanyDetails?.Title;
             return View("CannotContinue");
-        }
+        }        
 
         [HttpGet]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult ContactDetails()
         {
+            this.ShowBackButton("DeedPoll");
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-
-            ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
-            ViewBag.NextActionController = "Organisation";
-            ViewBag.IsRegulatoryContact = true;
-
+            this.ShowBackButton("DeedPoll");            
             return View("UserDetails/ContactDetails", userModel.ContactDetails);
         }
 
@@ -392,6 +401,7 @@ namespace HNTAS.Web.UI.Controllers
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
         public IActionResult SaveContactDetails(OrganisationContactDetailsModel contactDetails)
         {
+            this.ShowBackButton("DeedPoll");
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
 
@@ -426,8 +436,6 @@ namespace HNTAS.Web.UI.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewBag.ShowBackButton = true;
-                ViewBag.BackLinkUrl = Url.Action("ConfirmRegulatoryContact");
                 TempData["ErrorSummary"] = "CustomErrorSummary";
                 ViewBag.IsRegulatoryContact = true;
                 return View("UserDetails/ContactDetails", contactDetails);
@@ -453,7 +461,7 @@ namespace HNTAS.Web.UI.Controllers
                 ConfirmDeclaration = false
             };
 
-            ViewBag.ShowBackButton = false;
+            //ViewBag.ShowBackButton = false;
 
             // Set the flow state to Check Answers mode
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, true);
