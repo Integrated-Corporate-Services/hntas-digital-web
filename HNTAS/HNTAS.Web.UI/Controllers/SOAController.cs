@@ -244,14 +244,14 @@ namespace HNTAS.Web.UI.Controllers
                 });
             }
 
-            var orderedTypes = new List<HeatNetworkElementType>
+            var orderedTypes = new List<HeatNetworkElementDisplayType>
             {
-                HeatNetworkElementType.EnergyCentre,
-                HeatNetworkElementType.DistributionNetwork,
-                HeatNetworkElementType.ThermalSubStation,
-                HeatNetworkElementType.CommunalDistributionNetwork,
-                HeatNetworkElementType.ConsumerConnections,
-                HeatNetworkElementType.ConsumerHeatSystems
+                HeatNetworkElementDisplayType.EnergyCentre,
+                HeatNetworkElementDisplayType.DistributionNetwork,
+                HeatNetworkElementDisplayType.ThermalSubStation,
+                HeatNetworkElementDisplayType.CommunalDistributionNetwork,
+                HeatNetworkElementDisplayType.ConsumerConnections,
+                HeatNetworkElementDisplayType.ConsumerHeatSystems
             };
 
             var elements = new List<ElementListItem>();
@@ -511,7 +511,7 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        private List<DocumentUploadModel> BuildDocumentInputsForElement(HeatNetworkElementType elementId, int count)
+        private List<DocumentUploadModel> BuildDocumentInputsForElement(HeatNetworkElementDisplayType elementId, int count)
         {
             var elementLabel = Utility.GetElementOptions().FirstOrDefault(x => x.Id == elementId)?.Label;
 

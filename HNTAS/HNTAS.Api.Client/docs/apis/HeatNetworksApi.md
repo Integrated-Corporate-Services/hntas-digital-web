@@ -12,6 +12,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiHeatNetworksHnIdGet**](HeatNetworksApi.md#apiheatnetworkshnidget) | **GET** /api/HeatNetworks/{hnId} |  |
 | [**ApiHeatNetworksHnIdsGet**](HeatNetworksApi.md#apiheatnetworkshnidsget) | **GET** /api/HeatNetworks/hnIds |  |
 | [**ApiHeatNetworksNetworkCharacteristicsPut**](HeatNetworksApi.md#apiheatnetworksnetworkcharacteristicsput) | **PUT** /api/HeatNetworks/network-characteristics |  |
+| [**ApiHeatNetworksNetworkElementsPut**](HeatNetworksApi.md#apiheatnetworksnetworkelementsput) | **PUT** /api/HeatNetworks/network-elements |  |
 
 <a id="apiexternalheatnetworkhnidget"></a>
 # **ApiExternalHeatNetworkHnIdGet**
@@ -267,6 +268,44 @@ No authorization required
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | **networkCharacteristics2** | [**NetworkCharacteristics2**](NetworkCharacteristics2.md) |  |  |
+| **hnId** | **string** |  | [optional]  |
+
+### Return type
+
+[**HeatNetworkResponse**](HeatNetworkResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiheatnetworksnetworkelementsput"></a>
+# **ApiHeatNetworksNetworkElementsPut**
+> HeatNetworkResponse ApiHeatNetworksNetworkElementsPut (NetworkElements2 networkElements2, string hnId = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **networkElements2** | [**NetworkElements2**](NetworkElements2.md) |  |  |
 | **hnId** | **string** |  | [optional]  |
 
 ### Return type

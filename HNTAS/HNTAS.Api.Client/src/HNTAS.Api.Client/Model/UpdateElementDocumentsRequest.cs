@@ -38,7 +38,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="updatedBy">updatedBy</param>
         /// <param name="documents">documents</param>
         [JsonConstructor]
-        public UpdateElementDocumentsRequest(Option<string?> hnId = default, Option<HeatNetworkElementType?> elementType = default, Option<string?> updatedBy = default, Option<List<UploadedDocument>?> documents = default)
+        public UpdateElementDocumentsRequest(Option<string?> hnId = default, Option<HeatNetworkElementDisplayType?> elementType = default, Option<string?> updatedBy = default, Option<List<UploadedDocument>?> documents = default)
         {
             HnIdOption = hnId;
             ElementTypeOption = elementType;
@@ -54,13 +54,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<HeatNetworkElementType?> ElementTypeOption { get; private set; }
+        public Option<HeatNetworkElementDisplayType?> ElementTypeOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets ElementType
         /// </summary>
         [JsonPropertyName("elementType")]
-        public HeatNetworkElementType? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
+        public HeatNetworkElementDisplayType? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of HnId
@@ -151,7 +151,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> hnId = default;
-            Option<HeatNetworkElementType?> elementType = default;
+            Option<HeatNetworkElementDisplayType?> elementType = default;
             Option<string?> updatedBy = default;
             Option<List<UploadedDocument>?> documents = default;
 
@@ -176,7 +176,7 @@ namespace HNTAS.Api.Client.Model
                         case "elementType":
                             string? elementTypeRawValue = utf8JsonReader.GetString();
                             if (elementTypeRawValue != null)
-                                elementType = new Option<HeatNetworkElementType?>(HeatNetworkElementTypeValueConverter.FromStringOrDefault(elementTypeRawValue));
+                                elementType = new Option<HeatNetworkElementDisplayType?>(HeatNetworkElementDisplayTypeValueConverter.FromStringOrDefault(elementTypeRawValue));
                             break;
                         case "updatedBy":
                             updatedBy = new Option<string?>(utf8JsonReader.GetString()!);
@@ -243,7 +243,7 @@ namespace HNTAS.Api.Client.Model
 
             if (updateElementDocumentsRequest.ElementTypeOption.IsSet)
             {
-                var elementTypeRawValue = HeatNetworkElementTypeValueConverter.ToJsonValue(updateElementDocumentsRequest.ElementType!.Value);
+                var elementTypeRawValue = HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(updateElementDocumentsRequest.ElementType!.Value);
                 writer.WriteString("elementType", elementTypeRawValue);
             }
             if (updateElementDocumentsRequest.UpdatedByOption.IsSet)
