@@ -610,6 +610,8 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("HeatNetworkType", "NetworkCharacteristics", new { hnid });
                 case NetworkDetailsType.NetworkElements:
                     return RedirectToAction("SelectNetworkElements", "NetworkElements", new { hnid });
+                case NetworkDetailsType.MeteringAndMonitoringStrategy:
+                    return RedirectToAction("UploadDocument", "NetworkDetailsUpload", new { hnid });
                 default:
                     return BadRequest();
             }
