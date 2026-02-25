@@ -20,12 +20,11 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult HeatNetworkType(string hnid)
+        public IActionResult HeatNetworkType()
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
-
-            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, hnid.ToUpper());
-            TempData["HnId"] = hnid.ToUpper();
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            TempData["HnId"] = hnId;
             var model = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelSessionKey) ?? new HeatNetworkTypeViewModel { HeatNetworkTypes = Helpers.Utility.GetHeatNetworkTypeOptions() };
             return View(model);
         }

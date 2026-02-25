@@ -615,11 +615,12 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpGet]
         public async Task<IActionResult> SelectNetworkDetail([FromQuery] string hnid, [FromQuery] NetworkDetailsType networkDetailId)
-        {            
+        {
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, hnid.ToUpper());
             switch (networkDetailId)
             {
                 case NetworkDetailsType.NetworkCharacteristics:
-                    return RedirectToAction("HeatNetworkType", "NetworkCharacteristics", new { hnid });
+                    return RedirectToAction("HeatNetworkType", "NetworkCharacteristics");
                 case NetworkDetailsType.NetworkElements:
                     return RedirectToAction("SelectNetworkElements", "NetworkElements", new { hnid });
                 case NetworkDetailsType.MeteringAndMonitoringStrategy:
