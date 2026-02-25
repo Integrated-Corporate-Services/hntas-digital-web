@@ -61,6 +61,8 @@ docs/models/NetworkCharacteristics.md
 docs/models/NetworkCharacteristics2.md
 docs/models/NetworkCharacteristicsResponse.md
 docs/models/NetworkDetailsStatus.md
+docs/models/NetworkDetailsUploadDocumentRequest.md
+docs/models/NetworkDetailsUploadedDocument.md
 docs/models/NetworkElements.md
 docs/models/NetworkElements2.md
 docs/models/NetworkElementsResponse.md
@@ -193,6 +195,8 @@ src/HNTAS.Api.Client/Model/NetworkCharacteristics.cs
 src/HNTAS.Api.Client/Model/NetworkCharacteristics2.cs
 src/HNTAS.Api.Client/Model/NetworkCharacteristicsResponse.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
+src/HNTAS.Api.Client/Model/NetworkDetailsUploadDocumentRequest.cs
+src/HNTAS.Api.Client/Model/NetworkDetailsUploadedDocument.cs
 src/HNTAS.Api.Client/Model/NetworkElements.cs
 src/HNTAS.Api.Client/Model/NetworkElements2.cs
 src/HNTAS.Api.Client/Model/NetworkElementsResponse.cs

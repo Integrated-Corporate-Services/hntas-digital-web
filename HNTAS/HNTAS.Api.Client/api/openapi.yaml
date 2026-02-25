@@ -452,6 +452,49 @@ paths:
           description: Internal Server Error
       tags:
       - HeatNetworks
+  /api/HeatNetworks/network-details-document-update:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - HeatNetworks
   /api/external/heat-networks:
     get:
       responses:
@@ -2436,6 +2479,9 @@ components:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
+        documents:
+        - ""
+        - ""
         createdBy: createdBy
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -2443,6 +2489,9 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items: {}
+          type: array
         createdAt:
           format: date-time
           type: string
@@ -2460,6 +2509,9 @@ components:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
+        documents:
+        - ""
+        - ""
         createdBy: createdBy
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -2467,6 +2519,9 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items: {}
+          type: array
         createdAt:
           format: date-time
           type: string
@@ -2983,6 +3038,9 @@ components:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
+        documents:
+        - ""
+        - ""
         createdBy: createdBy
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -2990,6 +3048,9 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items: {}
+          type: array
         createdAt:
           format: date-time
           type: string
@@ -3007,6 +3068,9 @@ components:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
+        documents:
+        - ""
+        - ""
         createdBy: createdBy
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3014,6 +3078,9 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items: {}
+          type: array
         createdAt:
           format: date-time
           type: string
@@ -3033,6 +3100,9 @@ components:
       - Assessment
       - Assessor
       - Certifier
+      - MeteringAndMonitoringStrategy
+      - AssessmentPlan
+      - DesignConstructionLog
       type: string
     ECDetails:
       example:
@@ -3488,6 +3558,15 @@ components:
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
+          documents:
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3497,6 +3576,9 @@ components:
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
+          documents:
+          - ""
+          - ""
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3506,6 +3588,9 @@ components:
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
+          documents:
+          - ""
+          - ""
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3846,6 +3931,15 @@ components:
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
+          documents:
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3855,6 +3949,9 @@ components:
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
+          documents:
+          - ""
+          - ""
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3863,6 +3960,9 @@ components:
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
+          documents:
+          - ""
+          - ""
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4262,6 +4362,15 @@ components:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
+        documents:
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
         createdBy: createdBy
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4269,6 +4378,10 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items:
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+          type: array
         createdAt:
           format: date-time
           type: string
@@ -4286,6 +4399,15 @@ components:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
+        documents:
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
         createdBy: createdBy
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4293,6 +4415,10 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items:
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+          type: array
         createdAt:
           format: date-time
           type: string
@@ -4476,6 +4602,48 @@ components:
       - CannotStartYet
       - Incomplete
       type: string
+    NetworkDetailsUploadDocumentRequest:
+      example:
+        hnId: hnId
+        fileName: fileName
+        s3Key: s3Key
+        documentType: Assessment
+        uploadedBy: uploadedBy
+      properties:
+        hnId:
+          type: string
+        uploadedBy:
+          type: string
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        documentType:
+          $ref: "#/components/schemas/DocumentType"
+      required:
+      - documentType
+      - fileName
+      - hnId
+      - s3Key
+      - uploadedBy
+      type: object
+    NetworkDetailsUploadedDocument:
+      example:
+        fileName: fileName
+        s3Key: s3Key
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        uploadedBy: uploadedBy
+      properties:
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        uploadedAt:
+          format: date-time
+          type: string
+        uploadedBy:
+          type: string
+      type: object
     NetworkElements:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -5411,12 +5579,12 @@ components:
         documentType: Assessment
         uploadedBy: uploadedBy
       properties:
-        hnId:
-          type: string
         phase:
           $ref: "#/components/schemas/SoaPhase"
         stage:
           $ref: "#/components/schemas/NullableOfSoaStage"
+        hnId:
+          type: string
         uploadedBy:
           type: string
         fileName:

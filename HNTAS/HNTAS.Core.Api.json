@@ -736,6 +736,78 @@
         }
       }
     },
+    "/api/HeatNetworks/network-details-document-update": {
+      "patch": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/external/heat-networks": {
       "get": {
         "tags": [
@@ -3817,6 +3889,10 @@
           "status": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
+          "documents": {
+            "type": "array",
+            "items": { }
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -3841,6 +3917,10 @@
         "properties": {
           "status": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "documents": {
+            "type": "array",
+            "items": { }
           },
           "createdAt": {
             "type": "string",
@@ -4182,6 +4262,10 @@
           "status": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
+          "documents": {
+            "type": "array",
+            "items": { }
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4207,6 +4291,10 @@
           "status": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
+          "documents": {
+            "type": "array",
+            "items": { }
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4231,7 +4319,10 @@
         "enum": [
           "Assessment",
           "Assessor",
-          "Certifier"
+          "Certifier",
+          "MeteringAndMonitoringStrategy",
+          "AssessmentPlan",
+          "DesignConstructionLog"
         ]
       },
       "ECDetails": {
@@ -4908,6 +4999,12 @@
           "status": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+            }
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4932,6 +5029,12 @@
         "properties": {
           "status": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+            }
           },
           "createdAt": {
             "type": "string",
@@ -5125,6 +5228,51 @@
           "CannotStartYet",
           "Incomplete"
         ]
+      },
+      "NetworkDetailsUploadDocumentRequest": {
+        "required": [
+          "hnId",
+          "uploadedBy",
+          "fileName",
+          "s3Key",
+          "documentType"
+        ],
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "uploadedBy": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "documentType": {
+            "$ref": "#/components/schemas/DocumentType"
+          }
+        }
+      },
+      "NetworkDetailsUploadedDocument": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
+        }
       },
       "NetworkElements": {
         "type": "object",
@@ -5746,8 +5894,8 @@
       },
       "UpdateDocumentRequest": {
         "required": [
-          "hnId",
           "phase",
+          "hnId",
           "uploadedBy",
           "fileName",
           "s3Key",
@@ -5755,14 +5903,14 @@
         ],
         "type": "object",
         "properties": {
-          "hnId": {
-            "type": "string"
-          },
           "phase": {
             "$ref": "#/components/schemas/SoaPhase"
           },
           "stage": {
             "$ref": "#/components/schemas/NullableOfSoaStage"
+          },
+          "hnId": {
+            "type": "string"
           },
           "uploadedBy": {
             "type": "string"
