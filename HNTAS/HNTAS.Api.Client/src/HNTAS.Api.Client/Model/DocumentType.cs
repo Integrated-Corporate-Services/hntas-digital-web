@@ -43,7 +43,22 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Enum Certifier for value: Certifier
         /// </summary>
-        Certifier = 3
+        Certifier = 3,
+
+        /// <summary>
+        /// Enum MeteringAndMonitoringStrategy for value: MeteringAndMonitoringStrategy
+        /// </summary>
+        MeteringAndMonitoringStrategy = 4,
+
+        /// <summary>
+        /// Enum AssessmentPlan for value: AssessmentPlan
+        /// </summary>
+        AssessmentPlan = 5,
+
+        /// <summary>
+        /// Enum DesignConstructionLog for value: DesignConstructionLog
+        /// </summary>
+        DesignConstructionLog = 6
     }
 
     /// <summary>
@@ -67,6 +82,15 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Certifier"))
                 return DocumentType.Certifier;
 
+            if (value.Equals("MeteringAndMonitoringStrategy"))
+                return DocumentType.MeteringAndMonitoringStrategy;
+
+            if (value.Equals("AssessmentPlan"))
+                return DocumentType.AssessmentPlan;
+
+            if (value.Equals("DesignConstructionLog"))
+                return DocumentType.DesignConstructionLog;
+
             throw new NotImplementedException($"Could not convert value to type DocumentType: '{value}'");
         }
 
@@ -85,6 +109,15 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("Certifier"))
                 return DocumentType.Certifier;
+
+            if (value.Equals("MeteringAndMonitoringStrategy"))
+                return DocumentType.MeteringAndMonitoringStrategy;
+
+            if (value.Equals("AssessmentPlan"))
+                return DocumentType.AssessmentPlan;
+
+            if (value.Equals("DesignConstructionLog"))
+                return DocumentType.DesignConstructionLog;
 
             return null;
         }
@@ -105,6 +138,15 @@ namespace HNTAS.Api.Client.Model
 
             if (value == DocumentType.Certifier)
                 return "Certifier";
+
+            if (value == DocumentType.MeteringAndMonitoringStrategy)
+                return "MeteringAndMonitoringStrategy";
+
+            if (value == DocumentType.AssessmentPlan)
+                return "AssessmentPlan";
+
+            if (value == DocumentType.DesignConstructionLog)
+                return "DesignConstructionLog";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }

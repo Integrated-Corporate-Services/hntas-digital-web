@@ -11,5 +11,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task<HeatNetworkResponse> UpdateNetworkCharacteristics(string hnId, NetworkCharacteristics2 request);
         Task<List<HeatNetworkResponse>> GetAllHeatNetworks();
         Task<HeatNetworkResponse> UpdateNetworkElements(string hnId, NetworkElements2 request);
+        Task UpdateDocument(NetworkDetailsUploadDocumentRequest request);
     }
 }

@@ -1,44 +1,45 @@
-﻿@using HNTAS.Web.UI.Models.Soa
-@model UploadAssessmentPlanViewModel
-@{
-    ViewData["Title"] = "Add assessment plan to statement of applicability (SOA)";
-}
+﻿@using HNTAS.Web.UI.Models.NetworkDetailsUpload
+@model NetworkDetailsUploadViewModel
 
-
-<div class="govuk-width-container">
+<div class="govuk-width-container">    
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <div class="dashboard-card">
-                <h3 class="dashboard-card__title govuk-heading-s">
-                    <a href="@Url.Action("DefineSOA")" class="govuk-link govuk-link--no-visited-state">Part of define your overall SOA</a>
-                </h3>
-                <p class="govuk-body-s">Choose your elements</p>
-            </div>
-        </div>
-    </div>
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-l">@Model.HeatNetworkName</span>
-            <h1 class="govuk-heading-m">@ViewData["Title"] </h1>
+            <span class="govuk-caption-xl">@ViewBag.HnId</span>
+            <h1 class="govuk-heading-xl">
+                @ViewBag.Heading
+            </h1>
 
             <p class="govuk-body">
-                Upload your assessment plan for <strong>phase @Model.PhaseNumber</strong>. You can
-                <a href="@Model.TemplateDownloadUrl" class="govuk-link">download</a> the template to fill in and update later.
+                @ViewBag.Description1
             </p>
 
-            <form asp-action="UploadAssessmentPlan" method="post" enctype="multipart/form-data" class="govuk-form-group">
+            <p class="govuk-body">
+                <a href="@Model.TemplateDownloadUrl" class="govuk-link">Download</a> the template for completion.
+            </p>            
+
+            <form asp-action="@ViewBag.Action" method="post" enctype="multipart/form-data" class="govuk-form-group">
+
                 <div class="govuk-form-group">
-@*                     <label class="govuk-label" for="assessmentPlan">
-                        Choose file
-                    </label> *@
-                    <input class="govuk-file-upload" id="assessmentPlan" name="assessmentPlan" type="file">
+                    <label class="govuk-label" for="docToUpload">
+                        @ViewBag.Description2
+                    </label>
+                    <div class="govuk-drop-zone"
+                         data-module="govuk-file-upload">
+                        <input class="govuk-file-upload" id="docToUpload" name="docToUpload" type="file">
+                    </div>
                 </div>
                 <br />
                 <button type="submit" class="govuk-button" data-module="govuk-button">
-                    Continue
+                    Upload
                 </button>
             </form>
 
+            @if (@Model.UploadedDocument?.FileName != null)
+            {
+                <p class="govuk-body">
+                    Currently uploaded: <a class="govuk-link" href="@Model.TemplateDownloadUrl">@Model.UploadedDocument.FileName</a>&nbsp;&nbsp;<a class="govuk-link" href="#" onclick="document.getElementById('docToUpload').click(); return false;">Replace</a>
+                </p>
+            }            
 
         </div>
     </div>
