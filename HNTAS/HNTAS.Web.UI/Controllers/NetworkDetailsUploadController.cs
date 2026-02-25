@@ -77,6 +77,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MeteringAndMonitoringStrategy(IFormFile docToUpload)
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
@@ -156,6 +157,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssessmentPlan(IFormFile docToUpload)
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
@@ -235,6 +237,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DesignConstructionLog(IFormFile docToUpload)
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
