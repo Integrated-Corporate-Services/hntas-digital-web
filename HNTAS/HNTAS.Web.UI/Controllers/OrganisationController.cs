@@ -392,7 +392,8 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("DeedPoll");
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-            this.ShowBackButton("DeedPoll");            
+            this.ShowBackButton("DeedPoll");
+            ViewBag.NextActionController = "UserDetails";
             return View("UserDetails/ContactDetails", userModel.ContactDetails);
         }
 
