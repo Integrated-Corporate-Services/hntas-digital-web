@@ -1,0 +1,252 @@
+﻿@using HNTAS.Web.UI.Models.User
+@using HNTAS.Web.UI.Models.Enums
+@model OrganisationContactDetailsModel
+
+@{
+    ViewData["Title"] = "Your details";
+
+    // Pre-calculate common ModelState checks for cleaner markup
+    bool hasEmailAddressErrors = ViewData.ModelState.ContainsKey(nameof(Model.EmailAddress)) && ViewData.ModelState[nameof(Model.EmailAddress)].Errors.Any();
+    bool hasFirstNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.FirstName)) && ViewData.ModelState[nameof(Model.FirstName)].Errors.Any();
+    bool hasLastNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.LastName)) && ViewData.ModelState[nameof(Model.LastName)].Errors.Any();
+    bool hasPreferredContactTypeErrors = ViewData.ModelState.ContainsKey(nameof(Model.PreferredContactType)) && ViewData.ModelState[nameof(Model.PreferredContactType)].Errors.Any();
+    bool hasLandlineNumberErrors = ViewData.ModelState.ContainsKey(nameof(Model.LandlineNumber)) && ViewData.ModelState[nameof(Model.LandlineNumber)].Errors.Any();
+    bool hasContactNumberExtensionErrors = ViewData.ModelState.ContainsKey(nameof(Model.ContactNumberExtension)) && ViewData.ModelState[nameof(Model.ContactNumberExtension)].Errors.Any();
+    bool hasMobileNumberErrors = ViewData.ModelState.ContainsKey(nameof(Model.MobileNumber)) && ViewData.ModelState[nameof(Model.MobileNumber)].Errors.Any();
+    bool hasJobTitleErrors = ViewData.ModelState.ContainsKey(nameof(Model.JobTitle)) && ViewData.ModelState[nameof(Model.JobTitle)].Errors.Any();
+
+    // Determine if the entire preferred contact number section should show an error state
+    bool hasAnyContactNumberSectionError = hasPreferredContactTypeErrors ||
+                                             (Model.PreferredContactType == PreferredContactType.Landline && (hasLandlineNumberErrors || hasContactNumberExtensionErrors)) ||
+                                             (Model.PreferredContactType == PreferredContactType.Mobile && hasMobileNumberErrors);
+
+    // Custom check for Landline default selection:
+    bool isLandlineSelected = ViewBag.IsRegulatoryContact == true
+     ? (Model.PreferredContactType == PreferredContactType.Landline || Model.PreferredContactType == null) : Model.PreferredContactType == PreferredContactType.Landline;
+    bool isPreferNotToSaySelected = ViewBag.IsRegulatoryContact != true && Model.PreferredContactType == PreferredContactType.PreferNotToSay;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+       @* Error Summary - only displayed if ModelState is invalid *@
+       @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        @foreach (var keyValuePair in ViewData.ModelState)
+                        {
+                            var fieldName = keyValuePair.Key;
+                            var modelStateEntry = keyValuePair.Value;
+
+                            foreach (var error in modelStateEntry.Errors)
+                            {
+                                string targetId = fieldName; // Default: link to the input's ID (which is usually the fieldName)
+
+                                // Special cases for linking in the error summary
+                                if (fieldName == nameof(Model.EmailAddress))
+                                {
+                                    targetId = "EmailAddressDisplay"; // Link to the display span for EmailAddress
+                                }
+                                else if (fieldName == nameof(Model.PreferredContactType))
+                                {
+                                    targetId = "PreferredContactType-Landline"; // Link to the first visible radio button in the group
+                                }
+
+                                <li>
+                                    <a href="#@targetId">@error.ErrorMessage</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+
+        <h1 class="govuk-heading-l">Your details</h1>
+
+        <form asp-controller="Organisation" asp-action="SaveContactDetails" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            @* Email address - DISPLAY ONLY FIELD (No changes needed) *@
+            <div class="govuk-form-group @(hasEmailAddressErrors ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="EmailAddressDisplay">
+                    Email address
+                </label>
+                @if (hasEmailAddressErrors)
+                {
+                    <p id="EmailAddress-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.EmailAddress)
+                    </p>
+                }
+                <span class="govuk-body" id="EmailAddressDisplay">@Model.EmailAddress</span>
+                <input type="hidden" asp-for="EmailAddress" />
+            </div>
+
+            @* First name input (No changes needed) *@
+            <div class="govuk-form-group @(hasFirstNameErrors ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="FirstName">
+                    First name
+                </label>
+                @if (hasFirstNameErrors)
+                {
+                    <p id="FirstName-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.FirstName)
+                    </p>
+                }
+                <input class="govuk-input govuk-!-width-two-thirds" id="FirstName" name="FirstName" type="text" autocomplete="given-name" spellcheck="false"
+                       asp-for="FirstName"
+                       aria-describedby="@(hasFirstNameErrors ? "FirstName-error" : "")">
+            </div>
+
+            @* Last name input (No changes needed) *@
+            <div class="govuk-form-group @(hasLastNameErrors ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="LastName">
+                    Last name
+                </label>
+                @if (hasLastNameErrors)
+                {
+                    <p id="LastName-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.LastName)
+                    </p>
+                }
+                <input class="govuk-input govuk-!-width-two-thirds" id="LastName" name="LastName" type="text" autocomplete="family-name" spellcheck="false"
+                       asp-for="LastName"
+                       aria-describedby="@(hasLastNameErrors ? "LastName-error" : "")">
+            </div>
+
+            @* Preferred contact number section with conditional reveals (Landline/Mobile) *@
+            <div class="govuk-form-group @(hasAnyContactNumberSectionError ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="contact-number-hint @(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        Preferred contact number for work
+                    </legend>
+                    <div id="contact-number-hint" class="govuk-hint">
+                        HNTAS will only use this if we need to contact you about your organisation's heat networks. For international numbers, include the country code.
+                    </div>
+
+                    @* Error for PreferredContactType radio buttons *@
+                    @if (hasPreferredContactTypeErrors)
+                    {
+                        <p id="PreferredContactType-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.PreferredContactType)
+                        </p>
+                    }
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            @* Landline radio button - CHECKED LOGIC UPDATED *@
+                            <input class="govuk-radios__input" id="PreferredContactType-Landline" name="PreferredContactType" type="radio"
+                                   value="@PreferredContactType.Landline"
+                                   data-aria-controls="conditional-Landline"
+                                   @(isLandlineSelected ? "checked" : "")
+                                   aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+                            <label class="govuk-label govuk-radios__label" for="PreferredContactType-Landline">
+                                Landline
+                            </label>
+                        </div>
+                        <div class="govuk-radios__conditional @(!isLandlineSelected ? "govuk-radios__conditional--hidden" : "")" id="conditional-Landline"> @* Conditional visibility logic needs updating too *@
+                            <div class="govuk-form-group @(hasLandlineNumberErrors ? "govuk-form-group--error" : "")">
+                                <label class="govuk-label" for="LandlineNumber">
+                                    Landline number
+                                </label>
+                                @if (hasLandlineNumberErrors)
+                                {
+                                    <p id="LandlineNumber-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.LandlineNumber)
+                                    </p>
+                                }
+                                <input class="govuk-input govuk-input--width-20" id="LandlineNumber" name="LandlineNumber" type="tel" autocomplete="tel"
+                                       asp-for="LandlineNumber"
+                                       aria-describedby="@(hasLandlineNumberErrors ? "LandlineNumber-error" : "")">
+                            </div>
+
+                            <div class="govuk-form-group @(hasContactNumberExtensionErrors ? "govuk-form-group--error" : "")">
+                                <label class="govuk-label" for="ContactNumberExtension">
+                                    Extension (optional)
+                                </label>
+                                @if (hasContactNumberExtensionErrors)
+                                {
+                                    <p id="ContactNumberExtension-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ContactNumberExtension)
+                                    </p>
+                                }
+                                <input class="govuk-input govuk-input--width-5" id="ContactNumberExtension" name="ContactNumberExtension" type="text"
+                                       asp-for="ContactNumberExtension"
+                                       aria-describedby="@(hasContactNumberExtensionErrors ? "ContactNumberExtension-error" : "")">
+                            </div>
+                        </div>
+
+                        <div class="govuk-radios__item">
+                            @* Mobile radio button - CHECKED LOGIC UPDATED *@
+                            <input class="govuk-radios__input" id="PreferredContactType-Mobile" name="PreferredContactType" type="radio"
+                                   value="@PreferredContactType.Mobile"
+                                   data-aria-controls="conditional-Mobile"
+                                   @(Model.PreferredContactType == PreferredContactType.Mobile ? "checked" : "")
+                                   aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+                            <label class="govuk-label govuk-radios__label" for="PreferredContactType-Mobile">
+                                Mobile
+                            </label>
+                        </div>
+                        <div class="govuk-radios__conditional @(Model.PreferredContactType != PreferredContactType.Mobile ? "govuk-radios__conditional--hidden" : "")" id="conditional-Mobile">
+                            @* Conditional visibility logic needs updating too *@
+                            <div class="govuk-form-group @(hasMobileNumberErrors ? "govuk-form-group--error" : "")">
+                                <label class="govuk-label" for="MobileNumber">
+                                    Mobile number
+                                </label>
+                                @if (hasMobileNumberErrors)
+                                {
+                                    <p id="MobileNumber-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.MobileNumber)
+                                    </p>
+                                }
+                                <input class="govuk-input govuk-input--width-20" id="MobileNumber" name="MobileNumber" type="tel" autocomplete="tel"
+                                       asp-for="MobileNumber"
+                                       aria-describedby="@(hasMobileNumberErrors ? "MobileNumber-error" : "")">
+                            </div>
+                        </div>
+
+                        @if (ViewBag.IsRegulatoryContact != true)
+                        {
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="PreferredContactType-PreferNotToSay" name="PreferredContactType" type="radio"
+                                       value="@PreferredContactType.PreferNotToSay"
+                                       @(isPreferNotToSaySelected ? "checked" : "")
+                                       aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+                                <label class="govuk-label govuk-radios__label" for="PreferredContactType-PreferNotToSay">
+                                    Prefer not to say
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
+            </div>
+
+            @* Job title input (No changes needed) *@
+            <div class="govuk-form-group @(hasJobTitleErrors ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="JobTitle">
+                    Job title
+                </label>
+                @if (hasJobTitleErrors)
+                {
+                    <p id="JobTitle-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.JobTitle)
+                    </p>
+                }
+                <input class="govuk-input govuk-!-width-two-thirds" id="JobTitle" name="JobTitle" type="text" spellcheck="false"
+                       asp-for="JobTitle"
+                       aria-describedby="@(hasJobTitleErrors ? "JobTitle-error" : "")">
+            </div>
+
+            @* Continue button (No changes needed) *@
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+
+    </div>
+</div>

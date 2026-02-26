@@ -36,7 +36,8 @@
 }
 
 <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">        
         <h1 class="govuk-heading-l">Check your answers before submitting</h1>
 
         <form asp-controller="Organisation" asp-action="SubmitAnswers" method="post" novalidate>
@@ -93,13 +94,13 @@
                     <dd class="govuk-summary-list__actions">
                         @if (!string.IsNullOrEmpty(organisationModel.CompanyNumber))
                         {
-                             <a class="govuk-link" href="@Url.Action("CompanyNumber")">Change<span class="govuk-visually-hidden"> company number</span></a>
+                                <a class="govuk-link" href="@Url.Action("CompanyNumber")">Change<span class="govuk-visually-hidden"> company number</span></a>
                         }
                         else
                         {
-                             <a class="govuk-link" href="@Url.Action("OrganisationAddress")">Change<span class="govuk-visually-hidden"> company number</span></a>
+                                <a class="govuk-link" href="@Url.Action("OrganisationAddress")">Change<span class="govuk-visually-hidden"> company number</span></a>
                         }
-                     </dd>
+                        </dd>
                 </div>
             </dl>
 
@@ -144,8 +145,8 @@
                 </div>
             </dl>
 
-            <h2 class="govuk-heading-m">Declaration</h2>
-            <div class="govuk-form-group @(hasDeclarationErrors ? "govuk-form-group--error" : "")">
+            @* <h2 class="govuk-heading-m">Declaration</h2> *@
+            @* <div class="govuk-form-group @(hasDeclarationErrors ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset" aria-describedby="@(hasDeclarationErrors ? "confirmDeclaration-error" : "")">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                         <h1 class="govuk-fieldset__heading">Tick to confirm:</h1>
@@ -160,10 +161,10 @@
                     <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                         <div class="govuk-checkboxes__item">
                             <input class="govuk-checkboxes__input"
-                                   id="@fieldName"
-                                   asp-for="ConfirmDeclaration"
-                                   type="checkbox"
-                                   value="true">
+                                    id="@fieldName"
+                                    asp-for="ConfirmDeclaration"
+                                    type="checkbox"
+                                    value="true">
                             <label class="govuk-label govuk-checkboxes__label" for="@fieldName">
                                 I confirm that:
                             </label>
@@ -174,11 +175,12 @@
 
             <ul class="govuk-list govuk-list--bullet">
                 <li>I have read and understood the digital form and guidance currently published on <a href="#" class="govuk-link">GOV.UK</a></li>
-            </ul>
+            </ul> *@
 
             <button type="submit" class="govuk-button" data-module="govuk-button">
-                Accept and send
+                Submit
             </button>
         </form>
-    </main>
+    </div>
+    </div>
 </div>
