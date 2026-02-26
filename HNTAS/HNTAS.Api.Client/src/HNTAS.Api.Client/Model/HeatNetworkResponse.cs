@@ -40,6 +40,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="name">name</param>
         /// <param name="pathway">pathway</param>
         /// <param name="soa">soa</param>
+        /// <param name="elementSoa">elementSoa</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="phase">phase</param>
@@ -49,7 +50,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="assessmentPlan">assessmentPlan</param>
         /// <param name="designConstructionLog">designConstructionLog</param>
         [JsonConstructor]
-        public HeatNetworkResponse(Option<string?> id = default, Option<string?> hnId = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> pathway = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<NetworkCharacteristicsResponse?> networkCharacteristics = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default)
+        public HeatNetworkResponse(Option<string?> id = default, Option<string?> hnId = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> pathway = default, Option<SoaResponse?> soa = default, Option<ElementSoaResponse?> elementSoa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<NetworkCharacteristicsResponse?> networkCharacteristics = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default)
         {
             IdOption = id;
             HnIdOption = hnId;
@@ -58,6 +59,7 @@ namespace HNTAS.Api.Client.Model
             NameOption = name;
             PathwayOption = pathway;
             SoaOption = soa;
+            ElementSoaOption = elementSoa;
             CreatedByOption = createdBy;
             CreatedAtOption = createdAt;
             PhaseOption = phase;
@@ -161,6 +163,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("soa")]
         public SoaResponse? Soa { get { return this.SoaOption; } set { this.SoaOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ElementSoa
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<ElementSoaResponse?> ElementSoaOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementSoa
+        /// </summary>
+        [JsonPropertyName("elementSoa")]
+        public ElementSoaResponse? ElementSoa { get { return this.ElementSoaOption; } set { this.ElementSoaOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedBy
@@ -281,6 +296,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Pathway: ").Append(Pathway).Append("\n");
             sb.Append("  Soa: ").Append(Soa).Append("\n");
+            sb.Append("  ElementSoa: ").Append(ElementSoa).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  Phase: ").Append(Phase).Append("\n");
@@ -338,6 +354,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> name = default;
             Option<string?> pathway = default;
             Option<SoaResponse?> soa = default;
+            Option<ElementSoaResponse?> elementSoa = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> phase = default;
@@ -382,6 +399,9 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "soa":
                             soa = new Option<SoaResponse?>(JsonSerializer.Deserialize<SoaResponse>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "elementSoa":
+                            elementSoa = new Option<ElementSoaResponse?>(JsonSerializer.Deserialize<ElementSoaResponse>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "createdBy":
                             createdBy = new Option<string?>(utf8JsonReader.GetString()!);
@@ -434,7 +454,7 @@ namespace HNTAS.Api.Client.Model
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class HeatNetworkResponse.");
 
-            return new HeatNetworkResponse(id, hnId, ecDetails, address, name, pathway, soa, createdBy, createdAt, phase, networkCharacteristics, networkElements, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog);
+            return new HeatNetworkResponse(id, hnId, ecDetails, address, name, pathway, soa, elementSoa, createdBy, createdAt, phase, networkCharacteristics, networkElements, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog);
         }
 
         /// <summary>
@@ -512,6 +532,14 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("soa");
+            if (heatNetworkResponse.ElementSoaOption.IsSet)
+                if (heatNetworkResponse.ElementSoaOption.Value != null)
+                {
+                    writer.WritePropertyName("elementSoa");
+                    JsonSerializer.Serialize(writer, heatNetworkResponse.ElementSoa, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("elementSoa");
             if (heatNetworkResponse.CreatedByOption.IsSet)
                 writer.WriteString("createdBy", heatNetworkResponse.CreatedBy);
 

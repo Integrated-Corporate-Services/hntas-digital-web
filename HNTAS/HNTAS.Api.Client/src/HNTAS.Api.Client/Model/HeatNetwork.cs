@@ -43,6 +43,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="networkCharacteristics">networkCharacteristics</param>
         /// <param name="networkElements">networkElements</param>
         /// <param name="soa">soa</param>
+        /// <param name="elementSoa">elementSoa</param>
         /// <param name="meteringAndMonitoringStrategy">meteringAndMonitoringStrategy</param>
         /// <param name="assessmentPlan">assessmentPlan</param>
         /// <param name="designConstructionLog">designConstructionLog</param>
@@ -50,7 +51,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="createdAt">createdAt</param>
         /// <param name="phase">phase</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> name = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<NetworkCharacteristics?> networkCharacteristics = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
+        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> name = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<NetworkCharacteristics?> networkCharacteristics = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<ElementSoa?> elementSoa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
         {
             IdOption = id;
             HnIdOption = hnId;
@@ -62,6 +63,7 @@ namespace HNTAS.Api.Client.Model
             NetworkCharacteristicsOption = networkCharacteristics;
             NetworkElementsOption = networkElements;
             SoaOption = soa;
+            ElementSoaOption = elementSoa;
             MeteringAndMonitoringStrategyOption = meteringAndMonitoringStrategy;
             AssessmentPlanOption = assessmentPlan;
             DesignConstructionLogOption = designConstructionLog;
@@ -204,6 +206,19 @@ namespace HNTAS.Api.Client.Model
         public Soa? Soa { get { return this.SoaOption; } set { this.SoaOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of ElementSoa
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<ElementSoa?> ElementSoaOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementSoa
+        /// </summary>
+        [JsonPropertyName("elementSoa")]
+        public ElementSoa? ElementSoa { get { return this.ElementSoaOption; } set { this.ElementSoaOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of MeteringAndMonitoringStrategy
         /// </summary>
         [JsonIgnore]
@@ -299,6 +314,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  NetworkCharacteristics: ").Append(NetworkCharacteristics).Append("\n");
             sb.Append("  NetworkElements: ").Append(NetworkElements).Append("\n");
             sb.Append("  Soa: ").Append(Soa).Append("\n");
+            sb.Append("  ElementSoa: ").Append(ElementSoa).Append("\n");
             sb.Append("  MeteringAndMonitoringStrategy: ").Append(MeteringAndMonitoringStrategy).Append("\n");
             sb.Append("  AssessmentPlan: ").Append(AssessmentPlan).Append("\n");
             sb.Append("  DesignConstructionLog: ").Append(DesignConstructionLog).Append("\n");
@@ -357,6 +373,7 @@ namespace HNTAS.Api.Client.Model
             Option<NetworkCharacteristics?> networkCharacteristics = default;
             Option<NetworkElements?> networkElements = default;
             Option<Soa?> soa = default;
+            Option<ElementSoa?> elementSoa = default;
             Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default;
             Option<AssessmentPlan?> assessmentPlan = default;
             Option<DesignConstructionLog?> designConstructionLog = default;
@@ -411,6 +428,9 @@ namespace HNTAS.Api.Client.Model
                         case "soa":
                             soa = new Option<Soa?>(JsonSerializer.Deserialize<Soa>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "elementSoa":
+                            elementSoa = new Option<ElementSoa?>(JsonSerializer.Deserialize<ElementSoa>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         case "meteringAndMonitoringStrategy":
                             meteringAndMonitoringStrategy = new Option<MeteringAndMonitoringStrategy?>(JsonSerializer.Deserialize<MeteringAndMonitoringStrategy>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -453,7 +473,7 @@ namespace HNTAS.Api.Client.Model
             if (phase.IsSet && phase.Value == null)
                 throw new ArgumentNullException(nameof(phase), "Property is not nullable for class HeatNetwork.");
 
-            return new HeatNetwork(id, hnId, name, address, ecDetails, pathway, registrationSource, networkCharacteristics, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, createdBy, createdAt, phase);
+            return new HeatNetwork(id, hnId, name, address, ecDetails, pathway, registrationSource, networkCharacteristics, networkElements, soa, elementSoa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, createdBy, createdAt, phase);
         }
 
         /// <summary>
@@ -555,6 +575,14 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("soa");
+            if (heatNetwork.ElementSoaOption.IsSet)
+                if (heatNetwork.ElementSoaOption.Value != null)
+                {
+                    writer.WritePropertyName("elementSoa");
+                    JsonSerializer.Serialize(writer, heatNetwork.ElementSoa, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("elementSoa");
             if (heatNetwork.MeteringAndMonitoringStrategyOption.IsSet)
                 if (heatNetwork.MeteringAndMonitoringStrategyOption.Value != null)
                 {

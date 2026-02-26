@@ -1,0 +1,71 @@
+﻿@using HNTAS.Web.UI.Helpers
+@using HNTAS.Web.UI.Models.ElementSoa
+
+@model ElementSoaViewModel
+
+@{
+    //ViewData["Title"] = Model.PageTitle;
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @* <span class="govuk-caption-l">@Model.ProjectName</span>
+            <h1 class="govuk-heading-l">@Model.PageTitle</h1> *@
+
+            <p class="govuk-body">As a next step you need to add assesment plan to your  statement of applicability (SOA) </p>
+
+            <div class="govuk-tabs" data-module="govuk-tabs">
+                <h2 class="govuk-tabs__title">Contents</h2>
+                <ul class="govuk-tabs__list">
+                    @for (int i = 0; i < Model.Stages.Count; i++)
+                    {
+                        var stage = Model.Stages[i];
+                        <li class="govuk-tabs__list-item @(i == Model.CurrentStageIndex ? "govuk-tabs__list-item--selected" : "")">
+                            <a class="govuk-tabs__tab" href="#stage-@i">
+                                @stage.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+                @for (int i = 0; i < Model.Stages.Count; i++)
+                {
+                    var stage = Model.Stages[i];
+                    <div id="stage-@i" class="govuk-tabs__panel @(i != Model.CurrentStageIndex ? "govuk-tabs__panel--hidden" : "")">
+                        @* <h2 class="govuk-heading-l">@stage.Title</h2> *@
+
+                        @* @foreach (var stage in phase.Stages)
+                        { *@
+                            <h3 class="govuk-heading-m">@stage.Name</h3>
+                            <hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible">
+                            <table class="govuk-table">
+                                <tbody class="govuk-table__body">
+                                    @foreach (var element in stage.Elements)
+                                    {
+                                        <tr class="govuk-table__row">
+                                            @* <td class="govuk-table__cell">
+                                                <a class="govuk-link app-element-list__link" href="@element.Url">@element.Name</a>
+                                            </td>
+                                            <td class="govuk-table__cell">
+                                                <strong class="govuk-tag @GovUkTagHelper.GetTagClass(element.Status)">
+                                                    @element.Status
+                                                </strong>
+                                            </td> *@
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        @* } *@
+                    </div>
+                }
+            </div>
+
+            <a href="@Url.Action("UploadAssessmentPlan", new { phase = 0 })" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                Continue
+            </a>
+
+        </div>        
+    </div>
+</div>

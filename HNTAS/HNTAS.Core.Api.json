@@ -4383,6 +4383,91 @@
           }
         }
       },
+      "Elements": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
+          },
+          "elementType": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementId": {
+            "type": "string",
+            "nullable": true
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+            }
+          }
+        }
+      },
+      "ElementSoa": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SoaStages"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "ElementSoaResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SoaStages"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
       "Energy": {
         "type": "object",
         "properties": {
@@ -4534,6 +4619,9 @@
           "soa": {
             "$ref": "#/components/schemas/Soa"
           },
+          "elementSoa": {
+            "$ref": "#/components/schemas/ElementSoa"
+          },
           "meteringAndMonitoringStrategy": {
             "$ref": "#/components/schemas/MeteringAndMonitoringStrategy"
           },
@@ -4683,6 +4771,9 @@
           },
           "soa": {
             "$ref": "#/components/schemas/SoaResponse"
+          },
+          "elementSoa": {
+            "$ref": "#/components/schemas/ElementSoaResponse"
           },
           "createdBy": {
             "type": "string"
@@ -5001,9 +5092,7 @@
           },
           "documents": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
-            }
+            "items": { }
           },
           "createdAt": {
             "type": "string",
@@ -5032,9 +5121,7 @@
           },
           "documents": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
-            }
+            "items": { }
           },
           "createdAt": {
             "type": "string",
@@ -5855,6 +5942,32 @@
         "properties": {
           "status": {
             "type": "string"
+          }
+        }
+      },
+      "SoaStage": {
+        "enum": [
+          "Stage1",
+          "Stage2",
+          "Stage3",
+          "Stage4",
+          "Stage5",
+          "Stage6",
+          "Stage7",
+          "Stage8"
+        ]
+      },
+      "SoaStages": {
+        "type": "object",
+        "properties": {
+          "stage": {
+            "$ref": "#/components/schemas/SoaStage"
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Elements"
+            }
           }
         }
       },

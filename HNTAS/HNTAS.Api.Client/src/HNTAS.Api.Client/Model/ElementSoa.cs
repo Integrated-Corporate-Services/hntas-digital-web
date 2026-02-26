@@ -26,24 +26,24 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// AssessmentPlanResponse
+    /// ElementSoa
     /// </summary>
-    public partial class AssessmentPlanResponse : IValidatableObject
+    public partial class ElementSoa : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssessmentPlanResponse" /> class.
+        /// Initializes a new instance of the <see cref="ElementSoa" /> class.
         /// </summary>
         /// <param name="status">status</param>
-        /// <param name="documents">documents</param>
+        /// <param name="stages">stages</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public AssessmentPlanResponse(Option<NetworkDetailsStatus?> status = default, Option<List<Object>?> documents = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public ElementSoa(Option<NetworkDetailsStatus?> status = default, Option<List<SoaStages>?> stages = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
-            DocumentsOption = documents;
+            StagesOption = stages;
             CreatedAtOption = createdAt;
             CreatedByOption = createdBy;
             UpdatedAtOption = updatedAt;
@@ -67,17 +67,17 @@ namespace HNTAS.Api.Client.Model
         public NetworkDetailsStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Documents
+        /// Used to track the state of Stages
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<Object>?> DocumentsOption { get; private set; }
+        public Option<List<SoaStages>?> StagesOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Documents
+        /// Gets or Sets Stages
         /// </summary>
-        [JsonPropertyName("documents")]
-        public List<Object>? Documents { get { return this.DocumentsOption; } set { this.DocumentsOption = new(value); } }
+        [JsonPropertyName("stages")]
+        public List<SoaStages>? Stages { get { return this.StagesOption; } set { this.StagesOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedAt
@@ -138,9 +138,9 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class AssessmentPlanResponse {\n");
+            sb.Append("class ElementSoa {\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
-            sb.Append("  Documents: ").Append(Documents).Append("\n");
+            sb.Append("  Stages: ").Append(Stages).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
@@ -161,9 +161,9 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="AssessmentPlanResponse" />
+    /// A Json converter for type <see cref="ElementSoa" />
     /// </summary>
-    public class AssessmentPlanResponseJsonConverter : JsonConverter<AssessmentPlanResponse>
+    public class ElementSoaJsonConverter : JsonConverter<ElementSoa>
     {
         /// <summary>
         /// The format to use to serialize CreatedAt
@@ -176,14 +176,14 @@ namespace HNTAS.Api.Client.Model
         public static string UpdatedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
         /// <summary>
-        /// Deserializes json to <see cref="AssessmentPlanResponse" />
+        /// Deserializes json to <see cref="ElementSoa" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override AssessmentPlanResponse Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override ElementSoa Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -193,7 +193,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<NetworkDetailsStatus?> status = default;
-            Option<List<Object>?> documents = default;
+            Option<List<SoaStages>?> stages = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
@@ -219,14 +219,14 @@ namespace HNTAS.Api.Client.Model
                             if (statusRawValue != null)
                                 status = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
-                        case "documents":
-                            documents = new Option<List<Object>?>(JsonSerializer.Deserialize<List<Object>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                        case "stages":
+                            stages = new Option<List<SoaStages>?>(JsonSerializer.Deserialize<List<SoaStages>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "createdBy":
-                            createdBy = new Option<string?>(utf8JsonReader.GetString());
+                            createdBy = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "updatedAt":
                             updatedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
@@ -241,72 +241,75 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class AssessmentPlanResponse.");
+                throw new ArgumentNullException(nameof(status), "Property is not nullable for class ElementSoa.");
 
-            if (documents.IsSet && documents.Value == null)
-                throw new ArgumentNullException(nameof(documents), "Property is not nullable for class AssessmentPlanResponse.");
+            if (stages.IsSet && stages.Value == null)
+                throw new ArgumentNullException(nameof(stages), "Property is not nullable for class ElementSoa.");
 
             if (createdAt.IsSet && createdAt.Value == null)
-                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class AssessmentPlanResponse.");
+                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class ElementSoa.");
 
-            return new AssessmentPlanResponse(status, documents, createdAt, createdBy, updatedAt, updatedBy);
+            if (createdBy.IsSet && createdBy.Value == null)
+                throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class ElementSoa.");
+
+            return new ElementSoa(status, stages, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
-        /// Serializes a <see cref="AssessmentPlanResponse" />
+        /// Serializes a <see cref="ElementSoa" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="assessmentPlanResponse"></param>
+        /// <param name="elementSoa"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, AssessmentPlanResponse assessmentPlanResponse, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, ElementSoa elementSoa, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, assessmentPlanResponse, jsonSerializerOptions);
+            WriteProperties(writer, elementSoa, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="AssessmentPlanResponse" />
+        /// Serializes the properties of <see cref="ElementSoa" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="assessmentPlanResponse"></param>
+        /// <param name="elementSoa"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, AssessmentPlanResponse assessmentPlanResponse, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, ElementSoa elementSoa, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (assessmentPlanResponse.DocumentsOption.IsSet && assessmentPlanResponse.Documents == null)
-                throw new ArgumentNullException(nameof(assessmentPlanResponse.Documents), "Property is required for class AssessmentPlanResponse.");
+            if (elementSoa.StagesOption.IsSet && elementSoa.Stages == null)
+                throw new ArgumentNullException(nameof(elementSoa.Stages), "Property is required for class ElementSoa.");
 
-            if (assessmentPlanResponse.StatusOption.IsSet)
+            if (elementSoa.CreatedByOption.IsSet && elementSoa.CreatedBy == null)
+                throw new ArgumentNullException(nameof(elementSoa.CreatedBy), "Property is required for class ElementSoa.");
+
+            if (elementSoa.StatusOption.IsSet)
             {
-                var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(assessmentPlanResponse.Status!.Value);
+                var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(elementSoa.Status!.Value);
                 writer.WriteString("status", statusRawValue);
             }
-            if (assessmentPlanResponse.DocumentsOption.IsSet)
+            if (elementSoa.StagesOption.IsSet)
             {
-                writer.WritePropertyName("documents");
-                JsonSerializer.Serialize(writer, assessmentPlanResponse.Documents, jsonSerializerOptions);
+                writer.WritePropertyName("stages");
+                JsonSerializer.Serialize(writer, elementSoa.Stages, jsonSerializerOptions);
             }
-            if (assessmentPlanResponse.CreatedAtOption.IsSet)
-                writer.WriteString("createdAt", assessmentPlanResponse.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
+            if (elementSoa.CreatedAtOption.IsSet)
+                writer.WriteString("createdAt", elementSoa.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
 
-            if (assessmentPlanResponse.CreatedByOption.IsSet)
-                if (assessmentPlanResponse.CreatedByOption.Value != null)
-                    writer.WriteString("createdBy", assessmentPlanResponse.CreatedBy);
-                else
-                    writer.WriteNull("createdBy");
+            if (elementSoa.CreatedByOption.IsSet)
+                writer.WriteString("createdBy", elementSoa.CreatedBy);
 
-            if (assessmentPlanResponse.UpdatedAtOption.IsSet)
-                if (assessmentPlanResponse.UpdatedAtOption.Value != null)
-                    writer.WriteString("updatedAt", assessmentPlanResponse.UpdatedAtOption.Value!.Value.ToString(UpdatedAtFormat));
+            if (elementSoa.UpdatedAtOption.IsSet)
+                if (elementSoa.UpdatedAtOption.Value != null)
+                    writer.WriteString("updatedAt", elementSoa.UpdatedAtOption.Value!.Value.ToString(UpdatedAtFormat));
                 else
                     writer.WriteNull("updatedAt");
 
-            if (assessmentPlanResponse.UpdatedByOption.IsSet)
-                if (assessmentPlanResponse.UpdatedByOption.Value != null)
-                    writer.WriteString("updatedBy", assessmentPlanResponse.UpdatedBy);
+            if (elementSoa.UpdatedByOption.IsSet)
+                if (elementSoa.UpdatedByOption.Value != null)
+                    writer.WriteString("updatedBy", elementSoa.UpdatedBy);
                 else
                     writer.WriteNull("updatedBy");
         }

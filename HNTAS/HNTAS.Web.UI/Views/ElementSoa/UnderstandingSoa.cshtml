@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Understanding the Statement of Applicability (SOA)";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Understanding the Statement of Applicability (SOA)</h1>
+
+            <p class="govuk-body">
+                The SOA demonstrates how your heat network meets the <a target="_blank" href="https://assets.publishing.service.gov.uk/media/691c938cd140bbbaa59a29b9/heat-network-technical-standard-1-draft.pdf">TS1 Heat Network Technical Standard</a> (opens in new tab). An SOA is completed for each element at every stage of network development.
+            </p>
+
+            <p class="govuk-body">
+                Completing an SOA for each element shows the assessor how your network meets the technical requirements. Your answers must be supported by evidence documents that you’ll supply to your chosen assessor outside of this service.
+            </p>
+
+            <p class="govuk-body">
+                This forms the basis of the assessor providing a Statement of Conformity (SOC) which enables the certification of your heat network element, prior to operation.
+            </p>
+
+            <p class="govuk-body">The statement is formed of three sections:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>Technical requirements - agree to what is applicable from TS1 and justify where requirements are not applicable</li>
+                <li>KPIs - confirm which Key Performance Indicators apply</li>
+                <li>Key failures - confirm whether any key failures can be avoided</li>
+            </ul>
+
+            <p class="govuk-body">
+                Use TS1 and the supporting technical specifications as your reference material when completing each section.
+            </p>            
+
+            <form asp-action="SubmitSOAIntro" method="post">
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Start SOA
+                </button>
+            </form>
+        </div>        
+    </div>
+</div>

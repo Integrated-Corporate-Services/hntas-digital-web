@@ -35,6 +35,9 @@ docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
 docs/models/Element.md
+docs/models/ElementSoa.md
+docs/models/ElementSoaResponse.md
+docs/models/Elements.md
 docs/models/Energy.md
 docs/models/EnergyCentreDetails.md
 docs/models/EnumItemResponse.md
@@ -89,6 +92,8 @@ docs/models/SoaJourneyData.md
 docs/models/SoaPhase.md
 docs/models/SoaResponse.md
 docs/models/SoaResponse2.md
+docs/models/SoaStage.md
+docs/models/SoaStages.md
 docs/models/SoaStatus.md
 docs/models/UpdateConnectionsRequest.md
 docs/models/UpdateDocumentRequest.md
@@ -113,6 +118,7 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/SoaStagesTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/AssessorApi.cs
 src/HNTAS.Api.Client/Api/AuditApi.cs
@@ -169,6 +175,9 @@ src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs
 src/HNTAS.Api.Client/Model/Element.cs
+src/HNTAS.Api.Client/Model/ElementSoa.cs
+src/HNTAS.Api.Client/Model/ElementSoaResponse.cs
+src/HNTAS.Api.Client/Model/Elements.cs
 src/HNTAS.Api.Client/Model/Energy.cs
 src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
@@ -223,6 +232,8 @@ src/HNTAS.Api.Client/Model/SoaJourneyData.cs
 src/HNTAS.Api.Client/Model/SoaPhase.cs
 src/HNTAS.Api.Client/Model/SoaResponse.cs
 src/HNTAS.Api.Client/Model/SoaResponse2.cs
+src/HNTAS.Api.Client/Model/SoaStage.cs
+src/HNTAS.Api.Client/Model/SoaStages.cs
 src/HNTAS.Api.Client/Model/SoaStatus.cs
 src/HNTAS.Api.Client/Model/UpdateConnectionsRequest.cs
 src/HNTAS.Api.Client/Model/UpdateDocumentRequest.cs

@@ -623,6 +623,8 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("HeatNetworkType", "NetworkCharacteristics");
                 case NetworkDetailsType.NetworkElements:
                     return RedirectToAction("SelectNetworkElements", "NetworkElements", new { hnid });
+                case NetworkDetailsType.Soa:
+                    return RedirectToAction("UnderstandingSoa", "ElementSoa");
                 case NetworkDetailsType.MeteringAndMonitoringStrategy:
                     return RedirectToAction("MeteringAndMonitoringStrategy", "NetworkDetailsUpload");
                 case NetworkDetailsType.AssessmentPlan:

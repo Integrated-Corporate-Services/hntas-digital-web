@@ -1,11 +1,11 @@
-# HNTAS.Api.Client.Model.MeteringAndMonitoringStrategyResponse
+# HNTAS.Api.Client.Model.ElementSoaResponse
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Status** | **NetworkDetailsStatus** |  | [optional] 
-**Documents** | **List&lt;Object&gt;** |  | [optional] 
+**Stages** | [**List&lt;SoaStages&gt;**](SoaStages.md) |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **UpdatedAt** | **DateTimeOffset** |  | [optional] 

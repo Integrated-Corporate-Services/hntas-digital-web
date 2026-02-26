@@ -3147,7 +3147,7 @@ components:
           addressLine1: addressLine1
           addressLine2: addressLine2
         count: 5
-        type: EnergyCentre
+        type: null
         elementType: elementType
       properties:
         type:
@@ -3164,6 +3164,197 @@ components:
           nullable: true
           type: string
         elementId:
+          nullable: true
+          type: string
+      type: object
+    Elements:
+      example:
+        elementId: elementId
+        documents:
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        type: EnergyCentre
+        elementType: elementType
+      properties:
+        type:
+          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+        elementType:
+          nullable: true
+          type: string
+        elementId:
+          nullable: true
+          type: string
+        documents:
+          items:
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+          type: array
+      type: object
+    ElementSoa:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        stages:
+        - stage: Stage1
+          elements:
+          - elementId: elementId
+            documents:
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            type: EnergyCentre
+            elementType: elementType
+          - elementId: elementId
+            documents:
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            type: EnergyCentre
+            elementType: elementType
+        - stage: Stage1
+          elements:
+          - elementId: elementId
+            documents:
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            type: EnergyCentre
+            elementType: elementType
+          - elementId: elementId
+            documents:
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            type: EnergyCentre
+            elementType: elementType
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        stages:
+          items:
+            $ref: "#/components/schemas/SoaStages"
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    ElementSoaResponse:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        createdBy: createdBy
+        stages:
+        - stage: Stage1
+          elements:
+          - elementId: elementId
+            documents:
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            type: EnergyCentre
+            elementType: elementType
+          - elementId: elementId
+            documents:
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            type: EnergyCentre
+            elementType: elementType
+        - stage: Stage1
+          elements:
+          - elementId: elementId
+            documents:
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            type: EnergyCentre
+            elementType: elementType
+          - elementId: elementId
+            documents:
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            type: EnergyCentre
+            elementType: elementType
+        status: InProgress
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        stages:
+          items:
+            $ref: "#/components/schemas/SoaStages"
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
           nullable: true
           type: string
       type: object
@@ -3537,7 +3728,7 @@ components:
               addressLine1: addressLine1
               addressLine2: addressLine2
             count: 5
-            type: EnergyCentre
+            type: null
             elementType: elementType
           - elementId: elementId
             ecDetails:
@@ -3551,7 +3742,7 @@ components:
               addressLine1: addressLine1
               addressLine2: addressLine2
             count: 5
-            type: EnergyCentre
+            type: null
             elementType: elementType
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3559,14 +3750,8 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           documents:
-          - fileName: fileName
-            s3Key: s3Key
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
-          - fileName: fileName
-            s3Key: s3Key
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
+          - ""
+          - ""
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3585,6 +3770,65 @@ components:
         name: name
         registrationSource: HNTAS
         pathway: pathway
+        elementSoa:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          stages:
+          - stage: Stage1
+            elements:
+            - elementId: elementId
+              documents:
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              type: EnergyCentre
+              elementType: elementType
+            - elementId: elementId
+              documents:
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              type: EnergyCentre
+              elementType: elementType
+          - stage: Stage1
+            elements:
+            - elementId: elementId
+              documents:
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              type: EnergyCentre
+              elementType: elementType
+            - elementId: elementId
+              documents:
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              type: EnergyCentre
+              elementType: elementType
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -3618,6 +3862,8 @@ components:
           $ref: "#/components/schemas/NetworkElements"
         soa:
           $ref: "#/components/schemas/Soa"
+        elementSoa:
+          $ref: "#/components/schemas/ElementSoa"
         meteringAndMonitoringStrategy:
           $ref: "#/components/schemas/MeteringAndMonitoringStrategy"
         assessmentPlan:
@@ -3889,7 +4135,7 @@ components:
           containsPressureBreak: true
           id: id
           heatNetworkType: CityScaleDistrictHeatingNetwork
-          status: InProgress
+          status: null
           isSuppliedByADistrictHeatNetwork: true
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkElements:
@@ -3909,7 +4155,7 @@ components:
               addressLine1: addressLine1
               addressLine2: addressLine2
             count: 5
-            type: EnergyCentre
+            type: null
             elementType: elementType
           - elementId: elementId
             ecDetails:
@@ -3923,7 +4169,7 @@ components:
               addressLine1: addressLine1
               addressLine2: addressLine2
             count: 5
-            type: EnergyCentre
+            type: null
             elementType: elementType
           elementType: elementType
           status: null
@@ -3932,14 +4178,8 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           documents:
-          - fileName: fileName
-            s3Key: s3Key
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
-          - fileName: fileName
-            s3Key: s3Key
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
+          - ""
+          - ""
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3957,6 +4197,65 @@ components:
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
         pathway: pathway
+        elementSoa:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          createdBy: createdBy
+          stages:
+          - stage: Stage1
+            elements:
+            - elementId: elementId
+              documents:
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              type: EnergyCentre
+              elementType: elementType
+            - elementId: elementId
+              documents:
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              type: EnergyCentre
+              elementType: elementType
+          - stage: Stage1
+            elements:
+            - elementId: elementId
+              documents:
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              type: EnergyCentre
+              elementType: elementType
+            - elementId: elementId
+              documents:
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              type: EnergyCentre
+              elementType: elementType
+          status: InProgress
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -3982,6 +4281,8 @@ components:
           type: string
         soa:
           $ref: "#/components/schemas/SoaResponse"
+        elementSoa:
+          $ref: "#/components/schemas/ElementSoaResponse"
         createdBy:
           type: string
         createdAt:
@@ -4363,14 +4664,8 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         documents:
-        - fileName: fileName
-          s3Key: s3Key
-          uploadedAt: 2000-01-23T04:56:07.000+00:00
-          uploadedBy: uploadedBy
-        - fileName: fileName
-          s3Key: s3Key
-          uploadedAt: 2000-01-23T04:56:07.000+00:00
-          uploadedBy: uploadedBy
+        - ""
+        - ""
         createdBy: createdBy
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4379,8 +4674,7 @@ components:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         documents:
-          items:
-            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+          items: {}
           type: array
         createdAt:
           format: date-time
@@ -4400,14 +4694,8 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         documents:
-        - fileName: fileName
-          s3Key: s3Key
-          uploadedAt: 2000-01-23T04:56:07.000+00:00
-          uploadedBy: uploadedBy
-        - fileName: fileName
-          s3Key: s3Key
-          uploadedAt: 2000-01-23T04:56:07.000+00:00
-          uploadedBy: uploadedBy
+        - ""
+        - ""
         createdBy: createdBy
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4416,8 +4704,7 @@ components:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         documents:
-          items:
-            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+          items: {}
           type: array
         createdAt:
           format: date-time
@@ -4550,7 +4837,7 @@ components:
         containsPressureBreak: true
         id: id
         heatNetworkType: CityScaleDistrictHeatingNetwork
-        status: InProgress
+        status: null
         isSuppliedByADistrictHeatNetwork: true
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
@@ -4662,7 +4949,7 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           count: 5
-          type: EnergyCentre
+          type: null
           elementType: elementType
         - elementId: elementId
           ecDetails:
@@ -4676,7 +4963,7 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           count: 5
-          type: EnergyCentre
+          type: null
           elementType: elementType
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4719,7 +5006,7 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           count: 5
-          type: EnergyCentre
+          type: null
           elementType: elementType
         - elementId: elementId
           ecDetails:
@@ -4733,7 +5020,7 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           count: 5
-          type: EnergyCentre
+          type: null
           elementType: elementType
         status: InProgress
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4775,7 +5062,7 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           count: 5
-          type: EnergyCentre
+          type: null
           elementType: elementType
         - elementId: elementId
           ecDetails:
@@ -4789,7 +5076,7 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           count: 5
-          type: EnergyCentre
+          type: null
           elementType: elementType
         elementType: elementType
         status: null
@@ -5536,6 +5823,53 @@ components:
       properties:
         status:
           type: string
+      type: object
+    SoaStage:
+      enum:
+      - Stage1
+      - Stage2
+      - Stage3
+      - Stage4
+      - Stage5
+      - Stage6
+      - Stage7
+      - Stage8
+      type: string
+    SoaStages:
+      example:
+        stage: Stage1
+        elements:
+        - elementId: elementId
+          documents:
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          type: EnergyCentre
+          elementType: elementType
+        - elementId: elementId
+          documents:
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          type: EnergyCentre
+          elementType: elementType
+      properties:
+        stage:
+          $ref: "#/components/schemas/SoaStage"
+        elements:
+          items:
+            $ref: "#/components/schemas/Elements"
+          type: array
       type: object
     SoaStatus:
       enum:
