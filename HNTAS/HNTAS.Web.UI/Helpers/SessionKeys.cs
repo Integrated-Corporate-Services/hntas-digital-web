@@ -53,6 +53,10 @@
         public const string IsEditOrganisationDetailsJourneySessionKey = "IsEditOrganisationDetailsJourney";
         public const string IsAddOrganisationDetailsNonRPJourneySessionKey = "IsAddOrganisationDetailsNonRPJourneySession";
         public const string IsAssessorOrCertifier = "IsAssessorOrCertifier";
+        public const string DoesEnergyCentreHaveAPostcodeViewModelSessionKey = "DoesEnergyCentreHaveAPostcodeViewModel";
+        public const string EnergyCentreLocationModelKey = "EnergyCentreLocation";
+        public const string EnergyCentreDetailsModelSessionKey = "EnergyCentreDetailsModelSessionKey";
+        public const string SelectedElementsSessionKey = "SelectedElements";
 
         public const string HeatNetworkTypeViewModelSessionKey = "HeatNetworkTypeViewModelSessionKey";
         public const string WhatIsTheHeatGenerationSourceForViewModelSessionKey =  "WhatIsTheHeatGenerationSourceForViewModelSessionKey";
@@ -61,5 +65,8 @@
         public const string NetworkSupplyViewModelSessionKey = "NetworkSupplyViewModelSessionKey";
         public const string NetworkOverviewDataModelSessionKey = "NetworkOverviewDataModelSessionKey";
 
+        public const string HeatNetworkTypeSessionKey = "HeatNetworkTypeSessionKey";
+        public const string NetworkElementsViewModelSessionKey = "NetworkElementsViewModelSessionKey";
+        public const string NetworkDetailsUploadSessionKey = "NetworkDetailsUploadSessionKey";
     }
 }

@@ -1,0 +1,43 @@
+﻿@using HNTAS.Web.UI.Models.NetworkElements
+@model NetworkElementsModel
+
+@* @{
+    ViewData["Title"] = "Heat Network Details";
+} *@
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <form asp-action="NetworkElementsOverView" method="post">
+            @Html.AntiForgeryToken()
+            <span class="govuk-caption-l">@ViewBag.HnId</span>
+            <h1 class="govuk-heading-l">
+                Network overview
+            </h1>
+
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Address
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.HeatNetworkAddressModel?.Fulladdress
+                    </dd>
+                </div>
+
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                        Latitude and longitude coordinates
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.ECDetailsModel.LatitudeLongitude
+                        </dd>
+                    </div>
+             
+                
+            </dl>
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>

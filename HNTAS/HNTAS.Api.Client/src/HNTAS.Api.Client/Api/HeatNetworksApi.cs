@@ -218,6 +218,54 @@ namespace HNTAS.Api.Client.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksNetworkCharacteristicsPutApiResponse"/>?&gt;</returns>
         Task<IApiHeatNetworksNetworkCharacteristicsPutApiResponse?> ApiHeatNetworksNetworkCharacteristicsPutOrDefaultAsync(NetworkCharacteristics2 networkCharacteristics2, Option<string> hnId = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse"/>&gt;</returns>
+        Task<IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse> ApiHeatNetworksNetworkDetailsDocumentUpdatePatchAsync(NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse"/>?&gt;</returns>
+        Task<IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse?> ApiHeatNetworksNetworkDetailsDocumentUpdatePatchOrDefaultAsync(NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="networkElements2"></param>
+        /// <param name="hnId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksNetworkElementsPutApiResponse"/>&gt;</returns>
+        Task<IApiHeatNetworksNetworkElementsPutApiResponse> ApiHeatNetworksNetworkElementsPutAsync(NetworkElements2 networkElements2, Option<string> hnId = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="networkElements2"></param>
+        /// <param name="hnId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksNetworkElementsPutApiResponse"/>?&gt;</returns>
+        Task<IApiHeatNetworksNetworkElementsPutApiResponse?> ApiHeatNetworksNetworkElementsPutOrDefaultAsync(NetworkElements2 networkElements2, Option<string> hnId = default, System.Threading.CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -374,6 +422,60 @@ namespace HNTAS.Api.Client.Api
     /// The <see cref="IApiHeatNetworksNetworkCharacteristicsPutApiResponse"/>
     /// </summary>
     public interface IApiHeatNetworksNetworkCharacteristicsPutApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.HeatNetworkResponse?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse"/>
+    /// </summary>
+    public interface IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IApiHeatNetworksNetworkElementsPutApiResponse"/>
+    /// </summary>
+    public interface IApiHeatNetworksNetworkElementsPutApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.HeatNetworkResponse?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -564,6 +666,46 @@ namespace HNTAS.Api.Client.Api
         {
             OnErrorApiHeatNetworksNetworkCharacteristicsPut?.Invoke(this, new ExceptionEventArgs(exception));
         }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiHeatNetworksNetworkDetailsDocumentUpdatePatch;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiHeatNetworksNetworkDetailsDocumentUpdatePatch;
+
+        internal void ExecuteOnApiHeatNetworksNetworkDetailsDocumentUpdatePatch(HeatNetworksApi.ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse apiResponse)
+        {
+            OnApiHeatNetworksNetworkDetailsDocumentUpdatePatch?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiHeatNetworksNetworkDetailsDocumentUpdatePatch(Exception exception)
+        {
+            OnErrorApiHeatNetworksNetworkDetailsDocumentUpdatePatch?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiHeatNetworksNetworkElementsPut;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiHeatNetworksNetworkElementsPut;
+
+        internal void ExecuteOnApiHeatNetworksNetworkElementsPut(HeatNetworksApi.ApiHeatNetworksNetworkElementsPutApiResponse apiResponse)
+        {
+            OnApiHeatNetworksNetworkElementsPut?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiHeatNetworksNetworkElementsPut(Exception exception)
+        {
+            OnErrorApiHeatNetworksNetworkElementsPut?.Invoke(this, new ExceptionEventArgs(exception));
+        }
     }
 
     /// <summary>
@@ -629,7 +771,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiExternalHeatNetworkHnIdGet(ref suppressDefaultLog, apiResponseLocalVar, hnId);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -729,11 +871,17 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
                         ILogger<ApiExternalHeatNetworkHnIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiExternalHeatNetworkHnIdGetApiResponse>();
+                        ApiExternalHeatNetworkHnIdGetApiResponse apiResponseLocalVar;
 
-                        ApiExternalHeatNetworkHnIdGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/external/heat-network/{hnId}", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/external/heat-network/{hnId}", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
 
                         AfterApiExternalHeatNetworkHnIdGetDefaultImplementation(apiResponseLocalVar, hnId);
 
@@ -772,6 +920,22 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiExternalHeatNetworkHnIdGetApiResponse(ILogger<ApiExternalHeatNetworkHnIdGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiExternalHeatNetworkHnIdGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiExternalHeatNetworkHnIdGetApiResponse(ILogger<ApiExternalHeatNetworkHnIdGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -875,7 +1039,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiExternalHeatNetworksGet(ref suppressDefaultLog, apiResponseLocalVar);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -965,11 +1129,17 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
                         ILogger<ApiExternalHeatNetworksGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiExternalHeatNetworksGetApiResponse>();
+                        ApiExternalHeatNetworksGetApiResponse apiResponseLocalVar;
 
-                        ApiExternalHeatNetworksGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/external/heat-networks", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/external/heat-networks", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
 
                         AfterApiExternalHeatNetworksGetDefaultImplementation(apiResponseLocalVar);
 
@@ -1008,6 +1178,22 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiExternalHeatNetworksGetApiResponse(ILogger<ApiExternalHeatNetworksGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiExternalHeatNetworksGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiExternalHeatNetworksGetApiResponse(ILogger<ApiExternalHeatNetworksGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -1077,7 +1263,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiExternalHeatNetworksSearchGet(ref suppressDefaultLog, apiResponseLocalVar, fromDate, toDate);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -1189,11 +1375,17 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
                         ILogger<ApiExternalHeatNetworksSearchGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiExternalHeatNetworksSearchGetApiResponse>();
+                        ApiExternalHeatNetworksSearchGetApiResponse apiResponseLocalVar;
 
-                        ApiExternalHeatNetworksSearchGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/external/heat-networks/search", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/external/heat-networks/search", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
 
                         AfterApiExternalHeatNetworksSearchGetDefaultImplementation(apiResponseLocalVar, fromDate, toDate);
 
@@ -1232,6 +1424,22 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiExternalHeatNetworksSearchGetApiResponse(ILogger<ApiExternalHeatNetworksSearchGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiExternalHeatNetworksSearchGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiExternalHeatNetworksSearchGetApiResponse(ILogger<ApiExternalHeatNetworksSearchGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -1349,7 +1557,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiHeatNetworksAddHeatNetworkPost(ref suppressDefaultLog, apiResponseLocalVar, heatNetwork);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -1462,11 +1670,17 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
                         ILogger<ApiHeatNetworksAddHeatNetworkPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiHeatNetworksAddHeatNetworkPostApiResponse>();
+                        ApiHeatNetworksAddHeatNetworkPostApiResponse apiResponseLocalVar;
 
-                        ApiHeatNetworksAddHeatNetworkPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/add-heat-network", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/add-heat-network", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
 
                         AfterApiHeatNetworksAddHeatNetworkPostDefaultImplementation(apiResponseLocalVar, heatNetwork);
 
@@ -1505,6 +1719,22 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiHeatNetworksAddHeatNetworkPostApiResponse(ILogger<ApiHeatNetworksAddHeatNetworkPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiHeatNetworksAddHeatNetworkPostApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiHeatNetworksAddHeatNetworkPostApiResponse(ILogger<ApiHeatNetworksAddHeatNetworkPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -1614,7 +1844,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiHeatNetworksGet(ref suppressDefaultLog, apiResponseLocalVar);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -1704,11 +1934,17 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
                         ILogger<ApiHeatNetworksGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiHeatNetworksGetApiResponse>();
+                        ApiHeatNetworksGetApiResponse apiResponseLocalVar;
 
-                        ApiHeatNetworksGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
 
                         AfterApiHeatNetworksGetDefaultImplementation(apiResponseLocalVar);
 
@@ -1747,6 +1983,22 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiHeatNetworksGetApiResponse(ILogger<ApiHeatNetworksGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiHeatNetworksGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiHeatNetworksGetApiResponse(ILogger<ApiHeatNetworksGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -1832,7 +2084,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiHeatNetworksHnIdGet(ref suppressDefaultLog, apiResponseLocalVar, hnId);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -1932,11 +2184,17 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
                         ILogger<ApiHeatNetworksHnIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiHeatNetworksHnIdGetApiResponse>();
+                        ApiHeatNetworksHnIdGetApiResponse apiResponseLocalVar;
 
-                        ApiHeatNetworksHnIdGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/{hnId}", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/{hnId}", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
 
                         AfterApiHeatNetworksHnIdGetDefaultImplementation(apiResponseLocalVar, hnId);
 
@@ -1975,6 +2233,22 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiHeatNetworksHnIdGetApiResponse(ILogger<ApiHeatNetworksHnIdGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiHeatNetworksHnIdGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiHeatNetworksHnIdGetApiResponse(ILogger<ApiHeatNetworksHnIdGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -2136,7 +2410,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiHeatNetworksHnIdsGet(ref suppressDefaultLog, apiResponseLocalVar, hnIdsString);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -2242,11 +2516,17 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
                         ILogger<ApiHeatNetworksHnIdsGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiHeatNetworksHnIdsGetApiResponse>();
+                        ApiHeatNetworksHnIdsGetApiResponse apiResponseLocalVar;
 
-                        ApiHeatNetworksHnIdsGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/hnIds", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/hnIds", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
 
                         AfterApiHeatNetworksHnIdsGetDefaultImplementation(apiResponseLocalVar, hnIdsString);
 
@@ -2285,6 +2565,22 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiHeatNetworksHnIdsGetApiResponse(ILogger<ApiHeatNetworksHnIdsGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiHeatNetworksHnIdsGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiHeatNetworksHnIdsGetApiResponse(ILogger<ApiHeatNetworksHnIdsGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -2451,7 +2747,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiHeatNetworksNetworkCharacteristicsPut(ref suppressDefaultLog, apiResponseLocalVar, networkCharacteristics2, hnId);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -2576,11 +2872,17 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
                         ILogger<ApiHeatNetworksNetworkCharacteristicsPutApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiHeatNetworksNetworkCharacteristicsPutApiResponse>();
+                        ApiHeatNetworksNetworkCharacteristicsPutApiResponse apiResponseLocalVar;
 
-                        ApiHeatNetworksNetworkCharacteristicsPutApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/network-characteristics", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/network-characteristics", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
 
                         AfterApiHeatNetworksNetworkCharacteristicsPutDefaultImplementation(apiResponseLocalVar, networkCharacteristics2, hnId);
 
@@ -2619,6 +2921,680 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiHeatNetworksNetworkCharacteristicsPutApiResponse(ILogger<ApiHeatNetworksNetworkCharacteristicsPutApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiHeatNetworksNetworkCharacteristicsPutApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiHeatNetworksNetworkCharacteristicsPutApiResponse(ILogger<ApiHeatNetworksNetworkCharacteristicsPutApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.HeatNetworkResponse? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.HeatNetworkResponse>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.HeatNetworkResponse? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiHeatNetworksNetworkDetailsDocumentUpdatePatch(NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
+        /// <returns></returns>
+        private void ValidateApiHeatNetworksNetworkDetailsDocumentUpdatePatch(NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest)
+        {
+            if (networkDetailsUploadDocumentRequest == null)
+                throw new ArgumentNullException(nameof(networkDetailsUploadDocumentRequest));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
+        private void AfterApiHeatNetworksNetworkDetailsDocumentUpdatePatchDefaultImplementation(IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse apiResponseLocalVar, NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiHeatNetworksNetworkDetailsDocumentUpdatePatch(ref suppressDefaultLog, apiResponseLocalVar, networkDetailsUploadDocumentRequest);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
+        partial void AfterApiHeatNetworksNetworkDetailsDocumentUpdatePatch(ref bool suppressDefaultLog, IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse apiResponseLocalVar, NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
+        private void OnErrorApiHeatNetworksNetworkDetailsDocumentUpdatePatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiHeatNetworksNetworkDetailsDocumentUpdatePatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, networkDetailsUploadDocumentRequest);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
+        partial void OnErrorApiHeatNetworksNetworkDetailsDocumentUpdatePatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse"/>&gt;</returns>
+        public async Task<IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse?> ApiHeatNetworksNetworkDetailsDocumentUpdatePatchOrDefaultAsync(NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiHeatNetworksNetworkDetailsDocumentUpdatePatchAsync(networkDetailsUploadDocumentRequest, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse"/>&gt;</returns>
+        public async Task<IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse> ApiHeatNetworksNetworkDetailsDocumentUpdatePatchAsync(NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiHeatNetworksNetworkDetailsDocumentUpdatePatch(networkDetailsUploadDocumentRequest);
+
+                FormatApiHeatNetworksNetworkDetailsDocumentUpdatePatch(networkDetailsUploadDocumentRequest);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/HeatNetworks/network-details-document-update"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/HeatNetworks/network-details-document-update");
+
+                    httpRequestMessageLocalVar.Content = (networkDetailsUploadDocumentRequest as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(networkDetailsUploadDocumentRequest, _jsonSerializerOptions));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "text/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Patch;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        ILogger<ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse>();
+                        ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse apiResponseLocalVar;
+
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/network-details-document-update", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
+
+                        AfterApiHeatNetworksNetworkDetailsDocumentUpdatePatchDefaultImplementation(apiResponseLocalVar, networkDetailsUploadDocumentRequest);
+
+                        Events.ExecuteOnApiHeatNetworksNetworkDetailsDocumentUpdatePatch(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiHeatNetworksNetworkDetailsDocumentUpdatePatchDefaultImplementation(e, "/api/HeatNetworks/network-details-document-update", uriBuilderLocalVar.Path, networkDetailsUploadDocumentRequest);
+                Events.ExecuteOnErrorApiHeatNetworksNetworkDetailsDocumentUpdatePatch(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse"/>
+        /// </summary>
+        public partial class ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse(ILogger<ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse(ILogger<ApiHeatNetworksNetworkDetailsDocumentUpdatePatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiHeatNetworksNetworkElementsPut(NetworkElements2 networkElements2, ref Option<string> hnId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="networkElements2"></param>
+        /// <param name="hnId"></param>
+        /// <returns></returns>
+        private void ValidateApiHeatNetworksNetworkElementsPut(NetworkElements2 networkElements2, Option<string> hnId)
+        {
+            if (networkElements2 == null)
+                throw new ArgumentNullException(nameof(networkElements2));
+
+            if (hnId.IsSet && hnId.Value == null)
+                throw new ArgumentNullException(nameof(hnId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="networkElements2"></param>
+        /// <param name="hnId"></param>
+        private void AfterApiHeatNetworksNetworkElementsPutDefaultImplementation(IApiHeatNetworksNetworkElementsPutApiResponse apiResponseLocalVar, NetworkElements2 networkElements2, Option<string> hnId)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiHeatNetworksNetworkElementsPut(ref suppressDefaultLog, apiResponseLocalVar, networkElements2, hnId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="networkElements2"></param>
+        /// <param name="hnId"></param>
+        partial void AfterApiHeatNetworksNetworkElementsPut(ref bool suppressDefaultLog, IApiHeatNetworksNetworkElementsPutApiResponse apiResponseLocalVar, NetworkElements2 networkElements2, Option<string> hnId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="networkElements2"></param>
+        /// <param name="hnId"></param>
+        private void OnErrorApiHeatNetworksNetworkElementsPutDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, NetworkElements2 networkElements2, Option<string> hnId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiHeatNetworksNetworkElementsPut(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, networkElements2, hnId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="networkElements2"></param>
+        /// <param name="hnId"></param>
+        partial void OnErrorApiHeatNetworksNetworkElementsPut(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, NetworkElements2 networkElements2, Option<string> hnId);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="networkElements2"></param>
+        /// <param name="hnId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksNetworkElementsPutApiResponse"/>&gt;</returns>
+        public async Task<IApiHeatNetworksNetworkElementsPutApiResponse?> ApiHeatNetworksNetworkElementsPutOrDefaultAsync(NetworkElements2 networkElements2, Option<string> hnId = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiHeatNetworksNetworkElementsPutAsync(networkElements2, hnId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="networkElements2"></param>
+        /// <param name="hnId"> (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksNetworkElementsPutApiResponse"/>&gt;</returns>
+        public async Task<IApiHeatNetworksNetworkElementsPutApiResponse> ApiHeatNetworksNetworkElementsPutAsync(NetworkElements2 networkElements2, Option<string> hnId = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiHeatNetworksNetworkElementsPut(networkElements2, hnId);
+
+                FormatApiHeatNetworksNetworkElementsPut(networkElements2, ref hnId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/HeatNetworks/network-elements"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/HeatNetworks/network-elements");
+
+                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    if (hnId.IsSet)
+                        parseQueryStringLocalVar["hnId"] = ClientUtils.ParameterToString(hnId.Value);
+
+                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
+
+                    httpRequestMessageLocalVar.Content = (networkElements2 as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(networkElements2, _jsonSerializerOptions));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Put;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        ILogger<ApiHeatNetworksNetworkElementsPutApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiHeatNetworksNetworkElementsPutApiResponse>();
+                        ApiHeatNetworksNetworkElementsPutApiResponse apiResponseLocalVar;
+
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/network-elements", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
+
+                        AfterApiHeatNetworksNetworkElementsPutDefaultImplementation(apiResponseLocalVar, networkElements2, hnId);
+
+                        Events.ExecuteOnApiHeatNetworksNetworkElementsPut(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiHeatNetworksNetworkElementsPutDefaultImplementation(e, "/api/HeatNetworks/network-elements", uriBuilderLocalVar.Path, networkElements2, hnId);
+                Events.ExecuteOnErrorApiHeatNetworksNetworkElementsPut(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiHeatNetworksNetworkElementsPutApiResponse"/>
+        /// </summary>
+        public partial class ApiHeatNetworksNetworkElementsPutApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiHeatNetworksNetworkElementsPutApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiHeatNetworksNetworkElementsPutApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiHeatNetworksNetworkElementsPutApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiHeatNetworksNetworkElementsPutApiResponse(ILogger<ApiHeatNetworksNetworkElementsPutApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiHeatNetworksNetworkElementsPutApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiHeatNetworksNetworkElementsPutApiResponse(ILogger<ApiHeatNetworksNetworkElementsPutApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);

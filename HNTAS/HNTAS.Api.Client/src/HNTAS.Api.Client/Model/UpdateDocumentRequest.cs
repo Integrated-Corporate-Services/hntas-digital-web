@@ -33,18 +33,18 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateDocumentRequest" /> class.
         /// </summary>
-        /// <param name="hnId">hnId</param>
         /// <param name="phase">phase</param>
+        /// <param name="hnId">hnId</param>
         /// <param name="uploadedBy">uploadedBy</param>
         /// <param name="fileName">fileName</param>
         /// <param name="s3Key">s3Key</param>
         /// <param name="documentType">documentType</param>
         /// <param name="stage">stage</param>
         [JsonConstructor]
-        public UpdateDocumentRequest(string hnId, SoaPhase phase, string uploadedBy, string fileName, string s3Key, DocumentType documentType, Option<NullableOfSoaStage?> stage = default)
+        public UpdateDocumentRequest(SoaPhase phase, string hnId, string uploadedBy, string fileName, string s3Key, DocumentType documentType, Option<NullableOfSoaStage?> stage = default)
         {
-            HnId = hnId;
             Phase = phase;
+            HnId = hnId;
             UploadedBy = uploadedBy;
             FileName = fileName;
             S3Key = s3Key;
@@ -112,8 +112,8 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class UpdateDocumentRequest {\n");
-            sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  Phase: ").Append(Phase).Append("\n");
+            sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  UploadedBy: ").Append(UploadedBy).Append("\n");
             sb.Append("  FileName: ").Append(FileName).Append("\n");
             sb.Append("  S3Key: ").Append(S3Key).Append("\n");
@@ -156,8 +156,8 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> hnId = default;
             Option<SoaPhase?> phase = default;
+            Option<string?> hnId = default;
             Option<string?> uploadedBy = default;
             Option<string?> fileName = default;
             Option<string?> s3Key = default;
@@ -179,13 +179,13 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "hnId":
-                            hnId = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
                         case "phase":
                             string? phaseRawValue = utf8JsonReader.GetString();
                             if (phaseRawValue != null)
                                 phase = new Option<SoaPhase?>(SoaPhaseValueConverter.FromStringOrDefault(phaseRawValue));
+                            break;
+                        case "hnId":
+                            hnId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "uploadedBy":
                             uploadedBy = new Option<string?>(utf8JsonReader.GetString()!);
@@ -212,11 +212,11 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (!hnId.IsSet)
-                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(hnId));
-
             if (!phase.IsSet)
                 throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(phase));
+
+            if (!hnId.IsSet)
+                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(hnId));
 
             if (!uploadedBy.IsSet)
                 throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(uploadedBy));
@@ -230,11 +230,11 @@ namespace HNTAS.Api.Client.Model
             if (!documentType.IsSet)
                 throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(documentType));
 
-            if (hnId.IsSet && hnId.Value == null)
-                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class UpdateDocumentRequest.");
-
             if (phase.IsSet && phase.Value == null)
                 throw new ArgumentNullException(nameof(phase), "Property is not nullable for class UpdateDocumentRequest.");
+
+            if (hnId.IsSet && hnId.Value == null)
+                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class UpdateDocumentRequest.");
 
             if (uploadedBy.IsSet && uploadedBy.Value == null)
                 throw new ArgumentNullException(nameof(uploadedBy), "Property is not nullable for class UpdateDocumentRequest.");
@@ -248,7 +248,7 @@ namespace HNTAS.Api.Client.Model
             if (documentType.IsSet && documentType.Value == null)
                 throw new ArgumentNullException(nameof(documentType), "Property is not nullable for class UpdateDocumentRequest.");
 
-            return new UpdateDocumentRequest(hnId.Value!, phase.Value!.Value!, uploadedBy.Value!, fileName.Value!, s3Key.Value!, documentType.Value!.Value!, stage);
+            return new UpdateDocumentRequest(phase.Value!.Value!, hnId.Value!, uploadedBy.Value!, fileName.Value!, s3Key.Value!, documentType.Value!.Value!, stage);
         }
 
         /// <summary>
@@ -287,10 +287,10 @@ namespace HNTAS.Api.Client.Model
             if (updateDocumentRequest.S3Key == null)
                 throw new ArgumentNullException(nameof(updateDocumentRequest.S3Key), "Property is required for class UpdateDocumentRequest.");
 
-            writer.WriteString("hnId", updateDocumentRequest.HnId);
-
             var phaseRawValue = SoaPhaseValueConverter.ToJsonValue(updateDocumentRequest.Phase);
             writer.WriteString("phase", phaseRawValue);
+
+            writer.WriteString("hnId", updateDocumentRequest.HnId);
 
             writer.WriteString("uploadedBy", updateDocumentRequest.UploadedBy);
 

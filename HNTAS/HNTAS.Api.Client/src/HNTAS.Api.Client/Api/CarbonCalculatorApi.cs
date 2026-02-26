@@ -160,7 +160,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiCarbonCalculatorRunPost(ref suppressDefaultLog, apiResponseLocalVar, carbonCalculatorRequest);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -274,11 +274,17 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
                         ILogger<ApiCarbonCalculatorRunPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiCarbonCalculatorRunPostApiResponse>();
+                        ApiCarbonCalculatorRunPostApiResponse apiResponseLocalVar;
 
-                        ApiCarbonCalculatorRunPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/CarbonCalculator/run", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/CarbonCalculator/run", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
 
                         AfterApiCarbonCalculatorRunPostDefaultImplementation(apiResponseLocalVar, carbonCalculatorRequest);
 
@@ -288,7 +294,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiCarbonCalculatorRunPostDefaultImplementation(e, "/api/CarbonCalculator/run", uriBuilderLocalVar.Path, carbonCalculatorRequest);
                 Events.ExecuteOnErrorApiCarbonCalculatorRunPost(e);
@@ -322,6 +328,22 @@ namespace HNTAS.Api.Client.Api
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
+            /// <summary>
+            /// The <see cref="ApiCarbonCalculatorRunPostApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiCarbonCalculatorRunPostApiResponse(ILogger<ApiCarbonCalculatorRunPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
             partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
 
             /// <summary>
@@ -347,15 +369,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.CarbonCalculatorResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.CarbonCalculatorResponse? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }

@@ -4,6 +4,8 @@ using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.HeatNetwork;
+using HNTAS.Web.UI.Models.NetworkElements;
+using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -57,44 +59,46 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
-            return RedirectToAction("DoesHNHaveAPostcode");
-        }
-
-        [HttpGet]
-        public IActionResult DoesHNHaveAPostcode()
-        {
-            this.ShowBackButton("EnterHNName", "HeatNetwork");
-            var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey) ?? new DoesHNHaveAPostcodeViewModel { HasPostcode = false };
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> DoesHNHaveAPostcode(DoesHNHaveAPostcodeViewModel model)
-        {
-            this.ShowBackButton("EnterHNName", "HeatNetwork");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
-            if (!model.HasPostcode)
-            {
-                return RedirectToAction("ECCoordinates");
-            }
-            SearchAddressByPostcodeModel results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
-            model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
-            if (results == null || results.Addresses == null || results.Addresses.Length == 0)
-            {
-                ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
-                return View(model);
-            }
-            results.Addresses = results.Addresses
-                .Select(address => Utility.CapitalizeCommaSeparated(address))
-                .ToArray();
-            _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
             _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "HeatNetwork");
-            return RedirectToAction("SearchByPostcodeResults", "Address");
+            return RedirectToAction("DoesHNHaveAPostcode", "Address");
         }
+
+        //[HttpGet]
+        //public IActionResult DoesHNHaveAPostcode()
+        //{
+        //    this.ShowBackButton("EnterHNName", "HeatNetwork");
+        //    var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey) ?? new DoesHNHaveAPostcodeViewModel { HasPostcode = false };
+        //    return View(model);
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> DoesHNHaveAPostcode(DoesHNHaveAPostcodeViewModel model)
+        //{
+        //    this.ShowBackButton("EnterHNName", "HeatNetwork");
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+        //    _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
+        //    if (!model.HasPostcode)
+        //    {
+        //        //return RedirectToAction("ECCoordinates");
+        //        return RedirectToAction("ECCoordinates", "Coordinates");
+        //    }
+        //    SearchAddressByPostcodeModel results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
+        //    model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
+        //    if (results == null || results.Addresses == null || results.Addresses.Length == 0)
+        //    {
+        //        ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
+        //        return View(model);
+        //    }
+        //    results.Addresses = results.Addresses
+        //        .Select(address => Utility.CapitalizeCommaSeparated(address))
+        //        .ToArray();
+        //    _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
+        //    _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "HeatNetwork");
+        //    return RedirectToAction("SearchByPostcodeResults", "Address");
+        //}
 
         // -- Flow switching to AddressController for postcode search results -- //
         // -- Flow switching back from AddressController after address selection -- //
@@ -110,75 +114,78 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel { HNAddressByStreet = new AddressByStreetOrTownModel() };
             heatNetworkLocationModel.HNAddressByStreet = model;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
-            return RedirectToAction("ECCoordinates", "HeatNetwork");
+            //return RedirectToAction("ECCoordinates", "HeatNetwork");
+            return RedirectToAction("ECCoordinates", "Coordinates");
         }
 
-        [HttpGet]
-        public IActionResult AddressManualEntry()
-        {
-            this.ShowBackButton("EnterHNName", "HeatNetwork");
-            var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey)?.HNAddressByStreet ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
-            return View(model);
-        }
+        //[HttpGet]
+        //public IActionResult AddressManualEntry()
+        //{
+        //    this.ShowBackButton("EnterHNName", "HeatNetwork");
+        //    var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey)?.HNAddressByStreet ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        public IActionResult AddressManualEntry(AddressByStreetOrTownModel model)
-        {
-            this.ShowBackButton("EnterHNName", "HeatNetwork");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }            
-            var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
-                .Where(part => !string.IsNullOrWhiteSpace(part));
-            model.Fulladdress = string.Join(", ", addressParts);
-            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
-            heatNetworkLocationModel.HNAddressByStreet = model;
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
-            return RedirectToAction("ECCoordinates", "HeatNetwork");
-        }
+        //[HttpPost]
+        //public IActionResult AddressManualEntry(AddressByStreetOrTownModel model)
+        //{
+        //    this.ShowBackButton("EnterHNName", "HeatNetwork");
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }            
+        //    var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
+        //        .Where(part => !string.IsNullOrWhiteSpace(part));
+        //    model.Fulladdress = string.Join(", ", addressParts);
+        //    var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
+        //    heatNetworkLocationModel.HNAddressByStreet = model;
+        //    _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
+        //    //return RedirectToAction("ECCoordinates", "HeatNetwork");
+        //    return RedirectToAction("ECCoordinates", "Coordinates");
+        //}
 
-        [HttpGet]
-        public IActionResult ECCoordinates()
-        {
-            this.ShowBackButton("DoesHNHaveAPostcode");
-            var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
-            return View(model);
-        }
+        //[HttpGet]
+        //public IActionResult ECCoordinates()
+        //{
+        //    this.ShowBackButton("DoesHNHaveAPostcode");
+        //    var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ECCoordinates(ECDetailsModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult ECCoordinates(ECDetailsModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
 
-            // Try to split and parse the LatitudeLongitude value
-            var raw = model.LatitudeLongitude;
-            var parts = raw.Split(',', System.StringSplitOptions.RemoveEmptyEntries | System.StringSplitOptions.TrimEntries);
+        //    // Try to split and parse the LatitudeLongitude value
+        //    var raw = model.LatitudeLongitude;
+        //    var parts = raw.Split(',', System.StringSplitOptions.RemoveEmptyEntries | System.StringSplitOptions.TrimEntries);
 
-            if (parts.Length != 2
-                || !decimal.TryParse(parts[0], NumberStyles.Float | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var lat)
-                || !decimal.TryParse(parts[1], NumberStyles.Float | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var lon))
-            {
-                ModelState.AddModelError(nameof(model.LatitudeLongitude),
-                    "Enter latitude and longitude in correct format.");
-                return View("ECCoordinates", model);
-            }
+        //    if (parts.Length != 2
+        //        || !decimal.TryParse(parts[0], NumberStyles.Float | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var lat)
+        //        || !decimal.TryParse(parts[1], NumberStyles.Float | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var lon))
+        //    {
+        //        ModelState.AddModelError(nameof(model.LatitudeLongitude),
+        //            "Enter latitude and longitude in correct format.");
+        //        return View("ECCoordinates", model);
+        //    }
 
-            // Populate nested AddressByLatLongModel
-            model.ECAddressByLatLong.Latitude = lat;
-            model.ECAddressByLatLong.Longitude = lon;
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.ECDetailsModelSessionKey, model);
-            return RedirectToAction("EnterHNPhase");
-        }
+        //    // Populate nested AddressByLatLongModel
+        //    model.ECAddressByLatLong.Latitude = lat;
+        //    model.ECAddressByLatLong.Longitude = lon;
+        //    _sessionHelper.SaveToSession(HttpContext, SessionKeys.ECDetailsModelSessionKey, model);
+        //    return RedirectToAction("EnterHNPhase");
+        //}
 
         [HttpGet]
         public IActionResult EnterHNPhase()
         {
-            this.ShowBackButton("ECCoordinates", "HeatNetwork");
+            //this.ShowBackButton("ECCoordinates", "HeatNetwork");
+            this.ShowBackButton("ECCoordinates", "Coordinates");
             var heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey) ?? new HeatNetworkPhaseModel();
             var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
             ViewBag.HNName = heatNetworkNameModel.HeatNetworkName;
@@ -189,7 +196,8 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnterHNPhase(HeatNetworkPhaseModel model)
         {
-            this.ShowBackButton("ECCoordinates", "HeatNetwork");
+            //this.ShowBackButton("ECCoordinates", "HeatNetwork");
+            this.ShowBackButton("ECCoordinates", "Coordinates");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -507,7 +515,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> AddNetworkDetails([FromQuery] string hnid)
         {
-            hnid = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId) ?? hnid;
+            hnid = hnid ?? _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
 
             var model = await GetNetworkDetails(hnid);
             if (model == null) 
@@ -552,11 +560,13 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> NetworkDetailsAsync()
+        public async Task<IActionResult> NetworkDetails()
         {
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+
+            var networkType = heatNetworkData?.NetworkCharacteristics?.HeatNetworkType;
 
             this.ShowBackButton("AddNetworkDetails", "HeatNetwork", new {hnId});
 
@@ -566,15 +576,27 @@ namespace HNTAS.Web.UI.Controllers
             {
                 if (option.Id == NetworkDetailsType.NetworkCharacteristics)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkCharacteristics?.Status);
+                    Utility.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkCharacteristics?.Status);
                 }
                 else if (option.Id == NetworkDetailsType.NetworkElements)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.Status);
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.Status, heatNetworkData?.NetworkCharacteristics?.Status);
                 }
                 else if (option.Id == NetworkDetailsType.Soa)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.Soa?.Status);
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.Soa?.Status, heatNetworkData?.NetworkElements?.Status);
+                }
+                else if (option.Id == NetworkDetailsType.MeteringAndMonitoringStrategy)
+                {
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.MeteringAndMonitoringStrategy?.Status, heatNetworkData?.NetworkElements?.Status);
+                }
+                else if (option.Id == NetworkDetailsType.AssessmentPlan)
+                {
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.AssessmentPlan?.Status, heatNetworkData?.NetworkElements?.Status);
+                }
+                else if (option.Id == NetworkDetailsType.DesignConstructionLog)
+                {
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.DesignConstructionLog?.Status, heatNetworkData?.NetworkElements?.Status);
                 }
             }
 
@@ -585,6 +607,8 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HNId = hnId;
             ViewBag.HNName = hnName;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnName);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkTypeSessionKey, networkType);
 
             return View("NetworkDetails", model);
         }
@@ -592,12 +616,19 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> SelectNetworkDetail([FromQuery] string hnid, [FromQuery] NetworkDetailsType networkDetailId)
         {
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, hnid.ToUpper());
             switch (networkDetailId)
             {
                 case NetworkDetailsType.NetworkCharacteristics:
-                    return RedirectToAction("HeatNetworkType", "NetworkCharacteristics", new { hnid });
+                    return RedirectToAction("HeatNetworkType", "NetworkCharacteristics");
                 case NetworkDetailsType.NetworkElements:
                     return RedirectToAction("SelectNetworkElements", "NetworkElements", new { hnid });
+                case NetworkDetailsType.MeteringAndMonitoringStrategy:
+                    return RedirectToAction("MeteringAndMonitoringStrategy", "NetworkDetailsUpload");
+                case NetworkDetailsType.AssessmentPlan:
+                    return RedirectToAction("AssessmentPlan", "NetworkDetailsUpload");
+                case NetworkDetailsType.DesignConstructionLog:
+                    return RedirectToAction("DesignConstructionLog", "NetworkDetailsUpload");
                 default:
                     return BadRequest();
             }

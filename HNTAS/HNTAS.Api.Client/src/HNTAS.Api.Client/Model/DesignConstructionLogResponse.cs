@@ -34,14 +34,16 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="DesignConstructionLogResponse" /> class.
         /// </summary>
         /// <param name="status">status</param>
+        /// <param name="documents">documents</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public DesignConstructionLogResponse(Option<NetworkDetailsStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public DesignConstructionLogResponse(Option<NetworkDetailsStatus?> status = default, Option<List<NetworkDetailsUploadedDocument>?> documents = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
+            DocumentsOption = documents;
             CreatedAtOption = createdAt;
             CreatedByOption = createdBy;
             UpdatedAtOption = updatedAt;
@@ -63,6 +65,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("status")]
         public NetworkDetailsStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Documents
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<NetworkDetailsUploadedDocument>?> DocumentsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Documents
+        /// </summary>
+        [JsonPropertyName("documents")]
+        public List<NetworkDetailsUploadedDocument>? Documents { get { return this.DocumentsOption; } set { this.DocumentsOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedAt
@@ -125,6 +140,7 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class DesignConstructionLogResponse {\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  Documents: ").Append(Documents).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
@@ -177,6 +193,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<NetworkDetailsStatus?> status = default;
+            Option<List<NetworkDetailsUploadedDocument>?> documents = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
@@ -202,6 +219,9 @@ namespace HNTAS.Api.Client.Model
                             if (statusRawValue != null)
                                 status = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
+                        case "documents":
+                            documents = new Option<List<NetworkDetailsUploadedDocument>?>(JsonSerializer.Deserialize<List<NetworkDetailsUploadedDocument>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -223,10 +243,13 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class DesignConstructionLogResponse.");
 
+            if (documents.IsSet && documents.Value == null)
+                throw new ArgumentNullException(nameof(documents), "Property is not nullable for class DesignConstructionLogResponse.");
+
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class DesignConstructionLogResponse.");
 
-            return new DesignConstructionLogResponse(status, createdAt, createdBy, updatedAt, updatedBy);
+            return new DesignConstructionLogResponse(status, documents, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
@@ -253,10 +276,18 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, DesignConstructionLogResponse designConstructionLogResponse, JsonSerializerOptions jsonSerializerOptions)
         {
+            if (designConstructionLogResponse.DocumentsOption.IsSet && designConstructionLogResponse.Documents == null)
+                throw new ArgumentNullException(nameof(designConstructionLogResponse.Documents), "Property is required for class DesignConstructionLogResponse.");
+
             if (designConstructionLogResponse.StatusOption.IsSet)
             {
                 var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(designConstructionLogResponse.Status!.Value);
                 writer.WriteString("status", statusRawValue);
+            }
+            if (designConstructionLogResponse.DocumentsOption.IsSet)
+            {
+                writer.WritePropertyName("documents");
+                JsonSerializer.Serialize(writer, designConstructionLogResponse.Documents, jsonSerializerOptions);
             }
             if (designConstructionLogResponse.CreatedAtOption.IsSet)
                 writer.WriteString("createdAt", designConstructionLogResponse.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));

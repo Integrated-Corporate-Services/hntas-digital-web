@@ -108,7 +108,11 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new MeteringAndMonitoringStrategyResponseJsonConverter(),
         new AssessmentPlanResponseJsonConverter(),
         new DesignConstructionLogResponseJsonConverter(),
-        new AuditLogResponseJsonConverter()
+        new AuditLogResponseJsonConverter(),
+        new ElementJsonConverter(),
+        new ECDetails2JsonConverter(),
+        new NetworkDetailsUploadedDocumentJsonConverter()
+        
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

@@ -4,9 +4,9 @@
 
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
-        <span class="govuk-caption-xl">Network details</span>
+        <span class="govuk-caption-xl">@ViewBag.HNId</span>
             <h1 class="govuk-heading-xl">
-            @ViewBag.HNId @ViewBag.HNName
+                Network details
             </h1>
 
             <ul class="govuk-task-list">
@@ -32,7 +32,6 @@
                         <div class="govuk-task-list__name-and-hint">
                         @if (detail.IsEnabled)
                         {
-                            //TODO: controller and action to be defined for each link
                             <a class="govuk-link govuk-task-list__link" href="@Url.Action("SelectNetworkDetail", "HeatNetwork", new { hnid = ViewBag.HNId, networkDetailId = detail.Id })" aria-describedby="@detail.Id">
                                 @detail.Label
                             </a>
