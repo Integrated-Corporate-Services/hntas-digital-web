@@ -67,6 +67,6 @@
 
         public const string HeatNetworkTypeSessionKey = "HeatNetworkTypeSessionKey";
         public const string NetworkElementsViewModelSessionKey = "NetworkElementsViewModelSessionKey";
-
+        public const string NetworkDetailsUploadSessionKey = "NetworkDetailsUploadSessionKey";
     }
 }

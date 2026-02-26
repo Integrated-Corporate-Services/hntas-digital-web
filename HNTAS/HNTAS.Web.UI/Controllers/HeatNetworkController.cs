@@ -580,11 +580,23 @@ namespace HNTAS.Web.UI.Controllers
                 }
                 else if (option.Id == NetworkDetailsType.NetworkElements)
                 {
-                    Utility.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkElements?.Status, heatNetworkData?.NetworkCharacteristics?.Status);
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.Status, heatNetworkData?.NetworkCharacteristics?.Status);
                 }
                 else if (option.Id == NetworkDetailsType.Soa)
                 {
-                    Utility.UpdateOptionStatus<SoaStatus, NetworkDetailsStatus>(option, heatNetworkData?.Soa?.Status, heatNetworkData?.NetworkElements?.Status);
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.Soa?.Status, heatNetworkData?.NetworkElements?.Status);
+                }
+                else if (option.Id == NetworkDetailsType.MeteringAndMonitoringStrategy)
+                {
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.MeteringAndMonitoringStrategy?.Status, heatNetworkData?.NetworkElements?.Status);
+                }
+                else if (option.Id == NetworkDetailsType.AssessmentPlan)
+                {
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.AssessmentPlan?.Status, heatNetworkData?.NetworkElements?.Status);
+                }
+                else if (option.Id == NetworkDetailsType.DesignConstructionLog)
+                {
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.DesignConstructionLog?.Status, heatNetworkData?.NetworkElements?.Status);
                 }
             }
 
@@ -611,6 +623,12 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("HeatNetworkType", "NetworkCharacteristics");
                 case NetworkDetailsType.NetworkElements:
                     return RedirectToAction("SelectNetworkElements", "NetworkElements", new { hnid });
+                case NetworkDetailsType.MeteringAndMonitoringStrategy:
+                    return RedirectToAction("MeteringAndMonitoringStrategy", "NetworkDetailsUpload");
+                case NetworkDetailsType.AssessmentPlan:
+                    return RedirectToAction("AssessmentPlan", "NetworkDetailsUpload");
+                case NetworkDetailsType.DesignConstructionLog:
+                    return RedirectToAction("DesignConstructionLog", "NetworkDetailsUpload");
                 default:
                     return BadRequest();
             }

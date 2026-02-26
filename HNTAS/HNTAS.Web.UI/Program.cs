@@ -110,7 +110,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new DesignConstructionLogResponseJsonConverter(),
         new AuditLogResponseJsonConverter(),
         new ElementJsonConverter(),
-        new ECDetails2JsonConverter()
+        new ECDetails2JsonConverter(),
+        new NetworkDetailsUploadedDocumentJsonConverter()
         
     }
 });

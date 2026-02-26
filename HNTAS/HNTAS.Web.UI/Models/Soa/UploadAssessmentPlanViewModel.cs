@@ -6,4 +6,6 @@
         public int PhaseNumber { get; set; }
         public string TemplateDownloadUrl { get; set; } = string.Empty;
     }
+
+
 }

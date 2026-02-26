@@ -26,59 +26,36 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// UpdateDocumentRequest
+    /// NetworkDetailsUploadDocumentRequest
     /// </summary>
-    public partial class UpdateDocumentRequest : IValidatableObject
+    public partial class NetworkDetailsUploadDocumentRequest : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateDocumentRequest" /> class.
+        /// Initializes a new instance of the <see cref="NetworkDetailsUploadDocumentRequest" /> class.
         /// </summary>
-        /// <param name="phase">phase</param>
         /// <param name="hnId">hnId</param>
         /// <param name="uploadedBy">uploadedBy</param>
         /// <param name="fileName">fileName</param>
         /// <param name="s3Key">s3Key</param>
         /// <param name="documentType">documentType</param>
-        /// <param name="stage">stage</param>
         [JsonConstructor]
-        public UpdateDocumentRequest(SoaPhase phase, string hnId, string uploadedBy, string fileName, string s3Key, DocumentType documentType, Option<NullableOfSoaStage?> stage = default)
+        public NetworkDetailsUploadDocumentRequest(string hnId, string uploadedBy, string fileName, string s3Key, DocumentType documentType)
         {
-            Phase = phase;
             HnId = hnId;
             UploadedBy = uploadedBy;
             FileName = fileName;
             S3Key = s3Key;
             DocumentType = documentType;
-            StageOption = stage;
             OnCreated();
         }
 
         partial void OnCreated();
 
         /// <summary>
-        /// Gets or Sets Phase
-        /// </summary>
-        [JsonPropertyName("phase")]
-        public SoaPhase Phase { get; set; }
-
-        /// <summary>
         /// Gets or Sets DocumentType
         /// </summary>
         [JsonPropertyName("documentType")]
         public DocumentType DocumentType { get; set; }
-
-        /// <summary>
-        /// Used to track the state of Stage
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<NullableOfSoaStage?> StageOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Stage
-        /// </summary>
-        [JsonPropertyName("stage")]
-        public NullableOfSoaStage? Stage { get { return this.StageOption; } set { this.StageOption = new(value); } }
 
         /// <summary>
         /// Gets or Sets HnId
@@ -111,14 +88,12 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class UpdateDocumentRequest {\n");
-            sb.Append("  Phase: ").Append(Phase).Append("\n");
+            sb.Append("class NetworkDetailsUploadDocumentRequest {\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  UploadedBy: ").Append(UploadedBy).Append("\n");
             sb.Append("  FileName: ").Append(FileName).Append("\n");
             sb.Append("  S3Key: ").Append(S3Key).Append("\n");
             sb.Append("  DocumentType: ").Append(DocumentType).Append("\n");
-            sb.Append("  Stage: ").Append(Stage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -135,19 +110,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="UpdateDocumentRequest" />
+    /// A Json converter for type <see cref="NetworkDetailsUploadDocumentRequest" />
     /// </summary>
-    public class UpdateDocumentRequestJsonConverter : JsonConverter<UpdateDocumentRequest>
+    public class NetworkDetailsUploadDocumentRequestJsonConverter : JsonConverter<NetworkDetailsUploadDocumentRequest>
     {
         /// <summary>
-        /// Deserializes json to <see cref="UpdateDocumentRequest" />
+        /// Deserializes json to <see cref="NetworkDetailsUploadDocumentRequest" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override UpdateDocumentRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override NetworkDetailsUploadDocumentRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -156,13 +131,11 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<SoaPhase?> phase = default;
             Option<string?> hnId = default;
             Option<string?> uploadedBy = default;
             Option<string?> fileName = default;
             Option<string?> s3Key = default;
             Option<DocumentType?> documentType = default;
-            Option<NullableOfSoaStage?> stage = default;
 
             while (utf8JsonReader.Read())
             {
@@ -179,11 +152,6 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "phase":
-                            string? phaseRawValue = utf8JsonReader.GetString();
-                            if (phaseRawValue != null)
-                                phase = new Option<SoaPhase?>(SoaPhaseValueConverter.FromStringOrDefault(phaseRawValue));
-                            break;
                         case "hnId":
                             hnId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
@@ -201,114 +169,91 @@ namespace HNTAS.Api.Client.Model
                             if (documentTypeRawValue != null)
                                 documentType = new Option<DocumentType?>(DocumentTypeValueConverter.FromStringOrDefault(documentTypeRawValue));
                             break;
-                        case "stage":
-                            string? stageRawValue = utf8JsonReader.GetString();
-                            if (stageRawValue != null)
-                                stage = new Option<NullableOfSoaStage?>(NullableOfSoaStageValueConverter.FromStringOrDefault(stageRawValue));
-                            break;
                         default:
                             break;
                     }
                 }
             }
 
-            if (!phase.IsSet)
-                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(phase));
-
             if (!hnId.IsSet)
-                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(hnId));
+                throw new ArgumentException("Property is required for class NetworkDetailsUploadDocumentRequest.", nameof(hnId));
 
             if (!uploadedBy.IsSet)
-                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(uploadedBy));
+                throw new ArgumentException("Property is required for class NetworkDetailsUploadDocumentRequest.", nameof(uploadedBy));
 
             if (!fileName.IsSet)
-                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(fileName));
+                throw new ArgumentException("Property is required for class NetworkDetailsUploadDocumentRequest.", nameof(fileName));
 
             if (!s3Key.IsSet)
-                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(s3Key));
+                throw new ArgumentException("Property is required for class NetworkDetailsUploadDocumentRequest.", nameof(s3Key));
 
             if (!documentType.IsSet)
-                throw new ArgumentException("Property is required for class UpdateDocumentRequest.", nameof(documentType));
-
-            if (phase.IsSet && phase.Value == null)
-                throw new ArgumentNullException(nameof(phase), "Property is not nullable for class UpdateDocumentRequest.");
+                throw new ArgumentException("Property is required for class NetworkDetailsUploadDocumentRequest.", nameof(documentType));
 
             if (hnId.IsSet && hnId.Value == null)
-                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class UpdateDocumentRequest.");
+                throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class NetworkDetailsUploadDocumentRequest.");
 
             if (uploadedBy.IsSet && uploadedBy.Value == null)
-                throw new ArgumentNullException(nameof(uploadedBy), "Property is not nullable for class UpdateDocumentRequest.");
+                throw new ArgumentNullException(nameof(uploadedBy), "Property is not nullable for class NetworkDetailsUploadDocumentRequest.");
 
             if (fileName.IsSet && fileName.Value == null)
-                throw new ArgumentNullException(nameof(fileName), "Property is not nullable for class UpdateDocumentRequest.");
+                throw new ArgumentNullException(nameof(fileName), "Property is not nullable for class NetworkDetailsUploadDocumentRequest.");
 
             if (s3Key.IsSet && s3Key.Value == null)
-                throw new ArgumentNullException(nameof(s3Key), "Property is not nullable for class UpdateDocumentRequest.");
+                throw new ArgumentNullException(nameof(s3Key), "Property is not nullable for class NetworkDetailsUploadDocumentRequest.");
 
             if (documentType.IsSet && documentType.Value == null)
-                throw new ArgumentNullException(nameof(documentType), "Property is not nullable for class UpdateDocumentRequest.");
+                throw new ArgumentNullException(nameof(documentType), "Property is not nullable for class NetworkDetailsUploadDocumentRequest.");
 
-            return new UpdateDocumentRequest(phase.Value!.Value!, hnId.Value!, uploadedBy.Value!, fileName.Value!, s3Key.Value!, documentType.Value!.Value!, stage);
+            return new NetworkDetailsUploadDocumentRequest(hnId.Value!, uploadedBy.Value!, fileName.Value!, s3Key.Value!, documentType.Value!.Value!);
         }
 
         /// <summary>
-        /// Serializes a <see cref="UpdateDocumentRequest" />
+        /// Serializes a <see cref="NetworkDetailsUploadDocumentRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="updateDocumentRequest"></param>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, UpdateDocumentRequest updateDocumentRequest, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, updateDocumentRequest, jsonSerializerOptions);
+            WriteProperties(writer, networkDetailsUploadDocumentRequest, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="UpdateDocumentRequest" />
+        /// Serializes the properties of <see cref="NetworkDetailsUploadDocumentRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="updateDocumentRequest"></param>
+        /// <param name="networkDetailsUploadDocumentRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, UpdateDocumentRequest updateDocumentRequest, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (updateDocumentRequest.HnId == null)
-                throw new ArgumentNullException(nameof(updateDocumentRequest.HnId), "Property is required for class UpdateDocumentRequest.");
+            if (networkDetailsUploadDocumentRequest.HnId == null)
+                throw new ArgumentNullException(nameof(networkDetailsUploadDocumentRequest.HnId), "Property is required for class NetworkDetailsUploadDocumentRequest.");
 
-            if (updateDocumentRequest.UploadedBy == null)
-                throw new ArgumentNullException(nameof(updateDocumentRequest.UploadedBy), "Property is required for class UpdateDocumentRequest.");
+            if (networkDetailsUploadDocumentRequest.UploadedBy == null)
+                throw new ArgumentNullException(nameof(networkDetailsUploadDocumentRequest.UploadedBy), "Property is required for class NetworkDetailsUploadDocumentRequest.");
 
-            if (updateDocumentRequest.FileName == null)
-                throw new ArgumentNullException(nameof(updateDocumentRequest.FileName), "Property is required for class UpdateDocumentRequest.");
+            if (networkDetailsUploadDocumentRequest.FileName == null)
+                throw new ArgumentNullException(nameof(networkDetailsUploadDocumentRequest.FileName), "Property is required for class NetworkDetailsUploadDocumentRequest.");
 
-            if (updateDocumentRequest.S3Key == null)
-                throw new ArgumentNullException(nameof(updateDocumentRequest.S3Key), "Property is required for class UpdateDocumentRequest.");
+            if (networkDetailsUploadDocumentRequest.S3Key == null)
+                throw new ArgumentNullException(nameof(networkDetailsUploadDocumentRequest.S3Key), "Property is required for class NetworkDetailsUploadDocumentRequest.");
 
-            var phaseRawValue = SoaPhaseValueConverter.ToJsonValue(updateDocumentRequest.Phase);
-            writer.WriteString("phase", phaseRawValue);
+            writer.WriteString("hnId", networkDetailsUploadDocumentRequest.HnId);
 
-            writer.WriteString("hnId", updateDocumentRequest.HnId);
+            writer.WriteString("uploadedBy", networkDetailsUploadDocumentRequest.UploadedBy);
 
-            writer.WriteString("uploadedBy", updateDocumentRequest.UploadedBy);
+            writer.WriteString("fileName", networkDetailsUploadDocumentRequest.FileName);
 
-            writer.WriteString("fileName", updateDocumentRequest.FileName);
+            writer.WriteString("s3Key", networkDetailsUploadDocumentRequest.S3Key);
 
-            writer.WriteString("s3Key", updateDocumentRequest.S3Key);
-
-            var documentTypeRawValue = DocumentTypeValueConverter.ToJsonValue(updateDocumentRequest.DocumentType);
+            var documentTypeRawValue = DocumentTypeValueConverter.ToJsonValue(networkDetailsUploadDocumentRequest.DocumentType);
             writer.WriteString("documentType", documentTypeRawValue);
-
-            if (updateDocumentRequest.StageOption.IsSet)
-                if (updateDocumentRequest.StageOption!.Value != null)
-                {
-                    var stageRawValue = NullableOfSoaStageValueConverter.ToJsonValue(updateDocumentRequest.StageOption.Value!.Value);
-                    writer.WriteString("stage", stageRawValue);
-                }
-                else
-                    writer.WriteNull("stage");
         }
     }
 }
