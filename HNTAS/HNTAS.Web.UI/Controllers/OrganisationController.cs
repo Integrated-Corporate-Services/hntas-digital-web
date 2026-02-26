@@ -392,10 +392,13 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("DeedPoll");
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-            this.ShowBackButton("DeedPoll");            
-            return View("UserDetails/ContactDetails", userModel.ContactDetails);
+            this.ShowBackButton("DeedPoll");
+            return View(userModel.ContactDetails);
+
+            return View(userModel.ContactDetails);
         }
 
+        // not in use
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
@@ -456,12 +459,10 @@ namespace HNTAS.Web.UI.Controllers
 
             var viewModel = new CheckYourAnswersModel
             {
-                Organisation = organisationModel,
-                User = userModel,
                 ConfirmDeclaration = false
-            };
-
-            //ViewBag.ShowBackButton = false;
+            };            
+                ConfirmedDeclaration = false
+            ViewBag.ShowBackButton = false;
 
             // Set the flow state to Check Answers mode
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, true);
