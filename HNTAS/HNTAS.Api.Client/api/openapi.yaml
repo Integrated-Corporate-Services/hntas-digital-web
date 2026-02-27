@@ -1460,6 +1460,49 @@ paths:
           description: Not Found
       tags:
       - SOA
+  /api/SOA/document-update-soa:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaUploadDocumentRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaUploadDocumentRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaUploadDocumentRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SOA
   /api/SOA/{hnId}:
     delete:
       parameters:
@@ -3095,6 +3138,29 @@ components:
           nullable: true
           type: string
       type: object
+    Document:
+      example:
+        phase: Phase1
+        fileName: fileName
+        s3Key: s3Key
+        stage: Stage1
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        uploadedBy: uploadedBy
+      properties:
+        phase:
+          $ref: "#/components/schemas/SoaPhase"
+        stage:
+          $ref: "#/components/schemas/NullableOfSoaStage"
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        uploadedAt:
+          format: date-time
+          type: string
+        uploadedBy:
+          type: string
+      type: object
     DocumentType:
       enum:
       - Assessment
@@ -3103,6 +3169,7 @@ components:
       - MeteringAndMonitoringStrategy
       - AssessmentPlan
       - DesignConstructionLog
+      - Soa
       type: string
     ECDetails:
       example:
@@ -3171,12 +3238,16 @@ components:
       example:
         elementId: elementId
         documents:
-        - fileName: fileName
+        - phase: Phase1
+          fileName: fileName
           s3Key: s3Key
+          stage: Stage1
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
-        - fileName: fileName
+        - phase: Phase1
+          fileName: fileName
           s3Key: s3Key
+          stage: Stage1
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         type: EnergyCentre
@@ -3192,7 +3263,7 @@ components:
           type: string
         documents:
           items:
-            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+            $ref: "#/components/schemas/Document"
           type: array
       type: object
     ElementSoa:
@@ -3205,24 +3276,32 @@ components:
           elements:
           - elementId: elementId
             documents:
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
             documents:
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             type: EnergyCentre
@@ -3231,24 +3310,32 @@ components:
           elements:
           - elementId: elementId
             documents:
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
             documents:
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             type: EnergyCentre
@@ -3286,24 +3373,32 @@ components:
           elements:
           - elementId: elementId
             documents:
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
             documents:
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             type: EnergyCentre
@@ -3312,24 +3407,32 @@ components:
           elements:
           - elementId: elementId
             documents:
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
             documents:
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
-            - fileName: fileName
+            - phase: Phase1
+              fileName: fileName
               s3Key: s3Key
+              stage: Stage1
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             type: EnergyCentre
@@ -3357,6 +3460,38 @@ components:
         updatedBy:
           nullable: true
           type: string
+      type: object
+    ElementSoaUploadDocumentRequest:
+      example:
+        elementId: elementId
+        hnId: hnId
+        fileName: fileName
+        s3Key: s3Key
+        stage: Stage1
+        documentType: Assessment
+        uploadedBy: uploadedBy
+      properties:
+        stage:
+          $ref: "#/components/schemas/SoaStage"
+        elementId:
+          nullable: true
+          type: string
+        hnId:
+          type: string
+        uploadedBy:
+          type: string
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        documentType:
+          $ref: "#/components/schemas/DocumentType"
+      required:
+      - documentType
+      - fileName
+      - hnId
+      - s3Key
+      - uploadedBy
       type: object
     Energy:
       example:
@@ -3750,8 +3885,14 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           documents:
-          - ""
-          - ""
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3779,24 +3920,32 @@ components:
             elements:
             - elementId: elementId
               documents:
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               type: EnergyCentre
               elementType: elementType
             - elementId: elementId
               documents:
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               type: EnergyCentre
@@ -3805,24 +3954,32 @@ components:
             elements:
             - elementId: elementId
               documents:
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               type: EnergyCentre
               elementType: elementType
             - elementId: elementId
               documents:
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               type: EnergyCentre
@@ -4178,8 +4335,14 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           documents:
-          - ""
-          - ""
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4206,24 +4369,32 @@ components:
             elements:
             - elementId: elementId
               documents:
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               type: EnergyCentre
               elementType: elementType
             - elementId: elementId
               documents:
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               type: EnergyCentre
@@ -4232,24 +4403,32 @@ components:
             elements:
             - elementId: elementId
               documents:
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               type: EnergyCentre
               elementType: elementType
             - elementId: elementId
               documents:
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
-              - fileName: fileName
+              - phase: Phase1
+                fileName: fileName
                 s3Key: s3Key
+                stage: Stage1
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               type: EnergyCentre
@@ -4664,8 +4843,14 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         documents:
-        - ""
-        - ""
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
         createdBy: createdBy
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4674,7 +4859,8 @@ components:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         documents:
-          items: {}
+          items:
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
           type: array
         createdAt:
           format: date-time
@@ -4694,8 +4880,14 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         documents:
-        - ""
-        - ""
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
         createdBy: createdBy
         status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4704,7 +4896,8 @@ components:
         status:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         documents:
-          items: {}
+          items:
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
           type: array
         createdAt:
           format: date-time
@@ -5841,24 +6034,32 @@ components:
         elements:
         - elementId: elementId
           documents:
-          - fileName: fileName
+          - phase: Phase1
+            fileName: fileName
             s3Key: s3Key
+            stage: Stage1
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
-          - fileName: fileName
+          - phase: Phase1
+            fileName: fileName
             s3Key: s3Key
+            stage: Stage1
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
           documents:
-          - fileName: fileName
+          - phase: Phase1
+            fileName: fileName
             s3Key: s3Key
+            stage: Stage1
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
-          - fileName: fileName
+          - phase: Phase1
+            fileName: fileName
             s3Key: s3Key
+            stage: Stage1
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           type: EnergyCentre

@@ -38,7 +38,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="elementId">elementId</param>
         /// <param name="documents">documents</param>
         [JsonConstructor]
-        public Elements(Option<HeatNetworkElementDisplayType?> type = default, Option<string?> elementType = default, Option<string?> elementId = default, Option<List<NetworkDetailsUploadedDocument>?> documents = default)
+        public Elements(Option<HeatNetworkElementDisplayType?> type = default, Option<string?> elementType = default, Option<string?> elementId = default, Option<List<Document>?> documents = default)
         {
             TypeOption = type;
             ElementTypeOption = elementType;
@@ -93,13 +93,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<NetworkDetailsUploadedDocument>?> DocumentsOption { get; private set; }
+        public Option<List<Document>?> DocumentsOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Documents
         /// </summary>
         [JsonPropertyName("documents")]
-        public List<NetworkDetailsUploadedDocument>? Documents { get { return this.DocumentsOption; } set { this.DocumentsOption = new(value); } }
+        public List<Document>? Documents { get { return this.DocumentsOption; } set { this.DocumentsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -153,7 +153,7 @@ namespace HNTAS.Api.Client.Model
             Option<HeatNetworkElementDisplayType?> type = default;
             Option<string?> elementType = default;
             Option<string?> elementId = default;
-            Option<List<NetworkDetailsUploadedDocument>?> documents = default;
+            Option<List<Document>?> documents = default;
 
             while (utf8JsonReader.Read())
             {
@@ -182,7 +182,7 @@ namespace HNTAS.Api.Client.Model
                             elementId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "documents":
-                            documents = new Option<List<NetworkDetailsUploadedDocument>?>(JsonSerializer.Deserialize<List<NetworkDetailsUploadedDocument>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            documents = new Option<List<Document>?>(JsonSerializer.Deserialize<List<Document>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;

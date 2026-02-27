@@ -1,13 +1,16 @@
-# HNTAS.Api.Client.Model.Elements
+# HNTAS.Api.Client.Model.ElementSoaUploadDocumentRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Type** | **HeatNetworkElementDisplayType** |  | [optional] 
-**ElementType** | **string** |  | [optional] 
+**HnId** | **string** |  | 
+**UploadedBy** | **string** |  | 
+**FileName** | **string** |  | 
+**S3Key** | **string** |  | 
+**DocumentType** | **DocumentType** |  | 
+**Stage** | **SoaStage** |  | [optional] 
 **ElementId** | **string** |  | [optional] 
-**Documents** | [**List&lt;Document&gt;**](Document.md) |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

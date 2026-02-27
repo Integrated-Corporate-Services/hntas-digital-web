@@ -1,27 +1,27 @@
-﻿@using HNTAS.Web.UI.Models.NetworkDetailsUpload
-@model NetworkDetailsUploadViewModel
+﻿@using HNTAS.Web.UI.Models.ElementSoa
+@model ElementSoaUploadViewModel
 
-<div class="govuk-width-container">    
+<div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-xl">@ViewBag.HnId</span>
             <h1 class="govuk-heading-xl">
-                @ViewBag.Heading
+                @* @ViewBag.Heading *@
             </h1>
 
             <p class="govuk-body">
-                @ViewBag.Description1
+                @* @ViewBag.Description1 *@
             </p>
 
             <p class="govuk-body">
                 <a href="@Model.TemplateDownloadUrl" class="govuk-link">Download</a> the template for completion.
-            </p>            
+            </p>
 
-            <form asp-action="@ViewBag.Action" method="post" enctype="multipart/form-data" class="govuk-form-group">
+            <form asp-action="@ViewBag.Action" asp-controller="ElementSoa" method="post" enctype="multipart/form-data" class="govuk-form-group">
 
                 <div class="govuk-form-group">
                     <label class="govuk-label" for="docToUpload">
-                        @ViewBag.Description2
+                        @* @ViewBag.Description2 *@
                     </label>
                     <div class="govuk-drop-zone"
                          data-module="govuk-file-upload">
@@ -37,9 +37,9 @@
             @if (@Model.UploadedDocument?.FileName != null)
             {
                 <p class="govuk-body">
-                    Currently uploaded: <a class="govuk-link" href="@Model.UploadedDocument.DocumentUrl">@Model.UploadedDocument.FileName</a>&nbsp;&nbsp;<a class="govuk-link" href="#" onclick="document.getElementById('docToUpload').click(); return false;">Replace</a>
+                    Currently uploaded: <a class="govuk-link" href="@Model.TemplateDownloadUrl">@Model.UploadedDocument.FileName</a>&nbsp;&nbsp;<a class="govuk-link" href="#" onclick="document.getElementById('docToUpload').click(); return false;">Replace</a>
                 </p>
-            }            
+            }
 
         </div>
     </div>

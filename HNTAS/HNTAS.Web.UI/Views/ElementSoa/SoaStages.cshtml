@@ -3,17 +3,15 @@
 
 @model ElementSoaViewModel
 
-@{
-    //ViewData["Title"] = Model.PageTitle;
-}
-
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            @* <span class="govuk-caption-l">@Model.ProjectName</span>
-            <h1 class="govuk-heading-l">@Model.PageTitle</h1> *@
+        <div class="govuk-grid-column-full">
+            <span class="govuk-caption-xl">@ViewBag.HnId</span>
+            <h1 class="govuk-heading-xl">
+                Element statements of applicability (SOAs)
+            </h1>
 
-            <p class="govuk-body">As a next step you need to add assesment plan to your  statement of applicability (SOA) </p>
+            <p class="govuk-body">Successful network assessment and eventual regulatory certification requires each element to conform to their respective technical requirements. Complete applicability for the stages below. You can submit an element SOA for the next stage, but not beyond that until the other elements have been completed.</p>
 
             <div class="govuk-tabs" data-module="govuk-tabs">
                 <h2 class="govuk-tabs__title">Contents</h2>
@@ -33,25 +31,34 @@
                 {
                     var stage = Model.Stages[i];
                     <div id="stage-@i" class="govuk-tabs__panel @(i != Model.CurrentStageIndex ? "govuk-tabs__panel--hidden" : "")">
-                        @* <h2 class="govuk-heading-l">@stage.Title</h2> *@
+                        <h2 class="govuk-heading-l">@stage.Title</h2>
 
                         @* @foreach (var stage in phase.Stages)
                         { *@
-                            <h3 class="govuk-heading-m">@stage.Name</h3>
-                            <hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible">
+                            @* <h3 class="govuk-heading-m">@stage.Name</h3>
+                            <hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible"> *@
                             <table class="govuk-table">
                                 <tbody class="govuk-table__body">
                                     @foreach (var element in stage.Elements)
                                     {
                                         <tr class="govuk-table__row">
-                                            @* <td class="govuk-table__cell">
-                                                <a class="govuk-link app-element-list__link" href="@element.Url">@element.Name</a>
+                                            <td class="govuk-table__cell">
+                                            @element.Name
                                             </td>
                                             <td class="govuk-table__cell">
-                                                <strong class="govuk-tag @GovUkTagHelper.GetTagClass(element.Status)">
-                                                    @element.Status
-                                                </strong>
-                                            </td> *@
+                                            @if (element.Documents?.Count > 0)
+                                            {
+                                                <a class="govuk-link govuk-task-list__link" href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.Stage, elementId = element.ElementId})" aria-describedby="@element.Documents?.FirstOrDefault()?.FileName">
+                                                    @element.Documents?.FirstOrDefault()?.FileName
+                                                </a>
+                                            }
+                                            else{
+                                                <a class="govuk-link govuk-task-list__link" href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.Stage, elementId = element.ElementId })" aria-describedby="Upload SOA details">
+                                                    Upload SOA details
+                                                </a>
+                                            }
+                                            
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

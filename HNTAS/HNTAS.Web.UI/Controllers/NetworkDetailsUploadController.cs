@@ -128,9 +128,15 @@ namespace HNTAS.Web.UI.Controllers
                     {
                         uploadedDocument = new UploadedDocumentInfo
                         {
-                            //FileName = document.FileName!,
-                            //UploadedBy = document.UploadedBy!,
-                            //S3Key = document.S3Key!
+                            FileName = document.FileName!,
+                            UploadedBy = document.UploadedBy!,
+                            S3Key = document.S3Key!,
+                            DocumentUrl = document?.S3Key != null
+                                ? Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(
+                                    Url.Action("DownloadFile", "NetworkDetailsUpload")!,
+                                    "key",
+                                    document.S3Key)
+                                : null,
                         };
                     }
                 }

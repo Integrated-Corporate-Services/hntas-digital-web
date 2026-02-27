@@ -58,7 +58,12 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Enum DesignConstructionLog for value: DesignConstructionLog
         /// </summary>
-        DesignConstructionLog = 6
+        DesignConstructionLog = 6,
+
+        /// <summary>
+        /// Enum Soa for value: Soa
+        /// </summary>
+        Soa = 7
     }
 
     /// <summary>
@@ -91,6 +96,9 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("DesignConstructionLog"))
                 return DocumentType.DesignConstructionLog;
 
+            if (value.Equals("Soa"))
+                return DocumentType.Soa;
+
             throw new NotImplementedException($"Could not convert value to type DocumentType: '{value}'");
         }
 
@@ -118,6 +126,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("DesignConstructionLog"))
                 return DocumentType.DesignConstructionLog;
+
+            if (value.Equals("Soa"))
+                return DocumentType.Soa;
 
             return null;
         }
@@ -147,6 +158,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value == DocumentType.DesignConstructionLog)
                 return "DesignConstructionLog";
+
+            if (value == DocumentType.Soa)
+                return "Soa";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
