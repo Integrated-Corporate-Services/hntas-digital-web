@@ -4387,30 +4387,6 @@
         },
         "nullable": true
       },
-      "Document": {
-        "type": "object",
-        "properties": {
-          "phase": {
-            "$ref": "#/components/schemas/SoaPhase"
-          },
-          "stage": {
-            "$ref": "#/components/schemas/NullableOfSoaStage"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "s3Key": {
-            "type": "string"
-          },
-          "uploadedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "uploadedBy": {
-            "type": "string"
-          }
-        }
-      },
       "DocumentType": {
         "enum": [
           "Assessment",
@@ -4483,13 +4459,6 @@
       "Elements": {
         "type": "object",
         "properties": {
-          "type": {
-            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
-          },
-          "elementType": {
-            "type": "string",
-            "nullable": true
-          },
           "elementId": {
             "type": "string",
             "nullable": true
@@ -4497,7 +4466,7 @@
           "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Document"
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
             }
           }
         }
@@ -5223,9 +5192,7 @@
           },
           "documents": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
-            }
+            "items": { }
           },
           "createdAt": {
             "type": "string",
@@ -5254,9 +5221,7 @@
           },
           "documents": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
-            }
+            "items": { }
           },
           "createdAt": {
             "type": "string",

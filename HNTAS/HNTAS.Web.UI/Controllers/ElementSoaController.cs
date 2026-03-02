@@ -56,7 +56,7 @@ namespace HNTAS.Web.UI.Controllers
             var elementSoa = heatNetworkData?.ElementSoa;
             var elementSoaStages = elementSoa?.Stages;
 
-            var soaElements = GetElementsForStage(networkElements);
+            //var soaElements = GetElementsForStage(networkElements);
 
             var model = new ElementSoaViewModel
             {
@@ -67,7 +67,7 @@ namespace HNTAS.Web.UI.Controllers
                     {
                         Name = "Stage 1",
                         Stage = SoaStage.Stage1,
-                        Elements = soaElements,
+                        Elements = GetElementsForStage(networkElements),
                         IsActive = true,
                         Title = "Feasibility (Concept Design)"
                     },
@@ -75,7 +75,7 @@ namespace HNTAS.Web.UI.Controllers
                     {
                         Name = "Stage 2",
                         Stage = SoaStage.Stage2,
-                        Elements = soaElements,
+                        Elements = GetElementsForStage(networkElements),
                         IsActive = false,
                         Title = "Design (Developed Design)"
                     },
@@ -83,27 +83,34 @@ namespace HNTAS.Web.UI.Controllers
                     {
                         Name = "Stage 3",
                         Stage = SoaStage.Stage3,
-                        Elements = soaElements,
+                        Elements = GetElementsForStage(networkElements),
                         IsActive = false,
                         Title = "Design (Technical Design)"
                     }
                 }
             };
 
-            foreach(var stageInModel in model.Stages)
+            foreach (var stageInModel in model.Stages)
             {
                 if (elementSoaStages != null)
                 {
-                    foreach(var modelElement in stageInModel.Elements)
+                    foreach (var modelElement in stageInModel.Elements)
                     {
-                        modelElement.Documents = elementSoaStages
-                            .Find(s => s.Stage == stageInModel.Stage)?
-                            .Elements?
-                            .Find(e => e.ElementId == modelElement.ElementId)?
-                            .Documents ?? [];
+                        foreach (var elementSoaStage in elementSoaStages)
+                        {
+                            if (elementSoaStage.Stage == stageInModel.Stage)
+                            {
+                                var elementInStage = elementSoaStage.Elements?.Find(e => e.ElementId == modelElement.ElementId);
+                                if (elementInStage != null)
+                                {
+                                    modelElement.Documents = elementInStage.Documents ?? [];
+                                }
+                            }
+                        }
                     }
                 }
             }
+
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaViewModelSessionKey, model);
             return View("SoaStages", model);
         }
@@ -185,8 +192,8 @@ namespace HNTAS.Web.UI.Controllers
                 soaElements.Add(new SoaElementsView
                 {
                     ElementId = element.ElementId,
-                    ElementType = element.ElementType,
-                    Type = element.Type,
+                    //ElementType = element.ElementType,
+                    //Type = element.Type,
                     Name = Utility.GetDefaultNetworkElementOptions().Find(a => a.Id.ToString() == element.Type.ToString()).Label
                 });
             }

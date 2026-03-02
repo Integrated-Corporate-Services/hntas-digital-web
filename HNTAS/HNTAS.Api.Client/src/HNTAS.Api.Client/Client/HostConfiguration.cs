@@ -61,7 +61,6 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new CountryAndTerritoryJsonConverter());
             _jsonOptions.Converters.Add(new DesignConstructionLogJsonConverter());
             _jsonOptions.Converters.Add(new DesignConstructionLogResponseJsonConverter());
-            _jsonOptions.Converters.Add(new DocumentJsonConverter());
             _jsonOptions.Converters.Add(new DocumentTypeJsonConverter());
             _jsonOptions.Converters.Add(new DocumentTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());

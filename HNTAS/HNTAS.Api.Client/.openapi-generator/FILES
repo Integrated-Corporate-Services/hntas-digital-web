@@ -31,7 +31,6 @@ docs/models/ContributorRole.md
 docs/models/CountryAndTerritory.md
 docs/models/DesignConstructionLog.md
 docs/models/DesignConstructionLogResponse.md
-docs/models/Document.md
 docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
@@ -120,8 +119,6 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/DocumentTests.cs
-src/HNTAS.Api.Client.Test/Model/ElementSoaUploadDocumentRequestTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/AssessorApi.cs
 src/HNTAS.Api.Client/Api/AuditApi.cs
@@ -174,7 +171,6 @@ src/HNTAS.Api.Client/Model/ContributorRole.cs
 src/HNTAS.Api.Client/Model/CountryAndTerritory.cs
 src/HNTAS.Api.Client/Model/DesignConstructionLog.cs
 src/HNTAS.Api.Client/Model/DesignConstructionLogResponse.cs
-src/HNTAS.Api.Client/Model/Document.cs
 src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs

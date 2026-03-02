@@ -33,47 +33,17 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Elements" /> class.
         /// </summary>
-        /// <param name="type">type</param>
-        /// <param name="elementType">elementType</param>
         /// <param name="elementId">elementId</param>
         /// <param name="documents">documents</param>
         [JsonConstructor]
-        public Elements(Option<HeatNetworkElementDisplayType?> type = default, Option<string?> elementType = default, Option<string?> elementId = default, Option<List<Document>?> documents = default)
+        public Elements(Option<string?> elementId = default, Option<List<NetworkDetailsUploadedDocument>?> documents = default)
         {
-            TypeOption = type;
-            ElementTypeOption = elementType;
             ElementIdOption = elementId;
             DocumentsOption = documents;
             OnCreated();
         }
 
         partial void OnCreated();
-
-        /// <summary>
-        /// Used to track the state of Type
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<HeatNetworkElementDisplayType?> TypeOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Type
-        /// </summary>
-        [JsonPropertyName("type")]
-        public HeatNetworkElementDisplayType? Type { get { return this.TypeOption; } set { this.TypeOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of ElementType
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ElementTypeOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets ElementType
-        /// </summary>
-        [JsonPropertyName("elementType")]
-        public string? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ElementId
@@ -93,13 +63,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<Document>?> DocumentsOption { get; private set; }
+        public Option<List<NetworkDetailsUploadedDocument>?> DocumentsOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Documents
         /// </summary>
         [JsonPropertyName("documents")]
-        public List<Document>? Documents { get { return this.DocumentsOption; } set { this.DocumentsOption = new(value); } }
+        public List<NetworkDetailsUploadedDocument>? Documents { get { return this.DocumentsOption; } set { this.DocumentsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -109,8 +79,6 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class Elements {\n");
-            sb.Append("  Type: ").Append(Type).Append("\n");
-            sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("  ElementId: ").Append(ElementId).Append("\n");
             sb.Append("  Documents: ").Append(Documents).Append("\n");
             sb.Append("}\n");
@@ -150,10 +118,8 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<HeatNetworkElementDisplayType?> type = default;
-            Option<string?> elementType = default;
             Option<string?> elementId = default;
-            Option<List<Document>?> documents = default;
+            Option<List<NetworkDetailsUploadedDocument>?> documents = default;
 
             while (utf8JsonReader.Read())
             {
@@ -170,19 +136,11 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "type":
-                            string? typeRawValue = utf8JsonReader.GetString();
-                            if (typeRawValue != null)
-                                type = new Option<HeatNetworkElementDisplayType?>(HeatNetworkElementDisplayTypeValueConverter.FromStringOrDefault(typeRawValue));
-                            break;
-                        case "elementType":
-                            elementType = new Option<string?>(utf8JsonReader.GetString());
-                            break;
                         case "elementId":
                             elementId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "documents":
-                            documents = new Option<List<Document>?>(JsonSerializer.Deserialize<List<Document>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            documents = new Option<List<NetworkDetailsUploadedDocument>?>(JsonSerializer.Deserialize<List<NetworkDetailsUploadedDocument>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -190,13 +148,10 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (type.IsSet && type.Value == null)
-                throw new ArgumentNullException(nameof(type), "Property is not nullable for class Elements.");
-
             if (documents.IsSet && documents.Value == null)
                 throw new ArgumentNullException(nameof(documents), "Property is not nullable for class Elements.");
 
-            return new Elements(type, elementType, elementId, documents);
+            return new Elements(elementId, documents);
         }
 
         /// <summary>
@@ -225,17 +180,6 @@ namespace HNTAS.Api.Client.Model
         {
             if (elements.DocumentsOption.IsSet && elements.Documents == null)
                 throw new ArgumentNullException(nameof(elements.Documents), "Property is required for class Elements.");
-
-            if (elements.TypeOption.IsSet)
-            {
-                var typeRawValue = HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(elements.Type!.Value);
-                writer.WriteString("type", typeRawValue);
-            }
-            if (elements.ElementTypeOption.IsSet)
-                if (elements.ElementTypeOption.Value != null)
-                    writer.WriteString("elementType", elements.ElementType);
-                else
-                    writer.WriteNull("elementType");
 
             if (elements.ElementIdOption.IsSet)
                 if (elements.ElementIdOption.Value != null)
