@@ -1,6 +1,9 @@
 ﻿using HNTAS.Web.UI.Models.User;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
+// Testing migration for success
+
+
 
 namespace HNTAS.Web.UI.Models
 {
