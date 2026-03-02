@@ -7,6 +7,7 @@ using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -137,7 +138,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             this.ShowBackButton("Dashboard", "UserAccount");
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var user = await _userService.GetUserDetails(userId);
+            var user = await _userService.GetUserDetails(userId);            
             var model = new OrganisationContactDetailsModel
             {
                 EmailAddress = user.EmailId,
@@ -149,7 +150,14 @@ namespace HNTAS.Web.UI.Controllers
                 LandlineNumber = user.LandlineNumber,
                 MobileNumber = user.MobileNumber
             };
+            var userModel = new UserModel
+            {
+                IsRegulatoryContact = user.Roles.Contains(UserRole.ResponsiblePerson),
+                OrganisationName = user.Organisation?.Name,
+                ContactDetails = model
+            };
             _sessionHelper.SaveToSession<OrganisationContactDetailsModel>(HttpContext, SessionKeys.OrganisationContactDetailsModelSessionKey, model);
+            _sessionHelper.SaveToSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey, userModel);
             _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "YourDetails");
             return View(model);
         }

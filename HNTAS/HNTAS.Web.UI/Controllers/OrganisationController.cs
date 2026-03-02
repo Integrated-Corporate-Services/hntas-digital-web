@@ -412,12 +412,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult SaveContactDetails(OrganisationContactDetailsModel contactDetails)
         {
             this.ShowBackButton("DeedPoll");
-            var previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if (previousStep == "YourDetails")
-            {
-                _sessionHelper.ClearFromSession(HttpContext, SessionKeys.PreviousStepKey);
-                return RedirectToAction("YourDetails", "Dashboard");
-            }            
+                       
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
 
@@ -454,7 +449,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 TempData["ErrorSummary"] = "CustomErrorSummary";
                 ViewBag.IsRegulatoryContact = true;
-                return View("UserDetails/ContactDetails", contactDetails);
+                return View("ContactDetails", contactDetails);
             }
 
             userModel.ContactDetails = contactDetails;
