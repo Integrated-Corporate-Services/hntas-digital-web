@@ -25,7 +25,11 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper = sessionHelper;
             _s3UploadService = s3UploadService;
             _soaProjectService = soaProjectService;
-        }        
+        }
+        /// <summary>
+        /// Get MeteringAndMonitoringStrategy
+        /// </summary>
+        /// <returns></returns>
 
         [HttpGet]
         public async Task<IActionResult> MeteringAndMonitoringStrategy()
@@ -107,6 +111,10 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("NetworkDetails", "HeatNetwork");
         }
 
+        /// <summary>
+        /// Get AssessmentPlan
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> AssessmentPlan()
         {
@@ -187,6 +195,10 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("NetworkDetails", "HeatNetwork");
         }
 
+        /// <summary>
+        /// Get DesignConstructionLog
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> DesignConstructionLog()
         {
