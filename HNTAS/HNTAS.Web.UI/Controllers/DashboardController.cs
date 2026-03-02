@@ -7,7 +7,6 @@ using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace HNTAS.Web.UI.Controllers
 {
