@@ -2,6 +2,8 @@
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Enums;
+using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -128,6 +130,28 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, true);
             return RedirectToAction("OrganisationType", "Organisation");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> YourDetails()
+        {
+            this.ShowBackButton("Dashboard", "UserAccount");
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var user = await _userService.GetUserDetails(userId);
+            var model = new OrganisationContactDetailsModel
+            {
+                EmailAddress = user.EmailId,
+                JobTitle = user.JobTitle,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PreferredContactType = user.PreferredContactType == NullableOfPreferredContactType.PreferNotToSay ? PreferredContactType.PreferNotToSay : (user.PreferredContactType == NullableOfPreferredContactType.Mobile ? PreferredContactType.Mobile : PreferredContactType.Landline),
+                ContactNumberExtension = user.ContactNumberExtension,
+                LandlineNumber = user.LandlineNumber,
+                MobileNumber = user.MobileNumber
+            };
+            _sessionHelper.SaveToSession<OrganisationContactDetailsModel>(HttpContext, SessionKeys.OrganisationContactDetailsModelSessionKey, model);
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "YourDetails");
+            return View(model);
         }
     }
 }

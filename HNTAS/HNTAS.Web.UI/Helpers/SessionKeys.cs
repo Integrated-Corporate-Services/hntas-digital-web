@@ -59,7 +59,7 @@
         public const string SelectedElementsSessionKey = "SelectedElements";
 
         public const string HeatNetworkTypeViewModelSessionKey = "HeatNetworkTypeViewModelSessionKey";
-        public const string WhatIsTheHeatGenerationSourceForViewModelSessionKey =  "WhatIsTheHeatGenerationSourceForViewModelSessionKey";
+        public const string WhatIsTheHeatGenerationSourceForViewModelSessionKey = "WhatIsTheHeatGenerationSourceForViewModelSessionKey";
         public const string CommunalFloorsViewModelSessionKey = "CommunalFloorsViewModelSessionKey";
         public const string DoesDistrictNetworkContainPressureBreakViewModelSessionKey = "DoesDistrictNetworkContainPressureBreakViewModelSessionKey";
         public const string NetworkSupplyViewModelSessionKey = "NetworkSupplyViewModelSessionKey";
@@ -68,5 +68,7 @@
         public const string HeatNetworkTypeSessionKey = "HeatNetworkTypeSessionKey";
         public const string NetworkElementsViewModelSessionKey = "NetworkElementsViewModelSessionKey";
         public const string NetworkDetailsUploadSessionKey = "NetworkDetailsUploadSessionKey";
+
+        public const string OrganisationContactDetailsModelSessionKey = "OrganisationContactDetailsModel";
     }
 }
