@@ -19,10 +19,22 @@
                     @for (int i = 0; i < Model.Stages.Count; i++)
                     {
                         var stage = Model.Stages[i];
-                        <li class="govuk-tabs__list-item @(i == Model.CurrentStageIndex ? "govuk-tabs__list-item--selected" : "")">
-                            <a class="govuk-tabs__tab" href="#stage-@i">
-                                @stage.Name
-                            </a>
+                        var selectedTab = (i == Model.EligibleStageIndex ? "govuk-tabs__list-item--selected" : "");
+                        <li class="govuk-tabs__list-item @selectedTab">
+                            @if (i < Model.EligibleStageIndex)
+                            {
+                                <span class="govuk-tabs__tab govuk-tabs__tab--disabled"
+                                      data-disabled="true"
+                                      style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+                                    @stage.Name
+                                </span>                                
+                            }
+                            else
+                            {
+                                <a class="govuk-tabs__tab" href="#stage-@i">
+                                    @stage.Name
+                                </a>
+                            }
                         </li>
                     }
                 </ul>
@@ -30,7 +42,7 @@
                 @for (int i = 0; i < Model.Stages.Count; i++)
                 {
                     var stage = Model.Stages[i];
-                    <div id="stage-@i" class="govuk-tabs__panel @(i != Model.CurrentStageIndex ? "govuk-tabs__panel--hidden" : "")">
+                    <div id="stage-@i" class="govuk-tabs__panel @(i != Model.EligibleStageIndex ? "govuk-tabs__panel--hidden" : "")">
                         <h2 class="govuk-heading-l">@stage.Title</h2>
 
                         <table class="govuk-table">
@@ -45,16 +57,18 @@
                                             @if (element.Documents?.Count > 0)
                                             {
                                                 <a class="govuk-link"
-                                                   href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.Stage, elementId = element.ElementId })"
+                                                   href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.Stage, elementId = element.ElementId, elementType = element.Type })"
                                                    aria-describedby="@element.Documents?.FirstOrDefault()?.FileName"
                                                    onclick="event.stopPropagation();">
-                                                    @element.Documents?.FirstOrDefault()?.FileName
+                                                    <strong class="govuk-tag govuk-tag--green">
+                                                        @element.Documents?.FirstOrDefault()?.FileName
+                                                    </strong>
                                                 </a>
                                             }
                                             else
                                             {
                                                 <a class="govuk-link"
-                                                   href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.Stage, elementId = element.ElementId })"
+                                                   href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.Stage, elementId = element.ElementId, elementType = element.Type })"
                                                    aria-describedby="Upload SOA details"
                                                    onclick="event.stopPropagation();">
                                                     Upload SOA details
@@ -67,11 +81,7 @@
                         </table>
                     </div>
                 }
-            </div>
-
-            <a href="@Url.Action("UploadAssessmentPlan", new { phase = 0 })" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
-                Continue
-            </a>
+            </div>            
         </div>
     </div>
 </div>
@@ -93,6 +103,27 @@
                 link.addEventListener('click', function(e) {
                     e.stopPropagation(); // Prevent event bubbling to tab handlers
                 });
+            });
+
+            // Completely prevent disabled tabs from being opened
+            var tabsList = document.querySelector('.govuk-tabs__list');
+            if (tabsList) {
+                tabsList.addEventListener('click', function(e) {
+                    var target = e.target.closest('.govuk-tabs__tab--disabled');
+                    if (target && target.hasAttribute('data-disabled')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        return false;
+                    }
+                }, true); // Use capture phase to intercept before GOV.UK handler
+            }
+
+            // Remove href from disabled tab spans to prevent any navigation
+            var disabledTabs = document.querySelectorAll('.govuk-tabs__tab--disabled[data-disabled="true"]');
+            disabledTabs.forEach(function(tab) {
+                tab.removeAttribute('href');
+                tab.style.pointerEvents = 'none';
             });
         });
     </script>

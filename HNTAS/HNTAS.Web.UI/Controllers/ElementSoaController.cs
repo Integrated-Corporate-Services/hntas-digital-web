@@ -51,15 +51,16 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
 
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var phase = heatNetworkData?.Phase;
 
             var networkElements = heatNetworkData?.NetworkElements?.Elements;
             var elementSoa = heatNetworkData?.ElementSoa;
             var elementSoaStages = elementSoa?.Stages;
-
-            //var soaElements = GetElementsForStage(networkElements);
+            var eligibleIndex = phase == "Design" ? 1 : phase == "Construction" ? 2 : 0;
 
             var model = new ElementSoaViewModel
             {
+                EligibleStageIndex = eligibleIndex,
                 Status = NetworkDetailsStatus.Incomplete,
                 Stages = new List<SoaStagesView>
                 {
@@ -68,7 +69,7 @@ namespace HNTAS.Web.UI.Controllers
                         Name = "Stage 1",
                         Stage = SoaStage.Stage1,
                         Elements = GetElementsForStage(networkElements),
-                        IsActive = true,
+                        IsActive = eligibleIndex == 0,
                         Title = "Feasibility (Concept Design)"
                     },
                     new SoaStagesView
@@ -76,7 +77,7 @@ namespace HNTAS.Web.UI.Controllers
                         Name = "Stage 2",
                         Stage = SoaStage.Stage2,
                         Elements = GetElementsForStage(networkElements),
-                        IsActive = false,
+                        IsActive = eligibleIndex == 1,
                         Title = "Design (Developed Design)"
                     },
                     new SoaStagesView
@@ -86,7 +87,40 @@ namespace HNTAS.Web.UI.Controllers
                         Elements = GetElementsForStage(networkElements),
                         IsActive = false,
                         Title = "Design (Technical Design)"
-                    }
+                    },                    
+                    new SoaStagesView
+                    {
+                        Name = "Stage 4",
+                        Stage = SoaStage.Stage4,
+                        Elements = GetElementsForStage(networkElements),
+                        IsActive = false,
+                        Title = "Construction (Construction Design)"
+                    },
+                    new SoaStagesView
+                    {
+                        Name = "Stage 5",
+                        Stage = SoaStage.Stage5,
+                        Elements = GetElementsForStage(networkElements),
+                        IsActive = false,
+                        Title = "Construction (Installation)"
+                    },
+                    new SoaStagesView
+                    {
+                        Name = "Stage 6",
+                        Stage = SoaStage.Stage6,
+                        Elements = GetElementsForStage(networkElements),
+                        IsActive = false,
+                        Title = "Construction (Commissioning)"
+                    },
+                    new SoaStagesView
+                    {
+                        Name = "Stage 7",
+                        Stage = SoaStage.Stage7,
+                        Elements = GetElementsForStage(networkElements),
+                        IsActive = false,
+                        Title = "Operation (Operation and Maintenance)"
+                    },
+
                 }
             };
 
@@ -116,10 +150,14 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult SoaStagesToUpload([FromQuery] SoaStage stage, [FromQuery] string elementId)
+        public IActionResult SoaStagesToUpload([FromQuery] SoaStage stage, [FromQuery] string elementId, [FromQuery] HeatNetworkElementDisplayType elementType)
         {
+            this.ShowBackButton("SoaStages", "ElementSoa");
             var soaStagesModel = _sessionHelper.GetFromSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey);
             @ViewBag.Action = "SoaStagesToUpload";
+
+            // Set element-specific ViewBag properties
+            SetSoaElementsViewBag(elementType);            
             var DocumentForElement = soaStagesModel?.Stages?
                 .Find(s => s.Stage == stage)?.Elements?
                 .Find(e => e.ElementId == elementId)?.Documents;
@@ -146,7 +184,8 @@ namespace HNTAS.Web.UI.Controllers
                 ElementId = elementId,
                 SoaStage = stage,
                 HeatNetworkName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName),                
-                UploadedDocument = uploadedDocument
+                UploadedDocument = uploadedDocument,
+                Type = elementType
             };
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaUploadViewModelSessionKey, model);
             
@@ -157,31 +196,74 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> SoaStagesToUpload(IFormFile docToUpload)
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
+            var model = _sessionHelper.GetFromSession<ElementSoaUploadViewModel>(HttpContext, SessionKeys.ElementSoaUploadViewModelSessionKey);
+            var elementType = model?.Type;
+            // Set element-specific ViewBag properties
+            SetSoaElementsViewBag(elementType);
+            if (docToUpload == null || docToUpload.Length == 0)
+            {
+
+                ModelState.AddModelError("assessmentPlan", "Please select a file to upload.");
+                return View("SoaUpload", model);
+            }
+            //var fileExtension = Path.GetExtension(docToUpload.FileName).ToLower();
+            //if (fileExtension != ".xlsx" && fileExtension != ".pdf")
+            //{
+            //    ModelState.AddModelError("excelFile", "The selected file must be an XLSX or PDF");
+            //    return View("SoaUpload", model);
+            //}
+            
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            ViewBag.Action = "AssessmentPlan";
-            ViewBag.Heading = "Network assessment plan";
-            ViewBag.Description1 = "Complete the assessment plan for phase 1.";
-            ViewBag.Description2 = "Upload the network assessment plan for the phase 1 of the heat network";
-
-            var model = _sessionHelper.GetFromSession<ElementSoaUploadViewModel>(HttpContext, SessionKeys.ElementSoaUploadViewModelSessionKey);
-            if (docToUpload == null || docToUpload.Length == 0)
-            {
-                
-                ModelState.AddModelError("assessmentPlan", "Please select a file to upload.");
-                return View("UploadDocument", model);
-            }
+            
 
             var s3Key = await _s3UploadService.UploadFileAsync(docToUpload, $"NetworkDetails/{hnId}/Soa/{model?.SoaStage}/{model?.ElementId}");
 
             // Optionally persist metadata or update project state here
-            var request = new ElementSoaUploadDocumentRequest(hnId: hnId, uploadedBy: userId, fileName: docToUpload.FileName, s3Key: s3Key, documentType: DocumentType.AssessmentPlan, stage: model?.SoaStage, elementId: model?.ElementId);
+            var request = new ElementSoaUploadDocumentRequest(hnId: hnId, uploadedBy: userId, fileName: docToUpload.FileName, s3Key: s3Key, documentType: DocumentType.Soa, stage: model?.SoaStage, elementId: model?.ElementId);
             await _soaProjectService.UpdateDocumentSoa(request);
 
             _logger.LogInformation("Assessment Plan uploaded for HN ID: {HnId}, UploadedBy: {UserId}", hnId, userId);
 
             return RedirectToAction("NetworkDetails", "HeatNetwork");
+        }
+
+        private void SetSoaElementsViewBag(HeatNetworkElementDisplayType? elementType)
+        {
+            (ViewBag.Heading, ViewBag.Description1, ViewBag.Description2) = elementType switch
+            {
+                HeatNetworkElementDisplayType.EnergyCentre => (
+                    "Upload the statement of applicability (SOA) for the energy centre",
+                    "Intro to Energy centre...",
+                    "Upload the statement of applicability (SOA) for the energy centre"
+                ),
+                HeatNetworkElementDisplayType.DistributionNetwork => (
+                    "Upload the statement of applicability (SOA) for the distribution network",
+                    "Intro to Distribution network...",
+                    "Upload the statement of applicability (SOA) for the distribution network"
+                ),
+                HeatNetworkElementDisplayType.ThermalSubStation => (
+                    "Upload the statement of applicability (SOA) for the thermal substation",
+                    "Intro to Thermal substation...",
+                    "Upload the statement of applicability (SOA) for the thermal substation"
+                ),
+                HeatNetworkElementDisplayType.ConsumerConnections => (
+                    "Upload the statement of applicability (SOA) for the consumer connections",
+                    "Intro to Consumer connections...",
+                    "Upload the statement of applicability (SOA) for the consumer connections"
+                ),
+                HeatNetworkElementDisplayType.CommunalDistributionNetwork => (
+                    "Upload the statement of applicability (SOA) for the communal distribution network",
+                    "Intro to Communal distribution network...",
+                    "Upload the statement of applicability (SOA) for the communal distribution network"
+                ),
+                HeatNetworkElementDisplayType.ConsumerHeatSystems => (
+                    "Upload the statement of applicability (SOA) for the consumer heat systems",
+                    "Intro to Consumer heat systems...",
+                    "Upload the statement of applicability (SOA) for the consumer heat systems"
+                )
+            };
         }
 
         private List<SoaElementsView> GetElementsForStage(List<Element>? elements)
@@ -193,7 +275,7 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     ElementId = element.ElementId,
                     //ElementType = element.ElementType,
-                    //Type = element.Type,
+                    Type = element.Type,
                     Name = Utility.GetDefaultNetworkElementOptions().Find(a => a.Id.ToString() == element.Type.ToString()).Label
                 });
             }

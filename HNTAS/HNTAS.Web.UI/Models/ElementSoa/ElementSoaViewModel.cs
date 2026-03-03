@@ -7,6 +7,7 @@ namespace HNTAS.Web.UI.Models.ElementSoa
         public NetworkDetailsStatus Status { get; set; }
         public List<SoaStagesView> Stages { get; set; } = [];
         public int CurrentStageIndex { get; set; } = 0;
+        public int EligibleStageIndex { get; set; } = 0;
     }
 
     public class SoaStagesView : SoaStages
@@ -20,5 +21,6 @@ namespace HNTAS.Web.UI.Models.ElementSoa
     public class SoaElementsView : Elements
     {
         public string? Name { get; set; }
+        public HeatNetworkElementDisplayType? Type { get; set; }
     }
 }

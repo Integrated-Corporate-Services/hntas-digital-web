@@ -7,5 +7,6 @@ namespace HNTAS.Web.UI.Models.ElementSoa
     {
         public SoaStage? SoaStage { get; set; }
         public string? ElementId { get; set; }
+        public HeatNetworkElementDisplayType? Type { get; set; }
     }
 }
