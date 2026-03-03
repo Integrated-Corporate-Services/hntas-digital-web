@@ -2,11 +2,13 @@
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.CompaniesHouse;
 using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -16,13 +18,15 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ILogger<DashboardController> _logger;
         private readonly IUserService _userService;
         private readonly IHeatNetworksApi _heatNetworksApi;
+        private readonly IOrganisationService _organisationService;
         private readonly ISessionHelper _sessionHelper;
 
-        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworksApi heatNetworksApi, ISessionHelper sessionHelper)
+        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworksApi heatNetworksApi, IOrganisationService organisationService, ISessionHelper sessionHelper)
         {
             _logger = logger;
             _userService = userService;
             _heatNetworksApi = heatNetworksApi;
+            _organisationService = organisationService;
             _sessionHelper = sessionHelper;
         }
 
@@ -137,7 +141,8 @@ namespace HNTAS.Web.UI.Controllers
         {
             this.ShowBackButton("Dashboard", "UserAccount");
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var user = await _userService.GetUserDetails(userId);            
+            var user = await _userService.GetUserDetails(userId);
+            var org = await _organisationService.GetOrganisationById(user.Organisation.OrgId);
             var model = new OrganisationContactDetailsModel
             {
                 EmailAddress = user.EmailId,
@@ -155,9 +160,28 @@ namespace HNTAS.Web.UI.Controllers
                 OrganisationName = user.Organisation?.Name,
                 ContactDetails = model
             };
+            var orgModel = new OrganisationModel
+            {
+                OrganisationTypes = new List<SelectListItem>(),
+                SelectedOrganisationType = org.Type.ToString(),
+                CompanyNumber = org.CompaniesHouseNumber,
+                CompanyDetails = new Models.CompaniesHouse.CompanyDetailsModel
+                {
+                    Title = org.Name,
+                    RegisteredOfficeAddress = new RegisteredOfficeAddressModel
+                    {
+                        AddressLine1 = org.RegisteredAddress.AddressLine1,
+                        AddressLine2 = org.RegisteredAddress.AddressLine2,
+                        Locality = org.RegisteredAddress.Town,
+                        PostalCode = org.RegisteredAddress.Postcode,
+                        Country = org.RegisteredAddress.Country
+                    }
+                }
+
+            };
             _sessionHelper.SaveToSession<OrganisationContactDetailsModel>(HttpContext, SessionKeys.OrganisationContactDetailsModelSessionKey, model);
             _sessionHelper.SaveToSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey, userModel);
-            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "YourDetails");
+            _sessionHelper.SaveToSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey, orgModel);
             return View(model);
         }
     }

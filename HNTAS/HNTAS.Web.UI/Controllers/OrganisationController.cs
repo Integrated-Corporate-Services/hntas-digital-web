@@ -390,15 +390,7 @@ namespace HNTAS.Web.UI.Controllers
         //[ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult ContactDetails()
         {
-            var previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if(previousStep == "YourDetails")
-            {
-                this.ShowBackButton("Dashboard", "YourDetails");
-            }
-            else
-            {
-                this.ShowBackButton("DeedPoll");
-            }                
+            this.ShowBackButton("DeedPoll");
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
             var model = _sessionHelper.GetFromSession<OrganisationContactDetailsModel>(HttpContext, SessionKeys.OrganisationContactDetailsModelSessionKey) ?? userModel.ContactDetails;           
