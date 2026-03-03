@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Status** | **NetworkDetailsStatus** |  | [optional] 
-**Stages** | [**List&lt;SoaStages&gt;**](SoaStages.md) |  | [optional] 
+**Elements** | [**List&lt;Elements&gt;**](Elements.md) |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **UpdatedAt** | **DateTimeOffset** |  | [optional] 

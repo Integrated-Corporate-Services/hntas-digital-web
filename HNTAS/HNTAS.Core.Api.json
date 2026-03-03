@@ -4463,10 +4463,10 @@
             "type": "string",
             "nullable": true
           },
-          "documents": {
+          "stages": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+              "$ref": "#/components/schemas/SoaStages"
             }
           }
         }
@@ -4477,10 +4477,10 @@
           "status": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
-          "stages": {
+          "elements": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SoaStages"
+              "$ref": "#/components/schemas/Elements"
             }
           },
           "createdAt": {
@@ -4508,10 +4508,10 @@
           "status": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
-          "stages": {
+          "elements": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SoaStages"
+              "$ref": "#/components/schemas/Elements"
             }
           },
           "createdAt": {
@@ -5192,7 +5192,9 @@
           },
           "documents": {
             "type": "array",
-            "items": { }
+            "items": {
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+            }
           },
           "createdAt": {
             "type": "string",
@@ -5221,7 +5223,9 @@
           },
           "documents": {
             "type": "array",
-            "items": { }
+            "items": {
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+            }
           },
           "createdAt": {
             "type": "string",
@@ -6060,14 +6064,11 @@
       "SoaStages": {
         "type": "object",
         "properties": {
-          "stage": {
+          "stageId": {
             "$ref": "#/components/schemas/SoaStage"
           },
-          "elements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Elements"
-            }
+          "document": {
+            "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
           }
         }
       },

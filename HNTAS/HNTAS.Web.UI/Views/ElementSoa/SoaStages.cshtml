@@ -54,21 +54,21 @@
                                             @element.Name
                                         </td>
                                         <td class="govuk-table__cell">
-                                            @if (element.Documents?.Count > 0)
+                                            @if (element.Document != null)
                                             {
                                                 <a class="govuk-link"
-                                                   href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.Stage, elementId = element.ElementId, elementType = element.Type })"
-                                                   aria-describedby="@element.Documents?.FirstOrDefault()?.FileName"
+                                                   href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type })"
+                                                   aria-describedby="@element.Document?.FileName"
                                                    onclick="event.stopPropagation();">
                                                     <strong class="govuk-tag govuk-tag--green">
-                                                        @element.Documents?.FirstOrDefault()?.FileName
+                                                        @element.Document?.FileName
                                                     </strong>
                                                 </a>
                                             }
                                             else
                                             {
                                                 <a class="govuk-link"
-                                                   href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.Stage, elementId = element.ElementId, elementType = element.Type })"
+                                                   href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type })"
                                                    aria-describedby="Upload SOA details"
                                                    onclick="event.stopPropagation();">
                                                     Upload SOA details

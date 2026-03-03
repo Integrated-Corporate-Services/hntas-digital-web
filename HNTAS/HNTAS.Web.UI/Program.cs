@@ -115,7 +115,7 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new ElementSoaResponseJsonConverter(),
         new SoaStagesJsonConverter(),
         new ElementsJsonConverter(),
-        new DocumentJsonConverter()
+        //new DocumentJsonConverter()
 
     }
 });

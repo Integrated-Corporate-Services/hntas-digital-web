@@ -55,7 +55,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var networkElements = heatNetworkData?.NetworkElements?.Elements;
             var elementSoa = heatNetworkData?.ElementSoa;
-            var elementSoaStages = elementSoa?.Stages;
+            var elementSoaElements = elementSoa?.Elements;
             var eligibleIndex = phase == "Design" ? 1 : phase == "Construction" ? 2 : 0;
 
             var model = new ElementSoaViewModel
@@ -67,7 +67,7 @@ namespace HNTAS.Web.UI.Controllers
                     new SoaStagesView
                     {
                         Name = "Stage 1",
-                        Stage = SoaStage.Stage1,
+                        StageId = SoaStage.Stage1,
                         Elements = GetElementsForStage(networkElements),
                         IsActive = eligibleIndex == 0,
                         Title = "Feasibility (Concept Design)"
@@ -75,7 +75,7 @@ namespace HNTAS.Web.UI.Controllers
                     new SoaStagesView
                     {
                         Name = "Stage 2",
-                        Stage = SoaStage.Stage2,
+                        StageId = SoaStage.Stage2,
                         Elements = GetElementsForStage(networkElements),
                         IsActive = eligibleIndex == 1,
                         Title = "Design (Developed Design)"
@@ -83,7 +83,7 @@ namespace HNTAS.Web.UI.Controllers
                     new SoaStagesView
                     {
                         Name = "Stage 3",
-                        Stage = SoaStage.Stage3,
+                        StageId = SoaStage.Stage3,
                         Elements = GetElementsForStage(networkElements),
                         IsActive = false,
                         Title = "Design (Technical Design)"
@@ -91,7 +91,7 @@ namespace HNTAS.Web.UI.Controllers
                     new SoaStagesView
                     {
                         Name = "Stage 4",
-                        Stage = SoaStage.Stage4,
+                        StageId = SoaStage.Stage4,
                         Elements = GetElementsForStage(networkElements),
                         IsActive = false,
                         Title = "Construction (Construction Design)"
@@ -99,7 +99,7 @@ namespace HNTAS.Web.UI.Controllers
                     new SoaStagesView
                     {
                         Name = "Stage 5",
-                        Stage = SoaStage.Stage5,
+                        StageId = SoaStage.Stage5,
                         Elements = GetElementsForStage(networkElements),
                         IsActive = false,
                         Title = "Construction (Installation)"
@@ -107,7 +107,7 @@ namespace HNTAS.Web.UI.Controllers
                     new SoaStagesView
                     {
                         Name = "Stage 6",
-                        Stage = SoaStage.Stage6,
+                        StageId = SoaStage.Stage6,
                         Elements = GetElementsForStage(networkElements),
                         IsActive = false,
                         Title = "Construction (Commissioning)"
@@ -115,7 +115,7 @@ namespace HNTAS.Web.UI.Controllers
                     new SoaStagesView
                     {
                         Name = "Stage 7",
-                        Stage = SoaStage.Stage7,
+                        StageId = SoaStage.Stage7,
                         Elements = GetElementsForStage(networkElements),
                         IsActive = false,
                         Title = "Operation (Operation and Maintenance)"
@@ -126,19 +126,35 @@ namespace HNTAS.Web.UI.Controllers
 
             foreach (var stageInModel in model.Stages)
             {
-                if (elementSoaStages != null)
+                //if (elementSoaStages != null)
+                //{
+                //    foreach (var modelElement in stageInModel.Elements)
+                //    {
+                //        foreach (var elementSoaStage in elementSoaStages)
+                //        {
+                //            if (elementSoaStage.Stage == stageInModel.Stage)
+                //            {
+                //                var elementInStage = elementSoaStage.Elements?.Find(e => e.ElementId == modelElement.ElementId);
+                //                if (elementInStage != null)
+                //                {
+                //                    modelElement.Documents = elementInStage.Documents ?? [];
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                
+                if (elementSoaElements != null)
                 {
-                    foreach (var modelElement in stageInModel.Elements)
+                    foreach (var elementSoaElement in elementSoaElements)
                     {
-                        foreach (var elementSoaStage in elementSoaStages)
+                        if (elementSoaElement.ElementId == stageInModel.Elements?.FirstOrDefault(e => e.ElementId == elementSoaElement.ElementId)?.ElementId)
                         {
-                            if (elementSoaStage.Stage == stageInModel.Stage)
+                            var modelElement = stageInModel.Elements?.Find(e => e.ElementId == elementSoaElement.ElementId);
+                            var doc = elementSoaElement.Stages?.Find(s => s.StageId == stageInModel.StageId)?.Document;
+                            if (modelElement != null)
                             {
-                                var elementInStage = elementSoaStage.Elements?.Find(e => e.ElementId == modelElement.ElementId);
-                                if (elementInStage != null)
-                                {
-                                    modelElement.Documents = elementInStage.Documents ?? [];
-                                }
+                                modelElement.Document = doc;
                             }
                         }
                     }
@@ -159,10 +175,10 @@ namespace HNTAS.Web.UI.Controllers
             // Set element-specific ViewBag properties
             SetSoaElementsViewBag(elementType);            
             var DocumentForElement = soaStagesModel?.Stages?
-                .Find(s => s.Stage == stage)?.Elements?
-                .Find(e => e.ElementId == elementId)?.Documents;
+                .Find(s => s.StageId == stage)?.Elements?
+                .Find(e => e.ElementId == elementId)?.Document;
 
-            var document = DocumentForElement?.FirstOrDefault();
+            var document = DocumentForElement;
             UploadedDocumentInfo? uploadedDocument = null;
 
             if (document != null)
@@ -226,7 +242,7 @@ namespace HNTAS.Web.UI.Controllers
 
             _logger.LogInformation("Assessment Plan uploaded for HN ID: {HnId}, UploadedBy: {UserId}", hnId, userId);
 
-            return RedirectToAction("NetworkDetails", "HeatNetwork");
+            return RedirectToAction("SoaStages", "ElementSoa");
         }
 
         private void SetSoaElementsViewBag(HeatNetworkElementDisplayType? elementType)

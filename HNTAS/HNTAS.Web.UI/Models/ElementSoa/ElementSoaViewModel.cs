@@ -10,17 +10,20 @@ namespace HNTAS.Web.UI.Models.ElementSoa
         public int EligibleStageIndex { get; set; } = 0;
     }
 
-    public class SoaStagesView : SoaStages
+    public class SoaStagesView
     {
         public new List<SoaElementsView> Elements { get; set; } = [];
         public bool IsActive { get; set; }
         public string? Name { get; set; }
         public string? Title { get; set; }
+        public SoaStage StageId { get; set; }
     }
 
-    public class SoaElementsView : Elements
+    public class SoaElementsView
     {
         public string? Name { get; set; }
         public HeatNetworkElementDisplayType? Type { get; set; }
+        public string? ElementId { get; set; }
+        public NetworkDetailsUploadedDocument? Document { get; set; }
     }
 }

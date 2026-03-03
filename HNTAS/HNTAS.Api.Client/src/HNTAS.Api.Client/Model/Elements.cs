@@ -34,12 +34,12 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="Elements" /> class.
         /// </summary>
         /// <param name="elementId">elementId</param>
-        /// <param name="documents">documents</param>
+        /// <param name="stages">stages</param>
         [JsonConstructor]
-        public Elements(Option<string?> elementId = default, Option<List<NetworkDetailsUploadedDocument>?> documents = default)
+        public Elements(Option<string?> elementId = default, Option<List<SoaStages>?> stages = default)
         {
             ElementIdOption = elementId;
-            DocumentsOption = documents;
+            StagesOption = stages;
             OnCreated();
         }
 
@@ -59,17 +59,17 @@ namespace HNTAS.Api.Client.Model
         public string? ElementId { get { return this.ElementIdOption; } set { this.ElementIdOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Documents
+        /// Used to track the state of Stages
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<NetworkDetailsUploadedDocument>?> DocumentsOption { get; private set; }
+        public Option<List<SoaStages>?> StagesOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Documents
+        /// Gets or Sets Stages
         /// </summary>
-        [JsonPropertyName("documents")]
-        public List<NetworkDetailsUploadedDocument>? Documents { get { return this.DocumentsOption; } set { this.DocumentsOption = new(value); } }
+        [JsonPropertyName("stages")]
+        public List<SoaStages>? Stages { get { return this.StagesOption; } set { this.StagesOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -80,7 +80,7 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class Elements {\n");
             sb.Append("  ElementId: ").Append(ElementId).Append("\n");
-            sb.Append("  Documents: ").Append(Documents).Append("\n");
+            sb.Append("  Stages: ").Append(Stages).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -119,7 +119,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> elementId = default;
-            Option<List<NetworkDetailsUploadedDocument>?> documents = default;
+            Option<List<SoaStages>?> stages = default;
 
             while (utf8JsonReader.Read())
             {
@@ -139,8 +139,8 @@ namespace HNTAS.Api.Client.Model
                         case "elementId":
                             elementId = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "documents":
-                            documents = new Option<List<NetworkDetailsUploadedDocument>?>(JsonSerializer.Deserialize<List<NetworkDetailsUploadedDocument>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                        case "stages":
+                            stages = new Option<List<SoaStages>?>(JsonSerializer.Deserialize<List<SoaStages>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -148,10 +148,10 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (documents.IsSet && documents.Value == null)
-                throw new ArgumentNullException(nameof(documents), "Property is not nullable for class Elements.");
+            if (stages.IsSet && stages.Value == null)
+                throw new ArgumentNullException(nameof(stages), "Property is not nullable for class Elements.");
 
-            return new Elements(elementId, documents);
+            return new Elements(elementId, stages);
         }
 
         /// <summary>
@@ -178,8 +178,8 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, Elements elements, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (elements.DocumentsOption.IsSet && elements.Documents == null)
-                throw new ArgumentNullException(nameof(elements.Documents), "Property is required for class Elements.");
+            if (elements.StagesOption.IsSet && elements.Stages == null)
+                throw new ArgumentNullException(nameof(elements.Stages), "Property is required for class Elements.");
 
             if (elements.ElementIdOption.IsSet)
                 if (elements.ElementIdOption.Value != null)
@@ -187,10 +187,10 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("elementId");
 
-            if (elements.DocumentsOption.IsSet)
+            if (elements.StagesOption.IsSet)
             {
-                writer.WritePropertyName("documents");
-                JsonSerializer.Serialize(writer, elements.Documents, jsonSerializerOptions);
+                writer.WritePropertyName("stages");
+                JsonSerializer.Serialize(writer, elements.Stages, jsonSerializerOptions);
             }
         }
     }
