@@ -16,7 +16,7 @@ namespace HNTAS.Web.UI.Models.ElementSoa
         public bool IsActive { get; set; }
         public string? Name { get; set; }
         public string? Title { get; set; }
-        public SoaStage StageId { get; set; }
+        public SoaStage? StageId { get; set; }
     }
 
     public class SoaElementsView

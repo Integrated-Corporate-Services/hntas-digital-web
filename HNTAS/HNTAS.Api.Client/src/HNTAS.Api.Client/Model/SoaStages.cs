@@ -36,7 +36,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="stageId">stageId</param>
         /// <param name="document">document</param>
         [JsonConstructor]
-        public SoaStages(Option<SoaStage?> stageId = default, Option<NetworkDetailsUploadedDocument?> document = default)
+        public SoaStages(Option<NullableOfSoaStage?> stageId = default, Option<NetworkDetailsUploadedDocument?> document = default)
         {
             StageIdOption = stageId;
             DocumentOption = document;
@@ -50,13 +50,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<SoaStage?> StageIdOption { get; private set; }
+        public Option<NullableOfSoaStage?> StageIdOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets StageId
         /// </summary>
         [JsonPropertyName("stageId")]
-        public SoaStage? StageId { get { return this.StageIdOption; } set { this.StageIdOption = new(value); } }
+        public NullableOfSoaStage? StageId { get { return this.StageIdOption; } set { this.StageIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Document
@@ -118,7 +118,7 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<SoaStage?> stageId = default;
+            Option<NullableOfSoaStage?> stageId = default;
             Option<NetworkDetailsUploadedDocument?> document = default;
 
             while (utf8JsonReader.Read())
@@ -139,22 +139,16 @@ namespace HNTAS.Api.Client.Model
                         case "stageId":
                             string? stageIdRawValue = utf8JsonReader.GetString();
                             if (stageIdRawValue != null)
-                                stageId = new Option<SoaStage?>(SoaStageValueConverter.FromStringOrDefault(stageIdRawValue));
+                                stageId = new Option<NullableOfSoaStage?>(NullableOfSoaStageValueConverter.FromStringOrDefault(stageIdRawValue));
                             break;
                         case "document":
-                            document = new Option<NetworkDetailsUploadedDocument?>(JsonSerializer.Deserialize<NetworkDetailsUploadedDocument>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            document = new Option<NetworkDetailsUploadedDocument?>(JsonSerializer.Deserialize<NetworkDetailsUploadedDocument>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
                     }
                 }
             }
-
-            if (stageId.IsSet && stageId.Value == null)
-                throw new ArgumentNullException(nameof(stageId), "Property is not nullable for class SoaStages.");
-
-            if (document.IsSet && document.Value == null)
-                throw new ArgumentNullException(nameof(document), "Property is not nullable for class SoaStages.");
 
             return new SoaStages(stageId, document);
         }
@@ -183,19 +177,22 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, SoaStages soaStages, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (soaStages.DocumentOption.IsSet && soaStages.Document == null)
-                throw new ArgumentNullException(nameof(soaStages.Document), "Property is required for class SoaStages.");
-
             if (soaStages.StageIdOption.IsSet)
-            {
-                var stageIdRawValue = SoaStageValueConverter.ToJsonValue(soaStages.StageId!.Value);
-                writer.WriteString("stageId", stageIdRawValue);
-            }
+                if (soaStages.StageIdOption!.Value != null)
+                {
+                    var stageIdRawValue = NullableOfSoaStageValueConverter.ToJsonValue(soaStages.StageIdOption.Value!.Value);
+                    writer.WriteString("stageId", stageIdRawValue);
+                }
+                else
+                    writer.WriteNull("stageId");
             if (soaStages.DocumentOption.IsSet)
-            {
-                writer.WritePropertyName("document");
-                JsonSerializer.Serialize(writer, soaStages.Document, jsonSerializerOptions);
-            }
+                if (soaStages.DocumentOption.Value != null)
+                {
+                    writer.WritePropertyName("document");
+                    JsonSerializer.Serialize(writer, soaStages.Document, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("document");
         }
     }
 }

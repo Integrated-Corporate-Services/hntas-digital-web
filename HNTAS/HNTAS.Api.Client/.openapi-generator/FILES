@@ -35,10 +35,7 @@ docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
 docs/models/Element.md
-docs/models/ElementSoa.md
-docs/models/ElementSoaResponse.md
 docs/models/ElementSoaUploadDocumentRequest.md
-docs/models/Elements.md
 docs/models/Energy.md
 docs/models/EnergyCentreDetails.md
 docs/models/EnumItemResponse.md
@@ -67,6 +64,7 @@ docs/models/NetworkCharacteristicsResponse.md
 docs/models/NetworkDetailsStatus.md
 docs/models/NetworkDetailsUploadDocumentRequest.md
 docs/models/NetworkDetailsUploadedDocument.md
+docs/models/NetworkDetailsUploadedDocument2.md
 docs/models/NetworkElements.md
 docs/models/NetworkElements2.md
 docs/models/NetworkElementsResponse.md
@@ -175,10 +173,7 @@ src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs
 src/HNTAS.Api.Client/Model/Element.cs
-src/HNTAS.Api.Client/Model/ElementSoa.cs
-src/HNTAS.Api.Client/Model/ElementSoaResponse.cs
 src/HNTAS.Api.Client/Model/ElementSoaUploadDocumentRequest.cs
-src/HNTAS.Api.Client/Model/Elements.cs
 src/HNTAS.Api.Client/Model/Energy.cs
 src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
@@ -207,6 +202,7 @@ src/HNTAS.Api.Client/Model/NetworkCharacteristicsResponse.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadDocumentRequest.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadedDocument.cs
+src/HNTAS.Api.Client/Model/NetworkDetailsUploadedDocument2.cs
 src/HNTAS.Api.Client/Model/NetworkElements.cs
 src/HNTAS.Api.Client/Model/NetworkElements2.cs
 src/HNTAS.Api.Client/Model/NetworkElementsResponse.cs

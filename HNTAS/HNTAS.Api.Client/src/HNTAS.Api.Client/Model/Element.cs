@@ -39,8 +39,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="ecDetails">ecDetails</param>
         /// <param name="elementType">elementType</param>
         /// <param name="elementId">elementId</param>
+        /// <param name="soaStages">soaStages</param>
         [JsonConstructor]
-        public Element(Option<HeatNetworkElementDisplayType?> type = default, Option<int?> count = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> elementType = default, Option<string?> elementId = default)
+        public Element(Option<HeatNetworkElementDisplayType?> type = default, Option<int?> count = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> elementType = default, Option<string?> elementId = default, Option<List<SoaStages>?> soaStages = default)
         {
             TypeOption = type;
             CountOption = count;
@@ -48,6 +49,7 @@ namespace HNTAS.Api.Client.Model
             EcDetailsOption = ecDetails;
             ElementTypeOption = elementType;
             ElementIdOption = elementId;
+            SoaStagesOption = soaStages;
             OnCreated();
         }
 
@@ -132,6 +134,19 @@ namespace HNTAS.Api.Client.Model
         public string? ElementId { get { return this.ElementIdOption; } set { this.ElementIdOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of SoaStages
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<SoaStages>?> SoaStagesOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets SoaStages
+        /// </summary>
+        [JsonPropertyName("soaStages")]
+        public List<SoaStages>? SoaStages { get { return this.SoaStagesOption; } set { this.SoaStagesOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -145,6 +160,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  EcDetails: ").Append(EcDetails).Append("\n");
             sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("  ElementId: ").Append(ElementId).Append("\n");
+            sb.Append("  SoaStages: ").Append(SoaStages).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -188,6 +204,7 @@ namespace HNTAS.Api.Client.Model
             Option<ECDetails2?> ecDetails = default;
             Option<string?> elementType = default;
             Option<string?> elementId = default;
+            Option<List<SoaStages>?> soaStages = default;
 
             while (utf8JsonReader.Read())
             {
@@ -224,6 +241,9 @@ namespace HNTAS.Api.Client.Model
                         case "elementId":
                             elementId = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "soaStages":
+                            soaStages = new Option<List<SoaStages>?>(JsonSerializer.Deserialize<List<SoaStages>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         default:
                             break;
                     }
@@ -233,7 +253,7 @@ namespace HNTAS.Api.Client.Model
             if (type.IsSet && type.Value == null)
                 throw new ArgumentNullException(nameof(type), "Property is not nullable for class Element.");
 
-            return new Element(type, count, address, ecDetails, elementType, elementId);
+            return new Element(type, count, address, ecDetails, elementType, elementId, soaStages);
         }
 
         /// <summary>
@@ -298,6 +318,15 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("elementId", element.ElementId);
                 else
                     writer.WriteNull("elementId");
+
+            if (element.SoaStagesOption.IsSet)
+                if (element.SoaStagesOption.Value != null)
+                {
+                    writer.WritePropertyName("soaStages");
+                    JsonSerializer.Serialize(writer, element.SoaStages, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("soaStages");
         }
     }
 }

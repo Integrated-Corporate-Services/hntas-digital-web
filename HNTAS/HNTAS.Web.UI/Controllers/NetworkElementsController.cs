@@ -223,7 +223,8 @@ namespace HNTAS.Web.UI.Controllers
                 Elements = elements?.Select(e => new Api.Client.Model.Element(type: e.Type, count: e.Count)).ToList(),
                 Status = NetworkDetailsStatus.Complete,
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = userId
+                CreatedBy = userId,
+                ElementSoaStatus = NetworkDetailsStatus.ReadyToStart
             };            
 
             if (request.Elements != null)

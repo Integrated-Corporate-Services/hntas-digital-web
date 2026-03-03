@@ -112,9 +112,9 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new ElementJsonConverter(),
         new ECDetails2JsonConverter(),
         new NetworkDetailsUploadedDocumentJsonConverter(),
-        new ElementSoaResponseJsonConverter(),
+        //new ElementSoaResponseJsonConverter(),
         new SoaStagesJsonConverter(),
-        new ElementsJsonConverter(),
+        //new ElementsJsonConverter(),
         //new DocumentJsonConverter()
 
     }

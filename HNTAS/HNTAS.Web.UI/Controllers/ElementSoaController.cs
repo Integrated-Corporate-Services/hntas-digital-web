@@ -54,8 +54,8 @@ namespace HNTAS.Web.UI.Controllers
             var phase = heatNetworkData?.Phase;
 
             var networkElements = heatNetworkData?.NetworkElements?.Elements;
-            var elementSoa = heatNetworkData?.ElementSoa;
-            var elementSoaElements = elementSoa?.Elements;
+            //var elementSoa = heatNetworkData?.ElementSoa;
+            //var elementSoaElements = elementSoa?.Elements;
             var eligibleIndex = phase == "Design" ? 1 : phase == "Construction" ? 2 : 0;
 
             var model = new ElementSoaViewModel
@@ -144,14 +144,16 @@ namespace HNTAS.Web.UI.Controllers
                 //    }
                 //}
                 
-                if (elementSoaElements != null)
+                if (networkElements != null)
                 {
-                    foreach (var elementSoaElement in elementSoaElements)
+                    foreach (var elementSoaElement in networkElements)
                     {
                         if (elementSoaElement.ElementId == stageInModel.Elements?.FirstOrDefault(e => e.ElementId == elementSoaElement.ElementId)?.ElementId)
                         {
                             var modelElement = stageInModel.Elements?.Find(e => e.ElementId == elementSoaElement.ElementId);
-                            var doc = elementSoaElement.Stages?.Find(s => s.StageId == stageInModel.StageId)?.Document;
+                            var doc = elementSoaElement.SoaStages?
+                                .Find(s => s.StageId.HasValue && stageInModel.StageId.HasValue && (int)s.StageId.Value == (int)stageInModel.StageId.Value)
+                                ?.Document;
                             if (modelElement != null)
                             {
                                 modelElement.Document = doc;
@@ -162,6 +164,8 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaViewModelSessionKey, model);
+
+            var soaStagesModel = _sessionHelper.GetFromSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey);
             return View("SoaStages", model);
         }
 

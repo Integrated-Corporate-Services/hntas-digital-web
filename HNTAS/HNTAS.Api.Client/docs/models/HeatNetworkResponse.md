@@ -11,7 +11,6 @@ Name | Type | Description | Notes
 **Name** | **string** |  | [optional] 
 **Pathway** | **string** |  | [optional] 
 **Soa** | [**SoaResponse**](SoaResponse.md) |  | [optional] 
-**ElementSoa** | [**ElementSoaResponse**](ElementSoaResponse.md) |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **Phase** | **string** |  | [optional] 

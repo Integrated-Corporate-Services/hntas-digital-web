@@ -14,7 +14,6 @@ Name | Type | Description | Notes
 **NetworkCharacteristics** | [**NetworkCharacteristics**](NetworkCharacteristics.md) |  | [optional] 
 **NetworkElements** | [**NetworkElements**](NetworkElements.md) |  | [optional] 
 **Soa** | [**Soa**](Soa.md) |  | [optional] 
-**ElementSoa** | [**ElementSoa**](ElementSoa.md) |  | [optional] 
 **MeteringAndMonitoringStrategy** | [**MeteringAndMonitoringStrategy**](MeteringAndMonitoringStrategy.md) |  | [optional] 
 **AssessmentPlan** | [**AssessmentPlan**](AssessmentPlan.md) |  | [optional] 
 **DesignConstructionLog** | [**DesignConstructionLog**](DesignConstructionLog.md) |  | [optional] 

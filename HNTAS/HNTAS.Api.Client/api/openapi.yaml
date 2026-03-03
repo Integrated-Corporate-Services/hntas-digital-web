@@ -3190,6 +3190,19 @@ components:
           postcode: postcode
           addressLine1: addressLine1
           addressLine2: addressLine2
+        soaStages:
+        - document:
+            fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          stageId: Stage1
+        - document:
+            fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          stageId: Stage1
         count: 5
         type: EnergyCentre
         elementType: elementType
@@ -3210,146 +3223,11 @@ components:
         elementId:
           nullable: true
           type: string
-      type: object
-    Elements:
-      example:
-        elementId: elementId
-        stages:
-        - document:
-            fileName: fileName
-            s3Key: s3Key
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
-          stageId: Stage1
-        - document:
-            fileName: fileName
-            s3Key: s3Key
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
-          stageId: Stage1
-      properties:
-        elementId:
-          nullable: true
-          type: string
-        stages:
+        soaStages:
           items:
             $ref: "#/components/schemas/SoaStages"
+          nullable: true
           type: array
-      type: object
-    ElementSoa:
-      example:
-        createdAt: 2000-01-23T04:56:07.000+00:00
-        updatedBy: updatedBy
-        createdBy: createdBy
-        elements:
-        - elementId: elementId
-          stages:
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
-            stageId: Stage1
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
-            stageId: Stage1
-        - elementId: elementId
-          stages:
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
-            stageId: Stage1
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
-            stageId: Stage1
-        status: null
-        updatedAt: 2000-01-23T04:56:07.000+00:00
-      nullable: true
-      properties:
-        status:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
-        elements:
-          items:
-            $ref: "#/components/schemas/Elements"
-          type: array
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          format: date-time
-          nullable: true
-          type: string
-        updatedBy:
-          nullable: true
-          type: string
-      type: object
-    ElementSoaResponse:
-      example:
-        createdAt: 2000-01-23T04:56:07.000+00:00
-        updatedBy: updatedBy
-        createdBy: createdBy
-        elements:
-        - elementId: elementId
-          stages:
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
-            stageId: Stage1
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
-            stageId: Stage1
-        - elementId: elementId
-          stages:
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
-            stageId: Stage1
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
-            stageId: Stage1
-        status: InProgress
-        updatedAt: 2000-01-23T04:56:07.000+00:00
-      nullable: true
-      properties:
-        status:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
-        elements:
-          items:
-            $ref: "#/components/schemas/Elements"
-          type: array
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          nullable: true
-          type: string
-        updatedAt:
-          format: date-time
-          nullable: true
-          type: string
-        updatedBy:
-          nullable: true
-          type: string
       type: object
     ElementSoaUploadDocumentRequest:
       example:
@@ -3737,6 +3615,7 @@ components:
           isSuppliedByADistrictHeatNetwork: true
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkElements:
+          elementSoaStatus: null
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
           createdBy: createdBy
@@ -3752,6 +3631,19 @@ components:
               postcode: postcode
               addressLine1: addressLine1
               addressLine2: addressLine2
+            soaStages:
+            - document:
+                fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              stageId: Stage1
+            - document:
+                fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              stageId: Stage1
             count: 5
             type: EnergyCentre
             elementType: elementType
@@ -3766,6 +3658,19 @@ components:
               postcode: postcode
               addressLine1: addressLine1
               addressLine2: addressLine2
+            soaStages:
+            - document:
+                fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              stageId: Stage1
+            - document:
+                fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              stageId: Stage1
             count: 5
             type: EnergyCentre
             elementType: elementType
@@ -3801,41 +3706,6 @@ components:
         name: name
         registrationSource: HNTAS
         pathway: pathway
-        elementSoa:
-          createdAt: 2000-01-23T04:56:07.000+00:00
-          updatedBy: updatedBy
-          createdBy: createdBy
-          elements:
-          - elementId: elementId
-            stages:
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
-              stageId: Stage1
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
-              stageId: Stage1
-          - elementId: elementId
-            stages:
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
-              stageId: Stage1
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
-              stageId: Stage1
-          status: null
-          updatedAt: 2000-01-23T04:56:07.000+00:00
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -3869,8 +3739,6 @@ components:
           $ref: "#/components/schemas/NetworkElements"
         soa:
           $ref: "#/components/schemas/Soa"
-        elementSoa:
-          $ref: "#/components/schemas/ElementSoa"
         meteringAndMonitoringStrategy:
           $ref: "#/components/schemas/MeteringAndMonitoringStrategy"
         assessmentPlan:
@@ -4142,7 +4010,7 @@ components:
           containsPressureBreak: true
           id: id
           heatNetworkType: CityScaleDistrictHeatingNetwork
-          status: null
+          status: InProgress
           isSuppliedByADistrictHeatNetwork: true
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkElements:
@@ -4161,6 +4029,19 @@ components:
               postcode: postcode
               addressLine1: addressLine1
               addressLine2: addressLine2
+            soaStages:
+            - document:
+                fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              stageId: Stage1
+            - document:
+                fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              stageId: Stage1
             count: 5
             type: EnergyCentre
             elementType: elementType
@@ -4175,6 +4056,19 @@ components:
               postcode: postcode
               addressLine1: addressLine1
               addressLine2: addressLine2
+            soaStages:
+            - document:
+                fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              stageId: Stage1
+            - document:
+                fileName: fileName
+                s3Key: s3Key
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              stageId: Stage1
             count: 5
             type: EnergyCentre
             elementType: elementType
@@ -4210,41 +4104,6 @@ components:
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
         pathway: pathway
-        elementSoa:
-          createdAt: 2000-01-23T04:56:07.000+00:00
-          updatedBy: updatedBy
-          createdBy: createdBy
-          elements:
-          - elementId: elementId
-            stages:
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
-              stageId: Stage1
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
-              stageId: Stage1
-          - elementId: elementId
-            stages:
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
-              stageId: Stage1
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
-              stageId: Stage1
-          status: InProgress
-          updatedAt: 2000-01-23T04:56:07.000+00:00
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -4270,8 +4129,6 @@ components:
           type: string
         soa:
           $ref: "#/components/schemas/SoaResponse"
-        elementSoa:
-          $ref: "#/components/schemas/ElementSoaResponse"
         createdBy:
           type: string
         createdAt:
@@ -4670,7 +4527,7 @@ components:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         documents:
           items:
-            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument2"
           type: array
         createdAt:
           format: date-time
@@ -4707,7 +4564,7 @@ components:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         documents:
           items:
-            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument2"
           type: array
         createdAt:
           format: date-time
@@ -4840,7 +4697,7 @@ components:
         containsPressureBreak: true
         id: id
         heatNetworkType: CityScaleDistrictHeatingNetwork
-        status: null
+        status: InProgress
         isSuppliedByADistrictHeatNetwork: true
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
@@ -4923,6 +4780,24 @@ components:
         s3Key: s3Key
         uploadedAt: 2000-01-23T04:56:07.000+00:00
         uploadedBy: uploadedBy
+      nullable: true
+      properties:
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        uploadedAt:
+          format: date-time
+          type: string
+        uploadedBy:
+          type: string
+      type: object
+    NetworkDetailsUploadedDocument2:
+      example:
+        fileName: fileName
+        s3Key: s3Key
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        uploadedBy: uploadedBy
       properties:
         fileName:
           type: string
@@ -4936,6 +4811,7 @@ components:
       type: object
     NetworkElements:
       example:
+        elementSoaStatus: null
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
@@ -4951,6 +4827,19 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
+          soaStages:
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
           count: 5
           type: EnergyCentre
           elementType: elementType
@@ -4965,6 +4854,19 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
+          soaStages:
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
           count: 5
           type: EnergyCentre
           elementType: elementType
@@ -4973,6 +4875,8 @@ components:
       nullable: true
       properties:
         status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        elementSoaStatus:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         elements:
           items:
@@ -4993,6 +4897,7 @@ components:
       type: object
     NetworkElements2:
       example:
+        elementSoaStatus: null
         createdAt: 2000-01-23T04:56:07.000+00:00
         updatedBy: updatedBy
         createdBy: createdBy
@@ -5008,6 +4913,19 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
+          soaStages:
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
           count: 5
           type: EnergyCentre
           elementType: elementType
@@ -5022,6 +4940,19 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
+          soaStages:
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
           count: 5
           type: EnergyCentre
           elementType: elementType
@@ -5029,6 +4960,8 @@ components:
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        elementSoaStatus:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         elements:
           items:
@@ -5064,6 +4997,19 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
+          soaStages:
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
           count: 5
           type: EnergyCentre
           elementType: elementType
@@ -5078,6 +5024,19 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
+          soaStages:
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
+          - document:
+              fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            stageId: Stage1
           count: 5
           type: EnergyCentre
           elementType: elementType
@@ -5848,7 +5807,7 @@ components:
         stageId: Stage1
       properties:
         stageId:
-          $ref: "#/components/schemas/SoaStage"
+          $ref: "#/components/schemas/NullableOfSoaStage"
         document:
           $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
       type: object

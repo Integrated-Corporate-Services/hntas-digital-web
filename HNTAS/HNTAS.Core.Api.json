@@ -4453,86 +4453,15 @@
           "elementId": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "Elements": {
-        "type": "object",
-        "properties": {
-          "elementId": {
-            "type": "string",
-            "nullable": true
           },
-          "stages": {
+          "soaStages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SoaStages"
-            }
+            },
+            "nullable": true
           }
         }
-      },
-      "ElementSoa": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
-          "elements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Elements"
-            }
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "nullable": true
-      },
-      "ElementSoaResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
-          "elements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Elements"
-            }
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string",
-            "nullable": true
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "nullable": true
       },
       "ElementSoaUploadDocumentRequest": {
         "required": [
@@ -4719,9 +4648,6 @@
           "soa": {
             "$ref": "#/components/schemas/Soa"
           },
-          "elementSoa": {
-            "$ref": "#/components/schemas/ElementSoa"
-          },
           "meteringAndMonitoringStrategy": {
             "$ref": "#/components/schemas/MeteringAndMonitoringStrategy"
           },
@@ -4871,9 +4797,6 @@
           },
           "soa": {
             "$ref": "#/components/schemas/SoaResponse"
-          },
-          "elementSoa": {
-            "$ref": "#/components/schemas/ElementSoaResponse"
           },
           "createdBy": {
             "type": "string"
@@ -5193,7 +5116,7 @@
           "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument2"
             }
           },
           "createdAt": {
@@ -5224,7 +5147,7 @@
           "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument2"
             }
           },
           "createdAt": {
@@ -5463,12 +5386,34 @@
           "uploadedBy": {
             "type": "string"
           }
+        },
+        "nullable": true
+      },
+      "NetworkDetailsUploadedDocument2": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
         }
       },
       "NetworkElements": {
         "type": "object",
         "properties": {
           "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "elementSoaStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "elements": {
@@ -5500,6 +5445,9 @@
         "type": "object",
         "properties": {
           "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "elementSoaStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "elements": {
@@ -6065,7 +6013,7 @@
         "type": "object",
         "properties": {
           "stageId": {
-            "$ref": "#/components/schemas/SoaStage"
+            "$ref": "#/components/schemas/NullableOfSoaStage"
           },
           "document": {
             "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
