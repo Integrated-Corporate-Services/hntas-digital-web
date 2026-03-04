@@ -4432,6 +4432,14 @@
       "Element": {
         "type": "object",
         "properties": {
+          "elementId": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementType": {
+            "type": "string",
+            "nullable": true
+          },
           "type": {
             "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
           },
@@ -4445,14 +4453,6 @@
           },
           "ecDetails": {
             "$ref": "#/components/schemas/ECDetails2"
-          },
-          "elementType": {
-            "type": "string",
-            "nullable": true
-          },
-          "elementId": {
-            "type": "string",
-            "nullable": true
           },
           "soaStages": {
             "type": "array",
@@ -5410,7 +5410,7 @@
       "NetworkElements": {
         "type": "object",
         "properties": {
-          "status": {
+          "networkElementStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "elementSoaStatus": {
@@ -5444,7 +5444,7 @@
       "NetworkElements2": {
         "type": "object",
         "properties": {
-          "status": {
+          "networkElementStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "elementSoaStatus": {
@@ -5477,12 +5477,11 @@
       "NetworkElementsResponse": {
         "type": "object",
         "properties": {
-          "status": {
+          "networkElementStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
-          "elementType": {
-            "type": "string",
-            "nullable": true
+          "elementSoaStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "elements": {
             "type": "array",

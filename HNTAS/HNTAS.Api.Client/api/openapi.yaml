@@ -3207,6 +3207,12 @@ components:
         type: EnergyCentre
         elementType: elementType
       properties:
+        elementId:
+          nullable: true
+          type: string
+        elementType:
+          nullable: true
+          type: string
         type:
           $ref: "#/components/schemas/HeatNetworkElementDisplayType"
         count:
@@ -3217,12 +3223,6 @@ components:
           $ref: "#/components/schemas/RegisteredAddress"
         ecDetails:
           $ref: "#/components/schemas/ECDetails2"
-        elementType:
-          nullable: true
-          type: string
-        elementId:
-          nullable: true
-          type: string
         soaStages:
           items:
             $ref: "#/components/schemas/SoaStages"
@@ -3617,6 +3617,7 @@ components:
         networkElements:
           elementSoaStatus: null
           createdAt: 2000-01-23T04:56:07.000+00:00
+          networkElementStatus: null
           updatedBy: updatedBy
           createdBy: createdBy
           elements:
@@ -3674,7 +3675,6 @@ components:
             count: 5
             type: EnergyCentre
             elementType: elementType
-          status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4014,7 +4014,9 @@ components:
           isSuppliedByADistrictHeatNetwork: true
           updatedAt: 2000-01-23T04:56:07.000+00:00
         networkElements:
+          elementSoaStatus: null
           createdAt: 2000-01-23T04:56:07.000+00:00
+          networkElementStatus: null
           updatedBy: updatedBy
           createdBy: createdBy
           elements:
@@ -4072,8 +4074,6 @@ components:
             count: 5
             type: EnergyCentre
             elementType: elementType
-          elementType: elementType
-          status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4813,6 +4813,7 @@ components:
       example:
         elementSoaStatus: null
         createdAt: 2000-01-23T04:56:07.000+00:00
+        networkElementStatus: null
         updatedBy: updatedBy
         createdBy: createdBy
         elements:
@@ -4870,11 +4871,10 @@ components:
           count: 5
           type: EnergyCentre
           elementType: elementType
-        status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
-        status:
+        networkElementStatus:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         elementSoaStatus:
           $ref: "#/components/schemas/NetworkDetailsStatus"
@@ -4899,6 +4899,7 @@ components:
       example:
         elementSoaStatus: null
         createdAt: 2000-01-23T04:56:07.000+00:00
+        networkElementStatus: InProgress
         updatedBy: updatedBy
         createdBy: createdBy
         elements:
@@ -4956,10 +4957,9 @@ components:
           count: 5
           type: EnergyCentre
           elementType: elementType
-        status: InProgress
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
-        status:
+        networkElementStatus:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         elementSoaStatus:
           $ref: "#/components/schemas/NetworkDetailsStatus"
@@ -4982,7 +4982,9 @@ components:
       type: object
     NetworkElementsResponse:
       example:
+        elementSoaStatus: null
         createdAt: 2000-01-23T04:56:07.000+00:00
+        networkElementStatus: null
         updatedBy: updatedBy
         createdBy: createdBy
         elements:
@@ -5040,16 +5042,13 @@ components:
           count: 5
           type: EnergyCentre
           elementType: elementType
-        elementType: elementType
-        status: null
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
-        status:
+        networkElementStatus:
           $ref: "#/components/schemas/NetworkDetailsStatus"
-        elementType:
-          nullable: true
-          type: string
+        elementSoaStatus:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         elements:
           items:
             $ref: "#/components/schemas/Element"

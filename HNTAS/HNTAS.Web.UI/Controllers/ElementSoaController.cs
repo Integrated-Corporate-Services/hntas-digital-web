@@ -54,8 +54,6 @@ namespace HNTAS.Web.UI.Controllers
             var phase = heatNetworkData?.Phase;
 
             var networkElements = heatNetworkData?.NetworkElements?.Elements;
-            //var elementSoa = heatNetworkData?.ElementSoa;
-            //var elementSoaElements = elementSoa?.Elements;
             var eligibleIndex = phase == "Design" ? 1 : phase == "Construction" ? 2 : 0;
 
             var model = new ElementSoaViewModel
@@ -125,25 +123,7 @@ namespace HNTAS.Web.UI.Controllers
             };
 
             foreach (var stageInModel in model.Stages)
-            {
-                //if (elementSoaStages != null)
-                //{
-                //    foreach (var modelElement in stageInModel.Elements)
-                //    {
-                //        foreach (var elementSoaStage in elementSoaStages)
-                //        {
-                //            if (elementSoaStage.Stage == stageInModel.Stage)
-                //            {
-                //                var elementInStage = elementSoaStage.Elements?.Find(e => e.ElementId == modelElement.ElementId);
-                //                if (elementInStage != null)
-                //                {
-                //                    modelElement.Documents = elementInStage.Documents ?? [];
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
-                
+            {                
                 if (networkElements != null)
                 {
                     foreach (var elementSoaElement in networkElements)
@@ -163,24 +143,32 @@ namespace HNTAS.Web.UI.Controllers
                 }
             }
 
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaViewModelSessionKey, model);
+            //_sessionHelper.SaveToSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey, model);
 
-            var soaStagesModel = _sessionHelper.GetFromSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey);
+            //var soaStagesModel = _sessionHelper.GetFromSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey);
             return View("SoaStages", model);
         }
 
         [HttpGet]
-        public IActionResult SoaStagesToUpload([FromQuery] SoaStage stage, [FromQuery] string elementId, [FromQuery] HeatNetworkElementDisplayType elementType)
+        public async Task<IActionResult> SoaStagesToUpload([FromQuery] SoaStage stage, [FromQuery] string elementId, [FromQuery] HeatNetworkElementDisplayType elementType)
         {
             this.ShowBackButton("SoaStages", "ElementSoa");
-            var soaStagesModel = _sessionHelper.GetFromSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey);
+            //var soaStagesModel = _sessionHelper.GetFromSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey);
             @ViewBag.Action = "SoaStagesToUpload";
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
             // Set element-specific ViewBag properties
             SetSoaElementsViewBag(elementType);            
-            var DocumentForElement = soaStagesModel?.Stages?
-                .Find(s => s.StageId == stage)?.Elements?
-                .Find(e => e.ElementId == elementId)?.Document;
+            //var DocumentForElement = soaStagesModel?.Stages?
+            //    .Find(s => s.StageId == stage)?.Elements?
+            //    .Find(e => e.ElementId == elementId)?.Document;
+
+            var DocumentForElement = heatNetworkData?.NetworkElements?.Elements?
+                .Find(e => e.ElementId == elementId)?.SoaStages?
+                .Find(s => s.StageId.HasValue && (SoaStage)s.StageId.Value == stage)?.Document;
 
             var document = DocumentForElement;
             UploadedDocumentInfo? uploadedDocument = null;

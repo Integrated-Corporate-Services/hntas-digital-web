@@ -33,7 +33,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="NetworkElements" /> class.
         /// </summary>
-        /// <param name="status">status</param>
+        /// <param name="networkElementStatus">networkElementStatus</param>
         /// <param name="elementSoaStatus">elementSoaStatus</param>
         /// <param name="elements">elements</param>
         /// <param name="createdAt">createdAt</param>
@@ -41,9 +41,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public NetworkElements(Option<NetworkDetailsStatus?> status = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<List<Element>?> elements = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public NetworkElements(Option<NetworkDetailsStatus?> networkElementStatus = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<List<Element>?> elements = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
-            StatusOption = status;
+            NetworkElementStatusOption = networkElementStatus;
             ElementSoaStatusOption = elementSoaStatus;
             ElementsOption = elements;
             CreatedAtOption = createdAt;
@@ -56,17 +56,17 @@ namespace HNTAS.Api.Client.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of Status
+        /// Used to track the state of NetworkElementStatus
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<NetworkDetailsStatus?> StatusOption { get; private set; }
+        public Option<NetworkDetailsStatus?> NetworkElementStatusOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Status
+        /// Gets or Sets NetworkElementStatus
         /// </summary>
-        [JsonPropertyName("status")]
-        public NetworkDetailsStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+        [JsonPropertyName("networkElementStatus")]
+        public NetworkDetailsStatus? NetworkElementStatus { get { return this.NetworkElementStatusOption; } set { this.NetworkElementStatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ElementSoaStatus
@@ -154,7 +154,7 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class NetworkElements {\n");
-            sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  NetworkElementStatus: ").Append(NetworkElementStatus).Append("\n");
             sb.Append("  ElementSoaStatus: ").Append(ElementSoaStatus).Append("\n");
             sb.Append("  Elements: ").Append(Elements).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
@@ -208,7 +208,7 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<NetworkDetailsStatus?> status = default;
+            Option<NetworkDetailsStatus?> networkElementStatus = default;
             Option<NetworkDetailsStatus?> elementSoaStatus = default;
             Option<List<Element>?> elements = default;
             Option<DateTimeOffset?> createdAt = default;
@@ -231,10 +231,10 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "status":
-                            string? statusRawValue = utf8JsonReader.GetString();
-                            if (statusRawValue != null)
-                                status = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(statusRawValue));
+                        case "networkElementStatus":
+                            string? networkElementStatusRawValue = utf8JsonReader.GetString();
+                            if (networkElementStatusRawValue != null)
+                                networkElementStatus = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(networkElementStatusRawValue));
                             break;
                         case "elementSoaStatus":
                             string? elementSoaStatusRawValue = utf8JsonReader.GetString();
@@ -262,8 +262,8 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class NetworkElements.");
+            if (networkElementStatus.IsSet && networkElementStatus.Value == null)
+                throw new ArgumentNullException(nameof(networkElementStatus), "Property is not nullable for class NetworkElements.");
 
             if (elementSoaStatus.IsSet && elementSoaStatus.Value == null)
                 throw new ArgumentNullException(nameof(elementSoaStatus), "Property is not nullable for class NetworkElements.");
@@ -277,7 +277,7 @@ namespace HNTAS.Api.Client.Model
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class NetworkElements.");
 
-            return new NetworkElements(status, elementSoaStatus, elements, createdAt, createdBy, updatedAt, updatedBy);
+            return new NetworkElements(networkElementStatus, elementSoaStatus, elements, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
@@ -310,10 +310,10 @@ namespace HNTAS.Api.Client.Model
             if (networkElements.CreatedByOption.IsSet && networkElements.CreatedBy == null)
                 throw new ArgumentNullException(nameof(networkElements.CreatedBy), "Property is required for class NetworkElements.");
 
-            if (networkElements.StatusOption.IsSet)
+            if (networkElements.NetworkElementStatusOption.IsSet)
             {
-                var statusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkElements.Status!.Value);
-                writer.WriteString("status", statusRawValue);
+                var networkElementStatusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkElements.NetworkElementStatus!.Value);
+                writer.WriteString("networkElementStatus", networkElementStatusRawValue);
             }
             if (networkElements.ElementSoaStatusOption.IsSet)
             {

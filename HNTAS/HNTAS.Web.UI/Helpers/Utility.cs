@@ -295,7 +295,7 @@ namespace HNTAS.Web.UI.Helpers
             if (dependentStatusName == null && statusName == null)
                 return;
 
-            if (dependentStatusName == "Complete" && statusName == null)
+            if (dependentStatusName == "Complete" && (statusName == null || statusName == "ReadyToStart"))
             {
                 option.UiStatus = StatusConstants.ReadyToStart;
                 option.IsEnabled = true;
@@ -304,7 +304,12 @@ namespace HNTAS.Web.UI.Helpers
             {
                 option.UiStatus = StatusConstants.Completed;
                 option.IsEnabled = true;
-            }            
+            }
+            else if (statusName == "InProgress")
+            {
+                option.UiStatus = StatusConstants.InProgress;
+                option.IsEnabled = true;
+            }
         }
 
         public static List<NetworkElementOption> GetDefaultNetworkElementOptions()

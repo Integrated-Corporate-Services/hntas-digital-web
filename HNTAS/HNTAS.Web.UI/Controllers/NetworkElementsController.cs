@@ -221,7 +221,7 @@ namespace HNTAS.Web.UI.Controllers
             var request = new NetworkElements2
             {
                 Elements = elements?.Select(e => new Api.Client.Model.Element(type: e.Type, count: e.Count)).ToList(),
-                Status = NetworkDetailsStatus.Complete,
+                NetworkElementStatus = NetworkDetailsStatus.Complete,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId,
                 ElementSoaStatus = NetworkDetailsStatus.ReadyToStart

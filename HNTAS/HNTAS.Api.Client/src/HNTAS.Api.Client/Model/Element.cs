@@ -33,22 +33,22 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Element" /> class.
         /// </summary>
+        /// <param name="elementId">elementId</param>
+        /// <param name="elementType">elementType</param>
         /// <param name="type">type</param>
         /// <param name="count">count</param>
         /// <param name="address">address</param>
         /// <param name="ecDetails">ecDetails</param>
-        /// <param name="elementType">elementType</param>
-        /// <param name="elementId">elementId</param>
         /// <param name="soaStages">soaStages</param>
         [JsonConstructor]
-        public Element(Option<HeatNetworkElementDisplayType?> type = default, Option<int?> count = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> elementType = default, Option<string?> elementId = default, Option<List<SoaStages>?> soaStages = default)
+        public Element(Option<string?> elementId = default, Option<string?> elementType = default, Option<HeatNetworkElementDisplayType?> type = default, Option<int?> count = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<List<SoaStages>?> soaStages = default)
         {
+            ElementIdOption = elementId;
+            ElementTypeOption = elementType;
             TypeOption = type;
             CountOption = count;
             AddressOption = address;
             EcDetailsOption = ecDetails;
-            ElementTypeOption = elementType;
-            ElementIdOption = elementId;
             SoaStagesOption = soaStages;
             OnCreated();
         }
@@ -67,6 +67,32 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("type")]
         public HeatNetworkElementDisplayType? Type { get { return this.TypeOption; } set { this.TypeOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ElementId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> ElementIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementId
+        /// </summary>
+        [JsonPropertyName("elementId")]
+        public string? ElementId { get { return this.ElementIdOption; } set { this.ElementIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ElementType
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> ElementTypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementType
+        /// </summary>
+        [JsonPropertyName("elementType")]
+        public string? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Count
@@ -108,32 +134,6 @@ namespace HNTAS.Api.Client.Model
         public ECDetails2? EcDetails { get { return this.EcDetailsOption; } set { this.EcDetailsOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of ElementType
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ElementTypeOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets ElementType
-        /// </summary>
-        [JsonPropertyName("elementType")]
-        public string? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of ElementId
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ElementIdOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets ElementId
-        /// </summary>
-        [JsonPropertyName("elementId")]
-        public string? ElementId { get { return this.ElementIdOption; } set { this.ElementIdOption = new(value); } }
-
-        /// <summary>
         /// Used to track the state of SoaStages
         /// </summary>
         [JsonIgnore]
@@ -154,12 +154,12 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class Element {\n");
+            sb.Append("  ElementId: ").Append(ElementId).Append("\n");
+            sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("  Type: ").Append(Type).Append("\n");
             sb.Append("  Count: ").Append(Count).Append("\n");
             sb.Append("  Address: ").Append(Address).Append("\n");
             sb.Append("  EcDetails: ").Append(EcDetails).Append("\n");
-            sb.Append("  ElementType: ").Append(ElementType).Append("\n");
-            sb.Append("  ElementId: ").Append(ElementId).Append("\n");
             sb.Append("  SoaStages: ").Append(SoaStages).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -198,12 +198,12 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
+            Option<string?> elementId = default;
+            Option<string?> elementType = default;
             Option<HeatNetworkElementDisplayType?> type = default;
             Option<int?> count = default;
             Option<RegisteredAddress?> address = default;
             Option<ECDetails2?> ecDetails = default;
-            Option<string?> elementType = default;
-            Option<string?> elementId = default;
             Option<List<SoaStages>?> soaStages = default;
 
             while (utf8JsonReader.Read())
@@ -221,6 +221,12 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
+                        case "elementId":
+                            elementId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "elementType":
+                            elementType = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         case "type":
                             string? typeRawValue = utf8JsonReader.GetString();
                             if (typeRawValue != null)
@@ -235,12 +241,6 @@ namespace HNTAS.Api.Client.Model
                         case "ecDetails":
                             ecDetails = new Option<ECDetails2?>(JsonSerializer.Deserialize<ECDetails2>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
-                        case "elementType":
-                            elementType = new Option<string?>(utf8JsonReader.GetString());
-                            break;
-                        case "elementId":
-                            elementId = new Option<string?>(utf8JsonReader.GetString());
-                            break;
                         case "soaStages":
                             soaStages = new Option<List<SoaStages>?>(JsonSerializer.Deserialize<List<SoaStages>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -253,7 +253,7 @@ namespace HNTAS.Api.Client.Model
             if (type.IsSet && type.Value == null)
                 throw new ArgumentNullException(nameof(type), "Property is not nullable for class Element.");
 
-            return new Element(type, count, address, ecDetails, elementType, elementId, soaStages);
+            return new Element(elementId, elementType, type, count, address, ecDetails, soaStages);
         }
 
         /// <summary>
@@ -280,6 +280,18 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, Element element, JsonSerializerOptions jsonSerializerOptions)
         {
+            if (element.ElementIdOption.IsSet)
+                if (element.ElementIdOption.Value != null)
+                    writer.WriteString("elementId", element.ElementId);
+                else
+                    writer.WriteNull("elementId");
+
+            if (element.ElementTypeOption.IsSet)
+                if (element.ElementTypeOption.Value != null)
+                    writer.WriteString("elementType", element.ElementType);
+                else
+                    writer.WriteNull("elementType");
+
             if (element.TypeOption.IsSet)
             {
                 var typeRawValue = HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(element.Type!.Value);
@@ -307,18 +319,6 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("ecDetails");
-            if (element.ElementTypeOption.IsSet)
-                if (element.ElementTypeOption.Value != null)
-                    writer.WriteString("elementType", element.ElementType);
-                else
-                    writer.WriteNull("elementType");
-
-            if (element.ElementIdOption.IsSet)
-                if (element.ElementIdOption.Value != null)
-                    writer.WriteString("elementId", element.ElementId);
-                else
-                    writer.WriteNull("elementId");
-
             if (element.SoaStagesOption.IsSet)
                 if (element.SoaStagesOption.Value != null)
                 {
