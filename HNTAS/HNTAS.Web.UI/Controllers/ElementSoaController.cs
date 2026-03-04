@@ -86,11 +86,13 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> SoaStagesToUpload([FromQuery] SoaStage stage, [FromQuery] string elementId, [FromQuery] HeatNetworkElementDisplayType elementType)
         {
-            this.ShowBackButton("SoaStages", "ElementSoa");
-            @ViewBag.Action = "SoaStagesToUpload";
-
             var currentStageIndex = ElementSoaHelper.GetStageIndex(stage);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey, currentStageIndex);
+            var targetFragment = string.Concat("stage-", currentStageIndex);
+            this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);
+            @ViewBag.Action = "SoaStagesToUpload";
+
+            
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
@@ -138,7 +140,9 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> SoaStagesToUpload(IFormFile docToUpload)
         {
-            this.ShowBackButton("NetworkDetails", "HeatNetwork");
+            var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
+            var targetFragment = string.Concat("stage-", currentStageIndex);
+            this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);
             var model = _sessionHelper.GetFromSession<ElementSoaUploadViewModel>(HttpContext, SessionKeys.ElementSoaUploadViewModelSessionKey);
             var elementType = model?.Type;
             // Set element-specific ViewBag properties
@@ -152,12 +156,12 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.AddModelError("assessmentPlan", "Please select a file to upload.");
                 return View("SoaUpload", model);
             }
-            //var fileExtension = Path.GetExtension(docToUpload.FileName).ToLower();
-            //if (fileExtension != ".xlsx" && fileExtension != ".pdf")
-            //{
-            //    ModelState.AddModelError("excelFile", "The selected file must be an XLSX or PDF");
-            //    return View("SoaUpload", model);
-            //}
+            var fileExtension = Path.GetExtension(docToUpload.FileName).ToLower();
+            if (fileExtension != ".xlsx" && fileExtension != ".pdf")
+            {
+                ModelState.AddModelError("excelFile", "The selected file must be an XLSX or PDF");
+                return View("SoaUpload", model);
+            }
 
             var incompleteSoa = _sessionHelper.GetFromSession<ElementSoaProgressStatusTracking>(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey);
 
@@ -175,8 +179,8 @@ namespace HNTAS.Web.UI.Controllers
             await _soaProjectService.UpdateDocumentSoa(request);
 
             _logger.LogInformation("Assessment Plan uploaded for HN ID: {HnId}, UploadedBy: {UserId}", hnId, userId);
-
-            return RedirectToAction("SoaStages", "ElementSoa");
+            
+            return RedirectToAction("SoaStages", "ElementSoa", targetFragment);
         }
 
         public async Task<IActionResult> DownloadFile([FromQuery] string key)
