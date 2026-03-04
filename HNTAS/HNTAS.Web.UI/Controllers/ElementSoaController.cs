@@ -38,6 +38,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SubmitUnderstandingSoa()
         {
             return RedirectToAction("SoaStages");
@@ -138,6 +139,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SoaStagesToUpload(IFormFile docToUpload)
         {
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;

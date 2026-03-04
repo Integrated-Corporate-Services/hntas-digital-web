@@ -111,11 +111,9 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new AuditLogResponseJsonConverter(),
         new ElementJsonConverter(),
         new ECDetails2JsonConverter(),
-        new NetworkDetailsUploadedDocumentJsonConverter(),
-        //new ElementSoaResponseJsonConverter(),
+        new NetworkDetailsUploadedDocumentJsonConverter(),        
         new SoaStagesJsonConverter(),
-        //new ElementsJsonConverter(),
-        //new DocumentJsonConverter()
+        new NetworkDetailsUploadedDocument2JsonConverter(),
 
     }
 });
