@@ -71,5 +71,6 @@
         public const string ElementSoaViewModelSessionKey = "ElementSoaViewModelSessionKey";
         public const string ElementSoaUploadViewModelSessionKey = "ElementSoaUploadViewModelSessionKey";
         public const string ElementSoaIncompleteSoaSessionKey = "ElementSoaIncompleteSoaSessionKey";
+        public const string CurrentStageIndexSessionKey = "CurrentStageIndexSessionKey";
     }
 }

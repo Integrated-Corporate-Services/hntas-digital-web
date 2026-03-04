@@ -55,72 +55,8 @@ namespace HNTAS.Web.UI.Controllers
 
             var networkElements = heatNetworkData?.NetworkElements?.Elements;
             var eligibleIndex = phase == "Design" ? 1 : phase == "Construction" ? 2 : 0;
-
-            var model = new ElementSoaViewModel
-            {
-                EligibleStageIndex = eligibleIndex,
-                Status = NetworkDetailsStatus.Incomplete,
-                Stages = new List<SoaStagesView>
-                {
-                    new SoaStagesView
-                    {
-                        Name = "Stage 1",
-                        StageId = SoaStage.Stage1,
-                        Elements = GetElementsForStage(networkElements),
-                        IsActive = eligibleIndex == 0,
-                        Title = "Feasibility (Concept Design)"
-                    },
-                    new SoaStagesView
-                    {
-                        Name = "Stage 2",
-                        StageId = SoaStage.Stage2,
-                        Elements = GetElementsForStage(networkElements),
-                        IsActive = eligibleIndex == 0 || eligibleIndex == 1,
-                        Title = "Design (Developed Design)"
-                    },
-                    new SoaStagesView
-                    {
-                        Name = "Stage 3",
-                        StageId = SoaStage.Stage3,
-                        Elements = GetElementsForStage(networkElements),
-                        IsActive = true,
-                        Title = "Design (Technical Design)"
-                    },                    
-                    new SoaStagesView
-                    {
-                        Name = "Stage 4",
-                        StageId = SoaStage.Stage4,
-                        Elements = GetElementsForStage(networkElements),
-                        IsActive = true,
-                        Title = "Construction (Construction Design)"
-                    },
-                    new SoaStagesView
-                    {
-                        Name = "Stage 5",
-                        StageId = SoaStage.Stage5,
-                        Elements = GetElementsForStage(networkElements),
-                        IsActive = true,
-                        Title = "Construction (Installation)"
-                    },
-                    new SoaStagesView
-                    {
-                        Name = "Stage 6",
-                        StageId = SoaStage.Stage6,
-                        Elements = GetElementsForStage(networkElements),
-                        IsActive = true,
-                        Title = "Construction (Commissioning)"
-                    },
-                    new SoaStagesView
-                    {
-                        Name = "Stage 7",
-                        StageId = SoaStage.Stage7,
-                        Elements = GetElementsForStage(networkElements),
-                        IsActive = true,
-                        Title = "Operation (Operation and Maintenance)"
-                    },
-
-                }
-            };
+            var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
+            var model = ElementSoaHelper.GetElementSoaViewModel(eligibleIndex, currentStageIndex, networkElements);
 
             foreach (var stageInModel in model.Stages)
             {                
@@ -142,35 +78,8 @@ namespace HNTAS.Web.UI.Controllers
                     }
                 }
             }
-
-            var totalElementsInAllActiveStages = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count());
-            var totalElementsWithDocuments = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count(e => e.Document != null));
-            ElementSoaProgressStatusTracking incompleteSoa = new ElementSoaProgressStatusTracking();
-            if (totalElementsInAllActiveStages > 0 && (totalElementsInAllActiveStages - totalElementsWithDocuments) == 1)
-            {  
-                incompleteSoa.AllElementsCompleted = false;
-                // find the one stage and element that doesn't have a document
-                var stageWithMissingDoc = model.Stages.FirstOrDefault(s => s.IsActive && s.Elements.Any(e => e.Document == null));
-                if (stageWithMissingDoc != null)
-                {
-                    incompleteSoa.IncompleteSoaStageId = stageWithMissingDoc.StageId;
-                    var elementWithMissingDoc = stageWithMissingDoc.Elements.FirstOrDefault(e => e.Document == null);
-                    if (elementWithMissingDoc != null)
-                    {
-                        incompleteSoa.IncompleteElementId = elementWithMissingDoc.ElementId;
-                    }
-                }
-            }
-            else if (totalElementsInAllActiveStages - totalElementsWithDocuments == 0)
-            {
-                incompleteSoa.AllElementsCompleted = true;
-            }
-
-             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey, incompleteSoa);
-
-            //_sessionHelper.SaveToSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey, model);
-
-            //var soaStagesModel = _sessionHelper.GetFromSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey);
+            var incompleteSoa = ElementSoaHelper.GetElementSoaProgressStatusTracking(model);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey, incompleteSoa);
             return View("SoaStages", model);
         }
 
@@ -178,18 +87,19 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> SoaStagesToUpload([FromQuery] SoaStage stage, [FromQuery] string elementId, [FromQuery] HeatNetworkElementDisplayType elementType)
         {
             this.ShowBackButton("SoaStages", "ElementSoa");
-            //var soaStagesModel = _sessionHelper.GetFromSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey);
             @ViewBag.Action = "SoaStagesToUpload";
 
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var currentStageIndex = ElementSoaHelper.GetStageIndex(stage);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey, currentStageIndex);
 
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
             // Set element-specific ViewBag properties
-            SetSoaElementsViewBag(elementType);            
-            //var DocumentForElement = soaStagesModel?.Stages?
-            //    .Find(s => s.StageId == stage)?.Elements?
-            //    .Find(e => e.ElementId == elementId)?.Document;
+            var content = ElementSoaHelper.GetSoaElementContent(elementType);
+            ViewBag.Heading = content.Heading;
+            ViewBag.Description1 = content.Description1;
+            ViewBag.Description2 = content.Description2;
 
             var DocumentForElement = heatNetworkData?.NetworkElements?.Elements?
                 .Find(e => e.ElementId == elementId)?.SoaStages?
@@ -232,7 +142,10 @@ namespace HNTAS.Web.UI.Controllers
             var model = _sessionHelper.GetFromSession<ElementSoaUploadViewModel>(HttpContext, SessionKeys.ElementSoaUploadViewModelSessionKey);
             var elementType = model?.Type;
             // Set element-specific ViewBag properties
-            SetSoaElementsViewBag(elementType);
+            var content = ElementSoaHelper.GetSoaElementContent(elementType);
+            ViewBag.Heading = content.Heading;
+            ViewBag.Description1 = content.Description1;
+            ViewBag.Description2 = content.Description2;
             if (docToUpload == null || docToUpload.Length == 0)
             {
 
@@ -251,16 +164,11 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            
-
             var s3Key = await _s3UploadService.UploadFileAsync(docToUpload, $"NetworkDetails/{hnId}/Soa/{model?.SoaStage}/{model?.ElementId}");
-
-            // Optionally persist metadata or update project state here
 
             var targetStatus = NetworkDetailsStatus.InProgress;
             if (incompleteSoa != null && ((incompleteSoa.IncompleteElementId == model?.ElementId && incompleteSoa.IncompleteSoaStageId == model?.SoaStage) || incompleteSoa.AllElementsCompleted))
-            {
-                // Clear the incomplete SOA tracking if the uploaded document corresponds to the tracked incomplete element and stage
+            {                
                 targetStatus = NetworkDetailsStatus.Complete;
             }
             var request = new ElementSoaUploadDocumentRequest(hnId: hnId, uploadedBy: userId, fileName: docToUpload.FileName, s3Key: s3Key, documentType: DocumentType.Soa, stage: model?.SoaStage, elementId: model?.ElementId, elementSoaStatus: targetStatus);
@@ -271,43 +179,6 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("SoaStages", "ElementSoa");
         }
 
-        private void SetSoaElementsViewBag(HeatNetworkElementDisplayType? elementType)
-        {
-            (ViewBag.Heading, ViewBag.Description1, ViewBag.Description2) = elementType switch
-            {
-                HeatNetworkElementDisplayType.EnergyCentre => (
-                    "Upload the statement of applicability (SOA) for the energy centre",
-                    "Intro to Energy centre...",
-                    "Upload the statement of applicability (SOA) for the energy centre"
-                ),
-                HeatNetworkElementDisplayType.DistributionNetwork => (
-                    "Upload the statement of applicability (SOA) for the distribution network",
-                    "Intro to Distribution network...",
-                    "Upload the statement of applicability (SOA) for the distribution network"
-                ),
-                HeatNetworkElementDisplayType.ThermalSubStation => (
-                    "Upload the statement of applicability (SOA) for the thermal substation",
-                    "Intro to Thermal substation...",
-                    "Upload the statement of applicability (SOA) for the thermal substation"
-                ),
-                HeatNetworkElementDisplayType.ConsumerConnections => (
-                    "Upload the statement of applicability (SOA) for the consumer connections",
-                    "Intro to Consumer connections...",
-                    "Upload the statement of applicability (SOA) for the consumer connections"
-                ),
-                HeatNetworkElementDisplayType.CommunalDistributionNetwork => (
-                    "Upload the statement of applicability (SOA) for the communal distribution network",
-                    "Intro to Communal distribution network...",
-                    "Upload the statement of applicability (SOA) for the communal distribution network"
-                ),
-                HeatNetworkElementDisplayType.ConsumerHeatSystems => (
-                    "Upload the statement of applicability (SOA) for the consumer heat systems",
-                    "Intro to Consumer heat systems...",
-                    "Upload the statement of applicability (SOA) for the consumer heat systems"
-                )
-            };
-        }
-
         public async Task<IActionResult> DownloadFile([FromQuery] string key)
         {
             var stream = await _s3UploadService.GetFileAsync(key);
@@ -315,22 +186,6 @@ namespace HNTAS.Web.UI.Controllers
                 return NotFound();
 
             return File(stream, "application/octet-stream", Path.GetFileName(key));
-        }
-
-        private List<SoaElementsView> GetElementsForStage(List<Element>? elements)
-        {
-            var soaElements = new List<SoaElementsView>();
-            foreach (var element in elements ?? [])
-            {
-                soaElements.Add(new SoaElementsView
-                {
-                    ElementId = element.ElementId,
-                    //ElementType = element.ElementType,
-                    Type = element.Type,
-                    Name = Utility.GetDefaultNetworkElementOptions().Find(a => a.Id.ToString() == element.Type.ToString()).Label
-                });
-            }
-            return soaElements;
-        }
+        }        
     }
 }
