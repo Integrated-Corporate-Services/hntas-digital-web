@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **DocumentType** | **DocumentType** |  | 
 **Stage** | **SoaStage** |  | [optional] 
 **ElementId** | **string** |  | [optional] 
+**ElementSoaStatus** | **NetworkDetailsStatus** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

@@ -70,5 +70,6 @@
         public const string NetworkDetailsUploadSessionKey = "NetworkDetailsUploadSessionKey";
         public const string ElementSoaViewModelSessionKey = "ElementSoaViewModelSessionKey";
         public const string ElementSoaUploadViewModelSessionKey = "ElementSoaUploadViewModelSessionKey";
+        public const string ElementSoaIncompleteSoaSessionKey = "ElementSoaIncompleteSoaSessionKey";
     }
 }

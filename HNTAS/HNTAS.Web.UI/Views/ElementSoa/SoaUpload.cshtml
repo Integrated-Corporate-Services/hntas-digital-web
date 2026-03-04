@@ -37,7 +37,7 @@
             @if (@Model.UploadedDocument?.FileName != null)
             {
                 <p class="govuk-body">
-                    Currently uploaded: <a class="govuk-link" href="@Model.UploadedDocument">@Model.UploadedDocument.FileName</a>&nbsp;&nbsp;<a class="govuk-link" href="#" onclick="document.getElementById('docToUpload').click(); return false;">Replace</a>
+                    Currently uploaded: <a class="govuk-link" href="@Model.UploadedDocument.DocumentUrl">@Model.UploadedDocument.FileName</a>&nbsp;&nbsp;<a class="govuk-link" href="#" onclick="document.getElementById('docToUpload').click(); return false;">Replace</a>
                 </p>
             }
 

@@ -40,8 +40,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="documentType">documentType</param>
         /// <param name="stage">stage</param>
         /// <param name="elementId">elementId</param>
+        /// <param name="elementSoaStatus">elementSoaStatus</param>
         [JsonConstructor]
-        public ElementSoaUploadDocumentRequest(string hnId, string uploadedBy, string fileName, string s3Key, DocumentType documentType, Option<SoaStage?> stage = default, Option<string?> elementId = default)
+        public ElementSoaUploadDocumentRequest(string hnId, string uploadedBy, string fileName, string s3Key, DocumentType documentType, Option<SoaStage?> stage = default, Option<string?> elementId = default, Option<NetworkDetailsStatus?> elementSoaStatus = default)
         {
             HnId = hnId;
             UploadedBy = uploadedBy;
@@ -50,6 +51,7 @@ namespace HNTAS.Api.Client.Model
             DocumentType = documentType;
             StageOption = stage;
             ElementIdOption = elementId;
+            ElementSoaStatusOption = elementSoaStatus;
             OnCreated();
         }
 
@@ -73,6 +75,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("stage")]
         public SoaStage? Stage { get { return this.StageOption; } set { this.StageOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ElementSoaStatus
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NetworkDetailsStatus?> ElementSoaStatusOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementSoaStatus
+        /// </summary>
+        [JsonPropertyName("elementSoaStatus")]
+        public NetworkDetailsStatus? ElementSoaStatus { get { return this.ElementSoaStatusOption; } set { this.ElementSoaStatusOption = new(value); } }
 
         /// <summary>
         /// Gets or Sets HnId
@@ -126,6 +141,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  DocumentType: ").Append(DocumentType).Append("\n");
             sb.Append("  Stage: ").Append(Stage).Append("\n");
             sb.Append("  ElementId: ").Append(ElementId).Append("\n");
+            sb.Append("  ElementSoaStatus: ").Append(ElementSoaStatus).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -170,6 +186,7 @@ namespace HNTAS.Api.Client.Model
             Option<DocumentType?> documentType = default;
             Option<SoaStage?> stage = default;
             Option<string?> elementId = default;
+            Option<NetworkDetailsStatus?> elementSoaStatus = default;
 
             while (utf8JsonReader.Read())
             {
@@ -211,6 +228,11 @@ namespace HNTAS.Api.Client.Model
                         case "elementId":
                             elementId = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "elementSoaStatus":
+                            string? elementSoaStatusRawValue = utf8JsonReader.GetString();
+                            if (elementSoaStatusRawValue != null)
+                                elementSoaStatus = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(elementSoaStatusRawValue));
+                            break;
                         default:
                             break;
                     }
@@ -250,7 +272,10 @@ namespace HNTAS.Api.Client.Model
             if (stage.IsSet && stage.Value == null)
                 throw new ArgumentNullException(nameof(stage), "Property is not nullable for class ElementSoaUploadDocumentRequest.");
 
-            return new ElementSoaUploadDocumentRequest(hnId.Value!, uploadedBy.Value!, fileName.Value!, s3Key.Value!, documentType.Value!.Value!, stage, elementId);
+            if (elementSoaStatus.IsSet && elementSoaStatus.Value == null)
+                throw new ArgumentNullException(nameof(elementSoaStatus), "Property is not nullable for class ElementSoaUploadDocumentRequest.");
+
+            return new ElementSoaUploadDocumentRequest(hnId.Value!, uploadedBy.Value!, fileName.Value!, s3Key.Value!, documentType.Value!.Value!, stage, elementId, elementSoaStatus);
         }
 
         /// <summary>
@@ -310,6 +335,12 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("elementId", elementSoaUploadDocumentRequest.ElementId);
                 else
                     writer.WriteNull("elementId");
+
+            if (elementSoaUploadDocumentRequest.ElementSoaStatusOption.IsSet)
+            {
+                var elementSoaStatusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(elementSoaUploadDocumentRequest.ElementSoaStatus!.Value);
+                writer.WriteString("elementSoaStatus", elementSoaStatusRawValue);
+            }
         }
     }
 }

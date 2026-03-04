@@ -75,7 +75,7 @@ namespace HNTAS.Web.UI.Controllers
                         Name = "Stage 2",
                         StageId = SoaStage.Stage2,
                         Elements = GetElementsForStage(networkElements),
-                        IsActive = eligibleIndex == 1,
+                        IsActive = eligibleIndex == 0 || eligibleIndex == 1,
                         Title = "Design (Developed Design)"
                     },
                     new SoaStagesView
@@ -83,7 +83,7 @@ namespace HNTAS.Web.UI.Controllers
                         Name = "Stage 3",
                         StageId = SoaStage.Stage3,
                         Elements = GetElementsForStage(networkElements),
-                        IsActive = false,
+                        IsActive = true,
                         Title = "Design (Technical Design)"
                     },                    
                     new SoaStagesView
@@ -91,7 +91,7 @@ namespace HNTAS.Web.UI.Controllers
                         Name = "Stage 4",
                         StageId = SoaStage.Stage4,
                         Elements = GetElementsForStage(networkElements),
-                        IsActive = false,
+                        IsActive = true,
                         Title = "Construction (Construction Design)"
                     },
                     new SoaStagesView
@@ -99,7 +99,7 @@ namespace HNTAS.Web.UI.Controllers
                         Name = "Stage 5",
                         StageId = SoaStage.Stage5,
                         Elements = GetElementsForStage(networkElements),
-                        IsActive = false,
+                        IsActive = true,
                         Title = "Construction (Installation)"
                     },
                     new SoaStagesView
@@ -107,7 +107,7 @@ namespace HNTAS.Web.UI.Controllers
                         Name = "Stage 6",
                         StageId = SoaStage.Stage6,
                         Elements = GetElementsForStage(networkElements),
-                        IsActive = false,
+                        IsActive = true,
                         Title = "Construction (Commissioning)"
                     },
                     new SoaStagesView
@@ -115,7 +115,7 @@ namespace HNTAS.Web.UI.Controllers
                         Name = "Stage 7",
                         StageId = SoaStage.Stage7,
                         Elements = GetElementsForStage(networkElements),
-                        IsActive = false,
+                        IsActive = true,
                         Title = "Operation (Operation and Maintenance)"
                     },
 
@@ -142,6 +142,31 @@ namespace HNTAS.Web.UI.Controllers
                     }
                 }
             }
+
+            var totalElementsInAllActiveStages = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count());
+            var totalElementsWithDocuments = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count(e => e.Document != null));
+            ElementSoaProgressStatusTracking incompleteSoa = new ElementSoaProgressStatusTracking();
+            if (totalElementsInAllActiveStages > 0 && (totalElementsInAllActiveStages - totalElementsWithDocuments) == 1)
+            {  
+                incompleteSoa.AllElementsCompleted = false;
+                // find the one stage and element that doesn't have a document
+                var stageWithMissingDoc = model.Stages.FirstOrDefault(s => s.IsActive && s.Elements.Any(e => e.Document == null));
+                if (stageWithMissingDoc != null)
+                {
+                    incompleteSoa.IncompleteSoaStageId = stageWithMissingDoc.StageId;
+                    var elementWithMissingDoc = stageWithMissingDoc.Elements.FirstOrDefault(e => e.Document == null);
+                    if (elementWithMissingDoc != null)
+                    {
+                        incompleteSoa.IncompleteElementId = elementWithMissingDoc.ElementId;
+                    }
+                }
+            }
+            else if (totalElementsInAllActiveStages - totalElementsWithDocuments == 0)
+            {
+                incompleteSoa.AllElementsCompleted = true;
+            }
+
+             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey, incompleteSoa);
 
             //_sessionHelper.SaveToSession<ElementSoaViewModel>(HttpContext, SessionKeys.ElementSoaViewModelSessionKey, model);
 
@@ -181,7 +206,7 @@ namespace HNTAS.Web.UI.Controllers
                     UploadedBy = document.UploadedBy!,
                     S3Key = document.S3Key,
                     DocumentUrl = Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(
-                                    Url.Action("DownloadFile", "NetworkDetailsUpload")!,
+                                    Url.Action("DownloadFile", "ElementSoa")!,
                                     "key",
                                     document.S3Key!)
 
@@ -220,7 +245,9 @@ namespace HNTAS.Web.UI.Controllers
             //    ModelState.AddModelError("excelFile", "The selected file must be an XLSX or PDF");
             //    return View("SoaUpload", model);
             //}
-            
+
+            var incompleteSoa = _sessionHelper.GetFromSession<ElementSoaProgressStatusTracking>(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey);
+
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
@@ -229,7 +256,14 @@ namespace HNTAS.Web.UI.Controllers
             var s3Key = await _s3UploadService.UploadFileAsync(docToUpload, $"NetworkDetails/{hnId}/Soa/{model?.SoaStage}/{model?.ElementId}");
 
             // Optionally persist metadata or update project state here
-            var request = new ElementSoaUploadDocumentRequest(hnId: hnId, uploadedBy: userId, fileName: docToUpload.FileName, s3Key: s3Key, documentType: DocumentType.Soa, stage: model?.SoaStage, elementId: model?.ElementId);
+
+            var targetStatus = NetworkDetailsStatus.InProgress;
+            if (incompleteSoa != null && ((incompleteSoa.IncompleteElementId == model?.ElementId && incompleteSoa.IncompleteSoaStageId == model?.SoaStage) || incompleteSoa.AllElementsCompleted))
+            {
+                // Clear the incomplete SOA tracking if the uploaded document corresponds to the tracked incomplete element and stage
+                targetStatus = NetworkDetailsStatus.Complete;
+            }
+            var request = new ElementSoaUploadDocumentRequest(hnId: hnId, uploadedBy: userId, fileName: docToUpload.FileName, s3Key: s3Key, documentType: DocumentType.Soa, stage: model?.SoaStage, elementId: model?.ElementId, elementSoaStatus: targetStatus);
             await _soaProjectService.UpdateDocumentSoa(request);
 
             _logger.LogInformation("Assessment Plan uploaded for HN ID: {HnId}, UploadedBy: {UserId}", hnId, userId);
@@ -272,6 +306,15 @@ namespace HNTAS.Web.UI.Controllers
                     "Upload the statement of applicability (SOA) for the consumer heat systems"
                 )
             };
+        }
+
+        public async Task<IActionResult> DownloadFile([FromQuery] string key)
+        {
+            var stream = await _s3UploadService.GetFileAsync(key);
+            if (stream == null)
+                return NotFound();
+
+            return File(stream, "application/octet-stream", Path.GetFileName(key));
         }
 
         private List<SoaElementsView> GetElementsForStage(List<Element>? elements)

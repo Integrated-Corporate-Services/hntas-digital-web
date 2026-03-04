@@ -4480,6 +4480,9 @@
             "type": "string",
             "nullable": true
           },
+          "elementSoaStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
           "hnId": {
             "type": "string"
           },

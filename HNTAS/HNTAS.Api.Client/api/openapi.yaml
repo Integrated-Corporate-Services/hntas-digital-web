@@ -3232,6 +3232,7 @@ components:
     ElementSoaUploadDocumentRequest:
       example:
         elementId: elementId
+        elementSoaStatus: InProgress
         hnId: hnId
         fileName: fileName
         s3Key: s3Key
@@ -3244,6 +3245,8 @@ components:
         elementId:
           nullable: true
           type: string
+        elementSoaStatus:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
         hnId:
           type: string
         uploadedBy:
