@@ -17,10 +17,10 @@
                 QId = elementId,
                 QText = "Is your organisation working on any new heat networks that are not yet operational?",
                 QDescText = null,
-                QHintText = null,
+                QHintText = "This includes any new heat networks across your organisation's portfolio that are in feasibility, design or construction.",
                 Options = new List<Option>
                 {
-                    new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = "Feasibility, design or construction phase." },
+                    new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
                     new Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = null }
                 },
                 SeletedOption = Model.IsYourOrgWorkingOnANewHN

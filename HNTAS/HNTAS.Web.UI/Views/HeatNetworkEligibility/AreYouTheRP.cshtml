@@ -15,8 +15,19 @@
             new Question
             {
                 QId = elementId,
-                QText = "Are you the responsible person for the organisation?",
-                QDescText = "This person is usually one of the directors legally accountable for meeting Heat Network Technical Assurance Scheme (HNTAS) requirements.",
+                QText = "Responsible Party",
+                QDescText =
+                    @"
+                    <p class='govuk-body'>You are responsible if you have overall accountability for heat networks at an organisational level.</p>
+
+                    <p class='govuk-body'>This is usually a director, trustee, or someone who reports or belongs to a senior leadership group. This group is known as the Responsible Party.</p>
+
+                    <p class='govuk-body'>You will have the authority to delegate responsibility to individuals leading or contributing to one or more heat networks.</p>
+
+                    <p class='govuk-body'>Those delegates can then bring in network specialists as required.</p>
+
+                    <h2 class='govuk-heading-m'>Are you responsible for heat networks in your organisation?</h2>
+                    ",
                 QHintText = null,
                 Options = new List<Option>
                 {
@@ -31,7 +42,7 @@
 
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-grid-column-two-thirds">            
             @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
         </div>
     </div>
