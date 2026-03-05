@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Status** | **NetworkDetailsStatus** |  | [optional] 
-**ElementType** | **string** |  | [optional] 
+**NetworkElementStatus** | **NetworkDetailsStatus** |  | [optional] 
+**ElementSoaStatus** | **NetworkDetailsStatus** |  | [optional] 
 **Elements** | [**List&lt;Element&gt;**](Element.md) |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 

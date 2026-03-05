@@ -111,8 +111,10 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new AuditLogResponseJsonConverter(),
         new ElementJsonConverter(),
         new ECDetails2JsonConverter(),
-        new NetworkDetailsUploadedDocumentJsonConverter()
-        
+        new NetworkDetailsUploadedDocumentJsonConverter(),        
+        new SoaStagesJsonConverter(),
+        new NetworkDetailsUploadedDocument2JsonConverter(),
+
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

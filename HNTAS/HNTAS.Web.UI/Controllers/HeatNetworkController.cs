@@ -580,23 +580,23 @@ namespace HNTAS.Web.UI.Controllers
                 }
                 else if (option.Id == NetworkDetailsType.NetworkElements)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.Status, heatNetworkData?.NetworkCharacteristics?.Status);
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.NetworkElementStatus, heatNetworkData?.NetworkCharacteristics?.Status);
                 }
                 else if (option.Id == NetworkDetailsType.Soa)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.Soa?.Status, heatNetworkData?.NetworkElements?.Status);
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.ElementSoaStatus, heatNetworkData?.NetworkElements?.NetworkElementStatus);
                 }
                 else if (option.Id == NetworkDetailsType.MeteringAndMonitoringStrategy)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.MeteringAndMonitoringStrategy?.Status, heatNetworkData?.NetworkElements?.Status);
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.MeteringAndMonitoringStrategy?.Status, heatNetworkData?.NetworkElements?.NetworkElementStatus);
                 }
                 else if (option.Id == NetworkDetailsType.AssessmentPlan)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.AssessmentPlan?.Status, heatNetworkData?.NetworkElements?.Status);
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.AssessmentPlan?.Status, heatNetworkData?.NetworkElements?.NetworkElementStatus);
                 }
                 else if (option.Id == NetworkDetailsType.DesignConstructionLog)
                 {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.DesignConstructionLog?.Status, heatNetworkData?.NetworkElements?.Status);
+                    Utility.UpdateOptionStatus(option, heatNetworkData?.DesignConstructionLog?.Status, heatNetworkData?.NetworkElements?.NetworkElementStatus);
                 }
             }
 
@@ -623,6 +623,8 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("HeatNetworkType", "NetworkCharacteristics");
                 case NetworkDetailsType.NetworkElements:
                     return RedirectToAction("SelectNetworkElements", "NetworkElements", new { hnid });
+                case NetworkDetailsType.Soa:
+                    return RedirectToAction("UnderstandingSoa", "ElementSoa");
                 case NetworkDetailsType.MeteringAndMonitoringStrategy:
                     return RedirectToAction("MeteringAndMonitoringStrategy", "NetworkDetailsUpload");
                 case NetworkDetailsType.AssessmentPlan:
