@@ -11,6 +11,7 @@
         public const string SearchAddressByPostcodeModelSessionKey = "SearchAddressByPostcodeModel";
         public const string AddressByStreetOrTownModelSessionKey = "AddressByStreetOrTownModel";
         public const string UserRoleKey = "UserRoleKey";
+        public const string OrganisationContactDetailsModelSessionKey = "OrganisationContactDetailsModelSessionKey";
 
         // Session key for the boolean flow state
         public const string IsCheckAnswerFlowKey = "IsCheckAnswerFlow";
