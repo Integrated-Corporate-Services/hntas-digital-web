@@ -137,6 +137,8 @@ namespace HNTAS.Api.Client.Client
                 return RegistrationSourceValueConverter.ToJsonValue(registrationSource);
             if (obj is SoaPhase soaPhase)
                 return SoaPhaseValueConverter.ToJsonValue(soaPhase);
+            if (obj is SoaStage soaStage)
+                return SoaStageValueConverter.ToJsonValue(soaStage);
             if (obj is SoaStatus soaStatus)
                 return SoaStatusValueConverter.ToJsonValue(soaStatus);
             if (obj is UserRole userRole)

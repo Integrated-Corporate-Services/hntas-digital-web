@@ -30,6 +30,12 @@ namespace HNTAS.Web.UI.Helpers
             controller.ViewBag.BackLinkUrl = controller.Url.Action(action, controllerName, routeValues);
         }
 
+        public static void ShowBackButton(this Controller controller, string action, string controllerName, string fragement)
+        {
+            controller.ViewBag.ShowBackButton = true;
+            controller.ViewBag.BackLinkUrl = controller.Url.Action(action, controllerName, "", "","", fragement);
+        }
+
         public static string CapitalizeCommaSeparated(string input)
         {
 
@@ -295,7 +301,7 @@ namespace HNTAS.Web.UI.Helpers
             if (dependentStatusName == null && statusName == null)
                 return;
 
-            if (dependentStatusName == "Complete" && statusName == null)
+            if (dependentStatusName == "Complete" && (statusName == null || statusName == "ReadyToStart"))
             {
                 option.UiStatus = StatusConstants.ReadyToStart;
                 option.IsEnabled = true;
@@ -304,7 +310,12 @@ namespace HNTAS.Web.UI.Helpers
             {
                 option.UiStatus = StatusConstants.Completed;
                 option.IsEnabled = true;
-            }            
+            }
+            else if (statusName == "InProgress")
+            {
+                option.UiStatus = StatusConstants.InProgress;
+                option.IsEnabled = true;
+            }
         }
 
         public static List<NetworkElementOption> GetDefaultNetworkElementOptions()

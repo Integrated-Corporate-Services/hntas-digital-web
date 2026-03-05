@@ -40,7 +40,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public AssessmentPlanResponse(Option<NetworkDetailsStatus?> status = default, Option<List<NetworkDetailsUploadedDocument>?> documents = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public AssessmentPlanResponse(Option<NetworkDetailsStatus?> status = default, Option<List<NetworkDetailsUploadedDocument2>?> documents = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             StatusOption = status;
             DocumentsOption = documents;
@@ -71,13 +71,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<NetworkDetailsUploadedDocument>?> DocumentsOption { get; private set; }
+        public Option<List<NetworkDetailsUploadedDocument2>?> DocumentsOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Documents
         /// </summary>
         [JsonPropertyName("documents")]
-        public List<NetworkDetailsUploadedDocument>? Documents { get { return this.DocumentsOption; } set { this.DocumentsOption = new(value); } }
+        public List<NetworkDetailsUploadedDocument2>? Documents { get { return this.DocumentsOption; } set { this.DocumentsOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedAt
@@ -193,7 +193,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<NetworkDetailsStatus?> status = default;
-            Option<List<NetworkDetailsUploadedDocument>?> documents = default;
+            Option<List<NetworkDetailsUploadedDocument2>?> documents = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
@@ -220,7 +220,7 @@ namespace HNTAS.Api.Client.Model
                                 status = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
                         case "documents":
-                            documents = new Option<List<NetworkDetailsUploadedDocument>?>(JsonSerializer.Deserialize<List<NetworkDetailsUploadedDocument>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            documents = new Option<List<NetworkDetailsUploadedDocument2>?>(JsonSerializer.Deserialize<List<NetworkDetailsUploadedDocument2>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));

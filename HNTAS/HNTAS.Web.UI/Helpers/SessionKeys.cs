@@ -68,7 +68,9 @@
         public const string HeatNetworkTypeSessionKey = "HeatNetworkTypeSessionKey";
         public const string NetworkElementsViewModelSessionKey = "NetworkElementsViewModelSessionKey";
         public const string NetworkDetailsUploadSessionKey = "NetworkDetailsUploadSessionKey";
-
-        public const string OrganisationContactDetailsModelSessionKey = "OrganisationContactDetailsModel";
+        public const string ElementSoaViewModelSessionKey = "ElementSoaViewModelSessionKey";
+        public const string ElementSoaUploadViewModelSessionKey = "ElementSoaUploadViewModelSessionKey";
+        public const string ElementSoaIncompleteSoaSessionKey = "ElementSoaIncompleteSoaSessionKey";
+        public const string CurrentStageIndexSessionKey = "CurrentStageIndexSessionKey";
     }
 }

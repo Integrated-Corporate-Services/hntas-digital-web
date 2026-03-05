@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Status** | **NetworkDetailsStatus** |  | [optional] 
-**Documents** | [**List&lt;NetworkDetailsUploadedDocument&gt;**](NetworkDetailsUploadedDocument.md) |  | [optional] 
+**Documents** | [**List&lt;NetworkDetailsUploadedDocument2&gt;**](NetworkDetailsUploadedDocument2.md) |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **UpdatedAt** | **DateTimeOffset** |  | [optional] 
