@@ -25,7 +25,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> ContactDetails()
         {
-            this.ShowBackButton("ManageUsers", "UserManagement");
+            this.ShowBackButton("YourDetails", "Dashboard");
             var isAssessorOrCertifier = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.IsAssessorOrCertifier);
             if (isAssessorOrCertifier == "true")
             {
@@ -112,7 +112,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (!ModelState.IsValid)
             {
-                this.ShowBackButton("ManageUsers", "UserManagement");
+                this.ShowBackButton("YourDetails", "Dashboard");
                 TempData["ErrorSummary"] = "CustomErrorSummary";
 
                 return View("UserDetails/ContactDetails", contactDetails);
@@ -164,7 +164,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
                 _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
-                return RedirectToAction("ManageUsers", "UserManagement");
+                return RedirectToAction("UserAccount", "Dashboard");
             }
             catch (Exception ex)
             {
