@@ -1,4 +1,5 @@
-﻿using HNTAS.Api.Client.Model;
+﻿using DocumentFormat.OpenXml.EMMA;
+using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
@@ -386,14 +387,14 @@ namespace HNTAS.Web.UI.Controllers
         }        
 
         [HttpGet]
-        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
+        //[ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult ContactDetails()
         {
             this.ShowBackButton("DeedPoll");
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-            this.ShowBackButton("DeedPoll");
-            return View(userModel.ContactDetails);
+            var model = _sessionHelper.GetFromSession<OrganisationContactDetailsModel>(HttpContext, SessionKeys.OrganisationContactDetailsModelSessionKey) ?? userModel.ContactDetails;           
+            return View(model);
         }
 
         // not in use
@@ -403,6 +404,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult SaveContactDetails(OrganisationContactDetailsModel contactDetails)
         {
             this.ShowBackButton("DeedPoll");
+                       
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
 
@@ -439,7 +441,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 TempData["ErrorSummary"] = "CustomErrorSummary";
                 ViewBag.IsRegulatoryContact = true;
-                return View("UserDetails/ContactDetails", contactDetails);
+                return View("ContactDetails", contactDetails);
             }
 
             userModel.ContactDetails = contactDetails;

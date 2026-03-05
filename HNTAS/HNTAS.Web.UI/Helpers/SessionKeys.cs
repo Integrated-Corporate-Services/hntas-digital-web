@@ -11,6 +11,7 @@
         public const string SearchAddressByPostcodeModelSessionKey = "SearchAddressByPostcodeModel";
         public const string AddressByStreetOrTownModelSessionKey = "AddressByStreetOrTownModel";
         public const string UserRoleKey = "UserRoleKey";
+        public const string OrganisationContactDetailsModelSessionKey = "OrganisationContactDetailsModelSessionKey";
 
         // Session key for the boolean flow state
         public const string IsCheckAnswerFlowKey = "IsCheckAnswerFlow";
@@ -59,7 +60,7 @@
         public const string SelectedElementsSessionKey = "SelectedElements";
 
         public const string HeatNetworkTypeViewModelSessionKey = "HeatNetworkTypeViewModelSessionKey";
-        public const string WhatIsTheHeatGenerationSourceForViewModelSessionKey =  "WhatIsTheHeatGenerationSourceForViewModelSessionKey";
+        public const string WhatIsTheHeatGenerationSourceForViewModelSessionKey = "WhatIsTheHeatGenerationSourceForViewModelSessionKey";
         public const string CommunalFloorsViewModelSessionKey = "CommunalFloorsViewModelSessionKey";
         public const string DoesDistrictNetworkContainPressureBreakViewModelSessionKey = "DoesDistrictNetworkContainPressureBreakViewModelSessionKey";
         public const string NetworkSupplyViewModelSessionKey = "NetworkSupplyViewModelSessionKey";
