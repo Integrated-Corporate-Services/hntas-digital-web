@@ -1,4 +1,6 @@
-﻿namespace HNTAS.Web.UI.Models.NetworkDetailsUpload
+﻿using HNTAS.Api.Client.Model;
+
+namespace HNTAS.Web.UI.Models.NetworkDetailsUpload
 {
     public class NetworkDetailsUploadViewModel
     {
@@ -14,5 +16,6 @@
         public DateTime UploadedDate { get; set; }
         public string? UploadedBy { get; set; }
         public string? S3Key { get; set; }
+        public string? DocumentUrl { get; set; }
     }
 }

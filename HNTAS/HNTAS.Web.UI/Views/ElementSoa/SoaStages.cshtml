@@ -1,0 +1,83 @@
+﻿@using HNTAS.Web.UI.Helpers
+@using HNTAS.Web.UI.Models.ElementSoa
+
+@model ElementSoaViewModel
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <span class="govuk-caption-xl">@ViewBag.HnId</span>
+            <h1 class="govuk-heading-xl">
+                Element statements of applicability (SOAs)
+            </h1>
+
+            <p class="govuk-body">Successful network assessment and eventual regulatory certification requires each element to conform to their respective technical requirements. Complete applicability for the stages below. You can submit an element SOA for the next stage, but not beyond that until the other elements have been completed.</p>
+
+            <div class="govuk-tabs" data-module="govuk-tabs">
+                <h2 class="govuk-tabs__title">Contents</h2>
+                <ul class="govuk-tabs__list">
+                    @for (int i = 0; i < Model.Stages.Count; i++)
+                    {
+                        var stage = Model.Stages[i];
+                        if (stage.IsActive)
+                        {
+                            var selectedTab = (i == Model.CurrentStageIndex ? "govuk-tabs__list-item--selected" : "");
+                            <li class="govuk-tabs__list-item @selectedTab">
+                                <a class="govuk-tabs__tab" href="#stage-@i">
+                                    @stage.Name
+                                </a>
+                            </li>
+                        }                        
+                    }
+                </ul>
+
+                @for (int i = 0; i < Model.Stages.Count; i++)
+                {
+                    var stage = Model.Stages[i];
+                    if (stage.IsActive)
+                    {
+                        var hiddenTab = (i != Model.CurrentStageIndex ? "govuk-tabs__panel--hidden" : "");
+                        <div id="stage-@i" class="govuk-tabs__panel @hiddenTab">
+                            <h2 class="govuk-heading-l">@stage.Title</h2>
+
+                            <table class="govuk-table">
+                                <tbody class="govuk-table__body">
+                                    @foreach (var element in stage.Elements)
+                                    {
+                                        <tr class="govuk-table__row">
+                                            <td class="govuk-table__cell">
+                                                @element.Name
+                                            </td>
+                                            <td class="govuk-table__cell">
+                                                @if (element.Document != null)
+                                                {
+                                                    <a class="govuk-link"
+                                                       href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type })"
+                                                       aria-describedby="@element.Document?.FileName"
+                                                       onclick="event.stopPropagation();">
+                                                        <strong class="govuk-tag govuk-tag--green">
+                                                            @element.Document?.FileName
+                                                        </strong>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="govuk-link"
+                                                       href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type })"
+                                                       aria-describedby="Upload SOA details"
+                                                       onclick="event.stopPropagation();">
+                                                        Upload SOA details
+                                                    </a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }                    
+                }
+            </div>            
+        </div>
+    </div>
+</div>

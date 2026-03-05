@@ -2314,6 +2314,78 @@
         }
       }
     },
+    "/api/SOA/document-update-soa": {
+      "patch": {
+        "tags": [
+          "SOA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaUploadDocumentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaUploadDocumentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaUploadDocumentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/SOA/{hnId}": {
       "delete": {
         "tags": [
@@ -4322,7 +4394,8 @@
           "Certifier",
           "MeteringAndMonitoringStrategy",
           "AssessmentPlan",
-          "DesignConstructionLog"
+          "DesignConstructionLog",
+          "Soa"
         ]
       },
       "ECDetails": {
@@ -4359,6 +4432,14 @@
       "Element": {
         "type": "object",
         "properties": {
+          "elementId": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementType": {
+            "type": "string",
+            "nullable": true
+          },
           "type": {
             "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
           },
@@ -4373,13 +4454,49 @@
           "ecDetails": {
             "$ref": "#/components/schemas/ECDetails2"
           },
-          "elementType": {
-            "type": "string",
+          "soaStages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SoaStages"
+            },
             "nullable": true
+          }
+        }
+      },
+      "ElementSoaUploadDocumentRequest": {
+        "required": [
+          "hnId",
+          "uploadedBy",
+          "fileName",
+          "s3Key",
+          "documentType"
+        ],
+        "type": "object",
+        "properties": {
+          "stage": {
+            "$ref": "#/components/schemas/SoaStage"
           },
           "elementId": {
             "type": "string",
             "nullable": true
+          },
+          "elementSoaStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "hnId": {
+            "type": "string"
+          },
+          "uploadedBy": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "documentType": {
+            "$ref": "#/components/schemas/DocumentType"
           }
         }
       },
@@ -5002,7 +5119,7 @@
           "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument2"
             }
           },
           "createdAt": {
@@ -5033,7 +5150,7 @@
           "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument2"
             }
           },
           "createdAt": {
@@ -5272,12 +5389,34 @@
           "uploadedBy": {
             "type": "string"
           }
+        },
+        "nullable": true
+      },
+      "NetworkDetailsUploadedDocument2": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
         }
       },
       "NetworkElements": {
         "type": "object",
         "properties": {
-          "status": {
+          "networkElementStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "elementSoaStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "elements": {
@@ -5308,7 +5447,10 @@
       "NetworkElements2": {
         "type": "object",
         "properties": {
-          "status": {
+          "networkElementStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "elementSoaStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "elements": {
@@ -5338,12 +5480,11 @@
       "NetworkElementsResponse": {
         "type": "object",
         "properties": {
-          "status": {
+          "networkElementStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
-          "elementType": {
-            "type": "string",
-            "nullable": true
+          "elementSoaStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
           "elements": {
             "type": "array",
@@ -5855,6 +5996,29 @@
         "properties": {
           "status": {
             "type": "string"
+          }
+        }
+      },
+      "SoaStage": {
+        "enum": [
+          "Stage1",
+          "Stage2",
+          "Stage3",
+          "Stage4",
+          "Stage5",
+          "Stage6",
+          "Stage7",
+          "Stage8"
+        ]
+      },
+      "SoaStages": {
+        "type": "object",
+        "properties": {
+          "stageId": {
+            "$ref": "#/components/schemas/NullableOfSoaStage"
+          },
+          "document": {
+            "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
           }
         }
       },

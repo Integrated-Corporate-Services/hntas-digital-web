@@ -19,5 +19,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task SendAssessorAssessmentEmail(string hnName, string hnId, string assessmentResult);
 
         Task SendCertificationCompleteEmail(string hnName, string hnId);
+        Task UpdateDocumentSoa(ElementSoaUploadDocumentRequest request);
     }
 }
