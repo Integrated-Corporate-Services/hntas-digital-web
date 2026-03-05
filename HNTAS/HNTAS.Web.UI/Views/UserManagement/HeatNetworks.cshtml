@@ -21,12 +21,12 @@
                 
                 <th class="govuk-table__header" scope="col">Status</th>
                 <th class="govuk-table__header" scope="col">Action</th>
-                <th class="govuk-table__header" scope="col">Certification history</th>
-                <th class="govuk-table__header" scope="col">Users</th>
                 @if (ViewBag.IsRegistrationEnabled == true)
                 {
-                    <th class="govuk-table__header govuk-!-text-align-centre" scope="col">History</th>
+                    <th class="govuk-table__header" scope="col">Certification history</th>
                 }
+                <th class="govuk-table__header" scope="col">Users</th>
+                
                 
             </tr>
         </thead>
@@ -60,20 +60,19 @@
                         <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
                     </td>                    
                     
-                    <td class="govuk-table__cell govuk-!-text-align-centre">
+                    <td class="govuk-table__cell">
                         <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("AddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId })">Add network details</a>
                     </td>
 
-                    <td class="govuk-table__cell"></td>
-                    <td class="govuk-table__cell govuk-!-text-align-centre" style="white-space: nowrap;">
+                    @if (ViewBag.IsRegistrationEnabled == true)
+                    {
+                        <td class="govuk-table__cell">
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistoryPOC", new { hnId = heatNetwork.HnId })">View history</a>
+                        </td>
+                    }
+                    <td class="govuk-table__cell" style="white-space: nowrap;">
                         <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("HeatNetworkUserRoles", "UserManagement", new { hnId = @heatNetwork.HnId })">View Users</a>
-                    </td>
-                        @if (ViewBag.IsRegistrationEnabled == true)
-                        {
-                            <td class="govuk-table__cell govuk-!-text-align-centre">
-                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistoryPOC", new { hnId = heatNetwork.HnId })">View history</a>
-                            </td>
-                        }
+                    </td>                        
                 </tr>
             }
         </tbody>
