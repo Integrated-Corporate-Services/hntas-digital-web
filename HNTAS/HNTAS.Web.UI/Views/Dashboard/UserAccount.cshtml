@@ -23,18 +23,39 @@
     }
 
     <div class="dashboard-grid">
-        @if (userIsRPOrActingRP)
-        {
-            <div class="dashboard-grid__item">
-                <div class="dashboard-card">
+        <div class="dashboard-grid__item">
+            <div class="dashboard-card">
+                @if (Model.OrganisationName == null)
+                {
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-controller="ExistingOrganisation" asp-action="AddOrRegister">
+                            Add Organisation Details
+                        </a>
+                    </h3>
+                    <p class="govuk-body-s">Add or register the organisation you work for.</p>
+                }
+                else
+                {
                     <h3 class="dashboard-card__title govuk-heading-s">
                         <a asp-controller="Dashboard" asp-action="OrganisationDetails" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
                     </h3>
                     <p class="govuk-body-s">View or change your organisation's details.</p>
-                    <span class="govuk-tag govuk-tag--green">Submitted</span>
-                </div>
+                }
             </div>
+        </div>
 
+        <div class="dashboard-grid__item">
+            <div class="dashboard-card @disabled">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a class="govuk-link govuk-link--no-visited-state" asp-action="YourDetails" asp-controller="Dashboard">Your Details</a>
+                </h3>
+                <p class="govuk-body-s">View your details.</p>
+            </div>
+        </div>
+
+
+        @if (userIsRPOrActingRP)
+        {
             <div class="dashboard-grid__item">
                 <div class="dashboard-card @disabled">
                     <h3 class="dashboard-card__title govuk-heading-s">
@@ -92,27 +113,6 @@
         else if (userIsAssessor)
         {
             <div class="dashboard-grid__item">
-                <div class="dashboard-card">
-                    @if (Model.OrganisationName == null)
-                    {
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-controller="ExistingOrganisation" asp-action="AddOrRegister">
-                                Add Organisation Details
-                            </a>
-                        </h3>
-                        <p class="govuk-body-s">Add or register the organisation you work for.</p>
-                    }
-                    else
-                    {
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a asp-controller="Dashboard" asp-action="OrganisationDetails" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
-                        </h3>
-                        <p class="govuk-body-s">View or change your organisation's details.</p>
-                    }
-                </div>
-            </div>
-
-            <div class="dashboard-grid__item">
                 <div class="dashboard-card @disabled">
                     <h3 class="dashboard-card__title govuk-heading-s">
                         <a class="govuk-link govuk-link--no-visited-state" asp-action="UserDetails" asp-controller="Assessor">User Details</a>
@@ -133,15 +133,6 @@
         else if (userIsCertifier)
         {
             <div class="dashboard-grid__item">
-                <div class="dashboard-card">
-                    <h3 class="dashboard-card__title govuk-heading-s">
-                        <a asp-controller="Dashboard" asp-action="OrganisationDetails" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
-                    </h3>
-                    <p class="govuk-body-s">View or change your organisation's details.</p>
-                </div>
-            </div>
-
-            <div class="dashboard-grid__item">
                 <div class="dashboard-card @disabled">
                     <h3 class="dashboard-card__title govuk-heading-s">
                         <a class="govuk-link govuk-link--no-visited-state" asp-action="UserDetails" asp-controller="Assessor">User Details</a>
@@ -160,28 +151,7 @@
             </div>
         }
         else
-        {
-            <div class="dashboard-grid__item">
-                <div class="dashboard-card">
-                    @if (Model.OrganisationName == null)
-                    {
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-controller="ExistingOrganisation" asp-action="AddOrRegister">
-                                Add Organisation Details
-                            </a>
-                        </h3>
-                        <p class="govuk-body-s">Add or register the organisation you work for.</p>
-                    }
-                    else
-                    {
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a asp-controller="Dashboard" asp-action="OrganisationDetails" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
-                        </h3>
-                        <p class="govuk-body-s">View or change your organisation's details.</p>
-                    }
-                </div>
-            </div>
-            
+        {           
             <div class="dashboard-grid__item">
                 <div class="dashboard-card">
                     <h3 class="dashboard-card__title govuk-heading-s">
