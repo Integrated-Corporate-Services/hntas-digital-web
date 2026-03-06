@@ -7,47 +7,15 @@ namespace HNTAS.Web.UI.Controllers
     {
         public IActionResult NewBuild()
         {
-            this.ShowBackButton("DocumentLibrary", "Home");
-            return View();
+            return RedirectToAction("Index", "NewBuild");
         }
         public IActionResult ExistingBuild()
-        {
-            this.ShowBackButton("DocumentLibrary", "Home");
-            return View();
+        {            
+            return RedirectToAction("Index", "ExistingBuild");
         }
         public IActionResult CertifiedBuild()
         {
             this.ShowBackButton("DocumentLibrary", "Home");
-            return View();
-        }
-        public IActionResult EnergyCentre()
-        {
-            this.ShowBackButton("NewBuild");
-            return View();
-        }
-        public IActionResult Substation()
-        {
-            this.ShowBackButton("NewBuild");
-            return View();
-        }
-        public IActionResult DistrictDistributionNetwork()
-        {
-            this.ShowBackButton("NewBuild");
-            return View();
-        }
-        public IActionResult CommunalDistributionNetwork()
-        {
-            this.ShowBackButton("NewBuild");
-            return View();
-        }
-        public IActionResult ConsumerConnection()
-        {
-            this.ShowBackButton("NewBuild");
-            return View();
-        }
-        public IActionResult ConsumerHeatSystem()
-        {
-            this.ShowBackButton("NewBuild");
             return View();
         }        
     }
