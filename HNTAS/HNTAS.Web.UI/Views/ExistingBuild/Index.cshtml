@@ -1,0 +1,73 @@
+﻿@section BeforeMain {
+
+    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="@Url.Action("DocumentLibrary", "Home")">Document library</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                Existing build
+            </li>
+        </ol>
+    </nav>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">Existing heat networks</h1>
+        <h2 class="govuk-heading-l">Overview</h2>
+
+        <p class="govuk-body">
+            Use this section to find the Technical Standard and Assessment Procedures for existing heat networks under the Heat Network Technical Assurance Scheme (HNTAS).
+        </p>
+
+        <p class="govuk-body">
+            These documents set out the minimum technical requirements for heat networks that are already operational and explain how compliance is assessed over time through a series of assessment milestones.
+        </p>
+
+        <p class="govuk-body">
+            Documents in this section are organised by heat network element. Within each element, documents are grouped by assessment milestone to help you find what applies at each stage of the HNTAS process.
+        </p>
+
+        <p class="govuk-body">
+            They are intended for:      
+        </p>
+        <ol class="govuk-list govuk-list--bullet">
+            <li>heat network operators</li>
+            <li>organisations in the heat network supply chain</li>
+        </ol>
+        <p class="govuk-body">
+            Documents may be updated as the scheme develops.
+        </p>
+
+        <h2 class="govuk-body govuk-label--s">Contents</h2>
+
+        <ul class="govuk-list">
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("Overview", "ExistingBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener"> Overview</a>
+            </li>
+
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("Milestone2", "ExistingBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener"> Milestone 2</a>
+            </li>
+
+            <li>
+                —
+                <a href="@Url.Action("Milestone3A", "ExistingBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener"> Milestone 3A</a>
+            </li>
+
+            <li>
+                —
+                <a href="@Url.Action("Milestone3B", "ExistingBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener"> Milestone 3B</a>
+            </li>
+
+            <li>
+                —
+                <a href="@Url.Action("Milestone4", "ExistingBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener"> Milestone 4</a>
+            </li>
+        </ul>
+    </div>    
+</div>
