@@ -15,13 +15,12 @@
             new Question
             {
                 QId = elementId,
-                QText = "What do you want to do?",
-                QDescText = "Choose an option so we can take you to the right part of the service.",
+                QText = "What do you want to do?",                
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = $"{elementId}", OptValue = "registerNewHN", OptText = "Register a new organisation with pre-operational heat network", OptHintText = "You'll answer a few questions to check if your network needs to meets the requirements." },
-                    new Option { OptId = $"{elementId}-2", OptValue = "updateExistingHN", OptText = "Resume adding details to your heat networks", OptHintText = "You'll sign in and be taken to your account." },
+                    new Option { OptId = $"{elementId}", OptValue = "registerNewHN", OptText = "Register a new organisation" },
+                    new Option { OptId = $"{elementId}-2", OptValue = "updateExistingHN", OptText = "Sign in to your account" },
                 },
                 SeletedOption = Model.UserPathToday
             }
