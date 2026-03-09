@@ -20,12 +20,33 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult HeatNetworkType()
+        public async Task<IActionResult> HeatNetworkTypeAsync()
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             TempData["HnId"] = hnId;
-            var model = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelSessionKey) ?? new HeatNetworkTypeViewModel { HeatNetworkTypes = Helpers.Utility.GetHeatNetworkTypeOptions() };
+            
+            var model = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelSessionKey);
+            if (model == null)
+            {
+                var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+                var heatNetworkCharacteristics = heatNetworkData?.NetworkCharacteristics;
+                model = new HeatNetworkTypeViewModel { HeatNetworkTypes = Utility.GetHeatNetworkTypeOptions() };
+                
+                if (heatNetworkCharacteristics != null )
+                {
+                    model.SelectedHeatNetworkType = heatNetworkCharacteristics.HeatNetworkType switch
+                    {
+                        ApiHeatNetworkType.NetworkLedDistrictHeatNetwork => "NetworkLedDistrictHeatNetwork",
+                        ApiHeatNetworkType.DeveloperLedDistrictHeatNetworkMorL => "DeveloperLedDistrictHeatNetworkMorL",
+                        ApiHeatNetworkType.DeveloperLedDistrictHeatNetworkSm => "DeveloperLedDistrictHeatNetworkSm",
+                        ApiHeatNetworkType.CommunalHeatNetwork => "CommunalHeatNetwork",
+                        _ => null
+                    };
+                }
+                
+            }
+            
             return View(model);
         }
 
@@ -78,10 +99,22 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult WhatIsTheHeatGenerationSourceFor()
+        public async Task<IActionResult> WhatIsTheHeatGenerationSourceForAsync()
         {
             this.ShowBackButton("HeatNetworkType");
-            var model = _sessionHelper.GetFromSession<WhatIsTheHeatGenerationSourceForViewModel>(HttpContext, SessionKeys.WhatIsTheHeatGenerationSourceForViewModelSessionKey) ?? new WhatIsTheHeatGenerationSourceForViewModel();
+            var model = _sessionHelper.GetFromSession<WhatIsTheHeatGenerationSourceForViewModel>(HttpContext, SessionKeys.WhatIsTheHeatGenerationSourceForViewModelSessionKey);
+            if (model == null)
+            {
+                model = new WhatIsTheHeatGenerationSourceForViewModel();
+                var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+                var heatNetworkCharacteristics = heatNetworkData?.NetworkCharacteristics;
+
+                if (heatNetworkCharacteristics != null)
+                {
+                    model.SelectedHeatGenerationSourceFor = heatNetworkCharacteristics.HeatGenerationSourceFor!;                    
+                }                
+            }
             return View(model);
         }
 
@@ -114,10 +147,22 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult HowManyFloorsDoesTheCommunalHNServe()
+        public async Task<IActionResult> HowManyFloorsDoesTheCommunalHNServeAsync()
         {
             this.ShowBackButton("WhatIsTheHeatGenerationSourceFor");
-            var model = _sessionHelper.GetFromSession<CommunalFloorsViewModel>(HttpContext, SessionKeys.CommunalFloorsViewModelSessionKey) ?? new CommunalFloorsViewModel();
+            var model = _sessionHelper.GetFromSession<CommunalFloorsViewModel>(HttpContext, SessionKeys.CommunalFloorsViewModelSessionKey);
+            if (model == null)
+            {
+                model = new CommunalFloorsViewModel();
+                var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+                var heatNetworkCharacteristics = heatNetworkData?.NetworkCharacteristics;
+
+                if (heatNetworkCharacteristics != null)
+                {
+                    model.NumberOfCommunalFloors = heatNetworkCharacteristics.NumberOfCommunalFloors ?? 0;
+                }
+            }
             return View(model);
         }
 
@@ -135,7 +180,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult DoesDistrictNetworkContainPressureBreak()
+        public async Task<IActionResult> DoesDistrictNetworkContainPressureBreakAsync()
         {
             var hnType = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelSessionKey)?.SelectedHeatNetworkType;
             if (hnType == "DeveloperLedDistrictHeatNetworkMorL" || hnType == "DeveloperLedDistrictHeatNetworkSm")
@@ -146,7 +191,18 @@ namespace HNTAS.Web.UI.Controllers
             {
                 this.ShowBackButton("HowManyFloorsDoesTheCommunalHNServe");
             }
-            var model = _sessionHelper.GetFromSession<DoesDistrictNetworkContainPressureBreakViewModel>(HttpContext, SessionKeys.DoesDistrictNetworkContainPressureBreakViewModelSessionKey) ?? new DoesDistrictNetworkContainPressureBreakViewModel();
+            var model = _sessionHelper.GetFromSession<DoesDistrictNetworkContainPressureBreakViewModel>(HttpContext, SessionKeys.DoesDistrictNetworkContainPressureBreakViewModelSessionKey);
+
+            if (model == null)
+            {
+                model = new DoesDistrictNetworkContainPressureBreakViewModel();
+                var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+                var heatNetworkCharacteristics = heatNetworkData?.NetworkCharacteristics;
+
+                // Safely handle nullable bool properties
+                model.ContainsPressureBreak = heatNetworkCharacteristics?.ContainsPressureBreak == true ? "yes" : "no";
+            }
             return View(model);
         }
 
@@ -172,7 +228,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult NetworkSupply()
+        public async Task<IActionResult> NetworkSupplyAsync()
         {
             var hnType = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelSessionKey)?.SelectedHeatNetworkType;
             if (hnType == "NetworkLedDistrictHeatNetwork")
@@ -183,7 +239,21 @@ namespace HNTAS.Web.UI.Controllers
             {
                 this.ShowBackButton("DoesDistrictNetworkContainPressureBreak");
             }
-            var model = _sessionHelper.GetFromSession<NetworkSupplyViewModel>(HttpContext, SessionKeys.NetworkSupplyViewModelSessionKey) ?? new NetworkSupplyViewModel();
+            var model = _sessionHelper.GetFromSession<NetworkSupplyViewModel>(HttpContext, SessionKeys.NetworkSupplyViewModelSessionKey);
+
+            if (model == null)
+            {
+                model = new NetworkSupplyViewModel();
+                var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+                var heatNetworkCharacteristics = heatNetworkData?.NetworkCharacteristics;
+
+                // Safely handle nullable bool properties
+                model.IsSupplyingOtherHeatNetworks = heatNetworkCharacteristics?.IsSupplyingOtherHeatNetworks ?? false;
+                model.HasCommercialConnections = heatNetworkCharacteristics?.HasCommercialConnections ?? false;
+                model.IsSuppliedByADistrictHeatNetwork = heatNetworkCharacteristics?.IsSuppliedByADistrictHeatNetwork ?? false;
+            }
+
             return View(model);
         }
 
@@ -225,7 +295,7 @@ namespace HNTAS.Web.UI.Controllers
             var viewModel = new NetworkOverviewViewModel
             {
                 SelectedHeatNetworkType = heatNetworkType.SelectedHeatNetworkTypeToDisplay,
-                SelectedHeatGenerationSourceFor = whatIsTheHeatGenerationSourceFor?.SelectedHeatGenerationSourceForToDisplay,
+                SelectedHeatGenerationSourceFor = whatIsTheHeatGenerationSourceFor?.SelectedHeatGenerationSourceFor,
                 NumberOfCommunalFloors = howManyFloorsDoesTheCommunalNetworkServe?.NumberOfCommunalFloors,
                 ContainsPressureBreak = doesTheDistrictNetworkContainAPressureBreak?.ContainsPressureBreak,
                 NetworkSupply = networkSupplyList

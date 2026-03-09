@@ -33,7 +33,7 @@ namespace HNTAS.Web.UI.Helpers
         public static void ShowBackButton(this Controller controller, string action, string controllerName, string fragement)
         {
             controller.ViewBag.ShowBackButton = true;
-            controller.ViewBag.BackLinkUrl = controller.Url.Action(action, controllerName, "", "","", fragement);
+            controller.ViewBag.BackLinkUrl = controller.Url.Action(action, controllerName, "", "", "", fragement);
         }
 
         public static string CapitalizeCommaSeparated(string input)
@@ -62,7 +62,7 @@ namespace HNTAS.Web.UI.Helpers
                 new() { Id = HeatNetworkElementDisplayType.ConsumerConnections, Label = "Consumer connections" },
                 new() { Id = HeatNetworkElementDisplayType.ConsumerHeatSystems, Label = "Consumer heat systems" }
             };
-        }        
+        }
 
         public static List<SelectItemOption> GetContributorSelectList(string userRole)
         {
@@ -201,7 +201,7 @@ namespace HNTAS.Web.UI.Helpers
             {
                 error = "Enter integers separated by commas, e.g., 10 or 10, 11.";
                 return false;
-            }           
+            }
 
             var parts = input.Split(',', StringSplitOptions.TrimEntries);
             if (parts.Length == 0)
@@ -247,7 +247,7 @@ namespace HNTAS.Web.UI.Helpers
             {
                 error = "Required. Enter numbers separated by commas, e.g., 10 or 10, 11.5.";
                 return false;
-            }           
+            }
 
             var parts = input.Split(',', StringSplitOptions.TrimEntries);
             if (parts.Length == 0)
@@ -289,12 +289,12 @@ namespace HNTAS.Web.UI.Helpers
                 new() { Id = NetworkDetailsType.AssessmentPlan, Label = "Assessment plan", UiStatus = StatusConstants.Incomplete, IsEnabled = true },
                 new() { Id = NetworkDetailsType.DesignConstructionLog, Label = "Design and construction log", UiStatus = StatusConstants.Incomplete, IsEnabled = true }
             };
-        }        
+        }
 
         public static void UpdateOptionStatus<TStatus, TDependentStatus>(NetworkDetailsOption option, TStatus? status, TDependentStatus? dependentStatus = null)
     where TStatus : struct, Enum
     where TDependentStatus : struct, Enum
-        {            
+        {
             var statusName = status != null ? Enum.GetName(typeof(TStatus), status.Value) : null;
             var dependentStatusName = dependentStatus != null ? Enum.GetName(typeof(TDependentStatus), dependentStatus!.Value) : null;
 
@@ -344,6 +344,20 @@ namespace HNTAS.Web.UI.Helpers
                 _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element type value: {elementType}")
             };
 
+        }
+
+        public static HeatNetworkElementDisplayType GetNetworkElementDisplayTypeById(string elementId)
+        {
+            return elementId switch
+            {
+                "EC" => HeatNetworkElementDisplayType.EnergyCentre,
+                "DDN" => HeatNetworkElementDisplayType.DistributionNetwork,
+                "TS" => HeatNetworkElementDisplayType.ThermalSubStation,
+                "CDN" => HeatNetworkElementDisplayType.CommunalDistributionNetwork,
+                "CC" => HeatNetworkElementDisplayType.ConsumerConnections,
+                "CHS" => HeatNetworkElementDisplayType.ConsumerHeatSystems,
+                _ => throw new ArgumentOutOfRangeException(nameof(elementId), $"Not expected heat network element ID value: {elementId}")
+            };
         }
     }
 }

@@ -209,6 +209,11 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult ConfirmAddress()
         {
+            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
+            if (previousStep == "EnergyCentre")
+            {
+                this.ShowBackButton("DoesHNHaveAPostcode", "Address");
+            }
             var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
             return View(model);
         }

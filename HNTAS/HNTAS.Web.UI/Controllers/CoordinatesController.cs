@@ -1,4 +1,5 @@
-﻿using HNTAS.Web.UI.Helpers;
+﻿using DocumentFormat.OpenXml.EMMA;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,16 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult ECCoordinates()
         {
-            this.ShowBackButton("DoesHNHaveAPostcode", "Address");
+            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
+            if (previousStep == "EnergyCentre")
+            {
+                this.ShowBackButton("ConfirmAddress", "Address");                
+            }
+            else
+            {
+                this.ShowBackButton("DoesHNHaveAPostcode", "Address");
+            }
+            
             var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
             return View(model);
         }
