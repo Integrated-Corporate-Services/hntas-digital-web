@@ -1,84 +1,72 @@
 ﻿@{
-    ViewData["Title"] = "Register your new heat network with Heat Networks Technical Assurance Scheme (HNTAS)";
+    ViewData["Title"] = "Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
 }
-
 
 <div class="govuk-width-container">
    
     <main class="govuk-main-wrapper" id="main-content" role="main">
         <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-grid-column-full">
 
                 <h1 class="govuk-heading-l">
-                    Register your new heat network with Heat Networks Technical Assurance Scheme (HNTAS)
+                    Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)
                 </h1>
 
                 <p class="govuk-body">
-                    If you build or operate heat networks, you may need to meet new legal requirements under HNTAS.
+                    Use this service to register your organisation and heat networks in England, Scotland and Wales.
                 </p>
 
-                <h2 class="govuk-heading-s">Use this service to:</h2>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>check if any of your new heat networks need to comply</li>
-                    <li>register and send technical specifications for assessment</li>
-                </ul>
-
-                <h2 class="govuk-heading-s">Who can use this service</h2>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>heat network owners with pre-operational networks</li>
-                    <li>designers, contractors and operators working on heat networks</li>
-                    <li>assessors validating specifications entered by heat network owners</li>
-                </ul>
-
-                <h2 class="govuk-heading-s">Understand your heat network structure</h2>
                 <p class="govuk-body">
-                    Learn more about <a href="#" class="govuk-link">heat networks</a> to better understand how your development adheres to HNTAS.
+                    You'll provide information for assessment and certification.
                 </p>
 
-                <p class="govuk-body" style="margin-top: 24px;">
-                    HNTAS is run by the Department for Energy Security and Net Zero (DESNZ) and regulated by Ofgem, who make sure networks meet the scheme’s requirements.
+                <h2 class="govuk-heading-m">Who this service is for</h2>
+                <p class="govuk-body">
+                    You should use this service if your organisation is responsible for developing, owning or operating a heat network that needs to meet the HNTAS technical standards.
                 </p>
+                <p class="govuk-body">
+                    This includes:
+                </p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>developers planning or building new heat networks</li>
+                    <li>owners or operators of existing heat networks</li>
+                    <li>local authorities or housing associations responsible for heat networks</li>
+                </ul>
 
-                <a href="@ViewBag.NavigateUrl" role="button" draggable="false" class="govuk-button govuk-button--start govuk-button--start-green" data-module="govuk-button" style="margin-top: 24px;">
+                <h2 class="govuk-heading-m">What you'll need</h2>
+                <p class="govuk-body">
+                    We will ask you for:
+                </p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>details about your organisation</li>
+                    <li>network status i.e. whether your heat networks are new or existing</li>
+                    <li>network characteristics and network elements</li>
+                </ul>
+                
+                <p class="govuk-body">
+                    Within the service, you’ll be able to invite others to help complete the information required to certify each network.
+                </p>                
+
+                <a href="@ViewBag.NavigateUrl" role="button" draggable="false" class="govuk-button govuk-button--start govuk-button--start-green" data-module="govuk-button" style="margin-top: 16px;">
                     Start now
                     <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
                         <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
                     </svg>
                 </a>
 
-                <h2 class="govuk-heading-m" style="margin-top: 40px;">Before you start</h2>
+                <h2 class="govuk-heading-m" >Before you start</h2>
 
                 <p class="govuk-body">
-                    Read the <a href="#" class="govuk-link">HNTAS guidance</a> for a full overview of the scheme.
+                    You may find it helpful to read:
                 </p>
-                <p class="govuk-body">
-                    <strong>Heat network owners</strong> can use <a href="#" class="govuk-link">Companies House</a> to verify their company information.
-                </p>
-                <p class="govuk-body">
-                    <strong>Contributors (designers, contractors, operators)</strong> will use <a href="#" class="govuk-link">what3words</a> to pinpoint elements within each heat network.
-                </p>
-                <p class="govuk-body">
-                    <strong>Assessors</strong> should follow the <a href="#" class="govuk-link">HNTAS assessment procedures</a> to validate each network.
-                </p>
-            </div>
-            <div class="govuk-grid-column-one-third">
-                <aside class="app-related-items" role="complementary">
-                    <h2 class="govuk-heading-s govuk-!-margin-top-0" id="related-content-heading"
-                        style="border-top: 2px solid #1d70b8; padding-top: 10px;">
-                        Related content
-                    </h2>
-                    <nav role="navigation" aria-labelledby="related-content-heading">
-                        <ul class="govuk-list govuk-!-font-size-16">
-                            <li>
-                                <a href="#" class="govuk-link">Ofgem</a>
-                            </li>
-                            <li>
-                                <a href="#" class="govuk-link">Zoning</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </aside>
-            </div>
+
+                <ul class="govuk-list govuk-list--bullet">
+                    <li><a target="_blank" href="https://www.gov.uk/government/publications/heat-networks-regulation-technical-standards/heat-network-technical-assurance-scheme-hntas#ts1--the-heat-network-technical-standard" class="govuk-link">Heat Network Technical Assurance Scheme</a></li>
+                    <li><a target="_blank" href="https://www.gov.uk/government/publications/heat-network-technical-standard-ts1" class="govuk-link">Heat network technical standard (TS1)</a></li>
+                    <li><a target="_blank" href="https://www.gov.uk/government/collections/heat-network-technical-assurance-scheme-hntas-draft-code-documents" class="govuk-link">HNTAS Code Documents</a></li>
+                    Draft technical specifications and assessment procedures for new and existing heat networks.
+                </ul>                           
+            </div>            
         </div>
     </main>
 </div>

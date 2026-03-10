@@ -66,7 +66,7 @@ namespace HNTAS.Web.UI.Helpers
 
         public static List<SelectItemOption> GetContributorSelectList(string userRole)
         {
-            if (userRole == UserRole.ResponsiblePerson.ToString())
+            if (userRole == UserRole.ResponsiblePerson.ToString() || userRole == UserRole.Coordinator.ToString())
             {
                 return new List<SelectItemOption>
                     {
@@ -119,6 +119,10 @@ namespace HNTAS.Web.UI.Helpers
             if (user?.Roles?.Contains(UserRole.ResponsiblePerson) == true)
             {
                 userRole = UserRole.ResponsiblePerson.ToString();
+            }
+            else if (user?.Roles?.Contains(UserRole.Coordinator) == true)
+            {
+                userRole = UserRole.Coordinator.ToString();
             }
             else
             {
