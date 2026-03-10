@@ -1,0 +1,106 @@
+﻿@section BeforeMain {
+
+    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="@Url.Action("DocumentLibrary", "Home")">Document library</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                New build
+            </li>
+        </ol>
+    </nav>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <fieldset class="govuk-fieldset" aria-describedby="contributor-required-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                New build
+            </legend>
+        </fieldset>
+
+        <!--Section 1-->
+        <div class="govuk-heading-m">Overview</div>
+
+        <p class="govuk-body">Use this section to find the Technical Specification and Assessment Procedures for new build heat networks under the Heat Network Technical Assurance Scheme (HNTAS).</p>
+        <p class="govuk-body">
+            These documents set out the minimum technical requirements for each part of a heat network and explain how compliance is assessed at different stages of design, construction and early operation.
+        </p>
+        <p class="govuk-body">
+            Documents in this section are organised by heat network element to help you find the documents that apply to the part of the network you are working on. Within each element, documents are grouped by phase of development.
+        </p>
+        <p class="govuk-body">
+            They are intended for:
+        </p>
+        <ul class="govuk-list">
+            <li class="govuk-body">
+                heat network assessors
+            </li>
+            <li class="govuk-body">
+                heat network developers
+            </li>
+            <li class="govuk-body">
+                heat network designers
+            </li>
+            <li class="govuk-body">
+                heat network operators
+            </li>
+        </ul>
+        <p class="govuk-body">
+            Documents may be updated as the scheme develops.
+        </p>
+
+        <h2 class="govuk-body govuk-!-margin-bottom-1">
+            Contents
+        </h2>
+        <ul class="govuk-list govuk-!-margin-top-2">
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("EnergyCentre", "DocumentLibrary")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener"> Energy Centre (EC)</a>
+            </li>
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("DistrictDistributionNetwork", "DocumentLibrary")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">  District Distribution Network (DD)</a>
+            </li>
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("Substation", "DocumentLibrary")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">  Substation (SS)</a>
+            </li>
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("CommunalDistributionNetwork", "DocumentLibrary")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">  Communal Distribution Network (CD)</a>
+            </li>
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("ConsumerConnection", "DocumentLibrary")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">  Concumer Connection (CC)</a>
+            </li>
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("ConsumerHeatSystem", "DocumentLibrary")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">  Consumer Heat System (CH)</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <!--Right Related Links Column-->
+
+    <div class="govuk-grid-column-one-third">
+
+        <aside class="govuk-prototype-kit-common-templates-related-items" role="complementary">
+            <h2 class="govuk-heading-m" id="subsection-title">
+                Related content
+            </h2>
+            <nav role="navigation" aria-labelledby="subsection-title">
+                <ul class="govuk-list govuk-!-font-size-16">
+                    <li>
+                        <a class="govuk-link" href="#">
+                            Guidance
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+    </div>
+</div>
