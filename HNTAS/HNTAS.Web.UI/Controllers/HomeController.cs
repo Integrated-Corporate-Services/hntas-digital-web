@@ -133,6 +133,10 @@ public class HomeController : Controller
                 {
                     return View();
                 }
+                else if (existingUser.OrgId == null && existingUser.Roles.Count() != 0)
+                {
+                    return RedirectToAction("AddOrRegister", "ExistingOrganisation");
+                }
                 else
                 {
                     return RedirectToAction("UserAccount", "Dashboard");

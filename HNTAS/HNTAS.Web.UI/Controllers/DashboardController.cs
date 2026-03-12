@@ -139,7 +139,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> YourDetails()
         {
-            this.ShowBackButton("Dashboard", "UserAccount");
+            this.ShowBackButton("UserAccount", "Dashboard");
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var user = await _userService.GetUserDetails(userId);
             var org = await _organisationService.GetOrganisationById(user.Organisation.OrgId);
