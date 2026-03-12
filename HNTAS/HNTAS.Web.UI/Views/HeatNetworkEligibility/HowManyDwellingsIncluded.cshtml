@@ -15,9 +15,32 @@
             new Question
             {
                 QId = elementId,
-                QText = "Do any of your new heat networks have the equivalent of 10 or more dwellings?",
-                QDescText = null,
-                QHintText = "This applies to domestic, non-domestic or mixed-use networks.",
+                QText = "Do any of your new heat networks have the equivalent of 6 or more dwellings?",
+                QDescText = @"
+                <p class='govuk-body'>This applies to domestic, non-domestic or mixed-use networks</p>
+                <details class= 'govuk-details'>
+                    <summary class='govuk-details__summary'>
+                        <span class= 'govuk-details__summary-text'>
+                            Help with equivalent dwellings
+                        </span>
+                    </summary>
+                    <div class= 'govuk-details__text'>
+                        <p class='govuk-body'>
+                            45kW is representative of a single “unit” or dwelling Heat Interface Unit (HIU).
+                            Therefore, a network with a total connection capacity of &lt; 450kW would represent the equivalent
+                            of a network with 10 properties or less. Using this equivalency, any network above the 450kW
+                            connection capacity threshold for existing networks, and above 225kW for new networks, would be
+                            subject to technical standards.
+                        </p>
+                        <p class= 'govuk-body'><strong>For example:</strong></p>
+                        <p class= 'govuk-body'>
+                            An existing heat network supplies heat to eight flats and a small supermarket.
+                            The supermarket has a 135kW connection capacity. As 45kW is representative of a single dwelling,
+                            the supermarket represents the equivalent of 3 dwellings (135/45 = 3.0).
+                        </p>
+                    </div>
+                </details>",
+                QHintText = null,
                 Options = new List<Option>
                 {
                     new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },

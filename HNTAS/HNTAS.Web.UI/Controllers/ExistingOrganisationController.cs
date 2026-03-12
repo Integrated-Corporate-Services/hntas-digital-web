@@ -22,7 +22,11 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult AddOrRegister()
         {
-            this.ShowBackButton("UserAccount", "Dashboard");
+            var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            if(organisationName != null)
+            {
+                this.ShowBackButton("UserAccount", "Dashboard");
+            }
             _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey, true);
             return View("AddOrRegister");
         }
