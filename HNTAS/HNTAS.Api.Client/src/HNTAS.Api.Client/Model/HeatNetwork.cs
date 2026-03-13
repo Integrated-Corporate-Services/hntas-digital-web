@@ -34,6 +34,7 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="HeatNetwork" /> class.
         /// </summary>
         /// <param name="id">id</param>
+        /// <param name="uHnId">uHnId</param>
         /// <param name="hnId">hnId</param>
         /// <param name="name">name</param>
         /// <param name="address">address</param>
@@ -50,9 +51,10 @@ namespace HNTAS.Api.Client.Model
         /// <param name="createdAt">createdAt</param>
         /// <param name="phase">phase</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> hnId = default, Option<string?> name = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<NetworkCharacteristics?> networkCharacteristics = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
+        public HeatNetwork(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> name = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<NetworkCharacteristics?> networkCharacteristics = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
         {
             IdOption = id;
+            UHnIdOption = uHnId;
             HnIdOption = hnId;
             NameOption = name;
             AddressOption = address;
@@ -98,6 +100,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("id")]
         public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of UHnId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> UHnIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets UHnId
+        /// </summary>
+        [JsonPropertyName("uHnId")]
+        public string? UHnId { get { return this.UHnIdOption; } set { this.UHnIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of HnId
@@ -290,6 +305,7 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class HeatNetwork {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  UHnId: ").Append(UHnId).Append("\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Address: ").Append(Address).Append("\n");
@@ -348,6 +364,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> id = default;
+            Option<string?> uHnId = default;
             Option<string?> hnId = default;
             Option<string?> name = default;
             Option<RegisteredAddress?> address = default;
@@ -381,6 +398,9 @@ namespace HNTAS.Api.Client.Model
                     {
                         case "id":
                             id = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "uHnId":
+                            uHnId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "hnId":
                             hnId = new Option<string?>(utf8JsonReader.GetString());
@@ -453,7 +473,7 @@ namespace HNTAS.Api.Client.Model
             if (phase.IsSet && phase.Value == null)
                 throw new ArgumentNullException(nameof(phase), "Property is not nullable for class HeatNetwork.");
 
-            return new HeatNetwork(id, hnId, name, address, ecDetails, pathway, registrationSource, networkCharacteristics, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, createdBy, createdAt, phase);
+            return new HeatNetwork(id, uHnId, hnId, name, address, ecDetails, pathway, registrationSource, networkCharacteristics, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, createdBy, createdAt, phase);
         }
 
         /// <summary>
@@ -497,6 +517,12 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("id", heatNetwork.Id);
                 else
                     writer.WriteNull("id");
+
+            if (heatNetwork.UHnIdOption.IsSet)
+                if (heatNetwork.UHnIdOption.Value != null)
+                    writer.WriteString("uHnId", heatNetwork.UHnId);
+                else
+                    writer.WriteNull("uHnId");
 
             if (heatNetwork.HnIdOption.IsSet)
                 if (heatNetwork.HnIdOption.Value != null)
