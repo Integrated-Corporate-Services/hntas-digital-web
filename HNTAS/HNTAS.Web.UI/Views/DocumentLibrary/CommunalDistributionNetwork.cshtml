@@ -1,0 +1,142 @@
+﻿@using HNTAS.Web.UI.Models
+@model HntasElementDocumentsLinksViewModel
+
+@{
+    ViewData["Title"] = "Communal Distribution Network (CD)";
+    var overviewPdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Overview for Technical Specification",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693be875c72b0f8ccf33d698/draft-hntas-technical-specification-communal-distribution-network-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 396,
+            NumberOfPages = 24
+        },
+        new PdfRow
+        {
+            PdfTitle = "Overview for Assessment Procedures",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693ae73fadb5707d9f33d63c/draft-hntas-assessment-procedure-communal-distribution-network-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 412,
+            NumberOfPages = 27
+        }
+    };
+    var phase1Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 1: Feasibility",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693be00933c7ace9c4a420bd/draft-hntas-new-build-technical-specification-communal-distribution-network-phase-1.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 502,
+            NumberOfPages = 23
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 1: Feasibility",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693ae76e5cc812f50aa42050/draft-hntas-new-build-assessment-procedure-communal-distribution-network-phase-1.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 435,
+            NumberOfPages = 14
+        }
+    };
+    var phase2Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 2: Design",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693be864c72b0f8ccf33d697/draft-hntas-new-build-technical-specification-communal-distribution-network-phase-2.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 608,
+            NumberOfPages = 32
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 2: Design",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693ae7a433c7ace9c4a42060/draft-hntas-new-build-assessment-procedure-communal-distribution-network-phase-2.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 424,
+            NumberOfPages = 17
+        }
+    };
+    var phase3Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 3: Construction",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bf89d33c7ace9c4a420d2/draft-hntas-new-build-technical-specification-communal-distribution-network-phase-3.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 1006,
+            NumberOfPages = 43
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 3: Construction",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693ae78b5cc812f50aa42051/draft-hntas-new-build-assessment-procedure-communal-distribution-network-phase-3.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 509,
+            NumberOfPages = 23
+        }
+    };
+    var phase4Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 4: Operation",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bf8c0c72b0f8ccf33d6ac/draft-hntas-new-build-technical-specification-communal-distribution-network-phase-4.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 581,
+            NumberOfPages = 28
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 4: Operation",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693ae973adb5707d9f33d643/draft-hntas-new-build-assessment-procedure-communal-distribution-network-phase-4.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 452,
+            NumberOfPages = 15
+        }
+    };
+
+    var pageData = new HntasElementDocumentsLinksViewModel
+    {
+        ElementName = "Communal Distribution Network (CD)",
+        Description = "The Communal Distribution Network includes the internal distribution elements that transfer heat within a building. This covers risers, lateral pipework, valves and controls serving individual dwellings or premises. ",
+        DocumentListSections = new List<DocumentListSection>
+        {
+            new DocumentListSection
+            {
+                SectionName = "Overview",
+                SectionId = "overview",
+                PdfRows = overviewPdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 1: Feasibility",
+                SectionId = "phase-1",
+                PdfRows = phase1Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 2: Design",
+                SectionId = "phase-2",
+                PdfRows = phase2Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 3: Construction",
+                SectionId = "phase-3",
+                PdfRows = phase3Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 4: Operation",
+                SectionId = "phase-4",
+                PdfRows = phase4Pdfs
+            }
+        }
+    };
+}
+
+@await Html.PartialAsync("_DocumentLibraryDocLinks", pageData)
