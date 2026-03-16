@@ -1,14 +1,15 @@
-# HNTAS.Api.Client.Model.Element
+# HNTAS.Api.Client.Model.ElementSoaStatusUpdateRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**HnId** | **string** |  | 
+**Stage** | **SoaStage** |  | [optional] 
 **ElementId** | **string** |  | [optional] 
-**ElementType** | **string** |  | [optional] 
-**Type** | **HeatNetworkElementDisplayType** |  | [optional] 
-**Count** | **int** |  | [optional] 
-**SoaStages** | [**List&lt;SoaStages&gt;**](SoaStages.md) |  | [optional] 
+**SoaStatus** | **string** |  | [optional] 
+**ElementSoaStatus** | **NetworkDetailsStatus** |  | [optional] 
+**SoaStatusUpdatedBy** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

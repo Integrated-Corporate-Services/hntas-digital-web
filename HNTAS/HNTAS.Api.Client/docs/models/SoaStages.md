@@ -5,7 +5,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **StageId** | **NullableOfSoaStage** |  | [optional] 
-**Document** | [**NetworkDetailsUploadedDocument**](NetworkDetailsUploadedDocument.md) |  | [optional] 
+**SoaStatus** | **string** |  | [optional] 
+**SoaStatusUpdatedAt** | **DateTimeOffset** |  | [optional] 
+**SoaStatusUpdatedBy** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

@@ -6,12 +6,18 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <span class="govuk-caption-xl">@ViewBag.HnId</span>
+            <span class="govuk-caption-l">@ViewBag.HnId</span>
             <h1 class="govuk-heading-xl">
-                Element statements of applicability (SOAs)
+                Statements of applicability (SOAs)
             </h1>
 
-            <p class="govuk-body">Successful network assessment and eventual regulatory certification requires each element to conform to their respective technical requirements. Complete applicability for the stages below. You can submit an element SOA for the next stage, but not beyond that until the other elements have been completed.</p>
+            <p class="govuk-body">
+                Address the applicability or non-applicability of <a class="govuk-link" asp-controller="Home" asp-action="DocumentLibrary" asp-method="GET">requirements</a> for each element at each stage. Work with your assessor to agree each SOA and supply them with the supporting evidence required (the requirements detail this).
+            </p>
+
+            <p class="govuk-body">
+                You should update the status of each SOA as you progress so that HNTAS can prepare for the certification of your network in good time.
+            </p>
 
             <div class="govuk-tabs" data-module="govuk-tabs">
                 <h2 class="govuk-tabs__title">Contents</h2>
@@ -40,37 +46,71 @@
                         <div id="stage-@i" class="govuk-tabs__panel @hiddenTab">
                             <h2 class="govuk-heading-l">@stage.Title</h2>
 
+                            @{
+                                if (stage.Description != null)
+                                {
+                                    <p class="govuk-body">
+                                        @stage.Description
+                                    </p>
+                                }
+                            }
                             <table class="govuk-table">
+                                <thead class="govuk-table__head">
+                                    <tr class="govuk-table__row">
+                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter"></th>
+                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Status</th>
+                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Updated</th>
+                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Assessor</th>
+                                    </tr>
+                                </thead>
                                 <tbody class="govuk-table__body">
                                     @foreach (var element in stage.Elements)
                                     {
-                                        <tr class="govuk-table__row">
-                                            <td class="govuk-table__cell">
-                                                @element.Name
+                                        var statusClass = "";
+                                        switch (@element.SoaStatus)
+                                        {                                            
+                                            case ElementSoaUpdateStatusConstants.InProgress:
+                                                statusClass = "govuk-tag--yellow";
+                                                break;
+                                            case ElementSoaUpdateStatusConstants.InRevision:
+                                                statusClass = "govuk-tag--orange";
+                                                break;
+                                            case ElementSoaUpdateStatusConstants.CompletedSoaAndEvidenceWithAssessor:
+                                                statusClass = "govuk-tag--teal";
+                                                break;
+                                            case ElementSoaUpdateStatusConstants.StatementOfApplicabilityAgreedWithAssessor:
+                                                statusClass = "govuk-tag govuk-tag--green";
+                                                break;
+                                            case ElementSoaUpdateStatusConstants.BeingAssessed:
+                                                statusClass = "govuk-tag--blue";
+                                                break;
+                                            default:
+                                                statusClass = "govuk-tag--grey";
+                                                break;
+                                        }
+                                        <tr class="govuk-table__row">                                            
+                                            <th scope="row" class="govuk-table__header govuk-!-width-one-quarter">@element.Name</th>
+                                            <td class="govuk-table__cell govuk-!-width-one-quarter">
+                                                <span class="govuk-tag @statusClass">
+                                                    @element.SoaStatus
+                                                </span>
+                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2"
+                                                   href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type })"
+                                                   aria-describedby="Update status"
+                                                   onclick="event.stopPropagation();">
+                                                    Update status
+                                                </a>
                                             </td>
-                                            <td class="govuk-table__cell">
-                                                @if (element.Document != null)
-                                                {
-                                                    <a class="govuk-link"
-                                                       href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type })"
-                                                       aria-describedby="@element.Document?.FileName"
-                                                       onclick="event.stopPropagation();">
-                                                        <strong class="govuk-tag govuk-tag--green">
-                                                            @element.Document?.FileName
-                                                        </strong>
-                                                    </a>
-                                                }
-                                                else
-                                                {
-                                                    <a class="govuk-link"
-                                                       href="@Url.Action("SoaStagesToUpload", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type })"
-                                                       aria-describedby="Upload SOA details"
-                                                       onclick="event.stopPropagation();">
-                                                        Upload SOA details
-                                                    </a>
-                                                }
+                                            <td class="govuk-table__cell govuk-!-width-one-quarter">
+                                                @element.SoaStatusUpdatedAt?.ToString("dd MMM yyyy")
                                             </td>
-                                        </tr>
+                                            <td class="govuk-table__cell govuk-!-width-one-quarter">
+                                                <span class="govuk-tag govuk-tag--blue">
+                                                    Not yet assigned
+                                                </span>                                                
+                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="#">Assign assessor</a>
+                                            </td>
+                                        </tr>                                        
                                     }
                                 </tbody>
                             </table>

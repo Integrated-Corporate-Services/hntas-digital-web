@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** |  | [optional] 
+**UHnId** | **string** |  | [optional] 
 **HnId** | **string** |  | [optional] 
 **Name** | **string** |  | [optional] 
 **Address** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 

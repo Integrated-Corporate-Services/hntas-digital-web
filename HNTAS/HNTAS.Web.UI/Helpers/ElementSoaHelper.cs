@@ -25,11 +25,12 @@ namespace HNTAS.Web.UI.Helpers
                     },
                     new SoaStagesView
                     {
-                        Name = "Stage 2",
+                        Name = "Stage 2 (optional)",
                         StageId = SoaStage.Stage2,
                         Elements = GetElementsForStage(networkElements),
                         IsActive = eligibleIndex == 0 || eligibleIndex == 1,
-                        Title = "Design (Developed Design)"
+                        Title = "Design (Developed Design)",
+                        Description = "You may want to undertake a Stage 2 assessment to gain further assurance during your design development process, or if you want to provide an assessed design when handing over to your Design & Build Contractor."
                     },
                     new SoaStagesView
                     {
@@ -79,24 +80,24 @@ namespace HNTAS.Web.UI.Helpers
         public static ElementSoaProgressStatusTracking GetElementSoaProgressStatusTracking(ElementSoaViewModel model)
         {
             var totalElementsInAllActiveStages = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count());
-            var totalElementsWithDocuments = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count(e => e.Document != null));
+            var totalElementsWithStatusUpdated = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count(e => e.SoaStatus != null && e.SoaStatus != "Not started"));
             ElementSoaProgressStatusTracking incompleteSoa = new ElementSoaProgressStatusTracking();
-            if (totalElementsInAllActiveStages > 0 && (totalElementsInAllActiveStages - totalElementsWithDocuments) == 1)
+            if (totalElementsInAllActiveStages > 0 && (totalElementsInAllActiveStages - totalElementsWithStatusUpdated) == 1)
             {
                 incompleteSoa.AllElementsCompleted = false;
-                // find the one stage and element that doesn't have a document
-                var stageWithMissingDoc = model.Stages.FirstOrDefault(s => s.IsActive && s.Elements.Any(e => e.Document == null));
+                // find the one stage and element that doesn't have a status
+                var stageWithMissingDoc = model.Stages.FirstOrDefault(s => s.IsActive && s.Elements.Any(e => e.SoaStatus == null || e.SoaStatus == "Not started"));
                 if (stageWithMissingDoc != null)
                 {
                     incompleteSoa.IncompleteSoaStageId = stageWithMissingDoc.StageId;
-                    var elementWithMissingDoc = stageWithMissingDoc.Elements.FirstOrDefault(e => e.Document == null);
+                    var elementWithMissingDoc = stageWithMissingDoc.Elements.FirstOrDefault(e => e.SoaStatus == null || e.SoaStatus == "Not started");
                     if (elementWithMissingDoc != null)
                     {
                         incompleteSoa.IncompleteElementId = elementWithMissingDoc.ElementId;
                     }
                 }
             }
-            else if (totalElementsInAllActiveStages - totalElementsWithDocuments == 0)
+            else if (totalElementsInAllActiveStages - totalElementsWithStatusUpdated == 0)
             {
                 incompleteSoa.AllElementsCompleted = true;
             }
@@ -108,35 +109,25 @@ namespace HNTAS.Web.UI.Helpers
             return elementType switch
             {
                 HeatNetworkElementDisplayType.EnergyCentre => (
-                    "Upload the statement of applicability (SOA) for the energy centre",
+                    "What is the status of the statement of applicability for the energy centre?",
                     "Intro to Energy centre...",
                     "Upload the statement of applicability (SOA) for the energy centre"
-                ),
-                HeatNetworkElementDisplayType.DistributionNetwork => (
-                    "Upload the statement of applicability (SOA) for the distribution network",
-                    "Intro to Distribution network...",
-                    "Upload the statement of applicability (SOA) for the distribution network"
-                ),
-                HeatNetworkElementDisplayType.ThermalSubStation => (
-                    "Upload the statement of applicability (SOA) for the thermal substation",
-                    "Intro to Thermal substation...",
-                    "Upload the statement of applicability (SOA) for the thermal substation"
-                ),
+                ),                
                 HeatNetworkElementDisplayType.ConsumerConnections => (
-                    "Upload the statement of applicability (SOA) for the consumer connections",
+                    "What is the status of the statement of applicability for the consumer connections",
                     "Intro to Consumer connections...",
                     "Upload the statement of applicability (SOA) for the consumer connections"
                 ),
-                HeatNetworkElementDisplayType.CommunalDistributionNetwork => (
-                    "Upload the statement of applicability (SOA) for the communal distribution network",
-                    "Intro to Communal distribution network...",
-                    "Upload the statement of applicability (SOA) for the communal distribution network"
+                HeatNetworkElementDisplayType.DistrictDistributionNetwork => (
+                    "What is the status of the statement of applicability for the district distribution network",
+                    "Intro to District distribution network...",
+                    "Upload the statement of applicability (SOA) for the district distribution network"
                 ),
-                HeatNetworkElementDisplayType.ConsumerHeatSystems => (
-                    "Upload the statement of applicability (SOA) for the consumer heat systems",
-                    "Intro to Consumer heat systems...",
-                    "Upload the statement of applicability (SOA) for the consumer heat systems"
-                ),
+                HeatNetworkElementDisplayType.Substation => (
+                    "What is the status of the statement of applicability for the substation",
+                    "Intro to substation",
+                    "Upload the statement of applicability (SOA) for the substation"
+                ),                
                 _ => (string.Empty, string.Empty, string.Empty)
             };
         }
@@ -156,7 +147,18 @@ namespace HNTAS.Web.UI.Helpers
             };
         }
 
-
+        public static ElementSoaUpdateStatusViewModel GetSoaStatuses()
+        {
+            return new ElementSoaUpdateStatusViewModel
+            {
+                SoaStatus = new List<string> {
+                    ElementSoaUpdateStatusConstants.InProgress,
+                    ElementSoaUpdateStatusConstants.InRevision,
+                    ElementSoaUpdateStatusConstants.CompletedSoaAndEvidenceWithAssessor,
+                    ElementSoaUpdateStatusConstants.StatementOfApplicabilityAgreedWithAssessor,
+                    ElementSoaUpdateStatusConstants.BeingAssessed }
+            };
+        }
         private static List<SoaElementsView> GetElementsForStage(List<Element>? elements)
         {
             var soaElements = new List<SoaElementsView>();
@@ -165,7 +167,6 @@ namespace HNTAS.Web.UI.Helpers
                 soaElements.Add(new SoaElementsView
                 {
                     ElementId = element.ElementId,
-                    //ElementType = element.ElementType,
                     Type = element.Type,
                     Name = Utility.GetDefaultNetworkElementOptions().Find(a => a.Id.ToString() == element.Type.ToString()).Label
                 });
