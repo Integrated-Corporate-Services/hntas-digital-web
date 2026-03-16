@@ -15,19 +15,16 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ISessionHelper _sessionHelper;
         private readonly ISoaService _soaProjectService;
         private readonly IHeatNetworkService _heatNetworkService;
-        private readonly ILogger<ElementSoaController> _logger;
-        private readonly IS3UploadService _s3UploadService;
+        private readonly ILogger<ElementSoaController> _logger;        
 
         public ElementSoaController(ISessionHelper sessionHelper,
             ISoaService soaProjectService,
-            ILogger<ElementSoaController> logger,
-            IS3UploadService s3UploadService,
+            ILogger<ElementSoaController> logger,            
             IHeatNetworkService heatNetworkService)
         {
             _sessionHelper = sessionHelper;
             _soaProjectService = soaProjectService;
-            _logger = logger;
-            _s3UploadService = s3UploadService;
+            _logger = logger;            
             _heatNetworkService = heatNetworkService;
         }
 
