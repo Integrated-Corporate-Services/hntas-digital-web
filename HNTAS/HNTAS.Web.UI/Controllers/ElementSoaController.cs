@@ -58,7 +58,7 @@ namespace HNTAS.Web.UI.Controllers
             var model = ElementSoaHelper.GetElementSoaViewModel(eligibleIndex, currentStageIndex, networkElements);
 
             foreach (var stageInModel in model.Stages)
-            {                
+            {
                 if (networkElements != null)
                 {
                     foreach (var elementSoaElement in networkElements)
@@ -68,10 +68,14 @@ namespace HNTAS.Web.UI.Controllers
                             var modelElement = stageInModel.Elements?.Find(e => e.ElementId == elementSoaElement.ElementId);
                             var elementStage = elementSoaElement.SoaStages?
                                 .Find(s => s.StageId.HasValue && stageInModel.StageId.HasValue && (int)s.StageId.Value == (int)stageInModel.StageId.Value);
-                            modelElement?.SoaStatus = elementStage?.SoaStatus ?? "Not started";
-                            modelElement?.SoaStatusUpdatedAt = elementStage?.SoaStatusUpdatedAt.HasValue == true
-                                ? elementStage.SoaStatusUpdatedAt.Value.DateTime
-                                : (DateTime?)null;
+
+                            if (modelElement != null)
+                            {
+                                modelElement.SoaStatus = elementStage?.SoaStatus ?? "Not started";
+                                modelElement.SoaStatusUpdatedAt = elementStage?.SoaStatusUpdatedAt.HasValue == true
+                                    ? elementStage.SoaStatusUpdatedAt.Value.DateTime
+                                    : (DateTime?)null;
+                            }
                         }
                     }
                 }
