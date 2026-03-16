@@ -12,7 +12,7 @@ namespace HNTAS.Web.UI.Models.ElementSoa
 
     public class SoaStagesView
     {
-        public new List<SoaElementsView> Elements { get; set; } = [];
+        public List<SoaElementsView> Elements { get; set; } = [];
         public bool IsActive { get; set; }
         public string? Name { get; set; }
         public string? Title { get; set; }
