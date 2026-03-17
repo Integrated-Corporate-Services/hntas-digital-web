@@ -213,11 +213,14 @@ namespace HNTAS.Web.UI.Controllers
                 switch (model.HeatNetworkPhase)
                 {
                     case "Design":
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "2" });
+                        return RedirectToAction("CheckYourAnswers");
                     case "Feasibility":
                         // store pathway as 1, navigate to cya
                         _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
                         return RedirectToAction("CheckYourAnswers");
                     case "Construction":
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "3" });
                         return RedirectToAction("HaveYouSignedMEContract");
                     case "Operation":
                         return RedirectToAction("HNInOperation");
