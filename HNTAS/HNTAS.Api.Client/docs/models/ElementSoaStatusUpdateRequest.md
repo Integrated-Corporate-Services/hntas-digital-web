@@ -1,0 +1,15 @@
+# HNTAS.Api.Client.Model.ElementSoaStatusUpdateRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**HnId** | **string** |  | 
+**Stage** | **SoaStage** |  | [optional] 
+**ElementId** | **string** |  | [optional] 
+**SoaStatus** | **string** |  | [optional] 
+**ElementSoaStatus** | **NetworkDetailsStatus** |  | [optional] 
+**SoaStatusUpdatedBy** | **string** |  | [optional] 
+
+[[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
+

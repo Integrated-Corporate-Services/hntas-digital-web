@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** |  | [optional] 
+**UHnId** | **string** |  | [optional] 
 **HnId** | **string** |  | [optional] 
 **EcDetails** | [**ECDetails**](ECDetails.md) |  | [optional] 
 **Address** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 
@@ -14,7 +15,8 @@ Name | Type | Description | Notes
 **CreatedBy** | **string** |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **Phase** | **string** |  | [optional] 
-**NetworkCharacteristics** | [**NetworkCharacteristicsResponse**](NetworkCharacteristicsResponse.md) |  | [optional] 
+**HeatNetworkType** | **HeatNetworkType** |  | [optional] 
+**HeatNetworkConnections** | [**HeatNetworkConnections**](HeatNetworkConnections.md) |  | [optional] 
 **NetworkElements** | [**NetworkElementsResponse**](NetworkElementsResponse.md) |  | [optional] 
 **MeteringAndMonitoringStrategy** | [**MeteringAndMonitoringStrategyResponse**](MeteringAndMonitoringStrategyResponse.md) |  | [optional] 
 **AssessmentPlan** | [**AssessmentPlanResponse**](AssessmentPlanResponse.md) |  | [optional] 

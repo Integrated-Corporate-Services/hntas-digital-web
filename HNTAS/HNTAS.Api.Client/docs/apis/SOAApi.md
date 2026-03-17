@@ -7,7 +7,6 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiSOAConnectionsPatch**](SOAApi.md#apisoaconnectionspatch) | **PATCH** /api/SOA/connections |  |
 | [**ApiSOACreatePost**](SOAApi.md#apisoacreatepost) | **POST** /api/SOA/create |  |
 | [**ApiSOADocumentUpdatePatch**](SOAApi.md#apisoadocumentupdatepatch) | **PATCH** /api/SOA/document-update |  |
-| [**ApiSOADocumentUpdateSoaPatch**](SOAApi.md#apisoadocumentupdatesoapatch) | **PATCH** /api/SOA/document-update-soa |  |
 | [**ApiSOAElementDocumentsPatch**](SOAApi.md#apisoaelementdocumentspatch) | **PATCH** /api/SOA/element-documents |  |
 | [**ApiSOAElementLocationsPatch**](SOAApi.md#apisoaelementlocationspatch) | **PATCH** /api/SOA/element-locations |  |
 | [**ApiSOAHeatNetworkHnIdGet**](SOAApi.md#apisoaheatnetworkhnidget) | **GET** /api/SOA/heat-network/{hnId} |  |
@@ -16,6 +15,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiSOANetworkTypePatch**](SOAApi.md#apisoanetworktypepatch) | **PATCH** /api/SOA/network-type |  |
 | [**ApiSOASendAssessorAssessmentEmailPost**](SOAApi.md#apisoasendassessorassessmentemailpost) | **POST** /api/SOA/send-assessor-assessment-email |  |
 | [**ApiSOASendCertificationCompleteEmailPost**](SOAApi.md#apisoasendcertificationcompleteemailpost) | **POST** /api/SOA/send-certification-complete-email |  |
+| [**ApiSOAUpdateSoaStatusPatch**](SOAApi.md#apisoaupdatesoastatuspatch) | **PATCH** /api/SOA/update-soa-status |  |
 | [**ApiSOAUpdateSoaStatusPut**](SOAApi.md#apisoaupdatesoastatusput) | **PUT** /api/SOA/update-soa-status |  |
 
 <a id="apisoaconnectionspatch"></a>
@@ -102,42 +102,6 @@ No authorization required
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | **updateDocumentRequest** | [**UpdateDocumentRequest**](UpdateDocumentRequest.md) |  |  |
-
-### Return type
-
-void (empty response body)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json, text/json, application/*+json
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
-| **400** | Bad Request |  -  |
-| **404** | Not Found |  -  |
-
-[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
-
-<a id="apisoadocumentupdatesoapatch"></a>
-# **ApiSOADocumentUpdateSoaPatch**
-> void ApiSOADocumentUpdateSoaPatch (ElementSoaUploadDocumentRequest elementSoaUploadDocumentRequest)
-
-
-
-
-### Parameters
-
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| **elementSoaUploadDocumentRequest** | [**ElementSoaUploadDocumentRequest**](ElementSoaUploadDocumentRequest.md) |  |  |
 
 ### Return type
 
@@ -453,6 +417,42 @@ No authorization required
 | **204** | No Content |  -  |
 | **400** | Bad Request |  -  |
 | **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apisoaupdatesoastatuspatch"></a>
+# **ApiSOAUpdateSoaStatusPatch**
+> void ApiSOAUpdateSoaStatusPatch (ElementSoaStatusUpdateRequest elementSoaStatusUpdateRequest)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **elementSoaStatusUpdateRequest** | [**ElementSoaStatusUpdateRequest**](ElementSoaStatusUpdateRequest.md) |  |  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

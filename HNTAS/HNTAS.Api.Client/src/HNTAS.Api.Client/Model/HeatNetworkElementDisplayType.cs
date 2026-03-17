@@ -36,29 +36,19 @@ namespace HNTAS.Api.Client.Model
         EnergyCentre = 1,
 
         /// <summary>
-        /// Enum DistributionNetwork for value: DistributionNetwork
+        /// Enum Substation for value: Substation
         /// </summary>
-        DistributionNetwork = 2,
+        Substation = 2,
 
         /// <summary>
-        /// Enum ThermalSubStation for value: ThermalSubStation
+        /// Enum DistrictDistributionNetwork for value: DistrictDistributionNetwork
         /// </summary>
-        ThermalSubStation = 3,
-
-        /// <summary>
-        /// Enum CommunalDistributionNetwork for value: CommunalDistributionNetwork
-        /// </summary>
-        CommunalDistributionNetwork = 4,
+        DistrictDistributionNetwork = 3,
 
         /// <summary>
         /// Enum ConsumerConnections for value: ConsumerConnections
         /// </summary>
-        ConsumerConnections = 5,
-
-        /// <summary>
-        /// Enum ConsumerHeatSystems for value: ConsumerHeatSystems
-        /// </summary>
-        ConsumerHeatSystems = 6
+        ConsumerConnections = 4
     }
 
     /// <summary>
@@ -76,20 +66,14 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("EnergyCentre"))
                 return HeatNetworkElementDisplayType.EnergyCentre;
 
-            if (value.Equals("DistributionNetwork"))
-                return HeatNetworkElementDisplayType.DistributionNetwork;
+            if (value.Equals("Substation"))
+                return HeatNetworkElementDisplayType.Substation;
 
-            if (value.Equals("ThermalSubStation"))
-                return HeatNetworkElementDisplayType.ThermalSubStation;
-
-            if (value.Equals("CommunalDistributionNetwork"))
-                return HeatNetworkElementDisplayType.CommunalDistributionNetwork;
+            if (value.Equals("DistrictDistributionNetwork"))
+                return HeatNetworkElementDisplayType.DistrictDistributionNetwork;
 
             if (value.Equals("ConsumerConnections"))
                 return HeatNetworkElementDisplayType.ConsumerConnections;
-
-            if (value.Equals("ConsumerHeatSystems"))
-                return HeatNetworkElementDisplayType.ConsumerHeatSystems;
 
             throw new NotImplementedException($"Could not convert value to type HeatNetworkElementDisplayType: '{value}'");
         }
@@ -104,20 +88,14 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("EnergyCentre"))
                 return HeatNetworkElementDisplayType.EnergyCentre;
 
-            if (value.Equals("DistributionNetwork"))
-                return HeatNetworkElementDisplayType.DistributionNetwork;
+            if (value.Equals("Substation"))
+                return HeatNetworkElementDisplayType.Substation;
 
-            if (value.Equals("ThermalSubStation"))
-                return HeatNetworkElementDisplayType.ThermalSubStation;
-
-            if (value.Equals("CommunalDistributionNetwork"))
-                return HeatNetworkElementDisplayType.CommunalDistributionNetwork;
+            if (value.Equals("DistrictDistributionNetwork"))
+                return HeatNetworkElementDisplayType.DistrictDistributionNetwork;
 
             if (value.Equals("ConsumerConnections"))
                 return HeatNetworkElementDisplayType.ConsumerConnections;
-
-            if (value.Equals("ConsumerHeatSystems"))
-                return HeatNetworkElementDisplayType.ConsumerHeatSystems;
 
             return null;
         }
@@ -133,20 +111,14 @@ namespace HNTAS.Api.Client.Model
             if (value == HeatNetworkElementDisplayType.EnergyCentre)
                 return "EnergyCentre";
 
-            if (value == HeatNetworkElementDisplayType.DistributionNetwork)
-                return "DistributionNetwork";
+            if (value == HeatNetworkElementDisplayType.Substation)
+                return "Substation";
 
-            if (value == HeatNetworkElementDisplayType.ThermalSubStation)
-                return "ThermalSubStation";
-
-            if (value == HeatNetworkElementDisplayType.CommunalDistributionNetwork)
-                return "CommunalDistributionNetwork";
+            if (value == HeatNetworkElementDisplayType.DistrictDistributionNetwork)
+                return "DistrictDistributionNetwork";
 
             if (value == HeatNetworkElementDisplayType.ConsumerConnections)
                 return "ConsumerConnections";
-
-            if (value == HeatNetworkElementDisplayType.ConsumerHeatSystems)
-                return "ConsumerHeatSystems";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
@@ -187,7 +159,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkElementDisplayType heatNetworkElementDisplayType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(heatNetworkElementDisplayType).ToString());
+            writer.WriteStringValue(heatNetworkElementDisplayType.ToString());
         }
     }
 
@@ -218,14 +190,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the HeatNetworkElementDisplayType to the json writer
+        /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="heatNetworkElementDisplayType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkElementDisplayType? heatNetworkElementDisplayType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkElementDisplayType.HasValue ? HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(heatNetworkElementDisplayType.Value).ToString() : "null");
+            writer.WriteStringValue(heatNetworkElementDisplayType?.ToString() ?? "null");
         }
     }
 }

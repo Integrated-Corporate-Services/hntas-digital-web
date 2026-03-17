@@ -66,11 +66,12 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());
             _jsonOptions.Converters.Add(new ECDetails2JsonConverter());
             _jsonOptions.Converters.Add(new ElementJsonConverter());
-            _jsonOptions.Converters.Add(new ElementSoaUploadDocumentRequestJsonConverter());
+            _jsonOptions.Converters.Add(new ElementSoaStatusUpdateRequestJsonConverter());
             _jsonOptions.Converters.Add(new EnergyJsonConverter());
             _jsonOptions.Converters.Add(new EnergyCentreDetailsJsonConverter());
             _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkJsonConverter());
+            _jsonOptions.Converters.Add(new HeatNetworkConnectionsJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementDisplayTypeJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkElementDisplayTypeNullableJsonConverter());
@@ -92,14 +93,10 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ManagedUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new MeteringAndMonitoringStrategyJsonConverter());
             _jsonOptions.Converters.Add(new MeteringAndMonitoringStrategyResponseJsonConverter());
-            _jsonOptions.Converters.Add(new NetworkCharacteristicsJsonConverter());
-            _jsonOptions.Converters.Add(new NetworkCharacteristics2JsonConverter());
-            _jsonOptions.Converters.Add(new NetworkCharacteristicsResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkDetailsStatusJsonConverter());
             _jsonOptions.Converters.Add(new NetworkDetailsStatusNullableJsonConverter());
             _jsonOptions.Converters.Add(new NetworkDetailsUploadDocumentRequestJsonConverter());
             _jsonOptions.Converters.Add(new NetworkDetailsUploadedDocumentJsonConverter());
-            _jsonOptions.Converters.Add(new NetworkDetailsUploadedDocument2JsonConverter());
             _jsonOptions.Converters.Add(new NetworkElementsJsonConverter());
             _jsonOptions.Converters.Add(new NetworkElements2JsonConverter());
             _jsonOptions.Converters.Add(new NetworkElementsResponseJsonConverter());

@@ -1,0 +1,62 @@
+﻿@using HNTAS.Web.UI.Models
+@model HowManyDwellingsIncludedModel
+
+@{
+    ViewData["Title"] = "Do any of your new heat networks have 5 or more dwellings – Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
+    var fieldOrder = new[] { nameof(Model.HowManyDwellingsIncluded) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.HowManyDwellingsIncluded)).ToLowerInvariant();
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "HeatNetworkRegistration",
+        Action = "HeatNetworkDwellingsCheck",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = "Does your new heat network have or help serve the equivalent of 6 or more dwellings?",
+                QDescText = @"
+                <p class='govuk-body'>This applies to domestic, non-domestic or mixed-use networks</p>
+                <details class= 'govuk-details'>
+                    <summary class='govuk-details__summary'>
+                        <span class= 'govuk-details__summary-text'>
+                            Help with equivalent dwellings
+                        </span>
+                    </summary>
+                    <div class= 'govuk-details__text'>
+                        <p class='govuk-body'>
+                            45kW is representative of a single “unit” or dwelling Heat Interface Unit (HIU).
+                            Therefore, a network with a total connection capacity of &lt; 450kW would represent the equivalent
+                            of a network with 10 properties or less. Using this equivalency, any network above the 450kW
+                            connection capacity threshold for existing networks, and above 225kW for new networks, would be
+                            subject to technical standards.
+                        </p>
+                        <p class= 'govuk-body'><strong>For example:</strong></p>
+                        <p class= 'govuk-body'>
+                            An existing heat network supplies heat to eight flats and a small supermarket.
+                            The supermarket has a 135kW connection capacity. As 45kW is representative of a single dwelling,
+                            the supermarket represents the equivalent of 3 dwellings (135/45 = 3.0).
+                        </p>
+                    </div>
+                </details>",
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = null }
+                },
+                SeletedOption = Model.HowManyDwellingsIncluded
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Add a heat network</span>
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div>

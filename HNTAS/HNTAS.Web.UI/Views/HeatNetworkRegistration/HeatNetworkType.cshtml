@@ -1,0 +1,60 @@
+﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.HeatNetworkRegistration
+@using HNTAS.Web.UI.Models.Enums
+@model HeatNetworkTypeViewModel
+
+@{
+    ViewData["Title"] = "Is the heat network a single communal block – Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
+    var fieldOrder = new[] { nameof(Model.HeatNetworkType) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.HeatNetworkType)).ToLowerInvariant();
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "HeatNetworkRegistration",
+        Action = "HeatNetworkType",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = "Network type",
+                QDescText = @"
+                <p class='govuk-body'>A<strong> communal heat network</strong> is a single building divided into separate dwellings or premises. It may or may not have its own energy centre and the building might be residential, commercial or a mix of both.</p>
+                <p class='govuk-body'>A <strong>district network </strong>supplies more than one building.</p>
+                <details class='govuk-details'>
+                  <summary class='govuk-details__summary'>
+                    <span class='govuk-details__summary-text'>
+                      Help with energy centre
+                    </span>
+                  </summary>
+                  <div class='govuk-details__text'>
+                    This is where the heat network's heating, cooloing or hot water is produced. For example, a gas boiler, heat pump or combined heat and power (CHP) plant.
+                  </div>
+                </details>
+                <legend class='govuk-fieldset__legend govuk-fieldset__legend--m'>
+                    <h1 class='govuk-fieldset__heading'>
+                        What type of network is it?
+                    </h1>
+                </legend>",
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = $"{elementId}", OptValue = HeatNetworkType.CommunalWithIntegralEC.ToString(), OptText = "Communal (with an integral energy centre)", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = HeatNetworkType.CommunalWithSeparateUpstreamHN.ToString(), OptText = "Communal (supplied by a separate upstream heat network)", OptHintText = null },
+                    new Option { OptId = $"{elementId}-3", OptValue = HeatNetworkType.DistrictWithOwnEC.ToString(), OptText = "District (with its own main energy centre)", OptHintText = null },
+                    new Option { OptId = $"{elementId}-4", OptValue = HeatNetworkType.DistrictWithSeparateUpstreamHN.ToString(), OptText = "District (supplied by a separate upstream heat network)", OptHintText = null }
+                },
+                SeletedOption = Model.HeatNetworkType
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Add a heat network</span>
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div>

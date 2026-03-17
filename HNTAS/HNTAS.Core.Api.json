@@ -544,102 +544,6 @@
         }
       }
     },
-    "/api/HeatNetworks/network-characteristics": {
-      "put": {
-        "tags": [
-          "HeatNetworks"
-        ],
-        "parameters": [
-          {
-            "name": "hnId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NetworkCharacteristics2"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/NetworkCharacteristics2"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/HeatNetworkResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HeatNetworkResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HeatNetworkResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
     "/api/HeatNetworks/network-elements": {
       "put": {
         "tags": [
@@ -2314,7 +2218,7 @@
         }
       }
     },
-    "/api/SOA/document-update-soa": {
+    "/api/SOA/update-soa-status": {
       "patch": {
         "tags": [
           "SOA"
@@ -2323,17 +2227,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ElementSoaUploadDocumentRequest"
+                "$ref": "#/components/schemas/ElementSoaStatusUpdateRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ElementSoaUploadDocumentRequest"
+                "$ref": "#/components/schemas/ElementSoaStatusUpdateRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ElementSoaUploadDocumentRequest"
+                "$ref": "#/components/schemas/ElementSoaStatusUpdateRequest"
               }
             }
           },
@@ -2365,6 +2269,56 @@
           },
           "404": {
             "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "SOA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2427,58 +2381,6 @@
           },
           "404": {
             "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/SOA/update-soa-status": {
-      "put": {
-        "tags": [
-          "SOA"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "400": {
-            "description": "Bad Request",
             "content": {
               "text/plain": {
                 "schema": {
@@ -4448,12 +4350,6 @@
             "format": "int32",
             "nullable": true
           },
-          "address": {
-            "$ref": "#/components/schemas/RegisteredAddress"
-          },
-          "ecDetails": {
-            "$ref": "#/components/schemas/ECDetails2"
-          },
           "soaStages": {
             "type": "array",
             "items": {
@@ -4463,13 +4359,9 @@
           }
         }
       },
-      "ElementSoaUploadDocumentRequest": {
+      "ElementSoaStatusUpdateRequest": {
         "required": [
-          "hnId",
-          "uploadedBy",
-          "fileName",
-          "s3Key",
-          "documentType"
+          "hnId"
         ],
         "type": "object",
         "properties": {
@@ -4480,23 +4372,19 @@
             "type": "string",
             "nullable": true
           },
+          "soaStatus": {
+            "type": "string",
+            "nullable": true
+          },
           "elementSoaStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
+          "soaStatusUpdatedBy": {
+            "type": "string",
+            "nullable": true
+          },
           "hnId": {
             "type": "string"
-          },
-          "uploadedBy": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "s3Key": {
-            "type": "string"
-          },
-          "documentType": {
-            "$ref": "#/components/schemas/DocumentType"
           }
         }
       },
@@ -4623,6 +4511,10 @@
             "type": "string",
             "nullable": true
           },
+          "uHnId": {
+            "type": "string",
+            "nullable": true
+          },
           "hnId": {
             "type": "string",
             "nullable": true
@@ -4642,8 +4534,11 @@
           "registrationSource": {
             "$ref": "#/components/schemas/RegistrationSource"
           },
-          "networkCharacteristics": {
-            "$ref": "#/components/schemas/NetworkCharacteristics"
+          "heatNetworkType": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "heatNetworkConnections": {
+            "$ref": "#/components/schemas/HeatNetworkConnections"
           },
           "networkElements": {
             "$ref": "#/components/schemas/NetworkElements"
@@ -4669,6 +4564,43 @@
           },
           "phase": {
             "type": "string"
+          }
+        }
+      },
+      "HeatNetworkConnections": {
+        "type": "object",
+        "properties": {
+          "isCommunalBuilding": {
+            "type": "boolean"
+          },
+          "noOfCommunalBuilding": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isDomesticConsumer": {
+            "type": "boolean"
+          },
+          "noOfDomesticConsumer": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isNonDomesticConsumer": {
+            "type": "boolean"
+          },
+          "noOfNonDomesticConsumer": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isUpstreamDistrictHeatNetworkConnections": {
+            "type": "boolean"
+          },
+          "noOfUpstreamDistrictHeatNetworkConnections": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         }
       },
@@ -4699,11 +4631,9 @@
       "HeatNetworkElementDisplayType": {
         "enum": [
           "EnergyCentre",
-          "DistributionNetwork",
-          "ThermalSubStation",
-          "CommunalDistributionNetwork",
-          "ConsumerConnections",
-          "ConsumerHeatSystems"
+          "Substation",
+          "DistrictDistributionNetwork",
+          "ConsumerConnections"
         ]
       },
       "HeatNetworkElementResponse": {
@@ -4783,6 +4713,9 @@
           "id": {
             "type": "string"
           },
+          "uHnId": {
+            "type": "string"
+          },
           "hnId": {
             "type": "string"
           },
@@ -4812,8 +4745,11 @@
             "type": "string",
             "nullable": true
           },
-          "networkCharacteristics": {
-            "$ref": "#/components/schemas/NetworkCharacteristicsResponse"
+          "heatNetworkType": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "heatNetworkConnections": {
+            "$ref": "#/components/schemas/HeatNetworkConnections"
           },
           "networkElements": {
             "$ref": "#/components/schemas/NetworkElementsResponse"
@@ -4831,16 +4767,10 @@
       },
       "HeatNetworkType": {
         "enum": [
-          "CityScaleDistrictHeatingNetwork",
-          "DevelopmentLedDistrictHeatingNetwork",
-          "LargeCommunalHeatNetwork",
-          "MediumCommunalHeatNetwork",
-          "SmallCommunalHeatNetwork",
-          "NetworkLedDistrictHeatNetwork",
-          "DeveloperLedDistrictHeatNetworkMorL",
-          "DeveloperLedDistrictHeatNetworkSm",
-          "CommunalHeatNetwork",
-          "Other"
+          "CommunalWithIntegralEC",
+          "CommunalWithSeparateUpstreamHN",
+          "DistrictWithOwnEC",
+          "DistrictWithSeparateUpstreamHN"
         ]
       },
       "HeatNetworkUserResponse": {
@@ -5119,7 +5049,7 @@
           "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument2"
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
             }
           },
           "createdAt": {
@@ -5150,170 +5080,8 @@
           "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument2"
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
             }
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string",
-            "nullable": true
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "nullable": true
-      },
-      "NetworkCharacteristics": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "heatNetworkType": {
-            "$ref": "#/components/schemas/HeatNetworkType"
-          },
-          "heatGenerationSourceFor": {
-            "type": "string",
-            "nullable": true
-          },
-          "numberOfCommunalFloors": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "containsPressureBreak": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "isSupplyingOtherHeatNetworks": {
-            "type": "boolean"
-          },
-          "hasCommercialConnections": {
-            "type": "boolean"
-          },
-          "isSuppliedByADistrictHeatNetwork": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "nullable": true
-      },
-      "NetworkCharacteristics2": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "heatNetworkType": {
-            "$ref": "#/components/schemas/HeatNetworkType"
-          },
-          "heatGenerationSourceFor": {
-            "type": "string",
-            "nullable": true
-          },
-          "numberOfCommunalFloors": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "containsPressureBreak": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "isSupplyingOtherHeatNetworks": {
-            "type": "boolean"
-          },
-          "hasCommercialConnections": {
-            "type": "boolean"
-          },
-          "isSuppliedByADistrictHeatNetwork": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "NetworkCharacteristicsResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/NetworkDetailsStatus"
-          },
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "heatNetworkType": {
-            "$ref": "#/components/schemas/HeatNetworkType"
-          },
-          "heatGenerationSourceFor": {
-            "type": "string",
-            "nullable": true
-          },
-          "numberOfCommunalFloors": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "containsPressureBreak": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "isSupplyingOtherHeatNetworks": {
-            "type": "boolean"
-          },
-          "hasCommercialConnections": {
-            "type": "boolean"
-          },
-          "isSuppliedByADistrictHeatNetwork": {
-            "type": "boolean"
           },
           "createdAt": {
             "type": "string",
@@ -5374,25 +5142,6 @@
         }
       },
       "NetworkDetailsUploadedDocument": {
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string"
-          },
-          "s3Key": {
-            "type": "string"
-          },
-          "uploadedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "uploadedBy": {
-            "type": "string"
-          }
-        },
-        "nullable": true
-      },
-      "NetworkDetailsUploadedDocument2": {
         "type": "object",
         "properties": {
           "fileName": {
@@ -6017,8 +5766,18 @@
           "stageId": {
             "$ref": "#/components/schemas/NullableOfSoaStage"
           },
-          "document": {
-            "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+          "soaStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "soaStatusUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "soaStatusUpdatedBy": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

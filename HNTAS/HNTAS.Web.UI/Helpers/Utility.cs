@@ -285,8 +285,7 @@ namespace HNTAS.Web.UI.Helpers
         public static List<NetworkDetailsOption> GetDefaultNetworkDetailsOptions()
         {
             return new List<NetworkDetailsOption>
-            {
-                new() { Id = NetworkDetailsType.NetworkCharacteristics, Label = "Network characteristics", Hint = "", UiStatus = StatusConstants.ReadyToStart, IsEnabled = true },
+            {                
                 new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
                 new() { Id = NetworkDetailsType.Soa, Label = "Element Statement of Applicability", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
                 new() { Id = NetworkDetailsType.MeteringAndMonitoringStrategy, Label = "Metering and monitoring strategy", UiStatus = StatusConstants.Incomplete, IsEnabled = true },
@@ -296,8 +295,8 @@ namespace HNTAS.Web.UI.Helpers
         }
 
         public static void UpdateOptionStatus<TStatus, TDependentStatus>(NetworkDetailsOption option, TStatus? status, TDependentStatus? dependentStatus = null)
-    where TStatus : struct, Enum
-    where TDependentStatus : struct, Enum
+        where TStatus : struct, Enum
+        where TDependentStatus : struct, Enum
         {
             var statusName = status != null ? Enum.GetName(typeof(TStatus), status.Value) : null;
             var dependentStatusName = dependentStatus != null ? Enum.GetName(typeof(TDependentStatus), dependentStatus!.Value) : null;
