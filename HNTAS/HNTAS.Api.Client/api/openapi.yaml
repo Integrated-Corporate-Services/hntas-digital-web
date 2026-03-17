@@ -1460,19 +1460,19 @@ paths:
           description: Not Found
       tags:
       - SOA
-  /api/SOA/document-update-soa:
+  /api/SOA/update-soa-status:
     patch:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ElementSoaUploadDocumentRequest"
+              $ref: "#/components/schemas/ElementSoaStatusUpdateRequest"
           text/json:
             schema:
-              $ref: "#/components/schemas/ElementSoaUploadDocumentRequest"
+              $ref: "#/components/schemas/ElementSoaStatusUpdateRequest"
           application/*+json:
             schema:
-              $ref: "#/components/schemas/ElementSoaUploadDocumentRequest"
+              $ref: "#/components/schemas/ElementSoaStatusUpdateRequest"
         required: true
       responses:
         "200":
@@ -1501,6 +1501,36 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      tags:
+      - SOA
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSoaStatusRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSoaStatusRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateSoaStatusRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
       tags:
       - SOA
   /api/SOA/{hnId}:
@@ -1540,37 +1570,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
-      tags:
-      - SOA
-  /api/SOA/update-soa-status:
-    put:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateSoaStatusRequest"
-          text/json:
-            schema:
-              $ref: "#/components/schemas/UpdateSoaStatusRequest"
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/UpdateSoaStatusRequest"
-        required: true
-      responses:
-        "204":
-          description: No Content
-        "400":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Bad Request
       tags:
       - SOA
   /api/SOA/send-assessor-assessment-email:
@@ -3164,8 +3163,8 @@ components:
       type: object
     ECDetails2:
       example:
-        latitude: 2.3021358869347655
-        longitude: 7.061401241503109
+        latitude: 0.8008281904610115
+        longitude: 6.027456183070403
       nullable: true
       properties:
         latitude:
@@ -3180,28 +3179,14 @@ components:
     Element:
       example:
         elementId: elementId
-        ecDetails:
-          latitude: 2.3021358869347655
-          longitude: 7.061401241503109
-        address:
-          country: country
-          town: town
-          county: county
-          postcode: postcode
-          addressLine1: addressLine1
-          addressLine2: addressLine2
         soaStages:
-        - document:
-            fileName: fileName
-            s3Key: s3Key
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
+        - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          soaStatus: soaStatus
+          soaStatusUpdatedBy: soaStatusUpdatedBy
           stageId: Stage1
-        - document:
-            fileName: fileName
-            s3Key: s3Key
-            uploadedAt: 2000-01-23T04:56:07.000+00:00
-            uploadedBy: uploadedBy
+        - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          soaStatus: soaStatus
+          soaStatusUpdatedBy: soaStatusUpdatedBy
           stageId: Stage1
         count: 5
         type: EnergyCentre
@@ -3219,50 +3204,38 @@ components:
           format: int32
           nullable: true
           type: integer
-        address:
-          $ref: "#/components/schemas/RegisteredAddress"
-        ecDetails:
-          $ref: "#/components/schemas/ECDetails2"
         soaStages:
           items:
             $ref: "#/components/schemas/SoaStages"
           nullable: true
           type: array
       type: object
-    ElementSoaUploadDocumentRequest:
+    ElementSoaStatusUpdateRequest:
       example:
         elementId: elementId
         elementSoaStatus: InProgress
         hnId: hnId
-        fileName: fileName
-        s3Key: s3Key
         stage: Stage1
-        documentType: Assessment
-        uploadedBy: uploadedBy
+        soaStatus: soaStatus
+        soaStatusUpdatedBy: soaStatusUpdatedBy
       properties:
         stage:
           $ref: "#/components/schemas/SoaStage"
         elementId:
           nullable: true
           type: string
+        soaStatus:
+          nullable: true
+          type: string
         elementSoaStatus:
           $ref: "#/components/schemas/NetworkDetailsStatus"
+        soaStatusUpdatedBy:
+          nullable: true
+          type: string
         hnId:
           type: string
-        uploadedBy:
-          type: string
-        fileName:
-          type: string
-        s3Key:
-          type: string
-        documentType:
-          $ref: "#/components/schemas/DocumentType"
       required:
-      - documentType
-      - fileName
       - hnId
-      - s3Key
-      - uploadedBy
       type: object
     Energy:
       example:
@@ -3535,8 +3508,8 @@ components:
       example:
         phase: phase
         ecDetails:
-          latitude: 2.3021358869347655
-          longitude: 7.061401241503109
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
         address:
           country: country
           town: town
@@ -3567,7 +3540,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 6
+              count: 5
               locations:
               - locations
               - locations
@@ -3585,7 +3558,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 6
+              count: 5
               locations:
               - locations
               - locations
@@ -3603,11 +3576,12 @@ components:
             - ChildConnections
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        uHnId: uHnId
         networkCharacteristics:
           isSupplyingOtherHeatNetworks: true
           updatedBy: updatedBy
           hasCommercialConnections: true
-          numberOfCommunalFloors: 0
+          numberOfCommunalFloors: 1
           createdAt: 2000-01-23T04:56:07.000+00:00
           heatGenerationSourceFor: heatGenerationSourceFor
           createdBy: createdBy
@@ -3625,55 +3599,27 @@ components:
           createdBy: createdBy
           elements:
           - elementId: elementId
-            ecDetails:
-              latitude: 2.3021358869347655
-              longitude: 7.061401241503109
-            address:
-              country: country
-              town: town
-              county: county
-              postcode: postcode
-              addressLine1: addressLine1
-              addressLine2: addressLine2
             soaStages:
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             count: 5
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
-            ecDetails:
-              latitude: 2.3021358869347655
-              longitude: 7.061401241503109
-            address:
-              country: country
-              town: town
-              county: county
-              postcode: postcode
-              addressLine1: addressLine1
-              addressLine2: addressLine2
             soaStages:
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             count: 5
             type: EnergyCentre
@@ -3721,6 +3667,9 @@ components:
         id: id
       properties:
         id:
+          nullable: true
+          type: string
+        uHnId:
           nullable: true
           type: string
         hnId:
@@ -3772,7 +3721,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         name: EnergyCentre
-        count: 6
+        count: 5
         locations:
         - locations
         - locations
@@ -3794,11 +3743,9 @@ components:
     HeatNetworkElementDisplayType:
       enum:
       - EnergyCentre
-      - DistributionNetwork
-      - ThermalSubStation
-      - CommunalDistributionNetwork
+      - Substation
+      - DistrictDistributionNetwork
       - ConsumerConnections
-      - ConsumerHeatSystems
       type: string
     HeatNetworkElementResponse:
       example:
@@ -4002,6 +3949,7 @@ components:
             - connectionTypes
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        uHnId: uHnId
         networkCharacteristics:
           isSupplyingOtherHeatNetworks: true
           updatedBy: updatedBy
@@ -4024,55 +3972,27 @@ components:
           createdBy: createdBy
           elements:
           - elementId: elementId
-            ecDetails:
-              latitude: 2.3021358869347655
-              longitude: 7.061401241503109
-            address:
-              country: country
-              town: town
-              county: county
-              postcode: postcode
-              addressLine1: addressLine1
-              addressLine2: addressLine2
             soaStages:
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             count: 5
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
-            ecDetails:
-              latitude: 2.3021358869347655
-              longitude: 7.061401241503109
-            address:
-              country: country
-              town: town
-              county: county
-              postcode: postcode
-              addressLine1: addressLine1
-              addressLine2: addressLine2
             soaStages:
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            - document:
-                fileName: fileName
-                s3Key: s3Key
-                uploadedAt: 2000-01-23T04:56:07.000+00:00
-                uploadedBy: uploadedBy
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             count: 5
             type: EnergyCentre
@@ -4119,6 +4039,8 @@ components:
         id: id
       properties:
         id:
+          type: string
+        uHnId:
           type: string
         hnId:
           type: string
@@ -4168,8 +4090,8 @@ components:
       example:
         hnId: hnId
         ecDetails:
-          latitude: 2.3021358869347655
-          longitude: 7.061401241503109
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
         address:
           country: country
           town: town
@@ -4530,7 +4452,7 @@ components:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         documents:
           items:
-            $ref: "#/components/schemas/NetworkDetailsUploadedDocument2"
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
           type: array
         createdAt:
           format: date-time
@@ -4567,7 +4489,7 @@ components:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         documents:
           items:
-            $ref: "#/components/schemas/NetworkDetailsUploadedDocument2"
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
           type: array
         createdAt:
           format: date-time
@@ -4588,7 +4510,7 @@ components:
         isSupplyingOtherHeatNetworks: true
         updatedBy: updatedBy
         hasCommercialConnections: true
-        numberOfCommunalFloors: 0
+        numberOfCommunalFloors: 1
         createdAt: 2000-01-23T04:56:07.000+00:00
         heatGenerationSourceFor: heatGenerationSourceFor
         createdBy: createdBy
@@ -4783,24 +4705,6 @@ components:
         s3Key: s3Key
         uploadedAt: 2000-01-23T04:56:07.000+00:00
         uploadedBy: uploadedBy
-      nullable: true
-      properties:
-        fileName:
-          type: string
-        s3Key:
-          type: string
-        uploadedAt:
-          format: date-time
-          type: string
-        uploadedBy:
-          type: string
-      type: object
-    NetworkDetailsUploadedDocument2:
-      example:
-        fileName: fileName
-        s3Key: s3Key
-        uploadedAt: 2000-01-23T04:56:07.000+00:00
-        uploadedBy: uploadedBy
       properties:
         fileName:
           type: string
@@ -4821,55 +4725,27 @@ components:
         createdBy: createdBy
         elements:
         - elementId: elementId
-          ecDetails:
-            latitude: 2.3021358869347655
-            longitude: 7.061401241503109
-          address:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
           soaStages:
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 5
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
-          ecDetails:
-            latitude: 2.3021358869347655
-            longitude: 7.061401241503109
-          address:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
           soaStages:
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 5
           type: EnergyCentre
@@ -4907,55 +4783,27 @@ components:
         createdBy: createdBy
         elements:
         - elementId: elementId
-          ecDetails:
-            latitude: 2.3021358869347655
-            longitude: 7.061401241503109
-          address:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
           soaStages:
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 5
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
-          ecDetails:
-            latitude: 2.3021358869347655
-            longitude: 7.061401241503109
-          address:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
           soaStages:
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 5
           type: EnergyCentre
@@ -4992,55 +4840,27 @@ components:
         createdBy: createdBy
         elements:
         - elementId: elementId
-          ecDetails:
-            latitude: 2.3021358869347655
-            longitude: 7.061401241503109
-          address:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
           soaStages:
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 5
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
-          ecDetails:
-            latitude: 2.3021358869347655
-            longitude: 7.061401241503109
-          address:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
           soaStages:
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          - document:
-              fileName: fileName
-              s3Key: s3Key
-              uploadedAt: 2000-01-23T04:56:07.000+00:00
-              uploadedBy: uploadedBy
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 5
           type: EnergyCentre
@@ -5453,7 +5273,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 6
+            count: 5
             locations:
             - locations
             - locations
@@ -5471,7 +5291,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 6
+            count: 5
             locations:
             - locations
             - locations
@@ -5532,7 +5352,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 6
+            count: 5
             locations:
             - locations
             - locations
@@ -5550,7 +5370,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 6
+            count: 5
             locations:
             - locations
             - locations
@@ -5606,7 +5426,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 6
+          count: 5
           locations:
           - locations
           - locations
@@ -5624,7 +5444,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 6
+          count: 5
           locations:
           - locations
           - locations
@@ -5801,17 +5621,23 @@ components:
       type: string
     SoaStages:
       example:
-        document:
-          fileName: fileName
-          s3Key: s3Key
-          uploadedAt: 2000-01-23T04:56:07.000+00:00
-          uploadedBy: uploadedBy
+        soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        soaStatus: soaStatus
+        soaStatusUpdatedBy: soaStatusUpdatedBy
         stageId: Stage1
       properties:
         stageId:
           $ref: "#/components/schemas/NullableOfSoaStage"
-        document:
-          $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+        soaStatus:
+          nullable: true
+          type: string
+        soaStatusUpdatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        soaStatusUpdatedBy:
+          nullable: true
+          type: string
       type: object
     SoaStatus:
       enum:
@@ -6266,8 +6092,8 @@ components:
         heatNetworks:
         - hnId: hnId
           ecDetails:
-            latitude: 2.3021358869347655
-            longitude: 7.061401241503109
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
           address:
             country: country
             town: town
@@ -6278,8 +6104,8 @@ components:
           name: name
         - hnId: hnId
           ecDetails:
-            latitude: 2.3021358869347655
-            longitude: 7.061401241503109
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
           address:
             country: country
             town: town

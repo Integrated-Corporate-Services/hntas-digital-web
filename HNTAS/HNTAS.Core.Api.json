@@ -2314,7 +2314,7 @@
         }
       }
     },
-    "/api/SOA/document-update-soa": {
+    "/api/SOA/update-soa-status": {
       "patch": {
         "tags": [
           "SOA"
@@ -2323,17 +2323,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ElementSoaUploadDocumentRequest"
+                "$ref": "#/components/schemas/ElementSoaStatusUpdateRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ElementSoaUploadDocumentRequest"
+                "$ref": "#/components/schemas/ElementSoaStatusUpdateRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ElementSoaUploadDocumentRequest"
+                "$ref": "#/components/schemas/ElementSoaStatusUpdateRequest"
               }
             }
           },
@@ -2365,6 +2365,56 @@
           },
           "404": {
             "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "SOA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2427,58 +2477,6 @@
           },
           "404": {
             "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/SOA/update-soa-status": {
-      "put": {
-        "tags": [
-          "SOA"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "400": {
-            "description": "Bad Request",
             "content": {
               "text/plain": {
                 "schema": {
@@ -4448,12 +4446,6 @@
             "format": "int32",
             "nullable": true
           },
-          "address": {
-            "$ref": "#/components/schemas/RegisteredAddress"
-          },
-          "ecDetails": {
-            "$ref": "#/components/schemas/ECDetails2"
-          },
           "soaStages": {
             "type": "array",
             "items": {
@@ -4463,13 +4455,9 @@
           }
         }
       },
-      "ElementSoaUploadDocumentRequest": {
+      "ElementSoaStatusUpdateRequest": {
         "required": [
-          "hnId",
-          "uploadedBy",
-          "fileName",
-          "s3Key",
-          "documentType"
+          "hnId"
         ],
         "type": "object",
         "properties": {
@@ -4480,23 +4468,19 @@
             "type": "string",
             "nullable": true
           },
+          "soaStatus": {
+            "type": "string",
+            "nullable": true
+          },
           "elementSoaStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
+          "soaStatusUpdatedBy": {
+            "type": "string",
+            "nullable": true
+          },
           "hnId": {
             "type": "string"
-          },
-          "uploadedBy": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "s3Key": {
-            "type": "string"
-          },
-          "documentType": {
-            "$ref": "#/components/schemas/DocumentType"
           }
         }
       },
@@ -4623,6 +4607,10 @@
             "type": "string",
             "nullable": true
           },
+          "uHnId": {
+            "type": "string",
+            "nullable": true
+          },
           "hnId": {
             "type": "string",
             "nullable": true
@@ -4699,11 +4687,9 @@
       "HeatNetworkElementDisplayType": {
         "enum": [
           "EnergyCentre",
-          "DistributionNetwork",
-          "ThermalSubStation",
-          "CommunalDistributionNetwork",
-          "ConsumerConnections",
-          "ConsumerHeatSystems"
+          "Substation",
+          "DistrictDistributionNetwork",
+          "ConsumerConnections"
         ]
       },
       "HeatNetworkElementResponse": {
@@ -4781,6 +4767,9 @@
         "type": "object",
         "properties": {
           "id": {
+            "type": "string"
+          },
+          "uHnId": {
             "type": "string"
           },
           "hnId": {
@@ -5119,7 +5108,7 @@
           "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument2"
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
             }
           },
           "createdAt": {
@@ -5150,7 +5139,7 @@
           "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument2"
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
             }
           },
           "createdAt": {
@@ -5374,25 +5363,6 @@
         }
       },
       "NetworkDetailsUploadedDocument": {
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string"
-          },
-          "s3Key": {
-            "type": "string"
-          },
-          "uploadedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "uploadedBy": {
-            "type": "string"
-          }
-        },
-        "nullable": true
-      },
-      "NetworkDetailsUploadedDocument2": {
         "type": "object",
         "properties": {
           "fileName": {
@@ -6017,8 +5987,18 @@
           "stageId": {
             "$ref": "#/components/schemas/NullableOfSoaStage"
           },
-          "document": {
-            "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+          "soaStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "soaStatusUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "soaStatusUpdatedBy": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
