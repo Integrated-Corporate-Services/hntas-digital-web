@@ -123,7 +123,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             _sessionHelperMock.Verify(x => x.SaveToSession<HeatNetworkPhaseModel>(_controller.HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model), Times.Once);
-            _sessionHelperMock.Verify(x => x.SaveToSession<PathwayModel>(_controller.HttpContext, SessionKeys.PathwayModelKey, It.Is<PathwayModel>(p => p.Pathway == "1")), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<PathwayModel>(_controller.HttpContext, SessionKeys.PathwayModelKey, It.Is<PathwayModel>(p => p.Pathway == "2")), Times.Once);
             Assert.Equal("CheckYourAnswers", redirectResult.ActionName);
         }
 
