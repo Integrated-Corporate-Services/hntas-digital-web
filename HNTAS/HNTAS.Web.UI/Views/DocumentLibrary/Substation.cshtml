@@ -1,0 +1,142 @@
+﻿@using HNTAS.Web.UI.Models
+@model HntasElementDocumentsLinksViewModel
+
+@{
+    ViewData["Title"] = "Substation (SS)";
+    var overviewPdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Overview for Technical Specification",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693be05b5cc812f50aa420ae/draft-hntas-technical-specification-substation-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 468,
+            NumberOfPages = 36
+        },
+        new PdfRow
+        {
+            PdfTitle = "Overview for Assessment Procedures",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693b24cf5cc812f50aa42094/draft-hntas-assessment-procedure-substation-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 412,
+            NumberOfPages = 27
+        }
+    };
+    var phase1Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 1: Feasibility",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693be0715cc812f50aa420af/draft-hntas-new-build-technical-specification-substations-phase-1.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 498,
+            NumberOfPages = 22
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 1: Feasibility",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693b24f4adb5707d9f33d679/draft-hntas-new-build-assessment-procedure-substations-phase-1.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 424,
+            NumberOfPages = 14
+        }
+    };
+    var phase2Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 2: Design",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693be186c72b0f8ccf33d691/draft-hntas-new-build-technical-specification-substations-phase-2.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 630,
+            NumberOfPages = 34
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 2: Design",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693b2521cfacd5e888491e81/draft-hntas-new-build-assessment-procedure-substations-phase-2.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 450,
+            NumberOfPages = 17
+        }
+    };
+    var phase3Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 3: Construction",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693be1b85cc812f50aa420b1/draft-hntas-new-build-technical-specification-substations-phase-3.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 1066,
+            NumberOfPages = 50
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 3: Construction",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693b253cc72b0f8ccf33d677/draft-hntas-new-build-assessment-procedure-substations-phase-3.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 497,
+            NumberOfPages = 23
+        }
+    };
+    var phase4Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 4: Operation",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693be1cc5cc812f50aa420b4/draft-hntas-new-build-technical-specification-substations-phase-4.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 604,
+            NumberOfPages = 30
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 4: Operation",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693b2557adb5707d9f33d67a/draft-hntas-new-build-assessment-procedure-substations-phase-4.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 452,
+            NumberOfPages = 15
+        }
+    };
+
+    var pageData = new HntasElementDocumentsLinksViewModel
+    {
+        ElementName = "Substation (SS)",
+        Description = "The Substation includes the interface elements that transfer heat from the district distribution network into a building. This covers heat exchangers, controls, metering and associated elements at the building boundary.",
+        DocumentListSections = new List<DocumentListSection>
+        {
+            new DocumentListSection
+            {
+                SectionName = "Overview",
+                SectionId = "overview",
+                PdfRows = overviewPdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 1: Feasibility",
+                SectionId = "phase-1",
+                PdfRows = phase1Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 2: Design",
+                SectionId = "phase-2",
+                PdfRows = phase2Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 3: Construction",
+                SectionId = "phase-3",
+                PdfRows = phase3Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 4: Operation",
+                SectionId = "phase-4",
+                PdfRows = phase4Pdfs
+            }
+        }
+    };
+}
+
+@await Html.PartialAsync("_DocumentLibraryDocLinks", pageData)
