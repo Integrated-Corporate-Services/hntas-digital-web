@@ -247,11 +247,7 @@ namespace HNTAS.Web.UI.Controllers
             var orderedTypes = new List<HeatNetworkElementDisplayType>
             {
                 HeatNetworkElementDisplayType.EnergyCentre,
-                HeatNetworkElementDisplayType.DistributionNetwork,
-                HeatNetworkElementDisplayType.ThermalSubStation,
-                HeatNetworkElementDisplayType.CommunalDistributionNetwork,
                 HeatNetworkElementDisplayType.ConsumerConnections,
-                HeatNetworkElementDisplayType.ConsumerHeatSystems
             };
 
             var elements = new List<ElementListItem>();

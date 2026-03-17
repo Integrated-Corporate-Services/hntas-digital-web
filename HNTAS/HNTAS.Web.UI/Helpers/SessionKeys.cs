@@ -73,6 +73,7 @@
         public const string ElementSoaUploadViewModelSessionKey = "ElementSoaUploadViewModelSessionKey";
         public const string ElementSoaIncompleteSoaSessionKey = "ElementSoaIncompleteSoaSessionKey";
         public const string CurrentStageIndexSessionKey = "CurrentStageIndexSessionKey";
+        public const string ElementSoaStatusUpdateModelSessionKey = "ElementSoaStatusUpdateModelSessionKey";
         public const string HeatNetworkTypeViewModelKey = "HeatNetworkTypeViewModelKey";
         public const string HeatNetworkConnectionsViewModelKey = "HeatNetworkConnectionsViewModelKey";
     }

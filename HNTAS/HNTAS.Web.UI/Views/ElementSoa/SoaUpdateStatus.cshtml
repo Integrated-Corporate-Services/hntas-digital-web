@@ -1,0 +1,40 @@
+﻿@using HNTAS.Web.UI.Models.ElementSoa
+@model ElementSoaUpdateStatusViewModel
+
+@{
+    var hasError = ViewData.ModelState.ContainsKey(nameof(Model.SelectedSoaStatus)) && ViewData.ModelState[nameof(Model.SelectedSoaStatus)].Errors.Any();
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-xl">@ViewBag.HnId</span>
+        <h1 class="govuk-heading-xl">
+            @ViewBag.Heading
+        </h1>
+        <form method="post" asp-action="SoaUpdateStatus" asp-controller="ElementSoa">
+            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">                
+                <fieldset class="govuk-fieldset"> 
+                    <div id="status-hint" class="govuk-hint">
+                        Select the current stage
+                    </div>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        @for (var i = 0; i < Model.SoaStatus.Count; i++)
+                        {
+                            var option = Model.SoaStatus[i];
+                            var optionId = $"option-{i}";
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="@optionId" name="SelectedSoaStatus" type="radio" value="@option" @( Model.SelectedSoaStatus == option ? "checked" : "")>
+                                <label class="govuk-label govuk-radios__label" for="@optionId">
+                                    @option<br />
+                                </label>
+                            </div>
+                        }
+                    </div>                    
+                </fieldset>
+            </div>
+            @Html.HiddenFor(m => m.SoaStatus)
+            @Html.HiddenFor(m => m.ElementId)
+            <button type="submit" class="govuk-button">Continue</button>
+        </form>
+    </div>
+</div>

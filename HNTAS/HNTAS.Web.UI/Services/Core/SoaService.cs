@@ -255,9 +255,9 @@ namespace HNTAS.Web.UI.Services.Core
                 return;
             }
             throw new Exception($"Failed to send assessor email with status code: {response.StatusCode}");
-        }
+        }        
 
-        public async Task UpdateDocumentSoa(ElementSoaUploadDocumentRequest request)
+        public async Task UpdateElementSoaStatus(ElementSoaStatusUpdateRequest request)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request), "Request cannot be null.");
@@ -267,17 +267,22 @@ namespace HNTAS.Web.UI.Services.Core
 
             try
             {
-                var response = await _soaApi.ApiSOADocumentUpdateSoaPatchAsync(request);
+                var response = await _soaApi.ApiSOAUpdateSoaStatusPatchAsync(request);
 
                 if (!response.IsOk)
-                    throw new InvalidOperationException($"Assessment plan update failed with status code: {response.StatusCode}");
+                    throw new InvalidOperationException($"Soa status update failed with status code: {response.StatusCode}");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Exception during assessment plan update for HN ID: {HnId}, UploadedBy: {UploadedBy}",
-                    request.HnId, request.UploadedBy);
+                _logger.LogError(ex, "Exception during soa status update for status: {SoaStatus} HN ID: {HnId}, Element:{ElementId}, Stage: {Stage}, UpdatedBy: {UpdatedBy}",
+                SanitizeForLogging(request.SoaStatus!), SanitizeForLogging(request.HnId), SanitizeForLogging(request.ElementId!), request.Stage, SanitizeForLogging(request.SoaStatusUpdatedBy!));
                 throw;
             }
+        }
+
+        private string SanitizeForLogging(string input)
+        {
+            return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;
         }
     }
 }

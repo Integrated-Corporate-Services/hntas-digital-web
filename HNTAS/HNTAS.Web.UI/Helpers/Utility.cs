@@ -24,7 +24,7 @@ namespace HNTAS.Web.UI.Helpers
             controller.ViewBag.ShowBackButton = true;
             controller.ViewBag.BackLinkUrl = controller.Url.Action(action);
         }
-        public static void ShowBackButton(this Controller controller, string action, string controllerName, object routeValues = null)
+        public static void ShowBackButton(this Controller controller, string action, string controllerName, object? routeValues = null)
         {
             controller.ViewBag.ShowBackButton = true;
             controller.ViewBag.BackLinkUrl = controller.Url.Action(action, controllerName, routeValues);
@@ -56,11 +56,7 @@ namespace HNTAS.Web.UI.Helpers
             return new List<HeatNetworkElementOption>
             {
                 new() { Id = HeatNetworkElementDisplayType.EnergyCentre, Label = "Energy centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
-                new() { Id = HeatNetworkElementDisplayType.DistributionNetwork, Label = "Distribution network", Hint = "Only 1 allowed per heat network." },
-                new() { Id = HeatNetworkElementDisplayType.ThermalSubStation, Label = "Thermal sub station" },
-                new() { Id = HeatNetworkElementDisplayType.CommunalDistributionNetwork, Label = "Communal distribution network"},
-                new() { Id = HeatNetworkElementDisplayType.ConsumerConnections, Label = "Consumer connections" },
-                new() { Id = HeatNetworkElementDisplayType.ConsumerHeatSystems, Label = "Consumer heat systems" }
+                new() { Id = HeatNetworkElementDisplayType.ConsumerConnections, Label = "Consumer connections" },                
             };
         }
 
@@ -285,12 +281,10 @@ namespace HNTAS.Web.UI.Helpers
         public static List<NetworkDetailsOption> GetDefaultNetworkDetailsOptions()
         {
             return new List<NetworkDetailsOption>
-            {                
-                new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+            {
+                
+                new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.ReadyToStart, IsEnabled = true },
                 new() { Id = NetworkDetailsType.Soa, Label = "Element Statement of Applicability", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
-                new() { Id = NetworkDetailsType.MeteringAndMonitoringStrategy, Label = "Metering and monitoring strategy", UiStatus = StatusConstants.Incomplete, IsEnabled = true },
-                new() { Id = NetworkDetailsType.AssessmentPlan, Label = "Assessment plan", UiStatus = StatusConstants.Incomplete, IsEnabled = true },
-                new() { Id = NetworkDetailsType.DesignConstructionLog, Label = "Design and construction log", UiStatus = StatusConstants.Incomplete, IsEnabled = true }
             };
         }
 
@@ -325,12 +319,10 @@ namespace HNTAS.Web.UI.Helpers
         {
             return new List<NetworkElementOption>
             {
-                new() { Id = HeatNetworkElementDisplayType.EnergyCentre, Label = "Energy Centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
-                new() { Id = HeatNetworkElementDisplayType.DistributionNetwork, Label = "District Distribution Network", Hint = "Only 1 allowed per heat network." },
-                new() { Id = HeatNetworkElementDisplayType.ThermalSubStation, Label = "Thermal Substation" },
-                new() { Id = HeatNetworkElementDisplayType.CommunalDistributionNetwork, Label = "Communal Distribution Network"},
-                new() { Id = HeatNetworkElementDisplayType.ConsumerConnections, Label = "Consumer Connections" },
-                new() { Id = HeatNetworkElementDisplayType.ConsumerHeatSystems, Label = "Consumer Heat Systems" }
+                new() { Id = HeatNetworkElementDisplayType.EnergyCentre, Label = "Energy Centre", Hint = "for example, a plant room with heat generation equipment, often in a separate building" },
+                new() { Id = HeatNetworkElementDisplayType.Substation, Label = "Substation", Hint = "for example, a heat exchanger connecting a building" },
+                new() { Id = HeatNetworkElementDisplayType.DistrictDistributionNetwork, Label = "District Distribution Network", Hint = "for example, pipework (often underground) running from the energy centre to buildings"},
+                new() { Id = HeatNetworkElementDisplayType.ConsumerConnections, Label = "Consumer Connection", Hint = "for example, a heat interface unit (HIU) connecting a dwelling" },
             };
         }
 
@@ -339,11 +331,9 @@ namespace HNTAS.Web.UI.Helpers
             return elementType switch
             {
                 "EnergyCentre" => "EC",
-                "DistributionNetwork" => "DDN",
-                "ThermalSubStation" => "TS",
-                "CommunalDistributionNetwork" => "CDN",
+                "Substation" => "SS",
+                "DistrictDistributionNetwork" => "DDN",
                 "ConsumerConnections" => "CC",
-                "ConsumerHeatSystems" => "CHS",
                 _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element type value: {elementType}")
             };
 
@@ -354,11 +344,9 @@ namespace HNTAS.Web.UI.Helpers
             return elementId switch
             {
                 "EC" => HeatNetworkElementDisplayType.EnergyCentre,
-                "DDN" => HeatNetworkElementDisplayType.DistributionNetwork,
-                "TS" => HeatNetworkElementDisplayType.ThermalSubStation,
-                "CDN" => HeatNetworkElementDisplayType.CommunalDistributionNetwork,
+                "SS" => HeatNetworkElementDisplayType.Substation,
+                "DDN" => HeatNetworkElementDisplayType.DistrictDistributionNetwork,
                 "CC" => HeatNetworkElementDisplayType.ConsumerConnections,
-                "CHS" => HeatNetworkElementDisplayType.ConsumerHeatSystems,
                 _ => throw new ArgumentOutOfRangeException(nameof(elementId), $"Not expected heat network element ID value: {elementId}")
             };
         }

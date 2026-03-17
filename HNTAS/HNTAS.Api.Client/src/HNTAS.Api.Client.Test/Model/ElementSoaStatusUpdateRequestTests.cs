@@ -90,15 +90,6 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'ElementSoaStatus'
-        /// </summary>
-        [Fact]
-        public void ElementSoaStatusTest()
-        {
-            // TODO unit test for the property 'ElementSoaStatus'
-        }
-
-        /// <summary>
         /// Test the property 'SoaStatusUpdatedBy'
         /// </summary>
         [Fact]

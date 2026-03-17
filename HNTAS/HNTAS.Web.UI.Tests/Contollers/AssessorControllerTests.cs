@@ -155,45 +155,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
                                         UploadedBy = "user"
                                     }
                                 }
-                            },
-                            new HeatNetworkElementResponse(){
-                                Name = HeatNetworkElementDisplayType.DistributionNetwork.ToString(),
-                                Count = 1,
-                                Locations = new List<string>{ "Location 2" },
-                                Documents = new List<UploadedDocumentResponse>{
-                                    new UploadedDocumentResponse(){
-                                        FileName = "distribution_network_doc.docx",
-                                        S3Key = "distribution_network_123",
-                                        Phase = "Phase1",
-                                        Stage = "Stage1",
-                                        UploadedAt = DateTime.UtcNow,
-                                        UploadedBy = "user"
-                                    }
-                                }
-                            },
-                            new HeatNetworkElementResponse(){
-                                Name = HeatNetworkElementDisplayType.ThermalSubStation.ToString(),
-                                Count = 2,
-                                Locations = new List<string>{ "Location 3", "Location 4" },
-                                Documents = new List<UploadedDocumentResponse>{
-                                    new UploadedDocumentResponse(){
-                                        FileName = "thermal_sub_station_doc1.docx",
-                                        S3Key = "thermal_sub_station_123",
-                                        Phase = "1",
-                                        Stage = "1",
-                                        UploadedAt = DateTime.UtcNow,
-                                        UploadedBy = "user"
-                                    },
-                                    new UploadedDocumentResponse(){
-                                        FileName = "thermal_sub_station_doc2.docx",
-                                        S3Key = "thermal_sub_station_456",
-                                        Phase = "1",
-                                        Stage = "1",
-                                        UploadedAt = DateTime.UtcNow,
-                                        UploadedBy = "user"
-                                    }
-                                }
-                            }
+                            },                            
                         },
                         AssessmentDocs = new List<UploadedAssessmentDocumentResponse> {
                             new UploadedAssessmentDocumentResponse(){

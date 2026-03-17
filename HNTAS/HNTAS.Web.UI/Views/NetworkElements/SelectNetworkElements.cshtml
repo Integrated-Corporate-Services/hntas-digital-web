@@ -7,8 +7,8 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-xl">@ViewBag.HnId</span>
-        <h1 class="govuk-heading-xl">
-            Network elements
+        <h1 class="govuk-heading-l">
+            District network elements
         </h1>
         <form asp-action="SelectNetworkElements" method="post" novalidate>
             @Html.AntiForgeryToken()
@@ -17,7 +17,7 @@
                 <fieldset class="govuk-fieldset">
                     
                     <div id="soa-elements-hint" class="govuk-hint">
-                        Select the elements that this heat network comprises of:
+                        Select the elements that apply
                     </div>
 
                     @if (ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)))
@@ -35,7 +35,8 @@
                             var checkboxId = $"SelectedElementIds_{item.Id.ToString()}";
                             var conditionalId = $"conditional-{item.Id.ToString().ToLowerInvariant()}";
                             var isChecked = Model.SelectedElementIds.Contains(item.Id);
-                                
+                            var hintId = $"{checkboxId}-item-hint";
+
                             @if (Model.ElementOptions[i].Id == HeatNetworkElementDisplayType.EnergyCentre)
                                 {
                                 <div class="govuk-checkboxes__item">
@@ -50,6 +51,9 @@
                                     <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
                                         @item.Label
                                     </label>
+                                    <div id="@hintId" class="govuk-hint govuk-checkboxes__hint">
+                                        @item.Hint
+                                    </div>
                                 </div>
                                 }
 
@@ -68,6 +72,9 @@
                                     <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
                                         @item.Label
                                     </label>
+                                    <div id="@hintId" class="govuk-hint govuk-checkboxes__hint">
+                                        @item.Hint
+                                    </div>
                                 </div>
                                 <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="@conditionalId">
                                     @{
@@ -89,7 +96,7 @@
                                         }
 
                                         <input class="govuk-input govuk-input--width-3 @(hasError ? "govuk-input--error" : "")"
-                                               id="ElementCounts_@item.Id"
+                                               id="elementcounts[@item.Id.ToString().ToLowerInvariant()]"
                                                name="ElementCounts[@item.Id]"
                                                type="number"
                                                value="@(Model.ElementCounts.ContainsKey(item.Id) ? Model.ElementCounts[item.Id] : null)" />
