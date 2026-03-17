@@ -55,6 +55,7 @@ namespace HNTAS.Web.UI.Controllers
             var contributors = await GetContributorSelectListAsync(userId);
             state.Data.ChooseContributorModel.Contributors = contributors;
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            ViewBag.NoUsers = false;
             if (contributors == null || !contributors.Any())
             {
                 _logger.LogError("No contributors found for the current user.");
