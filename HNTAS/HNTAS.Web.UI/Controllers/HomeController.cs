@@ -98,8 +98,6 @@ public class HomeController : Controller
                     _logger.LogInformation($"Invitation updated successfully for the invitationId: {invitationId}, invitedEmail : {invitedEmail}");
 
                     _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, userId);
-
-                    return RedirectToAction("UserAccount", "Dashboard");
                 }
             }
 
