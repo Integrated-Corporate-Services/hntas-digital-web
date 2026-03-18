@@ -142,7 +142,38 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("UserAccount", "Dashboard");
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var user = await _userService.GetUserDetails(userId);
-            var org = await _organisationService.GetOrganisationById(user.Organisation.OrgId);
+
+            Organisation org;
+            OrganisationModel orgModel;
+            if (user.Organisation != null)
+            {
+                org = await _organisationService.GetOrganisationById(user.Organisation.OrgId);
+                orgModel = new OrganisationModel
+                {
+                    OrganisationTypes = new List<SelectListItem>(),
+                    SelectedOrganisationType = org.Type.ToString(),
+                    CompanyNumber = org.CompaniesHouseNumber,
+                    CompanyDetails = new Models.CompaniesHouse.CompanyDetailsModel
+                    {
+                        Title = org.Name,
+                        RegisteredOfficeAddress = new RegisteredOfficeAddressModel
+                        {
+                            AddressLine1 = org.RegisteredAddress.AddressLine1,
+                            AddressLine2 = org.RegisteredAddress.AddressLine2,
+                            Locality = org.RegisteredAddress.Town,
+                            PostalCode = org.RegisteredAddress.Postcode,
+                            Country = org.RegisteredAddress.Country
+                        }
+                    }
+
+                };
+            }
+            else
+            {
+                org = new Organisation();
+                orgModel = new OrganisationModel();
+            }
+
             var model = new OrganisationContactDetailsModel
             {
                 EmailAddress = user.EmailId,
@@ -160,25 +191,7 @@ namespace HNTAS.Web.UI.Controllers
                 OrganisationName = user.Organisation?.Name,
                 ContactDetails = model
             };
-            var orgModel = new OrganisationModel
-            {
-                OrganisationTypes = new List<SelectListItem>(),
-                SelectedOrganisationType = org.Type.ToString(),
-                CompanyNumber = org.CompaniesHouseNumber,
-                CompanyDetails = new Models.CompaniesHouse.CompanyDetailsModel
-                {
-                    Title = org.Name,
-                    RegisteredOfficeAddress = new RegisteredOfficeAddressModel
-                    {
-                        AddressLine1 = org.RegisteredAddress.AddressLine1,
-                        AddressLine2 = org.RegisteredAddress.AddressLine2,
-                        Locality = org.RegisteredAddress.Town,
-                        PostalCode = org.RegisteredAddress.Postcode,
-                        Country = org.RegisteredAddress.Country
-                    }
-                }
-
-            };
+            
             _sessionHelper.SaveToSession<OrganisationContactDetailsModel>(HttpContext, SessionKeys.OrganisationContactDetailsModelSessionKey, model);
             _sessionHelper.SaveToSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey, userModel);
             _sessionHelper.SaveToSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey, orgModel);

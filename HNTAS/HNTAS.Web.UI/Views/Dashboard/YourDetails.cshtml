@@ -42,15 +42,16 @@
                     Contact number
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @if(Model.PreferredContactType == @PreferredContactType.Mobile)
+                    @if(Model.PreferredContactType == PreferredContactType.Mobile)
                     {
                         @Model.MobileNumber
                     }
-                    else{
-                        @Model.LandlineNumber @Model.ContactNumberExtension
+                    else
+                    {
+                        @Model.LandlineNumber
+                        @(Model.ContactNumberExtension != null && Model.ContactNumberExtension != "" ? " ext " + Model.ContactNumberExtension : "")
                     }
                 </dd>
-
             </div>
 
             <div class="govuk-summary-list__row">
