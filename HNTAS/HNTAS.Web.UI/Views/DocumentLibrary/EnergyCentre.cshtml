@@ -1,0 +1,150 @@
+﻿@using HNTAS.Web.UI.Models
+@model HntasElementDocumentsLinksViewModel
+
+@{
+    ViewData["Title"] = "Energy centre (EC)";
+    var overviewPdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "New build Assurance Pathway",
+            LinkToPdf = "https://hntas-prototype.energysecurity.gov.uk/public/pdf/newbuild-EC-P1-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 2690,
+            NumberOfPages = 1
+        },
+        new PdfRow
+        {
+            PdfTitle = "Overview for Technical Specification",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bfd7fcfacd5e888491ebf/draft-hntas-technical-specification-energy-centre-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 559,
+            NumberOfPages = 38
+        },
+        new PdfRow
+        {
+            PdfTitle = "Overview for Assessment Procedures",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693b0c0e6a12691d48491e8a/draft-hntas-assessment-procedure-energy-centre-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 407,
+            NumberOfPages = 26
+        }
+    };
+    var phase1Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 1: Feasibility",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bfd9bcfacd5e888491ec0/draft-hntas-new-build-technical-specification-energy-centre-phase-1.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 535,
+            NumberOfPages = 26
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 1: Feasibility",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693b103933c7ace9c4a4209b/draft-hntas-new-build-assessment-procedure-energy-centre-phase-1.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 405,
+            NumberOfPages = 15
+        }
+    };
+    var phase2Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 2: Design",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bfdb7cfacd5e888491ec1/draft-hntas-new-build-technical-specification-energy-centre-phase-2.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 656,
+            NumberOfPages = 36
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 2: Design",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bfdb7cfacd5e888491ec1/draft-hntas-new-build-technical-specification-energy-centre-phase-2.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 452,
+            NumberOfPages = 17
+        }
+    };
+    var phase3Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 3: Construction",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bfdd65cc812f50aa420d6/draft-hntas-new-build-technical-specification-energy-centre-phase-3.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 1061,
+            NumberOfPages = 49
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 3: Construction",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693b10a5adb5707d9f33d678/draft-hntas-new-build-assessment-procedure-energy-centre-phase-3.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 497,
+            NumberOfPages = 23
+        }
+    };
+    var phase4Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 4: Operation",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bfdebadb5707d9f33d6aa/draft-hntas-new-build-technical-specification-energy-centre-phase-4.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 608,
+            NumberOfPages = 30
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 4: Operation",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693b10c4cfacd5e888491e80/draft-hntas-new-build-assessment-procedure-energy-centre-phase-4.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 453,
+            NumberOfPages = 15
+        }
+    };
+
+    var pageData = new HntasElementDocumentsLinksViewModel
+    {
+        ElementName = "Energy centre (EC)",
+        Description = "The Energy Centre includes all heat-generating equipment and primary plant that supplies the heat network. This covers boilers, heat pumps, thermal stores, primary controls and monitoring equipment.",
+        DocumentListSections = new List<DocumentListSection>
+        {
+            new DocumentListSection
+            {
+                SectionName = "Overview",
+                SectionId = "overview",
+                PdfRows = overviewPdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 1: Feasibility",
+                SectionId = "phase-1",
+                PdfRows = phase1Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 2: Design",
+                SectionId = "phase-2",
+                PdfRows = phase2Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 3: Construction",
+                SectionId = "phase-3",
+                PdfRows = phase3Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 4: Operation",
+                SectionId = "phase-4",
+                PdfRows = phase4Pdfs
+            }
+        }
+    };    
+}
+
+@await Html.PartialAsync("_DocumentLibraryDocLinks", pageData)
