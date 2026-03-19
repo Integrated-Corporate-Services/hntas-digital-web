@@ -24,6 +24,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkDwellingsCheck(HowManyDwellingsIncludedModel model)
         {
             this.ShowBackButton("HeatNetworkAsync", "UserManagement");
@@ -68,6 +69,7 @@ namespace HNTAS.Web.UI.Controllers
         #endregion
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkType(HeatNetworkTypeViewModel model)
         {
             this.ShowBackButton("HeatNetworkIntroduction", "HeatNetworkRegistration");
@@ -131,6 +133,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkConnections(HeatNetworkConnectionsViewModel model)
         {
             this.ShowBackButton("HeatNetworkType", "HeatNetworkRegistration");
