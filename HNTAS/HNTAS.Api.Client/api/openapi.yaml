@@ -3588,6 +3588,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
+        hnDescription: hnDescription
         registrationSource: HNTAS
         pathway: pathway
         designConstructionLog:
@@ -3612,6 +3613,9 @@ components:
           nullable: true
           type: string
         name:
+          type: string
+        hnDescription:
+          nullable: true
           type: string
         address:
           $ref: "#/components/schemas/RegisteredAddress"
@@ -3995,6 +3999,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
+        hnDescription: hnDescription
         pathway: pathway
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4019,6 +4024,9 @@ components:
         address:
           $ref: "#/components/schemas/RegisteredAddress"
         name:
+          type: string
+        hnDescription:
+          nullable: true
           type: string
         pathway:
           type: string

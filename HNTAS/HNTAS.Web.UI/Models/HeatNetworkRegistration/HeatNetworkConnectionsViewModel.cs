@@ -11,6 +11,8 @@ namespace HNTAS.Web.UI.Models.HeatNetworkRegistration
         public int? NoOfDomesticConsumer { get; set; }
         public bool IsNonDomesticConsumer { get; set; }
         public int? NoOfNonDomesticConsumer { get; set; }
+        public bool IsDownstreamDistrictHeatNetworkConnections { get; set; }
+        public int? NoOfDownstreamDistrictHeatNetworkConnections { get; set; }
         public bool IsUpstreamDistrictHeatNetworkConnections { get; set; }
         public int? NoOfUpstreamDistrictHeatNetworkConnections { get; set; }
     }

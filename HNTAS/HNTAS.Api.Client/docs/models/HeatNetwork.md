@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **UHnId** | **string** |  | [optional] 
 **HnId** | **string** |  | [optional] 
 **Name** | **string** |  | [optional] 
+**HnDescription** | **string** |  | [optional] 
 **Address** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 
 **EcDetails** | [**ECDetails2**](ECDetails2.md) |  | [optional] 
 **Pathway** | **string** |  | [optional] 

@@ -4522,6 +4522,10 @@
           "name": {
             "type": "string"
           },
+          "hnDescription": {
+            "type": "string",
+            "nullable": true
+          },
           "address": {
             "$ref": "#/components/schemas/RegisteredAddress"
           },
@@ -4727,6 +4731,10 @@
           },
           "name": {
             "type": "string"
+          },
+          "hnDescription": {
+            "type": "string",
+            "nullable": true
           },
           "pathway": {
             "type": "string"

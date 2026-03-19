@@ -78,15 +78,14 @@ namespace HNTAS.Web.UI.Controllers
             string nextAction;
             switch (model.HeatNetworkType)
             {
-                // TODO - if possible, refactor to use enum instead of string for HeatNetworkType to avoid magic strings and potential typos
-                case "CommunalWithIntegralEC":
+                case Models.Enums.HeatNetworkType.CommunalWithIntegralEC:
                     nextAction = "HeatNetworkCommunalECSummary";
                     break;
-                case "CommunalWithSeparateUpstreamHN":
+                case Models.Enums.HeatNetworkType.CommunalWithSeparateUpstreamHN:
                     nextAction = "HeatNetworkCommunalNoECSummary";
                     break;
-                case "DistrictWithOwnEC":
-                case "DistrictWithSeparateUpstreamHN":
+                case Models.Enums.HeatNetworkType.DistrictWithOwnEC:
+                case Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN:
                     nextAction = "HeatNetworkConnections";
                     break;
                 default:
@@ -115,7 +114,19 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult HeatNetworkConnections()
         {
             this.ShowBackButton("HeatNetworkType", "HeatNetworkRegistration");
-            var model = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey) ?? new HeatNetworkConnectionsViewModel();
+            var hnTypeModel = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelKey);
+            var newModel = new HeatNetworkConnectionsViewModel();
+            if (hnTypeModel.HeatNetworkType == Models.Enums.HeatNetworkType.DistrictWithOwnEC)
+            {
+                ViewBag.IsDistrictWithOwnEC = true;
+                newModel.IsUpstreamDistrictHeatNetworkConnections = false;
+            }
+            else if (hnTypeModel.HeatNetworkType == Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN)
+            {
+                ViewBag.IsDistrictWithOwnEC = false;
+                newModel.IsDownstreamDistrictHeatNetworkConnections = false;
+            }
+            var model = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey) ?? newModel;
             return View(model);
         }
 
@@ -123,12 +134,72 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult HeatNetworkConnections(HeatNetworkConnectionsViewModel model)
         {
             this.ShowBackButton("HeatNetworkType", "HeatNetworkRegistration");
+
+            if (model.IsCommunalBuilding && !model.NoOfCommunalBuilding.HasValue)
+            {
+                ModelState.AddModelError(nameof(model.NoOfCommunalBuilding), "Enter the number of communal buildings");
+            }
+
+            if (model.IsDomesticConsumer && !model.NoOfDomesticConsumer.HasValue)
+            {
+                ModelState.AddModelError(nameof(model.NoOfDomesticConsumer), "Enter the number of domestic consumers");
+            }
+
+            if (model.IsNonDomesticConsumer && !model.NoOfNonDomesticConsumer.HasValue)
+            {
+                ModelState.AddModelError(nameof(model.NoOfNonDomesticConsumer), "Enter the number of non-domestic consumers");
+            }
+
+            if (model.IsDownstreamDistrictHeatNetworkConnections && !model.NoOfDownstreamDistrictHeatNetworkConnections.HasValue)
+            {
+                ModelState.AddModelError(nameof(model.NoOfDownstreamDistrictHeatNetworkConnections), "Enter the number of district connections");
+            }
+
+            if (model.IsUpstreamDistrictHeatNetworkConnections && !model.NoOfUpstreamDistrictHeatNetworkConnections.HasValue)
+            {
+                ModelState.AddModelError(nameof(model.NoOfUpstreamDistrictHeatNetworkConnections), "Enter the number of district connections");
+            }
+
+            if (!model.IsCommunalBuilding && !model.IsDomesticConsumer && !model.IsNonDomesticConsumer && !model.IsUpstreamDistrictHeatNetworkConnections && !model.IsDownstreamDistrictHeatNetworkConnections)
+            {
+                // Model-level error (not associated with a specific property)
+                ModelState.AddModelError("HeatNetworkConnections", "Select at least one connection type");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            
-            return RedirectToAction("HeatNetworkCommunalECSummary");
+            _sessionHelper.SaveToSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey, model);
+            var hnTypeModel = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelKey);
+            if (hnTypeModel.HeatNetworkType == Models.Enums.HeatNetworkType.DistrictWithOwnEC)
+            {
+                return RedirectToAction("HeatNetworkDistrictEcSummary");
+            }
+            else
+            {
+                return RedirectToAction("HeatNetworkDistrictNoEcSummary");
+            }
+        }
+
+        public IActionResult HeatNetworkDistrictEcSummary()
+        {
+            this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
+            var model = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey);
+            return View(model);
+        }
+
+        public IActionResult HeatNetworkDistrictNoEcSummary()
+        {
+            this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
+            var model = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey);
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult HeatNetworkSummary()
+        {
+            return RedirectToAction("EnterHnName", "HeatNetwork");
         }
     }
 }

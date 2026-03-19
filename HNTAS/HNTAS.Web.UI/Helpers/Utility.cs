@@ -145,46 +145,46 @@ namespace HNTAS.Web.UI.Helpers
             }).ToList();
         }
 
-        public static List<HeatNetworkTypeOption> GetHeatNetworkTypeOptions()
-        {
+        //public static List<HeatNetworkTypeOption> GetHeatNetworkTypeOptions()
+        //{
 
-            var heatNetworkOptions = new List<HeatNetworkTypeOption>
-            {
-                new() {
-                    Id = "SelectedHeatNetworkType",
-                    Value = ApiHeatNetworkType.NetworkLedDistrictHeatNetwork.ToString(),
-                    Text = "Network‑led District Heat Network",
-                    Hint = "An Energy Centre or District Distribution Network which is being developed as part of a network-led District Heating Network",
-                    SummaryText = "Help with network-led District Heat Networks",
-                    DetailsText = "A network-led District Heating Network is a heat network which supplies two or more buildings, and that is developed independently of the boundaries of any particular development, with third parties connecting to that heat network.\r\n\r\nThis would cover both District Heating Networks which are connecting to existing buildings and/or pre-existing heat networks (such as city-wide district heating networks constructed with HNIP or GHNF funding connecting to public buildings, campus networks, etc.), and those which serve new building developments developed by plot developers (but developed and constructed independently to the new buildings)."
-                },
-                new() {
-                    Id = "SelectedHeatNetworkType-2",
-                    Value = ApiHeatNetworkType.DeveloperLedDistrictHeatNetworkMorL.ToString(),
-                    Text = "Developer‑led District Heat Network(medium‑large)",
-                    Hint = "An Energy Centre or District Distribution Network which is being developed as part of a new build medium-large developer-led District Heating Network",
-                    SummaryText = "Help with developer-led District Heat Networks",
-                    DetailsText = "A developer-led District Heating Network refers to a heat network that is built to service a single development, which contains two or more buildings. Normally the heat network would be constructed simultaneously with the wider building works, but this can also include heat networks retrofitted to a single building or estate."
-                },
-                new() {
-                    Id = "SelectedHeatNetworkType-3",
-                    Value = ApiHeatNetworkType.DeveloperLedDistrictHeatNetworkSm.ToString(),
-                    Text = "Developer‑led District Heat Network(small)",
-                    Hint = "An Energy Centre which is being developed as part of a new build developer-led District Heating Network",
-                    SummaryText = "Help with developer-led District Heat Networks",
-                    DetailsText = "A developer-led District Heating Network refers to a heat network that is applicable where there are only a small number of new build apartment blocks or other Consumer Connections, with small amounts of District Distribution Network pipework. For example, a District Heating System where there are only two buildings, with one small length of buried pipework connecting them together."
-                },
-                new() {
-                    Id = "SelectedHeatNetworkType-4",
-                    Value = ApiHeatNetworkType.CommunalHeatNetwork.ToString(),
-                    Text = "Communal Heat Network",
-                    Hint = "An Energy Centre which is being developed as part of a new build Communal Heat Network",
-                    SummaryText = "Help with Communal Heat Networks",
-                    DetailsText = "A Communal Heat Network is a heat network which serves a single building divided into separate premises or persons in those premises (e.g. habitable dwellings).\r\n\r\nThis will most likely be a developer lead heat network, where the heat network is built to serve a single development.\r\n\r\nFor example, an Energy Centre serving a heat network in a single building containing multiple apartments and a small number of commercial connections. The Energy Centre (and rest of the heat network) is constructed simultaneously to the rest of the building."
-                }
-            };
-            return heatNetworkOptions;
-        }
+        //    var heatNetworkOptions = new List<HeatNetworkTypeOption>
+        //    {
+        //        new() {
+        //            Id = "SelectedHeatNetworkType",
+        //            //Value = ApiHeatNetworkType.NetworkLedDistrictHeatNetwork.ToString(),
+        //            Text = "Network‑led District Heat Network",
+        //            Hint = "An Energy Centre or District Distribution Network which is being developed as part of a network-led District Heating Network",
+        //            SummaryText = "Help with network-led District Heat Networks",
+        //            DetailsText = "A network-led District Heating Network is a heat network which supplies two or more buildings, and that is developed independently of the boundaries of any particular development, with third parties connecting to that heat network.\r\n\r\nThis would cover both District Heating Networks which are connecting to existing buildings and/or pre-existing heat networks (such as city-wide district heating networks constructed with HNIP or GHNF funding connecting to public buildings, campus networks, etc.), and those which serve new building developments developed by plot developers (but developed and constructed independently to the new buildings)."
+        //        },
+        //        new() {
+        //            Id = "SelectedHeatNetworkType-2",
+        //            //Value = ApiHeatNetworkType.DeveloperLedDistrictHeatNetworkMorL.ToString(),
+        //            Text = "Developer‑led District Heat Network(medium‑large)",
+        //            Hint = "An Energy Centre or District Distribution Network which is being developed as part of a new build medium-large developer-led District Heating Network",
+        //            SummaryText = "Help with developer-led District Heat Networks",
+        //            DetailsText = "A developer-led District Heating Network refers to a heat network that is built to service a single development, which contains two or more buildings. Normally the heat network would be constructed simultaneously with the wider building works, but this can also include heat networks retrofitted to a single building or estate."
+        //        },
+        //        new() {
+        //            Id = "SelectedHeatNetworkType-3",
+        //            Value = ApiHeatNetworkType.DeveloperLedDistrictHeatNetworkSm.ToString(),
+        //            Text = "Developer‑led District Heat Network(small)",
+        //            Hint = "An Energy Centre which is being developed as part of a new build developer-led District Heating Network",
+        //            SummaryText = "Help with developer-led District Heat Networks",
+        //            DetailsText = "A developer-led District Heating Network refers to a heat network that is applicable where there are only a small number of new build apartment blocks or other Consumer Connections, with small amounts of District Distribution Network pipework. For example, a District Heating System where there are only two buildings, with one small length of buried pipework connecting them together."
+        //        },
+        //        new() {
+        //            Id = "SelectedHeatNetworkType-4",
+        //            Value = ApiHeatNetworkType.CommunalHeatNetwork.ToString(),
+        //            Text = "Communal Heat Network",
+        //            Hint = "An Energy Centre which is being developed as part of a new build Communal Heat Network",
+        //            SummaryText = "Help with Communal Heat Networks",
+        //            DetailsText = "A Communal Heat Network is a heat network which serves a single building divided into separate premises or persons in those premises (e.g. habitable dwellings).\r\n\r\nThis will most likely be a developer lead heat network, where the heat network is built to serve a single development.\r\n\r\nFor example, an Energy Centre serving a heat network in a single building containing multiple apartments and a small number of commercial connections. The Energy Centre (and rest of the heat network) is constructed simultaneously to the rest of the building."
+        //        }
+        //    };
+        //    return heatNetworkOptions;
+        //}
 
 
 
