@@ -40,6 +40,7 @@ docs/models/Energy.md
 docs/models/EnergyCentreDetails.md
 docs/models/EnumItemResponse.md
 docs/models/HeatNetwork.md
+docs/models/HeatNetworkConnections.md
 docs/models/HeatNetworkElement.md
 docs/models/HeatNetworkElementDisplayType.md
 docs/models/HeatNetworkElementResponse.md
@@ -58,9 +59,6 @@ docs/models/JourneyDataResponse.md
 docs/models/ManagedUserResponse.md
 docs/models/MeteringAndMonitoringStrategy.md
 docs/models/MeteringAndMonitoringStrategyResponse.md
-docs/models/NetworkCharacteristics.md
-docs/models/NetworkCharacteristics2.md
-docs/models/NetworkCharacteristicsResponse.md
 docs/models/NetworkDetailsStatus.md
 docs/models/NetworkDetailsUploadDocumentRequest.md
 docs/models/NetworkDetailsUploadedDocument.md
@@ -177,6 +175,7 @@ src/HNTAS.Api.Client/Model/Energy.cs
 src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetwork.cs
+src/HNTAS.Api.Client/Model/HeatNetworkConnections.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElement.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElementDisplayType.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElementResponse.cs
@@ -195,9 +194,6 @@ src/HNTAS.Api.Client/Model/JourneyDataResponse.cs
 src/HNTAS.Api.Client/Model/ManagedUserResponse.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategy.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategyResponse.cs
-src/HNTAS.Api.Client/Model/NetworkCharacteristics.cs
-src/HNTAS.Api.Client/Model/NetworkCharacteristics2.cs
-src/HNTAS.Api.Client/Model/NetworkCharacteristicsResponse.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadDocumentRequest.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadedDocument.cs

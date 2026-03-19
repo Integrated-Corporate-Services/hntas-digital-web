@@ -39,7 +39,8 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult Index()
         {
             _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
-            return RedirectToAction("EnterHNName", "HeatNetwork");
+            //start
+            return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
         }
 
         [HttpGet]
@@ -569,23 +570,13 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
-            var networkType = heatNetworkData?.NetworkCharacteristics?.HeatNetworkType;
-
             this.ShowBackButton("AddNetworkDetails", "HeatNetwork", new {hnId});
 
             var networkDetailsTypeList = Utility.GetDefaultNetworkDetailsOptions();            
 
             foreach (var option in networkDetailsTypeList)
             {
-                if (option.Id == NetworkDetailsType.NetworkCharacteristics)
-                {
-                    Utility.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkCharacteristics?.Status);
-                }
-                else if (option.Id == NetworkDetailsType.NetworkElements)
-                {
-                    Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.NetworkElementStatus, heatNetworkData?.NetworkCharacteristics?.Status);
-                }
-                else if (option.Id == NetworkDetailsType.Soa)
+                if (option.Id == NetworkDetailsType.Soa)
                 {
                     Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.ElementSoaStatus, heatNetworkData?.NetworkElements?.NetworkElementStatus);
                 }
@@ -611,7 +602,6 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HNName = hnName;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnName);
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkTypeSessionKey, networkType);
 
             return View("NetworkDetails", model);
         }
@@ -621,9 +611,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, hnid.ToUpper());
             switch (networkDetailId)
-            {
-                case NetworkDetailsType.NetworkCharacteristics:
-                    return RedirectToAction("HeatNetworkType", "NetworkCharacteristics");
+            {                
                 case NetworkDetailsType.NetworkElements:
                     return RedirectToAction("SelectNetworkElements", "NetworkElements", new { hnid });
                 case NetworkDetailsType.Soa:
