@@ -43,26 +43,7 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
         }
 
-        [HttpGet]
-        public IActionResult EnterHNName()
-        {            
-            this.ShowBackButton("UserAccount", "Dashboard");
-            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
-            return View(heatNetworkNameModel);
-        }
-
-        [HttpPost]
-        public IActionResult EnterHNName(HeatNetworkNameModel model)
-        {
-            this.ShowBackButton("UserAccount", "Dashboard");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
-            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "HeatNetwork");
-            return RedirectToAction("DoesHNHaveAPostcode", "Address");
-        }
+        
 
         //[HttpGet]
         //public IActionResult DoesHNHaveAPostcode()

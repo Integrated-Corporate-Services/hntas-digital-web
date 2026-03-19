@@ -111,6 +111,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
+       
         public IActionResult HeatNetworkConnections()
         {
             this.ShowBackButton("HeatNetworkType", "HeatNetworkRegistration");
@@ -201,5 +202,34 @@ namespace HNTAS.Web.UI.Controllers
         {
             return RedirectToAction("EnterHnName", "HeatNetwork");
         }
+
+        [HttpGet]
+        public IActionResult HeatNetworkName()
+        {
+            var hnTypeModel = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelKey);
+            var backAction = hnTypeModel.HeatNetworkType switch
+            {
+                Models.Enums.HeatNetworkType.CommunalWithIntegralEC => "HeatNetworkCommunalECSummary",
+                Models.Enums.HeatNetworkType.CommunalWithSeparateUpstreamHN => "HeatNetworkCommunalNoECSummary",
+                Models.Enums.HeatNetworkType.DistrictWithOwnEC => "HeatNetworkDistrictEcSummary",
+                Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN => "HeatNetworkDistrictNoEcSummary",
+                _ => "HeatNetworkSummary"
+            };
+            this.ShowBackButton(backAction);
+            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+            return View(heatNetworkNameModel);
+        }
+
+        [HttpPost]
+        public IActionResult HeatNetworkName(HeatNetworkNameModel model)
+        {
+            this.ShowBackButton("UserAccount", "Dashboard");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "HeatNetwork");
+            return RedirectToAction("DoesHNHaveAPostcode", "Address");
+        }
     }
-}
