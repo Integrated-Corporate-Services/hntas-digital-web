@@ -31,6 +31,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkDwellingsCheck(HowManyDwellingsIncludedModel model)
         {
             this.ShowBackButton("HeatNetworksAsync", "UserManagement");
@@ -75,6 +76,7 @@ namespace HNTAS.Web.UI.Controllers
         #endregion
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkType(HeatNetworkTypeViewModel model)
         {
             this.ShowBackButton("HeatNetworkIntroduction", "HeatNetworkRegistration");
@@ -139,6 +141,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkConnections(HeatNetworkConnectionsViewModel model)
         {
             this.ShowBackButton("HeatNetworkType", "HeatNetworkRegistration");
@@ -190,13 +193,14 @@ namespace HNTAS.Web.UI.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult HeatNetworkDistrictEcSummary()
         {
             this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
             var model = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey);
             return View(model);
         }
-
+        [HttpGet]
         public IActionResult HeatNetworkDistrictNoEcSummary()
         {
             this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
@@ -228,6 +232,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkName(HeatNetworkNameModel model)
         {
             var hnTypeModel = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelKey);
