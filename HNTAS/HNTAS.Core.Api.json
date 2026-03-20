@@ -4598,6 +4598,14 @@
             "format": "int32",
             "nullable": true
           },
+          "isDownstreamDistrictHeatNetworkConnections": {
+            "type": "boolean"
+          },
+          "noOfDownstreamDistrictHeatNetworkConnections": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "isUpstreamDistrictHeatNetworkConnections": {
             "type": "boolean"
           },

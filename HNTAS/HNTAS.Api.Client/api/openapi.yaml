@@ -3128,7 +3128,7 @@ components:
           soaStatus: soaStatus
           soaStatusUpdatedBy: soaStatusUpdatedBy
           stageId: Stage1
-        count: 9
+        count: 3
         type: EnergyCentre
         elementType: elementType
       properties:
@@ -3534,7 +3534,7 @@ components:
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            count: 9
+            count: 3
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
@@ -3547,7 +3547,7 @@ components:
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            count: 9
+            count: 3
             type: EnergyCentre
             elementType: elementType
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3570,10 +3570,12 @@ components:
           isDomesticConsumer: true
           noOfNonDomesticConsumer: 2
           isNonDomesticConsumer: true
+          noOfDownstreamDistrictHeatNetworkConnections: 7
           isCommunalBuilding: true
-          noOfUpstreamDistrictHeatNetworkConnections: 7
+          noOfUpstreamDistrictHeatNetworkConnections: 9
           noOfDomesticConsumer: 5
           isUpstreamDistrictHeatNetworkConnections: true
+          isDownstreamDistrictHeatNetworkConnections: true
           noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -3652,10 +3654,12 @@ components:
         isDomesticConsumer: true
         noOfNonDomesticConsumer: 2
         isNonDomesticConsumer: true
+        noOfDownstreamDistrictHeatNetworkConnections: 7
         isCommunalBuilding: true
-        noOfUpstreamDistrictHeatNetworkConnections: 7
+        noOfUpstreamDistrictHeatNetworkConnections: 9
         noOfDomesticConsumer: 5
         isUpstreamDistrictHeatNetworkConnections: true
+        isDownstreamDistrictHeatNetworkConnections: true
         noOfCommunalBuilding: 5
       properties:
         isCommunalBuilding:
@@ -3673,6 +3677,12 @@ components:
         isNonDomesticConsumer:
           type: boolean
         noOfNonDomesticConsumer:
+          format: int32
+          nullable: true
+          type: integer
+        isDownstreamDistrictHeatNetworkConnections:
+          type: boolean
+        noOfDownstreamDistrictHeatNetworkConnections:
           format: int32
           nullable: true
           type: integer
@@ -3945,7 +3955,7 @@ components:
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            count: 9
+            count: 3
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
@@ -3958,7 +3968,7 @@ components:
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            count: 9
+            count: 3
             type: EnergyCentre
             elementType: elementType
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3981,10 +3991,12 @@ components:
           isDomesticConsumer: true
           noOfNonDomesticConsumer: 2
           isNonDomesticConsumer: true
+          noOfDownstreamDistrictHeatNetworkConnections: 7
           isCommunalBuilding: true
-          noOfUpstreamDistrictHeatNetworkConnections: 7
+          noOfUpstreamDistrictHeatNetworkConnections: 9
           noOfDomesticConsumer: 5
           isUpstreamDistrictHeatNetworkConnections: true
+          isDownstreamDistrictHeatNetworkConnections: true
           noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4549,7 +4561,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 9
+          count: 3
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -4562,7 +4574,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 9
+          count: 3
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4607,7 +4619,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 9
+          count: 3
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -4620,7 +4632,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 9
+          count: 3
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4664,7 +4676,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 9
+          count: 3
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -4677,7 +4689,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 9
+          count: 3
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00

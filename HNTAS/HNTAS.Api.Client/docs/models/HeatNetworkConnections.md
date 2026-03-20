@@ -10,6 +10,8 @@ Name | Type | Description | Notes
 **NoOfDomesticConsumer** | **int** |  | [optional] 
 **IsNonDomesticConsumer** | **bool** |  | [optional] 
 **NoOfNonDomesticConsumer** | **int** |  | [optional] 
+**IsDownstreamDistrictHeatNetworkConnections** | **bool** |  | [optional] 
+**NoOfDownstreamDistrictHeatNetworkConnections** | **int** |  | [optional] 
 **IsUpstreamDistrictHeatNetworkConnections** | **bool** |  | [optional] 
 **NoOfUpstreamDistrictHeatNetworkConnections** | **int** |  | [optional] 
 

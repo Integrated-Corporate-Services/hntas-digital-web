@@ -39,10 +39,12 @@ namespace HNTAS.Api.Client.Model
         /// <param name="noOfDomesticConsumer">noOfDomesticConsumer</param>
         /// <param name="isNonDomesticConsumer">isNonDomesticConsumer</param>
         /// <param name="noOfNonDomesticConsumer">noOfNonDomesticConsumer</param>
+        /// <param name="isDownstreamDistrictHeatNetworkConnections">isDownstreamDistrictHeatNetworkConnections</param>
+        /// <param name="noOfDownstreamDistrictHeatNetworkConnections">noOfDownstreamDistrictHeatNetworkConnections</param>
         /// <param name="isUpstreamDistrictHeatNetworkConnections">isUpstreamDistrictHeatNetworkConnections</param>
         /// <param name="noOfUpstreamDistrictHeatNetworkConnections">noOfUpstreamDistrictHeatNetworkConnections</param>
         [JsonConstructor]
-        public HeatNetworkConnections(Option<bool?> isCommunalBuilding = default, Option<int?> noOfCommunalBuilding = default, Option<bool?> isDomesticConsumer = default, Option<int?> noOfDomesticConsumer = default, Option<bool?> isNonDomesticConsumer = default, Option<int?> noOfNonDomesticConsumer = default, Option<bool?> isUpstreamDistrictHeatNetworkConnections = default, Option<int?> noOfUpstreamDistrictHeatNetworkConnections = default)
+        public HeatNetworkConnections(Option<bool?> isCommunalBuilding = default, Option<int?> noOfCommunalBuilding = default, Option<bool?> isDomesticConsumer = default, Option<int?> noOfDomesticConsumer = default, Option<bool?> isNonDomesticConsumer = default, Option<int?> noOfNonDomesticConsumer = default, Option<bool?> isDownstreamDistrictHeatNetworkConnections = default, Option<int?> noOfDownstreamDistrictHeatNetworkConnections = default, Option<bool?> isUpstreamDistrictHeatNetworkConnections = default, Option<int?> noOfUpstreamDistrictHeatNetworkConnections = default)
         {
             IsCommunalBuildingOption = isCommunalBuilding;
             NoOfCommunalBuildingOption = noOfCommunalBuilding;
@@ -50,6 +52,8 @@ namespace HNTAS.Api.Client.Model
             NoOfDomesticConsumerOption = noOfDomesticConsumer;
             IsNonDomesticConsumerOption = isNonDomesticConsumer;
             NoOfNonDomesticConsumerOption = noOfNonDomesticConsumer;
+            IsDownstreamDistrictHeatNetworkConnectionsOption = isDownstreamDistrictHeatNetworkConnections;
+            NoOfDownstreamDistrictHeatNetworkConnectionsOption = noOfDownstreamDistrictHeatNetworkConnections;
             IsUpstreamDistrictHeatNetworkConnectionsOption = isUpstreamDistrictHeatNetworkConnections;
             NoOfUpstreamDistrictHeatNetworkConnectionsOption = noOfUpstreamDistrictHeatNetworkConnections;
             OnCreated();
@@ -136,6 +140,32 @@ namespace HNTAS.Api.Client.Model
         public int? NoOfNonDomesticConsumer { get { return this.NoOfNonDomesticConsumerOption; } set { this.NoOfNonDomesticConsumerOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of IsDownstreamDistrictHeatNetworkConnections
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> IsDownstreamDistrictHeatNetworkConnectionsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets IsDownstreamDistrictHeatNetworkConnections
+        /// </summary>
+        [JsonPropertyName("isDownstreamDistrictHeatNetworkConnections")]
+        public bool? IsDownstreamDistrictHeatNetworkConnections { get { return this.IsDownstreamDistrictHeatNetworkConnectionsOption; } set { this.IsDownstreamDistrictHeatNetworkConnectionsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfDownstreamDistrictHeatNetworkConnections
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfDownstreamDistrictHeatNetworkConnectionsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfDownstreamDistrictHeatNetworkConnections
+        /// </summary>
+        [JsonPropertyName("noOfDownstreamDistrictHeatNetworkConnections")]
+        public int? NoOfDownstreamDistrictHeatNetworkConnections { get { return this.NoOfDownstreamDistrictHeatNetworkConnectionsOption; } set { this.NoOfDownstreamDistrictHeatNetworkConnectionsOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of IsUpstreamDistrictHeatNetworkConnections
         /// </summary>
         [JsonIgnore]
@@ -175,6 +205,8 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  NoOfDomesticConsumer: ").Append(NoOfDomesticConsumer).Append("\n");
             sb.Append("  IsNonDomesticConsumer: ").Append(IsNonDomesticConsumer).Append("\n");
             sb.Append("  NoOfNonDomesticConsumer: ").Append(NoOfNonDomesticConsumer).Append("\n");
+            sb.Append("  IsDownstreamDistrictHeatNetworkConnections: ").Append(IsDownstreamDistrictHeatNetworkConnections).Append("\n");
+            sb.Append("  NoOfDownstreamDistrictHeatNetworkConnections: ").Append(NoOfDownstreamDistrictHeatNetworkConnections).Append("\n");
             sb.Append("  IsUpstreamDistrictHeatNetworkConnections: ").Append(IsUpstreamDistrictHeatNetworkConnections).Append("\n");
             sb.Append("  NoOfUpstreamDistrictHeatNetworkConnections: ").Append(NoOfUpstreamDistrictHeatNetworkConnections).Append("\n");
             sb.Append("}\n");
@@ -220,6 +252,8 @@ namespace HNTAS.Api.Client.Model
             Option<int?> noOfDomesticConsumer = default;
             Option<bool?> isNonDomesticConsumer = default;
             Option<int?> noOfNonDomesticConsumer = default;
+            Option<bool?> isDownstreamDistrictHeatNetworkConnections = default;
+            Option<int?> noOfDownstreamDistrictHeatNetworkConnections = default;
             Option<bool?> isUpstreamDistrictHeatNetworkConnections = default;
             Option<int?> noOfUpstreamDistrictHeatNetworkConnections = default;
 
@@ -256,6 +290,12 @@ namespace HNTAS.Api.Client.Model
                         case "noOfNonDomesticConsumer":
                             noOfNonDomesticConsumer = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
+                        case "isDownstreamDistrictHeatNetworkConnections":
+                            isDownstreamDistrictHeatNetworkConnections = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
+                        case "noOfDownstreamDistrictHeatNetworkConnections":
+                            noOfDownstreamDistrictHeatNetworkConnections = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
                         case "isUpstreamDistrictHeatNetworkConnections":
                             isUpstreamDistrictHeatNetworkConnections = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
                             break;
@@ -277,10 +317,13 @@ namespace HNTAS.Api.Client.Model
             if (isNonDomesticConsumer.IsSet && isNonDomesticConsumer.Value == null)
                 throw new ArgumentNullException(nameof(isNonDomesticConsumer), "Property is not nullable for class HeatNetworkConnections.");
 
+            if (isDownstreamDistrictHeatNetworkConnections.IsSet && isDownstreamDistrictHeatNetworkConnections.Value == null)
+                throw new ArgumentNullException(nameof(isDownstreamDistrictHeatNetworkConnections), "Property is not nullable for class HeatNetworkConnections.");
+
             if (isUpstreamDistrictHeatNetworkConnections.IsSet && isUpstreamDistrictHeatNetworkConnections.Value == null)
                 throw new ArgumentNullException(nameof(isUpstreamDistrictHeatNetworkConnections), "Property is not nullable for class HeatNetworkConnections.");
 
-            return new HeatNetworkConnections(isCommunalBuilding, noOfCommunalBuilding, isDomesticConsumer, noOfDomesticConsumer, isNonDomesticConsumer, noOfNonDomesticConsumer, isUpstreamDistrictHeatNetworkConnections, noOfUpstreamDistrictHeatNetworkConnections);
+            return new HeatNetworkConnections(isCommunalBuilding, noOfCommunalBuilding, isDomesticConsumer, noOfDomesticConsumer, isNonDomesticConsumer, noOfNonDomesticConsumer, isDownstreamDistrictHeatNetworkConnections, noOfDownstreamDistrictHeatNetworkConnections, isUpstreamDistrictHeatNetworkConnections, noOfUpstreamDistrictHeatNetworkConnections);
         }
 
         /// <summary>
@@ -333,6 +376,15 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNumber("noOfNonDomesticConsumer", heatNetworkConnections.NoOfNonDomesticConsumerOption.Value!.Value);
                 else
                     writer.WriteNull("noOfNonDomesticConsumer");
+
+            if (heatNetworkConnections.IsDownstreamDistrictHeatNetworkConnectionsOption.IsSet)
+                writer.WriteBoolean("isDownstreamDistrictHeatNetworkConnections", heatNetworkConnections.IsDownstreamDistrictHeatNetworkConnectionsOption.Value!.Value);
+
+            if (heatNetworkConnections.NoOfDownstreamDistrictHeatNetworkConnectionsOption.IsSet)
+                if (heatNetworkConnections.NoOfDownstreamDistrictHeatNetworkConnectionsOption.Value != null)
+                    writer.WriteNumber("noOfDownstreamDistrictHeatNetworkConnections", heatNetworkConnections.NoOfDownstreamDistrictHeatNetworkConnectionsOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfDownstreamDistrictHeatNetworkConnections");
 
             if (heatNetworkConnections.IsUpstreamDistrictHeatNetworkConnectionsOption.IsSet)
                 writer.WriteBoolean("isUpstreamDistrictHeatNetworkConnections", heatNetworkConnections.IsUpstreamDistrictHeatNetworkConnectionsOption.Value!.Value);

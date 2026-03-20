@@ -1,4 +1,5 @@
 ﻿using HNTAS.Web.UI.Models.Address;
+using HNTAS.Web.UI.Models.HeatNetworkRegistration;
 using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
@@ -14,7 +15,7 @@ namespace HNTAS.Web.UI.Models
     }
 
     public class HeatNetworkLocationModel
-    {        
+    {   
         public AddressByStreetOrTownModel? HNAddressByStreet { get; set; }               
     }
 
@@ -29,25 +30,7 @@ namespace HNTAS.Web.UI.Models
     {
         [Required(ErrorMessage = "Please select the heat network phase.")]
         public string HeatNetworkPhase { get; set; }
-    }
-
-    public class HasElementBeenRegisteredModel
-    {
-        [Required(ErrorMessage = "Please select an option.")]
-        public string? HasElementBeenRegistered { get; set; }
-    }
-
-    public class HasPlanningApplicationBeenSubmittedModel
-    {
-        [Required(ErrorMessage = "Please select an option.")]
-        public string? HasPlanningApplicationBeenSubmitted { get; set; }
-    }
-
-    public class HaveYouSignedMEContractModel
-    {
-        [Required(ErrorMessage = "Please select an option.")]
-        public string? HaveYouSignedMEContract { get; set; }
-    }
+    }   
 
     public class PathwayModel
     {
@@ -59,10 +42,9 @@ namespace HNTAS.Web.UI.Models
         public HeatNetworkNameModel HeatNetworkNameModel { get; set; }
         public AddressByStreetOrTownModel? HeatNetworkAddressModel { get; set; }
         public ECDetailsModel ECDetailsModel { get; set; }
-        public HeatNetworkPhaseModel HeatNetworkPhaseModel { get; set; }
-        public HasElementBeenRegisteredModel? HasElementBeenRegisteredModel { get; set; }
-        public HasPlanningApplicationBeenSubmittedModel? HasPlanningApplicationBeenSubmittedModel { get; set; }
-        public HaveYouSignedMEContractModel? HaveYouSignedMEContractModel { get; set; }
+        public HeatNetworkPhaseModel HeatNetworkPhaseModel { get; set; }        
+        public HeatNetworkTypeViewModel HeatNetworkTypeModel { get; set; }
+        public HeatNetworkConnectionsViewModel HeatNetworkConnectionsModel { get; set; }
         public PathwayModel PathwayModel { get; set; }
 
         // The ConfirmedDeclaration property, now part of this specific ViewModel
