@@ -1,15 +1,11 @@
 ﻿@using HNTAS.Web.UI.Models.NetworkElements
-@model NetworkElementsModel
-
-@* @{
-    ViewData["Title"] = "Heat Network Details";
-} *@
+@model NetworkElementsOverViewModel
 
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
-        <form asp-action="NetworkElementsOverView" method="post">
+        <form asp-action="NetworkElementsOverViewAsync" method="post">
             @Html.AntiForgeryToken()
-            <span class="govuk-caption-l">@ViewBag.HnId</span>
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
             <h1 class="govuk-heading-l">
                 Network overview
             </h1>
@@ -20,20 +16,48 @@
                         Address
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        @Model.HeatNetworkAddressModel?.Fulladdress
+                        @Model.HeatNetworkAddress
                     </dd>
                 </div>
 
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
-                        Latitude and longitude coordinates
+                        Coordinates
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            @Model.ECDetailsModel.LatitudeLongitude
+                            @Model.Coordinates
                         </dd>
                     </div>
-             
-                
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Network type
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        Communal (with an integral energy centre)
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Elements
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        <ul class="govuk-list">                            
+                            @foreach(var element in Model.Elements)
+                            {
+                                <li>@element</li>
+                            }
+                        </ul>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Phase
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.Phase
+                    </dd>
+                </div>
             </dl>
             <button type="submit" class="govuk-button" data-module="govuk-button">
                 Continue

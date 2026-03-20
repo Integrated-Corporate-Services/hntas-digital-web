@@ -3745,6 +3745,7 @@ components:
       - EnergyCentre
       - Substation
       - DistrictDistributionNetwork
+      - CommunalDistributionNetwork
       - ConsumerConnections
       type: string
     HeatNetworkElementResponse:

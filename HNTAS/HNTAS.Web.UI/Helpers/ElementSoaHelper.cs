@@ -168,7 +168,7 @@ namespace HNTAS.Web.UI.Helpers
                 {
                     ElementId = element.ElementId,
                     Type = element.Type,
-                    Name = Utility.GetDefaultNetworkElementOptions().Find(a => a.Id.ToString() == element.Type.ToString()).Label
+                    Name = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().Find(a => a.Id.ToString() == element.Type.ToString()).Label
                 });
             }
             return soaElements;

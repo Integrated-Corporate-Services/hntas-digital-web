@@ -6,9 +6,9 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-xl">@ViewBag.HnId</span>
+        <span class="govuk-caption-xl">@ViewBag.HnId @ViewBag.HnName</span>
         <h1 class="govuk-heading-l">
-            District network elements
+            @ViewBag.Heading
         </h1>
         <form asp-action="SelectNetworkElements" method="post" novalidate>
             @Html.AntiForgeryToken()
@@ -35,30 +35,7 @@
                             var checkboxId = $"SelectedElementIds_{item.Id.ToString()}";
                             var conditionalId = $"conditional-{item.Id.ToString().ToLowerInvariant()}";
                             var isChecked = Model.SelectedElementIds.Contains(item.Id);
-                            var hintId = $"{checkboxId}-item-hint";
-
-                            @if (Model.ElementOptions[i].Id == HeatNetworkElementDisplayType.EnergyCentre)
-                                {
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="@checkboxId"
-                                           name="SelectedElementIds"
-                                           type="checkbox"
-                                           value="@item.Id"                                           
-                                           @(isChecked ? "checked" : "")
-                                           @(string.IsNullOrEmpty(item.Hint) ? "" : $"aria-describedby=\"{checkboxId}-hint\"") />
-
-                                    <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
-                                        @item.Label
-                                    </label>
-                                    <div id="@hintId" class="govuk-hint govuk-checkboxes__hint">
-                                        @item.Hint
-                                    </div>
-                                </div>
-                                }
-
-                            else
-                                {
+                            var hintId = $"{checkboxId}-item-hint";                            
                                 <div class="govuk-checkboxes__item">
                                     <input class="govuk-checkboxes__input"
                                            id="@checkboxId"
@@ -85,7 +62,7 @@
                                     <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
 
                                         <label class="govuk-label" for="ElementCounts_@item.Id">
-                                            Number of @item.Label.ToLower()
+                                            Number of @item.SubLabel.ToLower()
                                         </label>
 
                                         @if (hasError)
@@ -101,9 +78,7 @@
                                                type="number"
                                                value="@(Model.ElementCounts.ContainsKey(item.Id) ? Model.ElementCounts[item.Id] : null)" />
                                     </div>
-                                </div>
-                                }
-                                
+                                </div>                                
                         }
                     </div>
                 </fieldset>

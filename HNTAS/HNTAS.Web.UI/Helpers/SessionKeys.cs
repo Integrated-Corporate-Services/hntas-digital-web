@@ -74,5 +74,6 @@
         public const string ElementSoaIncompleteSoaSessionKey = "ElementSoaIncompleteSoaSessionKey";
         public const string CurrentStageIndexSessionKey = "CurrentStageIndexSessionKey";
         public const string ElementSoaStatusUpdateModelSessionKey = "ElementSoaStatusUpdateModelSessionKey";
+        public const string NetworkElementsOverViewModelSessionKey = "NetworkElementsOverViewModelSessionKey";
     }
 }

@@ -4689,6 +4689,7 @@
           "EnergyCentre",
           "Substation",
           "DistrictDistributionNetwork",
+          "CommunalDistributionNetwork",
           "ConsumerConnections"
         ]
       },
