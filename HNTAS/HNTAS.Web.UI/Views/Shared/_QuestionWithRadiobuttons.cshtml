@@ -54,7 +54,7 @@
                             @if (!string.IsNullOrEmpty(option.OptHintText))
                             {
                                 <div id="@(q.QId)-item-hint" class="govuk-hint govuk-radios__hint">
-                                    @option.OptHintText
+                                    @Html.Raw(option.OptHintText)
                                 </div>
                             }
                         </div>
