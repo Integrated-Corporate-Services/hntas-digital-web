@@ -2,23 +2,23 @@
 @model IEnumerable<AuditLogResponse>
 
 @{
-    ViewData["Title"] = "Audit history";
+    ViewData["Title"] = "Certification history";
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
 
-        <h1 class="govuk-heading-l">Audit history</h1>
+        <h1 class="govuk-heading-l">Certification history</h1>
 
-        <table class="govuk-table">
-            <caption class="govuk-table__caption govuk-table__caption--m">Recent network events</caption>
+        <table class="govuk-table">           
 
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header">Event</th>
-                    <th scope="col" class="govuk-table__header">User</th>
-                    <th scope="col" class="govuk-table__header">Role</th>
-                    <th scope="col" class="govuk-table__header">Timestamp</th>
+                    <th scope="col" class="govuk-table__header">Entry type</th>
+                    <th scope="col" class="govuk-table__header">Element</th>
+                    <th scope="col" class="govuk-table__header">Phase</th>
+                    <th scope="col" class="govuk-table__header">Stage</th>
+                    <th scope="col" class="govuk-table__header">Date</th>
                 </tr>
             </thead>
 
@@ -26,13 +26,14 @@
                 @foreach (var log in Model)
                 {
                     <tr class="govuk-table__row">
-                        <td class="govuk-table__cell">@log.Event</td>
-                        <td class="govuk-table__cell">@log.UserName</td>
-                        <td class="govuk-table__cell">@log.Role</td>
+                        <td class="govuk-table__cell">@log.EntryType</td>
+                        <td class="govuk-table__cell">@log.ElementName</td>
+                        <td class="govuk-table__cell">@log.Phase</td>
+                        <td class="govuk-table__cell">@log.Stage</td>
                         <td class="govuk-table__cell">
                             @if (DateTime.TryParse(log.Timestamp, out DateTime parsedDate))
                             {
-                                @parsedDate.ToString("dd MMM yyyy HH:mm:ss")
+                                @parsedDate.ToString("dd/MM/yyyy")
                             }
                             else
                             {

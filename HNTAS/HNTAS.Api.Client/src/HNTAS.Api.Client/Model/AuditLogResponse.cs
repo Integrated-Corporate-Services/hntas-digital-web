@@ -33,34 +33,40 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="AuditLogResponse" /> class.
         /// </summary>
-        /// <param name="event">event</param>
+        /// <param name="entryType">entryType</param>
         /// <param name="userName">userName</param>
         /// <param name="role">role</param>
         /// <param name="timestamp">timestamp</param>
+        /// <param name="elementName">elementName</param>
+        /// <param name="phase">phase</param>
+        /// <param name="stage">stage</param>
         [JsonConstructor]
-        public AuditLogResponse(Option<string?> @event = default, Option<string?> userName = default, Option<string?> role = default, Option<string?> timestamp = default)
+        public AuditLogResponse(Option<string?> entryType = default, Option<string?> userName = default, Option<string?> role = default, Option<string?> timestamp = default, Option<string?> elementName = default, Option<string?> phase = default, Option<string?> stage = default)
         {
-            EventOption = @event;
+            EntryTypeOption = entryType;
             UserNameOption = userName;
             RoleOption = role;
             TimestampOption = timestamp;
+            ElementNameOption = elementName;
+            PhaseOption = phase;
+            StageOption = stage;
             OnCreated();
         }
 
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of Event
+        /// Used to track the state of EntryType
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> EventOption { get; private set; }
+        public Option<string?> EntryTypeOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Event
+        /// Gets or Sets EntryType
         /// </summary>
-        [JsonPropertyName("event")]
-        public string? Event { get { return this.EventOption; } set { this.EventOption = new(value); } }
+        [JsonPropertyName("entryType")]
+        public string? EntryType { get { return this.EntryTypeOption; } set { this.EntryTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of UserName
@@ -102,6 +108,45 @@ namespace HNTAS.Api.Client.Model
         public string? Timestamp { get { return this.TimestampOption; } set { this.TimestampOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of ElementName
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> ElementNameOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementName
+        /// </summary>
+        [JsonPropertyName("elementName")]
+        public string? ElementName { get { return this.ElementNameOption; } set { this.ElementNameOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Phase
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> PhaseOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Phase
+        /// </summary>
+        [JsonPropertyName("phase")]
+        public string? Phase { get { return this.PhaseOption; } set { this.PhaseOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Stage
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> StageOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Stage
+        /// </summary>
+        [JsonPropertyName("stage")]
+        public string? Stage { get { return this.StageOption; } set { this.StageOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -109,10 +154,13 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class AuditLogResponse {\n");
-            sb.Append("  Event: ").Append(Event).Append("\n");
+            sb.Append("  EntryType: ").Append(EntryType).Append("\n");
             sb.Append("  UserName: ").Append(UserName).Append("\n");
             sb.Append("  Role: ").Append(Role).Append("\n");
             sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
+            sb.Append("  ElementName: ").Append(ElementName).Append("\n");
+            sb.Append("  Phase: ").Append(Phase).Append("\n");
+            sb.Append("  Stage: ").Append(Stage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -150,10 +198,13 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> varEvent = default;
+            Option<string?> entryType = default;
             Option<string?> userName = default;
             Option<string?> role = default;
             Option<string?> timestamp = default;
+            Option<string?> elementName = default;
+            Option<string?> phase = default;
+            Option<string?> stage = default;
 
             while (utf8JsonReader.Read())
             {
@@ -170,8 +221,8 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "event":
-                            varEvent = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "entryType":
+                            entryType = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "userName":
                             userName = new Option<string?>(utf8JsonReader.GetString()!);
@@ -182,14 +233,23 @@ namespace HNTAS.Api.Client.Model
                         case "timestamp":
                             timestamp = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "elementName":
+                            elementName = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "phase":
+                            phase = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "stage":
+                            stage = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         default:
                             break;
                     }
                 }
             }
 
-            if (varEvent.IsSet && varEvent.Value == null)
-                throw new ArgumentNullException(nameof(varEvent), "Property is not nullable for class AuditLogResponse.");
+            if (entryType.IsSet && entryType.Value == null)
+                throw new ArgumentNullException(nameof(entryType), "Property is not nullable for class AuditLogResponse.");
 
             if (userName.IsSet && userName.Value == null)
                 throw new ArgumentNullException(nameof(userName), "Property is not nullable for class AuditLogResponse.");
@@ -200,7 +260,7 @@ namespace HNTAS.Api.Client.Model
             if (timestamp.IsSet && timestamp.Value == null)
                 throw new ArgumentNullException(nameof(timestamp), "Property is not nullable for class AuditLogResponse.");
 
-            return new AuditLogResponse(varEvent, userName, role, timestamp);
+            return new AuditLogResponse(entryType, userName, role, timestamp, elementName, phase, stage);
         }
 
         /// <summary>
@@ -227,8 +287,8 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, AuditLogResponse auditLogResponse, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (auditLogResponse.EventOption.IsSet && auditLogResponse.Event == null)
-                throw new ArgumentNullException(nameof(auditLogResponse.Event), "Property is required for class AuditLogResponse.");
+            if (auditLogResponse.EntryTypeOption.IsSet && auditLogResponse.EntryType == null)
+                throw new ArgumentNullException(nameof(auditLogResponse.EntryType), "Property is required for class AuditLogResponse.");
 
             if (auditLogResponse.UserNameOption.IsSet && auditLogResponse.UserName == null)
                 throw new ArgumentNullException(nameof(auditLogResponse.UserName), "Property is required for class AuditLogResponse.");
@@ -239,8 +299,8 @@ namespace HNTAS.Api.Client.Model
             if (auditLogResponse.TimestampOption.IsSet && auditLogResponse.Timestamp == null)
                 throw new ArgumentNullException(nameof(auditLogResponse.Timestamp), "Property is required for class AuditLogResponse.");
 
-            if (auditLogResponse.EventOption.IsSet)
-                writer.WriteString("event", auditLogResponse.Event);
+            if (auditLogResponse.EntryTypeOption.IsSet)
+                writer.WriteString("entryType", auditLogResponse.EntryType);
 
             if (auditLogResponse.UserNameOption.IsSet)
                 writer.WriteString("userName", auditLogResponse.UserName);
@@ -250,6 +310,24 @@ namespace HNTAS.Api.Client.Model
 
             if (auditLogResponse.TimestampOption.IsSet)
                 writer.WriteString("timestamp", auditLogResponse.Timestamp);
+
+            if (auditLogResponse.ElementNameOption.IsSet)
+                if (auditLogResponse.ElementNameOption.Value != null)
+                    writer.WriteString("elementName", auditLogResponse.ElementName);
+                else
+                    writer.WriteNull("elementName");
+
+            if (auditLogResponse.PhaseOption.IsSet)
+                if (auditLogResponse.PhaseOption.Value != null)
+                    writer.WriteString("phase", auditLogResponse.Phase);
+                else
+                    writer.WriteNull("phase");
+
+            if (auditLogResponse.StageOption.IsSet)
+                if (auditLogResponse.StageOption.Value != null)
+                    writer.WriteString("stage", auditLogResponse.Stage);
+                else
+                    writer.WriteNull("stage");
         }
     }
 }

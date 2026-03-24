@@ -94,8 +94,16 @@
                                                 <span class="govuk-tag @statusClass">
                                                     @element.SoaStatus
                                                 </span>
+                                                @{
+                                                    // Create a unique key for this navigation
+                                                    var tempDataKey = $"Soa_{element.ElementId}_{stage.StageId}";
+                                                    TempData[$"{tempDataKey}_Phase"] = stage.Title;
+                                                    TempData[$"{tempDataKey}_Element"] = element.Name;
+                                                    TempData.Keep($"{tempDataKey}_Phase");
+                                                    TempData.Keep($"{tempDataKey}_Element");
+                                                }
                                                 <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2"
-                                                   href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type })"
+                                                   href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type})"
                                                    aria-describedby="Update status"
                                                    onclick="event.stopPropagation();">
                                                     Update status

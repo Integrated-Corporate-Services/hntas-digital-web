@@ -3930,7 +3930,7 @@
       "AuditLogResponse": {
         "type": "object",
         "properties": {
-          "event": {
+          "entryType": {
             "type": "string"
           },
           "userName": {
@@ -3941,6 +3941,18 @@
           },
           "timestamp": {
             "type": "string"
+          },
+          "elementName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phase": {
+            "type": "string",
+            "nullable": true
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4385,6 +4397,14 @@
           },
           "hnId": {
             "type": "string"
+          },
+          "soaPhase": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementDisplayName": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

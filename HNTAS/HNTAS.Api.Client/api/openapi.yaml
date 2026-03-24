@@ -2530,18 +2530,30 @@ components:
       type: object
     AuditLogResponse:
       example:
+        phase: phase
+        entryType: entryType
         role: role
-        event: event
+        stage: stage
         userName: userName
         timestamp: timestamp
+        elementName: elementName
       properties:
-        event:
+        entryType:
           type: string
         userName:
           type: string
         role:
           type: string
         timestamp:
+          type: string
+        elementName:
+          nullable: true
+          type: string
+        phase:
+          nullable: true
+          type: string
+        stage:
+          nullable: true
           type: string
       type: object
     Background:
@@ -3155,9 +3167,11 @@ components:
         elementId: elementId
         elementSoaStatus: InProgress
         hnId: hnId
+        elementDisplayName: elementDisplayName
         stage: Stage1
         soaStatus: soaStatus
         soaStatusUpdatedBy: soaStatusUpdatedBy
+        soaPhase: soaPhase
       properties:
         stage:
           $ref: "#/components/schemas/SoaStage"
@@ -3173,6 +3187,12 @@ components:
           nullable: true
           type: string
         hnId:
+          type: string
+        soaPhase:
+          nullable: true
+          type: string
+        elementDisplayName:
+          nullable: true
           type: string
       required:
       - hnId
