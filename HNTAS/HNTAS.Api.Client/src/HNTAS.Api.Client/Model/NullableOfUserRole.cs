@@ -41,34 +41,24 @@ namespace HNTAS.Api.Client.Model
         Coordinator = 2,
 
         /// <summary>
+        /// Enum DesignatedDutyHolder for value: DesignatedDutyHolder
+        /// </summary>
+        DesignatedDutyHolder = 3,
+
+        /// <summary>
         /// Enum Contributor for value: Contributor
         /// </summary>
-        Contributor = 3,
-
-        /// <summary>
-        /// Enum Designer for value: Designer
-        /// </summary>
-        Designer = 4,
-
-        /// <summary>
-        /// Enum Contractor for value: Contractor
-        /// </summary>
-        Contractor = 5,
-
-        /// <summary>
-        /// Enum Operator for value: Operator
-        /// </summary>
-        Operator = 6,
+        Contributor = 4,
 
         /// <summary>
         /// Enum Assessor for value: Assessor
         /// </summary>
-        Assessor = 7,
+        Assessor = 5,
 
         /// <summary>
         /// Enum Certifier for value: Certifier
         /// </summary>
-        Certifier = 8
+        Certifier = 6
     }
 
     /// <summary>
@@ -89,17 +79,11 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Coordinator"))
                 return NullableOfUserRole.Coordinator;
 
+            if (value.Equals("DesignatedDutyHolder"))
+                return NullableOfUserRole.DesignatedDutyHolder;
+
             if (value.Equals("Contributor"))
                 return NullableOfUserRole.Contributor;
-
-            if (value.Equals("Designer"))
-                return NullableOfUserRole.Designer;
-
-            if (value.Equals("Contractor"))
-                return NullableOfUserRole.Contractor;
-
-            if (value.Equals("Operator"))
-                return NullableOfUserRole.Operator;
 
             if (value.Equals("Assessor"))
                 return NullableOfUserRole.Assessor;
@@ -123,17 +107,11 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Coordinator"))
                 return NullableOfUserRole.Coordinator;
 
+            if (value.Equals("DesignatedDutyHolder"))
+                return NullableOfUserRole.DesignatedDutyHolder;
+
             if (value.Equals("Contributor"))
                 return NullableOfUserRole.Contributor;
-
-            if (value.Equals("Designer"))
-                return NullableOfUserRole.Designer;
-
-            if (value.Equals("Contractor"))
-                return NullableOfUserRole.Contractor;
-
-            if (value.Equals("Operator"))
-                return NullableOfUserRole.Operator;
 
             if (value.Equals("Assessor"))
                 return NullableOfUserRole.Assessor;
@@ -158,17 +136,11 @@ namespace HNTAS.Api.Client.Model
             if (value == NullableOfUserRole.Coordinator)
                 return "Coordinator";
 
+            if (value == NullableOfUserRole.DesignatedDutyHolder)
+                return "DesignatedDutyHolder";
+
             if (value == NullableOfUserRole.Contributor)
                 return "Contributor";
-
-            if (value == NullableOfUserRole.Designer)
-                return "Designer";
-
-            if (value == NullableOfUserRole.Contractor)
-                return "Contractor";
-
-            if (value == NullableOfUserRole.Operator)
-                return "Operator";
 
             if (value == NullableOfUserRole.Assessor)
                 return "Assessor";

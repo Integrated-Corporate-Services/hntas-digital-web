@@ -4778,10 +4778,8 @@ components:
       enum:
       - ResponsiblePerson
       - Coordinator
+      - DesignatedDutyHolder
       - Contributor
-      - Designer
-      - Contractor
-      - Operator
       - Assessor
       - Certifier
       - null
@@ -6062,10 +6060,8 @@ components:
       enum:
       - ResponsiblePerson
       - Coordinator
+      - DesignatedDutyHolder
       - Contributor
-      - Designer
-      - Contractor
-      - Operator
       - Assessor
       - Certifier
       type: string

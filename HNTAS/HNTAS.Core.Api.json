@@ -5343,10 +5343,8 @@
         "enum": [
           "ResponsiblePerson",
           "Coordinator",
+          "DesignatedDutyHolder",
           "Contributor",
-          "Designer",
-          "Contractor",
-          "Operator",
           "Assessor",
           "Certifier",
           null
@@ -6350,10 +6348,8 @@
         "enum": [
           "ResponsiblePerson",
           "Coordinator",
+          "DesignatedDutyHolder",
           "Contributor",
-          "Designer",
-          "Contractor",
-          "Operator",
           "Assessor",
           "Certifier"
         ]
