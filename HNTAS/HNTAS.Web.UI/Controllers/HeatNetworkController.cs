@@ -128,6 +128,10 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     Utility.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.ElementSoaStatus, heatNetworkData?.NetworkElements?.NetworkElementStatus);
                 }
+                else if (option.Id == NetworkDetailsType.NetworkElements)
+                {
+                    Utility.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkElements?.NetworkElementStatus, null);
+                }
                 else if (option.Id == NetworkDetailsType.MeteringAndMonitoringStrategy)
                 {
                     Utility.UpdateOptionStatus(option, heatNetworkData?.MeteringAndMonitoringStrategy?.Status, heatNetworkData?.NetworkElements?.NetworkElementStatus);
