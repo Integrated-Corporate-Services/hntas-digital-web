@@ -2,20 +2,23 @@
 @model DoesHNHaveAPostcodeViewModel
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">  
-
+  <div class="govuk-grid-column-two-thirds">
+        @if (ViewBag.HnId != null)
+        {
+            <span class="govuk-caption-xl">@ViewBag.HnId</span>
+        }
     @* Error summary *@
-
+        <span class="govuk-caption-l">Add a heat network</span>
     <form method="post" novalidate>
         @Html.AntiForgeryToken()
-
+            
         <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
             <fieldset class="govuk-fieldset" aria-describedby="has-postcode-hint">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                    <h1 class="govuk-fieldset__heading">Does your heat network have a postcode?</h1>
+                        <h1 class="govuk-fieldset__heading">Does your main energy centre have an address and postcode?</h1>
                 </legend>
 
-                <div id="has-postcode-hint" class="govuk-hint">Select one option</div>
+                    <div id="has-postcode-hint" class="govuk-hint">Choose 'Yes', only if you have a full address and postcode</div>
 
                 @if (ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0)
                 {
@@ -80,7 +83,7 @@
         <button class="govuk-button" data-module="govuk-button" type="submit">Continue</button>
 
         <p class="govuk-body">
-            <a class="govuk-link" asp-controller="HeatNetwork" asp-action="AddressManualEntry" asp-method="GET">Enter address manually</a>
+            <a class="govuk-link" asp-controller="Address" asp-action="AddressManualEntry" asp-method="GET">Enter address manually</a>
         </p>
     </form>
 

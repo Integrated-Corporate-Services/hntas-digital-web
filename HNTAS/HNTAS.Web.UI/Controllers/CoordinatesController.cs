@@ -61,9 +61,9 @@ namespace HNTAS.Web.UI.Controllers
             model.ECAddressByLatLong.Longitude = lon;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ECDetailsModelSessionKey, model);
             string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if (previousStep == "HeatNetwork")
+            if (previousStep == "HeatNetworkRegistration")
             {
-                return RedirectToAction("EnterHNPhase", "HeatNetwork");
+                return RedirectToAction("HeatNetworkPhase", "HeatNetworkRegistration");
             }
             else
             {
