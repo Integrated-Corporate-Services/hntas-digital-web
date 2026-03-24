@@ -3,8 +3,10 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.HeatNetworkRegistration;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -13,12 +15,16 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ISessionHelper _sessionHelper;
         private readonly IHeatNetworkService _heatNetworkService;
         private readonly IOrganisationService _organisationService;
+        private readonly IAddressLookupService _addressLookUpService;
+        private readonly ILogger<HeatNetworkRegistrationController> _logger;
 
-        public HeatNetworkRegistrationController(ISessionHelper sessionHelper, IHeatNetworkService heatNetworkService, IOrganisationService organisationService)
+        public HeatNetworkRegistrationController(ISessionHelper sessionHelper, IHeatNetworkService heatNetworkService, IOrganisationService organisationService, IAddressLookupService addressLookupService, ILogger<HeatNetworkRegistrationController> logger)
         {
             _sessionHelper = sessionHelper;
             _heatNetworkService = heatNetworkService;
             _organisationService = organisationService;
+            _addressLookUpService = addressLookupService;
+            _logger = logger;
         }
 
         #region wip
@@ -85,12 +91,22 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             string nextAction;
+            var newHnConnectionsModel = new HeatNetworkConnectionsViewModel
+            {
+                IsCommunalBuilding = false,
+                IsDomesticConsumer = false,
+                IsNonDomesticConsumer = false,
+                IsDownstreamDistrictHeatNetworkConnections = false,
+                IsUpstreamDistrictHeatNetworkConnections = false
+            };
             switch (model.HeatNetworkType)
             {
                 case Models.Enums.HeatNetworkType.CommunalWithIntegralEC:
+                    _sessionHelper.SaveToSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey, newHnConnectionsModel);
                     nextAction = "HeatNetworkCommunalECSummary";
                     break;
                 case Models.Enums.HeatNetworkType.CommunalWithSeparateUpstreamHN:
+                    _sessionHelper.SaveToSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey, newHnConnectionsModel);
                     nextAction = "HeatNetworkCommunalNoECSummary";
                     break;
                 case Models.Enums.HeatNetworkType.DistrictWithOwnEC:
@@ -250,9 +266,138 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
-            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "HeatNetworkRegistration");
-            return RedirectToAction("DoesHNHaveAPostcode", "Address");
+            return RedirectToAction("DoesHNHaveAPostcode");
         }
+
+        #region address input
+        [HttpGet]
+        public IActionResult DoesHNHaveAPostcode()
+        {            
+            this.ShowBackButton("HeatNetworkName");
+            var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey) ?? new DoesHNHaveAPostcodeViewModel { HasPostcode = false };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DoesHNHaveAPostcode(DoesHNHaveAPostcodeViewModel model)
+        {
+            this.ShowBackButton("HeatNetworkName");
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
+            if (!model.HasPostcode)
+            {
+                return RedirectToAction("ECCoordinates");
+            }
+            SearchAddressByPostcodeModel results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
+            model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
+            if (results == null || results.Addresses == null || results.Addresses.Length == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
+                return View(model);
+            }
+            results.Addresses = results.Addresses
+                .Select(address => Utility.CapitalizeCommaSeparated(address))
+                .ToArray();
+            _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
+
+            return RedirectToAction("SearchByPostcodeResults");
+        }
+
+        [HttpGet]
+        public IActionResult SearchByPostcodeResults()
+        {
+            this.ShowBackButton("DoesHNHaveAPostcode");
+
+            SearchAddressByPostcodeModel model = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
+
+            if (model == null)
+            {
+                _logger.LogError("SearchAddressByPostcodeModel is null.");
+                return View("DoesHNHaveAPostcode");
+            }
+            return View(model);
+        }
+
+        public IActionResult SelectAddress(string selectedAddress)
+        {
+            var addressmodel = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
+            if (addressmodel == null)
+            {
+                _logger.LogError("SearchAddressByPostcodeModel not found in session.");
+                return BadRequest("Session expired or invalid. Please try again.");
+            }
+            addressmodel.SelectedFullAddress = Utility.CapitalizeCommaSeparated(selectedAddress);
+            var addressParts = addressmodel.SelectedFullAddress.Split(",");
+
+            if (addressParts.Length < 3)
+            {
+                var sanitizedAddress = selectedAddress?
+                    .Replace("\r", " ")
+                    .Replace("\n", " ");
+                _logger.LogError("Malformed address received: {Address}", sanitizedAddress);
+                return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");                
+            }
+
+            var model = new AddressByStreetOrTownModel
+            {
+                StreetAddress = string.Join(",", addressParts.Take(addressParts.Length - 2)).Trim() ?? string.Empty,
+                TownOrCity = addressParts[addressParts.Length - 2].Trim() ?? string.Empty,
+                Postalcode = (addressParts[addressParts.Length - 1]).ToUpper().Trim() ?? string.Empty,
+                Country = "United Kingdom" ?? string.Empty,
+                Fulladdress = addressmodel.SelectedFullAddress
+            };
+            // Save the new model to session
+            _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, model);
+            return RedirectToAction("ConfirmAddress");
+        }
+
+        [HttpGet]
+        public IActionResult AddressManualEntry()
+        {
+            this.ShowBackButton("HeatNetworkName", "HeatNetworkRegistration");
+            var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey)?.HNAddressByStreet ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddressManualEntry(AddressByStreetOrTownModel model)
+        {
+            this.ShowBackButton("HeatNetworkName");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
+                .Where(part => !string.IsNullOrWhiteSpace(part));
+            model.Fulladdress = string.Join(", ", addressParts);
+            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
+            heatNetworkLocationModel.HNAddressByStreet = model;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
+
+            return RedirectToAction("ECCoordinates");
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmAddress()
+        {
+            this.ShowBackButton("DoesHNHaveAPostcode");
+            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmAddress(AddressByStreetOrTownModel model)
+        {
+            return RedirectToAction("SaveHNAddressByPostcode");
+        }
+        #endregion
 
         [HttpGet]
         public IActionResult SaveHNAddressByPostcode()
@@ -265,8 +410,50 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel { HNAddressByStreet = new AddressByStreetOrTownModel() };
             heatNetworkLocationModel.HNAddressByStreet = model;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
-            return RedirectToAction("ECCoordinates", "Coordinates");
+            return RedirectToAction("ECCoordinates");
         }
+
+        #region Coordinates input
+        [HttpGet]
+        public IActionResult ECCoordinates()
+        {
+            this.ShowBackButton("DoesHNHaveAPostcode");
+            var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ECCoordinates(ECDetailsModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Try to split and parse the LatitudeLongitude value
+            var raw = model.LatitudeLongitude;
+            var parts = raw.Split(',', System.StringSplitOptions.RemoveEmptyEntries | System.StringSplitOptions.TrimEntries);
+
+            if (parts.Length != 2
+                || !decimal.TryParse(parts[0], NumberStyles.Float | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var lat)
+                || !decimal.TryParse(parts[1], NumberStyles.Float | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var lon))
+            {
+                ModelState.AddModelError(nameof(model.LatitudeLongitude),
+                    "Enter latitude and longitude in correct format.");
+                return View("ECCoordinates", model);
+            }
+
+            // Populate nested AddressByLatLongModel
+            model.ECAddressByLatLong.Latitude = lat;
+            model.ECAddressByLatLong.Longitude = lon;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.ECDetailsModelSessionKey, model);
+            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
+            return RedirectToAction("HeatNetworkPhase");
+        }
+        #endregion
+
+        
 
         [HttpGet]
         public IActionResult HeatNetworkPhase()
@@ -295,13 +482,13 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model);
                 switch (model.HeatNetworkPhase)
                 {
-                    case "Design":
-                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "2" });
-                        return RedirectToAction("CheckYourAnswers", "HeatNetworkRegistration");
                     case "Feasibility":
                         // store pathway as 1, navigate to cya
                         _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
                         return RedirectToAction("CheckYourAnswers", "HeatNetworkRegistration");
+                    case "Design":
+                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "2" });
+                        return RedirectToAction("CheckYourAnswers", "HeatNetworkRegistration");                    
                     case "Construction":
                         _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "3" });
                         return RedirectToAction("CheckYourAnswers", "HeatNetworkRegistration");

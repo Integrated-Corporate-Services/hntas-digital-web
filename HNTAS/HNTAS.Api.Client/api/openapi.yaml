@@ -3661,6 +3661,7 @@ components:
         isUpstreamDistrictHeatNetworkConnections: true
         isDownstreamDistrictHeatNetworkConnections: true
         noOfCommunalBuilding: 5
+      nullable: true
       properties:
         isCommunalBuilding:
           type: boolean
