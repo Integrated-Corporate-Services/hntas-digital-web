@@ -3,6 +3,7 @@ using GovUk.OneLogin.AspNetCore;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Routing;
@@ -111,8 +112,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new AuditLogResponseJsonConverter(),
         new ElementJsonConverter(),
         new ECDetails2JsonConverter(),
-        new NetworkDetailsUploadedDocumentJsonConverter(),        
-        new SoaStagesJsonConverter(),        
+        new NetworkDetailsUploadedDocumentJsonConverter(),
+        new SoaStagesJsonConverter(),
 
     }
 });
@@ -397,6 +398,10 @@ else
         });
 
 }
+
+
+// Custom authorization logic for role-based access control, policies, and handlers
+builder.Services.AddApplicationAuthorization();
 
 builder.Services.AddSession(options =>
 {

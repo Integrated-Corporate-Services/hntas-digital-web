@@ -122,7 +122,7 @@ public class HomeController : Controller
 
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, newUserId);
 
-                return View();
+                return RedirectToAction("StartRegistration", "Organisation");
             }
             // Existing user flow
             else if (existingUser != null)
@@ -131,7 +131,7 @@ public class HomeController : Controller
 
                 if (existingUser.OrgId == null && existingUser.Roles.Count() == 0)
                 {
-                    return View();
+                    return RedirectToAction("StartRegistration", "Organisation");
                 }
                 else if (existingUser.OrgId == null && existingUser.Roles.Count() != 0)
                 {
@@ -152,6 +152,8 @@ public class HomeController : Controller
             return BadRequest();
         }
     }
+
+
 
     public IActionResult Error(int code)
     {
