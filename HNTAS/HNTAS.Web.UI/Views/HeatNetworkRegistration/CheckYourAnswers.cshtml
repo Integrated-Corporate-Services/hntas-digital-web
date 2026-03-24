@@ -1,0 +1,131 @@
+﻿@using HNTAS.Web.UI.Models
+@model CheckYourAnswersHeatNetworkModel
+
+@{
+    ViewData["Title"] = "Check your answers";
+    var heatNetworkName = Model.HeatNetworkNameModel.HeatNetworkName;
+    var heatNetworkCoordinates = Model.ECDetailsModel.LatitudeLongitude;
+    var energyCentreAddress = Model.HeatNetworkAddressModel?.Fulladdress;
+    var heatNetworkPhase = Model.HeatNetworkPhaseModel.HeatNetworkPhase;
+    var heatNetworkType = Model.HeatNetworkTypeModel.HeatNetworkType;
+    var heatNetworkConnections = Model.HeatNetworkConnectionsModel;
+    var pathway = Model.PathwayModel.Pathway;
+    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) &&
+                                ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
+    string hnTypeToDisplay = heatNetworkType switch
+    {
+        HNTAS.Web.UI.Models.Enums.HeatNetworkType.CommunalWithIntegralEC => "Communal (with an integral energy centre)",
+        HNTAS.Web.UI.Models.Enums.HeatNetworkType.CommunalWithSeparateUpstreamHN => "Communal (supplied by a separate upstream heat network)",
+        HNTAS.Web.UI.Models.Enums.HeatNetworkType.DistrictWithOwnEC => "District (with its own main energy centre)",
+        HNTAS.Web.UI.Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN => "District (supplied by a separate upstream heat network)",
+        _ => ""
+    };
+    var connections = new List<string>();
+    if (heatNetworkConnections.IsCommunalBuilding)
+    {
+        connections.Add($"{heatNetworkConnections.NoOfCommunalBuilding} communal buildings");
+    }
+    if (heatNetworkConnections.IsDomesticConsumer)
+    {
+        connections.Add($"{heatNetworkConnections.NoOfDomesticConsumer} domestic consumers");
+    }
+    if (heatNetworkConnections.IsNonDomesticConsumer)
+    {
+        connections.Add($"{heatNetworkConnections.NoOfNonDomesticConsumer} non domestic consumers");
+    }
+    if (heatNetworkConnections.IsDownstreamDistrictHeatNetworkConnections)
+    {
+        connections.Add($"{heatNetworkConnections.NoOfDownstreamDistrictHeatNetworkConnections} district connections");
+    }
+    if (heatNetworkConnections.IsUpstreamDistrictHeatNetworkConnections)
+    {
+        connections.Add($"{heatNetworkConnections.NoOfUpstreamDistrictHeatNetworkConnections} district connections");
+    }
+    string hnConnectionsToDisplay = connections.Any() ? string.Join(", ", connections) : "No connections";
+    var fieldOrder = new[] { nameof(Model.ConfirmedDeclaration) };
+}
+
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Check your answers</h1>
+            <form asp-controller="HeatNetworkRegistration" asp-action="SubmitAnswers" method="post" novalidate>
+                @Html.AntiForgeryToken()
+                <h2 class="govuk-heading-m">Heat Network registration</h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Network Type</dt>
+                        <dd class="govuk-summary-list__value">@hnTypeToDisplay</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("HeatNetworkType", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HeatNetworkType</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Connections heat network has</dt>
+                        <dd class="govuk-summary-list__value">@hnConnectionsToDisplay</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("HeatNetworkConnections", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Coordinates</dt>
+                        <dd class="govuk-summary-list__value">@heatNetworkCoordinates</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("ECCoordinates", "Coordinates")">Change<span class="govuk-visually-hidden">HNLocation</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Heat Network Name</dt>
+                        <dd class="govuk-summary-list__value">@heatNetworkName</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("HeatNetworkName", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Main energy centre address and postcode</dt>
+                        <dd class="govuk-summary-list__value">@energyCentreAddress</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("DoesHNHaveAPostcode", "Address")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Phase</dt>
+                        <dd class="govuk-summary-list__value">@heatNetworkPhase</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("HeatNetworkPhase", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                        </dd>
+                    </div>
+                </dl>
+
+                <div class="govuk-form-group @(hasDeclarationErrors ? "govuk-form-group--error" : "")">
+                    <fieldset class="govuk-fieldset" aria-describedby="@(hasDeclarationErrors ? "confirmDeclaration-error" : "")">
+                        @if (hasDeclarationErrors)
+                        {
+                            <p id="confirmDeclaration-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ConfirmedDeclaration)
+                            </p>
+                        }
+                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input"
+                                       id="@(Html.GenerateIdFromName("ConfirmDeclaration").ToLowerInvariant())"
+                                       asp-for="ConfirmedDeclaration"
+                                       type="checkbox"
+                                       value="true">
+                                <label class="govuk-label govuk-checkboxes__label" for="confirmdeclaration">
+                                    I confirm that the summary above is correct for @heatNetworkName.
+                                </label>
+
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Confirm
+                </button>
+            </form>
+        </div>
+    </div>        
+</div>

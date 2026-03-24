@@ -32,22 +32,23 @@
     <!-- End Google Tag Manager -->
 </environment>
 @{
-    bool hasOrg = false;
-    if (User?.Identity?.IsAuthenticated == true)
-    {
-        var userId = _sessionHelper.GetFromSession<string>(HttpContextAccessor.HttpContext, "UserModelIdDataKey");
-        if (!string.IsNullOrEmpty(userId))
+        bool hasOrg = false;
+        if (User?.Identity?.IsAuthenticated == true)
         {
-            try
-            {
-                var fetched = await _userService.GetUserById(userId);
-                hasOrg = !string.IsNullOrWhiteSpace(fetched.OrgId);            
-            }catch
-            {
-                _logger.LogError("An error occurred while trying to check user's organisation details.");                    
-            }
-        }    
-    }
+                var userId = _sessionHelper.GetFromSession<string>(HttpContextAccessor.HttpContext, "UserModelIdDataKey");
+                if (!string.IsNullOrEmpty(userId))
+                {
+                        try
+                        {
+                                var fetched = await _userService.GetUserById(userId);
+                                hasOrg = !string.IsNullOrWhiteSpace(fetched.OrgId);
+                        }
+                        catch
+                        {
+                                _logger.LogError("An error occurred while trying to check user's organisation details.");
+                        }
+                }
+        }
 }
 
 <body class="govuk-template__body app-body-class">
@@ -134,10 +135,10 @@
                         </li>
 
                         @if (User.Identity.IsAuthenticated && hasOrg)
-                        {                            
+                        {
                             <li class="govuk-service-navigation__item @(currentAction == "UserAccount" && currentController == "Dashboard" ? "govuk-service-navigation__item--active" : "") @(hasOrg ? "" : "govuk-service-navigation__item--disabled")">
                                 <a class="govuk-service-navigation__link"
-                                    href="@Url.Action("UserAccount", "Dashboard")"
+                                   href="@Url.Action("UserAccount", "Dashboard")"
                                    @(currentAction == "UserAccount" && currentController == "Dashboard" ? "aria-current=page" : "")>
                                     <strong>Dashboard</strong>
                                 </a>
@@ -183,7 +184,7 @@
         }
 
         <partial name="_ErrorMessagePartial" />
-      
+
         <main class="govuk-main-wrapper app-main-class" id="main-content">
             @if (string.IsNullOrEmpty(TempData["ErrorSummary"] as string))
             {
