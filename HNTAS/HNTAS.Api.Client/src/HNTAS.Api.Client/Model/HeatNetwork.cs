@@ -465,7 +465,7 @@ namespace HNTAS.Api.Client.Model
                                 heatNetworkType = new Option<HeatNetworkType?>(HeatNetworkTypeValueConverter.FromStringOrDefault(heatNetworkTypeRawValue));
                             break;
                         case "heatNetworkConnections":
-                            heatNetworkConnections = new Option<HeatNetworkConnections?>(JsonSerializer.Deserialize<HeatNetworkConnections>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            heatNetworkConnections = new Option<HeatNetworkConnections?>(JsonSerializer.Deserialize<HeatNetworkConnections>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "networkElements":
                             networkElements = new Option<NetworkElements?>(JsonSerializer.Deserialize<NetworkElements>(ref utf8JsonReader, jsonSerializerOptions));
@@ -509,9 +509,6 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkType.IsSet && heatNetworkType.Value == null)
                 throw new ArgumentNullException(nameof(heatNetworkType), "Property is not nullable for class HeatNetwork.");
 
-            if (heatNetworkConnections.IsSet && heatNetworkConnections.Value == null)
-                throw new ArgumentNullException(nameof(heatNetworkConnections), "Property is not nullable for class HeatNetwork.");
-
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class HeatNetwork.");
 
@@ -553,9 +550,6 @@ namespace HNTAS.Api.Client.Model
 
             if (heatNetwork.PathwayOption.IsSet && heatNetwork.Pathway == null)
                 throw new ArgumentNullException(nameof(heatNetwork.Pathway), "Property is required for class HeatNetwork.");
-
-            if (heatNetwork.HeatNetworkConnectionsOption.IsSet && heatNetwork.HeatNetworkConnections == null)
-                throw new ArgumentNullException(nameof(heatNetwork.HeatNetworkConnections), "Property is required for class HeatNetwork.");
 
             if (heatNetwork.CreatedByOption.IsSet && heatNetwork.CreatedBy == null)
                 throw new ArgumentNullException(nameof(heatNetwork.CreatedBy), "Property is required for class HeatNetwork.");
@@ -620,10 +614,13 @@ namespace HNTAS.Api.Client.Model
                 writer.WriteString("heatNetworkType", heatNetworkTypeRawValue);
             }
             if (heatNetwork.HeatNetworkConnectionsOption.IsSet)
-            {
-                writer.WritePropertyName("heatNetworkConnections");
-                JsonSerializer.Serialize(writer, heatNetwork.HeatNetworkConnections, jsonSerializerOptions);
-            }
+                if (heatNetwork.HeatNetworkConnectionsOption.Value != null)
+                {
+                    writer.WritePropertyName("heatNetworkConnections");
+                    JsonSerializer.Serialize(writer, heatNetwork.HeatNetworkConnections, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("heatNetworkConnections");
             if (heatNetwork.NetworkElementsOption.IsSet)
                 if (heatNetwork.NetworkElementsOption.Value != null)
                 {
