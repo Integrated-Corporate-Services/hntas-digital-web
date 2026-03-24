@@ -77,5 +77,6 @@
         public const string HeatNetworkTypeViewModelKey = "HeatNetworkTypeViewModelKey";
         public const string HeatNetworkConnectionsViewModelKey = "HeatNetworkConnectionsViewModelKey";
         public const string CheckYourAnswersHeatNetworkModelKey = "CheckYourAnswersHeatNetworkModelKey";
+        public const string NetworkElementsOverViewModelSessionKey = "NetworkElementsOverViewModelSessionKey";
     }
 }
