@@ -1,0 +1,49 @@
+﻿@using HNTAS.Web.UI.Models.HeatNetworkRegistration
+@model HeatNetworkConnectionsViewModel
+
+@{
+    var connections = new List<string>();
+    if (Model.IsCommunalBuilding)
+    {
+        connections.Add($"{Model.NoOfCommunalBuilding} communal buildings");
+    }
+    if (Model.IsDomesticConsumer)
+    {
+        connections.Add($"{Model.NoOfDomesticConsumer} domestic consumers");
+    }
+    if (Model.IsNonDomesticConsumer)
+    {
+        connections.Add($"{Model.NoOfNonDomesticConsumer} non domestic consumers");
+    }
+    if (Model.IsDownstreamDistrictHeatNetworkConnections)
+    {
+        connections.Add($"{Model.NoOfDownstreamDistrictHeatNetworkConnections} district connections");
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Add a heat network</span>
+        <h1 class="govuk-heading-l">
+            Heat network summary
+        </h1>
+        <p class="govuk-body">You're registering a&nbsp;district heat network with its own main energy centre</p>
+        <p class="govuk-body">Connected communal networks must be registered separately</p>
+
+        <h2 class="govuk-heading-m">Connections</h2>
+
+        <ul class="govuk-list govuk-list--bullet">
+            @if (connections.Any())
+            {
+                foreach (var c in connections)
+                {
+                    <li>@c</li>
+                }
+            }
+        </ul>
+
+        <div class="app-button-wrapper">
+            <a asp-controller="HeatNetworkRegistration" asp-action="HeatNetworkSummary" asp-method="GET" role="button" data-module="govuk-button" draggable="false" class="govuk-button">Continue</a>
+        </div>
+    </div>
+</div>

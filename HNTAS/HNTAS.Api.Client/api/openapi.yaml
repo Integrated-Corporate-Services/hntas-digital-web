@@ -332,66 +332,6 @@ paths:
           description: Internal Server Error
       tags:
       - HeatNetworks
-  /api/HeatNetworks/network-characteristics:
-    put:
-      parameters:
-      - explode: true
-        in: query
-        name: hnId
-        required: false
-        schema:
-          type: string
-        style: form
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/NetworkCharacteristics2"
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/NetworkCharacteristics2"
-        required: true
-      responses:
-        "200":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/HeatNetworkResponse"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HeatNetworkResponse"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/HeatNetworkResponse"
-          description: OK
-        "400":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Bad Request
-        "404":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Not Found
-        "500":
-          description: Internal Server Error
-      tags:
-      - HeatNetworks
   /api/HeatNetworks/network-elements:
     put:
       parameters:
@@ -3188,7 +3128,7 @@ components:
           soaStatus: soaStatus
           soaStatusUpdatedBy: soaStatusUpdatedBy
           stageId: Stage1
-        count: 5
+        count: 3
         type: EnergyCentre
         elementType: elementType
       properties:
@@ -3540,7 +3480,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 5
+              count: 1
               locations:
               - locations
               - locations
@@ -3558,7 +3498,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 5
+              count: 1
               locations:
               - locations
               - locations
@@ -3577,24 +3517,10 @@ components:
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         uHnId: uHnId
-        networkCharacteristics:
-          isSupplyingOtherHeatNetworks: true
-          updatedBy: updatedBy
-          hasCommercialConnections: true
-          numberOfCommunalFloors: 1
-          createdAt: 2000-01-23T04:56:07.000+00:00
-          heatGenerationSourceFor: heatGenerationSourceFor
-          createdBy: createdBy
-          containsPressureBreak: true
-          id: id
-          heatNetworkType: CityScaleDistrictHeatingNetwork
-          status: InProgress
-          isSuppliedByADistrictHeatNetwork: true
-          updatedAt: 2000-01-23T04:56:07.000+00:00
         networkElements:
           elementSoaStatus: null
           createdAt: 2000-01-23T04:56:07.000+00:00
-          networkElementStatus: null
+          networkElementStatus: InProgress
           updatedBy: updatedBy
           createdBy: createdBy
           elements:
@@ -3608,7 +3534,7 @@ components:
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            count: 5
+            count: 3
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
@@ -3621,7 +3547,7 @@ components:
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            count: 5
+            count: 3
             type: EnergyCentre
             elementType: elementType
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -3640,6 +3566,17 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        heatNetworkConnections:
+          isDomesticConsumer: true
+          noOfNonDomesticConsumer: 2
+          isNonDomesticConsumer: true
+          noOfDownstreamDistrictHeatNetworkConnections: 7
+          isCommunalBuilding: true
+          noOfUpstreamDistrictHeatNetworkConnections: 9
+          noOfDomesticConsumer: 5
+          isUpstreamDistrictHeatNetworkConnections: true
+          isDownstreamDistrictHeatNetworkConnections: true
+          noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
@@ -3653,6 +3590,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
+        hnDescription: hnDescription
         registrationSource: HNTAS
         pathway: pathway
         designConstructionLog:
@@ -3665,6 +3603,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
+        heatNetworkType: CommunalWithIntegralEC
       properties:
         id:
           nullable: true
@@ -3677,6 +3616,9 @@ components:
           type: string
         name:
           type: string
+        hnDescription:
+          nullable: true
+          type: string
         address:
           $ref: "#/components/schemas/RegisteredAddress"
         ecDetails:
@@ -3685,8 +3627,10 @@ components:
           type: string
         registrationSource:
           $ref: "#/components/schemas/RegistrationSource"
-        networkCharacteristics:
-          $ref: "#/components/schemas/NetworkCharacteristics"
+        heatNetworkType:
+          $ref: "#/components/schemas/HeatNetworkType"
+        heatNetworkConnections:
+          $ref: "#/components/schemas/HeatNetworkConnections"
         networkElements:
           $ref: "#/components/schemas/NetworkElements"
         soa:
@@ -3705,6 +3649,51 @@ components:
         phase:
           type: string
       type: object
+    HeatNetworkConnections:
+      example:
+        isDomesticConsumer: true
+        noOfNonDomesticConsumer: 2
+        isNonDomesticConsumer: true
+        noOfDownstreamDistrictHeatNetworkConnections: 7
+        isCommunalBuilding: true
+        noOfUpstreamDistrictHeatNetworkConnections: 9
+        noOfDomesticConsumer: 5
+        isUpstreamDistrictHeatNetworkConnections: true
+        isDownstreamDistrictHeatNetworkConnections: true
+        noOfCommunalBuilding: 5
+      nullable: true
+      properties:
+        isCommunalBuilding:
+          type: boolean
+        noOfCommunalBuilding:
+          format: int32
+          nullable: true
+          type: integer
+        isDomesticConsumer:
+          type: boolean
+        noOfDomesticConsumer:
+          format: int32
+          nullable: true
+          type: integer
+        isNonDomesticConsumer:
+          type: boolean
+        noOfNonDomesticConsumer:
+          format: int32
+          nullable: true
+          type: integer
+        isDownstreamDistrictHeatNetworkConnections:
+          type: boolean
+        noOfDownstreamDistrictHeatNetworkConnections:
+          format: int32
+          nullable: true
+          type: integer
+        isUpstreamDistrictHeatNetworkConnections:
+          type: boolean
+        noOfUpstreamDistrictHeatNetworkConnections:
+          format: int32
+          nullable: true
+          type: integer
+      type: object
     HeatNetworkElement:
       example:
         documents:
@@ -3721,7 +3710,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         name: EnergyCentre
-        count: 5
+        count: 1
         locations:
         - locations
         - locations
@@ -3950,24 +3939,10 @@ components:
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         uHnId: uHnId
-        networkCharacteristics:
-          isSupplyingOtherHeatNetworks: true
-          updatedBy: updatedBy
-          hasCommercialConnections: true
-          numberOfCommunalFloors: 5
-          createdAt: 2000-01-23T04:56:07.000+00:00
-          heatGenerationSourceFor: heatGenerationSourceFor
-          createdBy: createdBy
-          containsPressureBreak: true
-          id: id
-          heatNetworkType: CityScaleDistrictHeatingNetwork
-          status: InProgress
-          isSuppliedByADistrictHeatNetwork: true
-          updatedAt: 2000-01-23T04:56:07.000+00:00
         networkElements:
           elementSoaStatus: null
           createdAt: 2000-01-23T04:56:07.000+00:00
-          networkElementStatus: null
+          networkElementStatus: InProgress
           updatedBy: updatedBy
           createdBy: createdBy
           elements:
@@ -3981,7 +3956,7 @@ components:
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            count: 5
+            count: 3
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
@@ -3994,7 +3969,7 @@ components:
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
-            count: 5
+            count: 3
             type: EnergyCentre
             elementType: elementType
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4013,6 +3988,17 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        heatNetworkConnections:
+          isDomesticConsumer: true
+          noOfNonDomesticConsumer: 2
+          isNonDomesticConsumer: true
+          noOfDownstreamDistrictHeatNetworkConnections: 7
+          isCommunalBuilding: true
+          noOfUpstreamDistrictHeatNetworkConnections: 9
+          noOfDomesticConsumer: 5
+          isUpstreamDistrictHeatNetworkConnections: true
+          isDownstreamDistrictHeatNetworkConnections: true
+          noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
@@ -4026,6 +4012,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
+        hnDescription: hnDescription
         pathway: pathway
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4037,6 +4024,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
+        heatNetworkType: CommunalWithIntegralEC
       properties:
         id:
           type: string
@@ -4050,6 +4038,9 @@ components:
           $ref: "#/components/schemas/RegisteredAddress"
         name:
           type: string
+        hnDescription:
+          nullable: true
+          type: string
         pathway:
           type: string
         soa:
@@ -4062,8 +4053,10 @@ components:
         phase:
           nullable: true
           type: string
-        networkCharacteristics:
-          $ref: "#/components/schemas/NetworkCharacteristicsResponse"
+        heatNetworkType:
+          $ref: "#/components/schemas/HeatNetworkType"
+        heatNetworkConnections:
+          $ref: "#/components/schemas/HeatNetworkConnections"
         networkElements:
           $ref: "#/components/schemas/NetworkElementsResponse"
         meteringAndMonitoringStrategy:
@@ -4075,16 +4068,10 @@ components:
       type: object
     HeatNetworkType:
       enum:
-      - CityScaleDistrictHeatingNetwork
-      - DevelopmentLedDistrictHeatingNetwork
-      - LargeCommunalHeatNetwork
-      - MediumCommunalHeatNetwork
-      - SmallCommunalHeatNetwork
-      - NetworkLedDistrictHeatNetwork
-      - DeveloperLedDistrictHeatNetworkMorL
-      - DeveloperLedDistrictHeatNetworkSm
-      - CommunalHeatNetwork
-      - Other
+      - CommunalWithIntegralEC
+      - CommunalWithSeparateUpstreamHN
+      - DistrictWithOwnEC
+      - DistrictWithSeparateUpstreamHN
       type: string
     HeatNetworkUserResponse:
       example:
@@ -4505,165 +4492,6 @@ components:
           nullable: true
           type: string
       type: object
-    NetworkCharacteristics:
-      example:
-        isSupplyingOtherHeatNetworks: true
-        updatedBy: updatedBy
-        hasCommercialConnections: true
-        numberOfCommunalFloors: 1
-        createdAt: 2000-01-23T04:56:07.000+00:00
-        heatGenerationSourceFor: heatGenerationSourceFor
-        createdBy: createdBy
-        containsPressureBreak: true
-        id: id
-        heatNetworkType: CityScaleDistrictHeatingNetwork
-        status: InProgress
-        isSuppliedByADistrictHeatNetwork: true
-        updatedAt: 2000-01-23T04:56:07.000+00:00
-      nullable: true
-      properties:
-        status:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
-        id:
-          nullable: true
-          type: string
-        heatNetworkType:
-          $ref: "#/components/schemas/HeatNetworkType"
-        heatGenerationSourceFor:
-          nullable: true
-          type: string
-        numberOfCommunalFloors:
-          format: int32
-          nullable: true
-          type: integer
-        containsPressureBreak:
-          nullable: true
-          type: boolean
-        isSupplyingOtherHeatNetworks:
-          type: boolean
-        hasCommercialConnections:
-          type: boolean
-        isSuppliedByADistrictHeatNetwork:
-          type: boolean
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          format: date-time
-          nullable: true
-          type: string
-        updatedBy:
-          nullable: true
-          type: string
-      type: object
-    NetworkCharacteristics2:
-      example:
-        isSupplyingOtherHeatNetworks: true
-        updatedBy: updatedBy
-        hasCommercialConnections: true
-        numberOfCommunalFloors: 0
-        createdAt: 2000-01-23T04:56:07.000+00:00
-        heatGenerationSourceFor: heatGenerationSourceFor
-        createdBy: createdBy
-        containsPressureBreak: true
-        id: id
-        heatNetworkType: CityScaleDistrictHeatingNetwork
-        status: InProgress
-        isSuppliedByADistrictHeatNetwork: true
-        updatedAt: 2000-01-23T04:56:07.000+00:00
-      properties:
-        status:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
-        id:
-          nullable: true
-          type: string
-        heatNetworkType:
-          $ref: "#/components/schemas/HeatNetworkType"
-        heatGenerationSourceFor:
-          nullable: true
-          type: string
-        numberOfCommunalFloors:
-          format: int32
-          nullable: true
-          type: integer
-        containsPressureBreak:
-          nullable: true
-          type: boolean
-        isSupplyingOtherHeatNetworks:
-          type: boolean
-        hasCommercialConnections:
-          type: boolean
-        isSuppliedByADistrictHeatNetwork:
-          type: boolean
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        updatedAt:
-          format: date-time
-          nullable: true
-          type: string
-        updatedBy:
-          nullable: true
-          type: string
-      type: object
-    NetworkCharacteristicsResponse:
-      example:
-        isSupplyingOtherHeatNetworks: true
-        updatedBy: updatedBy
-        hasCommercialConnections: true
-        numberOfCommunalFloors: 5
-        createdAt: 2000-01-23T04:56:07.000+00:00
-        heatGenerationSourceFor: heatGenerationSourceFor
-        createdBy: createdBy
-        containsPressureBreak: true
-        id: id
-        heatNetworkType: CityScaleDistrictHeatingNetwork
-        status: InProgress
-        isSuppliedByADistrictHeatNetwork: true
-        updatedAt: 2000-01-23T04:56:07.000+00:00
-      nullable: true
-      properties:
-        status:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
-        id:
-          nullable: true
-          type: string
-        heatNetworkType:
-          $ref: "#/components/schemas/HeatNetworkType"
-        heatGenerationSourceFor:
-          nullable: true
-          type: string
-        numberOfCommunalFloors:
-          format: int32
-          nullable: true
-          type: integer
-        containsPressureBreak:
-          nullable: true
-          type: boolean
-        isSupplyingOtherHeatNetworks:
-          type: boolean
-        hasCommercialConnections:
-          type: boolean
-        isSuppliedByADistrictHeatNetwork:
-          type: boolean
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          nullable: true
-          type: string
-        updatedAt:
-          format: date-time
-          nullable: true
-          type: string
-        updatedBy:
-          nullable: true
-          type: string
-      type: object
     NetworkDetailsStatus:
       enum:
       - InProgress
@@ -4720,7 +4548,7 @@ components:
       example:
         elementSoaStatus: null
         createdAt: 2000-01-23T04:56:07.000+00:00
-        networkElementStatus: null
+        networkElementStatus: InProgress
         updatedBy: updatedBy
         createdBy: createdBy
         elements:
@@ -4734,7 +4562,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 5
+          count: 3
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -4747,7 +4575,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 5
+          count: 3
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4792,7 +4620,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 5
+          count: 3
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -4805,7 +4633,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 5
+          count: 3
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4835,7 +4663,7 @@ components:
       example:
         elementSoaStatus: null
         createdAt: 2000-01-23T04:56:07.000+00:00
-        networkElementStatus: null
+        networkElementStatus: InProgress
         updatedBy: updatedBy
         createdBy: createdBy
         elements:
@@ -4849,7 +4677,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 5
+          count: 3
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -4862,7 +4690,7 @@ components:
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
-          count: 5
+          count: 3
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4917,7 +4745,7 @@ components:
     NetworkTypeSelection2:
       example:
         otherNetworkDescription: otherNetworkDescription
-        type: CityScaleDistrictHeatingNetwork
+        type: CommunalWithIntegralEC
       properties:
         type:
           $ref: "#/components/schemas/HeatNetworkType"
@@ -4950,10 +4778,8 @@ components:
       enum:
       - ResponsiblePerson
       - Coordinator
+      - DesignatedDutyHolder
       - Contributor
-      - Designer
-      - Contractor
-      - Operator
       - Assessor
       - Certifier
       - null
@@ -5273,7 +5099,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 5
+            count: 1
             locations:
             - locations
             - locations
@@ -5291,7 +5117,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 5
+            count: 1
             locations:
             - locations
             - locations
@@ -5352,7 +5178,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 5
+            count: 1
             locations:
             - locations
             - locations
@@ -5370,7 +5196,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 5
+            count: 1
             locations:
             - locations
             - locations
@@ -5426,7 +5252,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 5
+          count: 1
           locations:
           - locations
           - locations
@@ -5444,7 +5270,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 5
+          count: 1
           locations:
           - locations
           - locations
@@ -6234,10 +6060,8 @@ components:
       enum:
       - ResponsiblePerson
       - Coordinator
+      - DesignatedDutyHolder
       - Contributor
-      - Designer
-      - Contractor
-      - Operator
       - Assessor
       - Certifier
       type: string

@@ -104,7 +104,6 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new AssessorSearchResultJsonConverter(),
         new RegisteredAddress2JsonConverter(),
         new ECDetailsJsonConverter(),
-        new NetworkCharacteristicsResponseJsonConverter(),
         new NetworkElementsResponseJsonConverter(),
         new MeteringAndMonitoringStrategyResponseJsonConverter(),
         new AssessmentPlanResponseJsonConverter(),
@@ -114,7 +113,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new ECDetails2JsonConverter(),
         new NetworkDetailsUploadedDocumentJsonConverter(),
         new SoaStagesJsonConverter(),
-
+        new HeatNetworkConnectionsJsonConverter(),
+        new HeatNetworkTypeJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

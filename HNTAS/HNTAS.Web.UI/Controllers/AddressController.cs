@@ -22,11 +22,11 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult DoesHNHaveAPostcode()
         {
             string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if (previousStep == "HeatNetwork")
+            if (previousStep == "HeatNetworkRegistration")
             {
-                ViewBag.Heading = "Does your heat network have a postcode?";
-                ViewBag.Description = "Select one option";
-                this.ShowBackButton("EnterHNName", "HeatNetwork");
+                ViewBag.Heading = "Does your main energy centre have an address and postcode?";
+                ViewBag.Description = "Choose 'Yes', only if you have a full address and postcode";
+                this.ShowBackButton("HeatNetworkName", "HeatNetworkRegistration");
             }
             else if (previousStep == "EnergyCentre")
             {
@@ -46,9 +46,9 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> DoesHNHaveAPostcode(DoesHNHaveAPostcodeViewModel model)
         {
             string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if (previousStep == "HeatNetwork")
+            if (previousStep == "HeatNetworkRegistration")
             {
-                this.ShowBackButton("EnterHNName", "HeatNetwork");
+                this.ShowBackButton("HeatNetworkName", "HeatNetworkRegistration");
             }
             else if (previousStep == "EnergyCentre")
             {
@@ -84,7 +84,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult SearchByPostcodeResults()
         {
             string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if (previousStep == "HeatNetwork" || previousStep == "EnergyCentre")
+            if (previousStep == "HeatNetworkRegistration" || previousStep == "EnergyCentre")
             {
                 this.ShowBackButton("DoesHNHaveAPostcode", "Address");
             }            
@@ -100,7 +100,7 @@ namespace HNTAS.Web.UI.Controllers
                 _logger.LogError("SearchAddressByPostcodeModel is null.");
                 if (previousStep == "heatnetwork")
                 {
-                    return View("DoesHNHaveAPostcode", "HeatNetwork");
+                    return View("DoesHNHaveAPostcode", "Address");
                 }
                 else if (previousStep == "EnergyCentre")
                 {
@@ -142,7 +142,7 @@ namespace HNTAS.Web.UI.Controllers
             // Save the new model to session
             _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, model);
             string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if (previousStep == "HeatNetwork" || previousStep == "EnergyCentre")
+            if (previousStep == "HeatNetworkRegistration" || previousStep == "EnergyCentre")
             {
                 return RedirectToAction("ConfirmAddress", "Address");
             }
@@ -165,9 +165,9 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult AddressManualEntry()
         {
             string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if (previousStep == "HeatNetwork")
+            if (previousStep == "HeatNetworkRegistration")
             {
-                this.ShowBackButton("EnterHNName", "HeatNetwork");
+                this.ShowBackButton("HeatNetworkName", "HeatNetworkRegistration");
             }
             else if (previousStep == "EnergyCentre")
             {
@@ -183,9 +183,9 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult AddressManualEntry(AddressByStreetOrTownModel model)
         {
             string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
-            if (previousStep == "HeatNetwork")
+            if (previousStep == "HeatNetworkRegistration")
             {
-                this.ShowBackButton("EnterHNName", "HeatNetwork");
+                this.ShowBackButton("HeatNetworkName", "HeatNetworkRegistration");
             }
             else if (previousStep == "EnergyCentre")
             {
@@ -230,7 +230,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             else
             {
-                return RedirectToAction("SaveHNAddressByPostcode", "HeatNetwork");
+                return RedirectToAction("SaveHNAddressByPostcode", "HeatNetworkRegistration");
             }
                 
         }

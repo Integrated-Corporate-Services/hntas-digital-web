@@ -31,54 +31,24 @@ namespace HNTAS.Api.Client.Model
     public enum HeatNetworkType
     {
         /// <summary>
-        /// Enum CityScaleDistrictHeatingNetwork for value: CityScaleDistrictHeatingNetwork
+        /// Enum CommunalWithIntegralEC for value: CommunalWithIntegralEC
         /// </summary>
-        CityScaleDistrictHeatingNetwork = 1,
+        CommunalWithIntegralEC = 1,
 
         /// <summary>
-        /// Enum DevelopmentLedDistrictHeatingNetwork for value: DevelopmentLedDistrictHeatingNetwork
+        /// Enum CommunalWithSeparateUpstreamHN for value: CommunalWithSeparateUpstreamHN
         /// </summary>
-        DevelopmentLedDistrictHeatingNetwork = 2,
+        CommunalWithSeparateUpstreamHN = 2,
 
         /// <summary>
-        /// Enum LargeCommunalHeatNetwork for value: LargeCommunalHeatNetwork
+        /// Enum DistrictWithOwnEC for value: DistrictWithOwnEC
         /// </summary>
-        LargeCommunalHeatNetwork = 3,
+        DistrictWithOwnEC = 3,
 
         /// <summary>
-        /// Enum MediumCommunalHeatNetwork for value: MediumCommunalHeatNetwork
+        /// Enum DistrictWithSeparateUpstreamHN for value: DistrictWithSeparateUpstreamHN
         /// </summary>
-        MediumCommunalHeatNetwork = 4,
-
-        /// <summary>
-        /// Enum SmallCommunalHeatNetwork for value: SmallCommunalHeatNetwork
-        /// </summary>
-        SmallCommunalHeatNetwork = 5,
-
-        /// <summary>
-        /// Enum NetworkLedDistrictHeatNetwork for value: NetworkLedDistrictHeatNetwork
-        /// </summary>
-        NetworkLedDistrictHeatNetwork = 6,
-
-        /// <summary>
-        /// Enum DeveloperLedDistrictHeatNetworkMorL for value: DeveloperLedDistrictHeatNetworkMorL
-        /// </summary>
-        DeveloperLedDistrictHeatNetworkMorL = 7,
-
-        /// <summary>
-        /// Enum DeveloperLedDistrictHeatNetworkSm for value: DeveloperLedDistrictHeatNetworkSm
-        /// </summary>
-        DeveloperLedDistrictHeatNetworkSm = 8,
-
-        /// <summary>
-        /// Enum CommunalHeatNetwork for value: CommunalHeatNetwork
-        /// </summary>
-        CommunalHeatNetwork = 9,
-
-        /// <summary>
-        /// Enum Other for value: Other
-        /// </summary>
-        Other = 10
+        DistrictWithSeparateUpstreamHN = 4
     }
 
     /// <summary>
@@ -93,35 +63,17 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static HeatNetworkType FromString(string value)
         {
-            if (value.Equals("CityScaleDistrictHeatingNetwork"))
-                return HeatNetworkType.CityScaleDistrictHeatingNetwork;
+            if (value.Equals("CommunalWithIntegralEC"))
+                return HeatNetworkType.CommunalWithIntegralEC;
 
-            if (value.Equals("DevelopmentLedDistrictHeatingNetwork"))
-                return HeatNetworkType.DevelopmentLedDistrictHeatingNetwork;
+            if (value.Equals("CommunalWithSeparateUpstreamHN"))
+                return HeatNetworkType.CommunalWithSeparateUpstreamHN;
 
-            if (value.Equals("LargeCommunalHeatNetwork"))
-                return HeatNetworkType.LargeCommunalHeatNetwork;
+            if (value.Equals("DistrictWithOwnEC"))
+                return HeatNetworkType.DistrictWithOwnEC;
 
-            if (value.Equals("MediumCommunalHeatNetwork"))
-                return HeatNetworkType.MediumCommunalHeatNetwork;
-
-            if (value.Equals("SmallCommunalHeatNetwork"))
-                return HeatNetworkType.SmallCommunalHeatNetwork;
-
-            if (value.Equals("NetworkLedDistrictHeatNetwork"))
-                return HeatNetworkType.NetworkLedDistrictHeatNetwork;
-
-            if (value.Equals("DeveloperLedDistrictHeatNetworkMorL"))
-                return HeatNetworkType.DeveloperLedDistrictHeatNetworkMorL;
-
-            if (value.Equals("DeveloperLedDistrictHeatNetworkSm"))
-                return HeatNetworkType.DeveloperLedDistrictHeatNetworkSm;
-
-            if (value.Equals("CommunalHeatNetwork"))
-                return HeatNetworkType.CommunalHeatNetwork;
-
-            if (value.Equals("Other"))
-                return HeatNetworkType.Other;
+            if (value.Equals("DistrictWithSeparateUpstreamHN"))
+                return HeatNetworkType.DistrictWithSeparateUpstreamHN;
 
             throw new NotImplementedException($"Could not convert value to type HeatNetworkType: '{value}'");
         }
@@ -133,35 +85,17 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static HeatNetworkType? FromStringOrDefault(string value)
         {
-            if (value.Equals("CityScaleDistrictHeatingNetwork"))
-                return HeatNetworkType.CityScaleDistrictHeatingNetwork;
+            if (value.Equals("CommunalWithIntegralEC"))
+                return HeatNetworkType.CommunalWithIntegralEC;
 
-            if (value.Equals("DevelopmentLedDistrictHeatingNetwork"))
-                return HeatNetworkType.DevelopmentLedDistrictHeatingNetwork;
+            if (value.Equals("CommunalWithSeparateUpstreamHN"))
+                return HeatNetworkType.CommunalWithSeparateUpstreamHN;
 
-            if (value.Equals("LargeCommunalHeatNetwork"))
-                return HeatNetworkType.LargeCommunalHeatNetwork;
+            if (value.Equals("DistrictWithOwnEC"))
+                return HeatNetworkType.DistrictWithOwnEC;
 
-            if (value.Equals("MediumCommunalHeatNetwork"))
-                return HeatNetworkType.MediumCommunalHeatNetwork;
-
-            if (value.Equals("SmallCommunalHeatNetwork"))
-                return HeatNetworkType.SmallCommunalHeatNetwork;
-
-            if (value.Equals("NetworkLedDistrictHeatNetwork"))
-                return HeatNetworkType.NetworkLedDistrictHeatNetwork;
-
-            if (value.Equals("DeveloperLedDistrictHeatNetworkMorL"))
-                return HeatNetworkType.DeveloperLedDistrictHeatNetworkMorL;
-
-            if (value.Equals("DeveloperLedDistrictHeatNetworkSm"))
-                return HeatNetworkType.DeveloperLedDistrictHeatNetworkSm;
-
-            if (value.Equals("CommunalHeatNetwork"))
-                return HeatNetworkType.CommunalHeatNetwork;
-
-            if (value.Equals("Other"))
-                return HeatNetworkType.Other;
+            if (value.Equals("DistrictWithSeparateUpstreamHN"))
+                return HeatNetworkType.DistrictWithSeparateUpstreamHN;
 
             return null;
         }
@@ -174,35 +108,17 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(HeatNetworkType value)
         {
-            if (value == HeatNetworkType.CityScaleDistrictHeatingNetwork)
-                return "CityScaleDistrictHeatingNetwork";
+            if (value == HeatNetworkType.CommunalWithIntegralEC)
+                return "CommunalWithIntegralEC";
 
-            if (value == HeatNetworkType.DevelopmentLedDistrictHeatingNetwork)
-                return "DevelopmentLedDistrictHeatingNetwork";
+            if (value == HeatNetworkType.CommunalWithSeparateUpstreamHN)
+                return "CommunalWithSeparateUpstreamHN";
 
-            if (value == HeatNetworkType.LargeCommunalHeatNetwork)
-                return "LargeCommunalHeatNetwork";
+            if (value == HeatNetworkType.DistrictWithOwnEC)
+                return "DistrictWithOwnEC";
 
-            if (value == HeatNetworkType.MediumCommunalHeatNetwork)
-                return "MediumCommunalHeatNetwork";
-
-            if (value == HeatNetworkType.SmallCommunalHeatNetwork)
-                return "SmallCommunalHeatNetwork";
-
-            if (value == HeatNetworkType.NetworkLedDistrictHeatNetwork)
-                return "NetworkLedDistrictHeatNetwork";
-
-            if (value == HeatNetworkType.DeveloperLedDistrictHeatNetworkMorL)
-                return "DeveloperLedDistrictHeatNetworkMorL";
-
-            if (value == HeatNetworkType.DeveloperLedDistrictHeatNetworkSm)
-                return "DeveloperLedDistrictHeatNetworkSm";
-
-            if (value == HeatNetworkType.CommunalHeatNetwork)
-                return "CommunalHeatNetwork";
-
-            if (value == HeatNetworkType.Other)
-                return "Other";
+            if (value == HeatNetworkType.DistrictWithSeparateUpstreamHN)
+                return "DistrictWithSeparateUpstreamHN";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
@@ -243,7 +159,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkType heatNetworkType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType).ToString());
+            writer.WriteStringValue(heatNetworkType.ToString());
         }
     }
 
@@ -274,14 +190,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the HeatNetworkType to the json writer
+        /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="heatNetworkType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkType? heatNetworkType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkType.HasValue ? HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType.Value).ToString() : "null");
+            writer.WriteStringValue(heatNetworkType?.ToString() ?? "null");
         }
     }
 }
