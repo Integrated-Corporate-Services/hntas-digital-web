@@ -336,8 +336,11 @@ namespace HNTAS.Web.UI.Controllers
 
             if (addressParts.Length < 3)
             {
-                _logger.LogError("Malformed address received: {Address}", selectedAddress);
-                return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");
+                var sanitizedAddress = selectedAddress?
+                    .Replace("\r", " ")
+                    .Replace("\n", " ");
+                _logger.LogError("Malformed address received: {Address}", sanitizedAddress);
+                return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");                
             }
 
             var model = new AddressByStreetOrTownModel
