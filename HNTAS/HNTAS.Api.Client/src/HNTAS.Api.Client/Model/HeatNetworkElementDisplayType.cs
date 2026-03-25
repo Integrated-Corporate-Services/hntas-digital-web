@@ -46,9 +46,14 @@ namespace HNTAS.Api.Client.Model
         DistrictDistributionNetwork = 3,
 
         /// <summary>
+        /// Enum CommunalDistributionNetwork for value: CommunalDistributionNetwork
+        /// </summary>
+        CommunalDistributionNetwork = 4,
+
+        /// <summary>
         /// Enum ConsumerConnections for value: ConsumerConnections
         /// </summary>
-        ConsumerConnections = 4
+        ConsumerConnections = 5
     }
 
     /// <summary>
@@ -72,6 +77,9 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("DistrictDistributionNetwork"))
                 return HeatNetworkElementDisplayType.DistrictDistributionNetwork;
 
+            if (value.Equals("CommunalDistributionNetwork"))
+                return HeatNetworkElementDisplayType.CommunalDistributionNetwork;
+
             if (value.Equals("ConsumerConnections"))
                 return HeatNetworkElementDisplayType.ConsumerConnections;
 
@@ -93,6 +101,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("DistrictDistributionNetwork"))
                 return HeatNetworkElementDisplayType.DistrictDistributionNetwork;
+
+            if (value.Equals("CommunalDistributionNetwork"))
+                return HeatNetworkElementDisplayType.CommunalDistributionNetwork;
 
             if (value.Equals("ConsumerConnections"))
                 return HeatNetworkElementDisplayType.ConsumerConnections;
@@ -116,6 +127,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value == HeatNetworkElementDisplayType.DistrictDistributionNetwork)
                 return "DistrictDistributionNetwork";
+
+            if (value == HeatNetworkElementDisplayType.CommunalDistributionNetwork)
+                return "CommunalDistributionNetwork";
 
             if (value == HeatNetworkElementDisplayType.ConsumerConnections)
                 return "ConsumerConnections";

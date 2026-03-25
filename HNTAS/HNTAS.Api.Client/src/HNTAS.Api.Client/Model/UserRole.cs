@@ -41,34 +41,24 @@ namespace HNTAS.Api.Client.Model
         Coordinator = 2,
 
         /// <summary>
+        /// Enum DesignatedDutyHolder for value: DesignatedDutyHolder
+        /// </summary>
+        DesignatedDutyHolder = 3,
+
+        /// <summary>
         /// Enum Contributor for value: Contributor
         /// </summary>
-        Contributor = 3,
-
-        /// <summary>
-        /// Enum Designer for value: Designer
-        /// </summary>
-        Designer = 4,
-
-        /// <summary>
-        /// Enum Contractor for value: Contractor
-        /// </summary>
-        Contractor = 5,
-
-        /// <summary>
-        /// Enum Operator for value: Operator
-        /// </summary>
-        Operator = 6,
+        Contributor = 4,
 
         /// <summary>
         /// Enum Assessor for value: Assessor
         /// </summary>
-        Assessor = 7,
+        Assessor = 5,
 
         /// <summary>
         /// Enum Certifier for value: Certifier
         /// </summary>
-        Certifier = 8
+        Certifier = 6
     }
 
     /// <summary>
@@ -89,17 +79,11 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Coordinator"))
                 return UserRole.Coordinator;
 
+            if (value.Equals("DesignatedDutyHolder"))
+                return UserRole.DesignatedDutyHolder;
+
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
-
-            if (value.Equals("Designer"))
-                return UserRole.Designer;
-
-            if (value.Equals("Contractor"))
-                return UserRole.Contractor;
-
-            if (value.Equals("Operator"))
-                return UserRole.Operator;
 
             if (value.Equals("Assessor"))
                 return UserRole.Assessor;
@@ -123,17 +107,11 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Coordinator"))
                 return UserRole.Coordinator;
 
+            if (value.Equals("DesignatedDutyHolder"))
+                return UserRole.DesignatedDutyHolder;
+
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
-
-            if (value.Equals("Designer"))
-                return UserRole.Designer;
-
-            if (value.Equals("Contractor"))
-                return UserRole.Contractor;
-
-            if (value.Equals("Operator"))
-                return UserRole.Operator;
 
             if (value.Equals("Assessor"))
                 return UserRole.Assessor;
@@ -158,17 +136,11 @@ namespace HNTAS.Api.Client.Model
             if (value == UserRole.Coordinator)
                 return "Coordinator";
 
+            if (value == UserRole.DesignatedDutyHolder)
+                return "DesignatedDutyHolder";
+
             if (value == UserRole.Contributor)
                 return "Contributor";
-
-            if (value == UserRole.Designer)
-                return "Designer";
-
-            if (value == UserRole.Contractor)
-                return "Contractor";
-
-            if (value == UserRole.Operator)
-                return "Operator";
 
             if (value == UserRole.Assessor)
                 return "Assessor";
