@@ -8,11 +8,13 @@ namespace HNTAS.Web.UI.Authorization
     {
         private readonly IMemoryCache _cache;
         private readonly IUserService _userService;
+        private readonly IConfiguration _configuration;
 
-        public RoleService(IMemoryCache cache, IUserService userService)
+        public RoleService(IMemoryCache cache, IUserService userService, IConfiguration configuration)
         {
             _cache = cache;
             _userService = userService;
+            _configuration = configuration;
         }
 
         public async Task<List<UserRole>> GetRolesAsync(string oneloginId)
@@ -25,13 +27,19 @@ namespace HNTAS.Web.UI.Authorization
 
                 roles = response.Roles ?? new List<UserRole>();
 
-                // Now we can set a longer time (e.g., 5 mins) because we will manually kill it when needed
-                _cache.Set(cacheKey, roles, TimeSpan.FromMinutes(5));
+                // Read from appsettings, default to 30 if not found
+                var durationMinutes = _configuration.GetValue<int>("CacheSettings:RoleCacheDurationMinutes", 30);
+
+                // Set the cache to expire strictly in 30 minutes
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(durationMinutes));
+
+                _cache.Set(cacheKey, roles, cacheOptions);
             }
             return roles;
         }
 
-        public void InvalidateCache(string oneloginId)
+        public void ClearRoleCache(string oneloginId)
         {
             _cache.Remove($"roles_{oneloginId}");
         }

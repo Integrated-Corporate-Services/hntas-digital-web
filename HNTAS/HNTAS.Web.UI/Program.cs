@@ -334,7 +334,10 @@ else
 {
     // GOV.UK One Login authentication
     builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
-        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+        {
+            options.AccessDeniedPath = "/account/access-denied"; // The browser will go here for 403s
+        })
         .AddOneLogin(options =>
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;

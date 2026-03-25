@@ -1,20 +1,16 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
-using HNTAS.Web.UI.Models;
-using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.NetworkElements;
-using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
-using System.Linq;
 using Element = HNTAS.Web.UI.Models.NetworkElements.Element;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = SecurityConstants.Policies.CanAddHeatNetworkDetail)]
     public class NetworkElementsController : Controller
     {
         private readonly ILogger<NetworkElementsController> _logger;
@@ -51,7 +47,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ElementOptions = Utility.GetDefaultNetworkElementOptions()
             };
-            
+
             //var networkType = _sessionHelper.GetFromSession<HeatNetworkType>(HttpContext, SessionKeys.HeatNetworkTypeSessionKey);
 
             //if (networkType == HeatNetworkType.CommunalHeatNetwork)
@@ -125,16 +121,16 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View("SelectNetworkElements", model);
             }
-            
+
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, elements);
-            
+
             await SaveNetworkElements(new NetworkElementsModel());
             ClearNetworkElementSpecificSession();
             return RedirectToAction("NetworkDetails", "HeatNetwork");
         }
 
         private async Task SaveNetworkElements(NetworkElementsModel viewModel)
-        {            
+        {
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
 
@@ -147,12 +143,12 @@ namespace HNTAS.Web.UI.Controllers
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId,
                 ElementSoaStatus = NetworkDetailsStatus.ReadyToStart
-            };            
+            };
 
             if (request.Elements != null)
             {
                 request.Elements = request.Elements.Select((element, index) =>
-                {                    
+                {
                     element.ElementId = (index + 1).ToString("D5");
                     element.ElementType = Utility.GetNetworkElementIdByType(element.Type.ToString()!);
                     return element;

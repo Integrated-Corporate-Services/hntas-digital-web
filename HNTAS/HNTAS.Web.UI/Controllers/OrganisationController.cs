@@ -68,9 +68,9 @@ namespace HNTAS.Web.UI.Controllers
             if (!isActiveJourney && userRoles != null && userRoles.Any())
             {
                 // ...then they are trying to "re-register" an organisation they already have.
-                // We stop them and send them back to the Home/Dashboard.
+                // We stop them and send them Access denied page
                 _logger.LogWarning("Blocking registered user {UserId} from re-entering initial flow.", userId);
-                context.Result = RedirectToAction("Index", "Home");
+                context.Result = new RedirectToActionResult("AccessDenied", "Account", null);
                 return;
             }
 
@@ -510,6 +510,7 @@ namespace HNTAS.Web.UI.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Policy = SecurityConstants.Policies.CanStartRegistration)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
@@ -594,7 +595,7 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
 
             //Clear the role cache to ensure any new roles are picked up on their next request
-            _roleService.InvalidateCache(User.FindFirstValue("sub"));
+            _roleService.ClearRoleCache(User.FindFirstValue("sub"));
 
             return RedirectToAction("Confirmation");
         }

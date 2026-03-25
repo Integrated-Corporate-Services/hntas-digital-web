@@ -152,11 +152,12 @@ public class HomeController : Controller
     }
 
 
-
     public IActionResult Error(int code)
     {
         if (code == 404)
             return View("NotFound");
+        else if (code == 403)
+            return View("AccessDenied");
         else if (code == 500)
             return View("Error");
 
