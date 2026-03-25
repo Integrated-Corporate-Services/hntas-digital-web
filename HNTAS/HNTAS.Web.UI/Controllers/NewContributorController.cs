@@ -1,5 +1,6 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
@@ -18,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = SecurityConstants.Policies.CanAddDDHAndContributor)]
     public class NewContributorController : Controller
     {
         private readonly IWorkflowManager _workflowManager;
@@ -45,7 +46,6 @@ namespace HNTAS.Web.UI.Controllers
             _iInvitationTokenService = invitationTokenService;
             _invitationService = invitationService;
         }
-
 
         [HttpGet]
         public IActionResult AddEmailAddress()

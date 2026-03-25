@@ -1,21 +1,18 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Helpers;
-using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.NetworkElements;
-using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
-using System.Linq;
 using Element = HNTAS.Web.UI.Models.NetworkElements.Element;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = SecurityConstants.Policies.CanAddHeatNetworkDetail)]
     public class NetworkElementsController : Controller
     {
         private readonly ILogger<NetworkElementsController> _logger;
@@ -57,7 +54,7 @@ namespace HNTAS.Web.UI.Controllers
             model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
             ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
 
-            
+
             var selectedNetworkElements = heatNetworkData?.NetworkElements;
 
             if (selectedNetworkElements != null)
@@ -85,7 +82,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
-            
+
 
             if (!ModelState.IsValid)
             {
@@ -121,7 +118,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View("SelectNetworkElements", model);
             }
 
-            
+
             var address = heatNetworkData?.Address;
             var coordinates = heatNetworkData?.EcDetails;
             var phase = heatNetworkData?.Phase;

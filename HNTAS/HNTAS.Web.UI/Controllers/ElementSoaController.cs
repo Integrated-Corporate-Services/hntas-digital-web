@@ -1,30 +1,29 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using HNTAS.Api.Client.Model;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models.ElementSoa;
-using HNTAS.Web.UI.Models.Enums;
-using HNTAS.Web.UI.Models.NetworkDetailsUpload;
-using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize(Policy = SecurityConstants.Policies.CanAddHeatNetworkDetail)]
     public class ElementSoaController : Controller
     {
         private readonly ISessionHelper _sessionHelper;
         private readonly ISoaService _soaProjectService;
         private readonly IHeatNetworkService _heatNetworkService;
-        private readonly ILogger<ElementSoaController> _logger;        
+        private readonly ILogger<ElementSoaController> _logger;
 
         public ElementSoaController(ISessionHelper sessionHelper,
             ISoaService soaProjectService,
-            ILogger<ElementSoaController> logger,            
+            ILogger<ElementSoaController> logger,
             IHeatNetworkService heatNetworkService)
         {
             _sessionHelper = sessionHelper;
             _soaProjectService = soaProjectService;
-            _logger = logger;            
+            _logger = logger;
             _heatNetworkService = heatNetworkService;
         }
 
@@ -91,9 +90,9 @@ namespace HNTAS.Web.UI.Controllers
             var currentStageIndex = ElementSoaHelper.GetStageIndex(stage);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey, currentStageIndex);
             var targetFragment = string.Concat("stage-", currentStageIndex);
-            this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);            
+            this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);
 
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);           
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
 
             ViewBag.HnId = hnId;
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
@@ -111,7 +110,7 @@ namespace HNTAS.Web.UI.Controllers
             var model = ElementSoaHelper.GetSoaStatuses();
             model.SelectedSoaStatus = selectedStatusForElement;
             model.SoaStage = stage;
-            model.ElementId = elementId;            
+            model.ElementId = elementId;
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaStatusUpdateModelSessionKey, model);
 
@@ -131,8 +130,8 @@ namespace HNTAS.Web.UI.Controllers
             if (!ModelState.IsValid)
             {
                 return View(modelFromSession);
-            }            
-            
+            }
+
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var incompleteSoa = _sessionHelper.GetFromSession<ElementSoaProgressStatusTracking>(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey);
             var targetStatus = NetworkDetailsStatus.InProgress;
@@ -150,7 +149,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ElementSoaStatusUpdateModelSessionKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey);            
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey);
         }
     }
 }

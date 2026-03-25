@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Access denied";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">You do not have access to this page</h1>
+
+        <p class="govuk-body">
+            You do not have the permissions required to view this page.
+        </p>
+
+        <p class="govuk-body">
+            This might be because you have already completed this part of the service, or you need a different level of responsibility to access this section.
+        </p>
+
+        <p class="govuk-body">
+            For urgent enquiries, please contact us:
+        </p>
+
+        <p class="govuk-body">
+            Phone:<br>
+            <strong class="govuk-!-font-weight-bold">0000 0000 0000</strong>
+        </p>
+
+        <p class="govuk-body">
+            Opening times:<br>
+            <strong class="govuk-!-font-weight-bold">Monday to Friday: 8:30am to 4:30pm</strong>
+        </p>
+
+        <p class="govuk-body">
+            <a href="@Url.Action("Index", "Home")" class="govuk-link">Return to your dashboard</a>
+        </p>
+    </div>
+</div>
