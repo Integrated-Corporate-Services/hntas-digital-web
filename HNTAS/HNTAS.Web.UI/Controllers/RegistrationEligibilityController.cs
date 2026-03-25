@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    public class HeatNetworkEligibilityController : Controller
+    public class RegistrationEligibilityController : Controller
     {
 
         private readonly ISessionHelper _sessionHelper;
 
-        public HeatNetworkEligibilityController(ISessionHelper sessionHelper)
+        public RegistrationEligibilityController(ISessionHelper sessionHelper)
         {
             _sessionHelper = sessionHelper;
         }
@@ -36,10 +36,10 @@ namespace HNTAS.Web.UI.Controllers
             {
                 case "yes":
                     _sessionHelper.SaveToSession<AreYouTheRPModel>(HttpContext, SessionKeys.AreYouTheRPModelKey, model);
-                    return RedirectToAction("IsYourOrgWorkingOnANewHN", "HeatNetworkEligibility");
+                    return RedirectToAction("IsYourOrgWorkingOnANewHN");
                 case "no":
                     _sessionHelper.SaveToSession<AreYouTheRPModel>(HttpContext, SessionKeys.AreYouTheRPModelKey, model);
-                    return RedirectToAction("UserIsNotRP", "EndOfJourney");
+                    return RedirectToAction("UserIsNotRP");
                 default:
                     ModelState.AddModelError(nameof(model.AreYouTheRP), "Please select a valid option.");
                     return View(model);
@@ -47,9 +47,16 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
+        public IActionResult UserIsNotRP()
+        {
+            this.ShowBackButton("AreYouTheRP");
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult IsYourOrgWorkingOnANewHN()
         {
-            this.ShowBackButton("AreYouTheRP", "HeatNetworkEligibility");
+            this.ShowBackButton("AreYouTheRP");
             var model = _sessionHelper.GetFromSession<IsYourOrgWorkingOnANewHNModel>(HttpContext, SessionKeys.IsYourOrgWorkingOnANewHNModelKey) ?? new IsYourOrgWorkingOnANewHNModel();
             return View(model);
         }
@@ -58,7 +65,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult IsYourOrgWorkingOnANewHN(IsYourOrgWorkingOnANewHNModel model)
         {
-            this.ShowBackButton("AreYouTheRP", "HeatNetworkEligibility");
+            this.ShowBackButton("AreYouTheRP");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -67,10 +74,10 @@ namespace HNTAS.Web.UI.Controllers
             {
                 case "yes":
                     _sessionHelper.SaveToSession<IsYourOrgWorkingOnANewHNModel>(HttpContext, SessionKeys.IsYourOrgWorkingOnANewHNModelKey, model);
-                    return RedirectToAction("IsHNLocatedInEnglandScotlandWales", "HeatNetworkEligibility");
+                    return RedirectToAction("IsHNLocatedInEnglandScotlandWales");
                 case "no":
                     _sessionHelper.SaveToSession<IsYourOrgWorkingOnANewHNModel>(HttpContext, SessionKeys.IsYourOrgWorkingOnANewHNModelKey, model);
-                    return RedirectToAction("HNIsOperationalRegisterLater", "EndOfJourney");
+                    return RedirectToAction("HnIsOperational");
                 default:
                     ModelState.AddModelError(nameof(model.IsYourOrgWorkingOnANewHN), "Please select a valid option.");
                     return View(model);
@@ -78,9 +85,16 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
+        public IActionResult HnIsOperational()
+        {
+            this.ShowBackButton("IsYourOrgWorkingOnANewHN");
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult IsHNLocatedInEnglandScotlandWales()
         {
-            this.ShowBackButton("IsYourOrgWorkingOnANewHN", "HeatNetworkEligibility");
+            this.ShowBackButton("IsYourOrgWorkingOnANewHN");
             var model = _sessionHelper.GetFromSession<IsHNLocatedInEnglandScotlandWalesModel>(HttpContext, SessionKeys.IsHNLocatedInEnglandScotlandWalesModelKey) ?? new IsHNLocatedInEnglandScotlandWalesModel();
             return View(model);
         }
@@ -89,7 +103,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult IsHNLocatedInEnglandScotlandWales(IsHNLocatedInEnglandScotlandWalesModel model)
         {
-            this.ShowBackButton("IsYourOrgWorkingOnANewHN", "HeatNetworkEligibility");
+            this.ShowBackButton("IsYourOrgWorkingOnANewHN");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -98,10 +112,10 @@ namespace HNTAS.Web.UI.Controllers
             {
                 case "yes":
                     _sessionHelper.SaveToSession<IsHNLocatedInEnglandScotlandWalesModel>(HttpContext, SessionKeys.IsHNLocatedInEnglandScotlandWalesModelKey, model);
-                    return RedirectToAction("HowManyDwellingsIncluded", "HeatNetworkEligibility");
+                    return RedirectToAction("HowManyDwellingsIncluded");
                 case "no":
                     _sessionHelper.SaveToSession<IsHNLocatedInEnglandScotlandWalesModel>(HttpContext, SessionKeys.IsHNLocatedInEnglandScotlandWalesModelKey, model);
-                    return RedirectToAction("HNNotINEnglandScotlandWales", "EndOfJourney");
+                    return RedirectToAction("HnIsInNorthernIreland");
                 default:
                     ModelState.AddModelError(nameof(model.IsHNLocatedInEnglandScotlandWales), "Please select a valid option.");
                     return View(model);
@@ -109,9 +123,16 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
+        public IActionResult HnIsInNorthernIreland()
+        {
+            this.ShowBackButton("IsHNLocatedInEnglandScotlandWales");
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult HowManyDwellingsIncluded()
         {
-            this.ShowBackButton("IsHNLocatedInEnglandScotlandWales", "HeatNetworkEligibility");
+            this.ShowBackButton("IsHNLocatedInEnglandScotlandWales");
             var model = _sessionHelper.GetFromSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey) ?? new HowManyDwellingsIncludedModel();
             return View(model);
         }
@@ -120,7 +141,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult HowManyDwellingsIncluded(HowManyDwellingsIncludedModel model)
         {
-            this.ShowBackButton("IsHNLocatedInEnglandScotlandWales", "HeatNetworkEligibility");
+            this.ShowBackButton("IsHNLocatedInEnglandScotlandWales");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -129,16 +150,24 @@ namespace HNTAS.Web.UI.Controllers
             {
                 case "yes":
                     _sessionHelper.SaveToSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey, model);
-                    return RedirectToAction("YouAreEligible", "HeatNetworkEligibility");
+                    return RedirectToAction("YouAreEligible");
                 case "no":
                     _sessionHelper.SaveToSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey, model);
-                    return RedirectToAction("LessThan10Dwellings", "EndOfJourney");
+                    return RedirectToAction("LessThan6Dwellings");
                 default:
                     ModelState.AddModelError(nameof(model.HowManyDwellingsIncluded), "Please select a valid option.");
                     return View(model);
             }
         }
 
+        [HttpGet]
+        public IActionResult LessThan6Dwellings()
+        {
+            this.ShowBackButton("HowManyDwellingsIncluded");
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult YouAreEligible()
         {
             return View();

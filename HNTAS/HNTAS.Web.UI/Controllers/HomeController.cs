@@ -209,7 +209,7 @@ public class HomeController : Controller
         {
             case "registerNewHN":
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey, model);
-                return RedirectToAction("AreYouTheRP", "HeatNetworkEligibility");
+                return RedirectToAction("AreYouTheRP", "RegistrationEligibility");
             case "updateExistingHN":
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey, model);
                 return RedirectToAction("Index", "Home");
