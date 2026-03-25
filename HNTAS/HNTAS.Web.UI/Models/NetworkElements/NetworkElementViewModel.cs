@@ -18,6 +18,7 @@ namespace HNTAS.Web.UI.Models.NetworkElements
     {
         public HeatNetworkElementDisplayType Id { get; set; }
         public string Label { get; set; } = null!;
+        public string SubLabel { get; set; } = null!;
         public string Hint { get; set; } = null!;
     }
 }

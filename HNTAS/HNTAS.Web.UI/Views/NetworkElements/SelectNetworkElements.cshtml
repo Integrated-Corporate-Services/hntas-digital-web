@@ -1,4 +1,4 @@
-﻿@using HNTAS.Api.Client.Model
+﻿﻿@using HNTAS.Api.Client.Model
 @using HNTAS.Web.UI.Models.NetworkElements
 @using HNTAS.Web.UI.Models.Soa
 @model NetworkElementViewModel
@@ -6,16 +6,15 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-xl">@ViewBag.HnId</span>
+        <span class="govuk-caption-xl">@ViewBag.HnId @ViewBag.HnName</span>
         <h1 class="govuk-heading-l">
-            District network elements
+            @ViewBag.Heading
         </h1>
         <form asp-action="SelectNetworkElements" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
-                    
                     <div id="soa-elements-hint" class="govuk-hint">
                         Select the elements that apply
                     </div>
@@ -36,74 +35,49 @@
                             var conditionalId = $"conditional-{item.Id.ToString().ToLowerInvariant()}";
                             var isChecked = Model.SelectedElementIds.Contains(item.Id);
                             var hintId = $"{checkboxId}-item-hint";
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input"
+                                       id="@checkboxId"
+                                       name="SelectedElementIds"
+                                       type="checkbox"
+                                       value="@item.Id"
+                                       data-aria-controls="@conditionalId"
+                                       @(isChecked ? "checked" : "")
+                                       @(string.IsNullOrEmpty(item.Hint) ? "" : $"aria-describedby=\"{checkboxId}-hint\"") />
 
-                            @if (Model.ElementOptions[i].Id == HeatNetworkElementDisplayType.EnergyCentre)
-                                {
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="@checkboxId"
-                                           name="SelectedElementIds"
-                                           type="checkbox"
-                                           value="@item.Id"                                           
-                                           @(isChecked ? "checked" : "")
-                                           @(string.IsNullOrEmpty(item.Hint) ? "" : $"aria-describedby=\"{checkboxId}-hint\"") />
-
-                                    <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
-                                        @item.Label
-                                    </label>
-                                    <div id="@hintId" class="govuk-hint govuk-checkboxes__hint">
-                                        @item.Hint
-                                    </div>
+                                <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
+                                    @item.Label
+                                </label>
+                                <div id="@hintId" class="govuk-hint govuk-checkboxes__hint">
+                                    @item.Hint
                                 </div>
+                            </div>
+                            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="@conditionalId">
+                                @{
+                                    var hasError = Html.HasError($"ElementCounts[{item.Id}]");
+                                    var errorMessage = hasError ? ViewData.ModelState[$"ElementCounts[{item.Id}]"].Errors.FirstOrDefault()?.ErrorMessage : null;
                                 }
 
-                            else
-                            {
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="@checkboxId"
-                                           name="SelectedElementIds"
-                                           type="checkbox"
-                                           value="@item.Id"
-                                           data-aria-controls="@conditionalId"
-                                           @(isChecked ? "checked" : "")
-                                           @(string.IsNullOrEmpty(item.Hint) ? "" : $"aria-describedby=\"{checkboxId}-hint\"") />
+                                <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
 
-                                    <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
-                                        @item.Label
+                                    <label class="govuk-label" for="ElementCounts_@item.Id">
+                                        Number of @item.SubLabel.ToLower()
                                     </label>
-                                    <div id="@hintId" class="govuk-hint govuk-checkboxes__hint">
-                                        @item.Hint
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="@conditionalId">
-                                    @{
-                                        var hasError = Html.HasError($"ElementCounts[{item.Id}]");
-                                        var errorMessage = hasError ? ViewData.ModelState[$"ElementCounts[{item.Id}]"].Errors.FirstOrDefault()?.ErrorMessage : null;
+
+                                    @if (hasError)
+                                    {
+                                        <span class="govuk-error-message">
+                                            <span class="govuk-visually-hidden">Error:</span> @errorMessage
+                                        </span>
                                     }
 
-                                    <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
-
-                                        <label class="govuk-label" for="ElementCounts_@item.Id">
-                                            Number of @item.Label.ToLower()
-                                        </label>
-
-                                        @if (hasError)
-                                        {
-                                            <span class="govuk-error-message">
-                                                <span class="govuk-visually-hidden">Error:</span> @errorMessage
-                                            </span>
-                                        }
-
-                                        <input class="govuk-input govuk-input--width-3 @(hasError ? "govuk-input--error" : "")"
-                                               id="elementcounts[@item.Id.ToString().ToLowerInvariant()]"
-                                               name="ElementCounts[@item.Id]"
-                                               type="number"
-                                               value="@(Model.ElementCounts.ContainsKey(item.Id) ? Model.ElementCounts[item.Id] : null)" />
-                                    </div>
+                                    <input class="govuk-input govuk-input--width-3 @(hasError ? "govuk-input--error" : "")"
+                                           id="elementcounts[@item.Id.ToString().ToLowerInvariant()]"
+                                           name="ElementCounts[@item.Id]"
+                                           type="number"
+                                           value="@(Model.ElementCounts.ContainsKey(item.Id) ? Model.ElementCounts[item.Id] : null)" />
                                 </div>
-                            }
-                                
+                            </div>
                         }
                     </div>
                 </fieldset>

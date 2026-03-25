@@ -96,7 +96,6 @@ namespace HNTAS.Web.UI.Tests.Helpers
                                         UploadedBy = "user"
                                     }
                                 }
-                            
                             }
                         },
                         AssessmentDocs = new List<UploadedAssessmentDocumentResponse> {
@@ -182,7 +181,7 @@ namespace HNTAS.Web.UI.Tests.Helpers
                     MobileNumber = "4445556666",
                     Status = UserStatus.Active,
                     Roles = new List<UserRole>() {
-                        UserRole.Contractor
+                        UserRole.DesignatedDutyHolder
                     },
                     OrgId = "org-1",
                     HnRoleMappings = new List<HnRoleMapping>

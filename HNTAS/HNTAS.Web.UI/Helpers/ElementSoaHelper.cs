@@ -112,7 +112,7 @@ namespace HNTAS.Web.UI.Helpers
                     "What is the status of the statement of applicability for the energy centre?",
                     "Intro to Energy centre...",
                     "Upload the statement of applicability (SOA) for the energy centre"
-                ),                
+                ),
                 HeatNetworkElementDisplayType.ConsumerConnections => (
                     "What is the status of the statement of applicability for the consumer connections",
                     "Intro to Consumer connections...",
@@ -127,7 +127,7 @@ namespace HNTAS.Web.UI.Helpers
                     "What is the status of the statement of applicability for the substation",
                     "Intro to substation",
                     "Upload the statement of applicability (SOA) for the substation"
-                ),                
+                ),
                 _ => (string.Empty, string.Empty, string.Empty)
             };
         }
@@ -168,7 +168,7 @@ namespace HNTAS.Web.UI.Helpers
                 {
                     ElementId = element.ElementId,
                     Type = element.Type,
-                    Name = Utility.GetDefaultNetworkElementOptions().Find(a => a.Id.ToString() == element.Type.ToString()).Label
+                    Name = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().Find(a => a.Id.ToString() == element.Type.ToString()).Label
                 });
             }
             return soaElements;
