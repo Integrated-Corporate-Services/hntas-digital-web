@@ -48,7 +48,8 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 _mockSessionHelper.Object,
                 _mockAddressLookUpService.Object,
                 _mockCountriesAndTerritoriesService.Object,
-                _mockOrganisationService.Object
+                _mockOrganisationService.Object,
+                null
             );
 
             var httpContext = new DefaultHttpContext();
@@ -123,7 +124,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             controller.ModelState.AddModelError("SelectedOrganisationType", "Required");
 
             var model = new OrganisationModel();
-            var result = controller.OrganisationType(model);
+            var result = controller.SaveOrganisationType(model);
 
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal("OrganisationType", viewResult.ViewName);
@@ -140,7 +141,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             };
             controller.ModelState.Clear();
 
-            var result = controller.OrganisationType(model);
+            var result = controller.SaveOrganisationType(model);
 
             var redirect = Assert.IsType<RedirectToActionResult>(result);
             Assert.True(redirect.ActionName == "CompanyNumber" || redirect.ActionName == "OrganisationName");
@@ -156,7 +157,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             {
                 OrganisationTypes = new List<SelectListItem>(),
                 SelectedOrganisationType = "UkCompaniesHouse",
-                CompanyDetails = new CompanyDetailsModel() { RegisteredOfficeAddress = new RegisteredOfficeAddressModel() { Country = "country1"} }
+                CompanyDetails = new CompanyDetailsModel() { RegisteredOfficeAddress = new RegisteredOfficeAddressModel() { Country = "country1" } }
             };
             _controller.Url = SetUpBackLink("OrganisationName", "Organisation").Object;
             _mockSessionHelper
@@ -227,7 +228,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             Assert.NotNull(result);
             Assert.True(_controller.ModelState.ContainsKey(string.Empty));
             Assert.Equal("Unable to retrieve address data.", _controller.ModelState[string.Empty].Errors[0].ErrorMessage);
-        }        
+        }
 
         [Fact]
         public async Task SaveOrganisationAddress_ValidPostcode_RedirectsToCompanyConfirm()
