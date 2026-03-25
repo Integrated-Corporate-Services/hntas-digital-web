@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
@@ -17,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = SecurityConstants.Policies.CanAddDDHAndContributor)]
     public class ExistingContributorController : Controller
     {
         private readonly IWorkflowManager _workflowManager;
@@ -61,7 +62,7 @@ namespace HNTAS.Web.UI.Controllers
                 _logger.LogError("No contributors found for the current user.");
                 ViewData["ErrorMessage"] = "No users found. Please contact support.";
                 ViewBag.NoUsers = true;
-                return View("ChooseUser",state.Data.ChooseContributorModel);
+                return View("ChooseUser", state.Data.ChooseContributorModel);
             }
             return View(state.Data.ChooseContributorModel);
         }

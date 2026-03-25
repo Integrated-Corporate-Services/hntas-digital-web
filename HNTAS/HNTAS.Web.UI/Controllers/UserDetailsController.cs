@@ -1,15 +1,18 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize(Policy = SecurityConstants.Policies.CanUpdatePersonalDetail)]
     public class UserDetailsController : Controller
     {
         private readonly ISessionHelper _sessionHelper;

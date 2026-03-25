@@ -1,20 +1,18 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
-using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.HeatNetwork;
-using HNTAS.Web.UI.Models.NetworkElements;
-using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize]
+
+    [Authorize(Policy = SecurityConstants.Policies.CanAddHeatNetworkDetail)]
     public class HeatNetworkController : Controller
     {
 
@@ -41,19 +39,19 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
             //start
             return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
-        }        
-        
-
-        [HttpGet]
-        public async Task<IActionResult> Details([FromQuery] string hnid)
-        {
-            var model = await GetNetworkDetails(hnid);
-            if (model == null)
-                return BadRequest();
-
-            return View(model);
-
         }
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> Details([FromQuery] string hnid)
+        //{
+        //    var model = await GetNetworkDetails(hnid);
+        //    if (model == null)
+        //        return BadRequest();
+
+        //    return View(model);
+
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -70,7 +68,7 @@ namespace HNTAS.Web.UI.Controllers
             hnid = hnid ?? _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
 
             var model = await GetNetworkDetails(hnid);
-            if (model == null) 
+            if (model == null)
                 return BadRequest();
 
             return View("AddNetworkDetails", model);
@@ -97,7 +95,7 @@ namespace HNTAS.Web.UI.Controllers
                     TownOrCity = response?.Address?.Town,
                     Postalcode = response?.Address?.Postcode,
                     Country = response?.Address?.Country,
-                    Fulladdress =  string.Join(", ", new[] { response?.Address?.AddressLine1, response?.Address?.Town, response?.Address?.Postcode, response?.Address?.Country }.Where(part => !string.IsNullOrWhiteSpace(part)))
+                    Fulladdress = string.Join(", ", new[] { response?.Address?.AddressLine1, response?.Address?.Town, response?.Address?.Postcode, response?.Address?.Country }.Where(part => !string.IsNullOrWhiteSpace(part)))
                 },
                 OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName),
                 PathWay = response.Pathway,
@@ -118,7 +116,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
-            this.ShowBackButton("AddNetworkDetails", "HeatNetwork", new {hnId});
+            this.ShowBackButton("AddNetworkDetails", "HeatNetwork", new { hnId });
 
             var networkDetailsTypeList = NetworkElementHelper.GetDefaultNetworkDetailsOptions();            
 
@@ -163,7 +161,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, hnid.ToUpper());
             switch (networkDetailId)
-            {                
+            {
                 case NetworkDetailsType.NetworkElements:
                     return RedirectToAction("SelectNetworkElements", "NetworkElements");
                 case NetworkDetailsType.Soa:
