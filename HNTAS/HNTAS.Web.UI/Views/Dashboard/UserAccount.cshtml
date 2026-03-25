@@ -172,15 +172,17 @@
                     <p class="govuk-body-s">View, add or edit heat network details.</p>
                 </div>
             </div>
-
-            <div class="dashboard-grid__item">
-                <div class="dashboard-card @disabled">
-                    <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="AddContributor" asp-controller="UserManagement">Contributors</a>
-                    </h3>
-                    <p class="govuk-body-s">You can add or view contributors to your heat network.</p>
-                </div>
-            </div>            
+            @if (Model.UserRole != UserRole.Contributor.ToString())
+            {
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card @disabled">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="AddContributor" asp-controller="UserManagement">Contributors</a>
+                        </h3>
+                        <p class="govuk-body-s">You can add or view contributors to your heat network.</p>
+                    </div>
+                </div>   
+            }
         }
 
         <div class="dashboard-grid__item">

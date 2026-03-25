@@ -96,6 +96,7 @@ namespace HNTAS.Web.UI.Tests.Helpers
                                         UploadedBy = "user"
                                     }
                                 }
+
                             }
                         },
                         AssessmentDocs = new List<UploadedAssessmentDocumentResponse> {
