@@ -14,6 +14,8 @@ namespace HNTAS.Web.UI.Models
         [BindNever]
         public UserModel User { get; set; }
 
+        public DeedPollViewModel DeedPollViewModel { get; set; }
+
         // The ConfirmedDeclaration property, now part of this specific ViewModel
         [Display(Name = "I confirm that")]
         [Range(typeof(bool), "true", "true", ErrorMessage = "You must confirm the declaration to proceed.")]

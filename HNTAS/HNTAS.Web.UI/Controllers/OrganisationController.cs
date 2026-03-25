@@ -376,7 +376,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult DeedPoll()
         {
             this.ShowBackButton("ConfirmResponsibility");
-            var model = _sessionHelper.GetFromSession<DeedPollViewModel>(HttpContext, "DeedPollViewModel") ?? new DeedPollViewModel();
+            var model = _sessionHelper.GetFromSession<DeedPollViewModel>(HttpContext, SessionKeys.DeedPollViewModelSessionKey) ?? new DeedPollViewModel();
             return View(model);
         }
 
@@ -390,7 +390,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            _sessionHelper.SaveToSession<DeedPollViewModel>(HttpContext, "DeedPollViewModel", model);
+            _sessionHelper.SaveToSession<DeedPollViewModel>(HttpContext, SessionKeys.DeedPollViewModelSessionKey, model);
             if (model.IsDeedPollAccepted == true)
             {
                 var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey) ?? new UserModel();
@@ -496,11 +496,13 @@ namespace HNTAS.Web.UI.Controllers
         {
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
+            var deedPollViewModel = _sessionHelper.GetFromSession<DeedPollViewModel>(HttpContext, SessionKeys.DeedPollViewModelSessionKey);
 
             var viewModel = new CheckYourAnswersModel
             {
                 Organisation = organisationModel,
                 User = userModel,
+                DeedPollViewModel = deedPollViewModel,
                 ConfirmDeclaration = false
             };
 
