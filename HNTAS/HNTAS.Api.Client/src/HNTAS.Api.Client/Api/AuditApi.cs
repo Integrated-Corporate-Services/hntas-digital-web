@@ -62,7 +62,7 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// The <see cref="IApiAuditHeatNetworkHnIdGetApiResponse"/>
     /// </summary>
-    public interface IApiAuditHeatNetworkHnIdGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<AuditLogResponse>?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IApiAuditHeatNetworkHnIdGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.AuditLogResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -348,11 +348,11 @@ namespace HNTAS.Api.Client.Api
             /// Deserializes the response if the response is 200 Ok
             /// </summary>
             /// <returns></returns>
-            public List<AuditLogResponse>? Ok()
+            public HNTAS.Api.Client.Model.AuditLogResponse? Ok()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<List<AuditLogResponse>>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.AuditLogResponse>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -361,7 +361,7 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out List<AuditLogResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.AuditLogResponse? result)
             {
                 result = null;
 

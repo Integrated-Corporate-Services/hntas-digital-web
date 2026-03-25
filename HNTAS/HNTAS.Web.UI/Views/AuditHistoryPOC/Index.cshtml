@@ -1,5 +1,5 @@
 ﻿@using HNTAS.Api.Client.Model
-@model IEnumerable<AuditLogResponse>
+@model AuditLogResponse
 
 @{
     ViewData["Title"] = "Certification history";
@@ -23,7 +23,7 @@
             </thead>
 
             <tbody class="govuk-table__body">
-                @foreach (var log in Model)
+                @foreach (var log in Model.Items!)
                 {
                     <tr class="govuk-table__row">
                         <td class="govuk-table__cell">@log.EntryType</td>

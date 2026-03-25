@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**EntryType** | **string** |  | [optional] 
-**UserName** | **string** |  | [optional] 
-**Role** | **string** |  | [optional] 
-**Timestamp** | **string** |  | [optional] 
-**ElementName** | **string** |  | [optional] 
-**Phase** | **string** |  | [optional] 
-**Stage** | **string** |  | [optional] 
+**Items** | [**List&lt;AuditLog&gt;**](AuditLog.md) |  | [optional] 
+**PageNumber** | **int** |  | [optional] 
+**PageSize** | **int** |  | [optional] 
+**TotalCount** | **int** |  | [optional] 
+**TotalPages** | **int** |  | [optional] 
+**HasPreviousPage** | **bool** |  | [optional] 
+**HasNextPage** | **bool** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

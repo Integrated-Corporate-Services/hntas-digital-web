@@ -15,7 +15,7 @@ namespace HNTAS.Web.UI.Services.Core
             _logger = logger;
         }
 
-        public async Task<List<AuditLogResponse>> GetAuditHistoryByHnId(string hnId)
+        public async Task<AuditLogResponse> GetAuditHistoryByHnId(string hnId)
         {
             if (string.IsNullOrWhiteSpace(hnId))
             {
@@ -27,7 +27,7 @@ namespace HNTAS.Web.UI.Services.Core
             if (response.IsNotFound)
             {
                 _logger.LogWarning("No audit history found for Heat Network {HnId}.", hnId);
-                return new List<AuditLogResponse>();
+                return new AuditLogResponse();
             }
 
             if (!response.IsOk)
@@ -37,7 +37,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
 
 
-            return response.Ok() ?? new List<AuditLogResponse>();
+            return response.Ok() ?? new AuditLogResponse();
         }
     }
 }

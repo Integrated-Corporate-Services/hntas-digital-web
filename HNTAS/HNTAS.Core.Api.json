@@ -78,26 +78,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AuditLogResponse"
-                  }
+                  "$ref": "#/components/schemas/AuditLogResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AuditLogResponse"
-                  }
+                  "$ref": "#/components/schemas/AuditLogResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AuditLogResponse"
-                  }
+                  "$ref": "#/components/schemas/AuditLogResponse"
                 }
               }
             }
@@ -3927,7 +3918,7 @@
           }
         }
       },
-      "AuditLogResponse": {
+      "AuditLog": {
         "type": "object",
         "properties": {
           "entryType": {
@@ -3953,6 +3944,39 @@
           "stage": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "AuditLogResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuditLog"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
           }
         }
       },

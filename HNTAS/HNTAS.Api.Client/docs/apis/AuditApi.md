@@ -8,7 +8,7 @@ All URIs are relative to *https://localhost:7117*
 
 <a id="apiauditheatnetworkhnidget"></a>
 # **ApiAuditHeatNetworkHnIdGet**
-> List&lt;AuditLogResponse&gt; ApiAuditHeatNetworkHnIdGet (string hnId)
+> AuditLogResponse ApiAuditHeatNetworkHnIdGet (string hnId)
 
 
 
@@ -21,7 +21,7 @@ All URIs are relative to *https://localhost:7117*
 
 ### Return type
 
-[**List&lt;AuditLogResponse&gt;**](AuditLogResponse.md)
+[**AuditLogResponse**](AuditLogResponse.md)
 
 ### Authorization
 
