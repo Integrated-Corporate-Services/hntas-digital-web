@@ -1,6 +1,8 @@
 ﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Authorization;
+using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.NetworkElements;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
@@ -31,40 +33,35 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SelectNetworkElementsAsync([FromQuery] string hnId)
+        public async Task<IActionResult> SelectNetworkElementsAsync()
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
-            hnId = hnId ?? _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
 
-            ViewBag.HnId = hnId.ToUpper();
+            ViewBag.HnId = hnId?.ToUpper();
+            ViewBag.HnName = hnName;
             var model = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
 
             if (model != null)
             {
                 return View(model);
             }
-            model = new NetworkElementViewModel()
-            {
-                ElementOptions = Utility.GetDefaultNetworkElementOptions()
-            };
 
-            //var networkType = _sessionHelper.GetFromSession<HeatNetworkType>(HttpContext, SessionKeys.HeatNetworkTypeSessionKey);
-
-            //if (networkType == HeatNetworkType.CommunalHeatNetwork)
-            //{                 
-            //    //model.ElementOptions = model.ElementOptions
-            //    //    .Where(e => e.Id == HeatNetworkElementDisplayType.EnergyCentre || e.Id == HeatNetworkElementDisplayType.ConsumerHeatSystems)
-            //    //    .ToList();
-            //}
-
+            model = new NetworkElementViewModel();
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var networkType = heatNetworkData?.HeatNetworkType;
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
+            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
+
+
             var selectedNetworkElements = heatNetworkData?.NetworkElements;
 
             if (selectedNetworkElements != null)
             {
                 selectedNetworkElements.Elements?.ForEach(e =>
                 {
-                    var displayType = Utility.GetNetworkElementDisplayTypeById(e.ElementType!);
+                    var displayType = NetworkElementHelper.GetNetworkElementDisplayTypeById(e.ElementType!);
                     model.SelectedElementIds.Add(displayType);
                     if (e.Count.HasValue)
                     {
@@ -80,22 +77,21 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SelectNetworkElements(NetworkElementViewModel model)
         {
+            this.ShowBackButton("NetworkDetails", "HeatNetwork");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            model.ElementOptions = Utility.GetDefaultNetworkElementOptions();
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnId = hnId?.ToUpper();
+            ViewBag.HnName = hnName;
 
-            //var networkType = _sessionHelper.GetFromSession<HeatNetworkType>(HttpContext, SessionKeys.HeatNetworkTypeSessionKey);
-
-            //if (networkType == HeatNetworkType.CommunalHeatNetwork)
-            //{
-            //    //model.ElementOptions = model.ElementOptions
-            //    //    .Where(e => e.Id == HeatNetworkElementDisplayType.EnergyCentre || e.Id == HeatNetworkElementDisplayType.ConsumerHeatSystems)
-            //    //    .ToList();
-            //}
 
             if (!ModelState.IsValid)
             {
                 return View("SelectNetworkElements", model);
             }
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var networkType = heatNetworkData?.HeatNetworkType;
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
+            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
             var elements = new List<Element>();
 
             foreach (var selectedId in model.SelectedElementIds)
@@ -108,7 +104,7 @@ namespace HNTAS.Web.UI.Controllers
                 elements.Add(ele);
                 if ((selectedId != HeatNetworkElementDisplayType.EnergyCentre) && (!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
                 {
-                    var element = Utility.GetDefaultNetworkElementOptions().FirstOrDefault(x => x.Id == selectedId);
+                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == selectedId);
                     if (element == null)
                     {
                         return BadRequest();
@@ -122,14 +118,58 @@ namespace HNTAS.Web.UI.Controllers
                 return View("SelectNetworkElements", model);
             }
 
+
+            var address = heatNetworkData?.Address;
+            var coordinates = heatNetworkData?.EcDetails;
+            var phase = heatNetworkData?.Phase;
+
+            var latlong = coordinates != null ? $"{coordinates.Latitude},{coordinates.Longitude}" : null;
+            var addressByStreetOrTownModel = address != null ? (AddressByStreetOrTownModel)address! : null;
+
+            var networkElementsOverViewModel = new NetworkElementsOverViewModel
+            {
+                Elements = elements.Select(e =>
+                {
+                    var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.Type);
+                    var label = elementOption != null ? elementOption.Label : e.Type.ToString();
+                    label = label.ToSentenceCase();
+
+                    return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
+                }).ToList(),
+                HeatNetworkAddress = addressByStreetOrTownModel?.Fulladdress,
+                Coordinates = latlong,
+                NetworkType = "",
+                Phase = phase ?? string.Empty
+            };
+
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementsOverViewModel);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, elements);
 
-            await SaveNetworkElements(new NetworkElementsModel());
+            return RedirectToAction("NetworkElementsOverView", "NetworkElements");
+        }
+
+        [HttpGet]
+        public IActionResult NetworkElementsOverView()
+        {
+            this.ShowBackButton("SelectNetworkElements", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId?.ToUpper();
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnName = hnName;
+            var model = _sessionHelper.GetFromSession<NetworkElementsOverViewModel>(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey);
+            return View("NetworkElementsOverView", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NetworkElementsOverViewAsync()
+        {
+            await SaveNetworkElements();
             ClearNetworkElementSpecificSession();
             return RedirectToAction("NetworkDetails", "HeatNetwork");
         }
 
-        private async Task SaveNetworkElements(NetworkElementsModel viewModel)
+        private async Task SaveNetworkElements()
         {
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
@@ -150,7 +190,7 @@ namespace HNTAS.Web.UI.Controllers
                 request.Elements = request.Elements.Select((element, index) =>
                 {
                     element.ElementId = (index + 1).ToString("D5");
-                    element.ElementType = Utility.GetNetworkElementIdByType(element.Type.ToString()!);
+                    element.ElementType = NetworkElementHelper.GetNetworkElementIdByType(element.Type.ToString()!);
                     return element;
                 }).ToList();
             }
@@ -160,6 +200,7 @@ namespace HNTAS.Web.UI.Controllers
         private void ClearNetworkElementSpecificSession()
         {
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SelectedElementsSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey);
         }
     }
 }

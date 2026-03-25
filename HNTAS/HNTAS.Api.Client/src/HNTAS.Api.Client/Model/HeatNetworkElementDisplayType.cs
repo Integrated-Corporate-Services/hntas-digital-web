@@ -46,9 +46,14 @@ namespace HNTAS.Api.Client.Model
         DistrictDistributionNetwork = 3,
 
         /// <summary>
+        /// Enum CommunalDistributionNetwork for value: CommunalDistributionNetwork
+        /// </summary>
+        CommunalDistributionNetwork = 4,
+
+        /// <summary>
         /// Enum ConsumerConnections for value: ConsumerConnections
         /// </summary>
-        ConsumerConnections = 4
+        ConsumerConnections = 5
     }
 
     /// <summary>
@@ -72,6 +77,9 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("DistrictDistributionNetwork"))
                 return HeatNetworkElementDisplayType.DistrictDistributionNetwork;
 
+            if (value.Equals("CommunalDistributionNetwork"))
+                return HeatNetworkElementDisplayType.CommunalDistributionNetwork;
+
             if (value.Equals("ConsumerConnections"))
                 return HeatNetworkElementDisplayType.ConsumerConnections;
 
@@ -93,6 +101,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("DistrictDistributionNetwork"))
                 return HeatNetworkElementDisplayType.DistrictDistributionNetwork;
+
+            if (value.Equals("CommunalDistributionNetwork"))
+                return HeatNetworkElementDisplayType.CommunalDistributionNetwork;
 
             if (value.Equals("ConsumerConnections"))
                 return HeatNetworkElementDisplayType.ConsumerConnections;
@@ -116,6 +127,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value == HeatNetworkElementDisplayType.DistrictDistributionNetwork)
                 return "DistrictDistributionNetwork";
+
+            if (value == HeatNetworkElementDisplayType.CommunalDistributionNetwork)
+                return "CommunalDistributionNetwork";
 
             if (value == HeatNetworkElementDisplayType.ConsumerConnections)
                 return "ConsumerConnections";
@@ -159,7 +173,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkElementDisplayType heatNetworkElementDisplayType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkElementDisplayType.ToString());
+            writer.WriteStringValue(HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(heatNetworkElementDisplayType).ToString());
         }
     }
 
@@ -190,14 +204,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the HeatNetworkElementDisplayType to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="heatNetworkElementDisplayType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkElementDisplayType? heatNetworkElementDisplayType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkElementDisplayType?.ToString() ?? "null");
+            writer.WriteStringValue(heatNetworkElementDisplayType.HasValue ? HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(heatNetworkElementDisplayType.Value).ToString() : "null");
         }
     }
 }

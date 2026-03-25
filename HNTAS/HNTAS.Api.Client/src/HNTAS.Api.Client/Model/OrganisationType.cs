@@ -145,7 +145,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, OrganisationType organisationType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(organisationType.ToString());
+            writer.WriteStringValue(OrganisationTypeValueConverter.ToJsonValue(organisationType).ToString());
         }
     }
 
@@ -176,14 +176,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the OrganisationType to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="organisationType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, OrganisationType? organisationType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(organisationType?.ToString() ?? "null");
+            writer.WriteStringValue(organisationType.HasValue ? OrganisationTypeValueConverter.ToJsonValue(organisationType.Value).ToString() : "null");
         }
     }
 }
