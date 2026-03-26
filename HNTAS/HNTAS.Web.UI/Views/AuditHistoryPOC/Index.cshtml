@@ -12,16 +12,33 @@
     
     string GetSortUrl(string sortField)
     {
-        var order = (currentSort == sortField.ToLower() && currentOrder == "asc") ? "desc" : "asc";
+        var order = currentOrder == "asc" ? "desc" : "asc";
         return Url.Action("Index", new { hnId = hnId, sortBy = sortField, sortOrder = order, page = currentPage, pageSize = pageSize }) ?? "";
     }
     
-    string GetSortIcon(string sortField)
-    {
-        if (currentSort != sortField) return "";
-        return currentOrder == "asc" ? "▲" : "▼";
+    string GetSortIcon()
+    {        
+        if (currentOrder == "asc")
+        {
+            return "<svg class='govuk-!-margin-left-1' width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false'><path d='M6 2L10 8H2L6 2Z' fill='currentColor'/></svg>";
+        }
+        else
+        {
+            return "<svg class='govuk-!-margin-left-1' width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false'><path d='M6 10L2 4H10L6 10Z' fill='currentColor'/></svg>";
+        }
     }
 }
+
+<style>
+    .sort-link {
+        text-decoration: none !important;
+    }
+    
+    .sort-link:hover {
+        text-decoration: none !important;
+        text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+    }
+</style>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
@@ -33,13 +50,13 @@
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
                     <th scope="col" class="govuk-table__header">
-                        <a href="@GetSortUrl("EntryType")" class="govuk-link govuk-link--no-visited-state">
-                            Entry type @GetSortIcon("EntryType")
+                        <a href="@GetSortUrl("EntryType")" class="govuk-link govuk-link--no-visited-state sort-link">
+                            Entry type @Html.Raw(GetSortIcon())
                         </a>
                     </th>
                     <th scope="col" class="govuk-table__header">
-                        <a href="@GetSortUrl("Element")" class="govuk-link govuk-link--no-visited-state">
-                            Element @GetSortIcon("Element")
+                        <a href="@GetSortUrl("Element")" class="govuk-link govuk-link--no-visited-state sort-link">
+                            Element @Html.Raw(GetSortIcon())
                         </a>
                     </th>
                     <th scope="col" class="govuk-table__header">Phase</th>
@@ -83,35 +100,24 @@
         @if (totalPages > 1)
         {
             <nav class="govuk-pagination" role="navigation" aria-label="Pagination">
-                <div class="govuk-pagination__prev">
+                
                     @if (currentPage > 1)
                     {
+                    <div class="govuk-pagination__prev">
                         <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { hnId = hnId, sortBy = currentSort, sortOrder = currentOrder, page = currentPage - 1, pageSize = pageSize })" rel="prev">
                             <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
                                 <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
                             </svg>
                             <span class="govuk-pagination__link-title">Previous</span>
                         </a>
+                    </div>
                     }
-                </div>
+                
                 <ul class="govuk-pagination__list">
                     @{
                         int startPage = Math.Max(1, currentPage - 2);
-                        int endPage = Math.Min(totalPages, currentPage + 2);
-                        
-                        if (startPage > 1)
-                        {
-                            <li class="govuk-pagination__item">
-                                <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { hnId = hnId, sortBy = currentSort, sortOrder = currentOrder, page = 1, pageSize = pageSize })">
-                                    1
-                                </a>
-                            </li>
-                            if (startPage > 2)
-                            {
-                                <li class="govuk-pagination__item govuk-pagination__item--ellipses">⋯</li>
-                            }
-                        }
-                        
+                        int endPage = Math.Min(totalPages, currentPage + 2);        
+
                         for (int i = startPage; i <= endPage; i++)
                         {
                             if (i == currentPage)
@@ -128,20 +134,8 @@
                                     </a>
                                 </li>
                             }
-                        }
+                        }                        
                         
-                        if (endPage < totalPages)
-                        {
-                            if (endPage < totalPages - 1)
-                            {
-                                <li class="govuk-pagination__item govuk-pagination__item--ellipses">⋯</li>
-                            }
-                            <li class="govuk-pagination__item">
-                                <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { hnId = hnId, sortBy = currentSort, sortOrder = currentOrder, page = totalPages, pageSize = pageSize })">
-                                    @totalPages
-                                </a>
-                            </li>
-                        }
                     }
                 </ul>
                 <div class="govuk-pagination__next">
