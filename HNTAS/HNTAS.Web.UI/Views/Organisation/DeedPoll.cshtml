@@ -1,21 +1,18 @@
 ﻿@using HNTAS.Web.UI.Models;
 @model DeedPollViewModel
 @{
-    ViewData["Title"] = "Confirm your organisation's agreement to the HNTAS Code";
+    ViewData["Title"] = "Agree to HNTAS Terms and Conditions";
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <!-- Page title -->
-        <h1 class="govuk-heading-xl">
-            Confirm your organisation's agreement to the HNTAS Code
+        <h1 class="govuk-heading-l">
+            Agree to HNTAS Terms and Conditions
         </h1>
 
         <p class="govuk-body">
-            The HNTAS Code is a one-way legal commitment made by your organisation.
-            By agreeing to it, your organisation confirms that it will comply with the
-            HNTAS Code for all heat networks it registers for certification.
+            The terms and conditions set out what your organisation must do when registering heat networks for certification.
         </p>
 
         <p class="govuk-body">
@@ -23,14 +20,14 @@
         </p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>comply with the HNTAS Code and scheme rules</li>
+            <li>comply with HNTAS scheme rules</li>
             <li>follow HNTAS processes for registering heat networks and undergoing assessment</li>
             <li>accept decisions made by the HNTAS Code Manager, including the outcome of any appeals</li>
         </ul>
 
         <p class="govuk-body">
             The detailed requirements of HNTAS are set out in the
-            HNTAS Code</a>
+            <a class="govuk-link" href="#">HNTAS Terms and Conditions</a>
             and related scheme documents.
         </p>
 
@@ -44,9 +41,9 @@
                 <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
                 <div class="govuk-error-summary__body">
                     <ul class="govuk-list govuk-error-summary__list">
-                        error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
                         {
-                            <li><a>#IsDeedPollAccepted@error.ErrorMessage</a></li>
+                            <li><a href="#IsDeedPollAccepted">@error.ErrorMessage</a></li>
                         }
                     </ul>
                 </div>
@@ -56,33 +53,32 @@
         <form asp-action="DeedPoll" method="post" novalidate>
             @Html.AntiForgeryToken()
 
-        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.IsDeedPollAccepted)) && ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.Any() ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.IsDeedPollAccepted)) && ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.Any() ? "govuk-form-group--error" : "")">
 
                 <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                     <div class="govuk-checkboxes__item">
 
                         <input class="govuk-checkboxes__input"
-                                id="IsDeedPollAccepted"
-                                name="IsDeedPollAccepted"
-                                type="checkbox"
-                                value="true"
-                           @(Model.IsDeedPollAccepted == true ? "checked" : "") />
+                               id="IsDeedPollAccepted"
+                               name="IsDeedPollAccepted"
+                               type="checkbox"
+                               value="true"
+                               @(Model.IsDeedPollAccepted == true ? "checked" : "") />
 
                         <label class="govuk-label govuk-checkboxes__label" for="IsDeedPollAccepted">
-                            I confirm that I am authorised to act on behalf of this organisation
-                            and that it agrees to the HNTAS Code
+                            I confirm that I am authorised to act on behalf of this organisation and that it agrees to the HNTAS Terms and Conditions
                         </label>
 
                         <input type="hidden" name="IsDeedPollAccepted" value="false" />
                     </div>
                 </div>
 
-            @if (ViewData.ModelState.ContainsKey(nameof(Model.IsDeedPollAccepted)) &&
-                        ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.Any())
+                @if (ViewData.ModelState.ContainsKey(nameof(Model.IsDeedPollAccepted)) &&
+                            ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.Any())
                 {
                     <p id="IsDeedPollAccepted-error" class="govuk-error-message">
                         <span class="govuk-visually-hidden">Error:</span>
-                    @ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.First().ErrorMessage
+                        @ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.First().ErrorMessage
                     </p>
                 }
 

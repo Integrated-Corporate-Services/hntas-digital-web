@@ -1,4 +1,5 @@
-﻿using HNTAS.Api.Client.Model;
+﻿using DocumentFormat.OpenXml.EMMA;
+using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
@@ -54,13 +55,19 @@ namespace HNTAS.Web.UI.Controllers
             // 1. Get the status of our two "Edit/Add" flags
             var isEdit = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey);
             var isAddNonRP = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey);
+            var isAddRP = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsRPJourneySessionKey);
 
             // 2. Define our "Active Journey" state
-            bool isActiveJourney = isEdit || isAddNonRP;
+            bool isActiveJourney = isEdit || isAddNonRP || isAddRP;
 
             // 3. Get the user's current roles from the database
             var userId = User.FindFirstValue("sub");
             var userRoles = _roleService.GetRolesAsync(userId).GetAwaiter().GetResult();
+            var actionName = context.RouteData.Values["action"]?.ToString();
+            if (actionName == "Confirmation")
+            {
+                return;
+            }
 
             // 4. THE SECURITY CHECK:
             // If the user IS NOT in an active journey (Edit or Add), 
@@ -106,6 +113,7 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
             _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, false);
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsRPJourneySessionKey, true);
             return RedirectToAction("OrganisationType");
         }
 
@@ -134,7 +142,7 @@ namespace HNTAS.Web.UI.Controllers
                         Country = org.RegisteredAddress?.Country,
                         PostalCode = org.RegisteredAddress?.Postcode
                     }
-                };
+                };               
 
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, model);
             }
@@ -272,10 +280,12 @@ namespace HNTAS.Web.UI.Controllers
             if (!string.IsNullOrEmpty(organisationModel.CompanyNumber))
             {
                 this.ShowBackButton("CompanyNumber");
+                ViewBag.ChangeUrl = Url.Action("CompanyNumber");
             }
             else
             {
                 this.ShowBackButton("OrganisationAddress");
+                ViewBag.ChangeUrl = Url.Action("OrganisationAddress");
             }
             return View("CompanyConfirm", organisationModel.CompanyDetails);
         }
@@ -325,7 +335,6 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return RedirectToAction("UpdateOrganisationDetailsConfirmation");
             }
-
             return RedirectToAction("ConfirmResponsibility");
         }
 
@@ -376,7 +385,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult DeedPoll()
         {
             this.ShowBackButton("ConfirmResponsibility");
-            var model = _sessionHelper.GetFromSession<DeedPollViewModel>(HttpContext, "DeedPollViewModel") ?? new DeedPollViewModel();
+            var model = _sessionHelper.GetFromSession<DeedPollViewModel>(HttpContext, SessionKeys.DeedPollViewModelSessionKey) ?? new DeedPollViewModel();
             return View(model);
         }
 
@@ -390,7 +399,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            _sessionHelper.SaveToSession<DeedPollViewModel>(HttpContext, "DeedPollViewModel", model);
+            _sessionHelper.SaveToSession<DeedPollViewModel>(HttpContext, SessionKeys.DeedPollViewModelSessionKey, model);
             if (model.IsDeedPollAccepted == true)
             {
                 var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey) ?? new UserModel();
@@ -496,17 +505,19 @@ namespace HNTAS.Web.UI.Controllers
         {
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
+            var deedPollViewModel = _sessionHelper.GetFromSession<DeedPollViewModel>(HttpContext, SessionKeys.DeedPollViewModelSessionKey);
 
-            var viewModel = new CheckYourAnswersModel
+            var viewModel = new CheckYourAnswersOrganisationModel
             {
                 Organisation = organisationModel,
                 User = userModel,
+                DeedPollViewModel = deedPollViewModel,
                 ConfirmDeclaration = false
             };
 
             // Set the flow state to Check Answers mode
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, true);
-
+            _sessionHelper.SaveToSession<CheckYourAnswersOrganisationModel>(HttpContext, SessionKeys.CheckYourAnswersOrganisationModelSessionKey, viewModel);
             return View(viewModel);
         }
 
@@ -514,24 +525,21 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
-        public async Task<IActionResult> SubmitAnswers(CheckYourAnswersModel viewModel)
+        public async Task<IActionResult> SubmitAnswers()
         {
-            viewModel.Organisation = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
-            viewModel.User = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-
+            var viewModel = _sessionHelper.GetFromSession<CheckYourAnswersOrganisationModel>(HttpContext, SessionKeys.CheckYourAnswersOrganisationModelSessionKey);            
             ModelState.Remove(nameof(viewModel.Organisation));
             ModelState.Remove(nameof(viewModel.User));
+            var organisationModel = viewModel.Organisation;
+            var userModel = viewModel.User;
+            var emailAddress = userModel?.ContactDetails?.EmailAddress;
+            var company = organisationModel?.CompanyDetails;            
 
             if (!ModelState.IsValid)
             {
                 ViewBag.ShowBackButton = false;
                 return View("CheckYourAnswers", viewModel);
-            }
-            var organisationModel = viewModel.Organisation;
-            var userModel = viewModel.User;
-
-            var emailAddress = userModel?.ContactDetails?.EmailAddress;
-            var company = organisationModel?.CompanyDetails;
+            }            
 
             TempData["Confirmation_CompanyName"] = company?.Title;
             TempData["Confirmation_EmailAddress"] = emailAddress;
@@ -612,7 +620,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 // Ensure any lingering session data is cleared before redirecting for a clean start.
                 _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
-                return RedirectToAction("Start", "Organisation"); // Redirect to the very beginning of the flow
+                return RedirectToAction("Index", "Home"); // Redirect to the very beginning of the flow
             }
 
             //required for adding heat networks after org creation
@@ -623,6 +631,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.OrganisationId = orgId;
 
             ViewBag.ShowBackButton = false;
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsRPJourneySessionKey, false);
 
             return View("Confirmation");
         }
