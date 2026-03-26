@@ -66,7 +66,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving audit history for HN ID: {HnId}", hnId);
+                _logger.LogError(ex, "Error retrieving audit history for HN ID: {HnId}", SanitizeForLogging(hnId));
                 TempData["ErrorMessage"] = "An error occurred while retrieving the certification history.";
 
                 // Return empty result
@@ -87,6 +87,10 @@ namespace HNTAS.Web.UI.Controllers
 
                 return View(emptyResult);
             }
+        }
+        private string SanitizeForLogging(string input)
+        {
+            return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;
         }
     }
 }

@@ -26,18 +26,23 @@ namespace HNTAS.Web.UI.Services.Core
 
             if (response.IsNotFound)
             {
-                _logger.LogWarning("No audit history found for Heat Network {HnId}.", auditLogRequest.HnId);
+                _logger.LogWarning("No audit history found for Heat Network {HnId}.", SanitizeForLogging(auditLogRequest.HnId));
                 return new AuditLogResponse();
             }
 
             if (!response.IsOk)
             {
-                _logger.LogError("Failed to fetch audit history for Heat Network {HnId}. Status code: {StatusCode}", auditLogRequest.HnId, response.StatusCode);
+                _logger.LogError("Failed to fetch audit history for Heat Network {HnId}. Status code: {StatusCode}", SanitizeForLogging(auditLogRequest.HnId), response.StatusCode);
                 throw new HttpRequestException($"Failed to fetch audit history. Service returned {response.StatusCode}");
             }
 
 
             return response.Ok() ?? new AuditLogResponse();
+        }
+
+        private string SanitizeForLogging(string input)
+        {
+            return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;
         }
     }
 }
