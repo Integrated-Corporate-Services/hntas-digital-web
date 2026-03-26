@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
 {
-    public class CheckYourAnswersModel
+    public class CheckYourAnswersOrganisationModel
     {
         // Use [BindNever] to prevent the model binder from attempting to bind these
         // properties from the incoming form data on a POST request.
@@ -13,6 +13,8 @@ namespace HNTAS.Web.UI.Models
         public OrganisationModel Organisation { get; set; }
         [BindNever]
         public UserModel User { get; set; }
+
+        public DeedPollViewModel DeedPollViewModel { get; set; }
 
         // The ConfirmedDeclaration property, now part of this specific ViewModel
         [Display(Name = "I confirm that")]

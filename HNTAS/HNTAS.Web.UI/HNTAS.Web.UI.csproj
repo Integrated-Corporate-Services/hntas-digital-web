@@ -39,6 +39,7 @@
     <Folder Include="assets\js\shared\" />
     <Folder Include="assets\scss\shared\" />
     <Folder Include="assets\scss\views\" />
+    <Folder Include="Views\Account\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

@@ -1,15 +1,18 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PreferredContactType = HNTAS.Web.UI.Models.Enums.PreferredContactType;
 
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize(Policy = SecurityConstants.Policies.CanUpdatePersonalDetail)]
     public class UserDetailsController : Controller
     {
         private readonly ISessionHelper _sessionHelper;
@@ -129,7 +132,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             this.ShowBackButton("ContactDetails", "UserDetails");
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-            var viewModel = new CheckYourAnswersModel
+            var viewModel = new CheckYourAnswersOrganisationModel
             {
                 Organisation = new OrganisationModel(),
                 User = userModel,
@@ -170,7 +173,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 _logger.LogError(ex, "Error updating OrgDetails for user {UserId}", userId);
                 TempData["ErrorMessage"] = "There was a problem saving your details. Please try again.";
-                return View("UserDetails/CheckYourAnswers", new CheckYourAnswersModel
+                return View("UserDetails/CheckYourAnswers", new CheckYourAnswersOrganisationModel
                 {
                     Organisation = new OrganisationModel(),
                     User = userModel,

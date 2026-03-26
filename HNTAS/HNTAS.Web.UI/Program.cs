@@ -3,6 +3,7 @@ using GovUk.OneLogin.AspNetCore;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Routing;
@@ -334,7 +335,10 @@ else
 {
     // GOV.UK One Login authentication
     builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
-        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+        {
+            options.AccessDeniedPath = "/account/access-denied"; // The browser will go here for 403s
+        })
         .AddOneLogin(options =>
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -398,6 +402,10 @@ else
         });
 
 }
+
+
+// Custom authorization logic for role-based access control, policies, and handlers
+builder.Services.AddApplicationAuthorization();
 
 builder.Services.AddSession(options =>
 {

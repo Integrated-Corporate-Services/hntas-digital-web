@@ -1,12 +1,13 @@
 ﻿@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.Enums
 @using HNTAS.Web.UI.Models.User
-@model CheckYourAnswersModel
+@model CheckYourAnswersOrganisationModel
 
 @{
     ViewData["Title"] = "Check your answers";
     var organisationModel = Model.Organisation;
     var userModel = Model.User;
+    var deedPollViewModel = Model.DeedPollViewModel;
 
     string displayContactNumber = "Not provided";
     if (userModel?.ContactDetails != null)
@@ -38,149 +39,162 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">        
-        <h1 class="govuk-heading-l">Check your answers before submitting</h1>
+            <h1 class="govuk-heading-l">Check your answers before submitting</h1>
 
-        <form asp-controller="Organisation" asp-action="SubmitAnswers" method="post" novalidate>
-            @Html.AntiForgeryToken()
+            <form asp-controller="Organisation" asp-action="SubmitAnswers" method="post" novalidate>
+                @Html.AntiForgeryToken()
 
-            <h2 class="govuk-heading-m">Organisation details</h2>
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Organisation type</dt>
-                    <dd class="govuk-summary-list__value">@organisationModel?.SelectedOrganisationTypeText</dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("OrganisationType")">Change<span class="govuk-visually-hidden"> organisation type</span></a>
-                    </dd>
-                </div>
-
-                @if (!string.IsNullOrEmpty(@organisationModel?.CompanyNumber))
-                {
+                <h2 class="govuk-heading-m">Organisation details</h2>
+                <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Company number</dt>
-                        <dd class="govuk-summary-list__value">@organisationModel?.CompanyNumber</dd>
+                        <dt class="govuk-summary-list__key">Organisation type</dt>
+                        <dd class="govuk-summary-list__value">@organisationModel?.SelectedOrganisationTypeText</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("CompanyNumber")">Change<span class="govuk-visually-hidden"> company number</span></a>
+                            <a class="govuk-link" href="@Url.Action("OrganisationType")">Change<span class="govuk-visually-hidden"> organisation type</span></a>
                         </dd>
                     </div>
-                }
-               
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Organisation name and address</dt>
-                    <dd class="govuk-summary-list__value">
-                        @if (organisationModel?.CompanyDetails != null)
-                        {
-                            @organisationModel.CompanyDetails.Title<br />
-                            @organisationModel.CompanyDetails.RegisteredOfficeAddress.AddressLine1 <br />
-                            @if (!string.IsNullOrEmpty(organisationModel.CompanyDetails.RegisteredOfficeAddress.AddressLine2))
-                            {
-                                @organisationModel.CompanyDetails.RegisteredOfficeAddress.AddressLine2 <br />
-                            }
-                            @if (!string.IsNullOrEmpty(organisationModel.CompanyDetails.RegisteredOfficeAddress.Locality))
-                            {
-                                @organisationModel.CompanyDetails.RegisteredOfficeAddress.Locality <br />
-                            }
-                          
-                            @if (!string.IsNullOrEmpty(organisationModel.CompanyDetails.RegisteredOfficeAddress.Country))
-                            {
-                                @organisationModel.CompanyDetails.RegisteredOfficeAddress.Country <br />
-                            }
-                            @organisationModel.CompanyDetails.RegisteredOfficeAddress.PostalCode
-                        }
-                        else
-                        {
-                            <span>Not provided</span>
-                        }
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                        @if (!string.IsNullOrEmpty(organisationModel.CompanyNumber))
-                        {
-                                <a class="govuk-link" href="@Url.Action("CompanyNumber")">Change<span class="govuk-visually-hidden"> company number</span></a>
-                        }
-                        else
-                        {
-                                <a class="govuk-link" href="@Url.Action("OrganisationAddress")">Change<span class="govuk-visually-hidden"> company number</span></a>
-                        }
-                        </dd>
-                </div>
-            </dl>
 
-            <h2 class="govuk-heading-m">Your details</h2>
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Are you the regulatory contact?</dt>
-                    <dd class="govuk-summary-list__value">
-                        @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
-                        </dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("ConfirmRegulatoryContact")">Change<span class="govuk-visually-hidden"> regulatory contact</span></a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">First name</dt>
-                    <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.FirstName</dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> first name</span></a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Last name</dt>
-                    <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.LastName</dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> last name</span></a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Preferred contact number for work</dt>
-                    <dd class="govuk-summary-list__value">@displayContactNumber</dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> preferred contact number for work</span></a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Job title</dt>
-                    <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.JobTitle</dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> job title</span></a>
-                    </dd>
-                </div>
-            </dl>
-
-            @* <h2 class="govuk-heading-m">Declaration</h2> *@
-            @* <div class="govuk-form-group @(hasDeclarationErrors ? "govuk-form-group--error" : "")">
-                <fieldset class="govuk-fieldset" aria-describedby="@(hasDeclarationErrors ? "confirmDeclaration-error" : "")">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                        <h1 class="govuk-fieldset__heading">Tick to confirm:</h1>
-                    </legend>
-                    @if (hasDeclarationErrors)
+                    @if (!string.IsNullOrEmpty(@organisationModel?.CompanyNumber))
                     {
-                        <p id="confirmDeclaration-error" class="govuk-error-message">
-                            <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ConfirmDeclaration)
-                        </p>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Company number</dt>
+                            <dd class="govuk-summary-list__value">@organisationModel?.CompanyNumber</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("CompanyNumber")">Change<span class="govuk-visually-hidden"> company number</span></a>
+                            </dd>
+                        </div>
                     }
+               
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Organisation name and address</dt>
+                        <dd class="govuk-summary-list__value">
+                            @if (organisationModel?.CompanyDetails != null)
+                            {
+                                @organisationModel.CompanyDetails.Title<br />
+                                @organisationModel.CompanyDetails.RegisteredOfficeAddress.AddressLine1 <br />
+                                @if (!string.IsNullOrEmpty(organisationModel.CompanyDetails.RegisteredOfficeAddress.AddressLine2))
+                                {
+                                    @organisationModel.CompanyDetails.RegisteredOfficeAddress.AddressLine2 <br />
+                                }
+                                @if (!string.IsNullOrEmpty(organisationModel.CompanyDetails.RegisteredOfficeAddress.Locality))
+                                {
+                                    @organisationModel.CompanyDetails.RegisteredOfficeAddress.Locality <br />
+                                }
+                          
+                                @if (!string.IsNullOrEmpty(organisationModel.CompanyDetails.RegisteredOfficeAddress.Country))
+                                {
+                                    @organisationModel.CompanyDetails.RegisteredOfficeAddress.Country <br />
+                                }
+                                @organisationModel.CompanyDetails.RegisteredOfficeAddress.PostalCode
+                            }
+                            else
+                            {
+                                <span>Not provided</span>
+                            }
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            @if (!string.IsNullOrEmpty(organisationModel.CompanyNumber))
+                            {
+                                    <a class="govuk-link" href="@Url.Action("CompanyNumber")">Change<span class="govuk-visually-hidden"> company number</span></a>
+                            }
+                            else
+                            {
+                                    <a class="govuk-link" href="@Url.Action("OrganisationAddress")">Change<span class="govuk-visually-hidden"> organisation address</span></a>
+                            }
+                            </dd>
+                    </div>
+                </dl>
 
-                    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                <h2 class="govuk-heading-m">Your details</h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Are you the regulatory contact?</dt>
+                        <dd class="govuk-summary-list__value">
+                            @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
+                            </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("ConfirmRegulatoryContact")">Change<span class="govuk-visually-hidden"> regulatory contact</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">First name</dt>
+                        <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.FirstName</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> first name</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Last name</dt>
+                        <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.LastName</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> last name</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Preferred contact number for work</dt>
+                        <dd class="govuk-summary-list__value">@displayContactNumber</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> preferred contact number for work</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Job title</dt>
+                        <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.JobTitle</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> job title</span></a>
+                        </dd>
+                    </div>
+                </dl>
+
+                <h2 class="govuk-heading-m">Agreements</h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Your responsibility</dt>
+                        <dd class="govuk-summary-list__value">
+                            @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
+                            </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("ConfirmResponsibility")">Change<span class="govuk-visually-hidden">Confirm Responsibility</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Organisation Agreement</dt>
+                        <dd class="govuk-summary-list__value">
+                            @(deedPollViewModel.IsDeedPollAccepted ? "Yes" : "No")
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("DeedPoll")">Change<span class="govuk-visually-hidden">deed poll</span></a>
+                        </dd>
+                    </div>                
+                </dl>
+
+                <h2 class="govuk-heading-m">Declaration</h2>
+                <div class="govuk-form-group @(hasDeclarationErrors ? "govuk-form-group--error" : "")">
+                    <fieldset class="govuk-fieldset" aria-describedby="@(hasDeclarationErrors ? "confirmDeclaration-error" : "")">
+                    
+                        @if (hasDeclarationErrors)
+                        {
+                            <p id="confirmDeclaration-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ConfirmDeclaration)
+                            </p>
+                        }
                         <div class="govuk-checkboxes__item">
                             <input class="govuk-checkboxes__input"
-                                    id="@fieldName"
-                                    asp-for="ConfirmDeclaration"
-                                    type="checkbox"
-                                    value="true">
+                                        id="@fieldName"
+                                        asp-for="ConfirmDeclaration"
+                                        type="checkbox"
+                                        value="true">                      
                             <label class="govuk-label govuk-checkboxes__label" for="@fieldName">
-                                I confirm that:
+                            I confirm that I am authorised to act on behalf of @organisationModel.CompanyDetails.Title and the Responsible Party for heat networks, and that the information submitted through this service is accurate and complete.
                             </label>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
+                        </div>                    
+                    </fieldset>                
+                </div>
 
-            <ul class="govuk-list govuk-list--bullet">
-                <li>I have read and understood the digital form and guidance currently published on <a href="#" class="govuk-link">GOV.UK</a></li>
-            </ul> *@
-
-            <button type="submit" class="govuk-button" data-module="govuk-button">
-                Submit
-            </button>
-        </form>
-    </div>
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Confirm
+                </button>
+            </form>
+        </div>
     </div>
 </div>

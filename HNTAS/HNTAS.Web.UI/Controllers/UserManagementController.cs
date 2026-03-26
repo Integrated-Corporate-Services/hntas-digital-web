@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Enums;
@@ -90,7 +91,7 @@ namespace HNTAS.Web.UI.Controllers
             }
         }
 
-
+        [Authorize(Policy = SecurityConstants.Policies.CanAddDDHAndContributor)]
         [HttpGet]
         public IActionResult AddContributor()
         {
@@ -178,7 +179,7 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> HeatNetworksAsync()
         {
             ClearNetworkDetailsSession();
-            
+
             this.ShowBackButton("UserAccount", "Dashboard");
             var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
 

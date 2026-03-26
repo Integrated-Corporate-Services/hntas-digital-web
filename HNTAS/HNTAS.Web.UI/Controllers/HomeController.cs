@@ -120,7 +120,7 @@ public class HomeController : Controller
 
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, newUserId);
 
-                return View();
+                return RedirectToAction("StartRegistration", "Organisation");
             }
             // Existing user flow
             else if (existingUser != null)
@@ -129,7 +129,7 @@ public class HomeController : Controller
 
                 if (existingUser.OrgId == null && existingUser.Roles.Count() == 0)
                 {
-                    return View();
+                    return RedirectToAction("StartRegistration", "Organisation");
                 }
                 else if (existingUser.OrgId == null && existingUser.Roles.Count() != 0)
                 {
@@ -151,10 +151,13 @@ public class HomeController : Controller
         }
     }
 
+
     public IActionResult Error(int code)
     {
         if (code == 404)
             return View("NotFound");
+        else if (code == 403)
+            return View("AccessDenied");
         else if (code == 500)
             return View("Error");
 
@@ -209,7 +212,7 @@ public class HomeController : Controller
         {
             case "registerNewHN":
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey, model);
-                return RedirectToAction("AreYouTheRP", "HeatNetworkEligibility");
+                return RedirectToAction("AreYouTheRP", "RegistrationEligibility");
             case "updateExistingHN":
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey, model);
                 return RedirectToAction("Index", "Home");
