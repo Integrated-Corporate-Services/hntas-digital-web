@@ -8,7 +8,6 @@
     var currentPage = (int)(ViewBag.CurrentPage ?? 1);
     var pageSize = (int)(ViewBag.PageSize ?? 20);
     var totalPages = (int)(ViewBag.TotalPages ?? 1);
-    var totalItems = (int)(ViewBag.TotalItems ?? 0);
     var hnId = Model.HnId;
     
     string GetSortUrl(string sortField)
