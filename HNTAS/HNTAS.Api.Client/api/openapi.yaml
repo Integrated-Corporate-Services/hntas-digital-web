@@ -49,16 +49,20 @@ paths:
           description: OK
       tags:
       - Assessor
-  /api/Audit/heat-network/{hnId}:
+  /api/Audit/heat-network-audit-logs:
     get:
-      parameters:
-      - explode: false
-        in: path
-        name: hnId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuditLogRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/AuditLogRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/AuditLogRequest"
         required: true
-        schema:
-          type: string
-        style: simple
       responses:
         "200":
           content:
@@ -2550,8 +2554,32 @@ components:
           nullable: true
           type: string
       type: object
+    AuditLogRequest:
+      example:
+        hnId: hnId
+        sortDirection: sortDirection
+        pageSize: 6
+        sortBy: sortBy
+        page: 0
+      properties:
+        hnId:
+          type: string
+        sortBy:
+          nullable: true
+          type: string
+        sortDirection:
+          nullable: true
+          type: string
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+      type: object
     AuditLogResponse:
       example:
+        hnId: hnId
         pageNumber: 0
         hasNextPage: true
         totalPages: 5
@@ -2594,6 +2622,9 @@ components:
           type: boolean
         hasNextPage:
           type: boolean
+        hnId:
+          nullable: true
+          type: string
       type: object
     Background:
       example:

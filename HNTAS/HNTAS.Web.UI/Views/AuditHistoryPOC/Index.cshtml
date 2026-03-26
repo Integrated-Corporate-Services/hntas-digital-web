@@ -3,6 +3,25 @@
 
 @{
     ViewData["Title"] = "Certification history";
+    var currentSort = ViewBag.CurrentSort as string;
+    var currentOrder = ViewBag.CurrentOrder as string ?? "asc";
+    var currentPage = (int)(ViewBag.CurrentPage ?? 1);
+    var pageSize = (int)(ViewBag.PageSize ?? 20);
+    var totalPages = (int)(ViewBag.TotalPages ?? 1);
+    var totalItems = (int)(ViewBag.TotalItems ?? 0);
+    var hnId = Model.HnId;
+    
+    string GetSortUrl(string sortField)
+    {
+        var order = (currentSort == sortField.ToLower() && currentOrder == "asc") ? "desc" : "asc";
+        return Url.Action("Index", new { hnId = hnId, sortBy = sortField, sortOrder = order, page = currentPage, pageSize = pageSize }) ?? "";
+    }
+    
+    string GetSortIcon(string sortField)
+    {
+        if (currentSort != sortField) return "";
+        return currentOrder == "asc" ? "▲" : "▼";
+    }
 }
 
 <div class="govuk-grid-row">
@@ -14,8 +33,16 @@
 
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header">Entry type</th>
-                    <th scope="col" class="govuk-table__header">Element</th>
+                    <th scope="col" class="govuk-table__header">
+                        <a href="@GetSortUrl("EntryType")" class="govuk-link govuk-link--no-visited-state">
+                            Entry type @GetSortIcon("EntryType")
+                        </a>
+                    </th>
+                    <th scope="col" class="govuk-table__header">
+                        <a href="@GetSortUrl("Element")" class="govuk-link govuk-link--no-visited-state">
+                            Element @GetSortIcon("Element")
+                        </a>
+                    </th>
                     <th scope="col" class="govuk-table__header">Phase</th>
                     <th scope="col" class="govuk-table__header">Stage</th>
                     <th scope="col" class="govuk-table__header">Date</th>
@@ -23,27 +50,114 @@
             </thead>
 
             <tbody class="govuk-table__body">
-                @foreach (var log in Model.Items!)
+                @if (Model.Items != null && Model.Items.Any())
+                {
+                    @foreach (var log in Model.Items)
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">@log.EntryType</td>
+                            <td class="govuk-table__cell">@log.ElementName</td>
+                            <td class="govuk-table__cell">@log.Phase</td>
+                            <td class="govuk-table__cell">@log.Stage</td>
+                            <td class="govuk-table__cell">
+                                @if (DateTime.TryParse(log.Timestamp, out DateTime parsedDate))
+                                {
+                                    @parsedDate.ToString("dd/MM/yyyy")
+                                }
+                                else
+                                {
+                                    @log.Timestamp @* Fallback to raw string if parsing fails *@
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr class="govuk-table__row">
-                        <td class="govuk-table__cell">@log.EntryType</td>
-                        <td class="govuk-table__cell">@log.ElementName</td>
-                        <td class="govuk-table__cell">@log.Phase</td>
-                        <td class="govuk-table__cell">@log.Stage</td>
-                        <td class="govuk-table__cell">
-                            @if (DateTime.TryParse(log.Timestamp, out DateTime parsedDate))
-                            {
-                                @parsedDate.ToString("dd/MM/yyyy")
-                            }
-                            else
-                            {
-                                @log.Timestamp @* Fallback to raw string if parsing fails *@
-                            }
-                        </td>
+                        <td class="govuk-table__cell" colspan="5">No certification history found.</td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        @if (totalPages > 1)
+        {
+            <nav class="govuk-pagination" role="navigation" aria-label="Pagination">
+                <div class="govuk-pagination__prev">
+                    @if (currentPage > 1)
+                    {
+                        <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { hnId = hnId, sortBy = currentSort, sortOrder = currentOrder, page = currentPage - 1, pageSize = pageSize })" rel="prev">
+                            <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
+                            </svg>
+                            <span class="govuk-pagination__link-title">Previous</span>
+                        </a>
+                    }
+                </div>
+                <ul class="govuk-pagination__list">
+                    @{
+                        int startPage = Math.Max(1, currentPage - 2);
+                        int endPage = Math.Min(totalPages, currentPage + 2);
+                        
+                        if (startPage > 1)
+                        {
+                            <li class="govuk-pagination__item">
+                                <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { hnId = hnId, sortBy = currentSort, sortOrder = currentOrder, page = 1, pageSize = pageSize })">
+                                    1
+                                </a>
+                            </li>
+                            if (startPage > 2)
+                            {
+                                <li class="govuk-pagination__item govuk-pagination__item--ellipses">⋯</li>
+                            }
+                        }
+                        
+                        for (int i = startPage; i <= endPage; i++)
+                        {
+                            if (i == currentPage)
+                            {
+                                <li class="govuk-pagination__item govuk-pagination__item--current">
+                                    <a class="govuk-link govuk-pagination__link" href="#" aria-label="Page @i" aria-current="page">@i</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="govuk-pagination__item">
+                                    <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { hnId = hnId, sortBy = currentSort, sortOrder = currentOrder, page = i, pageSize = pageSize })" aria-label="Page @i">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+                        }
+                        
+                        if (endPage < totalPages)
+                        {
+                            if (endPage < totalPages - 1)
+                            {
+                                <li class="govuk-pagination__item govuk-pagination__item--ellipses">⋯</li>
+                            }
+                            <li class="govuk-pagination__item">
+                                <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { hnId = hnId, sortBy = currentSort, sortOrder = currentOrder, page = totalPages, pageSize = pageSize })">
+                                    @totalPages
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+                <div class="govuk-pagination__next">
+                    @if (currentPage < totalPages)
+                    {
+                        <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { hnId = hnId, sortBy = currentSort, sortOrder = currentOrder, page = currentPage + 1, pageSize = pageSize })" rel="next">
+                            <span class="govuk-pagination__link-title">Next</span>
+                            <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+                            </svg>
+                        </a>
+                    }
+                </div>
+            </nav>
+        }
 
     </div>
 </div>

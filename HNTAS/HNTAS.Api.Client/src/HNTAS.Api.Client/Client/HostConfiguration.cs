@@ -49,6 +49,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new AssessmentPlanResponseJsonConverter());
             _jsonOptions.Converters.Add(new AssessorSearchResultJsonConverter());
             _jsonOptions.Converters.Add(new AuditLogJsonConverter());
+            _jsonOptions.Converters.Add(new AuditLogRequestJsonConverter());
             _jsonOptions.Converters.Add(new AuditLogResponseJsonConverter());
             _jsonOptions.Converters.Add(new BackgroundJsonConverter());
             _jsonOptions.Converters.Add(new BoilerInputJsonConverter());

@@ -4,11 +4,11 @@ All URIs are relative to *https://localhost:7117*
 
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
-| [**ApiAuditHeatNetworkHnIdGet**](AuditApi.md#apiauditheatnetworkhnidget) | **GET** /api/Audit/heat-network/{hnId} |  |
+| [**ApiAuditHeatNetworkAuditLogsGet**](AuditApi.md#apiauditheatnetworkauditlogsget) | **GET** /api/Audit/heat-network-audit-logs |  |
 
-<a id="apiauditheatnetworkhnidget"></a>
-# **ApiAuditHeatNetworkHnIdGet**
-> AuditLogResponse ApiAuditHeatNetworkHnIdGet (string hnId)
+<a id="apiauditheatnetworkauditlogsget"></a>
+# **ApiAuditHeatNetworkAuditLogsGet**
+> AuditLogResponse ApiAuditHeatNetworkAuditLogsGet (AuditLogRequest auditLogRequest)
 
 
 
@@ -17,7 +17,7 @@ All URIs are relative to *https://localhost:7117*
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **hnId** | **string** |  |  |
+| **auditLogRequest** | [**AuditLogRequest**](AuditLogRequest.md) |  |  |
 
 ### Return type
 
@@ -29,7 +29,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json, text/json, application/*+json
  - **Accept**: text/plain, application/json, text/json
 
 

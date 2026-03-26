@@ -57,21 +57,31 @@
         }
       }
     },
-    "/api/Audit/heat-network/{hnId}": {
+    "/api/Audit/heat-network-audit-logs": {
       "get": {
         "tags": [
           "Audit"
         ],
-        "parameters": [
-          {
-            "name": "hnId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditLogRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditLogRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditLogRequest"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -3947,6 +3957,30 @@
           }
         }
       },
+      "AuditLogRequest": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "sortBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortDirection": {
+            "type": "string",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "AuditLogResponse": {
         "type": "object",
         "properties": {
@@ -3977,6 +4011,10 @@
           },
           "hasNextPage": {
             "type": "boolean"
+          },
+          "hnId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

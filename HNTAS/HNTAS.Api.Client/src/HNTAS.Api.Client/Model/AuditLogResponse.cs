@@ -40,8 +40,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="totalPages">totalPages</param>
         /// <param name="hasPreviousPage">hasPreviousPage</param>
         /// <param name="hasNextPage">hasNextPage</param>
+        /// <param name="hnId">hnId</param>
         [JsonConstructor]
-        public AuditLogResponse(Option<List<AuditLog>?> items = default, Option<int?> pageNumber = default, Option<int?> pageSize = default, Option<int?> totalCount = default, Option<int?> totalPages = default, Option<bool?> hasPreviousPage = default, Option<bool?> hasNextPage = default)
+        public AuditLogResponse(Option<List<AuditLog>?> items = default, Option<int?> pageNumber = default, Option<int?> pageSize = default, Option<int?> totalCount = default, Option<int?> totalPages = default, Option<bool?> hasPreviousPage = default, Option<bool?> hasNextPage = default, Option<string?> hnId = default)
         {
             ItemsOption = items;
             PageNumberOption = pageNumber;
@@ -50,6 +51,7 @@ namespace HNTAS.Api.Client.Model
             TotalPagesOption = totalPages;
             HasPreviousPageOption = hasPreviousPage;
             HasNextPageOption = hasNextPage;
+            HnIdOption = hnId;
             OnCreated();
         }
 
@@ -147,6 +149,19 @@ namespace HNTAS.Api.Client.Model
         public bool? HasNextPage { get { return this.HasNextPageOption; } set { this.HasNextPageOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of HnId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> HnIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HnId
+        /// </summary>
+        [JsonPropertyName("hnId")]
+        public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -161,6 +176,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  TotalPages: ").Append(TotalPages).Append("\n");
             sb.Append("  HasPreviousPage: ").Append(HasPreviousPage).Append("\n");
             sb.Append("  HasNextPage: ").Append(HasNextPage).Append("\n");
+            sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -205,6 +221,7 @@ namespace HNTAS.Api.Client.Model
             Option<int?> totalPages = default;
             Option<bool?> hasPreviousPage = default;
             Option<bool?> hasNextPage = default;
+            Option<string?> hnId = default;
 
             while (utf8JsonReader.Read())
             {
@@ -242,6 +259,9 @@ namespace HNTAS.Api.Client.Model
                         case "hasNextPage":
                             hasNextPage = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
                             break;
+                        case "hnId":
+                            hnId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         default:
                             break;
                     }
@@ -269,7 +289,7 @@ namespace HNTAS.Api.Client.Model
             if (hasNextPage.IsSet && hasNextPage.Value == null)
                 throw new ArgumentNullException(nameof(hasNextPage), "Property is not nullable for class AuditLogResponse.");
 
-            return new AuditLogResponse(items, pageNumber, pageSize, totalCount, totalPages, hasPreviousPage, hasNextPage);
+            return new AuditLogResponse(items, pageNumber, pageSize, totalCount, totalPages, hasPreviousPage, hasNextPage, hnId);
         }
 
         /// <summary>
@@ -321,6 +341,12 @@ namespace HNTAS.Api.Client.Model
 
             if (auditLogResponse.HasNextPageOption.IsSet)
                 writer.WriteBoolean("hasNextPage", auditLogResponse.HasNextPageOption.Value!.Value);
+
+            if (auditLogResponse.HnIdOption.IsSet)
+                if (auditLogResponse.HnIdOption.Value != null)
+                    writer.WriteString("hnId", auditLogResponse.HnId);
+                else
+                    writer.WriteNull("hnId");
         }
     }
 }

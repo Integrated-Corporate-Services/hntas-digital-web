@@ -21,6 +21,7 @@ docs/models/AssessmentPlan.md
 docs/models/AssessmentPlanResponse.md
 docs/models/AssessorSearchResult.md
 docs/models/AuditLog.md
+docs/models/AuditLogRequest.md
 docs/models/AuditLogResponse.md
 docs/models/Background.md
 docs/models/BoilerInput.md
@@ -157,6 +158,7 @@ src/HNTAS.Api.Client/Model/AssessmentPlan.cs
 src/HNTAS.Api.Client/Model/AssessmentPlanResponse.cs
 src/HNTAS.Api.Client/Model/AssessorSearchResult.cs
 src/HNTAS.Api.Client/Model/AuditLog.cs
+src/HNTAS.Api.Client/Model/AuditLogRequest.cs
 src/HNTAS.Api.Client/Model/AuditLogResponse.cs
 src/HNTAS.Api.Client/Model/Background.cs
 src/HNTAS.Api.Client/Model/BoilerInput.cs

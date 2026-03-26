@@ -42,10 +42,10 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="hnId"></param>
+        /// <param name="auditLogRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAuditHeatNetworkHnIdGetApiResponse"/>&gt;</returns>
-        Task<IApiAuditHeatNetworkHnIdGetApiResponse> ApiAuditHeatNetworkHnIdGetAsync(string hnId, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiAuditHeatNetworkAuditLogsGetApiResponse"/>&gt;</returns>
+        Task<IApiAuditHeatNetworkAuditLogsGetApiResponse> ApiAuditHeatNetworkAuditLogsGetAsync(AuditLogRequest auditLogRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -53,16 +53,16 @@ namespace HNTAS.Api.Client.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <param name="hnId"></param>
+        /// <param name="auditLogRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAuditHeatNetworkHnIdGetApiResponse"/>?&gt;</returns>
-        Task<IApiAuditHeatNetworkHnIdGetApiResponse?> ApiAuditHeatNetworkHnIdGetOrDefaultAsync(string hnId, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiAuditHeatNetworkAuditLogsGetApiResponse"/>?&gt;</returns>
+        Task<IApiAuditHeatNetworkAuditLogsGetApiResponse?> ApiAuditHeatNetworkAuditLogsGetOrDefaultAsync(AuditLogRequest auditLogRequest, System.Threading.CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// The <see cref="IApiAuditHeatNetworkHnIdGetApiResponse"/>
+    /// The <see cref="IApiAuditHeatNetworkAuditLogsGetApiResponse"/>
     /// </summary>
-    public interface IApiAuditHeatNetworkHnIdGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.AuditLogResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IApiAuditHeatNetworkAuditLogsGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.AuditLogResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -85,21 +85,21 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The event raised after the server response
         /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiAuditHeatNetworkHnIdGet;
+        public event EventHandler<ApiResponseEventArgs>? OnApiAuditHeatNetworkAuditLogsGet;
 
         /// <summary>
         /// The event raised after an error querying the server
         /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiAuditHeatNetworkHnIdGet;
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiAuditHeatNetworkAuditLogsGet;
 
-        internal void ExecuteOnApiAuditHeatNetworkHnIdGet(AuditApi.ApiAuditHeatNetworkHnIdGetApiResponse apiResponse)
+        internal void ExecuteOnApiAuditHeatNetworkAuditLogsGet(AuditApi.ApiAuditHeatNetworkAuditLogsGetApiResponse apiResponse)
         {
-            OnApiAuditHeatNetworkHnIdGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+            OnApiAuditHeatNetworkAuditLogsGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
         }
 
-        internal void ExecuteOnErrorApiAuditHeatNetworkHnIdGet(Exception exception)
+        internal void ExecuteOnErrorApiAuditHeatNetworkAuditLogsGet(Exception exception)
         {
-            OnErrorApiAuditHeatNetworkHnIdGet?.Invoke(this, new ExceptionEventArgs(exception));
+            OnErrorApiAuditHeatNetworkAuditLogsGet?.Invoke(this, new ExceptionEventArgs(exception));
         }
     }
 
@@ -143,28 +143,28 @@ namespace HNTAS.Api.Client.Api
             Events = auditApiEvents;
         }
 
-        partial void FormatApiAuditHeatNetworkHnIdGet(ref string hnId);
+        partial void FormatApiAuditHeatNetworkAuditLogsGet(AuditLogRequest auditLogRequest);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
-        /// <param name="hnId"></param>
+        /// <param name="auditLogRequest"></param>
         /// <returns></returns>
-        private void ValidateApiAuditHeatNetworkHnIdGet(string hnId)
+        private void ValidateApiAuditHeatNetworkAuditLogsGet(AuditLogRequest auditLogRequest)
         {
-            if (hnId == null)
-                throw new ArgumentNullException(nameof(hnId));
+            if (auditLogRequest == null)
+                throw new ArgumentNullException(nameof(auditLogRequest));
         }
 
         /// <summary>
         /// Processes the server response
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
-        /// <param name="hnId"></param>
-        private void AfterApiAuditHeatNetworkHnIdGetDefaultImplementation(IApiAuditHeatNetworkHnIdGetApiResponse apiResponseLocalVar, string hnId)
+        /// <param name="auditLogRequest"></param>
+        private void AfterApiAuditHeatNetworkAuditLogsGetDefaultImplementation(IApiAuditHeatNetworkAuditLogsGetApiResponse apiResponseLocalVar, AuditLogRequest auditLogRequest)
         {
             bool suppressDefaultLog = false;
-            AfterApiAuditHeatNetworkHnIdGet(ref suppressDefaultLog, apiResponseLocalVar, hnId);
+            AfterApiAuditHeatNetworkAuditLogsGet(ref suppressDefaultLog, apiResponseLocalVar, auditLogRequest);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -174,8 +174,8 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
-        /// <param name="hnId"></param>
-        partial void AfterApiAuditHeatNetworkHnIdGet(ref bool suppressDefaultLog, IApiAuditHeatNetworkHnIdGetApiResponse apiResponseLocalVar, string hnId);
+        /// <param name="auditLogRequest"></param>
+        partial void AfterApiAuditHeatNetworkAuditLogsGet(ref bool suppressDefaultLog, IApiAuditHeatNetworkAuditLogsGetApiResponse apiResponseLocalVar, AuditLogRequest auditLogRequest);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -183,11 +183,11 @@ namespace HNTAS.Api.Client.Api
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
-        /// <param name="hnId"></param>
-        private void OnErrorApiAuditHeatNetworkHnIdGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string hnId)
+        /// <param name="auditLogRequest"></param>
+        private void OnErrorApiAuditHeatNetworkAuditLogsGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, AuditLogRequest auditLogRequest)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiAuditHeatNetworkHnIdGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, hnId);
+            OnErrorApiAuditHeatNetworkAuditLogsGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, auditLogRequest);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -199,20 +199,20 @@ namespace HNTAS.Api.Client.Api
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
-        /// <param name="hnId"></param>
-        partial void OnErrorApiAuditHeatNetworkHnIdGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string hnId);
+        /// <param name="auditLogRequest"></param>
+        partial void OnErrorApiAuditHeatNetworkAuditLogsGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, AuditLogRequest auditLogRequest);
 
         /// <summary>
         ///  
         /// </summary>
-        /// <param name="hnId"></param>
+        /// <param name="auditLogRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAuditHeatNetworkHnIdGetApiResponse"/>&gt;</returns>
-        public async Task<IApiAuditHeatNetworkHnIdGetApiResponse?> ApiAuditHeatNetworkHnIdGetOrDefaultAsync(string hnId, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiAuditHeatNetworkAuditLogsGetApiResponse"/>&gt;</returns>
+        public async Task<IApiAuditHeatNetworkAuditLogsGetApiResponse?> ApiAuditHeatNetworkAuditLogsGetOrDefaultAsync(AuditLogRequest auditLogRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiAuditHeatNetworkHnIdGetAsync(hnId, cancellationToken).ConfigureAwait(false);
+                return await ApiAuditHeatNetworkAuditLogsGetAsync(auditLogRequest, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -224,18 +224,18 @@ namespace HNTAS.Api.Client.Api
         ///  
         /// </summary>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="hnId"></param>
+        /// <param name="auditLogRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAuditHeatNetworkHnIdGetApiResponse"/>&gt;</returns>
-        public async Task<IApiAuditHeatNetworkHnIdGetApiResponse> ApiAuditHeatNetworkHnIdGetAsync(string hnId, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiAuditHeatNetworkAuditLogsGetApiResponse"/>&gt;</returns>
+        public async Task<IApiAuditHeatNetworkAuditLogsGetApiResponse> ApiAuditHeatNetworkAuditLogsGetAsync(AuditLogRequest auditLogRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiAuditHeatNetworkHnIdGet(hnId);
+                ValidateApiAuditHeatNetworkAuditLogsGet(auditLogRequest);
 
-                FormatApiAuditHeatNetworkHnIdGet(ref hnId);
+                FormatApiAuditHeatNetworkAuditLogsGet(auditLogRequest);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -243,11 +243,25 @@ namespace HNTAS.Api.Client.Api
                     uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
                     uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
                     uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
-                        ? "/api/Audit/heat-network/{hnId}"
-                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Audit/heat-network/{hnId}");
-                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BhnId%7D", Uri.EscapeDataString(hnId.ToString()));
+                        ? "/api/Audit/heat-network-audit-logs"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Audit/heat-network-audit-logs");
+
+                    httpRequestMessageLocalVar.Content = (auditLogRequest as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(auditLogRequest, _jsonSerializerOptions));
 
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "text/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -266,21 +280,21 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        ILogger<ApiAuditHeatNetworkHnIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiAuditHeatNetworkHnIdGetApiResponse>();
-                        ApiAuditHeatNetworkHnIdGetApiResponse apiResponseLocalVar;
+                        ILogger<ApiAuditHeatNetworkAuditLogsGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiAuditHeatNetworkAuditLogsGetApiResponse>();
+                        ApiAuditHeatNetworkAuditLogsGetApiResponse apiResponseLocalVar;
 
                         switch ((int)httpResponseMessageLocalVar.StatusCode) {
                             default: {
                                 string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Audit/heat-network/{hnId}", requestedAtLocalVar, _jsonSerializerOptions);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Audit/heat-network-audit-logs", requestedAtLocalVar, _jsonSerializerOptions);
 
                                 break;
                             }
                         }
 
-                        AfterApiAuditHeatNetworkHnIdGetDefaultImplementation(apiResponseLocalVar, hnId);
+                        AfterApiAuditHeatNetworkAuditLogsGetDefaultImplementation(apiResponseLocalVar, auditLogRequest);
 
-                        Events.ExecuteOnApiAuditHeatNetworkHnIdGet(apiResponseLocalVar);
+                        Events.ExecuteOnApiAuditHeatNetworkAuditLogsGet(apiResponseLocalVar);
 
                         return apiResponseLocalVar;
                     }
@@ -288,24 +302,24 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiAuditHeatNetworkHnIdGetDefaultImplementation(e, "/api/Audit/heat-network/{hnId}", uriBuilderLocalVar.Path, hnId);
-                Events.ExecuteOnErrorApiAuditHeatNetworkHnIdGet(e);
+                OnErrorApiAuditHeatNetworkAuditLogsGetDefaultImplementation(e, "/api/Audit/heat-network-audit-logs", uriBuilderLocalVar.Path, auditLogRequest);
+                Events.ExecuteOnErrorApiAuditHeatNetworkAuditLogsGet(e);
                 throw;
             }
         }
 
         /// <summary>
-        /// The <see cref="ApiAuditHeatNetworkHnIdGetApiResponse"/>
+        /// The <see cref="ApiAuditHeatNetworkAuditLogsGetApiResponse"/>
         /// </summary>
-        public partial class ApiAuditHeatNetworkHnIdGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiAuditHeatNetworkHnIdGetApiResponse
+        public partial class ApiAuditHeatNetworkAuditLogsGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiAuditHeatNetworkAuditLogsGetApiResponse
         {
             /// <summary>
             /// The logger
             /// </summary>
-            public ILogger<ApiAuditHeatNetworkHnIdGetApiResponse> Logger { get; }
+            public ILogger<ApiAuditHeatNetworkAuditLogsGetApiResponse> Logger { get; }
 
             /// <summary>
-            /// The <see cref="ApiAuditHeatNetworkHnIdGetApiResponse"/>
+            /// The <see cref="ApiAuditHeatNetworkAuditLogsGetApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -314,14 +328,14 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiAuditHeatNetworkHnIdGetApiResponse(ILogger<ApiAuditHeatNetworkHnIdGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public ApiAuditHeatNetworkAuditLogsGetApiResponse(ILogger<ApiAuditHeatNetworkAuditLogsGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
             /// <summary>
-            /// The <see cref="ApiAuditHeatNetworkHnIdGetApiResponse"/>
+            /// The <see cref="ApiAuditHeatNetworkAuditLogsGetApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -330,7 +344,7 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiAuditHeatNetworkHnIdGetApiResponse(ILogger<ApiAuditHeatNetworkHnIdGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            public ApiAuditHeatNetworkAuditLogsGetApiResponse(ILogger<ApiAuditHeatNetworkAuditLogsGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
