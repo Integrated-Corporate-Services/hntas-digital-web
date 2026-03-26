@@ -4,10 +4,10 @@
 @{
     ViewData["Title"] = "Certification history";
     var currentSort = ViewBag.CurrentSort as string;
-    var currentOrder = ViewBag.CurrentOrder as string ?? "asc";
-    var currentPage = (int)(ViewBag.CurrentPage ?? 1);
-    var pageSize = (int)(ViewBag.PageSize ?? 20);
-    var totalPages = (int)(ViewBag.TotalPages ?? 1);
+    var currentOrder = ViewBag.CurrentOrder as string;
+    var currentPage = (int)(ViewBag.CurrentPage);
+    var pageSize = (int)(ViewBag.PageSize);
+    var totalPages = (int)(ViewBag.TotalPages);
     var hnId = Model.HnId;
     
     string GetSortUrl(string sortField)
@@ -59,9 +59,17 @@
                             Element @Html.Raw(GetSortIcon())
                         </a>
                     </th>
-                    <th scope="col" class="govuk-table__header">Phase</th>
+                    <th scope="col" class="govuk-table__header">
+                        <a href="@GetSortUrl("Phase")" class="govuk-link govuk-link--no-visited-state sort-link">
+                            Phase @Html.Raw(GetSortIcon())
+                        </a>
+                    </th>
                     <th scope="col" class="govuk-table__header">Stage</th>
-                    <th scope="col" class="govuk-table__header">Date</th>
+                    <th scope="col" class="govuk-table__header">
+                        <a href="@GetSortUrl("Timestamp")" class="govuk-link govuk-link--no-visited-state sort-link">
+                            Date @Html.Raw(GetSortIcon())
+                        </a>
+                    </th>
                 </tr>
             </thead>
 
