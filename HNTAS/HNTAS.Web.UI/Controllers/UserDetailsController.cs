@@ -132,7 +132,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             this.ShowBackButton("ContactDetails", "UserDetails");
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-            var viewModel = new CheckYourAnswersModel
+            var viewModel = new CheckYourAnswersOrganisationModel
             {
                 Organisation = new OrganisationModel(),
                 User = userModel,
@@ -173,7 +173,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 _logger.LogError(ex, "Error updating OrgDetails for user {UserId}", userId);
                 TempData["ErrorMessage"] = "There was a problem saving your details. Please try again.";
-                return View("UserDetails/CheckYourAnswers", new CheckYourAnswersModel
+                return View("UserDetails/CheckYourAnswers", new CheckYourAnswersOrganisationModel
                 {
                     Organisation = new OrganisationModel(),
                     User = userModel,

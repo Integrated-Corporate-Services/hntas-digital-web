@@ -1,7 +1,7 @@
 ﻿@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.Enums
 @using HNTAS.Web.UI.Models.User
-@model CheckYourAnswersModel
+@model CheckYourAnswersOrganisationModel
 
 @{
     ViewData["Title"] = "Check your answers";
@@ -99,7 +99,7 @@
                             }
                             else
                             {
-                                    <a class="govuk-link" href="@Url.Action("OrganisationAddress")">Change<span class="govuk-visually-hidden"> company number</span></a>
+                                    <a class="govuk-link" href="@Url.Action("OrganisationAddress")">Change<span class="govuk-visually-hidden"> organisation address</span></a>
                             }
                             </dd>
                     </div>

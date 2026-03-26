@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
 {
-    public class CheckYourAnswersModel
+    public class CheckYourAnswersOrganisationModel
     {
         // Use [BindNever] to prevent the model binder from attempting to bind these
         // properties from the incoming form data on a POST request.
