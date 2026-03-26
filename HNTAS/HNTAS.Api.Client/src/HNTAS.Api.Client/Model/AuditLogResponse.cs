@@ -33,73 +33,133 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="AuditLogResponse" /> class.
         /// </summary>
-        /// <param name="event">event</param>
-        /// <param name="userName">userName</param>
-        /// <param name="role">role</param>
-        /// <param name="timestamp">timestamp</param>
+        /// <param name="items">items</param>
+        /// <param name="pageNumber">pageNumber</param>
+        /// <param name="pageSize">pageSize</param>
+        /// <param name="totalCount">totalCount</param>
+        /// <param name="totalPages">totalPages</param>
+        /// <param name="hasPreviousPage">hasPreviousPage</param>
+        /// <param name="hasNextPage">hasNextPage</param>
+        /// <param name="hnId">hnId</param>
         [JsonConstructor]
-        public AuditLogResponse(Option<string?> @event = default, Option<string?> userName = default, Option<string?> role = default, Option<string?> timestamp = default)
+        public AuditLogResponse(Option<List<AuditLog>?> items = default, Option<int?> pageNumber = default, Option<int?> pageSize = default, Option<int?> totalCount = default, Option<int?> totalPages = default, Option<bool?> hasPreviousPage = default, Option<bool?> hasNextPage = default, Option<string?> hnId = default)
         {
-            EventOption = @event;
-            UserNameOption = userName;
-            RoleOption = role;
-            TimestampOption = timestamp;
+            ItemsOption = items;
+            PageNumberOption = pageNumber;
+            PageSizeOption = pageSize;
+            TotalCountOption = totalCount;
+            TotalPagesOption = totalPages;
+            HasPreviousPageOption = hasPreviousPage;
+            HasNextPageOption = hasNextPage;
+            HnIdOption = hnId;
             OnCreated();
         }
 
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of Event
+        /// Used to track the state of Items
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> EventOption { get; private set; }
+        public Option<List<AuditLog>?> ItemsOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Event
+        /// Gets or Sets Items
         /// </summary>
-        [JsonPropertyName("event")]
-        public string? Event { get { return this.EventOption; } set { this.EventOption = new(value); } }
+        [JsonPropertyName("items")]
+        public List<AuditLog>? Items { get { return this.ItemsOption; } set { this.ItemsOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of UserName
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> UserNameOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets UserName
-        /// </summary>
-        [JsonPropertyName("userName")]
-        public string? UserName { get { return this.UserNameOption; } set { this.UserNameOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of Role
+        /// Used to track the state of PageNumber
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> RoleOption { get; private set; }
+        public Option<int?> PageNumberOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Role
+        /// Gets or Sets PageNumber
         /// </summary>
-        [JsonPropertyName("role")]
-        public string? Role { get { return this.RoleOption; } set { this.RoleOption = new(value); } }
+        [JsonPropertyName("pageNumber")]
+        public int? PageNumber { get { return this.PageNumberOption; } set { this.PageNumberOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Timestamp
+        /// Used to track the state of PageSize
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> TimestampOption { get; private set; }
+        public Option<int?> PageSizeOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Timestamp
+        /// Gets or Sets PageSize
         /// </summary>
-        [JsonPropertyName("timestamp")]
-        public string? Timestamp { get { return this.TimestampOption; } set { this.TimestampOption = new(value); } }
+        [JsonPropertyName("pageSize")]
+        public int? PageSize { get { return this.PageSizeOption; } set { this.PageSizeOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of TotalCount
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> TotalCountOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets TotalCount
+        /// </summary>
+        [JsonPropertyName("totalCount")]
+        public int? TotalCount { get { return this.TotalCountOption; } set { this.TotalCountOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of TotalPages
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> TotalPagesOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets TotalPages
+        /// </summary>
+        [JsonPropertyName("totalPages")]
+        public int? TotalPages { get { return this.TotalPagesOption; } set { this.TotalPagesOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of HasPreviousPage
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> HasPreviousPageOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HasPreviousPage
+        /// </summary>
+        [JsonPropertyName("hasPreviousPage")]
+        public bool? HasPreviousPage { get { return this.HasPreviousPageOption; } set { this.HasPreviousPageOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of HasNextPage
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> HasNextPageOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HasNextPage
+        /// </summary>
+        [JsonPropertyName("hasNextPage")]
+        public bool? HasNextPage { get { return this.HasNextPageOption; } set { this.HasNextPageOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of HnId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> HnIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HnId
+        /// </summary>
+        [JsonPropertyName("hnId")]
+        public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -109,10 +169,14 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class AuditLogResponse {\n");
-            sb.Append("  Event: ").Append(Event).Append("\n");
-            sb.Append("  UserName: ").Append(UserName).Append("\n");
-            sb.Append("  Role: ").Append(Role).Append("\n");
-            sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
+            sb.Append("  Items: ").Append(Items).Append("\n");
+            sb.Append("  PageNumber: ").Append(PageNumber).Append("\n");
+            sb.Append("  PageSize: ").Append(PageSize).Append("\n");
+            sb.Append("  TotalCount: ").Append(TotalCount).Append("\n");
+            sb.Append("  TotalPages: ").Append(TotalPages).Append("\n");
+            sb.Append("  HasPreviousPage: ").Append(HasPreviousPage).Append("\n");
+            sb.Append("  HasNextPage: ").Append(HasNextPage).Append("\n");
+            sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -150,10 +214,14 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> varEvent = default;
-            Option<string?> userName = default;
-            Option<string?> role = default;
-            Option<string?> timestamp = default;
+            Option<List<AuditLog>?> items = default;
+            Option<int?> pageNumber = default;
+            Option<int?> pageSize = default;
+            Option<int?> totalCount = default;
+            Option<int?> totalPages = default;
+            Option<bool?> hasPreviousPage = default;
+            Option<bool?> hasNextPage = default;
+            Option<string?> hnId = default;
 
             while (utf8JsonReader.Read())
             {
@@ -170,17 +238,29 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "event":
-                            varEvent = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "items":
+                            items = new Option<List<AuditLog>?>(JsonSerializer.Deserialize<List<AuditLog>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
-                        case "userName":
-                            userName = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "pageNumber":
+                            pageNumber = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
-                        case "role":
-                            role = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "pageSize":
+                            pageSize = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
-                        case "timestamp":
-                            timestamp = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "totalCount":
+                            totalCount = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "totalPages":
+                            totalPages = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "hasPreviousPage":
+                            hasPreviousPage = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
+                        case "hasNextPage":
+                            hasNextPage = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
+                        case "hnId":
+                            hnId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         default:
                             break;
@@ -188,19 +268,28 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (varEvent.IsSet && varEvent.Value == null)
-                throw new ArgumentNullException(nameof(varEvent), "Property is not nullable for class AuditLogResponse.");
+            if (items.IsSet && items.Value == null)
+                throw new ArgumentNullException(nameof(items), "Property is not nullable for class AuditLogResponse.");
 
-            if (userName.IsSet && userName.Value == null)
-                throw new ArgumentNullException(nameof(userName), "Property is not nullable for class AuditLogResponse.");
+            if (pageNumber.IsSet && pageNumber.Value == null)
+                throw new ArgumentNullException(nameof(pageNumber), "Property is not nullable for class AuditLogResponse.");
 
-            if (role.IsSet && role.Value == null)
-                throw new ArgumentNullException(nameof(role), "Property is not nullable for class AuditLogResponse.");
+            if (pageSize.IsSet && pageSize.Value == null)
+                throw new ArgumentNullException(nameof(pageSize), "Property is not nullable for class AuditLogResponse.");
 
-            if (timestamp.IsSet && timestamp.Value == null)
-                throw new ArgumentNullException(nameof(timestamp), "Property is not nullable for class AuditLogResponse.");
+            if (totalCount.IsSet && totalCount.Value == null)
+                throw new ArgumentNullException(nameof(totalCount), "Property is not nullable for class AuditLogResponse.");
 
-            return new AuditLogResponse(varEvent, userName, role, timestamp);
+            if (totalPages.IsSet && totalPages.Value == null)
+                throw new ArgumentNullException(nameof(totalPages), "Property is not nullable for class AuditLogResponse.");
+
+            if (hasPreviousPage.IsSet && hasPreviousPage.Value == null)
+                throw new ArgumentNullException(nameof(hasPreviousPage), "Property is not nullable for class AuditLogResponse.");
+
+            if (hasNextPage.IsSet && hasNextPage.Value == null)
+                throw new ArgumentNullException(nameof(hasNextPage), "Property is not nullable for class AuditLogResponse.");
+
+            return new AuditLogResponse(items, pageNumber, pageSize, totalCount, totalPages, hasPreviousPage, hasNextPage, hnId);
         }
 
         /// <summary>
@@ -227,29 +316,37 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, AuditLogResponse auditLogResponse, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (auditLogResponse.EventOption.IsSet && auditLogResponse.Event == null)
-                throw new ArgumentNullException(nameof(auditLogResponse.Event), "Property is required for class AuditLogResponse.");
+            if (auditLogResponse.ItemsOption.IsSet && auditLogResponse.Items == null)
+                throw new ArgumentNullException(nameof(auditLogResponse.Items), "Property is required for class AuditLogResponse.");
 
-            if (auditLogResponse.UserNameOption.IsSet && auditLogResponse.UserName == null)
-                throw new ArgumentNullException(nameof(auditLogResponse.UserName), "Property is required for class AuditLogResponse.");
+            if (auditLogResponse.ItemsOption.IsSet)
+            {
+                writer.WritePropertyName("items");
+                JsonSerializer.Serialize(writer, auditLogResponse.Items, jsonSerializerOptions);
+            }
+            if (auditLogResponse.PageNumberOption.IsSet)
+                writer.WriteNumber("pageNumber", auditLogResponse.PageNumberOption.Value!.Value);
 
-            if (auditLogResponse.RoleOption.IsSet && auditLogResponse.Role == null)
-                throw new ArgumentNullException(nameof(auditLogResponse.Role), "Property is required for class AuditLogResponse.");
+            if (auditLogResponse.PageSizeOption.IsSet)
+                writer.WriteNumber("pageSize", auditLogResponse.PageSizeOption.Value!.Value);
 
-            if (auditLogResponse.TimestampOption.IsSet && auditLogResponse.Timestamp == null)
-                throw new ArgumentNullException(nameof(auditLogResponse.Timestamp), "Property is required for class AuditLogResponse.");
+            if (auditLogResponse.TotalCountOption.IsSet)
+                writer.WriteNumber("totalCount", auditLogResponse.TotalCountOption.Value!.Value);
 
-            if (auditLogResponse.EventOption.IsSet)
-                writer.WriteString("event", auditLogResponse.Event);
+            if (auditLogResponse.TotalPagesOption.IsSet)
+                writer.WriteNumber("totalPages", auditLogResponse.TotalPagesOption.Value!.Value);
 
-            if (auditLogResponse.UserNameOption.IsSet)
-                writer.WriteString("userName", auditLogResponse.UserName);
+            if (auditLogResponse.HasPreviousPageOption.IsSet)
+                writer.WriteBoolean("hasPreviousPage", auditLogResponse.HasPreviousPageOption.Value!.Value);
 
-            if (auditLogResponse.RoleOption.IsSet)
-                writer.WriteString("role", auditLogResponse.Role);
+            if (auditLogResponse.HasNextPageOption.IsSet)
+                writer.WriteBoolean("hasNextPage", auditLogResponse.HasNextPageOption.Value!.Value);
 
-            if (auditLogResponse.TimestampOption.IsSet)
-                writer.WriteString("timestamp", auditLogResponse.Timestamp);
+            if (auditLogResponse.HnIdOption.IsSet)
+                if (auditLogResponse.HnIdOption.Value != null)
+                    writer.WriteString("hnId", auditLogResponse.HnId);
+                else
+                    writer.WriteNull("hnId");
         }
     }
 }

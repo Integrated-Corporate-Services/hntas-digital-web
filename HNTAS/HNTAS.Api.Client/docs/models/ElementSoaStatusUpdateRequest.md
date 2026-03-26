@@ -10,6 +10,8 @@ Name | Type | Description | Notes
 **SoaStatus** | **string** |  | [optional] 
 **ElementSoaStatus** | **NetworkDetailsStatus** |  | [optional] 
 **SoaStatusUpdatedBy** | **string** |  | [optional] 
+**SoaPhase** | **string** |  | [optional] 
+**ElementDisplayName** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

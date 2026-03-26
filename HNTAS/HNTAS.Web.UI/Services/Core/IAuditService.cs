@@ -4,6 +4,6 @@ namespace HNTAS.Web.UI.Services.Core
 {
     public interface IAuditService
     {
-        Task<List<AuditLogResponse>> GetAuditHistoryByHnId(string hnId);
+        Task<AuditLogResponse> GetAuditHistoryByHnId(AuditLogRequest auditLogRequest);
     }
 }

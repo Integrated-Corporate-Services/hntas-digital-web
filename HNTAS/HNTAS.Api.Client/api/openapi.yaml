@@ -49,34 +49,32 @@ paths:
           description: OK
       tags:
       - Assessor
-  /api/Audit/heat-network/{hnId}:
+  /api/Audit/heat-network-audit-logs:
     get:
-      parameters:
-      - explode: false
-        in: path
-        name: hnId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuditLogRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/AuditLogRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/AuditLogRequest"
         required: true
-        schema:
-          type: string
-        style: simple
       responses:
         "200":
           content:
             text/plain:
               schema:
-                items:
-                  $ref: "#/components/schemas/AuditLogResponse"
-                type: array
+                $ref: "#/components/schemas/AuditLogResponse"
             application/json:
               schema:
-                items:
-                  $ref: "#/components/schemas/AuditLogResponse"
-                type: array
+                $ref: "#/components/schemas/AuditLogResponse"
             text/json:
               schema:
-                items:
-                  $ref: "#/components/schemas/AuditLogResponse"
-                type: array
+                $ref: "#/components/schemas/AuditLogResponse"
           description: OK
         "404":
           content:
@@ -2528,20 +2526,104 @@ components:
         fullName:
           type: string
       type: object
-    AuditLogResponse:
+    AuditLog:
       example:
+        phase: phase
+        entryType: entryType
         role: role
-        event: event
+        stage: stage
         userName: userName
         timestamp: timestamp
+        elementName: elementName
       properties:
-        event:
+        entryType:
           type: string
         userName:
           type: string
         role:
           type: string
         timestamp:
+          type: string
+        elementName:
+          nullable: true
+          type: string
+        phase:
+          nullable: true
+          type: string
+        stage:
+          nullable: true
+          type: string
+      type: object
+    AuditLogRequest:
+      example:
+        hnId: hnId
+        sortDirection: sortDirection
+        pageSize: 6
+        sortBy: sortBy
+        page: 0
+      properties:
+        hnId:
+          type: string
+        sortBy:
+          nullable: true
+          type: string
+        sortDirection:
+          nullable: true
+          type: string
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+      type: object
+    AuditLogResponse:
+      example:
+        hnId: hnId
+        pageNumber: 0
+        hasNextPage: true
+        totalPages: 5
+        pageSize: 6
+        hasPreviousPage: true
+        totalCount: 1
+        items:
+        - phase: phase
+          entryType: entryType
+          role: role
+          stage: stage
+          userName: userName
+          timestamp: timestamp
+          elementName: elementName
+        - phase: phase
+          entryType: entryType
+          role: role
+          stage: stage
+          userName: userName
+          timestamp: timestamp
+          elementName: elementName
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/AuditLog"
+          type: array
+        pageNumber:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        hasPreviousPage:
+          type: boolean
+        hasNextPage:
+          type: boolean
+        hnId:
+          nullable: true
           type: string
       type: object
     Background:
@@ -3155,9 +3237,11 @@ components:
         elementId: elementId
         elementSoaStatus: InProgress
         hnId: hnId
+        elementDisplayName: elementDisplayName
         stage: Stage1
         soaStatus: soaStatus
         soaStatusUpdatedBy: soaStatusUpdatedBy
+        soaPhase: soaPhase
       properties:
         stage:
           $ref: "#/components/schemas/SoaStage"
@@ -3173,6 +3257,12 @@ components:
           nullable: true
           type: string
         hnId:
+          type: string
+        soaPhase:
+          nullable: true
+          type: string
+        elementDisplayName:
+          nullable: true
           type: string
       required:
       - hnId
@@ -4931,7 +5021,7 @@ components:
         detail: detail
         type: type
         title: title
-        status: 0
+        status: 5
       properties:
         type:
           nullable: true

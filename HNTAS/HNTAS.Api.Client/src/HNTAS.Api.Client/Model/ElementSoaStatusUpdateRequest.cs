@@ -39,8 +39,10 @@ namespace HNTAS.Api.Client.Model
         /// <param name="soaStatus">soaStatus</param>
         /// <param name="elementSoaStatus">elementSoaStatus</param>
         /// <param name="soaStatusUpdatedBy">soaStatusUpdatedBy</param>
+        /// <param name="soaPhase">soaPhase</param>
+        /// <param name="elementDisplayName">elementDisplayName</param>
         [JsonConstructor]
-        public ElementSoaStatusUpdateRequest(string hnId, Option<SoaStage?> stage = default, Option<string?> elementId = default, Option<string?> soaStatus = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<string?> soaStatusUpdatedBy = default)
+        public ElementSoaStatusUpdateRequest(string hnId, Option<SoaStage?> stage = default, Option<string?> elementId = default, Option<string?> soaStatus = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<string?> soaStatusUpdatedBy = default, Option<string?> soaPhase = default, Option<string?> elementDisplayName = default)
         {
             HnId = hnId;
             StageOption = stage;
@@ -48,6 +50,8 @@ namespace HNTAS.Api.Client.Model
             SoaStatusOption = soaStatus;
             ElementSoaStatusOption = elementSoaStatus;
             SoaStatusUpdatedByOption = soaStatusUpdatedBy;
+            SoaPhaseOption = soaPhase;
+            ElementDisplayNameOption = elementDisplayName;
             OnCreated();
         }
 
@@ -125,6 +129,32 @@ namespace HNTAS.Api.Client.Model
         public string? SoaStatusUpdatedBy { get { return this.SoaStatusUpdatedByOption; } set { this.SoaStatusUpdatedByOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of SoaPhase
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> SoaPhaseOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets SoaPhase
+        /// </summary>
+        [JsonPropertyName("soaPhase")]
+        public string? SoaPhase { get { return this.SoaPhaseOption; } set { this.SoaPhaseOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ElementDisplayName
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> ElementDisplayNameOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementDisplayName
+        /// </summary>
+        [JsonPropertyName("elementDisplayName")]
+        public string? ElementDisplayName { get { return this.ElementDisplayNameOption; } set { this.ElementDisplayNameOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -138,6 +168,8 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  SoaStatus: ").Append(SoaStatus).Append("\n");
             sb.Append("  ElementSoaStatus: ").Append(ElementSoaStatus).Append("\n");
             sb.Append("  SoaStatusUpdatedBy: ").Append(SoaStatusUpdatedBy).Append("\n");
+            sb.Append("  SoaPhase: ").Append(SoaPhase).Append("\n");
+            sb.Append("  ElementDisplayName: ").Append(ElementDisplayName).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -181,6 +213,8 @@ namespace HNTAS.Api.Client.Model
             Option<string?> soaStatus = default;
             Option<NetworkDetailsStatus?> elementSoaStatus = default;
             Option<string?> soaStatusUpdatedBy = default;
+            Option<string?> soaPhase = default;
+            Option<string?> elementDisplayName = default;
 
             while (utf8JsonReader.Read())
             {
@@ -219,6 +253,12 @@ namespace HNTAS.Api.Client.Model
                         case "soaStatusUpdatedBy":
                             soaStatusUpdatedBy = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "soaPhase":
+                            soaPhase = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "elementDisplayName":
+                            elementDisplayName = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         default:
                             break;
                     }
@@ -237,7 +277,7 @@ namespace HNTAS.Api.Client.Model
             if (elementSoaStatus.IsSet && elementSoaStatus.Value == null)
                 throw new ArgumentNullException(nameof(elementSoaStatus), "Property is not nullable for class ElementSoaStatusUpdateRequest.");
 
-            return new ElementSoaStatusUpdateRequest(hnId.Value!, stage, elementId, soaStatus, elementSoaStatus, soaStatusUpdatedBy);
+            return new ElementSoaStatusUpdateRequest(hnId.Value!, stage, elementId, soaStatus, elementSoaStatus, soaStatusUpdatedBy, soaPhase, elementDisplayName);
         }
 
         /// <summary>
@@ -296,6 +336,18 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("soaStatusUpdatedBy", elementSoaStatusUpdateRequest.SoaStatusUpdatedBy);
                 else
                     writer.WriteNull("soaStatusUpdatedBy");
+
+            if (elementSoaStatusUpdateRequest.SoaPhaseOption.IsSet)
+                if (elementSoaStatusUpdateRequest.SoaPhaseOption.Value != null)
+                    writer.WriteString("soaPhase", elementSoaStatusUpdateRequest.SoaPhase);
+                else
+                    writer.WriteNull("soaPhase");
+
+            if (elementSoaStatusUpdateRequest.ElementDisplayNameOption.IsSet)
+                if (elementSoaStatusUpdateRequest.ElementDisplayNameOption.Value != null)
+                    writer.WriteString("elementDisplayName", elementSoaStatusUpdateRequest.ElementDisplayName);
+                else
+                    writer.WriteNull("elementDisplayName");
         }
     }
 }

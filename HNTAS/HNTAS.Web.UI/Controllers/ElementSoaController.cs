@@ -87,6 +87,9 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> SoaUpdateStatus([FromQuery] SoaStage stage, [FromQuery] string elementId, [FromQuery] HeatNetworkElementDisplayType elementType)
         {
+            var tempDataKey = $"Soa_{elementId}_{stage}";
+            string soaPhase = TempData[$"{tempDataKey}_Phase"] as string;
+            string elementName = TempData[$"{tempDataKey}_Element"] as string;
             var currentStageIndex = ElementSoaHelper.GetStageIndex(stage);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey, currentStageIndex);
             var targetFragment = string.Concat("stage-", currentStageIndex);
@@ -111,6 +114,8 @@ namespace HNTAS.Web.UI.Controllers
             model.SelectedSoaStatus = selectedStatusForElement;
             model.SoaStage = stage;
             model.ElementId = elementId;
+            model.ElementName = elementName;
+            model.SoaPhase = soaPhase;
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaStatusUpdateModelSessionKey, model);
 
@@ -139,7 +144,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 targetStatus = NetworkDetailsStatus.Complete;
             }
-            var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: modelFromSession?.SoaStage, elementId: model?.ElementId, soaStatus: model?.SelectedSoaStatus, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus);
+            var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: modelFromSession?.SoaStage, elementId: model?.ElementId, soaStatus: model?.SelectedSoaStatus, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: modelFromSession?.SoaPhase, elementDisplayName: modelFromSession?.ElementName);
             await _soaProjectService.UpdateElementSoaStatus(request);
             ClearSoaSpecificSession();
             return RedirectToAction("SoaStages", "ElementSoa", targetFragment);
