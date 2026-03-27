@@ -18,7 +18,7 @@ namespace HNTAS.Web.UI.Helpers
             };
         }
 
-        public static void UpdateOptionStatus<TStatus, TDependentStatus>(NetworkDetailsOption option, TStatus? status, TDependentStatus? dependentStatus = null)
+        public static void UpdateOptionStatus<TStatus, TDependentStatus>(NetworkDetailsOption option, TStatus? status, TDependentStatus? dependentStatus = null, bool enabledOnComplete = true)
     where TStatus : struct, Enum
     where TDependentStatus : struct, Enum
         {
@@ -36,7 +36,7 @@ namespace HNTAS.Web.UI.Helpers
             else if (statusName == "Complete")
             {
                 option.UiStatus = StatusConstants.Completed;
-                option.IsEnabled = true;
+                option.IsEnabled = enabledOnComplete;
             }
             else if (statusName == "InProgress")
             {
@@ -69,6 +69,19 @@ namespace HNTAS.Web.UI.Helpers
                 "CC" => HeatNetworkElementDisplayType.ConsumerConnections,
                 "CDN" => HeatNetworkElementDisplayType.CommunalDistributionNetwork,
                 _ => throw new ArgumentOutOfRangeException(nameof(elementId), $"Not expected heat network element ID value: {elementId}")
+            };
+        }
+
+        public static string GetNetworkElementLabelByElementType(HeatNetworkElementDisplayType elementType)
+        {
+            return elementType switch
+            {
+                HeatNetworkElementDisplayType.EnergyCentre => "Energy Centre",
+                HeatNetworkElementDisplayType.Substation => "Substation",
+                HeatNetworkElementDisplayType.DistrictDistributionNetwork => "District Distribution Network",
+                HeatNetworkElementDisplayType.ConsumerConnections => "Consumer Connection",
+                HeatNetworkElementDisplayType.CommunalDistributionNetwork => "Communal Distribution Network",
+                _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element ID value: {elementType}")
             };
         }
 
