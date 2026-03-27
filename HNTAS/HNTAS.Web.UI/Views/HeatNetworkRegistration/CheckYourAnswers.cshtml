@@ -76,7 +76,7 @@
                             else
                             {
                                 <a class="govuk-link" href="@disableHnConnectionsLink ? Url.Action("HeatNetworkConnections", "HeatNetworkRegistration") : "#">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
-                            }                            
+                            }
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
@@ -117,17 +117,17 @@
                                 <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ConfirmedDeclaration)
                             </p>
                         }
-                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+
+                        <div class="govuk-checkboxes govuk-checkboxes--small data-module="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input"
-                                       id="@(Html.GenerateIdFromName("ConfirmDeclaration").ToLowerInvariant())"
                                        asp-for="ConfirmedDeclaration"
                                        type="checkbox"
-                                       value="true">
-                                <label class="govuk-label govuk-checkboxes__label" for="confirmdeclaration">
+                                       required="required" />
+
+                                <label asp-for="ConfirmedDeclaration" class="govuk-label govuk-checkboxes__label">
                                     I confirm that the summary above is correct for @heatNetworkName.
                                 </label>
-
                             </div>
                         </div>
                     </fieldset>
