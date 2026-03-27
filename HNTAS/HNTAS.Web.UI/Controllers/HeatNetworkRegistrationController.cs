@@ -511,7 +511,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult CheckYourAnswers()
         {
-            ViewBag.ShowBackButton = false;           
+            ViewBag.ShowBackButton = false;
 
             HeatNetworkNameModel heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey);
             HeatNetworkLocationModel heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
@@ -524,7 +524,7 @@ namespace HNTAS.Web.UI.Controllers
                 return RedirectToAction("UserAccount", "Dashboard");
             }
 
-            var model = new CheckYourAnswersHeatNetworkModel
+            var model = _sessionHelper.GetFromSession<CheckYourAnswersHeatNetworkModel>(HttpContext, SessionKeys.CheckYourAnswersHeatNetworkModelKey) ?? new CheckYourAnswersHeatNetworkModel
             {
                 HeatNetworkNameModel = heatNetworkNameModel,
                 HeatNetworkAddressModel = heatNetworkLocationModel?.HNAddressByStreet ?? null,
@@ -543,7 +543,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitAnswers()
+        public async Task<IActionResult> SubmitAnswers(bool ConfirmedDeclaration)
         {
             var viewModel = _sessionHelper.GetFromSession<CheckYourAnswersHeatNetworkModel>(HttpContext, SessionKeys.CheckYourAnswersHeatNetworkModelKey);
             ModelState.Remove(nameof(viewModel.HeatNetworkNameModel));
@@ -551,6 +551,13 @@ namespace HNTAS.Web.UI.Controllers
             ModelState.Remove(nameof(viewModel.ECDetailsModel));
             ModelState.Remove(nameof(viewModel.PathwayModel));
             ModelState.Remove(nameof(viewModel.HeatNetworkPhaseModel));
+
+            // Validate the mandatory checkbox
+            if (ConfirmedDeclaration != true)
+            {
+                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "You must confirm the declaration to proceed.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View("CheckYourAnswers", viewModel);
