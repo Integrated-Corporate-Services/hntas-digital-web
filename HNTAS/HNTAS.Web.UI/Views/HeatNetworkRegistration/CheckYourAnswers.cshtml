@@ -43,6 +43,10 @@
     }
     string hnConnectionsToDisplay = connections.Any() ? string.Join(", ", connections) : "No connections";
     var fieldOrder = new[] { nameof(Model.ConfirmedDeclaration) };
+
+    bool disableHnConnectionsLink =
+        heatNetworkType == HNTAS.Web.UI.Models.Enums.HeatNetworkType.CommunalWithIntegralEC ||
+        heatNetworkType == HNTAS.Web.UI.Models.Enums.HeatNetworkType.CommunalWithSeparateUpstreamHN;
 }
 
 
@@ -65,7 +69,14 @@
                         <dt class="govuk-summary-list__key">Connections heat network has</dt>
                         <dd class="govuk-summary-list__value">@hnConnectionsToDisplay</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("HeatNetworkConnections", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
+                            @if (disableHnConnectionsLink)
+                            {
+                                <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
+                            }
+                            else
+                            {
+                                <a class="govuk-link" href="@disableHnConnectionsLink ? Url.Action("HeatNetworkConnections", "HeatNetworkRegistration") : "#">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
+                            }                            
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
@@ -86,7 +97,7 @@
                         <dt class="govuk-summary-list__key">Main energy centre address and postcode</dt>
                         <dd class="govuk-summary-list__value">@energyCentreAddress</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("DoesHNHaveAPostcode", "Address")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                            <a class="govuk-link" href="@Url.Action("DoesHNHaveAPostcode", "Address")">Change<span class="govuk-visually-hidden">HNName</span></a>                            
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">

@@ -57,47 +57,48 @@
         }
       }
     },
-    "/api/Audit/heat-network/{hnId}": {
+    "/api/Audit/heat-network-audit-logs": {
       "get": {
         "tags": [
           "Audit"
         ],
-        "parameters": [
-          {
-            "name": "hnId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditLogRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditLogRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditLogRequest"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AuditLogResponse"
-                  }
+                  "$ref": "#/components/schemas/AuditLogResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AuditLogResponse"
-                  }
+                  "$ref": "#/components/schemas/AuditLogResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AuditLogResponse"
-                  }
+                  "$ref": "#/components/schemas/AuditLogResponse"
                 }
               }
             }
@@ -3927,10 +3928,10 @@
           }
         }
       },
-      "AuditLogResponse": {
+      "AuditLog": {
         "type": "object",
         "properties": {
-          "event": {
+          "entryType": {
             "type": "string"
           },
           "userName": {
@@ -3941,6 +3942,79 @@
           },
           "timestamp": {
             "type": "string"
+          },
+          "elementName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phase": {
+            "type": "string",
+            "nullable": true
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AuditLogRequest": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "sortBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortDirection": {
+            "type": "string",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AuditLogResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuditLog"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          },
+          "hnId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4385,6 +4459,14 @@
           },
           "hnId": {
             "type": "string"
+          },
+          "soaPhase": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementDisplayName": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
