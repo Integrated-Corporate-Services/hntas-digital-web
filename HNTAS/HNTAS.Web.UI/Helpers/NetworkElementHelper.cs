@@ -149,5 +149,17 @@ namespace HNTAS.Web.UI.Helpers
                 _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
             };
         }
+
+        public static string GetNetworkTypeLabelForNetworkType(Api.Client.Model.HeatNetworkType? networkType)
+        {
+            return networkType switch
+            {
+                Api.Client.Model.HeatNetworkType.CommunalWithIntegralEC => HeatNetworkTypeConstants.CommunalWithIntegralEC,
+                Api.Client.Model.HeatNetworkType.CommunalWithSeparateUpstreamHN => HeatNetworkTypeConstants.CommunalWithSeparateUpstreamHN,
+                Api.Client.Model.HeatNetworkType.DistrictWithOwnEC => HeatNetworkTypeConstants.DistrictWithOwnEC,
+                Api.Client.Model.HeatNetworkType.DistrictWithSeparateUpstreamHN => HeatNetworkTypeConstants.DistrictWithSeparateUpstreamHN,
+                _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
+            };
+        }
     }
 }
