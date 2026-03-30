@@ -139,7 +139,7 @@ namespace HNTAS.Web.UI.Controllers
                 }).ToList(),
                 HeatNetworkAddress = addressByStreetOrTownModel?.Fulladdress,
                 Coordinates = latlong,
-                NetworkType = "",
+                NetworkType = NetworkElementHelper.GetNetworkTypeLabelForNetworkType(networkType),
                 Phase = phase ?? string.Empty
             };
 
