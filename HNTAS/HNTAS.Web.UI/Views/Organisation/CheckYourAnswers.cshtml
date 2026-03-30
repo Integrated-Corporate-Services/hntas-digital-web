@@ -30,10 +30,10 @@
         }
     }
 
-    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmDeclaration)) &&
-                                ViewData.ModelState[nameof(Model.ConfirmDeclaration)].Errors.Any();
+    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) &&
+                                ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
 
-    var fieldName = nameof(Model.ConfirmDeclaration).ToLowerInvariant();
+    var fieldName = nameof(Model.ConfirmedDeclaration).ToLowerInvariant();
 }
 
 <div class="govuk-width-container">
@@ -175,19 +175,19 @@
                         @if (hasDeclarationErrors)
                         {
                             <p id="confirmDeclaration-error" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ConfirmDeclaration)
+                                <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ConfirmedDeclaration)
                             </p>
                         }
                         <div class="govuk-checkboxes__item">
                             <input class="govuk-checkboxes__input"
                                         id="@fieldName"
-                                        asp-for="ConfirmDeclaration"
+                                        asp-for="ConfirmedDeclaration"
                                         type="checkbox"
                                         value="true">                      
                             <label class="govuk-label govuk-checkboxes__label" for="@fieldName">
-                            I confirm that I am authorised to act on behalf of @organisationModel.CompanyDetails.Title and the Responsible Party for heat networks, and that the information submitted through this service is accurate and complete.
+                                I confirm that I am authorised to act on behalf of @organisationModel.CompanyDetails.Title and the Responsible Party for heat networks, and that the information submitted through this service is accurate and complete.
                             </label>
-                        </div>                    
+                        </div>
                     </fieldset>                
                 </div>
 

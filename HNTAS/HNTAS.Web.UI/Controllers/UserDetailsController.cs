@@ -136,7 +136,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 Organisation = new OrganisationModel(),
                 User = userModel,
-                ConfirmDeclaration = true
+                ConfirmedDeclaration = true
             };
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, true);
             return View("UserDetails/CheckYourAnswers", viewModel);
@@ -177,7 +177,7 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     Organisation = new OrganisationModel(),
                     User = userModel,
-                    ConfirmDeclaration = true
+                    ConfirmedDeclaration = true
                 });
             }
         }
