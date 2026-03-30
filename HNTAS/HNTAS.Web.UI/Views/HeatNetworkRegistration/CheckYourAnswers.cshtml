@@ -69,13 +69,9 @@
                         <dt class="govuk-summary-list__key">Connections heat network has</dt>
                         <dd class="govuk-summary-list__value">@hnConnectionsToDisplay</dd>
                         <dd class="govuk-summary-list__actions">
-                            @if (disableHnConnectionsLink)
+                            @if (!disableHnConnectionsLink)
                             {
-                                <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
-                            }
-                            else
-                            {
-                                <a class="govuk-link" href="@disableHnConnectionsLink ? Url.Action("HeatNetworkConnections", "HeatNetworkRegistration") : "#">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
+                                <a class="govuk-link" href="@disableHnConnectionsLink ? Url.Action(" HeatNetworkConnections", "HeatNetworkRegistration" ) : "#">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
                             }
                         </dd>
                     </div>
