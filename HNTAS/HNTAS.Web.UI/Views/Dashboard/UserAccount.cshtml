@@ -6,9 +6,12 @@
 @{
     ViewData["Title"] = "User Account";
     var disabled = Model.HasHeatNetworks ? "" : "dashboard-card--disabled";
-    var userIsRPOrActingRP = Model.UserRole == UserRole.ResponsiblePerson.ToString() || Model.UserRole == UserRole.Coordinator.ToString();
+    var userIsRP = Model.UserRole == UserRole.ResponsiblePerson.ToString();
     var userIsAssessor = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Assessor.ToString();
     var userIsCertifier = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Certifier.ToString();
+    var userIsActingRP = Model.UserRole == UserRole.Coordinator.ToString();
+    var RPLoggedInForFirstTime = ViewBag.RPLoggedInForFirstTime;
+    var showCarbonCalculator = userIsRP || userIsActingRP || userIsAssessor || userIsCertifier && !RPLoggedInForFirstTime;
 }
 
 <div class="govuk-width-container">
@@ -23,6 +26,19 @@
     }
 
     <div class="dashboard-grid">
+        <!-- Notifications -->
+        <div class="dashboard-grid__item">
+            <div class="dashboard-card">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a class="govuk-link govuk-link--no-visited-state" asp-controller="" asp-action="">
+                        Notifications
+                    </a>
+                </h3>
+                <p class="govuk-body-s">Network, element and personnel updates</p>
+            </div>
+        </div>
+
+        <!-- Organisation Details -->
         <div class="dashboard-grid__item">
             <div class="dashboard-card">
                 @if (Model.OrganisationName == null)
@@ -44,6 +60,7 @@
             </div>
         </div>
 
+        <!-- Your Details -->
         <div class="dashboard-grid__item">
             <div class="dashboard-card">
                 <h3 class="dashboard-card__title govuk-heading-s">
@@ -51,10 +68,19 @@
                 </h3>
                 <p class="govuk-body-s">View your details.</p>
             </div>
-        </div>
+        </div>        
 
-
-        @if (userIsRPOrActingRP)
+        @if (userIsRP && RPLoggedInForFirstTime)
+        {
+            <div class="govuk-button-group">
+                <p class="govuk-body">
+                    <a href="@Url.Action("HeatNetworks","UserManagement")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                        Add a heat network
+                    </a> or <a class="govuk-link" href="@Url.Action("", "")">Authorise someone to manage heat networks</a>
+                </p>
+            </div>
+        }
+        else if (userIsRP || userIsActingRP)
         {
             <div class="dashboard-grid__item">
                 <div class="dashboard-card @disabled">
@@ -83,7 +109,7 @@
                 </div>
             </div>
 
-            @if (Model.UserRole != UserRole.Coordinator.ToString())
+            @if (userIsActingRP)
             {
                 <div class="dashboard-grid__item">
                     <div class="dashboard-card">
@@ -93,7 +119,7 @@
                         <p class="govuk-body-s">View or change user roles and permissions within your organisation.</p>
                     </div>
                 </div>
-            }                        
+            }
 
             <div class="dashboard-grid__item">
                 <div class="dashboard-card">
@@ -184,16 +210,19 @@
                 </div>   
             }
         }
-
-        <div class="dashboard-grid__item">
-            <div class="dashboard-card">
-                <h3 class="dashboard-card__title govuk-heading-s">
-                    <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="CarbonCalculator">Carbon Calculator</a>
-                </h3>
-                <p class="govuk-body-s">Calculate carbon emission for your heat network.</p>
-            </div>
-        </div>
         
-    </div>
+        @* @if (showCarbonCalculator)
+        {
+            <!-- Carbon Calculator-->
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="CarbonCalculator">Carbon Calculator</a>
+                    </h3>
+                    <p class="govuk-body-s">Calculate carbon emission for your heat network.</p>
+                </div>
+            </div>
+        } *@
 
+    </div>
 </div>
