@@ -27,11 +27,11 @@ namespace HNTAS.Web.UI.Controllers
             _logger = logger;
         }
 
-        #region wip
         [HttpGet]
         public IActionResult HeatNetworkDwellingsCheck()
         {
-            this.ShowBackButton("HeatNetworksAsync", "UserManagement");
+            this.ShowBackButton("HeatNetworks", "UserManagement");
+            //this.ShowBackButton("UserAccount", "Dashboard");
             var model = _sessionHelper.GetFromSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey) ?? new HowManyDwellingsIncludedModel();
             return View(model);
         }
@@ -78,8 +78,6 @@ namespace HNTAS.Web.UI.Controllers
             var model = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelKey) ?? new HeatNetworkTypeViewModel();
             return View(model);
         }
-
-        #endregion
 
         [HttpPost]
         [ValidateAntiForgeryToken]
