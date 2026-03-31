@@ -3211,6 +3211,7 @@ components:
           soaStatusUpdatedBy: soaStatusUpdatedBy
           stageId: Stage1
         count: 3
+        networkElementInstanceName: networkElementInstanceName
         type: EnergyCentre
         elementType: elementType
       properties:
@@ -3222,6 +3223,9 @@ components:
           type: string
         type:
           $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+        networkElementInstanceName:
+          nullable: true
+          type: string
         count:
           format: int32
           nullable: true
@@ -3625,6 +3629,7 @@ components:
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             count: 3
+            networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
@@ -3638,6 +3643,7 @@ components:
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             count: 3
+            networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4048,6 +4054,7 @@ components:
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             count: 3
+            networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
@@ -4061,6 +4068,7 @@ components:
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             count: 3
+            networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4654,6 +4662,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 3
+          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -4667,6 +4676,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 3
+          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4712,6 +4722,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 3
+          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -4725,6 +4736,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 3
+          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4769,6 +4781,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 3
+          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -4782,6 +4795,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           count: 3
+          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00

@@ -4419,6 +4419,10 @@
           "type": {
             "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
           },
+          "networkElementInstanceName": {
+            "type": "string",
+            "nullable": true
+          },
           "count": {
             "type": "integer",
             "format": "int32",

@@ -39,10 +39,10 @@
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = $"{elementId}", OptValue = HeatNetworkType.CommunalWithIntegralEC.ToString(), OptText = "Communal (with an integral energy centre)", OptHintText = null },
-                    new Option { OptId = $"{elementId}-2", OptValue = HeatNetworkType.CommunalWithSeparateUpstreamHN.ToString(), OptText = "Communal (supplied by a separate upstream heat network)", OptHintText = null },
-                    new Option { OptId = $"{elementId}-3", OptValue = HeatNetworkType.DistrictWithOwnEC.ToString(), OptText = "District (with its own main energy centre)", OptHintText = null },
-                    new Option { OptId = $"{elementId}-4", OptValue = HeatNetworkType.DistrictWithSeparateUpstreamHN.ToString(), OptText = "District (supplied by a separate upstream heat network)", OptHintText = null }
+                    new Option { OptId = $"{elementId}", OptValue = HeatNetworkType.CommunalWithIntegralEC.ToString(), OptText = HeatNetworkTypeConstants.CommunalWithIntegralEC, OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = HeatNetworkType.CommunalWithSeparateUpstreamHN.ToString(), OptText = HeatNetworkTypeConstants.CommunalWithSeparateUpstreamHN, OptHintText = null },
+                    new Option { OptId = $"{elementId}-3", OptValue = HeatNetworkType.DistrictWithOwnEC.ToString(), OptText = HeatNetworkTypeConstants.DistrictWithOwnEC, OptHintText = null },
+                    new Option { OptId = $"{elementId}-4", OptValue = HeatNetworkType.DistrictWithSeparateUpstreamHN.ToString(), OptText = HeatNetworkTypeConstants.DistrictWithSeparateUpstreamHN, OptHintText = null }
                 },
                 SeletedOption = Model.HeatNetworkType.ToString()
             },
