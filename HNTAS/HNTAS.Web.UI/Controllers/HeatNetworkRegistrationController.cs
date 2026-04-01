@@ -1,15 +1,18 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.HeatNetworkRegistration;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize(Policy = SecurityConstants.Policies.CanAddHeatNetwork)]
     public class HeatNetworkRegistrationController : Controller
     {
         private readonly ISessionHelper _sessionHelper;
@@ -27,11 +30,11 @@ namespace HNTAS.Web.UI.Controllers
             _logger = logger;
         }
 
-        #region wip
         [HttpGet]
         public IActionResult HeatNetworkDwellingsCheck()
         {
-            this.ShowBackButton("HeatNetworksAsync", "UserManagement");
+            this.ShowBackButton("HeatNetworks", "UserManagement");
+            //this.ShowBackButton("UserAccount", "Dashboard");
             var model = _sessionHelper.GetFromSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey) ?? new HowManyDwellingsIncludedModel();
             return View(model);
         }
@@ -78,8 +81,6 @@ namespace HNTAS.Web.UI.Controllers
             var model = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelKey) ?? new HeatNetworkTypeViewModel();
             return View(model);
         }
-
-        #endregion
 
         [HttpPost]
         [ValidateAntiForgeryToken]
