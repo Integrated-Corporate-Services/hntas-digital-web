@@ -14,17 +14,20 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ISessionHelper _sessionHelper;
         private readonly ISoaService _soaProjectService;
         private readonly IHeatNetworkService _heatNetworkService;
+        private readonly IUserService _userService;
         private readonly ILogger<ElementSoaController> _logger;
 
         public ElementSoaController(ISessionHelper sessionHelper,
             ISoaService soaProjectService,
             ILogger<ElementSoaController> logger,
-            IHeatNetworkService heatNetworkService)
+            IHeatNetworkService heatNetworkService,
+            IUserService userService)
         {
             _sessionHelper = sessionHelper;
             _soaProjectService = soaProjectService;
             _logger = logger;
             _heatNetworkService = heatNetworkService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -148,6 +151,66 @@ namespace HNTAS.Web.UI.Controllers
             await _soaProjectService.UpdateElementSoaStatus(request);
             ClearSoaSpecificSession();
             return RedirectToAction("SoaStages", "ElementSoa", targetFragment);
+        }
+
+        [HttpGet]
+        public IActionResult AssessorOnboarding()
+        {
+            var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
+            var targetFragment = string.Concat("stage-", currentStageIndex);
+            this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> SearchAssessor(string q)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(q) || q.Length < 2)
+                {
+                    return Json(new List<string>());
+                }
+
+                var results = await _userService.GetActiveAssessors(q);
+                return Json(results);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching assessor suggestions");
+                return Json(new { error = "Internal server error" });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SelectedAssessorOnboarding(string firstName, string lastName, string emailId)
+        {
+            if (string.IsNullOrEmpty(firstName) ||
+                string.IsNullOrEmpty(lastName) ||
+                string.IsNullOrEmpty(emailId))
+            {
+                TempData["ErrorMessage"] = "Please select an assessor before continuing.";
+                return RedirectToAction("AssessorOnboarding");
+            }
+
+            // Store in session
+            _sessionHelper.SaveToSession(HttpContext, "SelectedAssessorFirstName", firstName);
+            _sessionHelper.SaveToSession(HttpContext, "SelectedAssessorLastName", lastName);
+            _sessionHelper.SaveToSession(HttpContext, "SelectedAssessorEmail", emailId);
+
+            return RedirectToAction("AssessorSelectElements");
+        }
+        
+        [HttpGet]
+        public IActionResult AssessorSelectElements()
+        {            
+            this.ShowBackButton("SearchAssessor", "ElementSoa");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId;
+            return View("AssessorSelectElements");
         }
 
         private void ClearSoaSpecificSession()

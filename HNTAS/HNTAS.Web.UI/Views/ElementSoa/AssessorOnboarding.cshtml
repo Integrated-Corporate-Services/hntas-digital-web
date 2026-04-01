@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Who is the assessor for the energy centre?";
+    var defaultVal = "Sandeep Saini (sandeep_assessor@mailinator.com)";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">@ViewBag.HnId</span>
+            <h1 class="govuk-heading-l">Who is the assessor for the energy centre?</h1>
+
+            <p class="govuk-body">
+                You should contact the assessor before naming them. They need to be registered with us before they can assess any of your network.
+            </p>
+
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="assessor-autocomplete">
+                    Search for assessor name or email
+                </label>
+                <div id="assessor-autocomplete-container"></div>
+            </div>
+
+            <form asp-action="SelectedAssessorOnboarding" asp-controller="ElementSoa" method="post">
+                <input type="hidden" id="selected-assessor-firstName" name="FirstName" />
+                <input type="hidden" id="selected-assessor-lastName" name="LastName" />
+                <input type="hidden" id="selected-assessor-emailId" name="EmailId" />
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Wait for the window to fully load the module
+        window.addEventListener('load', function () {
+            if (window.accessibleAutocomplete) {
+                window.accessibleAutocomplete({
+                    element: document.querySelector('#assessor-autocomplete-container'),
+                    id: 'assessor-autocomplete',
+                    defaultValue: '@defaultVal',
+                    source: function (query, populateResults) {
+                        fetch('@Url.Action("SearchAssessor", "ElementSoa")?q=' + encodeURIComponent(query))
+                            .then(res => res.json())
+                            .then(data => {
+                                // Pass the full objects to populateResults
+                                populateResults(data);
+                            });
+                    },
+                    // Tell the component how to display your object
+                    templates: {
+                        inputValue: function (result) {
+                            return result && result.firstName + ' ' + result.lastName + ' (' + result.emailId + ')'; // Value shown in the input box after selection
+                        },
+                        suggestion: function (result) {
+                            return result && result.firstName + ' ' + result.lastName + ' (' + result.emailId + ')'; // Value shown in the dropdown list
+                        }
+                    },
+                    onConfirm: function (selected) {
+                        if (selected) {
+                            console.log("Selected Assessor ID:", selected);  
+                            // Optionally set a hidden field with the ID
+                            document.querySelector('#selected-assessor-firstName').value = selected.firstName;
+                            document.querySelector('#selected-assessor-lastName').value = selected.lastName;
+                            document.querySelector('#selected-assessor-emailId').value = selected.emailId;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

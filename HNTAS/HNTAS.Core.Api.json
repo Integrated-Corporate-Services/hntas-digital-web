@@ -10,6 +10,98 @@
     }
   ],
   "paths": {
+    "/api/arms/v1/hn/kpis": {
+      "post": {
+        "tags": [
+          "Arms"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiSubmissionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiSubmissionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiSubmissionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Assessor/search": {
       "get": {
         "tags": [
@@ -2808,6 +2900,48 @@
         }
       }
     },
+    "/api/Users/get-active-assessors/{searchTerm}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "searchTerm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Users/onelogin/{oneLoginId}": {
       "get": {
         "tags": [
@@ -4474,6 +4608,15 @@
           }
         }
       },
+      "ElementType": {
+        "enum": [
+          "EnergyCentre",
+          "Substation",
+          "DistrictDistribution",
+          "CommunalDistribution",
+          "ConsumerConnection"
+        ]
+      },
       "Energy": {
         "type": "object",
         "properties": {
@@ -5108,6 +5251,82 @@
         },
         "nullable": true
       },
+      "KpiMetadata": {
+        "required": [
+          "network_id",
+          "period_start"
+        ],
+        "type": "object",
+        "properties": {
+          "network_id": {
+            "type": "string"
+          },
+          "period_start": {
+            "type": "string"
+          },
+          "source_system": {
+            "type": "string",
+            "nullable": true
+          },
+          "additional_details": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "KpiSubmissionRequest": {
+        "required": [
+          "meta_data"
+        ],
+        "type": "object",
+        "properties": {
+          "meta_data": {
+            "$ref": "#/components/schemas/KpiMetadata"
+          },
+          "consumer_connection_aggregated_kpis": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/KpiValueAggregated"
+            },
+            "nullable": true
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkElement"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "KpiValue": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "is_kpi_imputed": {
+            "type": "boolean"
+          },
+          "kpi_imputation_details": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "KpiValueAggregated": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "ManagedUserResponse": {
         "type": "object",
         "properties": {
@@ -5262,6 +5481,28 @@
             "type": "string"
           }
         }
+      },
+      "NetworkElement": {
+        "required": [
+          "element_id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "element_id": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ElementType"
+          },
+          "kpis": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/KpiValue"
+            }
+          }
+        },
+        "additionalProperties": false
       },
       "NetworkElements": {
         "type": "object",
@@ -6466,10 +6707,48 @@
           "InvitationAccepted",
           "InvitationDeclined"
         ]
+      },
+      "ValidationProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
       }
     }
   },
   "tags": [
+    {
+      "name": "Arms"
+    },
     {
       "name": "Assessor"
     },
