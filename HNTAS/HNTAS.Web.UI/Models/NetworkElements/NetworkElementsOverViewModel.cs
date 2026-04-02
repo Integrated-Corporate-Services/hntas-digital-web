@@ -17,5 +17,6 @@ namespace HNTAS.Web.UI.Models.NetworkElements
     {
         public HeatNetworkElementDisplayType Type { get; set; }
         public int? Count { get; set; }
+        public string? NetworkElementInstanceName { get; set; }
     }
 }

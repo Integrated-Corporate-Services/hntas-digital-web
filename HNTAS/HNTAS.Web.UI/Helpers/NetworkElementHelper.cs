@@ -18,7 +18,7 @@ namespace HNTAS.Web.UI.Helpers
             };
         }
 
-        public static void UpdateOptionStatus<TStatus, TDependentStatus>(NetworkDetailsOption option, TStatus? status, TDependentStatus? dependentStatus = null)
+        public static void UpdateOptionStatus<TStatus, TDependentStatus>(NetworkDetailsOption option, TStatus? status, TDependentStatus? dependentStatus = null, bool enabledOnComplete = true)
     where TStatus : struct, Enum
     where TDependentStatus : struct, Enum
         {
@@ -36,7 +36,7 @@ namespace HNTAS.Web.UI.Helpers
             else if (statusName == "Complete")
             {
                 option.UiStatus = StatusConstants.Completed;
-                option.IsEnabled = true;
+                option.IsEnabled = enabledOnComplete;
             }
             else if (statusName == "InProgress")
             {
@@ -69,6 +69,19 @@ namespace HNTAS.Web.UI.Helpers
                 "CC" => HeatNetworkElementDisplayType.ConsumerConnections,
                 "CDN" => HeatNetworkElementDisplayType.CommunalDistributionNetwork,
                 _ => throw new ArgumentOutOfRangeException(nameof(elementId), $"Not expected heat network element ID value: {elementId}")
+            };
+        }
+
+        public static string GetNetworkElementLabelByElementType(HeatNetworkElementDisplayType elementType)
+        {
+            return elementType switch
+            {
+                HeatNetworkElementDisplayType.EnergyCentre => "Energy Centre",
+                HeatNetworkElementDisplayType.Substation => "Substation",
+                HeatNetworkElementDisplayType.DistrictDistributionNetwork => "District Distribution Network",
+                HeatNetworkElementDisplayType.ConsumerConnections => "Consumer Connection",
+                HeatNetworkElementDisplayType.CommunalDistributionNetwork => "Communal Distribution Network",
+                _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element ID value: {elementType}")
             };
         }
 
@@ -133,6 +146,18 @@ namespace HNTAS.Web.UI.Helpers
                 Api.Client.Model.HeatNetworkType.CommunalWithSeparateUpstreamHN => "Communal network elements",
                 Api.Client.Model.HeatNetworkType.DistrictWithOwnEC => "District network elements",
                 Api.Client.Model.HeatNetworkType.DistrictWithSeparateUpstreamHN => "District network elements",
+                _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
+            };
+        }
+
+        public static string GetNetworkTypeLabelForNetworkType(Api.Client.Model.HeatNetworkType? networkType)
+        {
+            return networkType switch
+            {
+                Api.Client.Model.HeatNetworkType.CommunalWithIntegralEC => HeatNetworkTypeConstants.CommunalWithIntegralEC,
+                Api.Client.Model.HeatNetworkType.CommunalWithSeparateUpstreamHN => HeatNetworkTypeConstants.CommunalWithSeparateUpstreamHN,
+                Api.Client.Model.HeatNetworkType.DistrictWithOwnEC => HeatNetworkTypeConstants.DistrictWithOwnEC,
+                Api.Client.Model.HeatNetworkType.DistrictWithSeparateUpstreamHN => HeatNetworkTypeConstants.DistrictWithSeparateUpstreamHN,
                 _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
             };
         }

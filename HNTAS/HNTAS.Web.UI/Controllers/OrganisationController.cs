@@ -507,37 +507,41 @@ namespace HNTAS.Web.UI.Controllers
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
             var deedPollViewModel = _sessionHelper.GetFromSession<DeedPollViewModel>(HttpContext, SessionKeys.DeedPollViewModelSessionKey);
 
-            var viewModel = new CheckYourAnswersOrganisationModel
+            var model = _sessionHelper.GetFromSession<CheckYourAnswersOrganisationModel>(HttpContext, SessionKeys.CheckYourAnswersOrganisationModelSessionKey) ?? new CheckYourAnswersOrganisationModel
             {
                 Organisation = organisationModel,
                 User = userModel,
                 DeedPollViewModel = deedPollViewModel,
-                ConfirmDeclaration = false
+                ConfirmedDeclaration = false
             };
 
             // Set the flow state to Check Answers mode
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, true);
-            _sessionHelper.SaveToSession<CheckYourAnswersOrganisationModel>(HttpContext, SessionKeys.CheckYourAnswersOrganisationModelSessionKey, viewModel);
-            return View(viewModel);
+            _sessionHelper.SaveToSession<CheckYourAnswersOrganisationModel>(HttpContext, SessionKeys.CheckYourAnswersOrganisationModelSessionKey, model);
+            return View(model);
         }
 
         [Authorize(Policy = SecurityConstants.Policies.CanStartRegistration)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnPostAttribute))]
-        public async Task<IActionResult> SubmitAnswers()
+        public async Task<IActionResult> SubmitAnswers(bool ConfirmedDeclaration)
         {
+            ViewBag.ShowBackButton = false;
             var viewModel = _sessionHelper.GetFromSession<CheckYourAnswersOrganisationModel>(HttpContext, SessionKeys.CheckYourAnswersOrganisationModelSessionKey);            
             ModelState.Remove(nameof(viewModel.Organisation));
             ModelState.Remove(nameof(viewModel.User));
             var organisationModel = viewModel.Organisation;
             var userModel = viewModel.User;
             var emailAddress = userModel?.ContactDetails?.EmailAddress;
-            var company = organisationModel?.CompanyDetails;            
-
-            if (!ModelState.IsValid)
+            var company = organisationModel?.CompanyDetails;
+            // Validate the mandatory checkbox
+            if (ConfirmedDeclaration != true)
             {
-                ViewBag.ShowBackButton = false;
+                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "You must confirm the declaration to proceed.");
+            }
+            if (!ModelState.IsValid)
+            {                
                 return View("CheckYourAnswers", viewModel);
             }            
 

@@ -59,7 +59,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (selectedNetworkElements != null)
             {
-                selectedNetworkElements.Elements?.ForEach(e =>
+                selectedNetworkElements.Elements?.DistinctBy(a => a.ElementType).ToList().ForEach(e =>
                 {
                     var displayType = NetworkElementHelper.GetNetworkElementDisplayTypeById(e.ElementType!);
                     model.SelectedElementIds.Add(displayType);
@@ -99,7 +99,8 @@ namespace HNTAS.Web.UI.Controllers
                 var ele = new Element
                 {
                     Type = selectedId,
-                    Count = model.ElementCounts.TryGetValue(selectedId, out var cnt) ? cnt : null
+                    Count = model.ElementCounts.TryGetValue(selectedId, out var cnt) ? cnt : null,
+                    
                 };
                 elements.Add(ele);
                 if ((selectedId != HeatNetworkElementDisplayType.EnergyCentre) && (!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
@@ -138,7 +139,7 @@ namespace HNTAS.Web.UI.Controllers
                 }).ToList(),
                 HeatNetworkAddress = addressByStreetOrTownModel?.Fulladdress,
                 Coordinates = latlong,
-                NetworkType = "",
+                NetworkType = NetworkElementHelper.GetNetworkTypeLabelForNetworkType(networkType),
                 Phase = phase ?? string.Empty
             };
 
@@ -176,9 +177,36 @@ namespace HNTAS.Web.UI.Controllers
 
             var elements = _sessionHelper.GetFromSession<List<Element>>(HttpContext, SessionKeys.SelectedElementsSessionKey);
 
+            var elementInstances = new List<Element>();
+            var instanceCounter = 1;
+            foreach (var element in elements!)
+            {
+                if (element.Count == 1)
+                {
+                    element.NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(element.Type);
+                    elementInstances.Add(element);
+                    continue;
+                }
+                instanceCounter = 1;
+                element.NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(element.Type) + " - " + instanceCounter;
+                elementInstances.Add(element);
+                for (int i = 1; i < (element.Count); i++)
+                {
+                    instanceCounter++;                    
+                    elementInstances.Add(
+                        new Element
+                        {
+                            Type = element.Type,
+                            Count = element.Count,
+                            NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(element.Type) + " - " + instanceCounter
+                        });
+                }                
+            }
+            
+
             var request = new NetworkElements2
             {
-                Elements = elements?.Select(e => new Api.Client.Model.Element(type: e.Type, count: e.Count)).ToList(),
+                Elements = elementInstances?.Select(e => new Api.Client.Model.Element(type: e.Type, count: e.Count, networkElementInstanceName: e.NetworkElementInstanceName    )).ToList(),
                 NetworkElementStatus = NetworkDetailsStatus.Complete,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId,
