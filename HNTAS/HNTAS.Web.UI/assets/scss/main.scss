@@ -3,6 +3,7 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
 
 @import "../../node_modules/govuk-frontend/dist/govuk/index";
 @import "../../node_modules/accessible-autocomplete/dist/accessible-autocomplete.min";
+@import "../../node_modules/@ministryofjustice/frontend/moj/all";
 @import "_step-by-step-nav.scss";
 
 .dashboard-grid {
