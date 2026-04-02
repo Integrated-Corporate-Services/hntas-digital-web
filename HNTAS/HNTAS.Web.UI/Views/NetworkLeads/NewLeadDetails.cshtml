@@ -50,6 +50,7 @@
 
 <div class="govuk-width-container">
     <form class="form" asp-controller="NetworkLeads" asp-action="NewLeadDetails" method="post">
+        @Html.AntiForgeryToken()
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 

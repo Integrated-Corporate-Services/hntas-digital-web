@@ -51,6 +51,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewLeadDetails(NewLeadDetailsViewModel model)
         {
             this.ShowBackButton("ManageLeads");
