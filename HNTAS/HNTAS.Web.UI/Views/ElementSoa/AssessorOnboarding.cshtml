@@ -34,34 +34,54 @@
 
 @section Scripts {
     <script>
+        // Debounce function to delay API calls
+        function debounce(func, delay) {
+            let timeoutId;
+            return function (...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
         // Wait for the window to fully load the module
         window.addEventListener('load', function () {
             if (window.accessibleAutocomplete) {
+                // Create debounced search function
+                const debouncedSearch = debounce(function (query, populateResults) {
+                    // Check minimum character length
+                    if (!query || query.length < 3) {
+                        populateResults([]);
+                        return;
+                    }
+
+                    fetch('@Url.Action("SearchAssessor", "ElementSoa")?q=' + encodeURIComponent(query))
+                        .then(res => res.json())
+                        .then(data => {
+                            populateResults(data);
+                        })
+                        .catch(err => {
+                            console.error('Error searching assessors:', err);
+                            populateResults([]);
+                        });
+                }, 300); // 300ms delay after user stops typing
+
                 window.accessibleAutocomplete({
                     element: document.querySelector('#assessor-autocomplete-container'),
                     id: 'assessor-autocomplete',
                     defaultValue: '@defaultVal',
-                    source: function (query, populateResults) {
-                        fetch('@Url.Action("SearchAssessor", "ElementSoa")?q=' + encodeURIComponent(query))
-                            .then(res => res.json())
-                            .then(data => {
-                                // Pass the full objects to populateResults
-                                populateResults(data);
-                            });
-                    },
-                    // Tell the component how to display your object
+                    minLength: 3, // Minimum characters before showing dropdown
+                    source: debouncedSearch,
                     templates: {
                         inputValue: function (result) {
-                            return result && result.firstName + ' ' + result.lastName + ' (' + result.emailId + ')'; // Value shown in the input box after selection
+                            return result && result.firstName + ' ' + result.lastName + ' (' + result.emailId + ')';
                         },
                         suggestion: function (result) {
-                            return result && result.firstName + ' ' + result.lastName + ' (' + result.emailId + ')'; // Value shown in the dropdown list
+                            return result && result.firstName + ' ' + result.lastName + ' (' + result.emailId + ')';
                         }
                     },
                     onConfirm: function (selected) {
                         if (selected) {
-                            console.log("Selected Assessor ID:", selected);  
-                            // Optionally set a hidden field with the ID
+                            console.log("Selected Assessor ID:", selected);
                             document.querySelector('#selected-assessor-firstName').value = selected.firstName;
                             document.querySelector('#selected-assessor-lastName').value = selected.lastName;
                             document.querySelector('#selected-assessor-emailId').value = selected.emailId;

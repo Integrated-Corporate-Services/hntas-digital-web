@@ -1,0 +1,96 @@
+﻿@using HNTAS.Web.UI.Models.ElementSoa
+﻿@using HNTAS.Web.UI.Models.NetworkElements
+@model AssessorElementSelectionOverviewModel
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <form asp-action="NetworkElementsOverViewAsync" method="post">
+                @Html.AntiForgeryToken()
+                <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+                <h1 class="govuk-heading-l">
+                    Check your answers
+                </h1>
+
+                <div aria-labelledby="personal-details-heading">
+                    <h2 class="govuk-heading-m">Personal details</h2>
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                First name
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.AssessorDetails.FirstName
+                            </dd>
+                        </div>
+
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Last name
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.AssessorDetails.LastName
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <div aria-labelledby="contact-details-heading">
+                    <h2 class="govuk-heading-m">Contact details</h2>
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Email address
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.AssessorDetails.Email
+                            </dd>
+                        </div>                        
+                    </dl>
+                </div>
+
+                <div aria-labelledby="heat-network-elements-heading">
+                    <h2 class="govuk-heading-m">Heat network details</h2>
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Phase (Stage)
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.HeatNetworkPhase (@Model.HeatNetworkStage)
+                            </dd>
+                        </div>
+
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Elements assigned
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                <ul class="govuk-list">
+                                    @foreach (var element in Model.AssessorSelectedElements.SelectedElementLabel!)
+                                    {
+                                        <li>@element</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Assessment step
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.AssessorAssessment.SelectedAssessmentOption
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+                
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+        </div>
+        
+    </div>
+</div>
