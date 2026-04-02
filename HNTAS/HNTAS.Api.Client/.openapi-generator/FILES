@@ -122,16 +122,8 @@ docs/models/UserStatus.md
 docs/models/ValidationProblemDetails.md
 docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
-src/HNTAS.Api.Client.Test/Api/ArmsApiTests.cs
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/ElementTypeTests.cs
-src/HNTAS.Api.Client.Test/Model/KpiMetadataTests.cs
-src/HNTAS.Api.Client.Test/Model/KpiSubmissionRequestTests.cs
-src/HNTAS.Api.Client.Test/Model/KpiValueAggregatedTests.cs
-src/HNTAS.Api.Client.Test/Model/KpiValueTests.cs
-src/HNTAS.Api.Client.Test/Model/NetworkElementTests.cs
-src/HNTAS.Api.Client.Test/Model/ValidationProblemDetailsTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/AssessorApi.cs
