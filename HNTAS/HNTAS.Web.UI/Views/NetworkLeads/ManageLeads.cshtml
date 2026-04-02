@@ -18,15 +18,9 @@
                 <table class="govuk-table moj-sortable-table" data-module="moj-sortable-table">
                     <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header">
-                                <span type="button" class="govuk-table__sort-button" aria-sort="none">Name</span>
-                            </th>
-                            <th scope="col" class="govuk-table__header">
-                                <button type="button" class="govuk-table__sort-button" aria-sort="none">Email</button>
-                            </th>
-                            <th scope="col" class="govuk-table__header">
-                                <button type="button" class="govuk-table__sort-button" aria-sort="none">Status</button>
-                            </th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Email</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Status</th>                            
                         </tr>
                     </thead>
                     <tbody class="govuk-table__body">
@@ -34,7 +28,7 @@
                     {
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell">@networkLead.Name</td>
-                            <td class="govuk-table__cell">@networkLead.EmailAddress</td>                            
+                            <td class="govuk-table__cell">@networkLead.EmailAddress</td>        
                             <td class="govuk-table__cell">
                                 <strong class="govuk-tag @GovUkTagHelper.GetTagClass(networkLead.Status)">@networkLead.Status</strong>
                             </td>
