@@ -7,9 +7,11 @@
     ViewData["Title"] = "User Account";
     var disabled = Model.HasHeatNetworks ? "" : "dashboard-card--disabled";
     var userIsRP = Model.UserRole == UserRole.ResponsiblePerson.ToString();
+    var userIsActingRP = Model.UserRole == UserRole.Coordinator.ToString();
     var userIsAssessor = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Assessor.ToString();
     var userIsCertifier = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Certifier.ToString();
-    var userIsActingRP = Model.UserRole == UserRole.Coordinator.ToString();
+    var userIsContributor = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Contributor.ToString();
+    var userIsDesignatedDutyHolder = Model.UserRole == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString();
     var RPLoggedInForFirstTime = ViewBag.RPLoggedInForFirstTime;
     var showCarbonCalculator = userIsRP || userIsActingRP || userIsAssessor || userIsCertifier && !RPLoggedInForFirstTime;
 }
@@ -68,19 +70,10 @@
                 </h3>
                 <p class="govuk-body-s">View your details.</p>
             </div>
-        </div>        
+        </div>  
 
-        @if (userIsRP && RPLoggedInForFirstTime)
-        {
-            <div class="govuk-button-group">
-                <p class="govuk-body">
-                    <a href="@Url.Action("HeatNetworks","UserManagement")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
-                        Add a heat network
-                    </a> or <a class="govuk-link" href="@Url.Action("", "")">Authorise someone to manage heat networks</a>
-                </p>
-            </div>
-        }
-        else if (userIsRP || userIsActingRP)
+        
+        @if ((userIsRP && !RPLoggedInForFirstTime) || userIsActingRP)
         {
             <div class="dashboard-grid__item">
                 <div class="dashboard-card @disabled">
@@ -179,7 +172,7 @@
                 </div>
             </div>
         }
-        else
+        else if(userIsContributor || userIsDesignatedDutyHolder)
         {           
             <div class="dashboard-grid__item">
                 <div class="dashboard-card">
@@ -198,7 +191,7 @@
                     <p class="govuk-body-s">View, add or edit heat network details.</p>
                 </div>
             </div>
-            @if (Model.UserRole != UserRole.Contributor.ToString())
+            @if (userIsContributor)
             {
                 <div class="dashboard-grid__item">
                     <div class="dashboard-card @disabled">
@@ -225,4 +218,14 @@
         } *@
 
     </div>
+    @if (userIsRP && RPLoggedInForFirstTime)
+    {
+        <div class="govuk-button-group govuk-!-margin-top-9">
+            <span class="govuk-body">
+                <a href="@Url.Action("HeatNetworkDwellingsCheck", "HeatNetworkRegistration")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                    Add a heat network
+                </a> or <a class="govuk-link" href="@Url.Action("ManageLeads", "NetworkLeads")">Authorise someone to manage heat networks</a>
+            </span>
+        </div>
+    }
 </div>

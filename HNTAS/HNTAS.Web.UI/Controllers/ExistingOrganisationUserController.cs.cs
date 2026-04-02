@@ -225,7 +225,7 @@ namespace HNTAS.Web.UI.Controllers
 
                     TempData["UserName"] = $"{selectedUser?.FirstName} {selectedUser?.LastName}";
                     TempData["OrganisationName"] = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-                    TempData["AssignedRole"] = state.Data.RoleAssignmentModel?.SelectedRoleName == ContributorRole.Coordinator.ToString() ? "HNTAS Coordinator" : "Responsible Party";
+                    TempData["AssignedRole"] = state.Data.RoleAssignmentModel?.SelectedRoleName == ContributorRole.Coordinator.ToString() ? "Network Manager" : "Responsible Party";
 
                     var invitationId = await _invitationService.AddInvitedUserAsync(
                            userId,

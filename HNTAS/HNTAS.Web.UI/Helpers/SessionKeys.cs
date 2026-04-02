@@ -81,5 +81,6 @@
         public const string DeedPollViewModelSessionKey = "DeedPollViewModel";
         public const string CheckYourAnswersOrganisationModelSessionKey = "CheckYourAnswersOrganisationModel";
         public const string IsAddOrganisationDetailsRPJourneySessionKey = "IsAddOrganisationDetailsRPJourneySessionKey";
+        public const string NewLeadDetailsViewModelSessionKey = "NewLeadDetailsViewModelSessionKey";
     }
 }
