@@ -79,7 +79,7 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, user.Organisation.OrgId);
             }
-
+            
 
             var dashboardModel = new DashboardModel
             {
@@ -88,9 +88,16 @@ namespace HNTAS.Web.UI.Controllers
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
                 HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any()
             };
-
+            var managedUsers = await _userService.GetManagedUsers(user.Id);
+            if(dashboardModel.IsResponsiblePerson && managedUsers.Count <= 1 && !dashboardModel.HasHeatNetworks)
+            {
+                ViewBag.RPLoggedInForFirstTime = true;
+            }
+            else
+            {
+                ViewBag.RPLoggedInForFirstTime = false;
+            }                
             return View(dashboardModel);
-
         }
 
         [HttpGet]
