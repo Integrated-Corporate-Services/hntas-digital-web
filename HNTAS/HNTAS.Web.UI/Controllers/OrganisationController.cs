@@ -62,6 +62,12 @@ namespace HNTAS.Web.UI.Controllers
 
             // 3. Get the user's current roles from the database
             var userId = User.FindFirstValue("sub");
+            var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
+
+            if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                userId = User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+            }
             var userRoles = _roleService.GetRolesAsync(userId).GetAwaiter().GetResult();
             var actionName = context.RouteData.Values["action"]?.ToString();
             if (actionName == "Confirmation")
