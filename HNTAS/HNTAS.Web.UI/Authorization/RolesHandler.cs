@@ -17,6 +17,12 @@ namespace HNTAS.Web.UI.Authorization
           RolesRequirement requirement)
         {
             var oneloginId = context.User.FindFirstValue("sub");
+            var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
+
+            if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                oneloginId = context.User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+            }
 
             if (oneloginId == null) return;
 
