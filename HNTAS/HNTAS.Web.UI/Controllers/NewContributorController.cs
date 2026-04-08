@@ -242,14 +242,14 @@ namespace HNTAS.Web.UI.Controllers
             {
                 _logger.LogError("No contributor roles found in API.");
                 TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later.";
-                return View("Contributors/ChooseRole", model);
+                return View("Contributor/ChooseRole", model);
             }
             model.Roles = roles;
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("ChooseRole");
                 ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-                return View("Contributors/ChooseRole", model);
+                return View("Contributor/ChooseRole", model);
             }
 
             model.SelectedRoleName = model.Roles
