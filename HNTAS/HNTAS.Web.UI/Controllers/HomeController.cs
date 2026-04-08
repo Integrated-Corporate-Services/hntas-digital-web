@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Services.Core;
@@ -29,13 +30,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var email = User.FindFirstValue("email");
-        var oneLoginId = User.FindFirstValue("sub");
-        var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
-
-        if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
-        {
-            oneLoginId = User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
-        }
+        var oneLoginId = User.GetOneLoginId(_logger);
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
         {
