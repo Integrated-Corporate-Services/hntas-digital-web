@@ -115,6 +115,10 @@ namespace HNTAS.Web.UI.Controllers
                         await _invitationService.RejectInvitationAsync(invitationId);
                         _logger.LogInformation("Invitation ID {InvitationId} declined.", invitationId);
                         //clear session
+                        _sessionHelper.ClearFromSession(HttpContext, SessionKeys.InvitedTokenEmail);
+                        _sessionHelper.ClearFromSession(HttpContext, SessionKeys.InvitationId);
+                        _sessionHelper.ClearFromSession(HttpContext, SessionKeys.InvitedInviterUserId);
+                        _sessionHelper.ClearFromSession(HttpContext, SessionKeys.InvitedInviterUserOrgId);
                         _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
                         return RedirectToAction("YouHaveDeclined", "Contributor");
                     }

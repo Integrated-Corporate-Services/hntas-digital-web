@@ -61,8 +61,8 @@ namespace HNTAS.Web.UI.Controllers
             bool isActiveJourney = isEdit || isAddNonRP || isAddRP;
 
             // 3. Get the user's current roles from the database
-            var userId = User.FindFirstValue("sub");
-            var userRoles = _roleService.GetRolesAsync(userId).GetAwaiter().GetResult();
+            var userId = User.GetOneLoginId(_logger);
+            var userRoles = _roleService.GetRolesAsync(userId!).GetAwaiter().GetResult();
             var actionName = context.RouteData.Values["action"]?.ToString();
             if (actionName == "Confirmation")
             {
@@ -605,9 +605,9 @@ namespace HNTAS.Web.UI.Controllers
 
             _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
             _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
-
+            var oneloginId = User.GetOneLoginId(_logger);
             //Clear the role cache to ensure any new roles are picked up on their next request
-            _roleService.ClearRoleCache(User.FindFirstValue("sub"));
+            _roleService.ClearRoleCache(oneloginId!);
 
             return RedirectToAction("Confirmation");
         }
