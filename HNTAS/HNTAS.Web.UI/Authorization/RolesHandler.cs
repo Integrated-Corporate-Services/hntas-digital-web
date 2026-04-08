@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using HNTAS.Web.UI.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace HNTAS.Web.UI.Authorization
@@ -6,17 +7,19 @@ namespace HNTAS.Web.UI.Authorization
     public class RolesHandler : AuthorizationHandler<RolesRequirement>
     {
         private readonly IRoleService _roleService;
+        private readonly ILogger<RolesHandler> _logger;
 
-        public RolesHandler(IRoleService roleService)
+        public RolesHandler(IRoleService roleService, ILogger<RolesHandler> logger)
         {
             _roleService = roleService;
+            _logger = logger;
         }
 
         protected override async Task HandleRequirementAsync(
           AuthorizationHandlerContext context,
           RolesRequirement requirement)
         {
-            var oneloginId = context.User.FindFirstValue("sub");
+            var oneloginId = context.User.GetOneLoginId(_logger);
 
             if (oneloginId == null) return;
 
