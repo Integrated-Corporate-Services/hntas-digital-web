@@ -1,4 +1,5 @@
-﻿using HNTAS.Api.Client.Model;
+﻿using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models.ElementSoa;
@@ -16,19 +17,22 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ISoaService _soaProjectService;
         private readonly IHeatNetworkService _heatNetworkService;
         private readonly IUserService _userService;
+        private readonly IAssessorApi _assessorApi;
         private readonly ILogger<ElementSoaController> _logger;
 
         public ElementSoaController(ISessionHelper sessionHelper,
             ISoaService soaProjectService,
             ILogger<ElementSoaController> logger,
             IHeatNetworkService heatNetworkService,
-            IUserService userService)
+            IUserService userService,
+            IAssessorApi assessorApi)
         {
             _sessionHelper = sessionHelper;
             _soaProjectService = soaProjectService;
             _logger = logger;
             _heatNetworkService = heatNetworkService;
             _userService = userService;
+            _assessorApi = assessorApi;
         }
 
         [HttpGet]
@@ -175,8 +179,9 @@ namespace HNTAS.Web.UI.Controllers
                     return Json(new List<string>());
                 }
 
-                var results = await _userService.GetActiveAssessors(q);
-                return Json(results);
+                //var results = await _userService.GetActiveAssessors(q);
+                var results = await _assessorApi.ApiAssessorSearchGetAsync(q);
+                return Json(results.Ok());
             }
             catch (Exception ex)
             {

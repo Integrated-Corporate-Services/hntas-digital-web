@@ -73,10 +73,10 @@
                     source: debouncedSearch,
                     templates: {
                         inputValue: function (result) {
-                            return result && result.firstName + ' ' + result.lastName + ' (' + result.emailId + ')';
+                            return result && result.firstName + ' ' + result.lastName + ' (' + result.email + ')';
                         },
                         suggestion: function (result) {
-                            return result && result.firstName + ' ' + result.lastName + ' (' + result.emailId + ')';
+                            return result && result.firstName + ' ' + result.lastName + ' (' + result.email + ')';
                         }
                     },
                     onConfirm: function (selected) {
@@ -84,7 +84,7 @@
                             console.log("Selected Assessor ID:", selected);
                             document.querySelector('#selected-assessor-firstName').value = selected.firstName;
                             document.querySelector('#selected-assessor-lastName').value = selected.lastName;
-                            document.querySelector('#selected-assessor-emailId').value = selected.emailId;
+                            document.querySelector('#selected-assessor-emailId').value = selected.email;
                         }
                     }
                 });
