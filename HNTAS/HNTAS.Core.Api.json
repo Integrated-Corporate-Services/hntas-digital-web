@@ -3631,6 +3631,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "networkManagersOnly",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -5484,12 +5492,12 @@
       },
       "NetworkElement": {
         "required": [
-          "element_id",
+          "elementId",
           "type"
         ],
         "type": "object",
         "properties": {
-          "element_id": {
+          "elementId": {
             "type": "string"
           },
           "type": {

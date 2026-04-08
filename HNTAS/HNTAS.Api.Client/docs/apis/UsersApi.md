@@ -418,7 +418,7 @@ No authorization required
 
 <a id="apiusersmanagedusersget"></a>
 # **ApiUsersManagedUsersGet**
-> List&lt;ManagedUserResponse&gt; ApiUsersManagedUsersGet (string userId = null)
+> List&lt;ManagedUserResponse&gt; ApiUsersManagedUsersGet (string userId = null, bool networkManagersOnly = null)
 
 
 
@@ -428,6 +428,7 @@ No authorization required
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | **userId** | **string** |  | [optional]  |
+| **networkManagersOnly** | **bool** |  | [optional] [default to false] |
 
 ### Return type
 

@@ -16,7 +16,7 @@ namespace HNTAS.Web.UI.Services.Core
         Task<List<EnumItemResponse>> GetContributorRolesAsync();
         Task<List<EnumItemResponse>> GetUserRolesAsync();
         Task<UserDetailsResponse> GetUserDetails(string userId);
-        Task<List<ManagedUserResponse>> GetManagedUsers(string userId);
+        Task<List<ManagedUserResponse>> GetManagedUsers(string userId, bool networkManagersOnly = false);
         Task<string?> AcceptUserInvitation(InvitedUserRequest userRequest);
         Task<List<UserResponse>> GetRegisteredUsersAsync(string rpUserId);
         Task<bool?> IsRpUserAsync(string emailId);

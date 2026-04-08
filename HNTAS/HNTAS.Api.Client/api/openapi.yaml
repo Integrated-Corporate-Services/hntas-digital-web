@@ -2286,6 +2286,14 @@ paths:
         schema:
           type: string
         style: form
+      - explode: true
+        in: query
+        name: networkManagersOnly
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
       responses:
         "200":
           content:
@@ -4594,14 +4602,14 @@ components:
       additionalProperties: false
       example:
         elements:
-        - element_id: element_id
+        - elementId: elementId
           type: EnergyCentre
           kpis:
             key:
               is_kpi_imputed: true
               value: 6.027456183070403
               kpi_imputation_details: kpi_imputation_details
-        - element_id: element_id
+        - elementId: elementId
           type: EnergyCentre
           kpis:
             key:
@@ -4825,7 +4833,7 @@ components:
     NetworkElement:
       additionalProperties: false
       example:
-        element_id: element_id
+        elementId: elementId
         type: EnergyCentre
         kpis:
           key:
@@ -4833,7 +4841,7 @@ components:
             value: 6.027456183070403
             kpi_imputation_details: kpi_imputation_details
       properties:
-        element_id:
+        elementId:
           type: string
         type:
           $ref: "#/components/schemas/ElementType"
@@ -4842,7 +4850,7 @@ components:
             $ref: "#/components/schemas/KpiValue"
           type: object
       required:
-      - element_id
+      - elementId
       - type
       type: object
     NetworkElements:

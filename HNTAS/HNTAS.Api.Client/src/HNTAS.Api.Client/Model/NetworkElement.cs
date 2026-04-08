@@ -56,7 +56,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets ElementId
         /// </summary>
-        [JsonPropertyName("element_id")]
+        [JsonPropertyName("elementId")]
         public string ElementId { get; set; }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "element_id":
+                        case "elementId":
                             elementId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "type":
@@ -204,7 +204,7 @@ namespace HNTAS.Api.Client.Model
             if (networkElement.KpisOption.IsSet && networkElement.Kpis == null)
                 throw new ArgumentNullException(nameof(networkElement.Kpis), "Property is required for class NetworkElement.");
 
-            writer.WriteString("element_id", networkElement.ElementId);
+            writer.WriteString("elementId", networkElement.ElementId);
 
             var typeRawValue = ElementTypeValueConverter.ToJsonValue(networkElement.Type);
             writer.WriteString("type", typeRawValue);

@@ -255,7 +255,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<List<ManagedUserResponse>> GetManagedUsers(string userId)
+        public async Task<List<ManagedUserResponse>> GetManagedUsers(string userId, bool networkManagersOnly = false)
         {
             _logger.LogInformation("Getting managed users for user ID: {UserId}", userId);
             if (string.IsNullOrWhiteSpace(userId))
@@ -265,7 +265,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
             try
             {
-                var users = await _usersApi.ApiUsersManagedUsersGetAsync(userId);
+                var users = await _usersApi.ApiUsersManagedUsersGetAsync(userId, networkManagersOnly);
                 if (users.IsOk)
                 {
                     return users.Ok();
