@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using HNTAS.Web.UI.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace HNTAS.Web.UI.Authorization
@@ -18,14 +19,7 @@ namespace HNTAS.Web.UI.Authorization
           AuthorizationHandlerContext context,
           RolesRequirement requirement)
         {
-            var oneloginId = context.User.FindFirstValue("sub");
-            var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
-
-            if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
-            {
-                oneloginId = context.User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
-                _logger.LogInformation("Using GovUK Simulator. Extracted oneloginId from 'nameidentifier' claim: {OneLoginId}", oneloginId);
-            }
+            var oneloginId = context.User.GetOneLoginId(_logger);
 
             if (oneloginId == null) return;
 
