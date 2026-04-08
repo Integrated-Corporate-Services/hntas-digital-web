@@ -1,0 +1,83 @@
+﻿@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Models.NetworkLeads
+@model NewLeadDetailsViewModel
+
+@{
+    bool hasFirstNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.FirstName)) && ViewData.ModelState[nameof(Model.FirstName)].Errors.Any();
+    bool hasLastNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.LastName)) && ViewData.ModelState[nameof(Model.LastName)].Errors.Any();
+    bool hasEmailErrors = ViewData.ModelState.ContainsKey(nameof(Model.EmailId)) && ViewData.ModelState[nameof(Model.EmailId)].Errors.Any();
+    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
+    var firstNameInputComponentData = new GovUkInputModel
+    {
+        Id = nameof(Model.FirstName),
+        Name = nameof(Model.FirstName),
+        Label = "First name",
+        HasError = hasFirstNameErrors,
+        AdditionalClasses = "govuk-input--width-20",
+        ErrorMessage = hasFirstNameErrors ? ViewData.ModelState[nameof(Model.FirstName)].Errors[0].ErrorMessage : null,
+        Value = Model.FirstName
+    };
+    var lastNameInputComponentData = new GovUkInputModel
+    {
+        Id = nameof(Model.LastName),
+        Name = nameof(Model.LastName),
+        Label = "Last name",
+        HasError = hasLastNameErrors,
+        AdditionalClasses = "govuk-input--width-20",
+        ErrorMessage = hasLastNameErrors ? ViewData.ModelState[nameof(Model.LastName)].Errors[0].ErrorMessage : null,
+        Value = Model.LastName
+    };
+    var emailInputComponentData = new GovUkInputModel
+    {
+        Id = nameof(Model.EmailId),
+        Name = nameof(Model.EmailId),
+        Label = "Email",
+        HasError = hasEmailErrors,
+        AdditionalClasses = "govuk-input--width-20",
+        ErrorMessage = hasEmailErrors ? ViewData.ModelState[nameof(Model.EmailId)].Errors[0].ErrorMessage : null,
+        Value = Model.EmailId
+    };
+    var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
+    {
+        Id = nameof(Model.ConfirmedDeclaration),
+        Name = nameof(Model.ConfirmedDeclaration),
+        Label = "I understand that by adding this person, I am giving them permission to add heat networks for this organisation.",
+        HasError = hasDeclarationErrors,
+        ErrorMessage = hasDeclarationErrors ? ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors[0].ErrorMessage : null,
+        Value = Model.ConfirmedDeclaration
+    };
+}
+
+<div class="govuk-width-container">
+    <form class="form" asp-controller="NetworkLeads" asp-action="NewLeadDetails" method="post">
+        @Html.AntiForgeryToken()
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <span class="govuk-caption-l">@ViewBag.OrganisationName</span>
+                <h1 class="govuk-heading-l">Invite a network manager</h1>
+
+                <p class="govuk-body">This network manager will be able to add networks to this organisation. They can add and update network information, assign assessors and manage the network team.</p>
+                
+                <h2 class="govuk-heading-m">Their contact details</h2>
+
+                <!-- First Name -->
+                @await Html.PartialAsync("Components/_GovUkInput", firstNameInputComponentData)                
+
+                <!-- Last Name -->
+                @await Html.PartialAsync("Components/_GovUkInput", lastNameInputComponentData)
+
+                <!-- Email Add -->
+                @await Html.PartialAsync("Components/_GovUkInput", emailInputComponentData)
+
+                <!-- Declaration -->
+                @await Html.PartialAsync("Components/_ConfirmDeclaration", confirmDeclarationComponentData)
+                
+                <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
+                    Continue
+                </button>
+
+            </div>
+        </div>
+    </form>
+</div>

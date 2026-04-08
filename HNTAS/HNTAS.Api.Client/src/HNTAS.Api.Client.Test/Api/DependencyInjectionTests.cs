@@ -66,6 +66,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithAClientTest()
         {
+            var armsApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IArmsApi>();
+            Assert.True(armsApi.HttpClient.BaseAddress != null);
+
             var assessorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
@@ -109,6 +112,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void ConfigureApiWithoutAClientTest()
         {
+            var armsApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IArmsApi>();
+            Assert.True(armsApi.HttpClient.BaseAddress != null);
+
             var assessorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
@@ -152,6 +158,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithAClientTest()
         {
+            var armsApi = _hostUsingAddWithAClient.Services.GetRequiredService<IArmsApi>();
+            Assert.True(armsApi.HttpClient.BaseAddress != null);
+            
             var assessorApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
             
@@ -195,6 +204,9 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact]
         public void AddApiWithoutAClientTest()
         {
+            var armsApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IArmsApi>();
+            Assert.True(armsApi.HttpClient.BaseAddress != null);
+
             var assessorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 

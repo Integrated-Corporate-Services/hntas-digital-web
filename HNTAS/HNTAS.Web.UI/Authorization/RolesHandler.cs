@@ -6,10 +6,12 @@ namespace HNTAS.Web.UI.Authorization
     public class RolesHandler : AuthorizationHandler<RolesRequirement>
     {
         private readonly IRoleService _roleService;
+        private readonly ILogger<RolesHandler> _logger;
 
-        public RolesHandler(IRoleService roleService)
+        public RolesHandler(IRoleService roleService, ILogger<RolesHandler> logger)
         {
             _roleService = roleService;
+            _logger = logger;
         }
 
         protected override async Task HandleRequirementAsync(
@@ -17,6 +19,13 @@ namespace HNTAS.Web.UI.Authorization
           RolesRequirement requirement)
         {
             var oneloginId = context.User.FindFirstValue("sub");
+            var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
+
+            if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                oneloginId = context.User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+                _logger.LogInformation("Using GovUK Simulator. Extracted oneloginId from 'nameidentifier' claim: {OneLoginId}", oneloginId);
+            }
 
             if (oneloginId == null) return;
 
