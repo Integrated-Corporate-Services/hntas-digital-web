@@ -525,7 +525,7 @@ namespace HNTAS.Web.UI.Controllers
                 return RedirectToAction("UserAccount", "Dashboard");
             }
 
-            var model = _sessionHelper.GetFromSession<CheckYourAnswersHeatNetworkModel>(HttpContext, SessionKeys.CheckYourAnswersHeatNetworkModelKey) ?? new CheckYourAnswersHeatNetworkModel
+            var model = new CheckYourAnswersHeatNetworkModel
             {
                 HeatNetworkNameModel = heatNetworkNameModel,
                 HeatNetworkAddressModel = heatNetworkLocationModel?.HNAddressByStreet ?? null,
