@@ -314,6 +314,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var selectedContributorRole = (ContributorRole)Convert.ToInt32(state.Data.ChooseRoleModel.SelectedRoleId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
 
             try
             {
@@ -325,6 +326,7 @@ namespace HNTAS.Web.UI.Controllers
                            lastName: state.Data.ContributorContactDetailsModel.LastName,
                            hnId: state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId,
                            contributorRoles: new List<ContributorRole> { selectedContributorRole },
+                           orgId: orgId,
                            replacedUserId: state.Data.ReplaceUserRoleViewModel != null ? state.Data.ReplaceUserRoleViewModel.CurrentRoleUserId : null,
                            rolesToReplace: new List<ContributorRole> { selectedContributorRole },
                            status: InvitationStatus.Invited
