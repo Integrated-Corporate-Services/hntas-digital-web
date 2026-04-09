@@ -96,11 +96,35 @@
                         }
                     },
                     onConfirm: function (selected) {
-                        if (selected) {
+                        if (selected && typeof selected === 'object') {
                             console.log("Selected Assessor ID:", selected);
                             document.querySelector('#selected-assessor-firstName').value = selected.firstName;
                             document.querySelector('#selected-assessor-lastName').value = selected.lastName;
                             document.querySelector('#selected-assessor-emailId').value = selected.email;
+                        }
+                    }
+                });
+
+                // Handle form submission to capture typed value
+                document.querySelector('form').addEventListener('submit', function (e) {
+                    const firstName = document.querySelector('#selected-assessor-firstName').value;
+
+                    // If no selection was made (hidden fields are empty)
+                    if (!firstName) {
+                        const inputValue = document.querySelector('#assessor-autocomplete').value;
+
+                        if (inputValue) {
+                            // Try to parse the format: "FirstName LastName (email@example.com)"
+                            const match = inputValue.match(/^(.+?)\s+(.+?)\s+\((.+?)\)$/);
+
+                            if (match) {
+                                document.querySelector('#selected-assessor-firstName').value = match[1].trim();
+                                document.querySelector('#selected-assessor-lastName').value = match[2].trim();
+                                document.querySelector('#selected-assessor-emailId').value = match[3].trim();
+                            } else {
+                                // If format doesn't match, store the whole value in firstName
+                                document.querySelector('#selected-assessor-firstName').value = inputValue;
+                            }
                         }
                     }
                 });
