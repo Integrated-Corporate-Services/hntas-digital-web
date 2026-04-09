@@ -40,6 +40,37 @@
                     </div>
                 </fieldset>
             </div>
+
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Help with assessment steps
+                    </span>
+                </summary>                
+                <div class="govuk-details__text">
+
+                    <p>The assessment has three steps: <strong>execute</strong>, <strong>review</strong> and <strong>decision</strong>.</p>
+
+                    <p>The same person cannot carry out the execution and review steps, or the execution and decision steps.</p>
+
+                    <h3 class="govuk-heading-s govuk-!-margin-top-4">Execute</h3>
+                    <p>Execute is the first step. The assessor carries out the initial assessment by reviewing the information and evidence provided for the heat network element and recording their findings.</p>
+                    <p>The outcome is passed to the review stage.</p>
+
+                    <h3 class="govuk-heading-s govuk-!-margin-top-4">Review</h3>
+                    <p>Review checks that the execution assessment was completed correctly.</p>
+                    <p>The reviewer checks the work carried out during the execution step and confirms that:</p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>the assessment was carried out properly</li>
+                        <li>the evidence supports the findings</li>
+                    </ul>
+                    <p>The outcome is passed to the decision stage.</p>
+
+                    <h3 class="govuk-heading-s govuk-!-margin-top-4">Decision</h3>
+                    <p>Decision is the final step. The decision maker reviews the outcomes of the earlier steps and makes the final decision on the assessment outcome.</p>
+
+                </div>
+            </details>
             @* @Html.HiddenFor(m => m.SoaStatus)
             @Html.HiddenFor(m => m.ElementId) *@
             <button type="submit" class="govuk-button">Continue</button>

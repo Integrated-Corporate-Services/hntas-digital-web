@@ -2433,6 +2433,78 @@
         }
       }
     },
+    "/api/SOA/soa-assign-assessor": {
+      "patch": {
+        "tags": [
+          "SOA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaAssignAssessorRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaAssignAssessorRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaAssignAssessorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/SOA/{hnId}": {
       "delete": {
         "tags": [
@@ -4067,6 +4139,15 @@
           },
           "fullName": {
             "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
           }
         }
       },
@@ -4576,6 +4657,35 @@
               "$ref": "#/components/schemas/SoaStages"
             },
             "nullable": true
+          }
+        }
+      },
+      "ElementSoaAssignAssessorRequest": {
+        "type": "object",
+        "properties": {
+          "elementIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assessorEmail": {
+            "type": "string"
+          },
+          "assessorFirstName": {
+            "type": "string"
+          },
+          "assessorLastName": {
+            "type": "string"
+          },
+          "assessment": {
+            "type": "string"
+          },
+          "hnId": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
           }
         }
       },
@@ -6019,6 +6129,27 @@
           }
         }
       },
+      "SoaAssessor": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "assessment": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/UserStatus"
+          }
+        },
+        "nullable": true
+      },
       "SoaJourneyData": {
         "type": "object",
         "properties": {
@@ -6129,6 +6260,9 @@
           "soaStatusUpdatedBy": {
             "type": "string",
             "nullable": true
+          },
+          "assessor": {
+            "$ref": "#/components/schemas/SoaAssessor"
           }
         }
       },

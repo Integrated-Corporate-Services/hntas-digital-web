@@ -34,5 +34,6 @@ namespace HNTAS.Web.UI.Models.NetworkElements
     {
         public string Label { get; set; } = null!;
         public string ElementId { get; set; } = null!;
+        public string AssignedAssessorName { get; set; } = null!;
     }
 }

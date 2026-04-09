@@ -1,6 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "Who is the assessor for the energy centre?";
-    var defaultVal = "Sandeep Saini (sandeep_assessor@mailinator.com)";
+    ViewData["Title"] = "Who is the assessor for the energy centre?";    
+    var defaultVal = @ViewBag.SelectedAssessor;
 }
 
 <div class="govuk-width-container">
@@ -73,10 +73,26 @@
                     source: debouncedSearch,
                     templates: {
                         inputValue: function (result) {
-                            return result && result.firstName + ' ' + result.lastName + ' (' + result.email + ')';
+                            // Handle string values (like defaultValue)
+                            if (typeof result === 'string') {
+                                return result;
+                            }
+                            // Handle object values from API
+                            return result && result.firstName
+                                ? result.firstName + ' ' + result.lastName + ' (' + result.email + ')'
+                                : '';
                         },
                         suggestion: function (result) {
-                            return result && result.firstName + ' ' + result.lastName + ' (' + result.email + ')';
+                            // Don't show string values in dropdown
+                            if (typeof result === 'string') {
+                                return '@defaultVal';
+                            }
+                            // Only show object results from API
+                            if (result && result.firstName) {
+                                console.log("suggestion:", result.firstName);
+                                return result.firstName + ' ' + result.lastName + ' (' + result.email + ')';
+                            }
+                            return '';
                         }
                     },
                     onConfirm: function (selected) {

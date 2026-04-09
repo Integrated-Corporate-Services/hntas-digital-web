@@ -26,56 +26,43 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// AssessorSearchResult
+    /// SoaAssessor
     /// </summary>
-    public partial class AssessorSearchResult : IValidatableObject
+    public partial class SoaAssessor : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssessorSearchResult" /> class.
+        /// Initializes a new instance of the <see cref="SoaAssessor" /> class.
         /// </summary>
-        /// <param name="id">id</param>
-        /// <param name="fullName">fullName</param>
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
         /// <param name="email">email</param>
+        /// <param name="assessment">assessment</param>
+        /// <param name="status">status</param>
         [JsonConstructor]
-        public AssessorSearchResult(Option<string?> id = default, Option<string?> fullName = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> email = default)
+        public SoaAssessor(Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> email = default, Option<string?> assessment = default, Option<UserStatus?> status = default)
         {
-            IdOption = id;
-            FullNameOption = fullName;
             FirstNameOption = firstName;
             LastNameOption = lastName;
             EmailOption = email;
+            AssessmentOption = assessment;
+            StatusOption = status;
             OnCreated();
         }
 
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of Id
+        /// Used to track the state of Status
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> IdOption { get; private set; }
+        public Option<UserStatus?> StatusOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Id
+        /// Gets or Sets Status
         /// </summary>
-        [JsonPropertyName("id")]
-        public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of FullName
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> FullNameOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets FullName
-        /// </summary>
-        [JsonPropertyName("fullName")]
-        public string? FullName { get { return this.FullNameOption; } set { this.FullNameOption = new(value); } }
+        [JsonPropertyName("status")]
+        public UserStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of FirstName
@@ -117,18 +104,31 @@ namespace HNTAS.Api.Client.Model
         public string? Email { get { return this.EmailOption; } set { this.EmailOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Assessment
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> AssessmentOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Assessment
+        /// </summary>
+        [JsonPropertyName("assessment")]
+        public string? Assessment { get { return this.AssessmentOption; } set { this.AssessmentOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class AssessorSearchResult {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  FullName: ").Append(FullName).Append("\n");
+            sb.Append("class SoaAssessor {\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
             sb.Append("  Email: ").Append(Email).Append("\n");
+            sb.Append("  Assessment: ").Append(Assessment).Append("\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -145,19 +145,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="AssessorSearchResult" />
+    /// A Json converter for type <see cref="SoaAssessor" />
     /// </summary>
-    public class AssessorSearchResultJsonConverter : JsonConverter<AssessorSearchResult>
+    public class SoaAssessorJsonConverter : JsonConverter<SoaAssessor>
     {
         /// <summary>
-        /// Deserializes json to <see cref="AssessorSearchResult" />
+        /// Deserializes json to <see cref="SoaAssessor" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override AssessorSearchResult Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override SoaAssessor Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -166,11 +166,11 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> id = default;
-            Option<string?> fullName = default;
             Option<string?> firstName = default;
             Option<string?> lastName = default;
             Option<string?> email = default;
+            Option<string?> assessment = default;
+            Option<UserStatus?> status = default;
 
             while (utf8JsonReader.Read())
             {
@@ -187,12 +187,6 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "id":
-                            id = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "fullName":
-                            fullName = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
                         case "firstName":
                             firstName = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
@@ -202,83 +196,91 @@ namespace HNTAS.Api.Client.Model
                         case "email":
                             email = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "assessment":
+                            assessment = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "status":
+                            string? statusRawValue = utf8JsonReader.GetString();
+                            if (statusRawValue != null)
+                                status = new Option<UserStatus?>(UserStatusValueConverter.FromStringOrDefault(statusRawValue));
+                            break;
                         default:
                             break;
                     }
                 }
             }
 
-            if (id.IsSet && id.Value == null)
-                throw new ArgumentNullException(nameof(id), "Property is not nullable for class AssessorSearchResult.");
-
-            if (fullName.IsSet && fullName.Value == null)
-                throw new ArgumentNullException(nameof(fullName), "Property is not nullable for class AssessorSearchResult.");
-
             if (firstName.IsSet && firstName.Value == null)
-                throw new ArgumentNullException(nameof(firstName), "Property is not nullable for class AssessorSearchResult.");
+                throw new ArgumentNullException(nameof(firstName), "Property is not nullable for class SoaAssessor.");
 
             if (lastName.IsSet && lastName.Value == null)
-                throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class AssessorSearchResult.");
+                throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class SoaAssessor.");
 
             if (email.IsSet && email.Value == null)
-                throw new ArgumentNullException(nameof(email), "Property is not nullable for class AssessorSearchResult.");
+                throw new ArgumentNullException(nameof(email), "Property is not nullable for class SoaAssessor.");
 
-            return new AssessorSearchResult(id, fullName, firstName, lastName, email);
+            if (assessment.IsSet && assessment.Value == null)
+                throw new ArgumentNullException(nameof(assessment), "Property is not nullable for class SoaAssessor.");
+
+            if (status.IsSet && status.Value == null)
+                throw new ArgumentNullException(nameof(status), "Property is not nullable for class SoaAssessor.");
+
+            return new SoaAssessor(firstName, lastName, email, assessment, status);
         }
 
         /// <summary>
-        /// Serializes a <see cref="AssessorSearchResult" />
+        /// Serializes a <see cref="SoaAssessor" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="assessorSearchResult"></param>
+        /// <param name="soaAssessor"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, AssessorSearchResult assessorSearchResult, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, SoaAssessor soaAssessor, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, assessorSearchResult, jsonSerializerOptions);
+            WriteProperties(writer, soaAssessor, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="AssessorSearchResult" />
+        /// Serializes the properties of <see cref="SoaAssessor" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="assessorSearchResult"></param>
+        /// <param name="soaAssessor"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, AssessorSearchResult assessorSearchResult, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, SoaAssessor soaAssessor, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (assessorSearchResult.IdOption.IsSet && assessorSearchResult.Id == null)
-                throw new ArgumentNullException(nameof(assessorSearchResult.Id), "Property is required for class AssessorSearchResult.");
+            if (soaAssessor.FirstNameOption.IsSet && soaAssessor.FirstName == null)
+                throw new ArgumentNullException(nameof(soaAssessor.FirstName), "Property is required for class SoaAssessor.");
 
-            if (assessorSearchResult.FullNameOption.IsSet && assessorSearchResult.FullName == null)
-                throw new ArgumentNullException(nameof(assessorSearchResult.FullName), "Property is required for class AssessorSearchResult.");
+            if (soaAssessor.LastNameOption.IsSet && soaAssessor.LastName == null)
+                throw new ArgumentNullException(nameof(soaAssessor.LastName), "Property is required for class SoaAssessor.");
 
-            if (assessorSearchResult.FirstNameOption.IsSet && assessorSearchResult.FirstName == null)
-                throw new ArgumentNullException(nameof(assessorSearchResult.FirstName), "Property is required for class AssessorSearchResult.");
+            if (soaAssessor.EmailOption.IsSet && soaAssessor.Email == null)
+                throw new ArgumentNullException(nameof(soaAssessor.Email), "Property is required for class SoaAssessor.");
 
-            if (assessorSearchResult.LastNameOption.IsSet && assessorSearchResult.LastName == null)
-                throw new ArgumentNullException(nameof(assessorSearchResult.LastName), "Property is required for class AssessorSearchResult.");
+            if (soaAssessor.AssessmentOption.IsSet && soaAssessor.Assessment == null)
+                throw new ArgumentNullException(nameof(soaAssessor.Assessment), "Property is required for class SoaAssessor.");
 
-            if (assessorSearchResult.EmailOption.IsSet && assessorSearchResult.Email == null)
-                throw new ArgumentNullException(nameof(assessorSearchResult.Email), "Property is required for class AssessorSearchResult.");
+            if (soaAssessor.FirstNameOption.IsSet)
+                writer.WriteString("firstName", soaAssessor.FirstName);
 
-            if (assessorSearchResult.IdOption.IsSet)
-                writer.WriteString("id", assessorSearchResult.Id);
+            if (soaAssessor.LastNameOption.IsSet)
+                writer.WriteString("lastName", soaAssessor.LastName);
 
-            if (assessorSearchResult.FullNameOption.IsSet)
-                writer.WriteString("fullName", assessorSearchResult.FullName);
+            if (soaAssessor.EmailOption.IsSet)
+                writer.WriteString("email", soaAssessor.Email);
 
-            if (assessorSearchResult.FirstNameOption.IsSet)
-                writer.WriteString("firstName", assessorSearchResult.FirstName);
+            if (soaAssessor.AssessmentOption.IsSet)
+                writer.WriteString("assessment", soaAssessor.Assessment);
 
-            if (assessorSearchResult.LastNameOption.IsSet)
-                writer.WriteString("lastName", assessorSearchResult.LastName);
-
-            if (assessorSearchResult.EmailOption.IsSet)
-                writer.WriteString("email", assessorSearchResult.Email);
+            if (soaAssessor.StatusOption.IsSet)
+            {
+                var statusRawValue = UserStatusValueConverter.ToJsonValue(soaAssessor.Status!.Value);
+                writer.WriteString("status", statusRawValue);
+            }
         }
     }
 }

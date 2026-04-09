@@ -86,5 +86,6 @@
         public const string AssessorAssessmentSelectionViewModelSessionKey = "AssessorAssessmentSelectionViewModelSessionKey";
         public const string AssessorDetailsSessionKey = "AssessorDetailsSessionKey";
         public const string NewLeadDetailsViewModelSessionKey = "NewLeadDetailsViewModelSessionKey";
+        public const string AssessorElementSelectionOverviewModelSessionKey = "AssessorElementSelectionOverviewModelSessionKey";
     }
 }
