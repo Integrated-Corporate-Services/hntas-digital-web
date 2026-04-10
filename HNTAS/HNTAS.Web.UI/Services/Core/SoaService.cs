@@ -297,8 +297,8 @@ namespace HNTAS.Web.UI.Services.Core
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex, "Exception during soa status update for status: {SoaStatus} HN ID: {HnId}, Element:{ElementId}, Stage: {Stage}, UpdatedBy: {UpdatedBy}",
-                //SanitizeForLogging(request.SoaStatus!), SanitizeForLogging(request.HnId), SanitizeForLogging(request.ElementId!), request.Stage, SanitizeForLogging(request.SoaStatusUpdatedBy!));
+                _logger.LogError(ex, "Exception during saving Assessor Assigned for HN ID: {HnId}, Elements: {ElementIds}, UpdatedBy: {UpdatedBy}",
+                SanitizeForLogging(request.HnId), SanitizeForLogging(string.Join(", ", request.ElementIds!)), SanitizeForLogging(request.UpdatedBy!));
                 throw;
             }
         }

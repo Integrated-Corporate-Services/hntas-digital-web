@@ -24,6 +24,7 @@
                 <input type="hidden" id="selected-assessor-firstName" name="FirstName" />
                 <input type="hidden" id="selected-assessor-lastName" name="LastName" />
                 <input type="hidden" id="selected-assessor-emailId" name="EmailId" />
+                <input type="hidden" id="asessor-from-input" name="FullNameFromInput" />
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     Continue
                 </button>
@@ -47,12 +48,7 @@
         window.addEventListener('load', function () {
             if (window.accessibleAutocomplete) {
                 // Create debounced search function
-                const debouncedSearch = debounce(function (query, populateResults) {
-                    // Check minimum character length
-                    if (!query || query.length < 3) {
-                        populateResults([]);
-                        return;
-                    }
+                const debouncedSearch = debounce(function (query, populateResults) {                    
 
                     fetch('@Url.Action("SearchAssessor", "ElementSoa")?q=' + encodeURIComponent(query))
                         .then(res => res.json())
@@ -68,8 +64,8 @@
                 window.accessibleAutocomplete({
                     element: document.querySelector('#assessor-autocomplete-container'),
                     id: 'assessor-autocomplete',
-                    defaultValue: '@defaultVal',
-                    minLength: 3, // Minimum characters before showing dropdown
+                    defaultValue: '@defaultVal', 
+                    minLength: 2,
                     source: debouncedSearch,
                     templates: {
                         inputValue: function (result) {
@@ -107,26 +103,9 @@
 
                 // Handle form submission to capture typed value
                 document.querySelector('form').addEventListener('submit', function (e) {
-                    const firstName = document.querySelector('#selected-assessor-firstName').value;
-
-                    // If no selection was made (hidden fields are empty)
-                    if (!firstName) {
-                        const inputValue = document.querySelector('#assessor-autocomplete').value;
-
-                        if (inputValue) {
-                            // Try to parse the format: "FirstName LastName (email@example.com)"
-                            const match = inputValue.match(/^(.+?)\s+(.+?)\s+\((.+?)\)$/);
-
-                            if (match) {
-                                document.querySelector('#selected-assessor-firstName').value = match[1].trim();
-                                document.querySelector('#selected-assessor-lastName').value = match[2].trim();
-                                document.querySelector('#selected-assessor-emailId').value = match[3].trim();
-                            } else {
-                                // If format doesn't match, store the whole value in firstName
-                                document.querySelector('#selected-assessor-firstName').value = inputValue;
-                            }
-                        }
-                    }
+                    
+                    const inputValue = document.querySelector('#assessor-autocomplete').value;
+                    document.querySelector('#asessor-from-input').value = inputValue;                    
                 });
             }
         });

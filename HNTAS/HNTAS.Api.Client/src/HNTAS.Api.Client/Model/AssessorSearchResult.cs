@@ -38,14 +38,16 @@ namespace HNTAS.Api.Client.Model
         /// <param name="firstName">firstName</param>
         /// <param name="lastName">lastName</param>
         /// <param name="email">email</param>
+        /// <param name="fullNameWithEmail">fullNameWithEmail</param>
         [JsonConstructor]
-        public AssessorSearchResult(Option<string?> id = default, Option<string?> fullName = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> email = default)
+        public AssessorSearchResult(Option<string?> id = default, Option<string?> fullName = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> email = default, Option<string?> fullNameWithEmail = default)
         {
             IdOption = id;
             FullNameOption = fullName;
             FirstNameOption = firstName;
             LastNameOption = lastName;
             EmailOption = email;
+            FullNameWithEmailOption = fullNameWithEmail;
             OnCreated();
         }
 
@@ -117,6 +119,19 @@ namespace HNTAS.Api.Client.Model
         public string? Email { get { return this.EmailOption; } set { this.EmailOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of FullNameWithEmail
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> FullNameWithEmailOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets FullNameWithEmail
+        /// </summary>
+        [JsonPropertyName("fullNameWithEmail")]
+        public string? FullNameWithEmail { get { return this.FullNameWithEmailOption; } set { this.FullNameWithEmailOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -129,6 +144,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
             sb.Append("  Email: ").Append(Email).Append("\n");
+            sb.Append("  FullNameWithEmail: ").Append(FullNameWithEmail).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -171,6 +187,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> firstName = default;
             Option<string?> lastName = default;
             Option<string?> email = default;
+            Option<string?> fullNameWithEmail = default;
 
             while (utf8JsonReader.Read())
             {
@@ -202,6 +219,9 @@ namespace HNTAS.Api.Client.Model
                         case "email":
                             email = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "fullNameWithEmail":
+                            fullNameWithEmail = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         default:
                             break;
                     }
@@ -223,7 +243,10 @@ namespace HNTAS.Api.Client.Model
             if (email.IsSet && email.Value == null)
                 throw new ArgumentNullException(nameof(email), "Property is not nullable for class AssessorSearchResult.");
 
-            return new AssessorSearchResult(id, fullName, firstName, lastName, email);
+            if (fullNameWithEmail.IsSet && fullNameWithEmail.Value == null)
+                throw new ArgumentNullException(nameof(fullNameWithEmail), "Property is not nullable for class AssessorSearchResult.");
+
+            return new AssessorSearchResult(id, fullName, firstName, lastName, email, fullNameWithEmail);
         }
 
         /// <summary>
@@ -265,6 +288,9 @@ namespace HNTAS.Api.Client.Model
             if (assessorSearchResult.EmailOption.IsSet && assessorSearchResult.Email == null)
                 throw new ArgumentNullException(nameof(assessorSearchResult.Email), "Property is required for class AssessorSearchResult.");
 
+            if (assessorSearchResult.FullNameWithEmailOption.IsSet && assessorSearchResult.FullNameWithEmail == null)
+                throw new ArgumentNullException(nameof(assessorSearchResult.FullNameWithEmail), "Property is required for class AssessorSearchResult.");
+
             if (assessorSearchResult.IdOption.IsSet)
                 writer.WriteString("id", assessorSearchResult.Id);
 
@@ -279,6 +305,9 @@ namespace HNTAS.Api.Client.Model
 
             if (assessorSearchResult.EmailOption.IsSet)
                 writer.WriteString("email", assessorSearchResult.Email);
+
+            if (assessorSearchResult.FullNameWithEmailOption.IsSet)
+                writer.WriteString("fullNameWithEmail", assessorSearchResult.FullNameWithEmail);
         }
     }
 }

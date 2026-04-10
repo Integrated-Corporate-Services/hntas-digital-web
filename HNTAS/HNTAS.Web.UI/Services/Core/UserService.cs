@@ -402,19 +402,6 @@ namespace HNTAS.Web.UI.Services.Core
             throw new Exception($"Failed to retrieve users by organisation ID with status code: {usersResponse.StatusCode}");
         }
 
-        public async Task<List<User>> GetActiveAssessors(string searchTerm)
-        {
-            var response = await _usersApi.ApiUsersGetActiveAssessorsSearchTermGetAsync(searchTerm);
-
-            if (response.IsOk)
-            {
-                _logger.LogInformation("Active assessors retrieved successfully for search term: {searchTerm}", searchTerm);
-                return response.Ok()!;
-            }
-            throw new Exception($"Failed to retrieve active assessors with status code: {response.StatusCode}");
-        }
-
-
         private string SanitizeForLogging(string input)
         {
             return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;

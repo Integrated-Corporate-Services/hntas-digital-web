@@ -2972,48 +2972,6 @@
         }
       }
     },
-    "/api/Users/get-active-assessors/{searchTerm}": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "parameters": [
-          {
-            "name": "searchTerm",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Users/onelogin/{oneLoginId}": {
       "get": {
         "tags": [
@@ -4147,6 +4105,9 @@
             "type": "string"
           },
           "email": {
+            "type": "string"
+          },
+          "fullNameWithEmail": {
             "type": "string"
           }
         }

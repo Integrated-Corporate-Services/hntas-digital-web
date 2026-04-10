@@ -1874,33 +1874,6 @@ paths:
           description: Not Found
       tags:
       - Users
-  /api/Users/get-active-assessors/{searchTerm}:
-    get:
-      parameters:
-      - explode: false
-        in: path
-        name: searchTerm
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/User"
-                type: array
-          description: OK
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Not Found
-      tags:
-      - Users
   /api/Users/onelogin/{oneLoginId}:
     get:
       operationId: GetUserByOneLoginId
@@ -2656,6 +2629,7 @@ components:
         lastName: lastName
         fullName: fullName
         id: id
+        fullNameWithEmail: fullNameWithEmail
         email: email
       properties:
         id:
@@ -2667,6 +2641,8 @@ components:
         lastName:
           type: string
         email:
+          type: string
+        fullNameWithEmail:
           type: string
       type: object
     AuditLog:

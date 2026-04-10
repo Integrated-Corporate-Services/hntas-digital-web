@@ -115,7 +115,9 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new SoaStagesJsonConverter(),
         new HeatNetworkConnectionsJsonConverter(),
         new HeatNetworkTypeJsonConverter(),
-        new AuditLogJsonConverter()
+        new AuditLogJsonConverter(),
+        new ElementSoaAssignAssessorRequestJsonConverter(),
+        new SoaAssessorJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
