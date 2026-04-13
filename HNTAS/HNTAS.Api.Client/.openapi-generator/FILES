@@ -38,6 +38,7 @@ docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
 docs/models/Element.md
+docs/models/ElementSoaAssignAssessorRequest.md
 docs/models/ElementSoaStatusUpdateRequest.md
 docs/models/ElementType.md
 docs/models/Energy.md
@@ -93,6 +94,7 @@ docs/models/RegistrationSource.md
 docs/models/SendInvitationEmailRequest.md
 docs/models/Soa.md
 docs/models/Soa2.md
+docs/models/SoaAssessor.md
 docs/models/SoaJourneyData.md
 docs/models/SoaPhase.md
 docs/models/SoaResponse.md
@@ -183,6 +185,7 @@ src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs
 src/HNTAS.Api.Client/Model/Element.cs
+src/HNTAS.Api.Client/Model/ElementSoaAssignAssessorRequest.cs
 src/HNTAS.Api.Client/Model/ElementSoaStatusUpdateRequest.cs
 src/HNTAS.Api.Client/Model/ElementType.cs
 src/HNTAS.Api.Client/Model/Energy.cs
@@ -238,6 +241,7 @@ src/HNTAS.Api.Client/Model/RegistrationSource.cs
 src/HNTAS.Api.Client/Model/SendInvitationEmailRequest.cs
 src/HNTAS.Api.Client/Model/Soa.cs
 src/HNTAS.Api.Client/Model/Soa2.cs
+src/HNTAS.Api.Client/Model/SoaAssessor.cs
 src/HNTAS.Api.Client/Model/SoaJourneyData.cs
 src/HNTAS.Api.Client/Model/SoaPhase.cs
 src/HNTAS.Api.Client/Model/SoaResponse.cs

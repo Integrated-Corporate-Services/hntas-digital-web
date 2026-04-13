@@ -26,6 +26,7 @@ namespace HNTAS.Web.UI.Authorization
 
                 options.AddPolicy(SecurityConstants.Policies.CanUpdatePersonalDetail, p => p.Requirements.Add(new RolesRequirement(UserRole.ResponsiblePerson, UserRole.Coordinator, UserRole.DesignatedDutyHolder, UserRole.Contributor)));
 
+                options.AddPolicy(SecurityConstants.Policies.CanAssignAssessor, p => p.Requirements.Add(new RolesRequirement(UserRole.ResponsiblePerson, UserRole.Coordinator)));
             });
 
             return services;

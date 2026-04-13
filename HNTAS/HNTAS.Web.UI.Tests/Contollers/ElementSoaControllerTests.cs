@@ -1,4 +1,5 @@
-﻿using HNTAS.Api.Client.Model;
+﻿using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models.ElementSoa;
@@ -18,7 +19,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<ILogger<ElementSoaController>> _loggerMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
         private readonly Mock<IHeatNetworkService> _heatNetworkServiceMock;
-        private readonly Mock<ISoaService> _soaServiceMock;        
+        private readonly Mock<ISoaService> _soaServiceMock;
+        private readonly Mock<IAssessorApi> _assessorMock;
         private readonly ElementSoaController _controller;
 
         public ElementSoaControllerTests()
@@ -26,7 +28,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _loggerMock = new Mock<ILogger<ElementSoaController>>();
             _sessionHelperMock = new Mock<ISessionHelper>();
             _heatNetworkServiceMock = new Mock<IHeatNetworkService>();
-            _soaServiceMock = new Mock<ISoaService>();            
+            _soaServiceMock = new Mock<ISoaService>();
+            _assessorMock = new Mock<IAssessorApi>();
             _controller = CreateController();
         }
 
@@ -36,7 +39,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 _sessionHelperMock.Object,
                 _soaServiceMock.Object,
                 _loggerMock.Object,
-                _heatNetworkServiceMock.Object
+                _heatNetworkServiceMock.Object,
+                _assessorMock.Object
 
             );
             var httpContext = new DefaultHttpContext();
@@ -120,7 +124,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                         new SoaStages
                         {
                             StageId = (NullableOfSoaStage)SoaStage.Stage1,
-                            
+
                         }
                     }
                 }
@@ -203,7 +207,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                                         SoaStatus = "Not started"
                                     }
                                 }
-                            },                            
+                            },
                         }
                     }
                 });
@@ -212,7 +216,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Act
             var result = await _controller.SoaUpdateStatus(stage, elementId, elementType);
-            Assert.NotNull(result);                
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -263,7 +267,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var result = await _controller.SoaUpdateStatus(request);
 
             // Assert
-           Assert.NotNull(result);
+            Assert.NotNull(result);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("SoaStages", redirectResult.ActionName);
         }
