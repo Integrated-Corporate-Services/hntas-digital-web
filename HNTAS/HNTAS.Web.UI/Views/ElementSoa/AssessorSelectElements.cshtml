@@ -1,0 +1,78 @@
+﻿@using HNTAS.Web.UI.Models.NetworkElements
+@model AssessorSelectElementsViewModel
+
+@{
+    ViewData["Title"] = "Will they be assessing any other elements for this network?";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">@ViewBag.HnId</span>
+            <h1 class="govuk-heading-l">Will they be assessing any other elements for this network?</h1>
+                                  
+
+            <form asp-action="SelectNetworkElements" method="post" novalidate>
+                @Html.AntiForgeryToken()
+
+                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
+                    <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+                        
+                        <div id="assessor-element-hint" class="govuk-hint">
+                            Select all that apply
+                        </div>
+                        @if (ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)))
+                        {
+                            <p class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span>
+                                @Html.ValidationMessageFor(m => m.SelectedElementIds)
+                            </p>
+                        }
+                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            @for (int i = 0; i < Model.ElementOptions?.Count; i++)
+                            {
+                                var item = Model.ElementOptions[i];
+                                var checkboxId = $"SelectedElementIds_{i}";                                
+                                var isChecked = Model.SelectedElementIds?.Contains(item.ElementId) ?? false;
+                                var hintId = $"{checkboxId}-item-hint";
+
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" 
+                                    id="@checkboxId"
+                                    name="SelectedElementIds" 
+                                    type="checkbox" 
+                                    value="@item.ElementId"
+                                    @(isChecked ? "checked" : "")
+                                    >
+                                    <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
+                                        @item.Label @item.AssignedAssessorName
+                                    </label>
+                                </div>
+                            }
+                            @* <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="waste" name="waste" type="checkbox" value="carcasses">
+                                <label class="govuk-label govuk-checkboxes__label" for="waste">
+                                    Waste from animal carcasses
+                                </label>
+                            </div>
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="waste-2" name="waste" type="checkbox" value="mines">
+                                <label class="govuk-label govuk-checkboxes__label" for="waste-2">
+                                    Waste from mines or quarries
+                                </label>
+                            </div>
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="waste-3" name="waste" type="checkbox" value="farm">
+                                <label class="govuk-label govuk-checkboxes__label" for="waste-3">
+                                    Farm or agricultural waste
+                                </label>
+                            </div> *@
+                        </div>
+                    </fieldset>
+                </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+            </form>
+        </div>
+    </div>
+</div>

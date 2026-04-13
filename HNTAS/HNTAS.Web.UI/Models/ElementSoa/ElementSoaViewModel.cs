@@ -28,5 +28,9 @@ namespace HNTAS.Web.UI.Models.ElementSoa
 
         public string? SoaStatus { get; set; }
         public DateTime? SoaStatusUpdatedAt { get; set; }
+        public string? AssessorEmailId { get; set; }
+        public string? AssessorFirstName { get; set; }
+        public string? AssessorLastName { get; set; }
+        public string? Assessment { get; set; }
     }
 }

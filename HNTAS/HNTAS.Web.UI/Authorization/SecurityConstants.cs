@@ -15,6 +15,7 @@
             public const string CanAddDDHAndContributor = "CanAddDDHAndContributor";
 
             public const string CanUpdatePersonalDetail = "CanUpdatePersonalDetail";
+            public const string CanAssignAssessor = "CanAssignAssessor";
         }
     }
 }

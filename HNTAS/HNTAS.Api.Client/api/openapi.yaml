@@ -1527,6 +1527,49 @@ paths:
           description: Bad Request
       tags:
       - SOA
+  /api/SOA/soa-assign-assessor:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaAssignAssessorRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaAssignAssessorRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaAssignAssessorRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SOA
   /api/SOA/{hnId}:
     delete:
       parameters:
@@ -2582,12 +2625,24 @@ components:
       type: object
     AssessorSearchResult:
       example:
+        firstName: firstName
+        lastName: lastName
         fullName: fullName
         id: id
+        fullNameWithEmail: fullNameWithEmail
+        email: email
       properties:
         id:
           type: string
         fullName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        fullNameWithEmail:
           type: string
       type: object
     AuditLog:
@@ -3267,10 +3322,22 @@ components:
         elementId: elementId
         soaStages:
         - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessor:
+            firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: Active
           soaStatus: soaStatus
           soaStatusUpdatedBy: soaStatusUpdatedBy
           stageId: Stage1
         - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessor:
+            firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: Active
           soaStatus: soaStatus
           soaStatusUpdatedBy: soaStatusUpdatedBy
           stageId: Stage1
@@ -3299,6 +3366,35 @@ components:
             $ref: "#/components/schemas/SoaStages"
           nullable: true
           type: array
+      type: object
+    ElementSoaAssignAssessorRequest:
+      example:
+        assessment: assessment
+        hnId: hnId
+        updatedBy: updatedBy
+        assessorLastName: assessorLastName
+        assessorEmail: assessorEmail
+        assessorFirstName: assessorFirstName
+        elementIds:
+        - elementIds
+        - elementIds
+      properties:
+        elementIds:
+          items:
+            type: string
+          type: array
+        assessorEmail:
+          type: string
+        assessorFirstName:
+          type: string
+        assessorLastName:
+          type: string
+        assessment:
+          type: string
+        hnId:
+          type: string
+        updatedBy:
+          type: string
       type: object
     ElementSoaStatusUpdateRequest:
       example:
@@ -3693,10 +3789,22 @@ components:
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
@@ -3707,10 +3815,22 @@ components:
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
@@ -4118,10 +4238,22 @@ components:
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
@@ -4132,10 +4264,22 @@ components:
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
               stageId: Stage1
@@ -4837,10 +4981,22 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
@@ -4851,10 +5007,22 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
@@ -4897,10 +5065,22 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
@@ -4911,10 +5091,22 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
@@ -4956,10 +5148,22 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
@@ -4970,10 +5174,22 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
             stageId: Stage1
@@ -5520,6 +5736,26 @@ components:
           nullable: true
           type: string
       type: object
+    SoaAssessor:
+      example:
+        firstName: firstName
+        lastName: lastName
+        assessment: assessment
+        email: email
+        status: Active
+      nullable: true
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        assessment:
+          type: string
+        status:
+          $ref: "#/components/schemas/UserStatus"
+      type: object
     SoaJourneyData:
       example:
         certifierDocs:
@@ -5736,6 +5972,12 @@ components:
     SoaStages:
       example:
         soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        assessor:
+          firstName: firstName
+          lastName: lastName
+          assessment: assessment
+          email: email
+          status: Active
         soaStatus: soaStatus
         soaStatusUpdatedBy: soaStatusUpdatedBy
         stageId: Stage1
@@ -5752,6 +5994,8 @@ components:
         soaStatusUpdatedBy:
           nullable: true
           type: string
+        assessor:
+          $ref: "#/components/schemas/SoaAssessor"
       type: object
     SoaStatus:
       enum:
