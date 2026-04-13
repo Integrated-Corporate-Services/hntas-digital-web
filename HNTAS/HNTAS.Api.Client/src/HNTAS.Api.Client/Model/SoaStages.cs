@@ -37,13 +37,15 @@ namespace HNTAS.Api.Client.Model
         /// <param name="soaStatus">soaStatus</param>
         /// <param name="soaStatusUpdatedAt">soaStatusUpdatedAt</param>
         /// <param name="soaStatusUpdatedBy">soaStatusUpdatedBy</param>
+        /// <param name="assessor">assessor</param>
         [JsonConstructor]
-        public SoaStages(Option<NullableOfSoaStage?> stageId = default, Option<string?> soaStatus = default, Option<DateTimeOffset?> soaStatusUpdatedAt = default, Option<string?> soaStatusUpdatedBy = default)
+        public SoaStages(Option<NullableOfSoaStage?> stageId = default, Option<string?> soaStatus = default, Option<DateTimeOffset?> soaStatusUpdatedAt = default, Option<string?> soaStatusUpdatedBy = default, Option<SoaAssessor?> assessor = default)
         {
             StageIdOption = stageId;
             SoaStatusOption = soaStatus;
             SoaStatusUpdatedAtOption = soaStatusUpdatedAt;
             SoaStatusUpdatedByOption = soaStatusUpdatedBy;
+            AssessorOption = assessor;
             OnCreated();
         }
 
@@ -102,6 +104,19 @@ namespace HNTAS.Api.Client.Model
         public string? SoaStatusUpdatedBy { get { return this.SoaStatusUpdatedByOption; } set { this.SoaStatusUpdatedByOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Assessor
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<SoaAssessor?> AssessorOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Assessor
+        /// </summary>
+        [JsonPropertyName("assessor")]
+        public SoaAssessor? Assessor { get { return this.AssessorOption; } set { this.AssessorOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -113,6 +128,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  SoaStatus: ").Append(SoaStatus).Append("\n");
             sb.Append("  SoaStatusUpdatedAt: ").Append(SoaStatusUpdatedAt).Append("\n");
             sb.Append("  SoaStatusUpdatedBy: ").Append(SoaStatusUpdatedBy).Append("\n");
+            sb.Append("  Assessor: ").Append(Assessor).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -159,6 +175,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> soaStatus = default;
             Option<DateTimeOffset?> soaStatusUpdatedAt = default;
             Option<string?> soaStatusUpdatedBy = default;
+            Option<SoaAssessor?> assessor = default;
 
             while (utf8JsonReader.Read())
             {
@@ -189,13 +206,16 @@ namespace HNTAS.Api.Client.Model
                         case "soaStatusUpdatedBy":
                             soaStatusUpdatedBy = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "assessor":
+                            assessor = new Option<SoaAssessor?>(JsonSerializer.Deserialize<SoaAssessor>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         default:
                             break;
                     }
                 }
             }
 
-            return new SoaStages(stageId, soaStatus, soaStatusUpdatedAt, soaStatusUpdatedBy);
+            return new SoaStages(stageId, soaStatus, soaStatusUpdatedAt, soaStatusUpdatedBy, assessor);
         }
 
         /// <summary>
@@ -247,6 +267,15 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("soaStatusUpdatedBy", soaStages.SoaStatusUpdatedBy);
                 else
                     writer.WriteNull("soaStatusUpdatedBy");
+
+            if (soaStages.AssessorOption.IsSet)
+                if (soaStages.AssessorOption.Value != null)
+                {
+                    writer.WritePropertyName("assessor");
+                    JsonSerializer.Serialize(writer, soaStages.Assessor, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("assessor");
         }
     }
 }

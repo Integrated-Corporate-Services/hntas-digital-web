@@ -68,6 +68,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());
             _jsonOptions.Converters.Add(new ECDetails2JsonConverter());
             _jsonOptions.Converters.Add(new ElementJsonConverter());
+            _jsonOptions.Converters.Add(new ElementSoaAssignAssessorRequestJsonConverter());
             _jsonOptions.Converters.Add(new ElementSoaStatusUpdateRequestJsonConverter());
             _jsonOptions.Converters.Add(new ElementTypeJsonConverter());
             _jsonOptions.Converters.Add(new ElementTypeNullableJsonConverter());
@@ -133,6 +134,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new SendInvitationEmailRequestJsonConverter());
             _jsonOptions.Converters.Add(new SoaJsonConverter());
             _jsonOptions.Converters.Add(new Soa2JsonConverter());
+            _jsonOptions.Converters.Add(new SoaAssessorJsonConverter());
             _jsonOptions.Converters.Add(new SoaJourneyDataJsonConverter());
             _jsonOptions.Converters.Add(new SoaPhaseJsonConverter());
             _jsonOptions.Converters.Add(new SoaPhaseNullableJsonConverter());
