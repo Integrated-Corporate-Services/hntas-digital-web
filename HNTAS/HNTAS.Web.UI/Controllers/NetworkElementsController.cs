@@ -83,11 +83,6 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
 
-
-            if (!ModelState.IsValid)
-            {
-                return View("SelectNetworkElements", model);
-            }
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
             model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
@@ -103,13 +98,15 @@ namespace HNTAS.Web.UI.Controllers
                     
                 };
                 elements.Add(ele);
-                if ((selectedId != HeatNetworkElementDisplayType.EnergyCentre) && (!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
+                if ((!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
                 {
                     var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == selectedId);
                     if (element == null)
                     {
                         return BadRequest();
                     }
+                    // Remove the automatic ModelState entry first
+                    ModelState.Remove($"ElementCounts.{selectedId}");
                     ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter number of {element.Label}.");
                 }
             }
@@ -145,7 +142,7 @@ namespace HNTAS.Web.UI.Controllers
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementsOverViewModel);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, elements);
-
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey, model);
             return RedirectToAction("NetworkElementsOverView", "NetworkElements");
         }
 
