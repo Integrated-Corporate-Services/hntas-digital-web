@@ -159,6 +159,45 @@ namespace HNTAS.Web.UI.Helpers
                     ElementSoaUpdateStatusConstants.BeingAssessed }
             };
         }
+
+        public static List<AssessmentOption> GetAssessmentOptions()
+        {
+            return new List<AssessmentOption>
+            {
+                new AssessmentOption
+                {
+                    Label = "Execute",
+                    Hint = "Carry out the initial assessment and review the evidence provided"
+                },
+                new AssessmentOption
+                {
+                    Label = "Review",
+                    Hint = "Check that the initial assessment was completed correctly"
+                },
+                new AssessmentOption
+                {
+                    Label = "Decision",
+                    Hint = "Make the final decision on the outcome of the assessment"
+                },
+                new AssessmentOption
+                {
+                    Label = "Review and Decision",
+                    Hint = ""
+                },                
+            };
+        }
+
+        public static string GetStageFromPhase(string phase)
+        {
+            return phase switch
+            {
+                "Feasibility" => "Concept design",
+                "Design" => "Developed design, technical design",
+                "Construction" => "Construction design, installation, commissioning",
+                "Operational" => "Operation, maintenance, ongoing monitoring",
+                _ => "NA"
+            };
+        }
         private static List<SoaElementsView> GetElementsForStage(List<Element>? elements)
         {
             var soaElements = new List<SoaElementsView>();

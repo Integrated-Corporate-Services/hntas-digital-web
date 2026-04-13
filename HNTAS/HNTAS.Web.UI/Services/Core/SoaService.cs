@@ -280,6 +280,29 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+        public async Task AssignAssessor(ElementSoaAssignAssessorRequest request)
+        {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request), "Request cannot be null.");
+
+            if (string.IsNullOrWhiteSpace(request.HnId))
+                throw new ArgumentException("Heat Network ID is required.", nameof(request.HnId));
+
+            try
+            {
+                var response = await _soaApi.ApiSOASoaAssignAssessorPatchAsync(request);
+
+                if (!response.IsOk)
+                    throw new InvalidOperationException($"Soa status update failed with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception during saving Assessor Assigned for HN ID: {HnId}, Elements: {ElementIds}, UpdatedBy: {UpdatedBy}",
+                SanitizeForLogging(request.HnId), SanitizeForLogging(string.Join(", ", request.ElementIds!)), SanitizeForLogging(request.UpdatedBy!));
+                throw;
+            }
+        }
+
         private string SanitizeForLogging(string input)
         {
             return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;

@@ -1,0 +1,46 @@
+﻿@using HNTAS.Web.UI.Models.ElementSoa
+@model AssessorElementSelectionOverviewModel
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <form class="form" asp-action="AssessorAssignedConfirmationOk" asp-controller="ElementSoa" method="post">
+
+                <div class="govuk-panel govuk-panel--confirmation">
+                    <h1 class="govuk-panel__title">
+                        The assessor has been successfully assigned
+                    </h1>
+                </div>
+
+                <p class="govuk-body"><strong>You've assigned @Model.AssessorDetails.FirstName @Model.AssessorDetails.LastName to be the assessor of:</strong></p>
+
+                <ul class="govuk-list govuk-list--bullet">
+                    @foreach (var element in Model.AssessorSelectedElements.SelectedElementLabel!)
+                    {
+                        <li>@element</li>
+                    }
+                    
+                </ul>
+
+
+                <p class="govuk-body">We have emailed them to let them know they have been assigned to your network.</p>
+
+                <p class="govuk-body"><strong>What happens next:</strong></p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>if they accept, you'll confirm their access</li>
+                    <li>if they decline, you'll be notified</li>
+                    <li>once confirmed, they can begin assessment</li>
+                </ul>
+
+                <div class="govuk-!-margin-top-6">
+
+                    <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>

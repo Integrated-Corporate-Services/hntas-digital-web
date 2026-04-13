@@ -29,11 +29,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDataProtection()
     .SetApplicationName("HNTAS.Web.UI");
 
-// Configure RouteOptions for lowercase URLs
+// Configure RouteOptions
 builder.Services.Configure<RouteOptions>(options =>
 {
-    options.LowercaseUrls = true;
-    options.LowercaseQueryStrings = true; // Optional: for query string parameters too
+    options.LowercaseUrls = false;
+    options.LowercaseQueryStrings = false; // Optional: for query string parameters too
 });
 
 // Register the parameter transformer globally for controllers/actions
@@ -115,7 +115,9 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new SoaStagesJsonConverter(),
         new HeatNetworkConnectionsJsonConverter(),
         new HeatNetworkTypeJsonConverter(),
-        new AuditLogJsonConverter()
+        new AuditLogJsonConverter(),
+        new ElementSoaAssignAssessorRequestJsonConverter(),
+        new SoaAssessorJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

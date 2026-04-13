@@ -402,7 +402,6 @@ namespace HNTAS.Web.UI.Services.Core
             throw new Exception($"Failed to retrieve users by organisation ID with status code: {usersResponse.StatusCode}");
         }
 
-
         private string SanitizeForLogging(string input)
         {
             return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;

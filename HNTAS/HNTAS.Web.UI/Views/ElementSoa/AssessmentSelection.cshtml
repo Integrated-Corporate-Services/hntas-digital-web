@@ -1,0 +1,79 @@
+﻿@using HNTAS.Web.UI.Models.ElementSoa
+@model AssessorAssessmentSelectionViewModel
+
+@{
+    var hasError = ViewData.ModelState.ContainsKey(nameof(Model.SelectedAssessmentOption)) && ViewData.ModelState[nameof(Model.SelectedAssessmentOption)].Errors.Any();
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-xl">@ViewBag.HnId</span>
+        <h1 class="govuk-heading-xl">
+            Which step of the assessment will they carry out for the energy centre?
+        </h1>
+        <form method="post" asp-action="AssessmentSelection" asp-controller="ElementSoa">
+            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset">
+                    <div id="status-hint" class="govuk-hint">
+                        Assign an independent assessor to one of the following steps.
+                    </div>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        @for (var i = 0; i < Model.AssessmentOptions.Count; i++)
+                        {
+                            var option = Model.AssessmentOptions[i];
+                            var optionId = $"option-{i}";
+                            var hintId = $"{optionId}-item-hint";
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="@optionId" name="SelectedAssessmentOption" type="radio" value="@option.Label" @( Model.SelectedAssessmentOption == option.Label ? "checked" : "")>
+                                <label class="govuk-label govuk-radios__label" for="@optionId">
+                                    @option.Label<br />
+                                </label>
+                                @if (!string.IsNullOrEmpty(option.Hint))
+                                {
+                                    <div id="@hintId" class="govuk-hint govuk-radios__hint">
+                                        @option.Hint
+                                    </div>
+                                }
+                                
+                            </div>
+                        }
+                    </div>
+                </fieldset>
+            </div>
+
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Help with assessment steps
+                    </span>
+                </summary>                
+                <div class="govuk-details__text">
+
+                    <p>The assessment has three steps: <strong>execute</strong>, <strong>review</strong> and <strong>decision</strong>.</p>
+
+                    <p>The same person cannot carry out the execution and review steps, or the execution and decision steps.</p>
+
+                    <h3 class="govuk-heading-s govuk-!-margin-top-4">Execute</h3>
+                    <p>Execute is the first step. The assessor carries out the initial assessment by reviewing the information and evidence provided for the heat network element and recording their findings.</p>
+                    <p>The outcome is passed to the review stage.</p>
+
+                    <h3 class="govuk-heading-s govuk-!-margin-top-4">Review</h3>
+                    <p>Review checks that the execution assessment was completed correctly.</p>
+                    <p>The reviewer checks the work carried out during the execution step and confirms that:</p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>the assessment was carried out properly</li>
+                        <li>the evidence supports the findings</li>
+                    </ul>
+                    <p>The outcome is passed to the decision stage.</p>
+
+                    <h3 class="govuk-heading-s govuk-!-margin-top-4">Decision</h3>
+                    <p>Decision is the final step. The decision maker reviews the outcomes of the earlier steps and makes the final decision on the assessment outcome.</p>
+
+                </div>
+            </details>
+            @* @Html.HiddenFor(m => m.SoaStatus)
+            @Html.HiddenFor(m => m.ElementId) *@
+            <button type="submit" class="govuk-button">Continue</button>
+        </form>
+    </div>
+</div>
