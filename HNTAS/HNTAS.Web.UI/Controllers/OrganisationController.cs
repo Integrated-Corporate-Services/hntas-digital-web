@@ -798,7 +798,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
                 _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "Organisation");
-                return RedirectToAction("SearchByPostcodeResults", "Address");
+                return RedirectToAction("SearchByPostcodeResults");
             }
             catch (HttpRequestException)
             {
@@ -806,6 +806,62 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
         }
+
+        #region address input
+        [HttpGet]
+        public IActionResult SearchByPostcodeResults()
+        {
+            this.ShowBackButton("OrganisationAddressByPostcode");
+
+            SearchAddressByPostcodeModel model = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
+
+            if (model == null)
+            {
+                _logger.LogError("SearchAddressByPostcodeModel is null.");
+                return View("OrganisationAddressByPostcode");
+            }
+            return View(model);
+        }
+
+        public IActionResult SelectAddress(string selectedAddress)
+        {
+            var addressmodel = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
+            if (addressmodel == null)
+            {
+                _logger.LogError("SearchAddressByPostcodeModel not found in session.");
+                return BadRequest("Session expired or invalid. Please try again.");
+            }
+            addressmodel.SelectedFullAddress = Utility.CapitalizeCommaSeparated(selectedAddress);
+            var addressParts = addressmodel.SelectedFullAddress.Split(",");
+
+            if (addressParts.Length < 3)
+            {
+                _logger.LogError("Malformed address received: {Address}", selectedAddress);
+                return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");
+            }
+
+            var model = new AddressByStreetOrTownModel
+            {
+                StreetAddress = string.Join(",", addressParts.Take(addressParts.Length - 2)).Trim() ?? string.Empty,
+                TownOrCity = addressParts[addressParts.Length - 2].Trim() ?? string.Empty,
+                Postalcode = (addressParts[addressParts.Length - 1]).ToUpper().Trim() ?? string.Empty,
+                Country = "United Kingdom" ?? string.Empty,
+                Fulladdress = addressmodel.SelectedFullAddress
+            };
+            // Save the new model to session
+            _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, model);
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
+
+            if (model == null || organisationModel?.CompanyDetails == null)
+            {
+                _logger.LogWarning("Missing session data : Required session data is missing or invalid. Address model and Organisation model with CompanyDetails must be present.");
+                return BadRequest("Missing session data");
+            }
+            organisationModel.CompanyDetails.RegisteredOfficeAddress = model;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, organisationModel);
+            return RedirectToAction("CompanyConfirm");
+        }
+        #endregion
 
         public async Task<List<SelectListItem>> GetCountrySelectListItems()
         {
