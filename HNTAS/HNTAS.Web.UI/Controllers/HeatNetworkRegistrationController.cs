@@ -34,7 +34,6 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult HeatNetworkDwellingsCheck()
         {
             this.ShowBackButton("HeatNetworks", "UserManagement");
-            //this.ShowBackButton("UserAccount", "Dashboard");
             var model = _sessionHelper.GetFromSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey) ?? new HowManyDwellingsIncludedModel();
             return View(model);
         }
@@ -525,7 +524,7 @@ namespace HNTAS.Web.UI.Controllers
                 return RedirectToAction("UserAccount", "Dashboard");
             }
 
-            var model = _sessionHelper.GetFromSession<CheckYourAnswersHeatNetworkModel>(HttpContext, SessionKeys.CheckYourAnswersHeatNetworkModelKey) ?? new CheckYourAnswersHeatNetworkModel
+            var model = new CheckYourAnswersHeatNetworkModel
             {
                 HeatNetworkNameModel = heatNetworkNameModel,
                 HeatNetworkAddressModel = heatNetworkLocationModel?.HNAddressByStreet ?? null,
