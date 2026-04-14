@@ -124,6 +124,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                         new SoaStages
                         {
                             StageId = (NullableOfSoaStage)SoaStage.Stage1,
+
                         }
                     }
                 }

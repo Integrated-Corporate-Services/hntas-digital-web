@@ -71,8 +71,8 @@
                         <dd class="govuk-summary-list__actions">
                             @if (!disableHnConnectionsLink)
                             {
-                                <a class="govuk-link" href="@disableHnConnectionsLink ? Url.Action(" HeatNetworkConnections", "HeatNetworkRegistration" ) : "#">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
-                            }
+                                <a class="govuk-link" href="@Url.Action("HeatNetworkConnections", "HeatNetworkRegistration" )">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
+                            }                            
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">

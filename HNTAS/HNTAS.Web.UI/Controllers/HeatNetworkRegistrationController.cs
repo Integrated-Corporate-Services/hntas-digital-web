@@ -287,25 +287,32 @@ namespace HNTAS.Web.UI.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
-            _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
+            }            
             if (!model.HasPostcode)
             {
+                model.Postcode = null;
+                _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
+                _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, new AddressByStreetOrTownModel());
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, new HeatNetworkLocationModel { HNAddressByStreet = new AddressByStreetOrTownModel() });                
                 return RedirectToAction("ECCoordinates");
             }
-            SearchAddressByPostcodeModel results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
-            model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
-            if (results == null || results.Addresses == null || results.Addresses.Length == 0)
+            else
             {
-                ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
-                return View(model);
-            }
-            results.Addresses = results.Addresses
-                .Select(address => Utility.CapitalizeCommaSeparated(address))
-                .ToArray();
-            _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
+                SearchAddressByPostcodeModel results = await _addressLookUpService.PostcodeLookupAsync(model.Postcode);
+                model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
+                if (results == null || results.Addresses == null || results.Addresses.Length == 0)
+                {
+                    ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
+                    return View(model);
+                }
+                results.Addresses = results.Addresses
+                    .Select(address => Utility.CapitalizeCommaSeparated(address))
+                    .ToArray();
+                _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
+                _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
 
-            return RedirectToAction("SearchByPostcodeResults");
+                return RedirectToAction("SearchByPostcodeResults");
+            }            
         }
 
         [HttpGet]
@@ -326,6 +333,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult SelectAddress(string selectedAddress)
         {
             var addressmodel = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
+
             if (addressmodel == null)
             {
                 _logger.LogError("SearchAddressByPostcodeModel not found in session.");
@@ -333,7 +341,6 @@ namespace HNTAS.Web.UI.Controllers
             }
             addressmodel.SelectedFullAddress = Utility.CapitalizeCommaSeparated(selectedAddress);
             var addressParts = addressmodel.SelectedFullAddress.Split(",");
-
             if (addressParts.Length < 3)
             {
                 var sanitizedAddress = selectedAddress?
@@ -458,7 +465,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult HeatNetworkPhase()
         {
-            this.ShowBackButton("ECCoordinates", "Coordinates");
+            this.ShowBackButton("ECCoordinates");
             var heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey) ?? new HeatNetworkPhaseModel();            
             return View("HeatNetworkPhase", heatNetworkPhaseModel);
         }
@@ -467,7 +474,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkPhase(HeatNetworkPhaseModel model)
         {
-            this.ShowBackButton("ECCoordinates", "Coordinates");
+            this.ShowBackButton("ECCoordinates");
             if (!ModelState.IsValid)
             {
                 return View(model);
