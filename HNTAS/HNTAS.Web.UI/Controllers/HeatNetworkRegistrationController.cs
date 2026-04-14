@@ -333,6 +333,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult SelectAddress(string selectedAddress)
         {
             var addressmodel = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
+
             if (addressmodel == null)
             {
                 _logger.LogError("SearchAddressByPostcodeModel not found in session.");
@@ -340,7 +341,6 @@ namespace HNTAS.Web.UI.Controllers
             }
             addressmodel.SelectedFullAddress = Utility.CapitalizeCommaSeparated(selectedAddress);
             var addressParts = addressmodel.SelectedFullAddress.Split(",");
-
             if (addressParts.Length < 3)
             {
                 var sanitizedAddress = selectedAddress?
