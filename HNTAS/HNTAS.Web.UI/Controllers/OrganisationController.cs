@@ -836,7 +836,10 @@ namespace HNTAS.Web.UI.Controllers
 
             if (addressParts.Length < 3)
             {
-                _logger.LogError("Malformed address received: {Address}", selectedAddress);
+                var sanitizedSelectedAddress = selectedAddress == null
+                    ? string.Empty
+                    : Regex.Replace(selectedAddress, @"\r\n?|\n", " ");
+                _logger.LogError("Malformed address received: {Address}", sanitizedSelectedAddress);
                 return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");
             }
 
