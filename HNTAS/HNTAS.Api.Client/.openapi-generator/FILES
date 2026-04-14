@@ -61,8 +61,12 @@ docs/models/InvitationStatus.md
 docs/models/InvitedUserRequest.md
 docs/models/InvitedUserResponse.md
 docs/models/JourneyDataResponse.md
+docs/models/KpiConfigRequest.md
+docs/models/KpiConfigResponse.md
 docs/models/KpiMetadata.md
+docs/models/KpiRule.md
 docs/models/KpiSubmissionRequest.md
+docs/models/KpiThresholdRule.md
 docs/models/KpiValue.md
 docs/models/KpiValueAggregated.md
 docs/models/ManagedUserResponse.md
@@ -126,6 +130,10 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/KpiConfigRequestTests.cs
+src/HNTAS.Api.Client.Test/Model/KpiConfigResponseTests.cs
+src/HNTAS.Api.Client.Test/Model/KpiRuleTests.cs
+src/HNTAS.Api.Client.Test/Model/KpiThresholdRuleTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/AssessorApi.cs
@@ -208,8 +216,12 @@ src/HNTAS.Api.Client/Model/InvitationStatus.cs
 src/HNTAS.Api.Client/Model/InvitedUserRequest.cs
 src/HNTAS.Api.Client/Model/InvitedUserResponse.cs
 src/HNTAS.Api.Client/Model/JourneyDataResponse.cs
+src/HNTAS.Api.Client/Model/KpiConfigRequest.cs
+src/HNTAS.Api.Client/Model/KpiConfigResponse.cs
 src/HNTAS.Api.Client/Model/KpiMetadata.cs
+src/HNTAS.Api.Client/Model/KpiRule.cs
 src/HNTAS.Api.Client/Model/KpiSubmissionRequest.cs
+src/HNTAS.Api.Client/Model/KpiThresholdRule.cs
 src/HNTAS.Api.Client/Model/KpiValue.cs
 src/HNTAS.Api.Client/Model/KpiValueAggregated.cs
 src/HNTAS.Api.Client/Model/ManagedUserResponse.cs
