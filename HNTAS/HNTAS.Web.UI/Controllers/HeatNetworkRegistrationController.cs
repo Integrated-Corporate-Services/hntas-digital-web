@@ -421,7 +421,7 @@ namespace HNTAS.Web.UI.Controllers
             else
             {
                 heatNetworkLocationModel = null;
-            }            
+            }           
             heatNetworkLocationModel.HNAddressByStreet = model;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocationModel);
             return RedirectToAction("ECCoordinates");
