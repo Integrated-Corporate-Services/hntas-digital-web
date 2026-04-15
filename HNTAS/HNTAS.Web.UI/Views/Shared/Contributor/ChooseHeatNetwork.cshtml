@@ -40,7 +40,9 @@
                             @Html.ValidationMessageFor(m => m.SelectedHeatNetworkId)
                         </p>
                     }
-
+                    <label class="govuk-visually-hidden" for="@selectedHeatNetworkId" id="@selectedHeatNetworkId-label">
+                        SelectedHeatNetworkId
+                    </label>
                     <select class="govuk-select" id="@selectedHeatNetworkId" name="@nameof(Model.SelectedHeatNetworkId)" aria-describedby="@ariaDescribedBy">
                         <option value="">Select a heat network</option>
                     
