@@ -1,11 +1,14 @@
-﻿using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Web.UI.Authorization;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.CompaniesHouse;
 using HNTAS.Web.UI.Services.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [Authorize(Policy = SecurityConstants.Policies.CanAddContributingOrganisation)]
     public class ExistingOrganisationController : Controller
     {
         private readonly IOrganisationService _organisationService;
@@ -22,11 +25,14 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult AddOrRegister()
         {
-            this.ShowBackButton("UserAccount", "Dashboard");
+            var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            if (organisationName != null)
+            {
+                this.ShowBackButton("UserAccount", "Dashboard");
+            }
             _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey, true);
             return View("AddOrRegister");
         }
-
 
         [HttpGet]
         public IActionResult Search()

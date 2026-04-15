@@ -1,15 +1,18 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
-using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Address;
+using HNTAS.Web.UI.Models.Enums;
 using HNTAS.Web.UI.Models.HeatNetwork;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize]
+
+    [Authorize(Policy = SecurityConstants.Policies.CanAddHeatNetworkDetail)]
     public class HeatNetworkController : Controller
     {
 
@@ -18,336 +21,61 @@ namespace HNTAS.Web.UI.Controllers
         private readonly IUserService _userService;
         private readonly ISessionHelper _sessionHelper;
         private readonly IOrganisationService _organisationService;
+        private readonly IAddressLookupService _addressLookUpService;
 
-        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworkService heatNetworkService, IUserService userService, ISessionHelper sessionHelper, IOrganisationService organisationService)
+        public HeatNetworkController(ILogger<HeatNetworkController> logger, IHeatNetworkService heatNetworkService, IUserService userService, ISessionHelper sessionHelper, IOrganisationService organisationService, IAddressLookupService addressLookupService)
         {
             _logger = logger;
             _heatNetworkService = heatNetworkService;
             _userService = userService;
             _sessionHelper = sessionHelper;
             _organisationService = organisationService;
-        }
-
-
-        [HttpGet]
-        public IActionResult EnterHNName()
-        {
-            this.ShowBackButton("UserAccount", "Dashboard");
-            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
-            return View(heatNetworkNameModel);
-        }
-
-        [HttpPost]
-        public IActionResult EnterHNName(HeatNetworkNameModel model)
-        {
-            this.ShowBackButton("UserAccount", "Dashboard");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
-            return RedirectToAction("EnterHNLocation");
-        }
-
-
-        [HttpGet]
-        public IActionResult EnterHNLocation()
-        {
-            this.ShowBackButton("EnterHNName", "HeatNetwork");
-            var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
-            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
-            ViewBag.HNName = heatNetworkNameModel.HeatNetworkName;
-            return View("EnterHNLocation", heatNetworkLocationModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EnterHNLocation(HeatNetworkLocationModel model)
-        {
-            this.ShowBackButton("EnterHNName", "HeatNetwork");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, model);
-            return RedirectToAction("EnterHNPhase");
+            _addressLookUpService = addressLookupService;
         }
 
         [HttpGet]
-        public IActionResult EnterHNPhase()
+        public IActionResult Index()
         {
-            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
-            var heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey) ?? new HeatNetworkPhaseModel();
-            var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
-            ViewBag.HNName = heatNetworkNameModel.HeatNetworkName;
-            return View("EnterHNPhase", heatNetworkPhaseModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EnterHNPhase(HeatNetworkPhaseModel model)
-        {
-            this.ShowBackButton("EnterHNLocation", "HeatNetwork");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            else if (string.IsNullOrWhiteSpace(model.HeatNetworkPhase))
-            {
-                ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
-                return View(model);
-            }
-            else
-            {
-                _sessionHelper.SaveToSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey, model);
-                switch (model.HeatNetworkPhase)
-                {
-                    case "design":
-                        // store pathway as 1, navigate to cya
-                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
-                        return RedirectToAction("CheckYourAnswers");
-                    case "construction":
-                        return RedirectToAction("HaveYouSignedMEContract");
-                    case "operation":
-                        return RedirectToAction("HNInOperation");
-                    default:
-                        ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
-                        return View(model);
-                }
-            }
-        }
-
-        [HttpGet]
-        public IActionResult HaveYouSignedMEContract()
-        {
-            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
-            var model = _sessionHelper.GetFromSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? new HaveYouSignedMEContractModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult HaveYouSignedMEContract(HaveYouSignedMEContractModel model)
-        {
-            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            switch (model.HaveYouSignedMEContract)
-            {
-                case "yes":
-                    _sessionHelper.SaveToSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model);
-                    return RedirectToAction("MEContractIsSigned", "HeatNetwork");
-                case "no":
-                    _sessionHelper.SaveToSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey, model);
-                    return RedirectToAction("HasElementBeenRegistered", "HeatNetwork");
-                default:
-                    ModelState.AddModelError(nameof(model.HaveYouSignedMEContract), "Please select a valid option.");
-                    return View(model);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult MEContractIsSigned()
-        {
-            this.ShowBackButton("HaveYouSignedMEContract", "HeatNetwork");
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult HasElementBeenRegistered()
-        {
-            this.ShowBackButton("HaveYouSignedMEContract", "HeatNetwork");
-            var model = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? new HasElementBeenRegisteredModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult HasElementBeenRegistered(HasElementBeenRegisteredModel model)
-        {
-            this.ShowBackButton("HaveYouSignedMEContract", "HeatNetwork");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            else if (string.IsNullOrWhiteSpace(model.HasElementBeenRegistered))
-            {
-                ModelState.AddModelError(nameof(model.HasElementBeenRegistered), "Please select an option.");
-                return View(model);
-            }
-            else
-            {
-                _sessionHelper.SaveToSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey, model);
-                switch (model.HasElementBeenRegistered)
-                {
-                    case "yes":
-                        return RedirectToAction("HasPlanningApplicationBeenSubmitted");
-                    case "no":
-                        // store pathway as 1, navigate to cya
-                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
-                        return RedirectToAction("CheckYourAnswers");
-                    default:
-                        ModelState.AddModelError(nameof(model.HasElementBeenRegistered), "Please select an option.");
-                        return View(model);
-                }
-            }
-        }
-
-        [HttpGet]
-        public IActionResult HasPlanningApplicationBeenSubmitted()
-        {
-            this.ShowBackButton("HasElementBeenRegistered", "HeatNetwork");
-            var model = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? new HasPlanningApplicationBeenSubmittedModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult HasPlanningApplicationBeenSubmitted(HasPlanningApplicationBeenSubmittedModel model)
-        {
-            this.ShowBackButton("HasElementBeenRegistered", "HeatNetwork");
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            else if (string.IsNullOrWhiteSpace(model.HasPlanningApplicationBeenSubmitted))
-            {
-                ModelState.AddModelError(nameof(model.HasPlanningApplicationBeenSubmitted), "Please select an option.");
-                return View(model);
-            }
-            else
-            {
-                _sessionHelper.SaveToSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey, model);
-                switch (model.HasPlanningApplicationBeenSubmitted)
-                {
-                    case "yes":
-                        //store pathway as 3, navigate to cya
-                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "3" });
-                        return RedirectToAction("CheckYourAnswers");
-                    case "no":
-                        // store pathway as 1, navigate to cya
-                        _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "1" });
-                        return RedirectToAction("CheckYourAnswers");
-                    default:
-                        ModelState.AddModelError(nameof(model.HasPlanningApplicationBeenSubmitted), "Please select an option.");
-                        return View(model);
-                }
-            }
-        }
-
-        [HttpGet]
-        public IActionResult HNInOperation()
-        {
-            this.ShowBackButton("EnterHNPhase", "HeatNetwork");
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult CheckYourAnswers()
-        {
-            ViewBag.ShowBackButton = false;
-
-            if (_sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) == null)
-            {
-                return RedirectToAction("UserAccount", "Dashboard");
-            }
-
-            var model = new CheckYourAnswersHeatNetworkModel
-            {
-                HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey),
-                HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey),
-                HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey),
-                HaveYouSignedMEContractModel = _sessionHelper.GetFromSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? new HaveYouSignedMEContractModel(),
-                HasElementBeenRegisteredModel = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? null,
-                HasPlanningApplicationBeenSubmittedModel = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? null,
-                PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey) ?? new PathwayModel() { Pathway = "1" },
-                ConfirmedDeclaration = false
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitAnswers(CheckYourAnswersHeatNetworkModel viewModel)
-        {
-
-            viewModel.HeatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey);
-            viewModel.HeatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
-            viewModel.PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey);
-            viewModel.HeatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey);
-            viewModel.HaveYouSignedMEContractModel = _sessionHelper.GetFromSession<HaveYouSignedMEContractModel>(HttpContext, SessionKeys.HaveYouSignedMEContractModelKey) ?? null;
-            viewModel.HasElementBeenRegisteredModel = _sessionHelper.GetFromSession<HasElementBeenRegisteredModel>(HttpContext, SessionKeys.HasElementBeenRegisteredModelKey) ?? null;
-            viewModel.HasPlanningApplicationBeenSubmittedModel = _sessionHelper.GetFromSession<HasPlanningApplicationBeenSubmittedModel>(HttpContext, SessionKeys.HasPlanningApplicationBeenSubmittedModelKey) ?? null;
-
-            ModelState.Remove(nameof(viewModel.HeatNetworkNameModel));
-            ModelState.Remove(nameof(viewModel.HeatNetworkLocationModel));
-            ModelState.Remove(nameof(viewModel.PathwayModel));
-            ModelState.Remove(nameof(viewModel.HeatNetworkPhaseModel));
-            ModelState.Remove(nameof(viewModel.HaveYouSignedMEContractModel));
-            ModelState.Remove(nameof(viewModel.HasElementBeenRegisteredModel));
-            ModelState.Remove(nameof(viewModel.HasPlanningApplicationBeenSubmittedModel));
-
-
-            if (!ModelState.IsValid)
-            {
-                return View("CheckYourAnswers", viewModel);
-            }
-
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
-
-            if (userId == null || orgId == null)
-            {
-                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
-                return View("CheckYourAnswers", viewModel);
-            }
-
-
-            var model = new HeatNetwork
-            {
-                Name = viewModel?.HeatNetworkNameModel?.HeatNetworkName,
-                Location = viewModel?.HeatNetworkLocationModel?.HeatNetworkLocation,
-                Pathway = viewModel?.PathwayModel?.Pathway,
-                CreatedAt = DateTime.UtcNow,
-                CreatedBy = userId
-            };
-
-            var userResponse = await _heatNetworkService.AddHeatNetwork(model);
-
-            if (userResponse.HnId != null)
-            {
-                await _organisationService.UpdateOrgHeatNetworkId(orgId, userId, userResponse.HnId);
-                TempData["Confirmation_HN_Id"] = userResponse.HnId;
-                TempData["HNName"] = userResponse.Name;
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
-                return View("CheckYourAnswers", viewModel);
-            }
             _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
-            _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
-
-            return RedirectToAction("Confirmation", "HeatNetwork");
+            //start
+            return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Confirmation()
+
+        //[HttpGet]
+        //public async Task<IActionResult> Details([FromQuery] string hnid)
+        //{
+        //    var model = await GetNetworkDetails(hnid);
+        //    if (model == null)
+        //        return BadRequest();
+
+        //    return View(model);
+
+        //}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitDetails(HNDetailsViewModel model)
         {
-            var userResponse = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
-
-            ViewBag.CompanyName = userResponse.Organisation?.Name;
-            ViewBag.ContactName = userResponse.FullName;
-            ViewBag.HNId = TempData["Confirmation_HN_Id"] as string;
-            ViewBag.HNName = TempData["HNName"] as string;
-            return View("Confirmation");
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, model.Name);
+            return RedirectToAction("SOAIntro", "SOA");
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details([FromQuery] string hnid)
+        public async Task<IActionResult> AddNetworkDetails([FromQuery] string hnid)
+        {
+            hnid = hnid ?? _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+
+            var model = await GetNetworkDetails(hnid);
+            if (model == null)
+                return BadRequest();
+
+            return View("AddNetworkDetails", model);
+
+        }
+
+        private async Task<HNDetailsViewModel> GetNetworkDetails(string hnid)
         {
             this.ShowBackButton("HeatNetworks", "UserManagement");
             // get user details
@@ -355,28 +83,81 @@ namespace HNTAS.Web.UI.Controllers
 
             if (response == null)
             {
-                return BadRequest();
+                return null;
             }
 
             var model = new HNDetailsViewModel
             {
                 Name = response?.Name,
-                LocationUrl = response?.Location,
+                Address = new AddressByStreetOrTownModel
+                {
+                    StreetAddress = response?.Address?.AddressLine1,
+                    TownOrCity = response?.Address?.Town,
+                    Postalcode = response?.Address?.Postcode,
+                    Country = response?.Address?.Country,
+                    Fulladdress = string.Join(", ", new[] { response?.Address?.AddressLine1, response?.Address?.Town, response?.Address?.Postcode, response?.Address?.Country }.Where(part => !string.IsNullOrWhiteSpace(part)))
+                },
                 OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName),
                 PathWay = response.Pathway,
-                UHNID = response?.HnId
+                UHNID = response?.HnId,
+                Phase = response?.Phase!
             };
 
-            return View(model);
-
-        }
-
-        [HttpPost]
-        public IActionResult SubmitDetails(HNDetailsViewModel model)
-        {
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, model.Name);
-            return RedirectToAction("SOAIntro", "SOA");
+
+            return model;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> NetworkDetails()
+        {
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+
+            this.ShowBackButton("AddNetworkDetails", "HeatNetwork", new { hnId });
+
+            var networkDetailsTypeList = NetworkElementHelper.GetDefaultNetworkDetailsOptions();            
+
+            foreach (var option in networkDetailsTypeList)
+            {
+                if (option.Id == NetworkDetailsType.Soa)
+                {
+                    NetworkElementHelper.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.ElementSoaStatus, heatNetworkData?.NetworkElements?.NetworkElementStatus);
+                }
+                else if (option.Id == NetworkDetailsType.NetworkElements)
+                {
+                    NetworkElementHelper.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkElements?.NetworkElementStatus, null, false);
+                }                
+            }
+
+            var model = new NetworkDetailsViewModel()
+            {
+                DetailsOptions = networkDetailsTypeList
+            };
+            ViewBag.HNId = hnId;
+            ViewBag.HNName = hnName;
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnName);
+
+            return View("NetworkDetails", model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SelectNetworkDetail([FromQuery] string hnid, [FromQuery] NetworkDetailsType networkDetailId)
+        {
+            _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, hnid.ToUpper());
+            switch (networkDetailId)
+            {
+                case NetworkDetailsType.NetworkElements:
+                    return RedirectToAction("SelectNetworkElements", "NetworkElements");
+                case NetworkDetailsType.Soa:
+                    return RedirectToAction("UnderstandingSoa", "ElementSoa");                
+                default:
+                    return BadRequest();
+            }
+
         }
 
     }

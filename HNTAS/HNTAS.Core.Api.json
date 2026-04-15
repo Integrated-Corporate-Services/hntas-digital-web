@@ -10,6 +10,214 @@
     }
   ],
   "paths": {
+    "/api/arms/v1/hn/kpis": {
+      "post": {
+        "tags": [
+          "Arms"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiSubmissionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiSubmissionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiSubmissionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Assessor/search": {
+      "get": {
+        "tags": [
+          "Assessor"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssessorSearchResult"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssessorSearchResult"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssessorSearchResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Audit/heat-network-audit-logs": {
+      "get": {
+        "tags": [
+          "Audit"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditLogRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditLogRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditLogRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditLogResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditLogResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditLogResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/CarbonCalculator/run": {
       "post": {
         "tags": [
@@ -96,6 +304,55 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/Import/upload-csv": {
+      "post": {
+        "tags": [
+          "Import"
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ContentType": {
+                    "type": "string"
+                  },
+                  "ContentDisposition": {
+                    "type": "string"
+                  },
+                  "Headers": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "Length": {
+                    "type": "integer",
+                    "format": "int64"
+                  },
+                  "Name": {
+                    "type": "string"
+                  },
+                  "FileName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -354,6 +611,62 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/HeatNetworks/network-elements": {
+      "put": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkElements2"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkElements2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
           "200": {
             "description": "OK",
             "content": {
@@ -394,8 +707,8 @@
               }
             }
           },
-          "409": {
-            "description": "Conflict",
+          "404": {
+            "description": "Not Found",
             "content": {
               "text/plain": {
                 "schema": {
@@ -416,6 +729,286 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/HeatNetworks/network-details-document-update": {
+      "patch": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/heat-networks": {
+      "get": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/heat-network/{hnId}": {
+      "get": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetworkExternalResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetworkExternalResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeatNetworkExternalResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/heat-networks/search": {
+      "get": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "parameters": [
+          {
+            "name": "from_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkExternalResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/HNDataImportExport/hn-users-orgs": {
+      "get": {
+        "tags": [
+          "HNDataImportExport"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/HNDataImportExport/hn-users-orgs.csv": {
+      "get": {
+        "tags": [
+          "HNDataImportExport"
+        ],
+        "parameters": [
+          {
+            "name": "take",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -1718,24 +2311,156 @@
         }
       }
     },
-    "/api/SOA/{hnId}": {
-      "delete": {
+    "/api/SOA/update-soa-status": {
+      "patch": {
         "tags": [
           "SOA"
         ],
-        "parameters": [
-          {
-            "name": "hnId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaStatusUpdateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaStatusUpdateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaStatusUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
             }
           }
+        }
+      },
+      "put": {
+        "tags": [
+          "SOA"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SOA/soa-assign-assessor": {
+      "patch": {
+        "tags": [
+          "SOA"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaAssignAssessorRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaAssignAssessorRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElementSoaAssignAssessorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -1780,37 +2505,47 @@
         }
       }
     },
-    "/api/SOA/update-soa-status": {
-      "put": {
+    "/api/SOA/{hnId}": {
+      "delete": {
         "tags": [
           "SOA"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSoaStatusRequest"
-              }
+        "parameters": [
+          {
+            "name": "hnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
-          },
-          "required": true
-        },
+          }
+        ],
         "responses": {
           "204": {
             "description": "No Content"
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2926,6 +3661,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "networkManagersOnly",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -3260,6 +4003,205 @@
           }
         }
       },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "addressLine1": {
+            "type": "string"
+          },
+          "addressLine2": {
+            "type": "string",
+            "nullable": true
+          },
+          "town": {
+            "type": "string",
+            "nullable": true
+          },
+          "county": {
+            "type": "string",
+            "nullable": true
+          },
+          "postcode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AssessmentPlan": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "documents": {
+            "type": "array",
+            "items": { }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "AssessmentPlanResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "documents": {
+            "type": "array",
+            "items": { }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "AssessorSearchResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "fullNameWithEmail": {
+            "type": "string"
+          }
+        }
+      },
+      "AuditLog": {
+        "type": "object",
+        "properties": {
+          "entryType": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "elementName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phase": {
+            "type": "string",
+            "nullable": true
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AuditLogRequest": {
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "sortBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortDirection": {
+            "type": "string",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AuditLogResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuditLog"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          },
+          "hnId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "Background": {
         "type": "object",
         "properties": {
@@ -3546,11 +4488,212 @@
           }
         }
       },
+      "DesignConstructionLog": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "documents": {
+            "type": "array",
+            "items": { }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "DesignConstructionLogResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "documents": {
+            "type": "array",
+            "items": { }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
       "DocumentType": {
         "enum": [
           "Assessment",
           "Assessor",
-          "Certifier"
+          "Certifier",
+          "MeteringAndMonitoringStrategy",
+          "AssessmentPlan",
+          "DesignConstructionLog",
+          "Soa"
+        ]
+      },
+      "ECDetails": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        }
+      },
+      "ECDetails2": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "Element": {
+        "type": "object",
+        "properties": {
+          "elementId": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementType": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
+          },
+          "networkElementInstanceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "soaStages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SoaStages"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "ElementSoaAssignAssessorRequest": {
+        "type": "object",
+        "properties": {
+          "elementIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assessorEmail": {
+            "type": "string"
+          },
+          "assessorFirstName": {
+            "type": "string"
+          },
+          "assessorLastName": {
+            "type": "string"
+          },
+          "assessment": {
+            "type": "string"
+          },
+          "hnId": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "ElementSoaStatusUpdateRequest": {
+        "required": [
+          "hnId"
+        ],
+        "type": "object",
+        "properties": {
+          "stage": {
+            "$ref": "#/components/schemas/SoaStage"
+          },
+          "elementId": {
+            "type": "string",
+            "nullable": true
+          },
+          "soaStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementSoaStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "soaStatusUpdatedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "hnId": {
+            "type": "string"
+          },
+          "soaPhase": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ElementType": {
+        "enum": [
+          "EnergyCentre",
+          "Substation",
+          "DistrictDistribution",
+          "CommunalDistribution",
+          "ConsumerConnection"
         ]
       },
       "Energy": {
@@ -3640,6 +4783,20 @@
           }
         }
       },
+      "EnergyCentreDetails": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "string"
+          },
+          "longitude": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
       "EnumItemResponse": {
         "type": "object",
         "properties": {
@@ -3662,21 +4819,53 @@
             "type": "string",
             "nullable": true
           },
+          "uHnId": {
+            "type": "string",
+            "nullable": true
+          },
           "hnId": {
             "type": "string",
             "nullable": true
           },
-          "location": {
-            "type": "string"
-          },
           "name": {
             "type": "string"
+          },
+          "hnDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/RegisteredAddress"
+          },
+          "ecDetails": {
+            "$ref": "#/components/schemas/ECDetails2"
           },
           "pathway": {
             "type": "string"
           },
+          "registrationSource": {
+            "$ref": "#/components/schemas/RegistrationSource"
+          },
+          "heatNetworkType": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "heatNetworkConnections": {
+            "$ref": "#/components/schemas/HeatNetworkConnections"
+          },
+          "networkElements": {
+            "$ref": "#/components/schemas/NetworkElements"
+          },
           "soa": {
             "$ref": "#/components/schemas/Soa"
+          },
+          "meteringAndMonitoringStrategy": {
+            "$ref": "#/components/schemas/MeteringAndMonitoringStrategy"
+          },
+          "assessmentPlan": {
+            "$ref": "#/components/schemas/AssessmentPlan"
+          },
+          "designConstructionLog": {
+            "$ref": "#/components/schemas/DesignConstructionLog"
           },
           "createdBy": {
             "type": "string"
@@ -3684,14 +4873,63 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "phase": {
+            "type": "string"
           }
         }
+      },
+      "HeatNetworkConnections": {
+        "type": "object",
+        "properties": {
+          "isCommunalBuilding": {
+            "type": "boolean"
+          },
+          "noOfCommunalBuilding": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isDomesticConsumer": {
+            "type": "boolean"
+          },
+          "noOfDomesticConsumer": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isNonDomesticConsumer": {
+            "type": "boolean"
+          },
+          "noOfNonDomesticConsumer": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isDownstreamDistrictHeatNetworkConnections": {
+            "type": "boolean"
+          },
+          "noOfDownstreamDistrictHeatNetworkConnections": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isUpstreamDistrictHeatNetworkConnections": {
+            "type": "boolean"
+          },
+          "noOfUpstreamDistrictHeatNetworkConnections": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "nullable": true
       },
       "HeatNetworkElement": {
         "type": "object",
         "properties": {
           "name": {
-            "$ref": "#/components/schemas/HeatNetworkElementType"
+            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
           },
           "count": {
             "type": "integer",
@@ -3710,6 +4948,15 @@
             }
           }
         }
+      },
+      "HeatNetworkElementDisplayType": {
+        "enum": [
+          "EnergyCentre",
+          "Substation",
+          "DistrictDistributionNetwork",
+          "CommunalDistributionNetwork",
+          "ConsumerConnections"
+        ]
       },
       "HeatNetworkElementResponse": {
         "type": "object",
@@ -3735,15 +4982,41 @@
           }
         }
       },
-      "HeatNetworkElementType": {
-        "enum": [
-          "EnergyCentre",
-          "DistributionNetwork",
-          "ThermalSubStation",
-          "CommunalDistributionNetwork",
-          "ConsumerConnections",
-          "ConsumerHeatSystems"
-        ]
+      "HeatNetworkExternalResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "hnId": {
+            "type": "string"
+          },
+          "hnName": {
+            "type": "string"
+          },
+          "registrationSource": {
+            "type": "string"
+          },
+          "energyCentre": {
+            "$ref": "#/components/schemas/EnergyCentreDetails"
+          },
+          "pathway": {
+            "type": "string"
+          },
+          "soa": {
+            "$ref": "#/components/schemas/SoaResponse2"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "rpDetails": {
+            "$ref": "#/components/schemas/OrgDetails"
+          }
+        }
       },
       "HeatNetworkInfo": {
         "type": "object",
@@ -3762,31 +5035,68 @@
           "id": {
             "type": "string"
           },
+          "uHnId": {
+            "type": "string"
+          },
           "hnId": {
             "type": "string"
           },
-          "location": {
-            "type": "string"
+          "ecDetails": {
+            "$ref": "#/components/schemas/ECDetails"
+          },
+          "address": {
+            "$ref": "#/components/schemas/RegisteredAddress"
           },
           "name": {
             "type": "string"
+          },
+          "hnDescription": {
+            "type": "string",
+            "nullable": true
           },
           "pathway": {
             "type": "string"
           },
           "soa": {
             "$ref": "#/components/schemas/SoaResponse"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "phase": {
+            "type": "string",
+            "nullable": true
+          },
+          "heatNetworkType": {
+            "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "heatNetworkConnections": {
+            "$ref": "#/components/schemas/HeatNetworkConnections"
+          },
+          "networkElements": {
+            "$ref": "#/components/schemas/NetworkElementsResponse"
+          },
+          "meteringAndMonitoringStrategy": {
+            "$ref": "#/components/schemas/MeteringAndMonitoringStrategyResponse"
+          },
+          "assessmentPlan": {
+            "$ref": "#/components/schemas/AssessmentPlanResponse"
+          },
+          "designConstructionLog": {
+            "$ref": "#/components/schemas/DesignConstructionLogResponse"
           }
         }
       },
       "HeatNetworkType": {
         "enum": [
-          "CityScaleDistrictHeatingNetwork",
-          "DevelopmentLedDistrictHeatingNetwork",
-          "LargeCommunalHeatNetwork",
-          "MediumCommunalHeatNetwork",
-          "SmallCommunalHeatNetwork",
-          "Other"
+          "CommunalWithIntegralEC",
+          "CommunalWithSeparateUpstreamHN",
+          "DistrictWithOwnEC",
+          "DistrictWithSeparateUpstreamHN"
         ]
       },
       "HeatNetworkUserResponse": {
@@ -3798,8 +5108,11 @@
           "name": {
             "type": "string"
           },
-          "location": {
-            "type": "string"
+          "ecDetails": {
+            "$ref": "#/components/schemas/ECDetails2"
+          },
+          "address": {
+            "$ref": "#/components/schemas/RegisteredAddress"
           }
         }
       },
@@ -4017,6 +5330,82 @@
         },
         "nullable": true
       },
+      "KpiMetadata": {
+        "required": [
+          "network_id",
+          "period_start"
+        ],
+        "type": "object",
+        "properties": {
+          "network_id": {
+            "type": "string"
+          },
+          "period_start": {
+            "type": "string"
+          },
+          "source_system": {
+            "type": "string",
+            "nullable": true
+          },
+          "additional_details": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "KpiSubmissionRequest": {
+        "required": [
+          "meta_data"
+        ],
+        "type": "object",
+        "properties": {
+          "meta_data": {
+            "$ref": "#/components/schemas/KpiMetadata"
+          },
+          "consumer_connection_aggregated_kpis": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/KpiValueAggregated"
+            },
+            "nullable": true
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkElement"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "KpiValue": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "is_kpi_imputed": {
+            "type": "boolean"
+          },
+          "kpi_imputation_details": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "KpiValueAggregated": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "ManagedUserResponse": {
         "type": "object",
         "properties": {
@@ -4052,6 +5441,249 @@
             "nullable": true
           }
         }
+      },
+      "MeteringAndMonitoringStrategy": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "MeteringAndMonitoringStrategyResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkDetailsUploadedDocument"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkDetailsStatus": {
+        "enum": [
+          "InProgress",
+          "Submitted",
+          "Complete",
+          "Archived",
+          "ReadyToStart",
+          "CannotStartYet",
+          "Incomplete"
+        ]
+      },
+      "NetworkDetailsUploadDocumentRequest": {
+        "required": [
+          "hnId",
+          "uploadedBy",
+          "fileName",
+          "s3Key",
+          "documentType"
+        ],
+        "type": "object",
+        "properties": {
+          "hnId": {
+            "type": "string"
+          },
+          "uploadedBy": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "documentType": {
+            "$ref": "#/components/schemas/DocumentType"
+          }
+        }
+      },
+      "NetworkDetailsUploadedDocument": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "s3Key": {
+            "type": "string"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uploadedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "NetworkElement": {
+        "required": [
+          "elementId",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "elementId": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ElementType"
+          },
+          "kpis": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/KpiValue"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "NetworkElements": {
+        "type": "object",
+        "properties": {
+          "networkElementStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "elementSoaStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Element"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "NetworkElements2": {
+        "type": "object",
+        "properties": {
+          "networkElementStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "elementSoaStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Element"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "NetworkElementsResponse": {
+        "type": "object",
+        "properties": {
+          "networkElementStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "elementSoaStatus": {
+            "$ref": "#/components/schemas/NetworkDetailsStatus"
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Element"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
       },
       "NetworkTypeResponse": {
         "type": "object",
@@ -4118,10 +5750,8 @@
         "enum": [
           "ResponsiblePerson",
           "Coordinator",
+          "DesignatedDutyHolder",
           "Contributor",
-          "Designer",
-          "Contractor",
-          "Operator",
           "Assessor",
           "Certifier",
           null
@@ -4149,7 +5779,7 @@
             "type": "string"
           },
           "registeredAddress": {
-            "$ref": "#/components/schemas/RegisteredAddress"
+            "$ref": "#/components/schemas/RegisteredAddress2"
           },
           "hnIds": {
             "type": "array",
@@ -4198,7 +5828,7 @@
             "$ref": "#/components/schemas/OrganisationType"
           },
           "registeredAddress": {
-            "$ref": "#/components/schemas/RegisteredAddress"
+            "$ref": "#/components/schemas/RegisteredAddress2"
           }
         }
       },
@@ -4219,7 +5849,7 @@
             "$ref": "#/components/schemas/OrganisationType"
           },
           "registeredAddress": {
-            "$ref": "#/components/schemas/RegisteredAddress"
+            "$ref": "#/components/schemas/RegisteredAddress2"
           }
         },
         "nullable": true
@@ -4230,6 +5860,23 @@
           "OtherUkOrganisation",
           "OverseasOrganisation"
         ]
+      },
+      "OrgDetails": {
+        "type": "object",
+        "properties": {
+          "orgId": {
+            "type": "string"
+          },
+          "orgName": {
+            "type": "string"
+          },
+          "emailId": {
+            "type": "string"
+          },
+          "orgAddress": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
       },
       "ProblemDetails": {
         "type": "object",
@@ -4337,7 +5984,45 @@
             "type": "string",
             "nullable": true
           }
+        },
+        "nullable": true
+      },
+      "RegisteredAddress2": {
+        "required": [
+          "addressLine1",
+          "postcode"
+        ],
+        "type": "object",
+        "properties": {
+          "addressLine1": {
+            "type": "string"
+          },
+          "addressLine2": {
+            "type": "string",
+            "nullable": true
+          },
+          "town": {
+            "type": "string",
+            "nullable": true
+          },
+          "county": {
+            "type": "string",
+            "nullable": true
+          },
+          "postcode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          }
         }
+      },
+      "RegistrationSource": {
+        "enum": [
+          "HNTAS",
+          "OFGEM"
+        ]
       },
       "SendInvitationEmailRequest": {
         "required": [
@@ -4356,6 +6041,9 @@
           "status": {
             "$ref": "#/components/schemas/SoaStatus"
           },
+          "journeyData": {
+            "$ref": "#/components/schemas/SoaJourneyData"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4371,9 +6059,6 @@
           "updatedBy": {
             "type": "string",
             "nullable": true
-          },
-          "journeyData": {
-            "$ref": "#/components/schemas/SoaJourneyData"
           }
         },
         "nullable": true
@@ -4384,6 +6069,9 @@
           "status": {
             "$ref": "#/components/schemas/SoaStatus"
           },
+          "journeyData": {
+            "$ref": "#/components/schemas/SoaJourneyData"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4399,11 +6087,29 @@
           "updatedBy": {
             "type": "string",
             "nullable": true
-          },
-          "journeyData": {
-            "$ref": "#/components/schemas/SoaJourneyData"
           }
         }
+      },
+      "SoaAssessor": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "assessment": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/UserStatus"
+          }
+        },
+        "nullable": true
       },
       "SoaJourneyData": {
         "type": "object",
@@ -4454,6 +6160,9 @@
           "status": {
             "$ref": "#/components/schemas/SoaStatus"
           },
+          "journeyData": {
+            "$ref": "#/components/schemas/JourneyDataResponse"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4470,19 +6179,63 @@
           "updatedBy": {
             "type": "string",
             "nullable": true
-          },
-          "journeyData": {
-            "$ref": "#/components/schemas/JourneyDataResponse"
           }
         },
         "nullable": true
+      },
+      "SoaResponse2": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "SoaStage": {
+        "enum": [
+          "Stage1",
+          "Stage2",
+          "Stage3",
+          "Stage4",
+          "Stage5",
+          "Stage6",
+          "Stage7",
+          "Stage8"
+        ]
+      },
+      "SoaStages": {
+        "type": "object",
+        "properties": {
+          "stageId": {
+            "$ref": "#/components/schemas/NullableOfSoaStage"
+          },
+          "soaStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "soaStatusUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "soaStatusUpdatedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "assessor": {
+            "$ref": "#/components/schemas/SoaAssessor"
+          }
+        }
       },
       "SoaStatus": {
         "enum": [
           "InProgress",
           "Submitted",
           "Complete",
-          "Archived"
+          "Archived",
+          "ReadyToStart",
+          "CannotStartYet",
+          "Incomplete"
         ]
       },
       "UpdateConnectionsRequest": {
@@ -4510,8 +6263,8 @@
       },
       "UpdateDocumentRequest": {
         "required": [
-          "hnId",
           "phase",
+          "hnId",
           "uploadedBy",
           "fileName",
           "s3Key",
@@ -4519,14 +6272,14 @@
         ],
         "type": "object",
         "properties": {
-          "hnId": {
-            "type": "string"
-          },
           "phase": {
             "$ref": "#/components/schemas/SoaPhase"
           },
           "stage": {
             "$ref": "#/components/schemas/NullableOfSoaStage"
+          },
+          "hnId": {
+            "type": "string"
           },
           "uploadedBy": {
             "type": "string"
@@ -4549,7 +6302,7 @@
             "type": "string"
           },
           "elementType": {
-            "$ref": "#/components/schemas/HeatNetworkElementType"
+            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
           },
           "updatedBy": {
             "type": "string"
@@ -4578,7 +6331,7 @@
             "type": "string"
           },
           "elementType": {
-            "$ref": "#/components/schemas/HeatNetworkElementType"
+            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
           },
           "locations": {
             "minItems": 1,
@@ -5026,10 +6779,8 @@
         "enum": [
           "ResponsiblePerson",
           "Coordinator",
+          "DesignatedDutyHolder",
           "Contributor",
-          "Designer",
-          "Contractor",
-          "Operator",
           "Assessor",
           "Certifier"
         ]
@@ -5059,10 +6810,54 @@
           "InvitationAccepted",
           "InvitationDeclined"
         ]
+      },
+      "ValidationProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
       }
     }
   },
   "tags": [
+    {
+      "name": "Arms"
+    },
+    {
+      "name": "Assessor"
+    },
+    {
+      "name": "Audit"
+    },
     {
       "name": "CarbonCalculator"
     },
@@ -5070,7 +6865,13 @@
       "name": "CountriesAndTerritories"
     },
     {
+      "name": "Import"
+    },
+    {
       "name": "HeatNetworks"
+    },
+    {
+      "name": "HNDataImportExport"
     },
     {
       "name": "Invitations"

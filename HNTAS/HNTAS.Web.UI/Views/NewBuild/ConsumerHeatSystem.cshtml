@@ -1,0 +1,118 @@
+﻿@using HNTAS.Web.UI.Models
+@model HntasElementDocumentsLinksViewModel
+
+@{
+    ViewData["Title"] = "Consumer Heat System (CH)";
+    var overviewPdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Overview for Technical Specification",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bf99fadb5707d9f33d6a2/draft-hntas-technical-specification-consumer-heat-system-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 353,
+            NumberOfPages = 17
+        },
+        new PdfRow
+        {
+            PdfTitle = "Overview for Assessment Procedures",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693aef1ac72b0f8ccf33d659/draft-hntas-assessment-procedure-consumer-heat-system-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 424,
+            NumberOfPages = 29
+        }
+    };
+    var phase1Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 1: Feasibility",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bf9f56a12691d48491ec9/draft-hntas-new-build-technical-specification-consumer-heat-system-phase-1.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 443,
+            NumberOfPages = 16
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 1: Feasibility",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693aef2eadb5707d9f33d65c/draft-hntas-new-build-assessment-procedure-consumer-heat-system-phase-1.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 415,
+            NumberOfPages = 13
+        }
+    };
+    var phase2Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 2: Design",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bfa086a12691d48491eca/draft-hntas-new-build-technical-specification-consumer-heat-system-phase-2.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 526,
+            NumberOfPages = 25
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 2: Design",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693aef4a5cc812f50aa42078/draft-hntas-new-build-assessment-procedure-consumer-heat-system-phase-2.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 435,
+            NumberOfPages = 15
+        }
+    };
+    var phase3Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 3: Construction",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693bfa1f6a12691d48491ecb/draft-hntas-new-build-technical-specification-consumer-heat-system-phase-3.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 933,
+            NumberOfPages = 37
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 3: Construction",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693aef646a12691d48491e72/draft-hntas-new-build-assessment-procedure-consumer-heat-system-phase-3.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 475,
+            NumberOfPages = 21
+        }
+    };
+    var phase4Pdfs = new List<PdfRow>();
+
+    var pageData = new HntasElementDocumentsLinksViewModel
+    {
+        ElementName = "Consumer Heat System (CH)",
+        Description = "The Consumer Heat System includes the elements within an individual dwelling or premises that use heat supplied by the network. This covers radiators, underfloor heating systems, hot water cylinders and internal controls.",
+        DocumentListSections = new List<DocumentListSection>
+        {
+            new DocumentListSection
+            {
+                SectionName = "Overview",
+                SectionId = "overview",
+                PdfRows = overviewPdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 1: Feasibility",
+                SectionId = "phase-1",
+                PdfRows = phase1Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 2: Design",
+                SectionId = "phase-2",
+                PdfRows = phase2Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 3: Construction",
+                SectionId = "phase-3",
+                PdfRows = phase3Pdfs
+            }            
+        }
+    };
+}
+
+@await Html.PartialAsync("_DocumentLibraryDocLinks", pageData)

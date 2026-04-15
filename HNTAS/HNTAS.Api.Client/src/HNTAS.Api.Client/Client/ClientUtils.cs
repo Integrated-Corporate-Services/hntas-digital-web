@@ -117,12 +117,16 @@ namespace HNTAS.Api.Client.Client
                 return ContributorRoleValueConverter.ToJsonValue(contributorRole);
             if (obj is DocumentType documentType)
                 return DocumentTypeValueConverter.ToJsonValue(documentType);
-            if (obj is HeatNetworkElementType heatNetworkElementType)
-                return HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElementType);
+            if (obj is ElementType elementType)
+                return ElementTypeValueConverter.ToJsonValue(elementType);
+            if (obj is HeatNetworkElementDisplayType heatNetworkElementDisplayType)
+                return HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(heatNetworkElementDisplayType);
             if (obj is HeatNetworkType heatNetworkType)
                 return HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType);
             if (obj is InvitationStatus invitationStatus)
                 return InvitationStatusValueConverter.ToJsonValue(invitationStatus);
+            if (obj is NetworkDetailsStatus networkDetailsStatus)
+                return NetworkDetailsStatusValueConverter.ToJsonValue(networkDetailsStatus);
             if (obj is NullableOfPreferredContactType nullableOfPreferredContactType)
                 return NullableOfPreferredContactTypeValueConverter.ToJsonValue(nullableOfPreferredContactType);
             if (obj is NullableOfSoaStage nullableOfSoaStage)
@@ -131,8 +135,12 @@ namespace HNTAS.Api.Client.Client
                 return NullableOfUserRoleValueConverter.ToJsonValue(nullableOfUserRole);
             if (obj is OrganisationType organisationType)
                 return OrganisationTypeValueConverter.ToJsonValue(organisationType);
+            if (obj is RegistrationSource registrationSource)
+                return RegistrationSourceValueConverter.ToJsonValue(registrationSource);
             if (obj is SoaPhase soaPhase)
                 return SoaPhaseValueConverter.ToJsonValue(soaPhase);
+            if (obj is SoaStage soaStage)
+                return SoaStageValueConverter.ToJsonValue(soaStage);
             if (obj is SoaStatus soaStatus)
                 return SoaStatusValueConverter.ToJsonValue(soaStatus);
             if (obj is UserRole userRole)

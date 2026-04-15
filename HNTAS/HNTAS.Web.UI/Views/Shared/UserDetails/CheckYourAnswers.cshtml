@@ -1,7 +1,7 @@
 ﻿@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.Enums
 @using HNTAS.Web.UI.Models.User
-@model CheckYourAnswersModel
+@model CheckYourAnswersOrganisationModel
 
 @{
     ViewData["Title"] = "Check your answers";
@@ -32,10 +32,10 @@
         }
     }
 
-    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmDeclaration)) &&
-                                ViewData.ModelState[nameof(Model.ConfirmDeclaration)].Errors.Any();
+    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) &&
+                                ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
 
-    var fieldName = nameof(Model.ConfirmDeclaration).ToLowerInvariant();
+    var fieldName = nameof(Model.ConfirmedDeclaration).ToLowerInvariant();
 }
 
 <div class="govuk-width-container">

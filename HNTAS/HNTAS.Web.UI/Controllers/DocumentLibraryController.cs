@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HNTAS.Web.UI.Helpers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -6,17 +7,16 @@ namespace HNTAS.Web.UI.Controllers
     {
         public IActionResult NewBuild()
         {
-            return View();
+            return RedirectToAction("Index", "NewBuild");
         }
-
         public IActionResult ExistingBuild()
-        {
-            return View();
+        {            
+            return RedirectToAction("Index", "ExistingBuild");
         }
-
         public IActionResult CertifiedBuild()
         {
+            this.ShowBackButton("DocumentLibrary", "Home");
             return View();
-        }
+        }        
     }
 }

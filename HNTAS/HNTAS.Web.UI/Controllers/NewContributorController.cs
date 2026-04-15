@@ -1,5 +1,6 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
@@ -18,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = SecurityConstants.Policies.CanAddDDHAndContributor)]
     public class NewContributorController : Controller
     {
         private readonly IWorkflowManager _workflowManager;
@@ -45,7 +46,6 @@ namespace HNTAS.Web.UI.Controllers
             _iInvitationTokenService = invitationTokenService;
             _invitationService = invitationService;
         }
-
 
         [HttpGet]
         public IActionResult AddEmailAddress()
@@ -242,14 +242,14 @@ namespace HNTAS.Web.UI.Controllers
             {
                 _logger.LogError("No contributor roles found in API.");
                 TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later.";
-                return View("Contributors/ChooseRole", model);
+                return View("Contributor/ChooseRole", model);
             }
             model.Roles = roles;
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("ChooseRole");
                 ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-                return View("Contributors/ChooseRole", model);
+                return View("Contributor/ChooseRole", model);
             }
 
             model.SelectedRoleName = model.Roles
@@ -314,6 +314,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var selectedContributorRole = (ContributorRole)Convert.ToInt32(state.Data.ChooseRoleModel.SelectedRoleId);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
 
             try
             {
@@ -325,6 +326,7 @@ namespace HNTAS.Web.UI.Controllers
                            lastName: state.Data.ContributorContactDetailsModel.LastName,
                            hnId: state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId,
                            contributorRoles: new List<ContributorRole> { selectedContributorRole },
+                           orgId: orgId,
                            replacedUserId: state.Data.ReplaceUserRoleViewModel != null ? state.Data.ReplaceUserRoleViewModel.CurrentRoleUserId : null,
                            rolesToReplace: new List<ContributorRole> { selectedContributorRole },
                            status: InvitationStatus.Invited

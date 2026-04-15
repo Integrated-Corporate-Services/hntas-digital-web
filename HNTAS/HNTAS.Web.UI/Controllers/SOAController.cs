@@ -75,10 +75,10 @@ namespace HNTAS.Web.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitHeatNetworkTypeAsync(HeatNetworkTypeViewModel model)
         {
-            if (model.SelectedHNType == ApiHeatNetworkType.Other && string.IsNullOrWhiteSpace(model.OtherNetworkDescription))
-            {
-                ModelState.AddModelError(nameof(model.OtherNetworkDescription), "Please describe your network type.");
-            }
+            //if (model.SelectedHNType == ApiHeatNetworkType.Other && string.IsNullOrWhiteSpace(model.OtherNetworkDescription))
+            //{
+            //    ModelState.AddModelError(nameof(model.OtherNetworkDescription), "Please describe your network type.");
+            //}
 
             if (!ModelState.IsValid)
             {
@@ -244,14 +244,10 @@ namespace HNTAS.Web.UI.Controllers
                 });
             }
 
-            var orderedTypes = new List<HeatNetworkElementType>
+            var orderedTypes = new List<HeatNetworkElementDisplayType>
             {
-                HeatNetworkElementType.EnergyCentre,
-                HeatNetworkElementType.DistributionNetwork,
-                HeatNetworkElementType.ThermalSubStation,
-                HeatNetworkElementType.CommunalDistributionNetwork,
-                HeatNetworkElementType.ConsumerConnections,
-                HeatNetworkElementType.ConsumerHeatSystems
+                HeatNetworkElementDisplayType.EnergyCentre,
+                HeatNetworkElementDisplayType.ConsumerConnections,
             };
 
             var elements = new List<ElementListItem>();
@@ -511,7 +507,7 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        private List<DocumentUploadModel> BuildDocumentInputsForElement(HeatNetworkElementType elementId, int count)
+        private List<DocumentUploadModel> BuildDocumentInputsForElement(HeatNetworkElementDisplayType elementId, int count)
         {
             var elementLabel = Utility.GetElementOptions().FirstOrDefault(x => x.Id == elementId)?.Label;
 
@@ -800,32 +796,32 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkOptions = new List<SelectItemOption>
             {
                 new() {
-                    Value = ApiHeatNetworkType.CityScaleDistrictHeatingNetwork.ToString(),
+                    //Value = ApiHeatNetworkType.CityScaleDistrictHeatingNetwork.ToString(),
                     Text = "City-scale district heating network (CSDH)",
                     Hint = "Connects multiple buildings independently, with third-party connections."
                 },
                 new() {
-                    Value = ApiHeatNetworkType.DevelopmentLedDistrictHeatingNetwork.ToString(),
+                    //Value = ApiHeatNetworkType.DevelopmentLedDistrictHeatingNetwork.ToString(),
                     Text = "Development led district heating network (DLDH)",
                     Hint = "Constructed simultaneously with wider building works."
                 },
                 new() {
-                    Value = ApiHeatNetworkType.LargeCommunalHeatNetwork.ToString(),
+                    //Value = ApiHeatNetworkType.LargeCommunalHeatNetwork.ToString(),
                     Text = "Large communal heat network (c.300 consumers)",
                     Hint = "Serves multiple buildings within one development."
                 },
                 new() {
-                    Value = ApiHeatNetworkType.MediumCommunalHeatNetwork.ToString(),
+                    //Value = ApiHeatNetworkType.MediumCommunalHeatNetwork.ToString(),
                     Text = "Medium communal heat network (c.100 consumers)",
                     Hint = "Serves multiple buildings within one development."
                 },
                 new() {
-                    Value = ApiHeatNetworkType.SmallCommunalHeatNetwork.ToString(),
+                    //Value = ApiHeatNetworkType.SmallCommunalHeatNetwork.ToString(),
                     Text = "Small communal heat network (c.50 consumers)",
                     Hint = "Serves consumers within a single building."
                 },
                 new() {
-                    Value = ApiHeatNetworkType.Other.ToString(),
+                    //Value = ApiHeatNetworkType.Other.ToString(),
                     Text = "Other"
                 }
             };

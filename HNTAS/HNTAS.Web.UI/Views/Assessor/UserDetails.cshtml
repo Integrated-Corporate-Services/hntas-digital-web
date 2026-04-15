@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "User Details";
     var heatNetworkNames = new List<string> { };
-    foreach(var hn in Model?.HeatNetworks)
+    foreach(var hn in Model?.HeatNetworks!)
     {
         heatNetworkNames.Add(hn.Name);
     }
@@ -14,7 +14,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <h1 class="govuk-heading-l">
-            <span class="govuk-caption-xl">@Model.Organisation.Name</span>
+            <span class="govuk-caption-xl">@Model?.Organisation?.Name</span>
             User Details
         </h1>
 

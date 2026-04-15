@@ -6,8 +6,6 @@ namespace HNTAS.Web.UI.Models
 {
     public class OrganisationModel
     {
-
-
         // This list will hold the display text and value for each radio button
         public List<SelectListItem> OrganisationTypes { get; set; } = new List<SelectListItem>();
 

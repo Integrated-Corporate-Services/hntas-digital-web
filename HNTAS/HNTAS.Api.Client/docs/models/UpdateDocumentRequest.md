@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**HnId** | **string** |  | 
 **Phase** | **SoaPhase** |  | 
+**HnId** | **string** |  | 
 **UploadedBy** | **string** |  | 
 **FileName** | **string** |  | 
 **S3Key** | **string** |  | 

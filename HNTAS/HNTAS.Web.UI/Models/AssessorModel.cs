@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.Soa;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,7 +17,7 @@ namespace HNTAS.Web.UI.Models
     {
         public string HnId;
         public string HnName;
-        public string HnLocation;
+        public AddressByStreetOrTownModel Address;
         public string OrganisationName;
         public List<SelectedElement> HeatNetworkElements { get; set; }
         public int CurrentPhaseIndex;

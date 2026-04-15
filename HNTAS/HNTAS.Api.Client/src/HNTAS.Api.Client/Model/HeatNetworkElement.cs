@@ -38,7 +38,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="locations">locations</param>
         /// <param name="documents">documents</param>
         [JsonConstructor]
-        public HeatNetworkElement(Option<HeatNetworkElementType?> name = default, Option<int?> count = default, Option<List<string>?> locations = default, Option<List<UploadedDocument>?> documents = default)
+        public HeatNetworkElement(Option<HeatNetworkElementDisplayType?> name = default, Option<int?> count = default, Option<List<string>?> locations = default, Option<List<UploadedDocument>?> documents = default)
         {
             NameOption = name;
             CountOption = count;
@@ -54,13 +54,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<HeatNetworkElementType?> NameOption { get; private set; }
+        public Option<HeatNetworkElementDisplayType?> NameOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
         [JsonPropertyName("name")]
-        public HeatNetworkElementType? Name { get { return this.NameOption; } set { this.NameOption = new(value); } }
+        public HeatNetworkElementDisplayType? Name { get { return this.NameOption; } set { this.NameOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Count
@@ -150,7 +150,7 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<HeatNetworkElementType?> name = default;
+            Option<HeatNetworkElementDisplayType?> name = default;
             Option<int?> count = default;
             Option<List<string>?> locations = default;
             Option<List<UploadedDocument>?> documents = default;
@@ -173,7 +173,7 @@ namespace HNTAS.Api.Client.Model
                         case "name":
                             string? nameRawValue = utf8JsonReader.GetString();
                             if (nameRawValue != null)
-                                name = new Option<HeatNetworkElementType?>(HeatNetworkElementTypeValueConverter.FromStringOrDefault(nameRawValue));
+                                name = new Option<HeatNetworkElementDisplayType?>(HeatNetworkElementDisplayTypeValueConverter.FromStringOrDefault(nameRawValue));
                             break;
                         case "count":
                             count = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
@@ -237,7 +237,7 @@ namespace HNTAS.Api.Client.Model
 
             if (heatNetworkElement.NameOption.IsSet)
             {
-                var nameRawValue = HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElement.Name!.Value);
+                var nameRawValue = HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(heatNetworkElement.Name!.Value);
                 writer.WriteString("name", nameRawValue);
             }
             if (heatNetworkElement.CountOption.IsSet)

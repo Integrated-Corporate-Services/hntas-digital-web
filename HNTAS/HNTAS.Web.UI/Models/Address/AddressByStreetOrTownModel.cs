@@ -1,4 +1,5 @@
-﻿using HNTAS.Web.UI.Models.CompaniesHouse;
+﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Models.CompaniesHouse;
 using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models.Address
@@ -29,6 +30,18 @@ namespace HNTAS.Web.UI.Models.Address
                  TownOrCity = v.Locality,
                  Postalcode = v.PostalCode,
                  Country = v.Country                
+            };
+        }
+        public static implicit operator AddressByStreetOrTownModel(RegisteredAddress v)
+        {
+            if (v == null) return null!;
+            return new AddressByStreetOrTownModel
+            {
+                StreetAddress = v.AddressLine1,
+                TownOrCity = v.Town!,
+                Postalcode = v.Postcode!,
+                Country = v.Country!,
+                Fulladdress = $"{v.AddressLine1}, {v.Town}, {v.Postcode}, {v.Country}"
             };
         }
     }

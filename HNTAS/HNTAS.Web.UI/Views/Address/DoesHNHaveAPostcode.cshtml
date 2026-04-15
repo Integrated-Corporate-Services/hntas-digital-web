@@ -1,0 +1,91 @@
+﻿@using HNTAS.Web.UI.Models
+@model DoesHNHaveAPostcodeViewModel
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+        @if (ViewBag.HnId != null)
+        {
+            <span class="govuk-caption-xl">@ViewBag.HnId</span>
+        }
+    @* Error summary *@
+        <span class="govuk-caption-l">Add a heat network</span>
+    <form method="post" novalidate>
+        @Html.AntiForgeryToken()
+            
+        <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
+            <fieldset class="govuk-fieldset" aria-describedby="has-postcode-hint">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">@ViewBag.Heading</h1>
+                </legend>
+
+                    <div id="has-postcode-hint" class="govuk-hint">@ViewBag.Description</div>
+
+                @if (ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0)
+                {
+                    <p class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span>
+                        @ViewData.ModelState[nameof(Model.HasPostcode)].Errors.FirstOrDefault()?.ErrorMessage
+                    </p>
+                }
+
+                <div class="govuk-radios" data-module="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input"
+                               id="haspostcode-yes"
+                               name="HasPostcode"
+                               type="radio"
+                               value="true"
+                               @(Model.HasPostcode ? "checked" : "")
+                               data-aria-controls="conditional-haspostcode">
+                        <label class="govuk-label govuk-radios__label" for="haspostcode-yes">
+                            Yes
+                        </label>
+                    </div>
+
+                    <div class="govuk-radios__conditional @(Model.HasPostcode ? "" : "govuk-radios__conditional--hidden")" id="conditional-haspostcode">
+                        <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
+                            <label class="govuk-label" for="postcode">Postcode</label>
+                            <div id="postcode-hint" class="govuk-hint">For example, NG9 3JE</div>
+
+                            @if (ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0)
+                            {
+                                <p class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @ViewData.ModelState[nameof(Model.Postcode)].Errors.FirstOrDefault()?.ErrorMessage
+                                </p>
+                            }
+
+                            <input class="govuk-input govuk-!-width-one-half"
+                                   id="postcode"
+                                   name="Postcode"
+                                   type="text"
+                                   value="@(Model.Postcode ?? "")"
+                                   autocomplete="postal-code"
+                                   spellcheck="false">
+                        </div>
+                    </div>
+
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input"
+                               id="haspostcode-no"
+                               name="HasPostcode"
+                               type="radio"
+                               value="false"
+                               @(!Model.HasPostcode ? "checked" : "")>
+                        <label class="govuk-label govuk-radios__label" for="haspostcode-no">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <button class="govuk-button" data-module="govuk-button" type="submit">Continue</button>
+
+        <p class="govuk-body">
+            <a class="govuk-link" asp-controller="Address" asp-action="AddressManualEntry" asp-method="GET">Enter address manually</a>
+        </p>
+    </form>
+
+  </div>
+</div>

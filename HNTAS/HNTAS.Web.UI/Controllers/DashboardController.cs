@@ -2,9 +2,13 @@
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.CompaniesHouse;
+using HNTAS.Web.UI.Models.Enums;
+using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -14,13 +18,15 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ILogger<DashboardController> _logger;
         private readonly IUserService _userService;
         private readonly IHeatNetworksApi _heatNetworksApi;
+        private readonly IOrganisationService _organisationService;
         private readonly ISessionHelper _sessionHelper;
 
-        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworksApi heatNetworksApi, ISessionHelper sessionHelper)
+        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworksApi heatNetworksApi, IOrganisationService organisationService, ISessionHelper sessionHelper)
         {
             _logger = logger;
             _userService = userService;
             _heatNetworksApi = heatNetworksApi;
+            _organisationService = organisationService;
             _sessionHelper = sessionHelper;
         }
 
@@ -73,7 +79,7 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, user.Organisation.OrgId);
             }
-
+            
 
             var dashboardModel = new DashboardModel
             {
@@ -82,9 +88,16 @@ namespace HNTAS.Web.UI.Controllers
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
                 HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any()
             };
-
+            var managedUsers = await _userService.GetManagedUsers(user.Id);
+            if(dashboardModel.IsResponsiblePerson && managedUsers.Count <= 1 && !dashboardModel.HasHeatNetworks)
+            {
+                ViewBag.RPLoggedInForFirstTime = true;
+            }
+            else
+            {
+                ViewBag.RPLoggedInForFirstTime = false;
+            }                
             return View(dashboardModel);
-
         }
 
         [HttpGet]
@@ -128,6 +141,68 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, true);
             return RedirectToAction("OrganisationType", "Organisation");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> YourDetails()
+        {
+            this.ShowBackButton("UserAccount", "Dashboard");
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var user = await _userService.GetUserDetails(userId);
+
+            Organisation org;
+            OrganisationModel orgModel;
+            if (user.Organisation != null)
+            {
+                org = await _organisationService.GetOrganisationById(user.Organisation.OrgId);
+                orgModel = new OrganisationModel
+                {
+                    OrganisationTypes = new List<SelectListItem>(),
+                    SelectedOrganisationType = org.Type.ToString(),
+                    CompanyNumber = org.CompaniesHouseNumber,
+                    CompanyDetails = new Models.CompaniesHouse.CompanyDetailsModel
+                    {
+                        Title = org.Name,
+                        RegisteredOfficeAddress = new RegisteredOfficeAddressModel
+                        {
+                            AddressLine1 = org.RegisteredAddress.AddressLine1,
+                            AddressLine2 = org.RegisteredAddress.AddressLine2,
+                            Locality = org.RegisteredAddress.Town,
+                            PostalCode = org.RegisteredAddress.Postcode,
+                            Country = org.RegisteredAddress.Country
+                        }
+                    }
+
+                };
+            }
+            else
+            {
+                org = new Organisation();
+                orgModel = new OrganisationModel();
+            }
+
+            var model = new OrganisationContactDetailsModel
+            {
+                EmailAddress = user.EmailId,
+                JobTitle = user.JobTitle,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PreferredContactType = user.PreferredContactType == NullableOfPreferredContactType.PreferNotToSay ? PreferredContactType.PreferNotToSay : (user.PreferredContactType == NullableOfPreferredContactType.Mobile ? PreferredContactType.Mobile : PreferredContactType.Landline),
+                ContactNumberExtension = user.ContactNumberExtension,
+                LandlineNumber = user.LandlineNumber,
+                MobileNumber = user.MobileNumber
+            };
+            var userModel = new UserModel
+            {
+                IsRegulatoryContact = user.Roles.Contains(UserRole.ResponsiblePerson),
+                OrganisationName = user.Organisation?.Name,
+                ContactDetails = model
+            };
+            
+            _sessionHelper.SaveToSession<OrganisationContactDetailsModel>(HttpContext, SessionKeys.OrganisationContactDetailsModelSessionKey, model);
+            _sessionHelper.SaveToSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey, userModel);
+            _sessionHelper.SaveToSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey, orgModel);
+            return View(model);
         }
     }
 }

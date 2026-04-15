@@ -1,0 +1,70 @@
+﻿@using HNTAS.Web.UI.Models.User
+@using HNTAS.Web.UI.Models.Enums
+@model OrganisationContactDetailsModel
+@{
+    ViewData["Title"] = "User details";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">User details</h1>
+
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Email address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.EmailAddress
+                </dd>
+            </div>
+
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    First name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.FirstName
+                </dd>
+            </div>
+
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Last name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.LastName
+                </dd>
+            </div>
+
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Contact number
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @if(Model.PreferredContactType == PreferredContactType.Mobile)
+                    {
+                        @Model.MobileNumber
+                    }
+                    else
+                    {
+                        @Model.LandlineNumber
+                        @(Model.ContactNumberExtension != null && Model.ContactNumberExtension != "" ? " ext " + Model.ContactNumberExtension : "")
+                    }
+                </dd>
+            </div>
+
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Job title
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.JobTitle
+                </dd>
+            </div>
+        </dl>
+        <a class="govuk-button" data-module="govuk-button" href="@Url.Action("ContactDetails", "UserDetails")">
+            Edit your details
+        </a>
+    </div>
+</div>
