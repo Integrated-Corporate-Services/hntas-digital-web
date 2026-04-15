@@ -1,0 +1,52 @@
+﻿@using HNTAS.Web.UI.Models
+@model AreYouTheRPModel
+
+@{
+    ViewData["Title"] = "Check your eligibility to register a heat network";
+    var fieldOrder = new[] { nameof(Model.AreYouTheRP) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.AreYouTheRP)).ToLowerInvariant();
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "HeatNetworkEligibility",
+        Action = "AreYouTheRP",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = "Responsible Party",
+                QDescText =
+                    @"
+                    <p class='govuk-body'>You are responsible if you have overall accountability for heat networks at an organisational level.</p>
+
+                    <p class='govuk-body'>This is usually a director, trustee, or someone who reports or belongs to a senior leadership group. This group is known as the Responsible Party.</p>
+
+                    <p class='govuk-body'>You will have the authority to delegate responsibility to individuals leading or contributing to one or more heat networks.</p>
+
+                    <p class='govuk-body'>Those delegates can then bring in network specialists as required.</p>
+
+                    <legend class='govuk-fieldset__legend govuk-fieldset__legend--m'>
+                        <h1 class='govuk-fieldset__heading'>
+                            Are you responsible for heat networks in your organisation?
+                        </h1>
+                    </legend>",
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = null }
+                },
+                SeletedOption = Model.AreYouTheRP
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">            
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@using HNTAS.Web.UI.Models
+@model IsHNLocatedInEnglandScotlandWalesModel
+
+@{
+    ViewData["Title"] = "Check your eligibility to register a heat network";
+    var fieldOrder = new[] { nameof(Model.IsHNLocatedInEnglandScotlandWales) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.IsHNLocatedInEnglandScotlandWales)).ToLowerInvariant();
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "HeatNetworkEligibility",
+        Action = "IsHNLocatedInEnglandScotlandWales",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = "Are any of your new heat networks in England, Scotland or Wales?",
+                QDescText = null,
+                QHintText = "Heat networks in Northern Ireland are currently exempt from HNTAS. You do not need to use this service for them.",
+                Options = new List<Option>
+                {
+                    new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = null }
+                },
+                SeletedOption = Model.IsHNLocatedInEnglandScotlandWales
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div>

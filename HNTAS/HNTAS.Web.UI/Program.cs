@@ -3,6 +3,7 @@ using GovUk.OneLogin.AspNetCore;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Routing;
@@ -28,11 +29,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDataProtection()
     .SetApplicationName("HNTAS.Web.UI");
 
-// Configure RouteOptions for lowercase URLs
+// Configure RouteOptions
 builder.Services.Configure<RouteOptions>(options =>
 {
-    options.LowercaseUrls = true;
-    options.LowercaseQueryStrings = true; // Optional: for query string parameters too
+    options.LowercaseUrls = false;
+    options.LowercaseQueryStrings = false; // Optional: for query string parameters too
 });
 
 // Register the parameter transformer globally for controllers/actions
@@ -99,7 +100,24 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new HeatNetworkInfoJsonConverter(),
         new CountryAndTerritoryJsonConverter(),
         new UserRoleDetailResponseJsonConverter(),
-        new OrganisationJsonConverter()
+        new OrganisationJsonConverter(),
+        new AssessorSearchResultJsonConverter(),
+        new RegisteredAddress2JsonConverter(),
+        new ECDetailsJsonConverter(),
+        new NetworkElementsResponseJsonConverter(),
+        new MeteringAndMonitoringStrategyResponseJsonConverter(),
+        new AssessmentPlanResponseJsonConverter(),
+        new DesignConstructionLogResponseJsonConverter(),
+        new AuditLogResponseJsonConverter(),
+        new ElementJsonConverter(),
+        new ECDetails2JsonConverter(),
+        new NetworkDetailsUploadedDocumentJsonConverter(),
+        new SoaStagesJsonConverter(),
+        new HeatNetworkConnectionsJsonConverter(),
+        new HeatNetworkTypeJsonConverter(),
+        new AuditLogJsonConverter(),
+        new ElementSoaAssignAssessorRequestJsonConverter(),
+        new SoaAssessorJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -169,6 +187,21 @@ builder.Services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddSingleton<AssessorApiEvents>();
+builder.Services.AddHttpClient<IAssessorApi, AssessorApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
+builder.Services.AddSingleton<AuditApiEvents>();
+builder.Services.AddHttpClient<IAuditApi, AuditApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
@@ -197,6 +230,7 @@ builder.Services.AddScoped<ICarbonCalculatorService, CarbonCalculatorService>();
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 builder.Services.AddScoped<IAddressLookupService, AddressLookupService>();
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
 
@@ -303,7 +337,10 @@ else
 {
     // GOV.UK One Login authentication
     builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
-        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+        {
+            options.AccessDeniedPath = "/account/access-denied"; // The browser will go here for 403s
+        })
         .AddOneLogin(options =>
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -367,6 +404,10 @@ else
         });
 
 }
+
+
+// Custom authorization logic for role-based access control, policies, and handlers
+builder.Services.AddApplicationAuthorization();
 
 builder.Services.AddSession(options =>
 {

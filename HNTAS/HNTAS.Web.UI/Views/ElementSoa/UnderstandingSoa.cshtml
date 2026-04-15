@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Before you complete your Statements of Applicability (SOAs)";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Before you complete your Statements of Applicability (SOAs)</h1>
+
+            <p class="govuk-body">
+                The SOAs confirm which HNTAS requirements apply to each heat network element and what evidence should be provided.
+            </p>
+
+            <p class="govuk-body">
+                SOAs are completed for every element at each stage of development.
+            </p>
+
+            <p class="govuk-body">
+                Assessors use completed SOAs so they can issue a Statement of Conformity (SOC). This enables certification of the heat network element before operation.
+            </p>
+
+            <p class="govuk-body">
+                The <a class="govuk-link" asp-controller="Home" asp-action="DocumentLibrary" asp-method="GET">Document Library</a> contains requirement specifications for each element and the supporting <a href="https://assets.publishing.service.gov.uk/media/691c938cd140bbbaa59a29b9/heat-network-technical-standard-1-draft.pdf" target="_blank">TS1 Heat Network Standards</a> (opens in new tab).
+            </p>
+
+            <h2 class="govuk-heading-s">An SOA must contain:</h2>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>which HNTAS technical requirements apply to the element</li>
+                <li>which performance metrics apply</li>
+                <li>how key network failures are avoided</li>
+            </ul>
+
+                       
+
+            <form asp-action="SubmitUnderstandingSoa" method="post">
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+        </div>        
+    </div>
+</div>

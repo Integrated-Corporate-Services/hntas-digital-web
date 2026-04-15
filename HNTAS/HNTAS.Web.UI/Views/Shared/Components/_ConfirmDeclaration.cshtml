@@ -1,0 +1,30 @@
+﻿@using HNTAS.Web.UI.Models.Components
+@model ConfirmDeclarationCheckboxModel
+
+<div class="govuk-form-group @(Model.HasError ? "govuk-form-group--error" : "")">
+    <fieldset class="govuk-fieldset" aria-describedby="@(Model.HasError ? $"{Model.Id}-error" : null)">
+
+        @if (Model.HasError)
+        {
+            <p id="@Model.Id-error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> @Model.ErrorMessage
+            </p>
+        }
+
+        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input"
+                       id="@Model.Name"
+                       name="@Model.Name"
+                       type="checkbox"
+                       value="true"
+                       @(Model.Value ? "checked" : "") />
+
+                <label class="govuk-label govuk-checkboxes__label" for="@Model.Name">
+                    @Model.Label
+                </label>
+                <input type="hidden" name="@Model.Name" value="false" />
+            </div>
+        </div>
+    </fieldset>
+</div>

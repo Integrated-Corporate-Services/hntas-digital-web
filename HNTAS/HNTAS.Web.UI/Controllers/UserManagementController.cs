@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Enums;
@@ -90,7 +91,7 @@ namespace HNTAS.Web.UI.Controllers
             }
         }
 
-
+        [Authorize(Policy = SecurityConstants.Policies.CanAddDDHAndContributor)]
         [HttpGet]
         public IActionResult AddContributor()
         {
@@ -177,6 +178,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> HeatNetworksAsync()
         {
+            ClearNetworkDetailsSession();
 
             this.ShowBackButton("UserAccount", "Dashboard");
             var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
@@ -211,7 +213,12 @@ namespace HNTAS.Web.UI.Controllers
             {
                 HeatNetworks = heatNetworks,
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
+                IsHntasCoordinator = user.Roles?.Contains(UserRole.Coordinator) ?? false,
             };
+
+            var isRegistrationEnabledString = Environment.GetEnvironmentVariable("IS_REGISTRATION_ENABLED");
+            ViewBag.IsRegistrationEnabled = !string.IsNullOrEmpty(isRegistrationEnabledString) &&
+                                             isRegistrationEnabledString.ToLower() == "true";
 
             return View(model);
         }
@@ -251,6 +258,18 @@ namespace HNTAS.Web.UI.Controllers
 
             this.ShowBackButton("HeatNetworks");
             return View("HeatNetworkUserRoles", viewModel);
+        }
+
+        private void ClearNetworkDetailsSession()
+        {
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.PreviousStepKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SelectedElementsSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ECDetailsModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey);
         }
     }
 }

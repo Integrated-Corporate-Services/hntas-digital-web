@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
@@ -17,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = SecurityConstants.Policies.CanAddDDHAndContributor)]
     public class ExistingContributorController : Controller
     {
         private readonly IWorkflowManager _workflowManager;
@@ -45,6 +46,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> ChooseUserAsync()
         {
+            this.ShowBackButton("AddContributor", "UserManagement");
             var state = _workflowManager.GetState<AddExistingContributorWorkflowModel>();
 
             state.Data.ChooseContributorModel ??= new ChooseContributorModel();
@@ -52,16 +54,16 @@ namespace HNTAS.Web.UI.Controllers
 
             //Call API to get list of contributors
             var contributors = await GetContributorSelectListAsync(userId);
+            state.Data.ChooseContributorModel.Contributors = contributors;
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            ViewBag.NoUsers = false;
             if (contributors == null || !contributors.Any())
             {
                 _logger.LogError("No contributors found for the current user.");
                 ViewData["ErrorMessage"] = "No users found. Please contact support.";
-                return View(state.Data.ChooseContributorModel);
+                ViewBag.NoUsers = true;
+                return View("ChooseUser", state.Data.ChooseContributorModel);
             }
-
-            state.Data.ChooseContributorModel.Contributors = contributors;
-            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-            this.ShowBackButton("AddContributor", "UserManagement");
             return View(state.Data.ChooseContributorModel);
         }
 

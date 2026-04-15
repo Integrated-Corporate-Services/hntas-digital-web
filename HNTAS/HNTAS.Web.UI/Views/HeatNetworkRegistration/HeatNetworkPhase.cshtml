@@ -1,0 +1,119 @@
+﻿@using HNTAS.Web.UI.Models
+@model HeatNetworkPhaseModel
+
+@{
+    ViewData["Title"] = "Which phase is your heat network in?";
+    var fieldOrder = new[] { nameof(Model.HeatNetworkPhase) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.HeatNetworkPhase)).ToLowerInvariant();
+    var optFeasibilityDescText = @"
+                Concept Design
+                <div class='govuk-!-margin-bottom-2'></div>
+                <details class= 'govuk-details'>
+                    <summary class='govuk-details__summary'>
+                        <span class= 'govuk-details__summary-text'>
+                            Help with feasibility
+                        </span>
+                    </summary>
+                    <div class= 'govuk-details__text'>
+                        <p class='govuk-body'>
+                            This stage corresponds to RIBA Stage 2. This will likely align with
+                            pre-planning applications and will be prior to the progression of
+                            design, with potential handover of design to additional parties.
+                        </p>                        
+                    </div>
+                </details>";
+    var optDesignDescText = @"
+                Developed design, technical design
+                <div class='govuk-!-margin-bottom-2'></div>
+                <details class= 'govuk-details'>
+                    <summary class='govuk-details__summary'>
+                        <span class= 'govuk-details__summary-text'>
+                            Help with design
+                        </span>
+                    </summary>
+                    <div class= 'govuk-details__text'>
+                        <p class='govuk-body'>
+                            Developed Design corresponds to RIBA Stage 3 design. This will
+                            likely align with submission of planning applications and may have
+                            potential handover of design to additional parties.
+                        </p>
+                        <p class='govuk-body'>
+                            Technical Design corresponds to pre-construction activities at
+                            RIBA Stage 4 design prior to design, sign off, procurement and
+                            construction.
+                        </p>
+                    </div>
+                </details>";
+    var optConstructionDescText = @"
+                Construction Design, Installation, Commissioning
+                <div class='govuk-!-margin-bottom-2'></div>
+                <details class= 'govuk-details'>
+                    <summary class='govuk-details__summary'>
+                        <span class= 'govuk-details__summary-text'>
+                            Help with construction
+                        </span>
+                    </summary>
+                    <div class= 'govuk-details__text'>
+                        <p class='govuk-body'>
+                            Construction corresponds to RIBA Stage 4 and 5 design items that occur within the construction phase.                            
+                        </p>
+                        <p class='govuk-body'>
+                            Installation corresponds to the installation activities of a heat network.
+                        </p>
+                        <p class='govuk-body'>                            
+                            Commissioning corresponds to the activities prior to commissioning: sign off, practical completion and handover to the heat network operator.
+                        </p>
+                    </div>
+                </details>";
+    var optOperationDescText = @"
+                Operation, Maintenance, Ongoing Monitoring
+                <div class='govuk-!-margin-bottom-2'></div>
+                <details class= 'govuk-details'>
+                    <summary class='govuk-details__summary'>
+                        <span class= 'govuk-details__summary-text'>
+                            Help with operation
+                        </span>
+                    </summary>
+                    <div class= 'govuk-details__text'>
+                        <p class='govuk-body'>
+                            Operation and maintenance corresponds to the activities of a heat network during the first two years of operation.
+                        </p>
+                        <p class='govuk-body'>
+                            Ongoing Monitoring corresponds to the ongoing operation and maintenance of a heat network during operation.
+                        </p>
+                    </div>
+                </details>";
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "HeatNetwork",
+        Action = "EnterHNPhase",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = $"Which phase is this network in?",
+                QDescText = null,
+                QHintText = "Elements in your network may be in different states of development, so choose an option which best describes your network overall.",
+                Options = new List<Option>
+                {
+                    new Option { OptId = $"{elementId}", OptValue = "Feasibility", OptText = "Feasibility", OptHintText = optFeasibilityDescText },
+                    new Option { OptId = $"{elementId}-1", OptValue = "Design", OptText = "Design", OptHintText =  optDesignDescText },
+                    new Option { OptId = $"{elementId}-2", OptValue = "Construction", OptText = "Construction", OptHintText = optConstructionDescText },
+                    new Option { OptId = $"{elementId}-3", OptValue = "Operation", OptText = "Operation", OptHintText =  optOperationDescText }
+                },
+                SeletedOption = Model.HeatNetworkPhase
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Add a heat network</span>
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div>

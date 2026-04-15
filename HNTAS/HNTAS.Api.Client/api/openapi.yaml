@@ -5,15 +5,147 @@ info:
 servers:
 - url: https://localhost:7117/
 tags:
+- name: Arms
+- name: Assessor
+- name: Audit
 - name: CarbonCalculator
 - name: CountriesAndTerritories
+- name: Import
 - name: HeatNetworks
+- name: HNDataImportExport
 - name: Invitations
 - name: Organisations
 - name: OrganisationUser
 - name: SOA
 - name: Users
 paths:
+  /api/arms/v1/hn/kpis:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KpiSubmissionRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/KpiSubmissionRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/KpiSubmissionRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ValidationProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ValidationProblemDetails"
+          description: Bad Request
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Internal Server Error
+        "503":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Service Unavailable
+      tags:
+      - Arms
+  /api/Assessor/search:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessorSearchResult"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessorSearchResult"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessorSearchResult"
+                type: array
+          description: OK
+      tags:
+      - Assessor
+  /api/Audit/heat-network-audit-logs:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuditLogRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/AuditLogRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/AuditLogRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/AuditLogResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuditLogResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AuditLogResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Audit
   /api/CarbonCalculator/run:
     post:
       requestBody:
@@ -68,6 +200,19 @@ paths:
           description: Internal Server Error
       tags:
       - CountriesAndTerritories
+  /api/Import/upload-csv:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/_api_Import_upload_csv_post_request"
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - Import
   /api/HeatNetworks:
     get:
       responses:
@@ -225,6 +370,42 @@ paths:
               schema:
                 $ref: "#/components/schemas/HeatNetworkResponse"
           description: Created
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - HeatNetworks
+  /api/HeatNetworks/network-elements:
+    put:
+      parameters:
+      - explode: true
+        in: query
+        name: hnId
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NetworkElements2"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/NetworkElements2"
+        required: true
+      responses:
         "200":
           content:
             text/plain:
@@ -249,7 +430,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Bad Request
-        "409":
+        "404":
           content:
             text/plain:
               schema:
@@ -260,11 +441,190 @@ paths:
             text/json:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
-          description: Conflict
+          description: Not Found
         "500":
           description: Internal Server Error
       tags:
       - HeatNetworks
+  /api/HeatNetworks/network-details-document-update:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/NetworkDetailsUploadDocumentRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - HeatNetworks
+  /api/external/heat-networks:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
+                type: array
+          description: OK
+      tags:
+      - HeatNetworks
+  /api/external/heat-network/{hnId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkExternalResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkExternalResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkExternalResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - HeatNetworks
+  /api/external/heat-networks/search:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: from_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatNetworkExternalResponse"
+                type: array
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+      tags:
+      - HeatNetworks
+  /api/HNDataImportExport/hn-users-orgs:
+    get:
+      responses:
+        "200":
+          description: OK
+      tags:
+      - HNDataImportExport
+  /api/HNDataImportExport/hn-users-orgs.csv:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: take
+        required: false
+        schema:
+          default: 100
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: OK
+      tags:
+      - HNDataImportExport
   /api/Invitations/{id}:
     get:
       parameters:
@@ -1094,6 +1454,122 @@ paths:
           description: Not Found
       tags:
       - SOA
+  /api/SOA/update-soa-status:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaStatusUpdateRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaStatusUpdateRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaStatusUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SOA
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSoaStatusRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSoaStatusRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateSoaStatusRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+      tags:
+      - SOA
+  /api/SOA/soa-assign-assessor:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaAssignAssessorRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaAssignAssessorRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaAssignAssessorRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SOA
   /api/SOA/{hnId}:
     delete:
       parameters:
@@ -1131,37 +1607,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
-      tags:
-      - SOA
-  /api/SOA/update-soa-status:
-    put:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateSoaStatusRequest"
-          text/json:
-            schema:
-              $ref: "#/components/schemas/UpdateSoaStatusRequest"
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/UpdateSoaStatusRequest"
-        required: true
-      responses:
-        "204":
-          description: No Content
-        "400":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Bad Request
       tags:
       - SOA
   /api/SOA/send-assessor-assessment-email:
@@ -1857,6 +2302,14 @@ paths:
         schema:
           type: string
         style: form
+      - explode: true
+        in: query
+        name: networkManagersOnly
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
       responses:
         "200":
           content:
@@ -2082,6 +2535,215 @@ components:
       - firstName
       - lastName
       - status
+      type: object
+    Address:
+      example:
+        country: country
+        town: town
+        county: county
+        postcode: postcode
+        addressLine1: addressLine1
+        addressLine2: addressLine2
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          nullable: true
+          type: string
+        town:
+          nullable: true
+          type: string
+        county:
+          nullable: true
+          type: string
+        postcode:
+          type: string
+        country:
+          nullable: true
+          type: string
+      type: object
+    AssessmentPlan:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        documents:
+        - ""
+        - ""
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items: {}
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    AssessmentPlanResponse:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        documents:
+        - ""
+        - ""
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items: {}
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    AssessorSearchResult:
+      example:
+        firstName: firstName
+        lastName: lastName
+        fullName: fullName
+        id: id
+        fullNameWithEmail: fullNameWithEmail
+        email: email
+      properties:
+        id:
+          type: string
+        fullName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        fullNameWithEmail:
+          type: string
+      type: object
+    AuditLog:
+      example:
+        phase: phase
+        entryType: entryType
+        role: role
+        stage: stage
+        userName: userName
+        timestamp: timestamp
+        elementName: elementName
+      properties:
+        entryType:
+          type: string
+        userName:
+          type: string
+        role:
+          type: string
+        timestamp:
+          type: string
+        elementName:
+          nullable: true
+          type: string
+        phase:
+          nullable: true
+          type: string
+        stage:
+          nullable: true
+          type: string
+      type: object
+    AuditLogRequest:
+      example:
+        hnId: hnId
+        sortDirection: sortDirection
+        pageSize: 6
+        sortBy: sortBy
+        page: 0
+      properties:
+        hnId:
+          type: string
+        sortBy:
+          nullable: true
+          type: string
+        sortDirection:
+          nullable: true
+          type: string
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+      type: object
+    AuditLogResponse:
+      example:
+        hnId: hnId
+        pageNumber: 0
+        hasNextPage: true
+        totalPages: 5
+        pageSize: 6
+        hasPreviousPage: true
+        totalCount: 1
+        items:
+        - phase: phase
+          entryType: entryType
+          role: role
+          stage: stage
+          userName: userName
+          timestamp: timestamp
+          elementName: elementName
+        - phase: phase
+          entryType: entryType
+          role: role
+          stage: stage
+          userName: userName
+          timestamp: timestamp
+          elementName: elementName
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/AuditLog"
+          type: array
+        pageNumber:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        hasPreviousPage:
+          type: boolean
+        hasNextPage:
+          type: boolean
+        hnId:
+          nullable: true
+          type: string
       type: object
     Background:
       example:
@@ -2555,11 +3217,227 @@ components:
         fullValue:
           type: string
       type: object
+    DesignConstructionLog:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        documents:
+        - ""
+        - ""
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items: {}
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    DesignConstructionLogResponse:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        documents:
+        - ""
+        - ""
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items: {}
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
     DocumentType:
       enum:
       - Assessment
       - Assessor
       - Certifier
+      - MeteringAndMonitoringStrategy
+      - AssessmentPlan
+      - DesignConstructionLog
+      - Soa
+      type: string
+    ECDetails:
+      example:
+        latitude: 0.8008281904610115
+        longitude: 6.027456183070403
+      properties:
+        latitude:
+          format: double
+          nullable: true
+          type: number
+        longitude:
+          format: double
+          nullable: true
+          type: number
+      type: object
+    ECDetails2:
+      example:
+        latitude: 0.8008281904610115
+        longitude: 6.027456183070403
+      nullable: true
+      properties:
+        latitude:
+          format: double
+          nullable: true
+          type: number
+        longitude:
+          format: double
+          nullable: true
+          type: number
+      type: object
+    Element:
+      example:
+        elementId: elementId
+        soaStages:
+        - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessor:
+            firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: Active
+          soaStatus: soaStatus
+          soaStatusUpdatedBy: soaStatusUpdatedBy
+          stageId: Stage1
+        - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessor:
+            firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: Active
+          soaStatus: soaStatus
+          soaStatusUpdatedBy: soaStatusUpdatedBy
+          stageId: Stage1
+        count: 3
+        networkElementInstanceName: networkElementInstanceName
+        type: EnergyCentre
+        elementType: elementType
+      properties:
+        elementId:
+          nullable: true
+          type: string
+        elementType:
+          nullable: true
+          type: string
+        type:
+          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+        networkElementInstanceName:
+          nullable: true
+          type: string
+        count:
+          format: int32
+          nullable: true
+          type: integer
+        soaStages:
+          items:
+            $ref: "#/components/schemas/SoaStages"
+          nullable: true
+          type: array
+      type: object
+    ElementSoaAssignAssessorRequest:
+      example:
+        assessment: assessment
+        hnId: hnId
+        updatedBy: updatedBy
+        assessorLastName: assessorLastName
+        assessorEmail: assessorEmail
+        assessorFirstName: assessorFirstName
+        elementIds:
+        - elementIds
+        - elementIds
+      properties:
+        elementIds:
+          items:
+            type: string
+          type: array
+        assessorEmail:
+          type: string
+        assessorFirstName:
+          type: string
+        assessorLastName:
+          type: string
+        assessment:
+          type: string
+        hnId:
+          type: string
+        updatedBy:
+          type: string
+      type: object
+    ElementSoaStatusUpdateRequest:
+      example:
+        elementId: elementId
+        elementSoaStatus: InProgress
+        hnId: hnId
+        elementDisplayName: elementDisplayName
+        stage: Stage1
+        soaStatus: soaStatus
+        soaStatusUpdatedBy: soaStatusUpdatedBy
+        soaPhase: soaPhase
+      properties:
+        stage:
+          $ref: "#/components/schemas/SoaStage"
+        elementId:
+          nullable: true
+          type: string
+        soaStatus:
+          nullable: true
+          type: string
+        elementSoaStatus:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        soaStatusUpdatedBy:
+          nullable: true
+          type: string
+        hnId:
+          type: string
+        soaPhase:
+          nullable: true
+          type: string
+        elementDisplayName:
+          nullable: true
+          type: string
+      required:
+      - hnId
+      type: object
+    ElementType:
+      enum:
+      - EnergyCentre
+      - Substation
+      - DistrictDistribution
+      - CommunalDistribution
+      - ConsumerConnection
       type: string
     Energy:
       example:
@@ -2795,6 +3673,25 @@ components:
           nullable: true
           type: string
       type: object
+    EnergyCentreDetails:
+      example:
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        latitude: latitude
+        longitude: longitude
+      properties:
+        latitude:
+          type: string
+        longitude:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+      type: object
     EnumItemResponse:
       example:
         name: name
@@ -2811,8 +3708,17 @@ components:
       type: object
     HeatNetwork:
       example:
-        hnId: hnId
-        createdAt: 2000-01-23T04:56:07.000+00:00
+        phase: phase
+        ecDetails:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
         soa:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -2836,7 +3742,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 0
+              count: 1
               locations:
               - locations
               - locations
@@ -2854,7 +3760,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 0
+              count: 1
               locations:
               - locations
               - locations
@@ -2863,7 +3769,7 @@ components:
             - ""
             networkType:
               otherNetworkDescription: otherNetworkDescription
-              type: CityScaleDistrictHeatingNetwork
+              type: null
             assessorDocs:
             - ""
             - ""
@@ -2872,31 +3778,209 @@ components:
             - ChildConnections
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        uHnId: uHnId
+        networkElements:
+          elementSoaStatus: null
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          networkElementStatus: InProgress
+          updatedBy: updatedBy
+          createdBy: createdBy
+          elements:
+          - elementId: elementId
+            soaStages:
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              stageId: Stage1
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              stageId: Stage1
+            count: 3
+            networkElementInstanceName: networkElementInstanceName
+            type: EnergyCentre
+            elementType: elementType
+          - elementId: elementId
+            soaStages:
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              stageId: Stage1
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              stageId: Stage1
+            count: 3
+            networkElementInstanceName: networkElementInstanceName
+            type: EnergyCentre
+            elementType: elementType
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        meteringAndMonitoringStrategy:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          documents:
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        heatNetworkConnections:
+          isDomesticConsumer: true
+          noOfNonDomesticConsumer: 2
+          isNonDomesticConsumer: true
+          noOfDownstreamDistrictHeatNetworkConnections: 7
+          isCommunalBuilding: true
+          noOfUpstreamDistrictHeatNetworkConnections: 9
+          noOfDomesticConsumer: 5
+          isUpstreamDistrictHeatNetworkConnections: true
+          isDownstreamDistrictHeatNetworkConnections: true
+          noOfCommunalBuilding: 5
+        hnId: hnId
+        createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
+        assessmentPlan:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          documents:
+          - ""
+          - ""
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
+        hnDescription: hnDescription
+        registrationSource: HNTAS
         pathway: pathway
-        location: location
+        designConstructionLog:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          documents:
+          - ""
+          - ""
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
+        heatNetworkType: CommunalWithIntegralEC
       properties:
         id:
+          nullable: true
+          type: string
+        uHnId:
           nullable: true
           type: string
         hnId:
           nullable: true
           type: string
-        location:
-          type: string
         name:
           type: string
+        hnDescription:
+          nullable: true
+          type: string
+        address:
+          $ref: "#/components/schemas/RegisteredAddress"
+        ecDetails:
+          $ref: "#/components/schemas/ECDetails2"
         pathway:
           type: string
+        registrationSource:
+          $ref: "#/components/schemas/RegistrationSource"
+        heatNetworkType:
+          $ref: "#/components/schemas/HeatNetworkType"
+        heatNetworkConnections:
+          $ref: "#/components/schemas/HeatNetworkConnections"
+        networkElements:
+          $ref: "#/components/schemas/NetworkElements"
         soa:
           $ref: "#/components/schemas/Soa"
+        meteringAndMonitoringStrategy:
+          $ref: "#/components/schemas/MeteringAndMonitoringStrategy"
+        assessmentPlan:
+          $ref: "#/components/schemas/AssessmentPlan"
+        designConstructionLog:
+          $ref: "#/components/schemas/DesignConstructionLog"
         createdBy:
           type: string
         createdAt:
           format: date-time
           type: string
+        phase:
+          type: string
+      type: object
+    HeatNetworkConnections:
+      example:
+        isDomesticConsumer: true
+        noOfNonDomesticConsumer: 2
+        isNonDomesticConsumer: true
+        noOfDownstreamDistrictHeatNetworkConnections: 7
+        isCommunalBuilding: true
+        noOfUpstreamDistrictHeatNetworkConnections: 9
+        noOfDomesticConsumer: 5
+        isUpstreamDistrictHeatNetworkConnections: true
+        isDownstreamDistrictHeatNetworkConnections: true
+        noOfCommunalBuilding: 5
+      nullable: true
+      properties:
+        isCommunalBuilding:
+          type: boolean
+        noOfCommunalBuilding:
+          format: int32
+          nullable: true
+          type: integer
+        isDomesticConsumer:
+          type: boolean
+        noOfDomesticConsumer:
+          format: int32
+          nullable: true
+          type: integer
+        isNonDomesticConsumer:
+          type: boolean
+        noOfNonDomesticConsumer:
+          format: int32
+          nullable: true
+          type: integer
+        isDownstreamDistrictHeatNetworkConnections:
+          type: boolean
+        noOfDownstreamDistrictHeatNetworkConnections:
+          format: int32
+          nullable: true
+          type: integer
+        isUpstreamDistrictHeatNetworkConnections:
+          type: boolean
+        noOfUpstreamDistrictHeatNetworkConnections:
+          format: int32
+          nullable: true
+          type: integer
       type: object
     HeatNetworkElement:
       example:
@@ -2914,13 +3998,13 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         name: EnergyCentre
-        count: 0
+        count: 1
         locations:
         - locations
         - locations
       properties:
         name:
-          $ref: "#/components/schemas/HeatNetworkElementType"
+          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
         count:
           format: int32
           type: integer
@@ -2933,6 +4017,14 @@ components:
             $ref: "#/components/schemas/UploadedDocument"
           type: array
       type: object
+    HeatNetworkElementDisplayType:
+      enum:
+      - EnergyCentre
+      - Substation
+      - DistrictDistributionNetwork
+      - CommunalDistributionNetwork
+      - ConsumerConnections
+      type: string
     HeatNetworkElementResponse:
       example:
         documents:
@@ -2949,7 +4041,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         name: name
-        count: 0
+        count: 1
         locations:
         - locations
         - locations
@@ -2968,15 +4060,61 @@ components:
             $ref: "#/components/schemas/UploadedDocumentResponse"
           type: array
       type: object
-    HeatNetworkElementType:
-      enum:
-      - EnergyCentre
-      - DistributionNetwork
-      - ThermalSubStation
-      - CommunalDistributionNetwork
-      - ConsumerConnections
-      - ConsumerHeatSystems
-      type: string
+    HeatNetworkExternalResponse:
+      example:
+        hnId: hnId
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        energyCentre:
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          latitude: latitude
+          longitude: longitude
+        soa:
+          status: status
+        createdBy: createdBy
+        registrationSource: registrationSource
+        pathway: pathway
+        hnName: hnName
+        rpDetails:
+          orgName: orgName
+          emailId: emailId
+          orgAddress:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          orgId: orgId
+        id: id
+      properties:
+        id:
+          type: string
+        hnId:
+          type: string
+        hnName:
+          type: string
+        registrationSource:
+          type: string
+        energyCentre:
+          $ref: "#/components/schemas/EnergyCentreDetails"
+        pathway:
+          type: string
+        soa:
+          $ref: "#/components/schemas/SoaResponse2"
+        createdBy:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        rpDetails:
+          $ref: "#/components/schemas/OrgDetails"
+      type: object
     HeatNetworkInfo:
       example:
         hnId: hnId
@@ -2989,7 +4127,17 @@ components:
       type: object
     HeatNetworkResponse:
       example:
-        hnId: hnId
+        phase: phase
+        ecDetails:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
         soa:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -3023,7 +4171,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: name
-              count: 0
+              count: 1
               locations:
               - locations
               - locations
@@ -3041,7 +4189,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: name
-              count: 0
+              count: 1
               locations:
               - locations
               - locations
@@ -3079,45 +4227,190 @@ components:
             - connectionTypes
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        uHnId: uHnId
+        networkElements:
+          elementSoaStatus: null
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          networkElementStatus: InProgress
+          updatedBy: updatedBy
+          createdBy: createdBy
+          elements:
+          - elementId: elementId
+            soaStages:
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              stageId: Stage1
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              stageId: Stage1
+            count: 3
+            networkElementInstanceName: networkElementInstanceName
+            type: EnergyCentre
+            elementType: elementType
+          - elementId: elementId
+            soaStages:
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              stageId: Stage1
+            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
+              soaStatus: soaStatus
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              stageId: Stage1
+            count: 3
+            networkElementInstanceName: networkElementInstanceName
+            type: EnergyCentre
+            elementType: elementType
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        meteringAndMonitoringStrategy:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          documents:
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          - fileName: fileName
+            s3Key: s3Key
+            uploadedAt: 2000-01-23T04:56:07.000+00:00
+            uploadedBy: uploadedBy
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        heatNetworkConnections:
+          isDomesticConsumer: true
+          noOfNonDomesticConsumer: 2
+          isNonDomesticConsumer: true
+          noOfDownstreamDistrictHeatNetworkConnections: 7
+          isCommunalBuilding: true
+          noOfUpstreamDistrictHeatNetworkConnections: 9
+          noOfDomesticConsumer: 5
+          isUpstreamDistrictHeatNetworkConnections: true
+          isDownstreamDistrictHeatNetworkConnections: true
+          noOfCommunalBuilding: 5
+        hnId: hnId
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        createdBy: createdBy
+        assessmentPlan:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          documents:
+          - ""
+          - ""
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
+        hnDescription: hnDescription
         pathway: pathway
-        location: location
+        designConstructionLog:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          updatedBy: updatedBy
+          documents:
+          - ""
+          - ""
+          createdBy: createdBy
+          status: null
+          updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
+        heatNetworkType: CommunalWithIntegralEC
       properties:
         id:
           type: string
+        uHnId:
+          type: string
         hnId:
           type: string
-        location:
-          type: string
+        ecDetails:
+          $ref: "#/components/schemas/ECDetails"
+        address:
+          $ref: "#/components/schemas/RegisteredAddress"
         name:
+          type: string
+        hnDescription:
+          nullable: true
           type: string
         pathway:
           type: string
         soa:
           $ref: "#/components/schemas/SoaResponse"
+        createdBy:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        phase:
+          nullable: true
+          type: string
+        heatNetworkType:
+          $ref: "#/components/schemas/HeatNetworkType"
+        heatNetworkConnections:
+          $ref: "#/components/schemas/HeatNetworkConnections"
+        networkElements:
+          $ref: "#/components/schemas/NetworkElementsResponse"
+        meteringAndMonitoringStrategy:
+          $ref: "#/components/schemas/MeteringAndMonitoringStrategyResponse"
+        assessmentPlan:
+          $ref: "#/components/schemas/AssessmentPlanResponse"
+        designConstructionLog:
+          $ref: "#/components/schemas/DesignConstructionLogResponse"
       type: object
     HeatNetworkType:
       enum:
-      - CityScaleDistrictHeatingNetwork
-      - DevelopmentLedDistrictHeatingNetwork
-      - LargeCommunalHeatNetwork
-      - MediumCommunalHeatNetwork
-      - SmallCommunalHeatNetwork
-      - Other
+      - CommunalWithIntegralEC
+      - CommunalWithSeparateUpstreamHN
+      - DistrictWithOwnEC
+      - DistrictWithSeparateUpstreamHN
       type: string
     HeatNetworkUserResponse:
       example:
         hnId: hnId
+        ecDetails:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
         name: name
-        location: location
       properties:
         hnId:
           type: string
         name:
           type: string
-        location:
-          type: string
+        ecDetails:
+          $ref: "#/components/schemas/ECDetails2"
+        address:
+          $ref: "#/components/schemas/RegisteredAddress"
       type: object
     HeatPumpInput:
       example:
@@ -3320,7 +4613,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: name
-          count: 0
+          count: 1
           locations:
           - locations
           - locations
@@ -3338,7 +4631,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: name
-          count: 0
+          count: 1
           locations:
           - locations
           - locations
@@ -3400,6 +4693,94 @@ components:
             $ref: "#/components/schemas/UploadedCertifierDocumentResponse"
           type: array
       type: object
+    KpiMetadata:
+      additionalProperties: false
+      example:
+        network_id: network_id
+        additional_details: additional_details
+        period_start: period_start
+        source_system: source_system
+      properties:
+        network_id:
+          type: string
+        period_start:
+          type: string
+        source_system:
+          nullable: true
+          type: string
+        additional_details:
+          nullable: true
+          type: string
+      required:
+      - network_id
+      - period_start
+      type: object
+    KpiSubmissionRequest:
+      additionalProperties: false
+      example:
+        elements:
+        - elementId: elementId
+          type: EnergyCentre
+          kpis:
+            key:
+              is_kpi_imputed: true
+              value: 6.027456183070403
+              kpi_imputation_details: kpi_imputation_details
+        - elementId: elementId
+          type: EnergyCentre
+          kpis:
+            key:
+              is_kpi_imputed: true
+              value: 6.027456183070403
+              kpi_imputation_details: kpi_imputation_details
+        meta_data:
+          network_id: network_id
+          additional_details: additional_details
+          period_start: period_start
+          source_system: source_system
+        consumer_connection_aggregated_kpis:
+          key:
+            value: 0.8008281904610115
+      properties:
+        meta_data:
+          $ref: "#/components/schemas/KpiMetadata"
+        consumer_connection_aggregated_kpis:
+          additionalProperties:
+            $ref: "#/components/schemas/KpiValueAggregated"
+          nullable: true
+          type: object
+        elements:
+          items:
+            $ref: "#/components/schemas/NetworkElement"
+          type: array
+      required:
+      - meta_data
+      type: object
+    KpiValue:
+      additionalProperties: false
+      example:
+        is_kpi_imputed: true
+        value: 6.027456183070403
+        kpi_imputation_details: kpi_imputation_details
+      properties:
+        value:
+          format: double
+          type: number
+        is_kpi_imputed:
+          type: boolean
+        kpi_imputation_details:
+          nullable: true
+          type: string
+      type: object
+    KpiValueAggregated:
+      additionalProperties: false
+      example:
+        value: 0.8008281904610115
+      properties:
+        value:
+          format: double
+          type: number
+      type: object
     ManagedUserResponse:
       example:
         heatNetworks:
@@ -3439,6 +4820,408 @@ components:
           nullable: true
           type: string
       type: object
+    MeteringAndMonitoringStrategy:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        documents:
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items:
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    MeteringAndMonitoringStrategyResponse:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedBy: updatedBy
+        documents:
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        - fileName: fileName
+          s3Key: s3Key
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+          uploadedBy: uploadedBy
+        createdBy: createdBy
+        status: null
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        status:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        documents:
+          items:
+            $ref: "#/components/schemas/NetworkDetailsUploadedDocument"
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    NetworkDetailsStatus:
+      enum:
+      - InProgress
+      - Submitted
+      - Complete
+      - Archived
+      - ReadyToStart
+      - CannotStartYet
+      - Incomplete
+      type: string
+    NetworkDetailsUploadDocumentRequest:
+      example:
+        hnId: hnId
+        fileName: fileName
+        s3Key: s3Key
+        documentType: Assessment
+        uploadedBy: uploadedBy
+      properties:
+        hnId:
+          type: string
+        uploadedBy:
+          type: string
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        documentType:
+          $ref: "#/components/schemas/DocumentType"
+      required:
+      - documentType
+      - fileName
+      - hnId
+      - s3Key
+      - uploadedBy
+      type: object
+    NetworkDetailsUploadedDocument:
+      example:
+        fileName: fileName
+        s3Key: s3Key
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        uploadedBy: uploadedBy
+      properties:
+        fileName:
+          type: string
+        s3Key:
+          type: string
+        uploadedAt:
+          format: date-time
+          type: string
+        uploadedBy:
+          type: string
+      type: object
+    NetworkElement:
+      additionalProperties: false
+      example:
+        elementId: elementId
+        type: EnergyCentre
+        kpis:
+          key:
+            is_kpi_imputed: true
+            value: 6.027456183070403
+            kpi_imputation_details: kpi_imputation_details
+      properties:
+        elementId:
+          type: string
+        type:
+          $ref: "#/components/schemas/ElementType"
+        kpis:
+          additionalProperties:
+            $ref: "#/components/schemas/KpiValue"
+          type: object
+      required:
+      - elementId
+      - type
+      type: object
+    NetworkElements:
+      example:
+        elementSoaStatus: null
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        networkElementStatus: InProgress
+        updatedBy: updatedBy
+        createdBy: createdBy
+        elements:
+        - elementId: elementId
+          soaStages:
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          count: 3
+          networkElementInstanceName: networkElementInstanceName
+          type: EnergyCentre
+          elementType: elementType
+        - elementId: elementId
+          soaStages:
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          count: 3
+          networkElementInstanceName: networkElementInstanceName
+          type: EnergyCentre
+          elementType: elementType
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        networkElementStatus:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        elementSoaStatus:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        elements:
+          items:
+            $ref: "#/components/schemas/Element"
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    NetworkElements2:
+      example:
+        elementSoaStatus: null
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        networkElementStatus: InProgress
+        updatedBy: updatedBy
+        createdBy: createdBy
+        elements:
+        - elementId: elementId
+          soaStages:
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          count: 3
+          networkElementInstanceName: networkElementInstanceName
+          type: EnergyCentre
+          elementType: elementType
+        - elementId: elementId
+          soaStages:
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          count: 3
+          networkElementInstanceName: networkElementInstanceName
+          type: EnergyCentre
+          elementType: elementType
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        networkElementStatus:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        elementSoaStatus:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        elements:
+          items:
+            $ref: "#/components/schemas/Element"
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
+    NetworkElementsResponse:
+      example:
+        elementSoaStatus: null
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        networkElementStatus: InProgress
+        updatedBy: updatedBy
+        createdBy: createdBy
+        elements:
+        - elementId: elementId
+          soaStages:
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          count: 3
+          networkElementInstanceName: networkElementInstanceName
+          type: EnergyCentre
+          elementType: elementType
+        - elementId: elementId
+          soaStages:
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatus: soaStatus
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            stageId: Stage1
+          count: 3
+          networkElementInstanceName: networkElementInstanceName
+          type: EnergyCentre
+          elementType: elementType
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        networkElementStatus:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        elementSoaStatus:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        elements:
+          items:
+            $ref: "#/components/schemas/Element"
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+        updatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        updatedBy:
+          nullable: true
+          type: string
+      type: object
     NetworkTypeResponse:
       example:
         otherNetworkDescription: otherNetworkDescription
@@ -3454,7 +5237,7 @@ components:
     NetworkTypeSelection:
       example:
         otherNetworkDescription: otherNetworkDescription
-        type: CityScaleDistrictHeatingNetwork
+        type: null
       nullable: true
       properties:
         type:
@@ -3466,7 +5249,7 @@ components:
     NetworkTypeSelection2:
       example:
         otherNetworkDescription: otherNetworkDescription
-        type: CityScaleDistrictHeatingNetwork
+        type: CommunalWithIntegralEC
       properties:
         type:
           $ref: "#/components/schemas/HeatNetworkType"
@@ -3499,10 +5282,8 @@ components:
       enum:
       - ResponsiblePerson
       - Coordinator
+      - DesignatedDutyHolder
       - Contributor
-      - Designer
-      - Contractor
-      - Operator
       - Assessor
       - Certifier
       - null
@@ -3544,7 +5325,7 @@ components:
         name:
           type: string
         registeredAddress:
-          $ref: "#/components/schemas/RegisteredAddress"
+          $ref: "#/components/schemas/RegisteredAddress2"
         hnIds:
           items:
             type: string
@@ -3586,7 +5367,7 @@ components:
         type:
           $ref: "#/components/schemas/OrganisationType"
         registeredAddress:
-          $ref: "#/components/schemas/RegisteredAddress"
+          $ref: "#/components/schemas/RegisteredAddress2"
       required:
       - name
       - registeredAddress
@@ -3617,7 +5398,7 @@ components:
         type:
           $ref: "#/components/schemas/OrganisationType"
         registeredAddress:
-          $ref: "#/components/schemas/RegisteredAddress"
+          $ref: "#/components/schemas/RegisteredAddress2"
       type: object
     OrganisationType:
       enum:
@@ -3625,13 +5406,35 @@ components:
       - OtherUkOrganisation
       - OverseasOrganisation
       type: string
+    OrgDetails:
+      example:
+        orgName: orgName
+        emailId: emailId
+        orgAddress:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        orgId: orgId
+      properties:
+        orgId:
+          type: string
+        orgName:
+          type: string
+        emailId:
+          type: string
+        orgAddress:
+          $ref: "#/components/schemas/Address"
+      type: object
     ProblemDetails:
       example:
         instance: instance
         detail: detail
         type: type
         title: title
-        status: 0
+        status: 6
       properties:
         type:
           nullable: true
@@ -3711,6 +5514,7 @@ components:
         postcode: postcode
         addressLine1: addressLine1
         addressLine2: addressLine2
+      nullable: true
       properties:
         addressLine1:
           type: string
@@ -3732,6 +5536,40 @@ components:
       - addressLine1
       - postcode
       type: object
+    RegisteredAddress2:
+      example:
+        country: country
+        town: town
+        county: county
+        postcode: postcode
+        addressLine1: addressLine1
+        addressLine2: addressLine2
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          nullable: true
+          type: string
+        town:
+          nullable: true
+          type: string
+        county:
+          nullable: true
+          type: string
+        postcode:
+          type: string
+        country:
+          nullable: true
+          type: string
+      required:
+      - addressLine1
+      - postcode
+      type: object
+    RegistrationSource:
+      enum:
+      - HNTAS
+      - OFGEM
+      type: string
     SendInvitationEmailRequest:
       example:
         token: token
@@ -3765,7 +5603,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -3783,7 +5621,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -3792,7 +5630,7 @@ components:
           - ""
           networkType:
             otherNetworkDescription: otherNetworkDescription
-            type: CityScaleDistrictHeatingNetwork
+            type: null
           assessorDocs:
           - ""
           - ""
@@ -3805,6 +5643,8 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/SoaStatus"
+        journeyData:
+          $ref: "#/components/schemas/SoaJourneyData"
         createdAt:
           format: date-time
           type: string
@@ -3817,8 +5657,6 @@ components:
         updatedBy:
           nullable: true
           type: string
-        journeyData:
-          $ref: "#/components/schemas/SoaJourneyData"
       type: object
     Soa2:
       example:
@@ -3844,7 +5682,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -3862,7 +5700,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -3871,7 +5709,7 @@ components:
           - ""
           networkType:
             otherNetworkDescription: otherNetworkDescription
-            type: CityScaleDistrictHeatingNetwork
+            type: null
           assessorDocs:
           - ""
           - ""
@@ -3883,6 +5721,8 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/SoaStatus"
+        journeyData:
+          $ref: "#/components/schemas/SoaJourneyData"
         createdAt:
           format: date-time
           type: string
@@ -3895,8 +5735,26 @@ components:
         updatedBy:
           nullable: true
           type: string
-        journeyData:
-          $ref: "#/components/schemas/SoaJourneyData"
+      type: object
+    SoaAssessor:
+      example:
+        firstName: firstName
+        lastName: lastName
+        assessment: assessment
+        email: email
+        status: Active
+      nullable: true
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        assessment:
+          type: string
+        status:
+          $ref: "#/components/schemas/UserStatus"
       type: object
     SoaJourneyData:
       example:
@@ -3918,7 +5776,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 0
+          count: 1
           locations:
           - locations
           - locations
@@ -3936,7 +5794,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 0
+          count: 1
           locations:
           - locations
           - locations
@@ -3945,7 +5803,7 @@ components:
         - ""
         networkType:
           otherNetworkDescription: otherNetworkDescription
-          type: CityScaleDistrictHeatingNetwork
+          type: null
         assessorDocs:
         - ""
         - ""
@@ -4017,7 +5875,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: name
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -4035,7 +5893,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: name
-            count: 0
+            count: 1
             locations:
             - locations
             - locations
@@ -4077,6 +5935,8 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/SoaStatus"
+        journeyData:
+          $ref: "#/components/schemas/JourneyDataResponse"
         createdAt:
           format: date-time
           type: string
@@ -4090,8 +5950,52 @@ components:
         updatedBy:
           nullable: true
           type: string
-        journeyData:
-          $ref: "#/components/schemas/JourneyDataResponse"
+      type: object
+    SoaResponse2:
+      example:
+        status: status
+      properties:
+        status:
+          type: string
+      type: object
+    SoaStage:
+      enum:
+      - Stage1
+      - Stage2
+      - Stage3
+      - Stage4
+      - Stage5
+      - Stage6
+      - Stage7
+      - Stage8
+      type: string
+    SoaStages:
+      example:
+        soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        assessor:
+          firstName: firstName
+          lastName: lastName
+          assessment: assessment
+          email: email
+          status: Active
+        soaStatus: soaStatus
+        soaStatusUpdatedBy: soaStatusUpdatedBy
+        stageId: Stage1
+      properties:
+        stageId:
+          $ref: "#/components/schemas/NullableOfSoaStage"
+        soaStatus:
+          nullable: true
+          type: string
+        soaStatusUpdatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        soaStatusUpdatedBy:
+          nullable: true
+          type: string
+        assessor:
+          $ref: "#/components/schemas/SoaAssessor"
       type: object
     SoaStatus:
       enum:
@@ -4099,6 +6003,9 @@ components:
       - Submitted
       - Complete
       - Archived
+      - ReadyToStart
+      - CannotStartYet
+      - Incomplete
       type: string
     UpdateConnectionsRequest:
       example:
@@ -4132,12 +6039,12 @@ components:
         documentType: Assessment
         uploadedBy: uploadedBy
       properties:
-        hnId:
-          type: string
         phase:
           $ref: "#/components/schemas/SoaPhase"
         stage:
           $ref: "#/components/schemas/NullableOfSoaStage"
+        hnId:
+          type: string
         uploadedBy:
           type: string
         fileName:
@@ -4176,7 +6083,7 @@ components:
         hnId:
           type: string
         elementType:
-          $ref: "#/components/schemas/HeatNetworkElementType"
+          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
         updatedBy:
           type: string
         documents:
@@ -4198,7 +6105,7 @@ components:
         updatedBy:
           type: string
         elementType:
-          $ref: "#/components/schemas/HeatNetworkElementType"
+          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
         locations:
           items:
             type: string
@@ -4542,11 +6449,29 @@ components:
         firstName: firstName
         heatNetworks:
         - hnId: hnId
+          ecDetails:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
           name: name
-          location: location
         - hnId: hnId
+          ecDetails:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
           name: name
-          location: location
         id: id
         status: Active
       properties:
@@ -4667,10 +6592,8 @@ components:
       enum:
       - ResponsiblePerson
       - Coordinator
+      - DesignatedDutyHolder
       - Contributor
-      - Designer
-      - Contractor
-      - Operator
       - Assessor
       - Certifier
       type: string
@@ -4698,4 +6621,59 @@ components:
       - InvitationAccepted
       - InvitationDeclined
       type: string
+    ValidationProblemDetails:
+      example:
+        instance: instance
+        detail: detail
+        type: type
+        title: title
+        errors:
+          key:
+          - errors
+          - errors
+        status: 0
+      properties:
+        type:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        detail:
+          nullable: true
+          type: string
+        instance:
+          nullable: true
+          type: string
+        errors:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+      type: object
+    _api_Import_upload_csv_post_request:
+      properties:
+        ContentType:
+          type: string
+        ContentDisposition:
+          type: string
+        Headers:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+        Length:
+          format: int64
+          type: integer
+        Name:
+          type: string
+        FileName:
+          type: string
+      type: object
 

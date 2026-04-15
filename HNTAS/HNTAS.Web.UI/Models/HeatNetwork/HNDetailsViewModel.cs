@@ -1,11 +1,14 @@
-﻿namespace HNTAS.Web.UI.Models.HeatNetwork
+﻿using HNTAS.Web.UI.Models.Address;
+
+namespace HNTAS.Web.UI.Models.HeatNetwork
 {
     public class HNDetailsViewModel
     {
         public string Name { get; set; }
         public string UHNID { get; set; }
         public string OrganisationName { get; set; }
-        public string LocationUrl { get; set; }
+        public AddressByStreetOrTownModel Address { get; set; }
         public string PathWay { get; set; }
+        public string Phase { get; set; }
     }
 }

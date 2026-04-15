@@ -18,15 +18,17 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<ILogger<DashboardController>> _loggerMock;
         private readonly Mock<IUserService> _userServiceMock;
         private readonly Mock<IHeatNetworksApi> _heatNetworksApiMock;
+        private readonly Mock<IOrganisationService> _organisationServiceMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
 
         private readonly DashboardController _controller;
-                
+
         public DashboardControllerTests()
         {
             _loggerMock = new Mock<ILogger<DashboardController>>();
             _userServiceMock = new Mock<IUserService>();
             _heatNetworksApiMock = new Mock<IHeatNetworksApi>();
+            _organisationServiceMock = new Mock<IOrganisationService>();
             _sessionHelperMock = new Mock<ISessionHelper>();
             _controller = CreateController();
         }
@@ -37,6 +39,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 _loggerMock.Object,
                 _userServiceMock.Object,
                 _heatNetworksApiMock.Object,
+                _organisationServiceMock.Object,
                 _sessionHelperMock.Object
             );
             controller.ControllerContext = new ControllerContext
@@ -96,7 +99,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 {
                     Organisation = null,
                     HeatNetworks = new List<HeatNetworkUserResponse>(),
-                    EmailId = "test@example.com"
+                    EmailId = "test@example.com",
+                    Roles = new List<UserRole>() { UserRole.ResponsiblePerson }
                 });
 
             // Act
@@ -124,7 +128,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 Organisation = new OrganisationResponse
                 {
                     Name = "Test Org",
-                    RegisteredAddress = new RegisteredAddress(addressLine1: "Line1", addressLine2: "Line2", town: "town", county: "county", postcode: "e23rt", country: "country"),
+                    RegisteredAddress = new RegisteredAddress2(addressLine1: "Line1", addressLine2: "Line2", town: "town", county: "county", postcode: "e23rt", country: "country"),
                 },
                 EmailId = "test@example.com"
             };

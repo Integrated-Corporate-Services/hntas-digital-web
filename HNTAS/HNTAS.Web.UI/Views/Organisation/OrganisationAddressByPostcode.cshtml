@@ -8,24 +8,7 @@
 
 <div class="govuk-width-container">
     <form asp-controller="Organisation" asp-action="OrganisationAddressByPostcode" method="post" class="govuk-form-group">
-        <h1 class="govuk-heading-l">Search by postcode</h1>
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="govuk-error-summary" role="alert">
-                <h2 class="govuk-error-summary__title">There is a problem</h2>
-                <ul class="govuk-list govuk-error-summary__list">
-                    @foreach (var entry in ViewData.ModelState)
-                    {
-                        foreach (var error in entry.Value.Errors)
-                        {
-                            <li id="@entry.Key-error" class="govuk-error-message">
-                                <a href="#@entry.Key-error"> @error.ErrorMessage </a>
-                            </li>
-                        }
-                    }
-                </ul>
-            </div>
-        }
+        <h1 class="govuk-heading-l">Search by postcode</h1>        
 
         @* Postcode Field *@
         <div class="govuk-form-group govuk-!-padding-bottom-5 @(ViewData.ModelState.ContainsKey(nameof(Model.Postcode)) && ViewData.ModelState[nameof(Model.Postcode)]?.Errors.Any() == true ? "govuk-form-group--error" : "")">

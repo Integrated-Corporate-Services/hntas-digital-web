@@ -1,0 +1,55 @@
+﻿@using HNTAS.Web.UI.Helpers
+@model HNTAS.Web.UI.Models.User.ManageLeadsModel
+
+@section BeforeMain {
+
+    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="@Url.Action("UserAccount", "Dashboard")">Dashboard</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                Network leads
+            </li>
+        </ol>
+    </nav>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-l">@ViewBag.OrganisationName</span>
+        <h1 class="govuk-heading-l" id="network-leads-list-heading">Network managers</h1>
+        <p class="govuk-body">You do not have anyone currently added to your organisation.</p>
+        <a href="@Url.Action("NewLeadDetails", "NetworkLeads")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+            Invite a network manager
+        </a>
+
+        @if(Model.NetworkLeads.Count != 0)
+        {
+            <h2 class="govuk-heading-m">Current network managers</h2>
+            <div class="govuk-overflow-container">
+                <table class="govuk-table moj-sortable-table" data-module="moj-sortable-table">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Email</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Status</th>                            
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                    @foreach (var networkLead in Model.NetworkLeads)
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">@networkLead.Name</td>
+                            <td class="govuk-table__cell">@networkLead.EmailAddress</td>        
+                            <td class="govuk-table__cell">
+                                <strong class="govuk-tag @GovUkTagHelper.GetTagClass(networkLead.Status)">@networkLead.Status</strong>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

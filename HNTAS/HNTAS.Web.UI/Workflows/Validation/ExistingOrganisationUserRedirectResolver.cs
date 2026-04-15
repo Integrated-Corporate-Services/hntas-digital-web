@@ -8,7 +8,7 @@ namespace HNTAS.Web.UI.Workflows.Validation
     {
         public IActionResult Resolve(AddExistingOrganisationUserWorkflowModel workflow, ExistingOrganisationUserWorkflowStep expectedStep)
         {
-            return new RedirectToActionResult("ChooseUser", "ExistingOrganisationUser", null);
+            return new RedirectToActionResult("Index", "Home", null);
         }
     }
 

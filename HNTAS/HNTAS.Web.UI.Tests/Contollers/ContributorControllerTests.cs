@@ -81,7 +81,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                     Name = "Test Organisation",
                     CompaniesHouseNumber = "12345678",
                     Type = OrganisationType.UkCompaniesHouse,
-                    RegisteredAddress = new RegisteredAddress("123 Test St", "TE1 1ST", "Test Area", "Test Town", "Test County", "Test Country")
+                    RegisteredAddress = new RegisteredAddress2("123 Test St", "TE1 1ST", "Test Area", "Test Town", "Test County", "Test Country")
                 },
                 HeatNetworks = new List<HeatNetworkUserResponse>()
                 {
@@ -89,13 +89,13 @@ namespace HNTAS.Web.UI.Tests.Controllers
                     {
                         HnId = "hn-1",
                         Name = "Heat Network 1",
-                        Location = "Location 1"
+                       // Location = "Location 1"
                     },
                     new HeatNetworkUserResponse
                     {
                         HnId = "hn-2",
                         Name = "Heat Network 2",
-                        Location = "Location 2"
+                        //Location = "Location 2"
                     }
                 }
             };
@@ -186,7 +186,12 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Arrange
             var model = new YouHaveBeenInvitedModel { AcceptInvitation = "accept" };
             _controller.ModelState.AddModelError("AcceptInvitation", "Required");
-
+            var invitationId = "validid";
+            var invitation = MockGetInvitationByIdAsync(invitationId);
+            var inviterUser = MockGetUserDetailsResponse(invitation.InviterUserId);
+            _invitationServiceMock.Setup(s => s.GetInvitationByIdAsync(It.IsAny<string>())).ReturnsAsync(invitation);
+            _userServiceMock.Setup(s => s.GetUserDetails(invitation.InviterUserId)).ReturnsAsync(inviterUser);
+            
             // Act
             var result = await _controller.YouHaveBeenInvitedAsync(model);
 
