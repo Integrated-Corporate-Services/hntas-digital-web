@@ -293,6 +293,7 @@ namespace HNTAS.Web.UI.Controllers
                 model.Postcode = null;
                 _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
                 _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, null);
+                _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, null);
                 _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, null);
                 return RedirectToAction("ECCoordinates");
             }
@@ -409,11 +410,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult SaveHNAddressByPostcode()
         {
-            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey) ?? new AddressByStreetOrTownModel();
-            if (model == null)
-            {
-                return BadRequest("Missing session data");
-            }
+            var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey) ?? new AddressByStreetOrTownModel();            
             var doesHnHaveAPostcodeModel = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey);
             HeatNetworkLocationModel heatNetworkLocationModel;
             if (doesHnHaveAPostcodeModel.HasPostcode)
