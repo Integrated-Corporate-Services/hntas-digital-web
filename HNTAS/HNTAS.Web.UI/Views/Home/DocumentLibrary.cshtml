@@ -30,7 +30,12 @@
                                 Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.
                             </p>
                             <p class="govuk-body">
-                                <a href="@Url.Action("NewBuild", "DocumentLibrary")" class="govuk-link">Read more</a>
+                                <a href="@Url.Action("NewBuild", "DocumentLibrary")" class="govuk-link">
+                                    Read more
+                                    <span class="govuk-visually-hidden">
+                                        about New build overview
+                                    </span>
+                                </a>
                             </p>
                         </div>
 
@@ -43,7 +48,12 @@
                                 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                             </p>
                             <p class="govuk-body">
-                                <a href="@Url.Action("ExistingBuild", "DocumentLibrary")" class="govuk-link">Read more</a>
+                                <a href="@Url.Action("ExistingBuild", "DocumentLibrary")" class="govuk-link">
+                                    Read more
+                                    <span class="govuk-visually-hidden">
+                                        about Existing overview
+                                    </span>
+                                </a>
                             </p>
                         </div>
                         <div id="certified-overview" class="govuk-!-margin-top-8">
@@ -53,10 +63,13 @@
                                 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                             </p>
                             <p class="govuk-body">
-                            <p class="govuk-link govuk-!-margin-bottom-6">
-                                <a href="@Url.Action("CertifiedBuild", "DocumentLibrary")" class="govuk-link">Read more</a>
+                                <a href="@Url.Action("CertifiedBuild", "DocumentLibrary")" class="govuk-link">Read more
+                                    <span class="govuk-visually-hidden">
+                                        about Certified overview
+                                    </span>
+                                </a>
                             </p>
-                            <p class="govuk-link govuk-!-margin-bottom-6">
+                            <p class="govuk-body govuk-!-margin-bottom-6">
                                 <a href="#" class="govuk-link">Terms and Conditions</a>
                             </p>
                         </div>

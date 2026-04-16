@@ -42,8 +42,8 @@
             }
         </ul>
 
-        <div class="app-button-wrapper">
-            <a asp-controller="HeatNetworkRegistration" asp-action="HeatNetworkSummary" asp-method="GET" role="button" data-module="govuk-button" draggable="false" class="govuk-button">Continue</a>
-        </div>
+        <button class="govuk-button" onclick="location.href='@Url.Action("HeatNetworkName", "HeatNetworkRegistration")'">
+            Continue
+        </button>
     </div>
 </div>
