@@ -6,48 +6,104 @@ namespace HNTAS.Web.UI.Controllers
 {
     public class ArmsDashboardPOCController : Controller
     {
-        public IActionResult Index(string hnid = "HN400219", string searchTerm = "", string[] statusFilter = null, int? month = null, int? year = null, int page = 1)
+        public IActionResult Index(string? searchTerm, int? month, int? year)
         {
-            int pageSize = 10;
+            ModelState.Clear();
 
-            // Default to current month/year if none selected
-            int filterMonth = month ?? DateTime.Now.Month;
+            // 1. Year defaults to current, but Month is now null (empty) by default
             int filterYear = year ?? DateTime.Now.Year;
 
-            var allKpis = GetMockKpiRows(hnid);
+            var networks = GetMockNetworks();
 
-            // 1. Filter by the Monthly Database Entry
-            var periodFiltered = allKpis.Where(k => k.ReportingPeriod.Month == filterMonth &&
-                                                   k.ReportingPeriod.Year == filterYear);
-
-            // 2. Filter by KPI Status (Fail / Outside Limit)
-            if (statusFilter != null && statusFilter.Any())
+            // 2. Filter by Search Term
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                periodFiltered = periodFiltered.Where(k => statusFilter.Contains(k.Status.ToString()));
+                networks = networks.Where(n =>
+                    n.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    n.Hnid.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                ).ToList();
             }
 
-            // 3. Grouping and Pagination
-            var grouped = periodFiltered.GroupBy(k => k.ElementId)
-                                        .ToDictionary(g => g.Key, g => g.ToList());
+            // 3. Updated Period Filtering
+            // Always filter by Year. Only filter by Month if one is selected.
+            networks = networks.Where(n => n.ReportingPeriod.Year == filterYear).ToList();
 
-            int totalElements = grouped.Count;
+            if (month.HasValue)
+            {
+                networks = networks.Where(n => n.ReportingPeriod.Month == month.Value).ToList();
+            }
+
+            // 4. Map to ViewModel
+            var viewModel = new NetworkListViewModel
+            {
+                SearchTerm = searchTerm,
+                SelectedMonth = month, // Pass the null value back to the view
+                SelectedYear = filterYear,
+                Networks = networks.Select(n => new HeatNetworkRowViewModel
+                {
+                    Hnid = n.Hnid,
+                    Name = n.Name,
+                    Provider = n.Provider,
+                    LastPostDate = n.ReportingPeriod
+                }).ToList()
+            };
+
+            return View(viewModel);
+        }
+
+
+        public IActionResult Details(string hnid, int? month, int? year, List<string> statusFilter, int page = 1)
+        {
+            // 1. Logic for safety/defaults
+            int filterYear = year ?? DateTime.Now.Year;
+            int filterMonth = month ?? DateTime.Now.Month;
+
+            var networkInfo = GetMockNetworks().FirstOrDefault(n => n.Hnid == hnid);
+            if (networkInfo == null) return NotFound();
+
+            // 2. Fetch and filter raw data
+            var rawKpis = GetMockKpiRows(hnid)
+                .Where(k => k.ReportingPeriod.Month == filterMonth && k.ReportingPeriod.Year == filterYear);
+
+            // 3. Apply Status Filters
+            if (statusFilter != null && statusFilter.Any())
+            {
+                rawKpis = rawKpis.Where(k => statusFilter.Contains(k.Status.ToString()));
+            }
+
+            // 4. Group all results first to get the total count for pagination
+            var allGrouped = rawKpis.GroupBy(k => k.ElementId)
+                                    .OrderBy(g => g.Key) // Ensure consistent order for paging
+                                    .ToDictionary(g => g.Key, g => g.ToList());
+
+            // 5. Pagination Math
+            int pageSize = 10;
+            int totalElements = allGrouped.Count;
             int totalPages = (int)Math.Ceiling(totalElements / (double)pageSize);
-            var pagedGroups = grouped.Skip((page - 1) * pageSize).Take(pageSize).ToDictionary(g => g.Key, g => g.Value);
 
-            // 7. Build the ViewModel
-            var viewModel = new ArmsDashboardViewModel
+            // Slice the dictionary for the current page
+            var pagedGrouped = allGrouped
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToDictionary(g => g.Key, g => g.Value);
+
+            // 6. Build ViewModel
+            var viewModel = new ArmsDetailsViewModel
             {
                 Hnid = hnid,
+                NetworkName = networkInfo.Name,
                 SelectedMonth = filterMonth,
                 SelectedYear = filterYear,
-                StatusFilter = statusFilter?.ToList() ?? new List<string>(),
-                GroupedElements = pagedGroups,
-                TotalElements = totalElements,
+                StatusFilter = statusFilter ?? new List<string>(),
+                GroupedElements = pagedGrouped, // Only passing the 10 for this page
+
+                // Paging metadata
                 CurrentPage = page,
                 TotalPages = totalPages,
-                FromRecord = totalElements > 0 ? ((page - 1) * pageSize) + 1 : 0,
-                ToRecord = Math.Min(page * pageSize, totalElements),
-                AllNetworks = GetMockNetworks()
+                TotalElements = totalElements,
+                PageSize = pageSize,
+
+                BackToListUrl = Url.Action("Index", new { month, year })
             };
 
             return View(viewModel);
@@ -59,36 +115,12 @@ namespace HNTAS.Web.UI.Controllers
         {
             return new List<HeatNetworkStaticData>
             {
-                new() {
-                    Hnid = "HN400219",
-                    Name = "Birmingham District Energy",
-                    Provider = "Cofely"
-                },
-                new() {
-                    Hnid = "HN600842",
-                    Name = "Greenwich Peninsula",
-                    Provider = "Pinnacle Power"
-                },
-                new() {
-                    Hnid = "HN100335",
-                    Name = "Pimlico District Heating",
-                    Provider = "Westminster Council"
-                },
-                new() {
-                    Hnid = "HN700111",
-                    Name = "Elephant & Castle",
-                    Provider = "Pinnacle Power"
-                },
-                new() {
-                    Hnid = "HN200555",
-                    Name = "Leicester District Energy",
-                    Provider = "Engie"
-                },
-                new() {
-                    Hnid = "HN300999",
-                    Name = "Olympic Park Network",
-                    Provider = "East London Energy"
-                }
+                new() { Hnid = "HN400219", Name = "Birmingham District Energy", Provider = "Cofely", ReportingPeriod = new DateTime(2026, 4, 1) },
+                new() { Hnid = "HN600842", Name = "Greenwich Peninsula", Provider = "Pinnacle Power", ReportingPeriod = new DateTime(2026, 4, 1) },
+                new() { Hnid = "HN100335", Name = "Pimlico District Heating", Provider = "Westminster Council", ReportingPeriod = new DateTime(2026, 4, 1) },
+                new() { Hnid = "HN700111", Name = "Elephant & Castle", Provider = "Pinnacle Power", ReportingPeriod = new DateTime(2026, 3, 1) }, // Older data
+                new() { Hnid = "HN200555", Name = "Leicester District Energy", Provider = "Engie", ReportingPeriod = new DateTime(2026, 4, 1) },
+                new() { Hnid = "HN300999", Name = "Olympic Park Network", Provider = "East London Energy", ReportingPeriod = new DateTime(2026, 2, 1) } // Older data
             };
         }
 
@@ -160,13 +192,69 @@ namespace HNTAS.Web.UI.Controllers
         }
 
 
+        public class NetworkListViewModel
+        {
+            public string? SearchTerm { get; set; } = string.Empty;
+            public int? SelectedMonth { get; set; }
+            public int SelectedYear { get; set; }
+            public List<HeatNetworkRowViewModel> Networks { get; set; } = new();
 
+            // Dropdown helpers
+            public List<int> AvailableYears => Enumerable.Range(2022, (DateTime.Now.Year - 2022) + 1).OrderByDescending(y => y).ToList();
+            public Dictionary<int, string> Months => new()
+            {
+                { 1, "January" }, { 2, "February" }, { 3, "March" }, { 4, "April" },
+                { 5, "May" }, { 6, "June" }, { 7, "July" }, { 8, "August" },
+                { 9, "September" }, { 10, "October" }, { 11, "November" }, { 12, "December" }
+            };
+        }
+
+        public class ArmsDetailsViewModel
+        {
+            // Network Info
+            public string Hnid { get; set; } = string.Empty;
+            public string NetworkName { get; set; } = string.Empty;
+
+            // Selection Context
+            public int SelectedMonth { get; set; }
+            public int SelectedYear { get; set; }
+            public List<string> StatusFilter { get; set; } = new();
+
+            // The Data: Grouped by Element ID
+            public Dictionary<string, List<KpiRowViewModel>> GroupedElements { get; set; } = new();
+
+            // Helper for the "Back" link
+            public string BackToListUrl { get; set; } = string.Empty;
+
+
+            // Pagination Properties
+            public int CurrentPage { get; set; }
+            public int TotalPages { get; set; }
+            public int TotalElements { get; set; }
+            public int PageSize { get; set; } = 10; // Default to 10 per page
+
+            public int FromRecord => ((CurrentPage - 1) * PageSize) + 1;
+            public int ToRecord => Math.Min(CurrentPage * PageSize, TotalElements);
+
+            public bool HasPreviousPage => CurrentPage > 1;
+            public bool HasNextPage => CurrentPage < TotalPages;
+        }
+
+        public class HeatNetworkRowViewModel
+        {
+            public string Hnid { get; set; } = string.Empty;
+            public string Name { get; set; } = string.Empty;
+            public string Provider { get; set; } = string.Empty;
+            public DateTime LastPostDate { get; set; } // The "Reporting Period" column
+        }
 
         public class HeatNetworkStaticData
         {
             public string Hnid { get; set; } = string.Empty;
             public string Name { get; set; } = string.Empty;
             public string Provider { get; set; } = string.Empty;
+
+            public DateTime ReportingPeriod { get; set; }
 
             // Helper property for the sidebar display
             public string DisplayName => $"{Hnid} ({Name})";
