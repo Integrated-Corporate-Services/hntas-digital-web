@@ -95,8 +95,12 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new InvitedUserRequestJsonConverter());
             _jsonOptions.Converters.Add(new InvitedUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new JourneyDataResponseJsonConverter());
+            _jsonOptions.Converters.Add(new KpiConfigRequestJsonConverter());
+            _jsonOptions.Converters.Add(new KpiConfigResponseJsonConverter());
             _jsonOptions.Converters.Add(new KpiMetadataJsonConverter());
+            _jsonOptions.Converters.Add(new KpiRuleJsonConverter());
             _jsonOptions.Converters.Add(new KpiSubmissionRequestJsonConverter());
+            _jsonOptions.Converters.Add(new KpiThresholdRuleJsonConverter());
             _jsonOptions.Converters.Add(new KpiValueJsonConverter());
             _jsonOptions.Converters.Add(new KpiValueAggregatedJsonConverter());
             _jsonOptions.Converters.Add(new ManagedUserResponseJsonConverter());
