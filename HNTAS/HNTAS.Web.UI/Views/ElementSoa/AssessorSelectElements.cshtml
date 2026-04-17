@@ -16,7 +16,8 @@
                 @Html.AntiForgeryToken()
 
                 <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
-                    <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-visually-hidden">Other elements for this network</legend>
                         
                         <div id="assessor-element-hint" class="govuk-hint">
                             Select all that apply
