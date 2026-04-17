@@ -107,6 +107,11 @@
 
                 <div class="govuk-form-group @(hasDeclarationErrors ? "govuk-form-group--error" : "")">
                     <fieldset class="govuk-fieldset" aria-describedby="@(hasDeclarationErrors ? "confirmDeclaration-error" : "")">
+
+                        <legend class="govuk-visually-hidden">
+                            Confirm declaration
+                        </legend>
+
                         @if (hasDeclarationErrors)
                         {
                             <p id="confirmDeclaration-error" class="govuk-error-message">

@@ -16,9 +16,9 @@
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
 
-                    <div id="soa-elements-hint" class="govuk-hint">
+                    <legend id="soa-elements-hint" class="govuk-hint">
                         Select the elements that apply
-                    </div>
+                    </legend>
 
                     @if (ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)))
                     {
@@ -61,7 +61,7 @@
 
                                 <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
 
-                                    <label class="govuk-label" for="ElementCounts_@item.Id">
+                                    <label class="govuk-label" for="elementcounts[@item.Id.ToString().ToLowerInvariant()]">
                                         Number of @item.SubLabel.ToLower()
                                     </label>
 
@@ -76,7 +76,7 @@
                                            id="elementcounts[@item.Id.ToString().ToLowerInvariant()]"
                                            name="ElementCounts[@item.Id]"
                                            type="number"
-                                           value="@(Model.ElementCounts.ContainsKey(item.Id) ? Model.ElementCounts[item.Id] : null)" />
+                                           value="@(Model.ElementCounts.ContainsKey(item.Id) ? Model.ElementCounts[item.Id] : null)" />                                    
                                 </div>
                             </div>
                         }

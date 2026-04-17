@@ -20,7 +20,7 @@ tags:
 - name: SOA
 - name: Users
 paths:
-  /api/arms/v1/hn/kpis:
+  /v1/hn/kpis:
     post:
       requestBody:
         content:
@@ -75,7 +75,7 @@ paths:
           description: Service Unavailable
       tags:
       - Arms
-  /api/arms/v1/hn/{networkId}/kpi-config:
+  /v1/hn/{networkId}/kpi-config:
     get:
       parameters:
       - explode: false
@@ -124,7 +124,7 @@ paths:
           description: Internal Server Error
       tags:
       - Arms
-  /api/arms/v1/hn/kpi-config:
+  /v1/hn/kpi-config:
     post:
       requestBody:
         content:
@@ -582,7 +582,7 @@ paths:
           description: Not Found
       tags:
       - HeatNetworks
-  /api/external/heat-networks:
+  /heat-networks:
     get:
       responses:
         "200":
@@ -605,7 +605,7 @@ paths:
           description: OK
       tags:
       - HeatNetworks
-  /api/external/heat-network/{hnId}:
+  /heat-network/{hnId}:
     get:
       parameters:
       - explode: false
@@ -642,7 +642,7 @@ paths:
           description: Not Found
       tags:
       - HeatNetworks
-  /api/external/heat-networks/search:
+  /heat-networks/search:
     get:
       parameters:
       - explode: true

@@ -278,13 +278,11 @@ namespace HNTAS.Web.UI.Controllers
             if (organisationModel?.CompanyDetails == null)
                 return RedirectToAction("CompanyNumber");
             if (!string.IsNullOrEmpty(organisationModel.CompanyNumber))
-            {
-                this.ShowBackButton("CompanyNumber");
+            {                
                 ViewBag.ChangeUrl = Url.Action("CompanyNumber");
             }
             else
-            {
-                this.ShowBackButton("OrganisationAddress");
+            {                
                 ViewBag.ChangeUrl = Url.Action("OrganisationAddress");
             }
             return View("CompanyConfirm", organisationModel.CompanyDetails);
@@ -339,9 +337,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         public IActionResult AlreadyRegistered()
-        {
-            ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("CompanyConfirm");
+        {            
             return View();
         }
 
@@ -797,7 +793,6 @@ namespace HNTAS.Web.UI.Controllers
                     .ToArray();
 
                 _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
-                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "Organisation");
                 return RedirectToAction("SearchByPostcodeResults");
             }
             catch (HttpRequestException)

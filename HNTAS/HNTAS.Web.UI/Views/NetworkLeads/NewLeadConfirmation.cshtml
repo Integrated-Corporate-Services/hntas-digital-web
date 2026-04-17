@@ -1,25 +1,23 @@
 ﻿<div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <form action="" method="post">
 
-            <div class="govuk-panel govuk-panel--confirmation">
-                <h1 class="govuk-panel__title">
-                    Network manager invited
-                </h1>
-            </div>
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                Network manager invited
+            </h1>
+        </div>
 
-            <p class="govuk-body">We have emailed them to let them know they have been invited to be a network manager for your organisation. </p>
-            <p class="govuk-body"><strong>What happens next:</strong></p>
-            <ul class="govuk-list govuk-list--bullet">
-                <li>if they accept, you'll confirm their access</li>
-                <li>if they decline, you'll be notified</li>
-                <li>once confirmed, they can add heat networks for your organisation</li>
-            </ul>
+        <p class="govuk-body">We have emailed them to let them know they have been invited to be a network manager for your organisation. </p>
+        <p class="govuk-body"><strong>What happens next:</strong></p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>if they accept, you'll confirm their access</li>
+            <li>if they decline, you'll be notified</li>
+            <li>once confirmed, they can add heat networks for your organisation</li>
+        </ul>
 
-            <button type="submit" class="govuk-button" data-module="govuk-button" href="@Url.Action("ManageLeads", "UserManagement")">
-                Continue
-            </button>
+        <a href="@Url.Action("ManageLeads", "NetworkLeads")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+            Invite a network manager
+        </a>
 
-        </form>
     </div>
 </div>

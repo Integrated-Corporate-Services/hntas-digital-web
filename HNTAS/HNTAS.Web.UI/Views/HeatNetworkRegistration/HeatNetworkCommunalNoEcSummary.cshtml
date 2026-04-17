@@ -6,8 +6,9 @@
         </h1>
         <p class="govuk-body">You're registering a communal heat network supplied by a separate upstream network</p>
         <p class="govuk-body">The main energy centre should be registered as a separate district network by that organisation.</p>
-        <div class="app-button-wrapper">
-            <a asp-controller="HeatNetworkRegistration" asp-action="HeatNetworkSummary" asp-method="GET" role="button" data-module="govuk-button" draggable="false" class="govuk-button">Continue</a>
-        </div>
+        
+        <button class="govuk-button" onclick="location.href='@Url.Action("HeatNetworkName", "HeatNetworkRegistration")'">
+            Continue
+        </button>
     </div>
 </div>
