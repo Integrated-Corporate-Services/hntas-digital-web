@@ -4,13 +4,13 @@ All URIs are relative to *https://localhost:7117*
 
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
-| [**ApiArmsV1HnKpiConfigPost**](ArmsApi.md#apiarmsv1hnkpiconfigpost) | **POST** /api/arms/v1/hn/kpi-config |  |
-| [**ApiArmsV1HnKpisPost**](ArmsApi.md#apiarmsv1hnkpispost) | **POST** /api/arms/v1/hn/kpis |  |
-| [**ApiArmsV1HnNetworkIdKpiConfigGet**](ArmsApi.md#apiarmsv1hnnetworkidkpiconfigget) | **GET** /api/arms/v1/hn/{networkId}/kpi-config |  |
+| [**V1HnKpiConfigPost**](ArmsApi.md#v1hnkpiconfigpost) | **POST** /v1/hn/kpi-config |  |
+| [**V1HnKpisPost**](ArmsApi.md#v1hnkpispost) | **POST** /v1/hn/kpis |  |
+| [**V1HnNetworkIdKpiConfigGet**](ArmsApi.md#v1hnnetworkidkpiconfigget) | **GET** /v1/hn/{networkId}/kpi-config |  |
 
-<a id="apiarmsv1hnkpiconfigpost"></a>
-# **ApiArmsV1HnKpiConfigPost**
-> void ApiArmsV1HnKpiConfigPost (KpiConfigRequest kpiConfigRequest)
+<a id="v1hnkpiconfigpost"></a>
+# **V1HnKpiConfigPost**
+> void V1HnKpiConfigPost (KpiConfigRequest kpiConfigRequest)
 
 
 
@@ -44,9 +44,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="apiarmsv1hnkpispost"></a>
-# **ApiArmsV1HnKpisPost**
-> void ApiArmsV1HnKpisPost (KpiSubmissionRequest kpiSubmissionRequest)
+<a id="v1hnkpispost"></a>
+# **V1HnKpisPost**
+> void V1HnKpisPost (KpiSubmissionRequest kpiSubmissionRequest)
 
 
 
@@ -81,9 +81,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="apiarmsv1hnnetworkidkpiconfigget"></a>
-# **ApiArmsV1HnNetworkIdKpiConfigGet**
-> KpiConfigResponse ApiArmsV1HnNetworkIdKpiConfigGet (string networkId)
+<a id="v1hnnetworkidkpiconfigget"></a>
+# **V1HnNetworkIdKpiConfigGet**
+> KpiConfigResponse V1HnNetworkIdKpiConfigGet (string networkId)
 
 
 

@@ -10,7 +10,7 @@
     }
   ],
   "paths": {
-    "/api/arms/v1/hn/kpis": {
+    "/v1/hn/kpis": {
       "post": {
         "tags": [
           "Arms"
@@ -102,7 +102,7 @@
         }
       }
     },
-    "/api/arms/v1/hn/{networkId}/kpi-config": {
+    "/v1/hn/{networkId}/kpi-config": {
       "get": {
         "tags": [
           "Arms"
@@ -181,7 +181,7 @@
         }
       }
     },
-    "/api/arms/v1/hn/kpi-config": {
+    "/v1/hn/kpi-config": {
       "post": {
         "tags": [
           "Arms"
@@ -956,7 +956,7 @@
         }
       }
     },
-    "/api/external/heat-networks": {
+    "/heat-networks": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -994,7 +994,7 @@
         }
       }
     },
-    "/api/external/heat-network/{hnId}": {
+    "/heat-network/{hnId}": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -1053,7 +1053,7 @@
         }
       }
     },
-    "/api/external/heat-networks/search": {
+    "/heat-networks/search": {
       "get": {
         "tags": [
           "HeatNetworks"

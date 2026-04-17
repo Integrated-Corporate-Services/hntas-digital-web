@@ -44,8 +44,8 @@ namespace HNTAS.Api.Client.Api
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="kpiConfigRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnKpiConfigPostApiResponse"/>&gt;</returns>
-        Task<IApiArmsV1HnKpiConfigPostApiResponse> ApiArmsV1HnKpiConfigPostAsync(KpiConfigRequest kpiConfigRequest, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnKpiConfigPostApiResponse"/>&gt;</returns>
+        Task<IV1HnKpiConfigPostApiResponse> V1HnKpiConfigPostAsync(KpiConfigRequest kpiConfigRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -55,8 +55,8 @@ namespace HNTAS.Api.Client.Api
         /// </remarks>
         /// <param name="kpiConfigRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnKpiConfigPostApiResponse"/>?&gt;</returns>
-        Task<IApiArmsV1HnKpiConfigPostApiResponse?> ApiArmsV1HnKpiConfigPostOrDefaultAsync(KpiConfigRequest kpiConfigRequest, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnKpiConfigPostApiResponse"/>?&gt;</returns>
+        Task<IV1HnKpiConfigPostApiResponse?> V1HnKpiConfigPostOrDefaultAsync(KpiConfigRequest kpiConfigRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -67,8 +67,8 @@ namespace HNTAS.Api.Client.Api
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="kpiSubmissionRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnKpisPostApiResponse"/>&gt;</returns>
-        Task<IApiArmsV1HnKpisPostApiResponse> ApiArmsV1HnKpisPostAsync(KpiSubmissionRequest kpiSubmissionRequest, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnKpisPostApiResponse"/>&gt;</returns>
+        Task<IV1HnKpisPostApiResponse> V1HnKpisPostAsync(KpiSubmissionRequest kpiSubmissionRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -78,8 +78,8 @@ namespace HNTAS.Api.Client.Api
         /// </remarks>
         /// <param name="kpiSubmissionRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnKpisPostApiResponse"/>?&gt;</returns>
-        Task<IApiArmsV1HnKpisPostApiResponse?> ApiArmsV1HnKpisPostOrDefaultAsync(KpiSubmissionRequest kpiSubmissionRequest, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnKpisPostApiResponse"/>?&gt;</returns>
+        Task<IV1HnKpisPostApiResponse?> V1HnKpisPostOrDefaultAsync(KpiSubmissionRequest kpiSubmissionRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -90,8 +90,8 @@ namespace HNTAS.Api.Client.Api
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="networkId"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnNetworkIdKpiConfigGetApiResponse"/>&gt;</returns>
-        Task<IApiArmsV1HnNetworkIdKpiConfigGetApiResponse> ApiArmsV1HnNetworkIdKpiConfigGetAsync(string networkId, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnNetworkIdKpiConfigGetApiResponse"/>&gt;</returns>
+        Task<IV1HnNetworkIdKpiConfigGetApiResponse> V1HnNetworkIdKpiConfigGetAsync(string networkId, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -101,14 +101,14 @@ namespace HNTAS.Api.Client.Api
         /// </remarks>
         /// <param name="networkId"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnNetworkIdKpiConfigGetApiResponse"/>?&gt;</returns>
-        Task<IApiArmsV1HnNetworkIdKpiConfigGetApiResponse?> ApiArmsV1HnNetworkIdKpiConfigGetOrDefaultAsync(string networkId, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnNetworkIdKpiConfigGetApiResponse"/>?&gt;</returns>
+        Task<IV1HnNetworkIdKpiConfigGetApiResponse?> V1HnNetworkIdKpiConfigGetOrDefaultAsync(string networkId, System.Threading.CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// The <see cref="IApiArmsV1HnKpiConfigPostApiResponse"/>
+    /// The <see cref="IV1HnKpiConfigPostApiResponse"/>
     /// </summary>
-    public interface IApiArmsV1HnKpiConfigPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IV1HnKpiConfigPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -130,9 +130,9 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
-    /// The <see cref="IApiArmsV1HnKpisPostApiResponse"/>
+    /// The <see cref="IV1HnKpisPostApiResponse"/>
     /// </summary>
-    public interface IApiArmsV1HnKpisPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ValidationProblemDetails?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>, IServiceUnavailable<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IV1HnKpisPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ValidationProblemDetails?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>, IServiceUnavailable<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -160,9 +160,9 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
-    /// The <see cref="IApiArmsV1HnNetworkIdKpiConfigGetApiResponse"/>
+    /// The <see cref="IV1HnNetworkIdKpiConfigGetApiResponse"/>
     /// </summary>
-    public interface IApiArmsV1HnNetworkIdKpiConfigGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.KpiConfigResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IV1HnNetworkIdKpiConfigGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.KpiConfigResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -191,61 +191,61 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The event raised after the server response
         /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiArmsV1HnKpiConfigPost;
+        public event EventHandler<ApiResponseEventArgs>? OnV1HnKpiConfigPost;
 
         /// <summary>
         /// The event raised after an error querying the server
         /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiArmsV1HnKpiConfigPost;
+        public event EventHandler<ExceptionEventArgs>? OnErrorV1HnKpiConfigPost;
 
-        internal void ExecuteOnApiArmsV1HnKpiConfigPost(ArmsApi.ApiArmsV1HnKpiConfigPostApiResponse apiResponse)
+        internal void ExecuteOnV1HnKpiConfigPost(ArmsApi.V1HnKpiConfigPostApiResponse apiResponse)
         {
-            OnApiArmsV1HnKpiConfigPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+            OnV1HnKpiConfigPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
         }
 
-        internal void ExecuteOnErrorApiArmsV1HnKpiConfigPost(Exception exception)
+        internal void ExecuteOnErrorV1HnKpiConfigPost(Exception exception)
         {
-            OnErrorApiArmsV1HnKpiConfigPost?.Invoke(this, new ExceptionEventArgs(exception));
+            OnErrorV1HnKpiConfigPost?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
         /// The event raised after the server response
         /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiArmsV1HnKpisPost;
+        public event EventHandler<ApiResponseEventArgs>? OnV1HnKpisPost;
 
         /// <summary>
         /// The event raised after an error querying the server
         /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiArmsV1HnKpisPost;
+        public event EventHandler<ExceptionEventArgs>? OnErrorV1HnKpisPost;
 
-        internal void ExecuteOnApiArmsV1HnKpisPost(ArmsApi.ApiArmsV1HnKpisPostApiResponse apiResponse)
+        internal void ExecuteOnV1HnKpisPost(ArmsApi.V1HnKpisPostApiResponse apiResponse)
         {
-            OnApiArmsV1HnKpisPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+            OnV1HnKpisPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
         }
 
-        internal void ExecuteOnErrorApiArmsV1HnKpisPost(Exception exception)
+        internal void ExecuteOnErrorV1HnKpisPost(Exception exception)
         {
-            OnErrorApiArmsV1HnKpisPost?.Invoke(this, new ExceptionEventArgs(exception));
+            OnErrorV1HnKpisPost?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
         /// The event raised after the server response
         /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiArmsV1HnNetworkIdKpiConfigGet;
+        public event EventHandler<ApiResponseEventArgs>? OnV1HnNetworkIdKpiConfigGet;
 
         /// <summary>
         /// The event raised after an error querying the server
         /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiArmsV1HnNetworkIdKpiConfigGet;
+        public event EventHandler<ExceptionEventArgs>? OnErrorV1HnNetworkIdKpiConfigGet;
 
-        internal void ExecuteOnApiArmsV1HnNetworkIdKpiConfigGet(ArmsApi.ApiArmsV1HnNetworkIdKpiConfigGetApiResponse apiResponse)
+        internal void ExecuteOnV1HnNetworkIdKpiConfigGet(ArmsApi.V1HnNetworkIdKpiConfigGetApiResponse apiResponse)
         {
-            OnApiArmsV1HnNetworkIdKpiConfigGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+            OnV1HnNetworkIdKpiConfigGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
         }
 
-        internal void ExecuteOnErrorApiArmsV1HnNetworkIdKpiConfigGet(Exception exception)
+        internal void ExecuteOnErrorV1HnNetworkIdKpiConfigGet(Exception exception)
         {
-            OnErrorApiArmsV1HnNetworkIdKpiConfigGet?.Invoke(this, new ExceptionEventArgs(exception));
+            OnErrorV1HnNetworkIdKpiConfigGet?.Invoke(this, new ExceptionEventArgs(exception));
         }
     }
 
@@ -289,14 +289,14 @@ namespace HNTAS.Api.Client.Api
             Events = armsApiEvents;
         }
 
-        partial void FormatApiArmsV1HnKpiConfigPost(KpiConfigRequest kpiConfigRequest);
+        partial void FormatV1HnKpiConfigPost(KpiConfigRequest kpiConfigRequest);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
         /// <param name="kpiConfigRequest"></param>
         /// <returns></returns>
-        private void ValidateApiArmsV1HnKpiConfigPost(KpiConfigRequest kpiConfigRequest)
+        private void ValidateV1HnKpiConfigPost(KpiConfigRequest kpiConfigRequest)
         {
             if (kpiConfigRequest == null)
                 throw new ArgumentNullException(nameof(kpiConfigRequest));
@@ -307,10 +307,10 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="kpiConfigRequest"></param>
-        private void AfterApiArmsV1HnKpiConfigPostDefaultImplementation(IApiArmsV1HnKpiConfigPostApiResponse apiResponseLocalVar, KpiConfigRequest kpiConfigRequest)
+        private void AfterV1HnKpiConfigPostDefaultImplementation(IV1HnKpiConfigPostApiResponse apiResponseLocalVar, KpiConfigRequest kpiConfigRequest)
         {
             bool suppressDefaultLog = false;
-            AfterApiArmsV1HnKpiConfigPost(ref suppressDefaultLog, apiResponseLocalVar, kpiConfigRequest);
+            AfterV1HnKpiConfigPost(ref suppressDefaultLog, apiResponseLocalVar, kpiConfigRequest);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -321,7 +321,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="kpiConfigRequest"></param>
-        partial void AfterApiArmsV1HnKpiConfigPost(ref bool suppressDefaultLog, IApiArmsV1HnKpiConfigPostApiResponse apiResponseLocalVar, KpiConfigRequest kpiConfigRequest);
+        partial void AfterV1HnKpiConfigPost(ref bool suppressDefaultLog, IV1HnKpiConfigPostApiResponse apiResponseLocalVar, KpiConfigRequest kpiConfigRequest);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -330,10 +330,10 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="kpiConfigRequest"></param>
-        private void OnErrorApiArmsV1HnKpiConfigPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, KpiConfigRequest kpiConfigRequest)
+        private void OnErrorV1HnKpiConfigPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, KpiConfigRequest kpiConfigRequest)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiArmsV1HnKpiConfigPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, kpiConfigRequest);
+            OnErrorV1HnKpiConfigPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, kpiConfigRequest);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -346,19 +346,19 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="kpiConfigRequest"></param>
-        partial void OnErrorApiArmsV1HnKpiConfigPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, KpiConfigRequest kpiConfigRequest);
+        partial void OnErrorV1HnKpiConfigPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, KpiConfigRequest kpiConfigRequest);
 
         /// <summary>
         ///  
         /// </summary>
         /// <param name="kpiConfigRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnKpiConfigPostApiResponse"/>&gt;</returns>
-        public async Task<IApiArmsV1HnKpiConfigPostApiResponse?> ApiArmsV1HnKpiConfigPostOrDefaultAsync(KpiConfigRequest kpiConfigRequest, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnKpiConfigPostApiResponse"/>&gt;</returns>
+        public async Task<IV1HnKpiConfigPostApiResponse?> V1HnKpiConfigPostOrDefaultAsync(KpiConfigRequest kpiConfigRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiArmsV1HnKpiConfigPostAsync(kpiConfigRequest, cancellationToken).ConfigureAwait(false);
+                return await V1HnKpiConfigPostAsync(kpiConfigRequest, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -372,16 +372,16 @@ namespace HNTAS.Api.Client.Api
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="kpiConfigRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnKpiConfigPostApiResponse"/>&gt;</returns>
-        public async Task<IApiArmsV1HnKpiConfigPostApiResponse> ApiArmsV1HnKpiConfigPostAsync(KpiConfigRequest kpiConfigRequest, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnKpiConfigPostApiResponse"/>&gt;</returns>
+        public async Task<IV1HnKpiConfigPostApiResponse> V1HnKpiConfigPostAsync(KpiConfigRequest kpiConfigRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiArmsV1HnKpiConfigPost(kpiConfigRequest);
+                ValidateV1HnKpiConfigPost(kpiConfigRequest);
 
-                FormatApiArmsV1HnKpiConfigPost(kpiConfigRequest);
+                FormatV1HnKpiConfigPost(kpiConfigRequest);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -389,8 +389,8 @@ namespace HNTAS.Api.Client.Api
                     uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
                     uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
                     uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
-                        ? "/api/arms/v1/hn/kpi-config"
-                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/arms/v1/hn/kpi-config");
+                        ? "/v1/hn/kpi-config"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/v1/hn/kpi-config");
 
                     httpRequestMessageLocalVar.Content = (kpiConfigRequest as object) is System.IO.Stream stream
                         ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
@@ -428,13 +428,13 @@ namespace HNTAS.Api.Client.Api
                     {
                         string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-                        ILogger<ApiArmsV1HnKpiConfigPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiArmsV1HnKpiConfigPostApiResponse>();
+                        ILogger<V1HnKpiConfigPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<V1HnKpiConfigPostApiResponse>();
 
-                        ApiArmsV1HnKpiConfigPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/arms/v1/hn/kpi-config", requestedAtLocalVar, _jsonSerializerOptions);
+                        V1HnKpiConfigPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/v1/hn/kpi-config", requestedAtLocalVar, _jsonSerializerOptions);
 
-                        AfterApiArmsV1HnKpiConfigPostDefaultImplementation(apiResponseLocalVar, kpiConfigRequest);
+                        AfterV1HnKpiConfigPostDefaultImplementation(apiResponseLocalVar, kpiConfigRequest);
 
-                        Events.ExecuteOnApiArmsV1HnKpiConfigPost(apiResponseLocalVar);
+                        Events.ExecuteOnV1HnKpiConfigPost(apiResponseLocalVar);
 
                         return apiResponseLocalVar;
                     }
@@ -442,24 +442,24 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiArmsV1HnKpiConfigPostDefaultImplementation(e, "/api/arms/v1/hn/kpi-config", uriBuilderLocalVar.Path, kpiConfigRequest);
-                Events.ExecuteOnErrorApiArmsV1HnKpiConfigPost(e);
+                OnErrorV1HnKpiConfigPostDefaultImplementation(e, "/v1/hn/kpi-config", uriBuilderLocalVar.Path, kpiConfigRequest);
+                Events.ExecuteOnErrorV1HnKpiConfigPost(e);
                 throw;
             }
         }
 
         /// <summary>
-        /// The <see cref="ApiArmsV1HnKpiConfigPostApiResponse"/>
+        /// The <see cref="V1HnKpiConfigPostApiResponse"/>
         /// </summary>
-        public partial class ApiArmsV1HnKpiConfigPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiArmsV1HnKpiConfigPostApiResponse
+        public partial class V1HnKpiConfigPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IV1HnKpiConfigPostApiResponse
         {
             /// <summary>
             /// The logger
             /// </summary>
-            public ILogger<ApiArmsV1HnKpiConfigPostApiResponse> Logger { get; }
+            public ILogger<V1HnKpiConfigPostApiResponse> Logger { get; }
 
             /// <summary>
-            /// The <see cref="ApiArmsV1HnKpiConfigPostApiResponse"/>
+            /// The <see cref="V1HnKpiConfigPostApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -468,7 +468,7 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiArmsV1HnKpiConfigPostApiResponse(ILogger<ApiArmsV1HnKpiConfigPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public V1HnKpiConfigPostApiResponse(ILogger<V1HnKpiConfigPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -569,14 +569,14 @@ namespace HNTAS.Api.Client.Api
             partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
-        partial void FormatApiArmsV1HnKpisPost(KpiSubmissionRequest kpiSubmissionRequest);
+        partial void FormatV1HnKpisPost(KpiSubmissionRequest kpiSubmissionRequest);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
         /// <param name="kpiSubmissionRequest"></param>
         /// <returns></returns>
-        private void ValidateApiArmsV1HnKpisPost(KpiSubmissionRequest kpiSubmissionRequest)
+        private void ValidateV1HnKpisPost(KpiSubmissionRequest kpiSubmissionRequest)
         {
             if (kpiSubmissionRequest == null)
                 throw new ArgumentNullException(nameof(kpiSubmissionRequest));
@@ -587,10 +587,10 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="kpiSubmissionRequest"></param>
-        private void AfterApiArmsV1HnKpisPostDefaultImplementation(IApiArmsV1HnKpisPostApiResponse apiResponseLocalVar, KpiSubmissionRequest kpiSubmissionRequest)
+        private void AfterV1HnKpisPostDefaultImplementation(IV1HnKpisPostApiResponse apiResponseLocalVar, KpiSubmissionRequest kpiSubmissionRequest)
         {
             bool suppressDefaultLog = false;
-            AfterApiArmsV1HnKpisPost(ref suppressDefaultLog, apiResponseLocalVar, kpiSubmissionRequest);
+            AfterV1HnKpisPost(ref suppressDefaultLog, apiResponseLocalVar, kpiSubmissionRequest);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -601,7 +601,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="kpiSubmissionRequest"></param>
-        partial void AfterApiArmsV1HnKpisPost(ref bool suppressDefaultLog, IApiArmsV1HnKpisPostApiResponse apiResponseLocalVar, KpiSubmissionRequest kpiSubmissionRequest);
+        partial void AfterV1HnKpisPost(ref bool suppressDefaultLog, IV1HnKpisPostApiResponse apiResponseLocalVar, KpiSubmissionRequest kpiSubmissionRequest);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -610,10 +610,10 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="kpiSubmissionRequest"></param>
-        private void OnErrorApiArmsV1HnKpisPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, KpiSubmissionRequest kpiSubmissionRequest)
+        private void OnErrorV1HnKpisPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, KpiSubmissionRequest kpiSubmissionRequest)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiArmsV1HnKpisPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, kpiSubmissionRequest);
+            OnErrorV1HnKpisPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, kpiSubmissionRequest);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -626,19 +626,19 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="kpiSubmissionRequest"></param>
-        partial void OnErrorApiArmsV1HnKpisPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, KpiSubmissionRequest kpiSubmissionRequest);
+        partial void OnErrorV1HnKpisPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, KpiSubmissionRequest kpiSubmissionRequest);
 
         /// <summary>
         ///  
         /// </summary>
         /// <param name="kpiSubmissionRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnKpisPostApiResponse"/>&gt;</returns>
-        public async Task<IApiArmsV1HnKpisPostApiResponse?> ApiArmsV1HnKpisPostOrDefaultAsync(KpiSubmissionRequest kpiSubmissionRequest, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnKpisPostApiResponse"/>&gt;</returns>
+        public async Task<IV1HnKpisPostApiResponse?> V1HnKpisPostOrDefaultAsync(KpiSubmissionRequest kpiSubmissionRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiArmsV1HnKpisPostAsync(kpiSubmissionRequest, cancellationToken).ConfigureAwait(false);
+                return await V1HnKpisPostAsync(kpiSubmissionRequest, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -652,16 +652,16 @@ namespace HNTAS.Api.Client.Api
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="kpiSubmissionRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnKpisPostApiResponse"/>&gt;</returns>
-        public async Task<IApiArmsV1HnKpisPostApiResponse> ApiArmsV1HnKpisPostAsync(KpiSubmissionRequest kpiSubmissionRequest, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnKpisPostApiResponse"/>&gt;</returns>
+        public async Task<IV1HnKpisPostApiResponse> V1HnKpisPostAsync(KpiSubmissionRequest kpiSubmissionRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiArmsV1HnKpisPost(kpiSubmissionRequest);
+                ValidateV1HnKpisPost(kpiSubmissionRequest);
 
-                FormatApiArmsV1HnKpisPost(kpiSubmissionRequest);
+                FormatV1HnKpisPost(kpiSubmissionRequest);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -669,8 +669,8 @@ namespace HNTAS.Api.Client.Api
                     uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
                     uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
                     uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
-                        ? "/api/arms/v1/hn/kpis"
-                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/arms/v1/hn/kpis");
+                        ? "/v1/hn/kpis"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/v1/hn/kpis");
 
                     httpRequestMessageLocalVar.Content = (kpiSubmissionRequest as object) is System.IO.Stream stream
                         ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
@@ -708,13 +708,13 @@ namespace HNTAS.Api.Client.Api
                     {
                         string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-                        ILogger<ApiArmsV1HnKpisPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiArmsV1HnKpisPostApiResponse>();
+                        ILogger<V1HnKpisPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<V1HnKpisPostApiResponse>();
 
-                        ApiArmsV1HnKpisPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/arms/v1/hn/kpis", requestedAtLocalVar, _jsonSerializerOptions);
+                        V1HnKpisPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/v1/hn/kpis", requestedAtLocalVar, _jsonSerializerOptions);
 
-                        AfterApiArmsV1HnKpisPostDefaultImplementation(apiResponseLocalVar, kpiSubmissionRequest);
+                        AfterV1HnKpisPostDefaultImplementation(apiResponseLocalVar, kpiSubmissionRequest);
 
-                        Events.ExecuteOnApiArmsV1HnKpisPost(apiResponseLocalVar);
+                        Events.ExecuteOnV1HnKpisPost(apiResponseLocalVar);
 
                         return apiResponseLocalVar;
                     }
@@ -722,24 +722,24 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiArmsV1HnKpisPostDefaultImplementation(e, "/api/arms/v1/hn/kpis", uriBuilderLocalVar.Path, kpiSubmissionRequest);
-                Events.ExecuteOnErrorApiArmsV1HnKpisPost(e);
+                OnErrorV1HnKpisPostDefaultImplementation(e, "/v1/hn/kpis", uriBuilderLocalVar.Path, kpiSubmissionRequest);
+                Events.ExecuteOnErrorV1HnKpisPost(e);
                 throw;
             }
         }
 
         /// <summary>
-        /// The <see cref="ApiArmsV1HnKpisPostApiResponse"/>
+        /// The <see cref="V1HnKpisPostApiResponse"/>
         /// </summary>
-        public partial class ApiArmsV1HnKpisPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiArmsV1HnKpisPostApiResponse
+        public partial class V1HnKpisPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IV1HnKpisPostApiResponse
         {
             /// <summary>
             /// The logger
             /// </summary>
-            public ILogger<ApiArmsV1HnKpisPostApiResponse> Logger { get; }
+            public ILogger<V1HnKpisPostApiResponse> Logger { get; }
 
             /// <summary>
-            /// The <see cref="ApiArmsV1HnKpisPostApiResponse"/>
+            /// The <see cref="V1HnKpisPostApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -748,7 +748,7 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiArmsV1HnKpisPostApiResponse(ILogger<ApiArmsV1HnKpisPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public V1HnKpisPostApiResponse(ILogger<V1HnKpisPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -887,14 +887,14 @@ namespace HNTAS.Api.Client.Api
             partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
-        partial void FormatApiArmsV1HnNetworkIdKpiConfigGet(ref string networkId);
+        partial void FormatV1HnNetworkIdKpiConfigGet(ref string networkId);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
         /// <param name="networkId"></param>
         /// <returns></returns>
-        private void ValidateApiArmsV1HnNetworkIdKpiConfigGet(string networkId)
+        private void ValidateV1HnNetworkIdKpiConfigGet(string networkId)
         {
             if (networkId == null)
                 throw new ArgumentNullException(nameof(networkId));
@@ -905,10 +905,10 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="networkId"></param>
-        private void AfterApiArmsV1HnNetworkIdKpiConfigGetDefaultImplementation(IApiArmsV1HnNetworkIdKpiConfigGetApiResponse apiResponseLocalVar, string networkId)
+        private void AfterV1HnNetworkIdKpiConfigGetDefaultImplementation(IV1HnNetworkIdKpiConfigGetApiResponse apiResponseLocalVar, string networkId)
         {
             bool suppressDefaultLog = false;
-            AfterApiArmsV1HnNetworkIdKpiConfigGet(ref suppressDefaultLog, apiResponseLocalVar, networkId);
+            AfterV1HnNetworkIdKpiConfigGet(ref suppressDefaultLog, apiResponseLocalVar, networkId);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -919,7 +919,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="networkId"></param>
-        partial void AfterApiArmsV1HnNetworkIdKpiConfigGet(ref bool suppressDefaultLog, IApiArmsV1HnNetworkIdKpiConfigGetApiResponse apiResponseLocalVar, string networkId);
+        partial void AfterV1HnNetworkIdKpiConfigGet(ref bool suppressDefaultLog, IV1HnNetworkIdKpiConfigGetApiResponse apiResponseLocalVar, string networkId);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -928,10 +928,10 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="networkId"></param>
-        private void OnErrorApiArmsV1HnNetworkIdKpiConfigGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string networkId)
+        private void OnErrorV1HnNetworkIdKpiConfigGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string networkId)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiArmsV1HnNetworkIdKpiConfigGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, networkId);
+            OnErrorV1HnNetworkIdKpiConfigGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, networkId);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -944,19 +944,19 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="networkId"></param>
-        partial void OnErrorApiArmsV1HnNetworkIdKpiConfigGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string networkId);
+        partial void OnErrorV1HnNetworkIdKpiConfigGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string networkId);
 
         /// <summary>
         ///  
         /// </summary>
         /// <param name="networkId"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnNetworkIdKpiConfigGetApiResponse"/>&gt;</returns>
-        public async Task<IApiArmsV1HnNetworkIdKpiConfigGetApiResponse?> ApiArmsV1HnNetworkIdKpiConfigGetOrDefaultAsync(string networkId, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnNetworkIdKpiConfigGetApiResponse"/>&gt;</returns>
+        public async Task<IV1HnNetworkIdKpiConfigGetApiResponse?> V1HnNetworkIdKpiConfigGetOrDefaultAsync(string networkId, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiArmsV1HnNetworkIdKpiConfigGetAsync(networkId, cancellationToken).ConfigureAwait(false);
+                return await V1HnNetworkIdKpiConfigGetAsync(networkId, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -970,16 +970,16 @@ namespace HNTAS.Api.Client.Api
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="networkId"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsV1HnNetworkIdKpiConfigGetApiResponse"/>&gt;</returns>
-        public async Task<IApiArmsV1HnNetworkIdKpiConfigGetApiResponse> ApiArmsV1HnNetworkIdKpiConfigGetAsync(string networkId, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IV1HnNetworkIdKpiConfigGetApiResponse"/>&gt;</returns>
+        public async Task<IV1HnNetworkIdKpiConfigGetApiResponse> V1HnNetworkIdKpiConfigGetAsync(string networkId, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiArmsV1HnNetworkIdKpiConfigGet(networkId);
+                ValidateV1HnNetworkIdKpiConfigGet(networkId);
 
-                FormatApiArmsV1HnNetworkIdKpiConfigGet(ref networkId);
+                FormatV1HnNetworkIdKpiConfigGet(ref networkId);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -987,8 +987,8 @@ namespace HNTAS.Api.Client.Api
                     uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
                     uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
                     uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
-                        ? "/api/arms/v1/hn/{networkId}/kpi-config"
-                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/arms/v1/hn/{networkId}/kpi-config");
+                        ? "/v1/hn/{networkId}/kpi-config"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/v1/hn/{networkId}/kpi-config");
                     uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BnetworkId%7D", Uri.EscapeDataString(networkId.ToString()));
 
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
@@ -1012,13 +1012,13 @@ namespace HNTAS.Api.Client.Api
                     {
                         string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-                        ILogger<ApiArmsV1HnNetworkIdKpiConfigGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiArmsV1HnNetworkIdKpiConfigGetApiResponse>();
+                        ILogger<V1HnNetworkIdKpiConfigGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<V1HnNetworkIdKpiConfigGetApiResponse>();
 
-                        ApiArmsV1HnNetworkIdKpiConfigGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/arms/v1/hn/{networkId}/kpi-config", requestedAtLocalVar, _jsonSerializerOptions);
+                        V1HnNetworkIdKpiConfigGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/v1/hn/{networkId}/kpi-config", requestedAtLocalVar, _jsonSerializerOptions);
 
-                        AfterApiArmsV1HnNetworkIdKpiConfigGetDefaultImplementation(apiResponseLocalVar, networkId);
+                        AfterV1HnNetworkIdKpiConfigGetDefaultImplementation(apiResponseLocalVar, networkId);
 
-                        Events.ExecuteOnApiArmsV1HnNetworkIdKpiConfigGet(apiResponseLocalVar);
+                        Events.ExecuteOnV1HnNetworkIdKpiConfigGet(apiResponseLocalVar);
 
                         return apiResponseLocalVar;
                     }
@@ -1026,24 +1026,24 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiArmsV1HnNetworkIdKpiConfigGetDefaultImplementation(e, "/api/arms/v1/hn/{networkId}/kpi-config", uriBuilderLocalVar.Path, networkId);
-                Events.ExecuteOnErrorApiArmsV1HnNetworkIdKpiConfigGet(e);
+                OnErrorV1HnNetworkIdKpiConfigGetDefaultImplementation(e, "/v1/hn/{networkId}/kpi-config", uriBuilderLocalVar.Path, networkId);
+                Events.ExecuteOnErrorV1HnNetworkIdKpiConfigGet(e);
                 throw;
             }
         }
 
         /// <summary>
-        /// The <see cref="ApiArmsV1HnNetworkIdKpiConfigGetApiResponse"/>
+        /// The <see cref="V1HnNetworkIdKpiConfigGetApiResponse"/>
         /// </summary>
-        public partial class ApiArmsV1HnNetworkIdKpiConfigGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiArmsV1HnNetworkIdKpiConfigGetApiResponse
+        public partial class V1HnNetworkIdKpiConfigGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IV1HnNetworkIdKpiConfigGetApiResponse
         {
             /// <summary>
             /// The logger
             /// </summary>
-            public ILogger<ApiArmsV1HnNetworkIdKpiConfigGetApiResponse> Logger { get; }
+            public ILogger<V1HnNetworkIdKpiConfigGetApiResponse> Logger { get; }
 
             /// <summary>
-            /// The <see cref="ApiArmsV1HnNetworkIdKpiConfigGetApiResponse"/>
+            /// The <see cref="V1HnNetworkIdKpiConfigGetApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -1052,7 +1052,7 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiArmsV1HnNetworkIdKpiConfigGetApiResponse(ILogger<ApiArmsV1HnNetworkIdKpiConfigGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public V1HnNetworkIdKpiConfigGetApiResponse(ILogger<V1HnNetworkIdKpiConfigGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
