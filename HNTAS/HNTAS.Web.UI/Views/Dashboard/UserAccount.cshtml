@@ -32,7 +32,7 @@
         <div class="dashboard-grid__item">
             <div class="dashboard-card">
                 <h3 class="dashboard-card__title govuk-heading-s">
-                    <a class="govuk-link govuk-link--no-visited-state" asp-controller="" asp-action="">
+                    <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "Notification", new { userId = ViewBag.UserId })">
                         Notifications
                     </a>
                 </h3>

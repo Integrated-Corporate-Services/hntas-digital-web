@@ -327,7 +327,7 @@ namespace HNTAS.Web.UI.Controllers
                            hnId: state.Data.ChooseHeatNetworkModel.SelectedHeatNetworkId,
                            contributorRoles: new List<ContributorRole> { selectedContributorRole },
                            orgId: orgId,
-                           replacedUserId: state.Data.ReplaceUserRoleViewModel != null ? state.Data.ReplaceUserRoleViewModel.CurrentRoleUserId : null,
+                           replacedUserId: state.Data.ReplaceUserRoleViewModel != null ? state.Data.ReplaceUserRoleViewModel?.CurrentRoleUserId : null,
                            rolesToReplace: new List<ContributorRole> { selectedContributorRole },
                            status: InvitationStatus.Invited
                        )

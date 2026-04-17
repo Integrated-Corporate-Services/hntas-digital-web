@@ -14,6 +14,7 @@ tags:
 - name: HeatNetworks
 - name: HNDataImportExport
 - name: Invitations
+- name: NotificationHistory
 - name: Organisations
 - name: OrganisationUser
 - name: SOA
@@ -72,6 +73,98 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Service Unavailable
+      tags:
+      - Arms
+  /api/arms/v1/hn/{networkId}/kpi-config:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: networkId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/KpiConfigResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KpiConfigResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/KpiConfigResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Internal Server Error
+      tags:
+      - Arms
+  /api/arms/v1/hn/kpi-config:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KpiConfigRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/KpiConfigRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/KpiConfigRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Internal Server Error
       tags:
       - Arms
   /api/Assessor/search:
@@ -805,6 +898,47 @@ paths:
           description: Bad Request
       tags:
       - Invitations
+  /api/NotificationHistory/notification-history:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationHistoryRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/NotificationHistoryRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/NotificationHistoryRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/NotificationHistoryResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationHistoryResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/NotificationHistoryResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - NotificationHistory
   /api/Organisations/{orgId}/edit-org-details:
     patch:
       parameters:
@@ -3322,6 +3456,7 @@ components:
         elementId: elementId
         soaStages:
         - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessorUpdatedBy: assessorUpdatedBy
           assessor:
             firstName: firstName
             lastName: lastName
@@ -3330,8 +3465,10 @@ components:
             status: Active
           soaStatus: soaStatus
           soaStatusUpdatedBy: soaStatusUpdatedBy
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           stageId: Stage1
         - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessorUpdatedBy: assessorUpdatedBy
           assessor:
             firstName: firstName
             lastName: lastName
@@ -3340,6 +3477,7 @@ components:
             status: Active
           soaStatus: soaStatus
           soaStatusUpdatedBy: soaStatusUpdatedBy
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           stageId: Stage1
         count: 3
         networkElementInstanceName: networkElementInstanceName
@@ -3789,6 +3927,7 @@ components:
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -3797,8 +3936,10 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -3807,6 +3948,7 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 3
             networkElementInstanceName: networkElementInstanceName
@@ -3815,6 +3957,7 @@ components:
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -3823,8 +3966,10 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -3833,6 +3978,7 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 3
             networkElementInstanceName: networkElementInstanceName
@@ -4238,6 +4384,7 @@ components:
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -4246,8 +4393,10 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -4256,6 +4405,7 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 3
             networkElementInstanceName: networkElementInstanceName
@@ -4264,6 +4414,7 @@ components:
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -4272,8 +4423,10 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -4282,6 +4435,7 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 3
             networkElementInstanceName: networkElementInstanceName
@@ -4693,6 +4847,58 @@ components:
             $ref: "#/components/schemas/UploadedCertifierDocumentResponse"
           type: array
       type: object
+    KpiConfigRequest:
+      example:
+        network_id: network_id
+        elements:
+          key:
+            key:
+              lower_limit: 0.8008281904610115
+              unit: unit
+              threshold_rule:
+                delta: 5.637376656633329
+                type: type
+                value: 1.4658129805029452
+                target: 5.962133916683182
+              upper_limit: 6.027456183070403
+              is_mandatory: true
+      properties:
+        network_id:
+          type: string
+        elements:
+          additionalProperties:
+            additionalProperties:
+              $ref: "#/components/schemas/KpiRule"
+            type: object
+          type: object
+      required:
+      - network_id
+      type: object
+    KpiConfigResponse:
+      example:
+        network_id: network_id
+        elements:
+          key:
+            key:
+              lower_limit: 0.8008281904610115
+              unit: unit
+              threshold_rule:
+                delta: 5.637376656633329
+                type: type
+                value: 1.4658129805029452
+                target: 5.962133916683182
+              upper_limit: 6.027456183070403
+              is_mandatory: true
+      properties:
+        network_id:
+          type: string
+        elements:
+          additionalProperties:
+            additionalProperties:
+              $ref: "#/components/schemas/KpiRule"
+            type: object
+          type: object
+      type: object
     KpiMetadata:
       additionalProperties: false
       example:
@@ -4714,6 +4920,31 @@ components:
       required:
       - network_id
       - period_start
+      type: object
+    KpiRule:
+      example:
+        lower_limit: 0.8008281904610115
+        unit: unit
+        threshold_rule:
+          delta: 5.637376656633329
+          type: type
+          value: 1.4658129805029452
+          target: 5.962133916683182
+        upper_limit: 6.027456183070403
+        is_mandatory: true
+      properties:
+        lower_limit:
+          format: double
+          type: number
+        upper_limit:
+          format: double
+          type: number
+        unit:
+          type: string
+        is_mandatory:
+          type: boolean
+        threshold_rule:
+          $ref: "#/components/schemas/KpiThresholdRule"
       type: object
     KpiSubmissionRequest:
       additionalProperties: false
@@ -4755,6 +4986,28 @@ components:
           type: array
       required:
       - meta_data
+      type: object
+    KpiThresholdRule:
+      example:
+        delta: 5.637376656633329
+        type: type
+        value: 1.4658129805029452
+        target: 5.962133916683182
+      properties:
+        type:
+          type: string
+        value:
+          format: double
+          nullable: true
+          type: number
+        target:
+          format: double
+          nullable: true
+          type: number
+        delta:
+          format: double
+          nullable: true
+          type: number
       type: object
     KpiValue:
       additionalProperties: false
@@ -4981,6 +5234,7 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -4989,8 +5243,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -4999,6 +5255,7 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 3
           networkElementInstanceName: networkElementInstanceName
@@ -5007,6 +5264,7 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5015,8 +5273,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5025,6 +5285,7 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 3
           networkElementInstanceName: networkElementInstanceName
@@ -5065,6 +5326,7 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5073,8 +5335,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5083,6 +5347,7 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 3
           networkElementInstanceName: networkElementInstanceName
@@ -5091,6 +5356,7 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5099,8 +5365,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5109,6 +5377,7 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 3
           networkElementInstanceName: networkElementInstanceName
@@ -5148,6 +5417,7 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5156,8 +5426,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5166,6 +5438,7 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 3
           networkElementInstanceName: networkElementInstanceName
@@ -5174,6 +5447,7 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5182,8 +5456,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5192,6 +5468,7 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 3
           networkElementInstanceName: networkElementInstanceName
@@ -5257,6 +5534,143 @@ components:
           nullable: true
           type: string
       type: object
+    NotificationHistoryData:
+      example:
+        eligibleRoles:
+        - eligibleRoles
+        - eligibleRoles
+        createdBy: createdBy
+        subject: subject
+        actorsId:
+        - actorsId
+        - actorsId
+        description: description
+        action: action
+        id: id
+        notificationType: 0
+        heatNetworkId: heatNetworkId
+        actionLink: actionLink
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          nullable: true
+          type: string
+        notificationType:
+          type: integer
+        actorsId:
+          items:
+            type: string
+          type: array
+        subject:
+          type: string
+        description:
+          nullable: true
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        action:
+          nullable: true
+          type: string
+        actionLink:
+          nullable: true
+          type: string
+        eligibleRoles:
+          items:
+            type: string
+          type: array
+        heatNetworkId:
+          nullable: true
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+      type: object
+    NotificationHistoryRequest:
+      example:
+        sortDirection: sortDirection
+        pageSize: 6
+        sortBy: sortBy
+        page: 0
+        userId: userId
+      properties:
+        userId:
+          nullable: true
+          type: string
+        sortBy:
+          nullable: true
+          type: string
+        sortDirection:
+          nullable: true
+          type: string
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+      type: object
+    NotificationHistoryResponse:
+      example:
+        pageNumber: 6
+        totalPages: 5
+        pageSize: 1
+        totalCount: 5
+        items:
+        - eligibleRoles:
+          - eligibleRoles
+          - eligibleRoles
+          createdBy: createdBy
+          subject: subject
+          actorsId:
+          - actorsId
+          - actorsId
+          description: description
+          action: action
+          id: id
+          notificationType: 0
+          heatNetworkId: heatNetworkId
+          actionLink: actionLink
+          timestamp: 2000-01-23T04:56:07.000+00:00
+        - eligibleRoles:
+          - eligibleRoles
+          - eligibleRoles
+          createdBy: createdBy
+          subject: subject
+          actorsId:
+          - actorsId
+          - actorsId
+          description: description
+          action: action
+          id: id
+          notificationType: 0
+          heatNetworkId: heatNetworkId
+          actionLink: actionLink
+          timestamp: 2000-01-23T04:56:07.000+00:00
+        userId: userId
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/NotificationHistoryData"
+          type: array
+        pageNumber:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        userId:
+          nullable: true
+          type: string
+      type: object
+    NotificationHistoryType:
+      type: integer
     NullableOfPreferredContactType:
       enum:
       - Landline
@@ -5972,6 +6386,7 @@ components:
     SoaStages:
       example:
         soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        assessorUpdatedBy: assessorUpdatedBy
         assessor:
           firstName: firstName
           lastName: lastName
@@ -5980,6 +6395,7 @@ components:
           status: Active
         soaStatus: soaStatus
         soaStatusUpdatedBy: soaStatusUpdatedBy
+        assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
         stageId: Stage1
       properties:
         stageId:
@@ -5992,6 +6408,13 @@ components:
           nullable: true
           type: string
         soaStatusUpdatedBy:
+          nullable: true
+          type: string
+        assessorUpdatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        assessorUpdatedBy:
           nullable: true
           type: string
         assessor:
