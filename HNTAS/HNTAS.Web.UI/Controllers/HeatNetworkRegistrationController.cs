@@ -680,6 +680,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult HeatNetworkSuccessRedirection(HeatNetworkSuccessRedirection model)
         {
             if (!ModelState.IsValid) {
