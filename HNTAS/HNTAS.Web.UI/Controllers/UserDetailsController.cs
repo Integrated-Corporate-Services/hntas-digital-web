@@ -36,7 +36,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-            if (userModel == null || userModel.ContactDetails == null || userModel.ContactDetails.JobTitle == null)
+            if (userModel == null || userModel.ContactDetails == null)
             {
                 var userDetails = await _userService.GetUserDetails(userId);
                 var isUserRp = await _userService.IsRpUserAsync(userDetails.EmailId);
@@ -78,6 +78,7 @@ namespace HNTAS.Web.UI.Controllers
             if (contactDetails.PreferredContactType == null)
             {
                 //add model error if preferred contact type is not selected
+                ViewBag.IsRegulatoryContact = userModel.IsRegulatoryContact;
                 TempData["ErrorSummary"] = "CustomErrorSummary";
                 ModelState.AddModelError(nameof(contactDetails.PreferredContactType), "Select your preferred contact method.");
                 return View("UserDetails/ContactDetails", contactDetails);
@@ -130,7 +131,6 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult CheckYourAnswers()
         {
-            this.ShowBackButton("ContactDetails", "UserDetails");
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
             var viewModel = new CheckYourAnswersOrganisationModel
             {

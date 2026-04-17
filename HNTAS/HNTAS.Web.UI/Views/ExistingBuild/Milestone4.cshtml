@@ -48,15 +48,15 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-label govuk-label--l">Milestone 4</h1>
+        <h1 class="govuk-heading govuk-heading-l">Milestone 4</h1>
 
         @foreach (hnElement ele in hnElements)
         {
             <h2 class="govuk-label govuk-label--m">@ele.Title</h2>
             <p class="govuk-body">@ele.Desc</p>
             <ol class="govuk-list govuk-list--bullet">
-                <li><a href="@ele.TSLink" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">Technical Specification</a></li>
-                <li><a href="@ele.APLink" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">Assessment Procedures</a></li>
+                <li><a href="@ele.TSLink" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener" target="_blank">Technical Specification</a></li>
+                <li><a href="@ele.APLink" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener" target="_blank">Assessment Procedures</a></li>
             </ol>
         }
     </div>

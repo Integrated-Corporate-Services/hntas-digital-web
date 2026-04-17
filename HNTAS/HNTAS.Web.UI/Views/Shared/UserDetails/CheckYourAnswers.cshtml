@@ -73,7 +73,10 @@
                         </div>
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Job title</dt>
-                            <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.JobTitle</dd>                            
+                            <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.JobTitle</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> first name</span></a>
+                            </dd>
                         </div>
                     </dl>                    
 

@@ -42,16 +42,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
 
-        //[HttpGet]
-        //public async Task<IActionResult> Details([FromQuery] string hnid)
-        //{
-        //    var model = await GetNetworkDetails(hnid);
-        //    if (model == null)
-        //        return BadRequest();
-
-        //    return View(model);
-
-        //}
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -72,7 +63,6 @@ namespace HNTAS.Web.UI.Controllers
                 return BadRequest();
 
             return View("AddNetworkDetails", model);
-
         }
 
         private async Task<HNDetailsViewModel> GetNetworkDetails(string hnid)
