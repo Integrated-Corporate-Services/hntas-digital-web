@@ -114,7 +114,7 @@
                 </div>
             }
 
-            <environment names="dev,qa">
+            <environment names="Local,dev,qa">
 
                 <div class="dashboard-grid__item">
                     <div class="dashboard-card">
@@ -131,6 +131,19 @@
                             <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="ImportExcelPOC">Import Excel POC</a>
                         </h3>
                         <p class="govuk-body-s">Search for active assessors using the fast typeahead proof-of-concept.</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="ArmsDashboardPOC">
+                                Heat Network Performance Dashboard
+                            </a>
+                        </h3>
+                        <p class="govuk-body-s">
+                            View KPI assessments, performance thresholds, and data integrity checks for registered heat networks.
+                        </p>
                     </div>
                 </div>
 

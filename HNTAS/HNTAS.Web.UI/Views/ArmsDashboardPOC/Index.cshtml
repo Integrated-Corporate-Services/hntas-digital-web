@@ -1,0 +1,225 @@
+﻿@using static HNTAS.Web.UI.Controllers.ArmsDashboardPOCController
+@model ArmsDashboardViewModel
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+        <form method="get" id="filter-form">
+            @* Ensure current network selection is preserved *@
+            <input type="hidden" name="hnid" value="@Model.Hnid" />
+
+            <div class="govuk-form-group">
+                <label class="govuk-label govuk-!-font-weight-bold" for="hn-search">
+                    Search networks
+                </label>
+                <input class="govuk-input" id="hn-search" name="searchTerm" type="text" value="@Model.SearchTerm">
+            </div>
+
+            <div class="govuk-form-group">
+                <label class="govuk-label govuk-!-font-weight-bold" for="hn-select">
+                    Select Heat Network
+                </label>
+                <select class="govuk-select govuk-!-width-full" id="hn-select" name="hnid_dropdown" onchange="this.form.hnid.value=this.value; this.form.submit();">
+                    @foreach (var network in Model.AllNetworks)
+                    {
+                        <option value="@network.Hnid" selected="@(Model.Hnid == network.Hnid ? "selected" : null)">
+                            @network.DisplayName
+                        </option>
+                    }
+                </select>
+            </div>
+
+          
+
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="kpi-status-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        KPI Status
+                    </legend>
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                Reporting Period
+                            </legend>
+
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="filter-year">
+                                    Year
+                                </label>
+                                <select class="govuk-select govuk-!-width-full" id="filter-year" name="year">
+                                    @foreach (var y in Model.AvailableYears)
+                                    {
+                                        <option value="@y" selected="@(Model.SelectedYear == y ? "selected" : null)">@y</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="govuk-form-group govuk-!-margin-bottom-2">
+                                <label class="govuk-label" for="filter-month">
+                                    Month
+                                </label>
+                                <select class="govuk-select govuk-!-width-full" id="filter-month" name="month">
+                                    @foreach (var m in Model.Months)
+                                    {
+                                        <option value="@m.Key" selected="@(Model.SelectedMonth == m.Key ? "selected" : null)">@m.Value</option>
+                                    }
+                                </select>
+                            </div>
+
+                           
+                        </fieldset>
+                    </div>
+
+                    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input"
+                                   id="status-fail"
+                                   name="statusFilter"
+                                   type="checkbox"
+                                   value="Fail"
+                                   @(Model.StatusFilter.Contains("Fail") ? "checked" : "") />
+
+                            <label class="govuk-label govuk-checkboxes__label" for="status-fail">
+                                Fail
+                            </label>
+                        </div>
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input"
+                                   id="status-outside"
+                                   name="statusFilter"
+                                   type="checkbox"
+                                   value="OutsideLimit"
+                                   @(Model.StatusFilter.Contains("OutsideLimit") ? "checked" : "") />
+
+                            <label class="govuk-label govuk-checkboxes__label" for="status-outside">
+                                Outside Limit
+                            </label>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button govuk-!-margin-top-4" data-module="govuk-button">
+                Apply filters
+            </button>
+
+
+            <p class="govuk-body-s">
+                <a href="?hnid=@Model.Hnid" class="govuk-link">Reset all filters</a>
+            </p>
+        </form>
+    </div>
+
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">@Model.NetworkName (@Model.Hnid)</h1>
+
+        @foreach (var element in Model.GroupedElements)
+        {
+            <details class="govuk-details govuk-!-margin-bottom-2" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        <strong>Element ID: @element.Key</strong>
+                        @* Inline badge for quick status check *@
+                        @if (element.Value.Any(k => k.Status == KPIAssessmentStatus.Fail))
+                        {
+                            <strong class="govuk-tag govuk-tag--red govuk-!-margin-left-2">Fail</strong>
+                        }
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    <table class="govuk-table">
+                        <thead class="govuk-table__head">
+                            <tr class="govuk-table__row">
+                                <th scope="col" class="govuk-table__header">KPI ID</th>
+                                <th scope="col" class="govuk-table__header govuk-table__header--numeric">Value</th>
+                                <th scope="col" class="govuk-table__header govuk-table__header--numeric">Threshold</th>
+                                <th scope="col" class="govuk-table__header">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="govuk-table__body">
+                            @foreach (var kpi in element.Value)
+                            {
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">@kpi.KpiId</td>
+                                    <td class="govuk-table__cell govuk-table__cell--numeric">@kpi.Value</td>
+                                    <td class="govuk-table__cell govuk-table__cell--numeric">@kpi.Threshold</td>
+                                    <td class="govuk-table__cell">
+                                        <strong class="govuk-tag @GetTagClass(kpi.Status)">@kpi.Status</strong>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        }
+
+        <nav class="govuk-pagination govuk-!-margin-top-6" role="navigation" aria-label="Pagination">
+            @if (Model.HasPreviousPage)
+            {
+                <div class="govuk-pagination__prev">
+                    <a class="govuk-link govuk-pagination__link" href="@GetPaginationUrl(Model.CurrentPage - 1)" rel="prev">
+                        <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" viewBox="0 0 15 13"><path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.0312-3.834h11.043v-2h-11.051l3.9746-3.9746-1.3418-1.375z"></path></svg>
+                        <span class="govuk-pagination__link-title">Previous</span>
+                    </a>
+                </div>
+            }
+
+            <ul class="govuk-pagination__list">
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="govuk-pagination__item @(i == Model.CurrentPage ? "govuk-pagination__item--current" : "")">
+                        <a class="govuk-link govuk-pagination__link" href="@GetPaginationUrl(i)" aria-label="Page @i">@i</a>
+                    </li>
+                }
+            </ul>
+
+            @if (Model.HasNextPage)
+            {
+                <div class="govuk-pagination__next">
+                    <a class="govuk-link govuk-pagination__link" href="@GetPaginationUrl(Model.CurrentPage + 1)" rel="next">
+                        <span class="govuk-pagination__link-title">Next</span>
+                        <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" viewBox="0 0 15 13"><path d="m8.107-0.0078125-1.4136 1.414 4.1856 4.1856h-11.565v2h11.565l-4.1856 4.1856 1.4136 1.414 6.5869-6.5869-6.5869-6.5869z"></path></svg>
+                    </a>
+                </div>
+            }
+        </nav>
+        <p class="govuk-body-s">Showing <strong>@Model.FromRecord</strong> to <strong>@Model.ToRecord</strong> of <strong>@Model.TotalElements</strong> elements</p>
+    </div>
+</div>
+
+<script>
+    // Expand/Collapse all functionality
+    document.getElementById('expand-all').addEventListener('click', function() {
+        const details = document.querySelectorAll('details');
+        const isOpening = this.textContent === 'Expand all';
+        details.forEach(d => d.open = isOpening);
+        this.textContent = isOpening ? 'Collapse all' : 'Expand all';
+    });
+</script>
+
+@functions {
+    string GetTagClass(KPIAssessmentStatus status) => status switch
+    {
+        KPIAssessmentStatus.Pass => "govuk-tag--green",
+        KPIAssessmentStatus.Fail => "govuk-tag--red",
+        KPIAssessmentStatus.OutsideLimit => "govuk-tag--orange",
+        _ => "govuk-tag--grey"
+    };
+
+    // Helper to build the URL strings without getting messy in the HTML
+    string GetPaginationUrl(int pageNum)
+    {
+        var url = $"?hnid={Model.Hnid}&searchTerm={Model.SearchTerm}&page={pageNum}";
+        foreach (var filter in Model.StatusFilter)
+        {
+            url += $"&statusFilter={filter}";
+        }
+        return url;
+    }
+}
