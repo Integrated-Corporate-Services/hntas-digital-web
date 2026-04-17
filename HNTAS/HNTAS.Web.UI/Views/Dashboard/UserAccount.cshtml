@@ -39,7 +39,7 @@
                 </h3>
                 <p class="govuk-body-s">Network, element and personnel updates</p>
             </div>
-        </div>
+        </div>       
 
         <!-- Organisation Details -->
         <div class="dashboard-grid__item">
@@ -74,8 +74,25 @@
         </div>  
 
         
-        @if ((userIsRP && !RPLoggedInForFirstTime) || userIsActingRP)
+        @if (userIsRP || userIsActingRP)
         {
+            @if (userIsRP)
+            {
+                <!-- Network Managers -->
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            @* <a class="govuk-link govuk-link--no-visited-state" asp-controller="NetworkLeads" asp-action="ManageLeads"> *@
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageLeads" asp-controller="NetworkLeads">
+                                Network Managers
+                            </a>
+                        </h3>
+                        <p class="govuk-body-s">Accountable personnel able to add heat networks and dutyholders</p>
+                    </div>
+                </div>
+            }
+
+
             <div class="dashboard-grid__item">
                 <div class="dashboard-card @disabled">
                     <h3 class="dashboard-card__title govuk-heading-s">
@@ -101,19 +118,7 @@
                     </h3>
                     <p class="govuk-body-s">You can add or view contributors to your heat network.</p>
                 </div>
-            </div>
-
-            @if (userIsActingRP)
-            {
-                <div class="dashboard-grid__item">
-                    <div class="dashboard-card">
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a asp-controller="UserManagement" asp-action="ChangeOrganisationUser" class="govuk-link govuk-link--no-visited-state">Manage Organisation Roles</a>
-                        </h3>
-                        <p class="govuk-body-s">View or change user roles and permissions within your organisation.</p>
-                    </div>
-                </div>
-            }
+            </div>           
 
             <div class="dashboard-grid__item">
                 <div class="dashboard-card">
