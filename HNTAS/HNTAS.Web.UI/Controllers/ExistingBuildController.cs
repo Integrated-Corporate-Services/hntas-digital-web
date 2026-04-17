@@ -7,7 +7,6 @@ namespace HNTAS.Web.UI.Controllers
     {
         public IActionResult Index()
         {
-            this.ShowBackButton("DocumentLibrary", "Home");
             return View();
         }
         public IActionResult Overview()
