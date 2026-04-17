@@ -274,7 +274,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult DoesHNHaveAPostcode()
         {            
             this.ShowBackButton("HeatNetworkName");
-            var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey) ?? new DoesHNHaveAPostcodeViewModel();
+            var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey) ?? new DoesHNHaveAPostcodeViewModel();
             return View(model);
         }
 
@@ -291,7 +291,7 @@ namespace HNTAS.Web.UI.Controllers
             if (!model.HasPostcode)
             {
                 model.Postcode = null;
-                _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
+                _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey, model);
                 _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, null);
                 _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, null);
                 _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, null);
@@ -411,7 +411,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult SaveHNAddressByPostcode()
         {
             var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey) ?? new AddressByStreetOrTownModel();            
-            var doesHnHaveAPostcodeModel = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey);
+            var doesHnHaveAPostcodeModel = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
             HeatNetworkLocationModel heatNetworkLocationModel;
             if (doesHnHaveAPostcodeModel.HasPostcode)
             {
@@ -686,10 +686,11 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.HeatNetworkSuccessRedirectionSessionKey);
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             switch (model.NextAction)
             {
                 case "HNDetails":
-                    return RedirectToAction("AddNetworkDetails", "HeatNetwork");
+                    return RedirectToAction("AddNetworkDetails", "HeatNetwork", new { hnid = hnId });
                 case "AddHN":
                     return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
                 case "Dashboard":
