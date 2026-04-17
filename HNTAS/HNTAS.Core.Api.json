@@ -10,7 +10,7 @@
     }
   ],
   "paths": {
-    "/v1/hn/kpis": {
+    "/api/arms/v1/hn/kpis": {
       "post": {
         "tags": [
           "Arms"
@@ -81,157 +81,6 @@
           },
           "503": {
             "description": "Service Unavailable",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/hn/{networkId}/kpi-config": {
-      "get": {
-        "tags": [
-          "Arms"
-        ],
-        "parameters": [
-          {
-            "name": "networkId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/KpiConfigResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/KpiConfigResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/KpiConfigResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/hn/kpi-config": {
-      "post": {
-        "tags": [
-          "Arms"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/KpiConfigRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/KpiConfigRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/KpiConfigRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -956,7 +805,7 @@
         }
       }
     },
-    "/heat-networks": {
+    "/api/external/heat-networks": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -994,7 +843,7 @@
         }
       }
     },
-    "/heat-network/{hnId}": {
+    "/api/external/heat-network/{hnId}": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -1053,7 +902,7 @@
         }
       }
     },
-    "/heat-networks/search": {
+    "/api/external/heat-networks/search": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -5481,43 +5330,6 @@
         },
         "nullable": true
       },
-      "KpiConfigRequest": {
-        "required": [
-          "network_id"
-        ],
-        "type": "object",
-        "properties": {
-          "network_id": {
-            "type": "string"
-          },
-          "elements": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object",
-              "additionalProperties": {
-                "$ref": "#/components/schemas/KpiRule"
-              }
-            }
-          }
-        }
-      },
-      "KpiConfigResponse": {
-        "type": "object",
-        "properties": {
-          "network_id": {
-            "type": "string"
-          },
-          "elements": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object",
-              "additionalProperties": {
-                "$ref": "#/components/schemas/KpiRule"
-              }
-            }
-          }
-        }
-      },
       "KpiMetadata": {
         "required": [
           "network_id",
@@ -5541,28 +5353,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "KpiRule": {
-        "type": "object",
-        "properties": {
-          "lower_limit": {
-            "type": "number",
-            "format": "double"
-          },
-          "upper_limit": {
-            "type": "number",
-            "format": "double"
-          },
-          "unit": {
-            "type": "string"
-          },
-          "is_mandatory": {
-            "type": "boolean"
-          },
-          "threshold_rule": {
-            "$ref": "#/components/schemas/KpiThresholdRule"
-          }
-        }
       },
       "KpiSubmissionRequest": {
         "required": [
@@ -5588,29 +5378,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "KpiThresholdRule": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string"
-          },
-          "value": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "target": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "delta": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          }
-        }
       },
       "KpiValue": {
         "type": "object",
@@ -6452,15 +6219,6 @@
             "nullable": true
           },
           "soaStatusUpdatedBy": {
-            "type": "string",
-            "nullable": true
-          },
-          "assessorUpdatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "assessorUpdatedBy": {
             "type": "string",
             "nullable": true
           },
