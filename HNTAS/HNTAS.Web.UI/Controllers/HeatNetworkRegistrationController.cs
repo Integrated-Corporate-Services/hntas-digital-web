@@ -70,6 +70,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult HeatNetworkIntroduction()
         {
+            this.ShowBackButton("HeatNetworkDwellingsCheck");
             return View();
         }
 
@@ -222,13 +223,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
             var model = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey);
             return View(model);
-        }
-
-        [HttpGet]
-        public IActionResult HeatNetworkSummary()
-        {
-            return RedirectToAction("HeatNetworkName", "HeatNetworkRegistration");
-        }
+        }        
 
         [HttpGet]
         public IActionResult HeatNetworkName()
@@ -394,7 +389,6 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult ConfirmAddress()
         {
-            this.ShowBackButton("DoesHNHaveAPostcode");
             var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
             return View(model);
         }
@@ -505,12 +499,19 @@ namespace HNTAS.Web.UI.Controllers
                         _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "3" });
                         return RedirectToAction("CheckYourAnswers", "HeatNetworkRegistration");
                     case "Operation":
-                        return RedirectToAction("HNInOperation");
+                        return RedirectToAction("HeatNetworkIsOperational", "HeatNetworkRegistration");
                     default:
                         ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
                         return View(model);
                 }
             }
+        }
+
+        [HttpGet]
+        public IActionResult HeatNetworkIsOperational()
+        {
+            this.ShowBackButton("HeatNetworkPhase");
+            return View();
         }
 
         [HttpGet]

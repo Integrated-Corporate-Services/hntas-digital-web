@@ -36,8 +36,7 @@
                         <input class="govuk-input"
                                asp-for="StreetAddress" type="text" autocomplete="streetaddress" id="@StreetAddressId"
                                name="@StreetAddressId"
-                               value="@Model.StreetAddress"
-                               aria-describedby="organisation-address-hint">
+                               value="@Model.StreetAddress">
                     </div>
 
                     @* Town or City Field *@
@@ -50,8 +49,7 @@
                         <input class="govuk-input"
                                asp-for="TownOrCity" type="text" autocomplete="townorcity" id="@TownOrCityId"
                                name="@TownOrCityId"
-                               value="@Model.TownOrCity"
-                               aria-describedby="organisation-address-hint">
+                               value="@Model.TownOrCity">
                     </div>
                     
                     @* Postal Code or Zip code Field *@
@@ -64,8 +62,7 @@
                         <input class="govuk-input"
                                asp-for="Postalcode" type="text" autocomplete="postalcode" id="@PostalcodeId"
                                name="@PostalcodeId"
-                               value="@Model.Postalcode"
-                               aria-describedby="organisation-address-hint">
+                               value="@Model.Postalcode">
                     </div>
 
                     @* Country *@
@@ -75,8 +72,7 @@
                                asp-for="Country" type="text" autocomplete="country" id="@CountryId"
                                name="@CountryId"
                                value="@Model.Country"
-                               readonly
-                               aria-describedby="organisation-address-hint">
+                               readonly>
                     </div>
                 </fieldset><br />
                 <button type="submit" class="govuk-button" data-module="govuk-button">
