@@ -53,4 +53,9 @@ namespace HNTAS.Web.UI.Models
         public bool ConfirmedDeclaration { get; set; }
     }
 
+    public class HeatNetworkSuccessRedirection
+    {
+        public string NextAction { get; set; }
+    }
+
 }

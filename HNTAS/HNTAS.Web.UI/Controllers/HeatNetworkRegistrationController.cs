@@ -269,7 +269,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult DoesHNHaveAPostcode()
         {            
             this.ShowBackButton("HeatNetworkName");
-            var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey) ?? new DoesHNHaveAPostcodeViewModel();
+            var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey) ?? new DoesHNHaveAPostcodeViewModel();
             return View(model);
         }
 
@@ -286,7 +286,7 @@ namespace HNTAS.Web.UI.Controllers
             if (!model.HasPostcode)
             {
                 model.Postcode = null;
-                _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
+                _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey, model);
                 _sessionHelper.SaveToSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey, null);
                 _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, null);
                 _sessionHelper.SaveToSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey, null);
@@ -304,7 +304,7 @@ namespace HNTAS.Web.UI.Controllers
                 results.Addresses = results.Addresses
                     .Select(address => Utility.CapitalizeCommaSeparated(address))
                     .ToArray();
-                _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey, model);
+                _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey, model);
                 _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
 
                 return RedirectToAction("SearchByPostcodeResults");
@@ -405,7 +405,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult SaveHNAddressByPostcode()
         {
             var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey) ?? new AddressByStreetOrTownModel();            
-            var doesHnHaveAPostcodeModel = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey);
+            var doesHnHaveAPostcodeModel = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
             HeatNetworkLocationModel heatNetworkLocationModel;
             if (doesHnHaveAPostcodeModel.HasPostcode)
             {
@@ -455,7 +455,6 @@ namespace HNTAS.Web.UI.Controllers
             model.ECAddressByLatLong.Latitude = lat;
             model.ECAddressByLatLong.Longitude = lon;
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ECDetailsModelSessionKey, model);
-            string previousStep = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.PreviousStepKey);
             return RedirectToAction("HeatNetworkPhase");
         }
         #endregion
@@ -650,15 +649,17 @@ namespace HNTAS.Web.UI.Controllers
                 await _organisationService.UpdateOrgHeatNetworkId(orgId, userId, userResponse.HnId);
                 TempData["Confirmation_HN_Id"] = userResponse.HnId;
                 TempData["HNName"] = userResponse.Name;
+                // safe to save HnId in session at this point as it maybe used for redirection to add hn details after registration
+                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, userResponse.HnId);
+                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnName, userResponse.Name);
             }
             else
             {
                 TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
                 return View("CheckYourAnswers", viewModel);
             }
-            _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
-            _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);
-
+            _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);
+            _sessionHelper.SetIsCheckAnswerFlow(HttpContext, false);            
             return RedirectToAction("HeatNetworkRegistrationComplete");
         }
 
@@ -668,6 +669,36 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HNId = TempData["Confirmation_HN_Id"] as string;
             ViewBag.HNName = TempData["HNName"] as string;
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult HeatNetworkSuccessRedirection()
+        {
+            ViewBag.HNId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HNName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var model = _sessionHelper.GetFromSession<HeatNetworkSuccessRedirection>(HttpContext, SessionKeys.HeatNetworkSuccessRedirectionSessionKey) ?? new HeatNetworkSuccessRedirection();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult HeatNetworkSuccessRedirection(HeatNetworkSuccessRedirection model)
+        {
+            if (!ModelState.IsValid) {
+                return View(model);
+            }
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.HeatNetworkSuccessRedirectionSessionKey);
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            switch (model.NextAction)
+            {
+                case "HNDetails":
+                    return RedirectToAction("AddNetworkDetails", "HeatNetwork", new { hnid = hnId });
+                case "AddHN":
+                    return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
+                case "Dashboard":
+                default:
+                    return RedirectToAction("UserAccount", "Dashboard");
+            }
         }
     }
 }

@@ -793,7 +793,6 @@ namespace HNTAS.Web.UI.Controllers
                     .ToArray();
 
                 _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
-                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "Organisation");
                 return RedirectToAction("SearchByPostcodeResults");
             }
             catch (HttpRequestException)
