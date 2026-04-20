@@ -3437,7 +3437,7 @@ components:
           soaStatusUpdatedBy: soaStatusUpdatedBy
           assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           stageId: Stage1
-        count: 3
+        count: 9
         networkElementInstanceName: networkElementInstanceName
         type: EnergyCentre
         elementType: elementType
@@ -3908,7 +3908,7 @@ components:
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            count: 3
+            count: 9
             networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
@@ -3938,7 +3938,7 @@ components:
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            count: 3
+            count: 9
             networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
@@ -3964,14 +3964,13 @@ components:
           isNonDomesticConsumer: true
           noOfDownstreamDistrictHeatNetworkConnections: 7
           isCommunalBuilding: true
-          noOfUpstreamDistrictHeatNetworkConnections: 9
           noOfDomesticConsumer: 5
-          isUpstreamDistrictHeatNetworkConnections: true
           isDownstreamDistrictHeatNetworkConnections: true
           noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
+        additionalDescription: additionalDescription
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -3982,7 +3981,6 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
-        hnDescription: hnDescription
         registrationSource: HNTAS
         pathway: pathway
         designConstructionLog:
@@ -4008,7 +4006,7 @@ components:
           type: string
         name:
           type: string
-        hnDescription:
+        additionalDescription:
           nullable: true
           type: string
         address:
@@ -4048,9 +4046,7 @@ components:
         isNonDomesticConsumer: true
         noOfDownstreamDistrictHeatNetworkConnections: 7
         isCommunalBuilding: true
-        noOfUpstreamDistrictHeatNetworkConnections: 9
         noOfDomesticConsumer: 5
-        isUpstreamDistrictHeatNetworkConnections: true
         isDownstreamDistrictHeatNetworkConnections: true
         noOfCommunalBuilding: 5
       nullable: true
@@ -4076,12 +4072,6 @@ components:
         isDownstreamDistrictHeatNetworkConnections:
           type: boolean
         noOfDownstreamDistrictHeatNetworkConnections:
-          format: int32
-          nullable: true
-          type: integer
-        isUpstreamDistrictHeatNetworkConnections:
-          type: boolean
-        noOfUpstreamDistrictHeatNetworkConnections:
           format: int32
           nullable: true
           type: integer
@@ -4365,7 +4355,7 @@ components:
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            count: 3
+            count: 9
             networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
@@ -4395,7 +4385,7 @@ components:
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            count: 3
+            count: 9
             networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
@@ -4421,14 +4411,13 @@ components:
           isNonDomesticConsumer: true
           noOfDownstreamDistrictHeatNetworkConnections: 7
           isCommunalBuilding: true
-          noOfUpstreamDistrictHeatNetworkConnections: 9
           noOfDomesticConsumer: 5
-          isUpstreamDistrictHeatNetworkConnections: true
           isDownstreamDistrictHeatNetworkConnections: true
           noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
+        additionalDescription: additionalDescription
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -4439,7 +4428,6 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
-        hnDescription: hnDescription
         pathway: pathway
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4465,7 +4453,7 @@ components:
           $ref: "#/components/schemas/RegisteredAddress"
         name:
           type: string
-        hnDescription:
+        additionalDescription:
           nullable: true
           type: string
         pathway:
@@ -5215,7 +5203,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
@@ -5245,7 +5233,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
@@ -5307,7 +5295,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
@@ -5337,7 +5325,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
@@ -5398,7 +5386,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
@@ -5428,7 +5416,7 @@ components:
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType

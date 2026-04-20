@@ -12,6 +12,14 @@ namespace HNTAS.Web.UI.Models
         [RegularExpression(@"^[A-Za-z0-9 :;\-]+$", ErrorMessage = "The heat network name contains invalid characters.")]
         [Display(Name = "HeatNetwork Name")]
         public string HeatNetworkName { get; set; }
+
+        private string? _additionalDescription;
+
+        public string? AdditionalDescription
+        {
+            get => _additionalDescription;
+            set => _additionalDescription = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+        }
     }
 
     public class HeatNetworkLocationModel
