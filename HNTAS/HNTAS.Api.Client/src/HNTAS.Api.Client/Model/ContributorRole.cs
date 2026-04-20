@@ -71,9 +71,9 @@ namespace HNTAS.Api.Client.Model
         Certifier = 8,
 
         /// <summary>
-        /// Enum Coordinator for value: Coordinator
+        /// Enum NetworkManager for value: NetworkManager
         /// </summary>
-        Coordinator = 9,
+        NetworkManager = 9,
 
         /// <summary>
         /// Enum ResponsiblePerson for value: ResponsiblePerson
@@ -117,8 +117,8 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Certifier"))
                 return ContributorRole.Certifier;
 
-            if (value.Equals("Coordinator"))
-                return ContributorRole.Coordinator;
+            if (value.Equals("NetworkManager"))
+                return ContributorRole.NetworkManager;
 
             if (value.Equals("ResponsiblePerson"))
                 return ContributorRole.ResponsiblePerson;
@@ -157,8 +157,8 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("Certifier"))
                 return ContributorRole.Certifier;
 
-            if (value.Equals("Coordinator"))
-                return ContributorRole.Coordinator;
+            if (value.Equals("NetworkManager"))
+                return ContributorRole.NetworkManager;
 
             if (value.Equals("ResponsiblePerson"))
                 return ContributorRole.ResponsiblePerson;
@@ -198,8 +198,8 @@ namespace HNTAS.Api.Client.Model
             if (value == ContributorRole.Certifier)
                 return "Certifier";
 
-            if (value == ContributorRole.Coordinator)
-                return "Coordinator";
+            if (value == ContributorRole.NetworkManager)
+                return "NetworkManager";
 
             if (value == ContributorRole.ResponsiblePerson)
                 return "ResponsiblePerson";

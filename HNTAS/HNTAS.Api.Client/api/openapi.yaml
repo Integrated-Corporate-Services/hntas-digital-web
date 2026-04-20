@@ -19,7 +19,7 @@ tags:
 - name: SOA
 - name: Users
 paths:
-  /v1/hn/kpis:
+  /arms/v1/hn/kpis:
     post:
       requestBody:
         content:
@@ -74,7 +74,7 @@ paths:
           description: Service Unavailable
       tags:
       - Arms
-  /v1/hn/{networkId}/kpi-config:
+  /arms/v1/hn/{networkId}/kpi-config:
     get:
       parameters:
       - explode: false
@@ -123,7 +123,7 @@ paths:
           description: Internal Server Error
       tags:
       - Arms
-  /v1/hn/kpi-config:
+  /arms/v1/hn/kpi-config:
     post:
       requestBody:
         content:
@@ -581,7 +581,7 @@ paths:
           description: Not Found
       tags:
       - HeatNetworks
-  /heat-networks:
+  /external/heat-networks:
     get:
       responses:
         "200":
@@ -604,7 +604,7 @@ paths:
           description: OK
       tags:
       - HeatNetworks
-  /heat-network/{hnId}:
+  /external/heat-network/{hnId}:
     get:
       parameters:
       - explode: false
@@ -641,7 +641,7 @@ paths:
           description: Not Found
       tags:
       - HeatNetworks
-  /heat-networks/search:
+  /external/heat-networks/search:
     get:
       parameters:
       - explode: true
@@ -3293,7 +3293,7 @@ components:
       - ContributingOperator
       - Assessor
       - Certifier
-      - Coordinator
+      - NetworkManager
       - ResponsiblePerson
       type: string
     CountryAndTerritory:
@@ -5516,7 +5516,7 @@ components:
     NullableOfUserRole:
       enum:
       - ResponsiblePerson
-      - Coordinator
+      - NetworkManager
       - DesignatedDutyHolder
       - Contributor
       - Assessor
@@ -6835,7 +6835,7 @@ components:
     UserRole:
       enum:
       - ResponsiblePerson
-      - Coordinator
+      - NetworkManager
       - DesignatedDutyHolder
       - Contributor
       - Assessor

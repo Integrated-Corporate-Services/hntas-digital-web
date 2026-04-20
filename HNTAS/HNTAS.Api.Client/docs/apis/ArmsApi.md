@@ -4,13 +4,13 @@ All URIs are relative to *https://localhost:7117*
 
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
-| [**V1HnKpiConfigPost**](ArmsApi.md#v1hnkpiconfigpost) | **POST** /v1/hn/kpi-config |  |
-| [**V1HnKpisPost**](ArmsApi.md#v1hnkpispost) | **POST** /v1/hn/kpis |  |
-| [**V1HnNetworkIdKpiConfigGet**](ArmsApi.md#v1hnnetworkidkpiconfigget) | **GET** /v1/hn/{networkId}/kpi-config |  |
+| [**ArmsV1HnKpiConfigPost**](ArmsApi.md#armsv1hnkpiconfigpost) | **POST** /arms/v1/hn/kpi-config |  |
+| [**ArmsV1HnKpisPost**](ArmsApi.md#armsv1hnkpispost) | **POST** /arms/v1/hn/kpis |  |
+| [**ArmsV1HnNetworkIdKpiConfigGet**](ArmsApi.md#armsv1hnnetworkidkpiconfigget) | **GET** /arms/v1/hn/{networkId}/kpi-config |  |
 
-<a id="v1hnkpiconfigpost"></a>
-# **V1HnKpiConfigPost**
-> void V1HnKpiConfigPost (KpiConfigRequest kpiConfigRequest)
+<a id="armsv1hnkpiconfigpost"></a>
+# **ArmsV1HnKpiConfigPost**
+> void ArmsV1HnKpiConfigPost (KpiConfigRequest kpiConfigRequest)
 
 
 
@@ -44,9 +44,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="v1hnkpispost"></a>
-# **V1HnKpisPost**
-> void V1HnKpisPost (KpiSubmissionRequest kpiSubmissionRequest)
+<a id="armsv1hnkpispost"></a>
+# **ArmsV1HnKpisPost**
+> void ArmsV1HnKpisPost (KpiSubmissionRequest kpiSubmissionRequest)
 
 
 
@@ -81,9 +81,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="v1hnnetworkidkpiconfigget"></a>
-# **V1HnNetworkIdKpiConfigGet**
-> KpiConfigResponse V1HnNetworkIdKpiConfigGet (string networkId)
+<a id="armsv1hnnetworkidkpiconfigget"></a>
+# **ArmsV1HnNetworkIdKpiConfigGet**
+> KpiConfigResponse ArmsV1HnNetworkIdKpiConfigGet (string networkId)
 
 
 
