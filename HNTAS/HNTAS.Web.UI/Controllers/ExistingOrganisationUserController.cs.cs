@@ -64,7 +64,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var userOptions = new List<SelectItemOption>();
 
-            foreach (var user in users.Where(u => u.Roles.Contains(Api.Client.Model.UserRole.Coordinator)))
+            foreach (var user in users.Where(u => u.Roles.Contains(Api.Client.Model.UserRole.NetworkManager)))
             {
                 var roles = user.Roles?.Select(r => userRoles.FirstOrDefault(cr => cr.Name == r.ToString())?.Description).ToList();
 
@@ -217,15 +217,15 @@ namespace HNTAS.Web.UI.Controllers
                     //get rp user id 
                     var rpuser = await _organisationUserService.GetResponsiblePartyDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId));
 
-                    var roleToReplace = selectedUser.Roles.Contains(UserRole.ResponsiblePerson) ? ContributorRole.ResponsiblePerson : ContributorRole.Coordinator;
+                    var roleToReplace = selectedUser.Roles.Contains(UserRole.ResponsiblePerson) ? ContributorRole.ResponsiblePerson : ContributorRole.NetworkManager;
 
-                    var selectedContributorRole = state.Data.RoleAssignmentModel?.SelectedRoleName == ContributorRole.Coordinator.ToString()
-                        ? ContributorRole.Coordinator
+                    var selectedContributorRole = state.Data.RoleAssignmentModel?.SelectedRoleName == ContributorRole.NetworkManager.ToString()
+                        ? ContributorRole.NetworkManager
                         : ContributorRole.ResponsiblePerson;
 
                     TempData["UserName"] = $"{selectedUser?.FirstName} {selectedUser?.LastName}";
                     TempData["OrganisationName"] = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-                    TempData["AssignedRole"] = state.Data.RoleAssignmentModel?.SelectedRoleName == ContributorRole.Coordinator.ToString() ? "Network Manager" : "Responsible Party";
+                    TempData["AssignedRole"] = state.Data.RoleAssignmentModel?.SelectedRoleName == ContributorRole.NetworkManager.ToString() ? "Network Manager" : "Responsible Party";
 
                     var invitationId = await _invitationService.AddInvitedUserAsync(
                            userId,
