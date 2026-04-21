@@ -26,9 +26,9 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// Defines ElementType
+    /// Defines HeatNetworkElementType
     /// </summary>
-    public enum ElementType
+    public enum HeatNetworkElementType
     {
         /// <summary>
         /// Enum EnergyCentre for value: EnergyCentre
@@ -57,81 +57,81 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// Converts <see cref="ElementType"/> to and from the JSON value
+    /// Converts <see cref="HeatNetworkElementType"/> to and from the JSON value
     /// </summary>
-    public static class ElementTypeValueConverter
+    public static class HeatNetworkElementTypeValueConverter
     {
         /// <summary>
-        /// Parses a given value to <see cref="ElementType"/>
+        /// Parses a given value to <see cref="HeatNetworkElementType"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static ElementType FromString(string value)
+        public static HeatNetworkElementType FromString(string value)
         {
             if (value.Equals("EnergyCentre"))
-                return ElementType.EnergyCentre;
+                return HeatNetworkElementType.EnergyCentre;
 
             if (value.Equals("Substation"))
-                return ElementType.Substation;
+                return HeatNetworkElementType.Substation;
 
             if (value.Equals("DistrictDistribution"))
-                return ElementType.DistrictDistribution;
+                return HeatNetworkElementType.DistrictDistribution;
 
             if (value.Equals("CommunalDistribution"))
-                return ElementType.CommunalDistribution;
+                return HeatNetworkElementType.CommunalDistribution;
 
             if (value.Equals("ConsumerConnection"))
-                return ElementType.ConsumerConnection;
+                return HeatNetworkElementType.ConsumerConnection;
 
-            throw new NotImplementedException($"Could not convert value to type ElementType: '{value}'");
+            throw new NotImplementedException($"Could not convert value to type HeatNetworkElementType: '{value}'");
         }
 
         /// <summary>
-        /// Parses a given value to <see cref="ElementType"/>
+        /// Parses a given value to <see cref="HeatNetworkElementType"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static ElementType? FromStringOrDefault(string value)
+        public static HeatNetworkElementType? FromStringOrDefault(string value)
         {
             if (value.Equals("EnergyCentre"))
-                return ElementType.EnergyCentre;
+                return HeatNetworkElementType.EnergyCentre;
 
             if (value.Equals("Substation"))
-                return ElementType.Substation;
+                return HeatNetworkElementType.Substation;
 
             if (value.Equals("DistrictDistribution"))
-                return ElementType.DistrictDistribution;
+                return HeatNetworkElementType.DistrictDistribution;
 
             if (value.Equals("CommunalDistribution"))
-                return ElementType.CommunalDistribution;
+                return HeatNetworkElementType.CommunalDistribution;
 
             if (value.Equals("ConsumerConnection"))
-                return ElementType.ConsumerConnection;
+                return HeatNetworkElementType.ConsumerConnection;
 
             return null;
         }
 
         /// <summary>
-        /// Converts the <see cref="ElementType"/> to the json value
+        /// Converts the <see cref="HeatNetworkElementType"/> to the json value
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static string ToJsonValue(ElementType value)
+        public static string ToJsonValue(HeatNetworkElementType value)
         {
-            if (value == ElementType.EnergyCentre)
+            if (value == HeatNetworkElementType.EnergyCentre)
                 return "EnergyCentre";
 
-            if (value == ElementType.Substation)
+            if (value == HeatNetworkElementType.Substation)
                 return "Substation";
 
-            if (value == ElementType.DistrictDistribution)
+            if (value == HeatNetworkElementType.DistrictDistribution)
                 return "DistrictDistribution";
 
-            if (value == ElementType.CommunalDistribution)
+            if (value == HeatNetworkElementType.CommunalDistribution)
                 return "CommunalDistribution";
 
-            if (value == ElementType.ConsumerConnection)
+            if (value == HeatNetworkElementType.ConsumerConnection)
                 return "ConsumerConnection";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
@@ -139,10 +139,10 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="ElementType"/>
+    /// A Json converter for type <see cref="HeatNetworkElementType"/>
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
-    public class ElementTypeJsonConverter : JsonConverter<ElementType>
+    public class HeatNetworkElementTypeJsonConverter : JsonConverter<HeatNetworkElementType>
     {
         /// <summary>
         /// Returns a  from the Json object
@@ -151,13 +151,13 @@ namespace HNTAS.Api.Client.Model
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override ElementType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override HeatNetworkElementType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            ElementType? result = rawValue == null
+            HeatNetworkElementType? result = rawValue == null
                 ? null
-                : ElementTypeValueConverter.FromStringOrDefault(rawValue);
+                : HeatNetworkElementTypeValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -166,36 +166,36 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the ElementType to the json writer
+        /// Writes the HeatNetworkElementType to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="elementType"></param>
+        /// <param name="heatNetworkElementType"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, ElementType elementType, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, HeatNetworkElementType heatNetworkElementType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(elementType.ToString());
+            writer.WriteStringValue(heatNetworkElementType.ToString());
         }
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="ElementType"/>
+    /// A Json converter for type <see cref="HeatNetworkElementType"/>
     /// </summary>
-    public class ElementTypeNullableJsonConverter : JsonConverter<ElementType?>
+    public class HeatNetworkElementTypeNullableJsonConverter : JsonConverter<HeatNetworkElementType?>
     {
         /// <summary>
-        /// Returns a ElementType from the Json object
+        /// Returns a HeatNetworkElementType from the Json object
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override ElementType? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override HeatNetworkElementType? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            ElementType? result = rawValue == null
+            HeatNetworkElementType? result = rawValue == null
                 ? null
-                : ElementTypeValueConverter.FromStringOrDefault(rawValue);
+                : HeatNetworkElementTypeValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -207,11 +207,11 @@ namespace HNTAS.Api.Client.Model
         /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="elementType"></param>
+        /// <param name="heatNetworkElementType"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, ElementType? elementType, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, HeatNetworkElementType? heatNetworkElementType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(elementType?.ToString() ?? "null");
+            writer.WriteStringValue(heatNetworkElementType?.ToString() ?? "null");
         }
     }
 }

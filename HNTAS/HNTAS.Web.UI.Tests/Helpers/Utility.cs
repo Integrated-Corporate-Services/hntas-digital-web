@@ -83,7 +83,7 @@ namespace HNTAS.Web.UI.Tests.Helpers
                         HeatNetworkElements = new List<HeatNetworkElementResponse>()
                         {
                             new HeatNetworkElementResponse(){
-                                Name = HeatNetworkElementDisplayType.EnergyCentre.ToString(),
+                                Name = HeatNetworkElementType.EnergyCentre.ToString(),
                                 Count = 1,
                                 Locations = new List<string>{ "Location 1" },
                                 Documents = new List<UploadedDocumentResponse>{

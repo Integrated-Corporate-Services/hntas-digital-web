@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **HeatNetworkElementDisplayType** |  | [optional] 
+**Name** | **HeatNetworkElementType** |  | [optional] 
 **Count** | **int** |  | [optional] 
 **Locations** | **List&lt;string&gt;** |  | [optional] 
 **Documents** | [**List&lt;UploadedDocument&gt;**](UploadedDocument.md) |  | [optional] 

@@ -26,18 +26,18 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// NetworkElement
+    /// NetworkElementRequest
     /// </summary>
-    public partial class NetworkElement : IValidatableObject
+    public partial class NetworkElementRequest : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NetworkElement" /> class.
+        /// Initializes a new instance of the <see cref="NetworkElementRequest" /> class.
         /// </summary>
         /// <param name="elementId">elementId</param>
         /// <param name="type">type</param>
         /// <param name="kpis">kpis</param>
         [JsonConstructor]
-        public NetworkElement(string elementId, ElementType type, Option<Dictionary<string, KpiValue>?> kpis = default)
+        public NetworkElementRequest(string elementId, HeatNetworkElementType type, Option<Dictionary<string, KpiValueRequest>?> kpis = default)
         {
             ElementId = elementId;
             Type = type;
@@ -51,7 +51,7 @@ namespace HNTAS.Api.Client.Model
         /// Gets or Sets Type
         /// </summary>
         [JsonPropertyName("type")]
-        public ElementType Type { get; set; }
+        public HeatNetworkElementType Type { get; set; }
 
         /// <summary>
         /// Gets or Sets ElementId
@@ -64,13 +64,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<Dictionary<string, KpiValue>?> KpisOption { get; private set; }
+        public Option<Dictionary<string, KpiValueRequest>?> KpisOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Kpis
         /// </summary>
         [JsonPropertyName("kpis")]
-        public Dictionary<string, KpiValue>? Kpis { get { return this.KpisOption; } set { this.KpisOption = new(value); } }
+        public Dictionary<string, KpiValueRequest>? Kpis { get { return this.KpisOption; } set { this.KpisOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -79,7 +79,7 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class NetworkElement {\n");
+            sb.Append("class NetworkElementRequest {\n");
             sb.Append("  ElementId: ").Append(ElementId).Append("\n");
             sb.Append("  Type: ").Append(Type).Append("\n");
             sb.Append("  Kpis: ").Append(Kpis).Append("\n");
@@ -99,19 +99,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="NetworkElement" />
+    /// A Json converter for type <see cref="NetworkElementRequest" />
     /// </summary>
-    public class NetworkElementJsonConverter : JsonConverter<NetworkElement>
+    public class NetworkElementRequestJsonConverter : JsonConverter<NetworkElementRequest>
     {
         /// <summary>
-        /// Deserializes json to <see cref="NetworkElement" />
+        /// Deserializes json to <see cref="NetworkElementRequest" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override NetworkElement Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override NetworkElementRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -121,8 +121,8 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> elementId = default;
-            Option<ElementType?> type = default;
-            Option<Dictionary<string, KpiValue>?> kpis = default;
+            Option<HeatNetworkElementType?> type = default;
+            Option<Dictionary<string, KpiValueRequest>?> kpis = default;
 
             while (utf8JsonReader.Read())
             {
@@ -145,10 +145,10 @@ namespace HNTAS.Api.Client.Model
                         case "type":
                             string? typeRawValue = utf8JsonReader.GetString();
                             if (typeRawValue != null)
-                                type = new Option<ElementType?>(ElementTypeValueConverter.FromStringOrDefault(typeRawValue));
+                                type = new Option<HeatNetworkElementType?>(HeatNetworkElementTypeValueConverter.FromStringOrDefault(typeRawValue));
                             break;
                         case "kpis":
-                            kpis = new Option<Dictionary<string, KpiValue>?>(JsonSerializer.Deserialize<Dictionary<string, KpiValue>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            kpis = new Option<Dictionary<string, KpiValueRequest>?>(JsonSerializer.Deserialize<Dictionary<string, KpiValueRequest>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -157,62 +157,62 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (!elementId.IsSet)
-                throw new ArgumentException("Property is required for class NetworkElement.", nameof(elementId));
+                throw new ArgumentException("Property is required for class NetworkElementRequest.", nameof(elementId));
 
             if (!type.IsSet)
-                throw new ArgumentException("Property is required for class NetworkElement.", nameof(type));
+                throw new ArgumentException("Property is required for class NetworkElementRequest.", nameof(type));
 
             if (elementId.IsSet && elementId.Value == null)
-                throw new ArgumentNullException(nameof(elementId), "Property is not nullable for class NetworkElement.");
+                throw new ArgumentNullException(nameof(elementId), "Property is not nullable for class NetworkElementRequest.");
 
             if (type.IsSet && type.Value == null)
-                throw new ArgumentNullException(nameof(type), "Property is not nullable for class NetworkElement.");
+                throw new ArgumentNullException(nameof(type), "Property is not nullable for class NetworkElementRequest.");
 
             if (kpis.IsSet && kpis.Value == null)
-                throw new ArgumentNullException(nameof(kpis), "Property is not nullable for class NetworkElement.");
+                throw new ArgumentNullException(nameof(kpis), "Property is not nullable for class NetworkElementRequest.");
 
-            return new NetworkElement(elementId.Value!, type.Value!.Value!, kpis);
+            return new NetworkElementRequest(elementId.Value!, type.Value!.Value!, kpis);
         }
 
         /// <summary>
-        /// Serializes a <see cref="NetworkElement" />
+        /// Serializes a <see cref="NetworkElementRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="networkElement"></param>
+        /// <param name="networkElementRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, NetworkElement networkElement, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, NetworkElementRequest networkElementRequest, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, networkElement, jsonSerializerOptions);
+            WriteProperties(writer, networkElementRequest, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="NetworkElement" />
+        /// Serializes the properties of <see cref="NetworkElementRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="networkElement"></param>
+        /// <param name="networkElementRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, NetworkElement networkElement, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, NetworkElementRequest networkElementRequest, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (networkElement.ElementId == null)
-                throw new ArgumentNullException(nameof(networkElement.ElementId), "Property is required for class NetworkElement.");
+            if (networkElementRequest.ElementId == null)
+                throw new ArgumentNullException(nameof(networkElementRequest.ElementId), "Property is required for class NetworkElementRequest.");
 
-            if (networkElement.KpisOption.IsSet && networkElement.Kpis == null)
-                throw new ArgumentNullException(nameof(networkElement.Kpis), "Property is required for class NetworkElement.");
+            if (networkElementRequest.KpisOption.IsSet && networkElementRequest.Kpis == null)
+                throw new ArgumentNullException(nameof(networkElementRequest.Kpis), "Property is required for class NetworkElementRequest.");
 
-            writer.WriteString("elementId", networkElement.ElementId);
+            writer.WriteString("elementId", networkElementRequest.ElementId);
 
-            var typeRawValue = ElementTypeValueConverter.ToJsonValue(networkElement.Type);
+            var typeRawValue = HeatNetworkElementTypeValueConverter.ToJsonValue(networkElementRequest.Type);
             writer.WriteString("type", typeRawValue);
 
-            if (networkElement.KpisOption.IsSet)
+            if (networkElementRequest.KpisOption.IsSet)
             {
                 writer.WritePropertyName("kpis");
-                JsonSerializer.Serialize(writer, networkElement.Kpis, jsonSerializerOptions);
+                JsonSerializer.Serialize(writer, networkElementRequest.Kpis, jsonSerializerOptions);
             }
         }
     }

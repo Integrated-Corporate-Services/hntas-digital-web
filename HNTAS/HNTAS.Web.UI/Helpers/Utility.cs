@@ -1,15 +1,8 @@
 ﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Models.Common;
-using HNTAS.Web.UI.Models.NetworkCharacteristics;
-using HNTAS.Web.UI.Models.Enums;
-using HNTAS.Web.UI.Models.HeatNetwork;
-using HNTAS.Web.UI.Models.NetworkElements;
 using HNTAS.Web.UI.Models.Soa;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
-using ApiHeatNetworkType = HNTAS.Api.Client.Model.HeatNetworkType;
-using System.Text.Json;
-using HNTAS.Web.UI.Models.Address;
 
 namespace HNTAS.Web.UI.Helpers
 {
@@ -56,8 +49,8 @@ namespace HNTAS.Web.UI.Helpers
         {
             return new List<HeatNetworkElementOption>
             {
-                new() { Id = HeatNetworkElementDisplayType.EnergyCentre, Label = "Energy centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
-                new() { Id = HeatNetworkElementDisplayType.ConsumerConnections, Label = "Consumer connections" },                
+                new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy centre", Hint = "Only 1 allowed per heat network unless part of a closed loop." },
+                new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer connections" },
             };
         }
 
@@ -145,7 +138,7 @@ namespace HNTAS.Web.UI.Helpers
                 Text = $"{hn.HnId} - {hn.Name}"
             }).ToList();
         }
-        
+
         /// <summary>
         /// Validates that input is a comma-separated integer list, e.g., "10" or "10, 11".
         /// Parses to List<int>.
@@ -233,6 +226,6 @@ namespace HNTAS.Web.UI.Helpers
             }
 
             return true;
-        }       
+        }
     }
 }

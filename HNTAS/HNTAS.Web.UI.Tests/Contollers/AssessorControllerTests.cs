@@ -2,7 +2,6 @@
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
-using HNTAS.Web.UI.Models.Address;
 using HNTAS.Web.UI.Models.Soa;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Moq;
 
 namespace HNTAS.Web.UI.Tests.Contollers
@@ -142,7 +140,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
                         HeatNetworkElements = new List<HeatNetworkElementResponse>()
                         {
                             new HeatNetworkElementResponse(){
-                                Name = HeatNetworkElementDisplayType.EnergyCentre.ToString(),
+                                Name = HeatNetworkElementType.EnergyCentre.ToString(),
                                 Count = 1,
                                 Locations = new List<string>{ "Location 1" },
                                 Documents = new List<UploadedDocumentResponse>{
@@ -155,7 +153,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
                                         UploadedBy = "user"
                                     }
                                 }
-                            },                            
+                            },
                         },
                         AssessmentDocs = new List<UploadedAssessmentDocumentResponse> {
                             new UploadedAssessmentDocumentResponse(){
