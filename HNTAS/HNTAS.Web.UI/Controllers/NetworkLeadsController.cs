@@ -73,7 +73,7 @@ namespace HNTAS.Web.UI.Controllers
                            firstName: model.FirstName,
                            lastName: model.LastName,
                            orgId: _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId),
-                           contributorRoles: new List<ContributorRole> { ContributorRole.Coordinator },
+                           contributorRoles: new List<ContributorRole> { ContributorRole.NetworkManager },
                            status: InvitationStatus.Invited
                        )
                    );

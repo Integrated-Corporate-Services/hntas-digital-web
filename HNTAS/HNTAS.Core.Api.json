@@ -4621,7 +4621,7 @@
           "ContributingOperator",
           "Assessor",
           "Certifier",
-          "Coordinator",
+          "NetworkManager",
           "ResponsiblePerson"
         ]
       },
@@ -5976,7 +5976,7 @@
       "NullableOfUserRole": {
         "enum": [
           "ResponsiblePerson",
-          "Coordinator",
+          "NetworkManager",
           "DesignatedDutyHolder",
           "Contributor",
           "Assessor",
@@ -7014,7 +7014,7 @@
       "UserRole": {
         "enum": [
           "ResponsiblePerson",
-          "Coordinator",
+          "NetworkManager",
           "DesignatedDutyHolder",
           "Contributor",
           "Assessor",

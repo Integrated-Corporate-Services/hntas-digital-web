@@ -3293,7 +3293,7 @@ components:
       - ContributingOperator
       - Assessor
       - Certifier
-      - Coordinator
+      - NetworkManager
       - ResponsiblePerson
       type: string
     CountryAndTerritory:
@@ -5510,7 +5510,7 @@ components:
     NullableOfUserRole:
       enum:
       - ResponsiblePerson
-      - Coordinator
+      - NetworkManager
       - DesignatedDutyHolder
       - Contributor
       - Assessor
@@ -6829,7 +6829,7 @@ components:
     UserRole:
       enum:
       - ResponsiblePerson
-      - Coordinator
+      - NetworkManager
       - DesignatedDutyHolder
       - Contributor
       - Assessor
