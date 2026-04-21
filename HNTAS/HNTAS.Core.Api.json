@@ -4972,7 +4972,7 @@
           "name": {
             "type": "string"
           },
-          "hnDescription": {
+          "additionalDescription": {
             "type": "string",
             "nullable": true
           },
@@ -5052,14 +5052,6 @@
             "type": "boolean"
           },
           "noOfDownstreamDistrictHeatNetworkConnections": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "isUpstreamDistrictHeatNetworkConnections": {
-            "type": "boolean"
-          },
-          "noOfUpstreamDistrictHeatNetworkConnections": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -5192,7 +5184,7 @@
           "name": {
             "type": "string"
           },
-          "hnDescription": {
+          "additionalDescription": {
             "type": "string",
             "nullable": true
           },
