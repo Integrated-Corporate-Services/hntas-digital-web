@@ -26,20 +26,20 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// KpiValue
+    /// KpiValueRequest
     /// </summary>
-    public partial class KpiValue : IValidatableObject
+    public partial class KpiValueRequest : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="KpiValue" /> class.
+        /// Initializes a new instance of the <see cref="KpiValueRequest" /> class.
         /// </summary>
         /// <param name="value">value</param>
         /// <param name="isKpiImputed">isKpiImputed</param>
         /// <param name="kpiImputationDetails">kpiImputationDetails</param>
         [JsonConstructor]
-        public KpiValue(Option<double?> value = default, Option<bool?> isKpiImputed = default, Option<string?> kpiImputationDetails = default)
+        public KpiValueRequest(double value, Option<bool?> isKpiImputed = default, Option<string?> kpiImputationDetails = default)
         {
-            ValueOption = value;
+            Value = value;
             IsKpiImputedOption = isKpiImputed;
             KpiImputationDetailsOption = kpiImputationDetails;
             OnCreated();
@@ -48,17 +48,10 @@ namespace HNTAS.Api.Client.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of Value
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<double?> ValueOption { get; private set; }
-
-        /// <summary>
         /// Gets or Sets Value
         /// </summary>
         [JsonPropertyName("value")]
-        public double? Value { get { return this.ValueOption; } set { this.ValueOption = new(value); } }
+        public double Value { get; set; }
 
         /// <summary>
         /// Used to track the state of IsKpiImputed
@@ -93,7 +86,7 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class KpiValue {\n");
+            sb.Append("class KpiValueRequest {\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
             sb.Append("  IsKpiImputed: ").Append(IsKpiImputed).Append("\n");
             sb.Append("  KpiImputationDetails: ").Append(KpiImputationDetails).Append("\n");
@@ -113,19 +106,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="KpiValue" />
+    /// A Json converter for type <see cref="KpiValueRequest" />
     /// </summary>
-    public class KpiValueJsonConverter : JsonConverter<KpiValue>
+    public class KpiValueRequestJsonConverter : JsonConverter<KpiValueRequest>
     {
         /// <summary>
-        /// Deserializes json to <see cref="KpiValue" />
+        /// Deserializes json to <see cref="KpiValueRequest" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override KpiValue Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override KpiValueRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -168,48 +161,50 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
+            if (!value.IsSet)
+                throw new ArgumentException("Property is required for class KpiValueRequest.", nameof(value));
+
             if (value.IsSet && value.Value == null)
-                throw new ArgumentNullException(nameof(value), "Property is not nullable for class KpiValue.");
+                throw new ArgumentNullException(nameof(value), "Property is not nullable for class KpiValueRequest.");
 
             if (isKpiImputed.IsSet && isKpiImputed.Value == null)
-                throw new ArgumentNullException(nameof(isKpiImputed), "Property is not nullable for class KpiValue.");
+                throw new ArgumentNullException(nameof(isKpiImputed), "Property is not nullable for class KpiValueRequest.");
 
-            return new KpiValue(value, isKpiImputed, kpiImputationDetails);
+            return new KpiValueRequest(value.Value!.Value!, isKpiImputed, kpiImputationDetails);
         }
 
         /// <summary>
-        /// Serializes a <see cref="KpiValue" />
+        /// Serializes a <see cref="KpiValueRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="kpiValue"></param>
+        /// <param name="kpiValueRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, KpiValue kpiValue, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, KpiValueRequest kpiValueRequest, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, kpiValue, jsonSerializerOptions);
+            WriteProperties(writer, kpiValueRequest, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="KpiValue" />
+        /// Serializes the properties of <see cref="KpiValueRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="kpiValue"></param>
+        /// <param name="kpiValueRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, KpiValue kpiValue, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, KpiValueRequest kpiValueRequest, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (kpiValue.ValueOption.IsSet)
-                writer.WriteNumber("value", kpiValue.ValueOption.Value!.Value);
+            writer.WriteNumber("value", kpiValueRequest.Value);
 
-            if (kpiValue.IsKpiImputedOption.IsSet)
-                writer.WriteBoolean("is_kpi_imputed", kpiValue.IsKpiImputedOption.Value!.Value);
+            if (kpiValueRequest.IsKpiImputedOption.IsSet)
+                writer.WriteBoolean("is_kpi_imputed", kpiValueRequest.IsKpiImputedOption.Value!.Value);
 
-            if (kpiValue.KpiImputationDetailsOption.IsSet)
-                if (kpiValue.KpiImputationDetailsOption.Value != null)
-                    writer.WriteString("kpi_imputation_details", kpiValue.KpiImputationDetails);
+            if (kpiValueRequest.KpiImputationDetailsOption.IsSet)
+                if (kpiValueRequest.KpiImputationDetailsOption.Value != null)
+                    writer.WriteString("kpi_imputation_details", kpiValueRequest.KpiImputationDetails);
                 else
                     writer.WriteNull("kpi_imputation_details");
         }
