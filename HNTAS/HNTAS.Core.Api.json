@@ -10,7 +10,7 @@
     }
   ],
   "paths": {
-    "/v1/hn/kpis": {
+    "/arms/v1/hn/kpis": {
       "post": {
         "tags": [
           "Arms"
@@ -102,7 +102,7 @@
         }
       }
     },
-    "/v1/hn/{networkId}/kpi-config": {
+    "/arms/v1/hn/{networkId}/kpi-config": {
       "get": {
         "tags": [
           "Arms"
@@ -181,7 +181,7 @@
         }
       }
     },
-    "/v1/hn/kpi-config": {
+    "/arms/v1/hn/kpi-config": {
       "post": {
         "tags": [
           "Arms"
@@ -956,7 +956,7 @@
         }
       }
     },
-    "/heat-networks": {
+    "/external/heat-networks": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -994,7 +994,7 @@
         }
       }
     },
-    "/heat-network/{hnId}": {
+    "/external/heat-network/{hnId}": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -1053,7 +1053,7 @@
         }
       }
     },
-    "/heat-networks/search": {
+    "/external/heat-networks/search": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -4621,7 +4621,7 @@
           "ContributingOperator",
           "Assessor",
           "Certifier",
-          "Coordinator",
+          "NetworkManager",
           "ResponsiblePerson"
         ]
       },
@@ -4752,7 +4752,7 @@
             "nullable": true
           },
           "type": {
-            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
+            "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "networkElementInstanceName": {
             "type": "string",
@@ -4837,15 +4837,6 @@
             "nullable": true
           }
         }
-      },
-      "ElementType": {
-        "enum": [
-          "EnergyCentre",
-          "Substation",
-          "DistrictDistribution",
-          "CommunalDistribution",
-          "ConsumerConnection"
-        ]
       },
       "Energy": {
         "type": "object",
@@ -4981,7 +4972,7 @@
           "name": {
             "type": "string"
           },
-          "hnDescription": {
+          "additionalDescription": {
             "type": "string",
             "nullable": true
           },
@@ -5064,14 +5055,6 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
-          },
-          "isUpstreamDistrictHeatNetworkConnections": {
-            "type": "boolean"
-          },
-          "noOfUpstreamDistrictHeatNetworkConnections": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         },
         "nullable": true
@@ -5080,7 +5063,7 @@
         "type": "object",
         "properties": {
           "name": {
-            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
+            "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "count": {
             "type": "integer",
@@ -5099,15 +5082,6 @@
             }
           }
         }
-      },
-      "HeatNetworkElementDisplayType": {
-        "enum": [
-          "EnergyCentre",
-          "Substation",
-          "DistrictDistributionNetwork",
-          "CommunalDistributionNetwork",
-          "ConsumerConnections"
-        ]
       },
       "HeatNetworkElementResponse": {
         "type": "object",
@@ -5132,6 +5106,15 @@
             }
           }
         }
+      },
+      "HeatNetworkElementType": {
+        "enum": [
+          "EnergyCentre",
+          "Substation",
+          "DistrictDistribution",
+          "CommunalDistribution",
+          "ConsumerConnection"
+        ]
       },
       "HeatNetworkExternalResponse": {
         "type": "object",
@@ -5201,7 +5184,7 @@
           "name": {
             "type": "string"
           },
-          "hnDescription": {
+          "additionalDescription": {
             "type": "string",
             "nullable": true
           },
@@ -5576,14 +5559,14 @@
           "consumer_connection_aggregated_kpis": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/KpiValueAggregated"
+              "$ref": "#/components/schemas/KpiValueAggregatedRequest"
             },
             "nullable": true
           },
           "elements": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkElement"
+              "$ref": "#/components/schemas/NetworkElementRequest"
             }
           }
         },
@@ -5612,7 +5595,20 @@
           }
         }
       },
-      "KpiValue": {
+      "KpiValueAggregatedRequest": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "KpiValueRequest": {
+        "required": [
+          "value"
+        ],
         "type": "object",
         "properties": {
           "value": {
@@ -5625,16 +5621,6 @@
           "kpi_imputation_details": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "KpiValueAggregated": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "format": "double"
           }
         },
         "additionalProperties": false
@@ -5794,7 +5780,7 @@
           }
         }
       },
-      "NetworkElement": {
+      "NetworkElementRequest": {
         "required": [
           "elementId",
           "type"
@@ -5805,12 +5791,12 @@
             "type": "string"
           },
           "type": {
-            "$ref": "#/components/schemas/ElementType"
+            "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "kpis": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/KpiValue"
+              "$ref": "#/components/schemas/KpiValueRequest"
             }
           }
         },
@@ -5982,7 +5968,7 @@
       "NullableOfUserRole": {
         "enum": [
           "ResponsiblePerson",
-          "Coordinator",
+          "NetworkManager",
           "DesignatedDutyHolder",
           "Contributor",
           "Assessor",
@@ -6544,7 +6530,7 @@
             "type": "string"
           },
           "elementType": {
-            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
+            "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "updatedBy": {
             "type": "string"
@@ -6573,7 +6559,7 @@
             "type": "string"
           },
           "elementType": {
-            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
+            "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "locations": {
             "minItems": 1,
@@ -7020,7 +7006,7 @@
       "UserRole": {
         "enum": [
           "ResponsiblePerson",
-          "Coordinator",
+          "NetworkManager",
           "DesignatedDutyHolder",
           "Contributor",
           "Assessor",

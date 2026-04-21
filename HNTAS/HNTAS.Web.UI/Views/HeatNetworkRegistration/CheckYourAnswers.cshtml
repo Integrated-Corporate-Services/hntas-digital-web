@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Check your answers";
     var heatNetworkName = Model.HeatNetworkNameModel.HeatNetworkName;
+    var additionalDescription = Model.HeatNetworkNameModel.AdditionalDescription;
     var heatNetworkCoordinates = Model.ECDetailsModel.LatitudeLongitude;
     var energyCentreAddress = Model.HeatNetworkAddressModel?.Fulladdress;
     var heatNetworkPhase = Model.HeatNetworkPhaseModel.HeatNetworkPhase;
@@ -36,11 +37,7 @@
     if (heatNetworkConnections.IsDownstreamDistrictHeatNetworkConnections)
     {
         connections.Add($"{heatNetworkConnections.NoOfDownstreamDistrictHeatNetworkConnections} district connections");
-    }
-    if (heatNetworkConnections.IsUpstreamDistrictHeatNetworkConnections)
-    {
-        connections.Add($"{heatNetworkConnections.NoOfUpstreamDistrictHeatNetworkConnections} district connections");
-    }
+    }    
     string hnConnectionsToDisplay = connections.Any() ? string.Join(", ", connections) : "No connections";
     var fieldOrder = new[] { nameof(Model.ConfirmedDeclaration) };
 
@@ -90,6 +87,13 @@
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Additional description</dt>
+                        <dd class="govuk-summary-list__value">@(!string.IsNullOrEmpty(additionalDescription) ? additionalDescription : "Not provided")</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("HeatNetworkName", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Main energy centre address and postcode</dt>
                         <dd class="govuk-summary-list__value">@energyCentreAddress</dd>
                         <dd class="govuk-summary-list__actions">
@@ -121,14 +125,14 @@
 
                         <div class="govuk-checkboxes govuk-checkboxes--small data-module="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input"
+                                <input class="govuk-checkboxes__input" id="confirmeddeclaration"
                                        asp-for="ConfirmedDeclaration"
                                        type="checkbox"
                                        required="required" />
 
-                                <label asp-for="ConfirmedDeclaration" class="govuk-label govuk-checkboxes__label">
-                                    I confirm that the summary above is correct for @heatNetworkName.
-                                </label>
+                                <label for="confirmeddeclaration" class="govuk-label govuk-checkboxes__label">
+                                    I confirm that the summary above is correct for @heatNetworkName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription + "." : ".")
+</label>
                             </div>
                         </div>
                     </fieldset>

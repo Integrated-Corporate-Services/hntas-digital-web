@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **EcDetails** | [**ECDetails**](ECDetails.md) |  | [optional] 
 **Address** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 
 **Name** | **string** |  | [optional] 
-**HnDescription** | **string** |  | [optional] 
+**AdditionalDescription** | **string** |  | [optional] 
 **Pathway** | **string** |  | [optional] 
 **Soa** | [**SoaResponse**](SoaResponse.md) |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 

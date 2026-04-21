@@ -23,7 +23,7 @@ namespace HNTAS.Web.UI.Models.ElementSoa
     public class SoaElementsView
     {
         public string? Name { get; set; }
-        public HeatNetworkElementDisplayType? Type { get; set; }
+        public HeatNetworkElementType? Type { get; set; }
         public string? ElementId { get; set; }
 
         public string? SoaStatus { get; set; }
