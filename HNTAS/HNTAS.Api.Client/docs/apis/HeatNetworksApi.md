@@ -10,9 +10,9 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiHeatNetworksHnIdsGet**](HeatNetworksApi.md#apiheatnetworkshnidsget) | **GET** /api/HeatNetworks/hnIds |  |
 | [**ApiHeatNetworksNetworkDetailsDocumentUpdatePatch**](HeatNetworksApi.md#apiheatnetworksnetworkdetailsdocumentupdatepatch) | **PATCH** /api/HeatNetworks/network-details-document-update |  |
 | [**ApiHeatNetworksNetworkElementsPut**](HeatNetworksApi.md#apiheatnetworksnetworkelementsput) | **PUT** /api/HeatNetworks/network-elements |  |
-| [**HeatNetworkHnIdGet**](HeatNetworksApi.md#heatnetworkhnidget) | **GET** /heat-network/{hnId} |  |
-| [**HeatNetworksGet**](HeatNetworksApi.md#heatnetworksget) | **GET** /heat-networks |  |
-| [**HeatNetworksSearchGet**](HeatNetworksApi.md#heatnetworkssearchget) | **GET** /heat-networks/search |  |
+| [**ExternalHeatNetworkHnIdGet**](HeatNetworksApi.md#externalheatnetworkhnidget) | **GET** /external/heat-network/{hnId} |  |
+| [**ExternalHeatNetworksGet**](HeatNetworksApi.md#externalheatnetworksget) | **GET** /external/heat-networks |  |
+| [**ExternalHeatNetworksSearchGet**](HeatNetworksApi.md#externalheatnetworkssearchget) | **GET** /external/heat-networks/search |  |
 
 <a id="apiheatnetworksaddheatnetworkpost"></a>
 # **ApiHeatNetworksAddHeatNetworkPost**
@@ -229,9 +229,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="heatnetworkhnidget"></a>
-# **HeatNetworkHnIdGet**
-> HeatNetworkExternalResponse HeatNetworkHnIdGet (string hnId)
+<a id="externalheatnetworkhnidget"></a>
+# **ExternalHeatNetworkHnIdGet**
+> HeatNetworkExternalResponse ExternalHeatNetworkHnIdGet (string hnId)
 
 
 
@@ -264,9 +264,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="heatnetworksget"></a>
-# **HeatNetworksGet**
-> List&lt;HeatNetworkExternalResponse&gt; HeatNetworksGet ()
+<a id="externalheatnetworksget"></a>
+# **ExternalHeatNetworksGet**
+> List&lt;HeatNetworkExternalResponse&gt; ExternalHeatNetworksGet ()
 
 
 
@@ -294,9 +294,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="heatnetworkssearchget"></a>
-# **HeatNetworksSearchGet**
-> List&lt;HeatNetworkExternalResponse&gt; HeatNetworksSearchGet (DateTimeOffset fromDate = null, DateTimeOffset toDate = null)
+<a id="externalheatnetworkssearchget"></a>
+# **ExternalHeatNetworksSearchGet**
+> List&lt;HeatNetworkExternalResponse&gt; ExternalHeatNetworksSearchGet (DateTimeOffset fromDate = null, DateTimeOffset toDate = null)
 
 
 

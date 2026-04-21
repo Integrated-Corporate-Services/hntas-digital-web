@@ -7,7 +7,6 @@ using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ApiHeatNetworkType = HNTAS.Api.Client.Model.HeatNetworkType;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -244,10 +243,10 @@ namespace HNTAS.Web.UI.Controllers
                 });
             }
 
-            var orderedTypes = new List<HeatNetworkElementDisplayType>
+            var orderedTypes = new List<HeatNetworkElementType>
             {
-                HeatNetworkElementDisplayType.EnergyCentre,
-                HeatNetworkElementDisplayType.ConsumerConnections,
+                HeatNetworkElementType.EnergyCentre,
+                HeatNetworkElementType.ConsumerConnection,
             };
 
             var elements = new List<ElementListItem>();
@@ -507,7 +506,7 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        private List<DocumentUploadModel> BuildDocumentInputsForElement(HeatNetworkElementDisplayType elementId, int count)
+        private List<DocumentUploadModel> BuildDocumentInputsForElement(HeatNetworkElementType elementId, int count)
         {
             var elementLabel = Utility.GetElementOptions().FirstOrDefault(x => x.Id == elementId)?.Label;
 

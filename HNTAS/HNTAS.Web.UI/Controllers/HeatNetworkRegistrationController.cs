@@ -97,8 +97,7 @@ namespace HNTAS.Web.UI.Controllers
                 IsCommunalBuilding = false,
                 IsDomesticConsumer = false,
                 IsNonDomesticConsumer = false,
-                IsDownstreamDistrictHeatNetworkConnections = false,
-                IsUpstreamDistrictHeatNetworkConnections = false
+                IsDownstreamDistrictHeatNetworkConnections = false,                
             };
             switch (model.HeatNetworkType)
             {
@@ -145,8 +144,7 @@ namespace HNTAS.Web.UI.Controllers
             var newModel = new HeatNetworkConnectionsViewModel();
             if (hnTypeModel.HeatNetworkType == Models.Enums.HeatNetworkType.DistrictWithOwnEC)
             {
-                ViewBag.IsDistrictWithOwnEC = true;
-                newModel.IsUpstreamDistrictHeatNetworkConnections = false;
+                ViewBag.IsDistrictWithOwnEC = true;                
             }
             else if (hnTypeModel.HeatNetworkType == Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN)
             {
@@ -181,14 +179,9 @@ namespace HNTAS.Web.UI.Controllers
             if (model.IsDownstreamDistrictHeatNetworkConnections && !model.NoOfDownstreamDistrictHeatNetworkConnections.HasValue)
             {
                 ModelState.AddModelError(nameof(model.NoOfDownstreamDistrictHeatNetworkConnections), "Enter the number of district connections");
-            }
+            }            
 
-            if (model.IsUpstreamDistrictHeatNetworkConnections && !model.NoOfUpstreamDistrictHeatNetworkConnections.HasValue)
-            {
-                ModelState.AddModelError(nameof(model.NoOfUpstreamDistrictHeatNetworkConnections), "Enter the number of district connections");
-            }
-
-            if (!model.IsCommunalBuilding && !model.IsDomesticConsumer && !model.IsNonDomesticConsumer && !model.IsUpstreamDistrictHeatNetworkConnections && !model.IsDownstreamDistrictHeatNetworkConnections)
+            if (!model.IsCommunalBuilding && !model.IsDomesticConsumer && !model.IsNonDomesticConsumer && !model.IsDownstreamDistrictHeatNetworkConnections)
             {
                 // Model-level error (not associated with a specific property)
                 ModelState.AddModelError("HeatNetworkConnections", "Select at least one connection type");
@@ -497,21 +490,12 @@ namespace HNTAS.Web.UI.Controllers
                         return RedirectToAction("CheckYourAnswers", "HeatNetworkRegistration");                    
                     case "Construction":
                         _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "3" });
-                        return RedirectToAction("CheckYourAnswers", "HeatNetworkRegistration");
-                    case "Operation":
-                        return RedirectToAction("HeatNetworkIsOperational", "HeatNetworkRegistration");
+                        return RedirectToAction("CheckYourAnswers", "HeatNetworkRegistration");                    
                     default:
                         ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
                         return View(model);
                 }
             }
-        }
-
-        [HttpGet]
-        public IActionResult HeatNetworkIsOperational()
-        {
-            this.ShowBackButton("HeatNetworkPhase");
-            return View();
         }
 
         [HttpGet]
@@ -621,9 +605,7 @@ namespace HNTAS.Web.UI.Controllers
                 IsDomesticConsumer = viewModel?.HeatNetworkConnectionsModel?.IsDomesticConsumer,
                 NoOfDomesticConsumer = viewModel?.HeatNetworkConnectionsModel?.NoOfDomesticConsumer,
                 IsNonDomesticConsumer = viewModel?.HeatNetworkConnectionsModel?.IsNonDomesticConsumer,
-                NoOfNonDomesticConsumer = viewModel?.HeatNetworkConnectionsModel?.NoOfNonDomesticConsumer,
-                IsUpstreamDistrictHeatNetworkConnections = viewModel?.HeatNetworkConnectionsModel?.IsUpstreamDistrictHeatNetworkConnections,
-                NoOfUpstreamDistrictHeatNetworkConnections = viewModel?.HeatNetworkConnectionsModel?.NoOfUpstreamDistrictHeatNetworkConnections,
+                NoOfNonDomesticConsumer = viewModel?.HeatNetworkConnectionsModel?.NoOfNonDomesticConsumer,                
                 IsDownstreamDistrictHeatNetworkConnections = viewModel?.HeatNetworkConnectionsModel?.IsDownstreamDistrictHeatNetworkConnections,
                 NoOfDownstreamDistrictHeatNetworkConnections = viewModel?.HeatNetworkConnectionsModel?.NoOfDownstreamDistrictHeatNetworkConnections
             };
@@ -631,6 +613,7 @@ namespace HNTAS.Web.UI.Controllers
             var model = new HeatNetwork
             {
                 Name = viewModel?.HeatNetworkNameModel?.HeatNetworkName,
+                AdditionalDescription = viewModel?.HeatNetworkNameModel?.AdditionalDescription,
                 Address = address,
                 EcDetails = ecDetails,
                 HeatNetworkType = hnType,
@@ -649,6 +632,7 @@ namespace HNTAS.Web.UI.Controllers
                 await _organisationService.UpdateOrgHeatNetworkId(orgId, userId, userResponse.HnId);
                 TempData["Confirmation_HN_Id"] = userResponse.HnId;
                 TempData["HNName"] = userResponse.Name;
+                TempData["AdditionalDescription"] = userResponse.AdditionalDescription;
                 // safe to save HnId in session at this point as it maybe used for redirection to add hn details after registration
                 _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, userResponse.HnId);
                 _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnName, userResponse.Name);
@@ -667,7 +651,9 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> HeatNetworkRegistrationComplete()
         {             
             ViewBag.HNId = TempData["Confirmation_HN_Id"] as string;
-            ViewBag.HNName = TempData["HNName"] as string;
+            var hnName = TempData["HNName"] as string;
+            var additionalDescription = TempData["AdditionalDescription"] as string;
+            ViewBag.HNNameWithDescription = hnName + (!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription : "");
             return View();
         }
 

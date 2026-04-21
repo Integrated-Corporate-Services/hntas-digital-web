@@ -136,7 +136,7 @@ namespace HNTAS.Web.UI.Controllers
             [
                 new SelectItemOption
                 {
-                    Value = ContributorRole.Coordinator.ToString(),
+                    Value = ContributorRole.NetworkManager.ToString(),
                     Text = "Assign as a HNTAS Coordinator"
                 },
             ];
@@ -164,8 +164,8 @@ namespace HNTAS.Web.UI.Controllers
                 model.AvailableRoles = [
                        new SelectItemOption
                         {
-                             Value = ContributorRole.Coordinator.ToString(),
-                             Text = "Assign as a HNTAS Coordinator"
+                             Value = ContributorRole.NetworkManager.ToString(),
+                             Text = "Assign as a NetworkManager"
                         },
                     ];
                 model.InvitedUserName = $"{state.Data.ContributorContactDetailsModel.FirstName} {state.Data.ContributorContactDetailsModel.LastName}";
@@ -183,10 +183,10 @@ namespace HNTAS.Web.UI.Controllers
 
             TempData["UserName"] = $"{state.Data.ContributorContactDetailsModel?.FirstName} {state.Data.ContributorContactDetailsModel?.LastName}";
             TempData["OrganisationName"] = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-            TempData["AssignedRole"] = model?.SelectedRoleName == ContributorRole.Coordinator.ToString() ? "HNTAS Coordinator" : "Responsible Party";
+            TempData["AssignedRole"] = model?.SelectedRoleName == ContributorRole.NetworkManager.ToString() ? "HNTAS Coordinator" : "Responsible Party";
 
-            var selectedContributorRole = model.SelectedRoleName == ContributorRole.Coordinator.ToString()
-                ? ContributorRole.Coordinator
+            var selectedContributorRole = model.SelectedRoleName == ContributorRole.NetworkManager.ToString()
+                ? ContributorRole.NetworkManager
                 : ContributorRole.ResponsiblePerson;
 
             var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);

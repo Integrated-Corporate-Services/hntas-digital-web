@@ -11,7 +11,7 @@ namespace HNTAS.Web.UI.Models.Soa
 
     public class ElementListItem
     {
-        public HeatNetworkElementDisplayType ElementType { get; set; }
+        public HeatNetworkElementType ElementType { get; set; }
 
         public string Name { get; set; } = null!;
 

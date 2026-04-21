@@ -6,12 +6,12 @@ Create a config.yaml file similar to what is below, then run the following power
 
 ```yaml
 generatorName: csharp
-inputSpec: C:\Users\MohantySushree(Energ\source\repos\hntas-digital-web\HNTAS\HNTAS.Core.Api.json
+inputSpec: C:\Users\ManokaranSivasankar(\source\repos\hntas-digital-web\HNTAS\HNTAS.Core.Api.json
 outputDir: out
 
 # https://openapi-generator.tech/docs/generators/csharp
 additionalProperties:
-  packageGuid: '{F1F28375-2F01-4BB3-9617-08922F11E2A3}'
+  packageGuid: '{8CC8FF59-9D32-4496-9964-BE16550826F5}'
 
 # https://openapi-generator.tech/docs/integrations/#github-integration
 # gitHost:
@@ -55,7 +55,7 @@ namespace YourProject
         {
             var host = CreateHostBuilder(args).Build();
             var api = host.Services.GetRequiredService<IArmsApi>();
-            IV1HnKpiConfigPostApiResponse apiResponse = await api.V1HnKpiConfigPostAsync("todo");
+            IArmsV1HnKpiConfigPostApiResponse apiResponse = await api.ArmsV1HnKpiConfigPostAsync("todo");
             object? model = apiResponse.Ok();
         }
 
