@@ -26,16 +26,16 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// KpiValueAggregated
+    /// KpiValueAggregatedRequest
     /// </summary>
-    public partial class KpiValueAggregated : IValidatableObject
+    public partial class KpiValueAggregatedRequest : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="KpiValueAggregated" /> class.
+        /// Initializes a new instance of the <see cref="KpiValueAggregatedRequest" /> class.
         /// </summary>
         /// <param name="value">value</param>
         [JsonConstructor]
-        public KpiValueAggregated(Option<double?> value = default)
+        public KpiValueAggregatedRequest(Option<double?> value = default)
         {
             ValueOption = value;
             OnCreated();
@@ -63,7 +63,7 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class KpiValueAggregated {\n");
+            sb.Append("class KpiValueAggregatedRequest {\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -81,19 +81,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="KpiValueAggregated" />
+    /// A Json converter for type <see cref="KpiValueAggregatedRequest" />
     /// </summary>
-    public class KpiValueAggregatedJsonConverter : JsonConverter<KpiValueAggregated>
+    public class KpiValueAggregatedRequestJsonConverter : JsonConverter<KpiValueAggregatedRequest>
     {
         /// <summary>
-        /// Deserializes json to <see cref="KpiValueAggregated" />
+        /// Deserializes json to <see cref="KpiValueAggregatedRequest" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override KpiValueAggregated Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override KpiValueAggregatedRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -129,37 +129,37 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (value.IsSet && value.Value == null)
-                throw new ArgumentNullException(nameof(value), "Property is not nullable for class KpiValueAggregated.");
+                throw new ArgumentNullException(nameof(value), "Property is not nullable for class KpiValueAggregatedRequest.");
 
-            return new KpiValueAggregated(value);
+            return new KpiValueAggregatedRequest(value);
         }
 
         /// <summary>
-        /// Serializes a <see cref="KpiValueAggregated" />
+        /// Serializes a <see cref="KpiValueAggregatedRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="kpiValueAggregated"></param>
+        /// <param name="kpiValueAggregatedRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, KpiValueAggregated kpiValueAggregated, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, KpiValueAggregatedRequest kpiValueAggregatedRequest, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, kpiValueAggregated, jsonSerializerOptions);
+            WriteProperties(writer, kpiValueAggregatedRequest, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="KpiValueAggregated" />
+        /// Serializes the properties of <see cref="KpiValueAggregatedRequest" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="kpiValueAggregated"></param>
+        /// <param name="kpiValueAggregatedRequest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, KpiValueAggregated kpiValueAggregated, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, KpiValueAggregatedRequest kpiValueAggregatedRequest, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (kpiValueAggregated.ValueOption.IsSet)
-                writer.WriteNumber("value", kpiValueAggregated.ValueOption.Value!.Value);
+            if (kpiValueAggregatedRequest.ValueOption.IsSet)
+                writer.WriteNumber("value", kpiValueAggregatedRequest.ValueOption.Value!.Value);
         }
     }
 }

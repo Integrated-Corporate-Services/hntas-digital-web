@@ -3449,7 +3449,7 @@ components:
           nullable: true
           type: string
         type:
-          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+          $ref: "#/components/schemas/HeatNetworkElementType"
         networkElementInstanceName:
           nullable: true
           type: string
@@ -3527,14 +3527,6 @@ components:
       required:
       - hnId
       type: object
-    ElementType:
-      enum:
-      - EnergyCentre
-      - Substation
-      - DistrictDistribution
-      - CommunalDistribution
-      - ConsumerConnection
-      type: string
     Energy:
       example:
         heatPumpCount: 5
@@ -4098,7 +4090,7 @@ components:
         - locations
       properties:
         name:
-          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+          $ref: "#/components/schemas/HeatNetworkElementType"
         count:
           format: int32
           type: integer
@@ -4111,14 +4103,6 @@ components:
             $ref: "#/components/schemas/UploadedDocument"
           type: array
       type: object
-    HeatNetworkElementDisplayType:
-      enum:
-      - EnergyCentre
-      - Substation
-      - DistrictDistributionNetwork
-      - CommunalDistributionNetwork
-      - ConsumerConnections
-      type: string
     HeatNetworkElementResponse:
       example:
         documents:
@@ -4154,6 +4138,14 @@ components:
             $ref: "#/components/schemas/UploadedDocumentResponse"
           type: array
       type: object
+    HeatNetworkElementType:
+      enum:
+      - EnergyCentre
+      - Substation
+      - DistrictDistribution
+      - CommunalDistribution
+      - ConsumerConnection
+      type: string
     HeatNetworkExternalResponse:
       example:
         hnId: hnId
@@ -4923,12 +4915,12 @@ components:
           $ref: "#/components/schemas/KpiMetadata"
         consumer_connection_aggregated_kpis:
           additionalProperties:
-            $ref: "#/components/schemas/KpiValueAggregated"
+            $ref: "#/components/schemas/KpiValueAggregatedRequest"
           nullable: true
           type: object
         elements:
           items:
-            $ref: "#/components/schemas/NetworkElement"
+            $ref: "#/components/schemas/NetworkElementRequest"
           type: array
       required:
       - meta_data
@@ -4955,7 +4947,16 @@ components:
           nullable: true
           type: number
       type: object
-    KpiValue:
+    KpiValueAggregatedRequest:
+      additionalProperties: false
+      example:
+        value: 0.8008281904610115
+      properties:
+        value:
+          format: double
+          type: number
+      type: object
+    KpiValueRequest:
       additionalProperties: false
       example:
         is_kpi_imputed: true
@@ -4970,15 +4971,8 @@ components:
         kpi_imputation_details:
           nullable: true
           type: string
-      type: object
-    KpiValueAggregated:
-      additionalProperties: false
-      example:
-        value: 0.8008281904610115
-      properties:
-        value:
-          format: double
-          type: number
+      required:
+      - value
       type: object
     ManagedUserResponse:
       example:
@@ -5146,7 +5140,7 @@ components:
         uploadedBy:
           type: string
       type: object
-    NetworkElement:
+    NetworkElementRequest:
       additionalProperties: false
       example:
         elementId: elementId
@@ -5160,10 +5154,10 @@ components:
         elementId:
           type: string
         type:
-          $ref: "#/components/schemas/ElementType"
+          $ref: "#/components/schemas/HeatNetworkElementType"
         kpis:
           additionalProperties:
-            $ref: "#/components/schemas/KpiValue"
+            $ref: "#/components/schemas/KpiValueRequest"
           type: object
       required:
       - elementId
@@ -6315,7 +6309,7 @@ components:
         hnId:
           type: string
         elementType:
-          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+          $ref: "#/components/schemas/HeatNetworkElementType"
         updatedBy:
           type: string
         documents:
@@ -6337,7 +6331,7 @@ components:
         updatedBy:
           type: string
         elementType:
-          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+          $ref: "#/components/schemas/HeatNetworkElementType"
         locations:
           items:
             type: string

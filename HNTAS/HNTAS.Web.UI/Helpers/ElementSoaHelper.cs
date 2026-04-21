@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.EMMA;
-using HNTAS.Api.Client.Model;
+﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Models.ElementSoa;
 
 namespace HNTAS.Web.UI.Helpers
@@ -104,26 +103,26 @@ namespace HNTAS.Web.UI.Helpers
             return incompleteSoa;
         }
 
-        public static (string Heading, string Description1, string Description2) GetSoaElementContent(HeatNetworkElementDisplayType? elementType)
+        public static (string Heading, string Description1, string Description2) GetSoaElementContent(HeatNetworkElementType? elementType)
         {
             return elementType switch
             {
-                HeatNetworkElementDisplayType.EnergyCentre => (
+                HeatNetworkElementType.EnergyCentre => (
                     "What is the status of the statement of applicability for the energy centre?",
                     "Intro to Energy centre...",
                     "Upload the statement of applicability (SOA) for the energy centre"
                 ),
-                HeatNetworkElementDisplayType.ConsumerConnections => (
+                HeatNetworkElementType.ConsumerConnection => (
                     "What is the status of the statement of applicability for the consumer connections",
                     "Intro to Consumer connections...",
                     "Upload the statement of applicability (SOA) for the consumer connections"
                 ),
-                HeatNetworkElementDisplayType.DistrictDistributionNetwork => (
+                HeatNetworkElementType.DistrictDistribution => (
                     "What is the status of the statement of applicability for the district distribution network",
                     "Intro to District distribution network...",
                     "Upload the statement of applicability (SOA) for the district distribution network"
                 ),
-                HeatNetworkElementDisplayType.Substation => (
+                HeatNetworkElementType.Substation => (
                     "What is the status of the statement of applicability for the substation",
                     "Intro to substation",
                     "Upload the statement of applicability (SOA) for the substation"
@@ -183,7 +182,7 @@ namespace HNTAS.Web.UI.Helpers
                 {
                     Label = "Review and Decision",
                     Hint = ""
-                },                
+                },
             };
         }
 
