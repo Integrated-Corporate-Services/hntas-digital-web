@@ -22,7 +22,7 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> Index(
             string userId,
             string? sortBy = DefaultSortBy,
-            string? sortOrder = "asc",
+            string? sortOrder = "desc",
             int page = DefaultPageNumber,
             int pageSize = DefaultPageSize)
         {
@@ -107,6 +107,10 @@ namespace HNTAS.Web.UI.Controllers
             else if (actionDetails["action"] == "DDH and contributors")
             {
                 return RedirectToAction("AddContributor", "UserManagement");
+            }
+            else if (actionDetails["action"] == "Network managers")
+            {
+                return RedirectToAction("ManageLeads", "NetworkLeads");
             }
             return View("ActionResult", actionDetails);
         }
