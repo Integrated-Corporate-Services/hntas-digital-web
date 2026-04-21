@@ -459,7 +459,7 @@ namespace HNTAS.Web.UI.Controllers
             var contributors = await _userService.GetRegisteredUsersAsync(userId);
 
             //remove hntas coordinator users
-            contributors = contributors.Where(u => !u.Roles.Contains(UserRole.Coordinator)).ToList();
+            contributors = contributors.Where(u => !u.Roles.Contains(UserRole.NetworkManager)).ToList();
 
             // Check for null or empty list and return an empty list if necessary
             if (contributors == null || !contributors.Any())
