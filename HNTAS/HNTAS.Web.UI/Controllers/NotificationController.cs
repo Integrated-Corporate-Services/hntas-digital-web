@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Models.NotificationHistory;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -100,15 +101,15 @@ namespace HNTAS.Web.UI.Controllers
 
         public async Task<IActionResult> ExecuteAction([FromQuery] Dictionary<string, string> actionDetails)
         {
-            if (actionDetails["action"] == "Heat network details")
-            {
+            if (actionDetails["action"] == NotificationHistoryActions.HeatNetworkDetails)
+            { 
                 return RedirectToAction("AddNetworkDetails", "HeatNetwork", new { hnId = actionDetails["hnid"] });
             }
-            else if (actionDetails["action"] == "DDH and contributors")
+            else if (actionDetails["action"] == NotificationHistoryActions.DDHAndContributors)
             {
                 return RedirectToAction("AddContributor", "UserManagement");
             }
-            else if (actionDetails["action"] == "Network managers")
+            else if (actionDetails["action"] == NotificationHistoryActions.NetworkManagers)
             {
                 return RedirectToAction("ManageLeads", "NetworkLeads");
             }
@@ -118,7 +119,5 @@ namespace HNTAS.Web.UI.Controllers
         {
             return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;
         }
-
-
     }
 }
