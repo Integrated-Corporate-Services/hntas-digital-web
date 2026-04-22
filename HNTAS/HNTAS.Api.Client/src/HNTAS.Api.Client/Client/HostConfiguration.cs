@@ -115,6 +115,9 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NetworkTypeResponseJsonConverter());
             _jsonOptions.Converters.Add(new NetworkTypeSelectionJsonConverter());
             _jsonOptions.Converters.Add(new NetworkTypeSelection2JsonConverter());
+            _jsonOptions.Converters.Add(new NotificationHistoryDataJsonConverter());
+            _jsonOptions.Converters.Add(new NotificationHistoryRequestJsonConverter());
+            _jsonOptions.Converters.Add(new NotificationHistoryResponseJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfPreferredContactTypeJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfPreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfSoaStageJsonConverter());
@@ -181,6 +184,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<HeatNetworksApiEvents>();
             _services.AddSingleton<ImportApiEvents>();
             _services.AddSingleton<InvitationsApiEvents>();
+            _services.AddSingleton<NotificationHistoryApiEvents>();
             _services.AddSingleton<OrganisationUserApiEvents>();
             _services.AddSingleton<OrganisationsApiEvents>();
             _services.AddSingleton<SOAApiEvents>();
@@ -211,6 +215,7 @@ namespace HNTAS.Api.Client.Client
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
             builders.Add(_services.AddHttpClient<IImportApi, ImportApi>(client));
             builders.Add(_services.AddHttpClient<IInvitationsApi, InvitationsApi>(client));
+            builders.Add(_services.AddHttpClient<INotificationHistoryApi, NotificationHistoryApi>(client));
             builders.Add(_services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client));
             builders.Add(_services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client));
             builders.Add(_services.AddHttpClient<ISOAApi, SOAApi>(client));

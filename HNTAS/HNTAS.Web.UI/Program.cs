@@ -117,7 +117,10 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new HeatNetworkTypeJsonConverter(),
         new AuditLogJsonConverter(),
         new ElementSoaAssignAssessorRequestJsonConverter(),
-        new SoaAssessorJsonConverter()
+        new SoaAssessorJsonConverter(),
+        new NotificationHistoryRequestJsonConverter(),
+        new NotificationHistoryResponseJsonConverter(),
+        new NotificationHistoryDataJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -202,6 +205,13 @@ builder.Services.AddHttpClient<IAuditApi, AuditApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddSingleton<NotificationHistoryApiEvents>();
+builder.Services.AddHttpClient<INotificationHistoryApi, NotificationHistoryApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
@@ -231,6 +241,7 @@ builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
 builder.Services.AddScoped<IAddressLookupService, AddressLookupService>();
 builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
 builder.Services.AddScoped<IAuditService, AuditService>();
+builder.Services.AddScoped<INotificationHistoryService, NotificationHistoryService>();
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
 

@@ -14,6 +14,7 @@ tags:
 - name: HeatNetworks
 - name: HNDataImportExport
 - name: Invitations
+- name: NotificationHistory
 - name: Organisations
 - name: OrganisationUser
 - name: SOA
@@ -897,6 +898,47 @@ paths:
           description: Bad Request
       tags:
       - Invitations
+  /api/NotificationHistory/notification-history:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationHistoryRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/NotificationHistoryRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/NotificationHistoryRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/NotificationHistoryResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationHistoryResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/NotificationHistoryResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - NotificationHistory
   /api/Organisations/{orgId}/edit-org-details:
     patch:
       parameters:
@@ -5474,6 +5516,143 @@ components:
           nullable: true
           type: string
       type: object
+    NotificationHistoryData:
+      example:
+        eligibleRoles:
+        - eligibleRoles
+        - eligibleRoles
+        createdBy: createdBy
+        subject: subject
+        actorsId:
+        - actorsId
+        - actorsId
+        description: description
+        action: action
+        id: id
+        notificationType: 0
+        heatNetworkId: heatNetworkId
+        actionLink: actionLink
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          nullable: true
+          type: string
+        notificationType:
+          type: integer
+        actorsId:
+          items:
+            type: string
+          type: array
+        subject:
+          type: string
+        description:
+          nullable: true
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        action:
+          nullable: true
+          type: string
+        actionLink:
+          nullable: true
+          type: string
+        eligibleRoles:
+          items:
+            type: string
+          type: array
+        heatNetworkId:
+          nullable: true
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+      type: object
+    NotificationHistoryRequest:
+      example:
+        sortDirection: sortDirection
+        pageSize: 6
+        sortBy: sortBy
+        page: 0
+        userId: userId
+      properties:
+        userId:
+          nullable: true
+          type: string
+        sortBy:
+          nullable: true
+          type: string
+        sortDirection:
+          nullable: true
+          type: string
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+      type: object
+    NotificationHistoryResponse:
+      example:
+        pageNumber: 6
+        totalPages: 5
+        pageSize: 1
+        totalCount: 5
+        items:
+        - eligibleRoles:
+          - eligibleRoles
+          - eligibleRoles
+          createdBy: createdBy
+          subject: subject
+          actorsId:
+          - actorsId
+          - actorsId
+          description: description
+          action: action
+          id: id
+          notificationType: 0
+          heatNetworkId: heatNetworkId
+          actionLink: actionLink
+          timestamp: 2000-01-23T04:56:07.000+00:00
+        - eligibleRoles:
+          - eligibleRoles
+          - eligibleRoles
+          createdBy: createdBy
+          subject: subject
+          actorsId:
+          - actorsId
+          - actorsId
+          description: description
+          action: action
+          id: id
+          notificationType: 0
+          heatNetworkId: heatNetworkId
+          actionLink: actionLink
+          timestamp: 2000-01-23T04:56:07.000+00:00
+        userId: userId
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/NotificationHistoryData"
+          type: array
+        pageNumber:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        userId:
+          nullable: true
+          type: string
+      type: object
+    NotificationHistoryType:
+      type: integer
     NullableOfPreferredContactType:
       enum:
       - Landline
