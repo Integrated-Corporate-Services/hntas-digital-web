@@ -33,9 +33,10 @@
 </environment>
 @{
         bool hasOrg = false;
+        var userId = string.Empty;
         if (User?.Identity?.IsAuthenticated == true)
         {
-                var userId = _sessionHelper.GetFromSession<string>(HttpContextAccessor.HttpContext, "UserModelIdDataKey");
+                userId = _sessionHelper.GetFromSession<string>(HttpContextAccessor.HttpContext, "UserModelIdDataKey");
                 if (!string.IsNullOrEmpty(userId))
                 {
                         try
@@ -145,7 +146,7 @@
                             </li>
 
                             <li class="govuk-service-navigation__item @(currentAction == "Index" && currentController == "Notification" ? "govuk-service-navigation__item--active" : "")">
-                                <a class="govuk-service-navigation__link" href="@Url.Action("Index", "Notification")"
+                                <a class="govuk-service-navigation__link" href="@Url.Action("Index", "Notification", new { userId = userId })"
                                    @(currentAction == "Index" && currentController == "Notification" ? "aria-current=page" : "")>
                                     <strong>Notifications</strong>
                                 </a>

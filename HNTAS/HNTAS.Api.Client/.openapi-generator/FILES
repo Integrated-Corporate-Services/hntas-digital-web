@@ -12,6 +12,7 @@ docs/apis/HNDataImportExportApi.md
 docs/apis/HeatNetworksApi.md
 docs/apis/ImportApi.md
 docs/apis/InvitationsApi.md
+docs/apis/NotificationHistoryApi.md
 docs/apis/OrganisationUserApi.md
 docs/apis/OrganisationsApi.md
 docs/apis/SOAApi.md
@@ -81,6 +82,9 @@ docs/models/NetworkElementsResponse.md
 docs/models/NetworkTypeResponse.md
 docs/models/NetworkTypeSelection.md
 docs/models/NetworkTypeSelection2.md
+docs/models/NotificationHistoryData.md
+docs/models/NotificationHistoryRequest.md
+docs/models/NotificationHistoryResponse.md
 docs/models/NullableOfPreferredContactType.md
 docs/models/NullableOfSoaStage.md
 docs/models/NullableOfUserRole.md
@@ -140,6 +144,7 @@ src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
 src/HNTAS.Api.Client/Api/ImportApi.cs
 src/HNTAS.Api.Client/Api/InvitationsApi.cs
+src/HNTAS.Api.Client/Api/NotificationHistoryApi.cs
 src/HNTAS.Api.Client/Api/OrganisationUserApi.cs
 src/HNTAS.Api.Client/Api/OrganisationsApi.cs
 src/HNTAS.Api.Client/Api/SOAApi.cs
@@ -231,6 +236,9 @@ src/HNTAS.Api.Client/Model/NetworkElementsResponse.cs
 src/HNTAS.Api.Client/Model/NetworkTypeResponse.cs
 src/HNTAS.Api.Client/Model/NetworkTypeSelection.cs
 src/HNTAS.Api.Client/Model/NetworkTypeSelection2.cs
+src/HNTAS.Api.Client/Model/NotificationHistoryData.cs
+src/HNTAS.Api.Client/Model/NotificationHistoryRequest.cs
+src/HNTAS.Api.Client/Model/NotificationHistoryResponse.cs
 src/HNTAS.Api.Client/Model/NullableOfPreferredContactType.cs
 src/HNTAS.Api.Client/Model/NullableOfSoaStage.cs
 src/HNTAS.Api.Client/Model/NullableOfUserRole.cs
