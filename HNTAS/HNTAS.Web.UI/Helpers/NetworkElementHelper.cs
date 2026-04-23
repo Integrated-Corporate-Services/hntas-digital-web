@@ -51,12 +51,11 @@ namespace HNTAS.Web.UI.Helpers
             {
                 "EnergyCentre" => "EC",
                 "Substation" => "SS",
-                "DistrictDistributionNetwork" => "DDN",
-                "ConsumerConnections" => "CC",
-                "CommunalDistributionNetwork" => "CDN",
+                "DistrictDistribution" => "DDN",
+                "ConsumerConnection" => "CC",
+                "CommunalDistribution" => "CDN",
                 _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element type value: {elementType}")
             };
-
         }
 
         public static HeatNetworkElementType GetNetworkElementDisplayTypeById(string elementId)
