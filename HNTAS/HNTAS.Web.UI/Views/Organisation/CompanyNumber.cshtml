@@ -29,7 +29,7 @@
                 }
 
                 <input class="govuk-input govuk-input--width-10" id="@companyNumberId" name="@companyNumberId" type="text"
-                       autocomplete="organization-id" spellcheck="false"
+                       autocomplete="off" spellcheck="false"
                        aria-describedby="@(ViewData.ModelState.ContainsKey(nameof(Model.CompanyNumber)) && ViewData.ModelState[nameof(Model.CompanyNumber)].Errors.Any() ? "company-number-hint company-number-error" : "company-number-hint")"
                        value="@Model.CompanyNumber">
             </div>
