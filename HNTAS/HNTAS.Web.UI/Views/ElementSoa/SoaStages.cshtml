@@ -112,7 +112,7 @@
                                                 <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2"
                                                    href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type})"                                                   
                                                    onclick="event.stopPropagation();">
-                                                    Update status
+                                                    Update status<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span>
                                                 </a>
                                             </td>
                                             <td class="govuk-table__cell govuk-!-width-one-quarter">
@@ -121,8 +121,8 @@
                                             <td class="govuk-table__cell govuk-!-width-one-quarter">
                                                 <span class="@assessorClass">
                                                     @assessorName
-                                                </span>                                                
-                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, selectedAssessor = fullNameWithEmail, selectedAssessorFirstName = element.AssessorFirstName, selectedAssessorLastName = element.AssessorLastName, selectedAssessorEmail = element.AssessorEmailId })">Assign assessor</a>
+                                                </span>
+                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, selectedAssessor = fullNameWithEmail, selectedAssessorFirstName = element.AssessorFirstName, selectedAssessorLastName = element.AssessorLastName, selectedAssessorEmail = element.AssessorEmailId })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
                                             </td>
                                         </tr>                                        
                                     }
