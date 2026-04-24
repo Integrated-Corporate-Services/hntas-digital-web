@@ -4,7 +4,7 @@
 @model ChooseHeatNetworkModel
 
 @{
-    ViewData["Title"] = "Heat network information";
+    ViewData["Title"] = "Choose the heat network";
     var selectedHeatNetworkId = Html.LowercaseIdFor(m => m.SelectedHeatNetworkId);
     var hasErrors = ViewData.ModelState.TryGetValue(nameof(Model.SelectedHeatNetworkId), out var entry) && entry.Errors.Any();
     var errorId = $"{selectedHeatNetworkId}-error";

@@ -22,8 +22,8 @@
         <p class="govuk-body">
             <a href="@Url.Action("DoesHNHaveAPostcode", "HeatNetworkRegistration")" class="govuk-link govuk-link--no-visited-state">Change</a>
         </p>
-        
-        <form asp-controller="Address" asp-action="ConfirmAddress" method="post" novalidate>
+
+        <form asp-controller="HeatNetworkRegistration" asp-action="ConfirmAddress" method="post" novalidate>
             @Html.AntiForgeryToken()
             <button type="submit" class="govuk-button" data-module="govuk-button">
                 Confirm and continue

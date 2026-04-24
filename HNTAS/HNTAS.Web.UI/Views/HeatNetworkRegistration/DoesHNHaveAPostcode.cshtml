@@ -1,6 +1,9 @@
 ﻿@using HNTAS.Web.UI.Models
 @model DoesHNHaveAPostcodeViewModel
 
+@{
+    ViewData["Title"] = "Does your main energy centre have an address and postcode?";
+}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
         @if (ViewBag.HnId != null)

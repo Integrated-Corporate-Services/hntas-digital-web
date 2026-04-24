@@ -2,6 +2,7 @@
 @model ElementSoaUpdateStatusViewModel
 
 @{
+    ViewData["Title"] = ViewBag.Heading;
     var hasError = ViewData.ModelState.ContainsKey(nameof(Model.SelectedSoaStatus)) && ViewData.ModelState[nameof(Model.SelectedSoaStatus)].Errors.Any();
 }
 
