@@ -6,14 +6,16 @@
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-        <span class="govuk-caption-xl">@ViewBag.HnId</span>
-        <h1 class="govuk-heading-xl">
-            @ViewBag.Heading
-        </h1>
+    <div class="govuk-grid-column-full">               
         <form method="post" asp-action="SoaUpdateStatus" asp-controller="ElementSoa">
-            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">                
-                <fieldset class="govuk-fieldset"> 
+            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+                <span class="govuk-caption-xl">@ViewBag.HnId</span>
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            @ViewBag.Heading
+                        </h1>
+                    </legend>
                     <div id="status-hint" class="govuk-hint">
                         Select the current stage
                     </div>
