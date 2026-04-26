@@ -254,7 +254,14 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
-            return RedirectToAction("DoesHNHaveAPostcode");
+            if (hnTypeModel.HeatNetworkType == Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN)
+            {
+                return RedirectToAction("ECCoordinates");
+            }
+            else
+            {
+                return RedirectToAction("DoesHNHaveAPostcode");
+            }                
         }
 
         #region address input
@@ -276,7 +283,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }            
-            if (!model.HasPostcode)
+            if ((bool)!model.HasPostcode!)
             {
                 model.Postcode = null;
                 _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey, model);
@@ -400,7 +407,7 @@ namespace HNTAS.Web.UI.Controllers
             var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey) ?? new AddressByStreetOrTownModel();            
             var doesHnHaveAPostcodeModel = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
             HeatNetworkLocationModel heatNetworkLocationModel;
-            if (doesHnHaveAPostcodeModel.HasPostcode)
+            if ((bool)doesHnHaveAPostcodeModel?.HasPostcode!)
             {
                 heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel { HNAddressByStreet = new AddressByStreetOrTownModel() };
                 heatNetworkLocationModel.HNAddressByStreet = model;
@@ -417,7 +424,16 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult ECCoordinates()
         {
-            this.ShowBackButton("DoesHNHaveAPostcode");
+            var hnTypeModel = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelKey);
+            if (hnTypeModel.HeatNetworkType == Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN)
+            {
+                this.ShowBackButton("HeatNetworkName");
+            }
+            else
+            {
+                this.ShowBackButton("DoesHNHaveAPostcode");
+            }            
+            
             var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
             return View(model);
         }
