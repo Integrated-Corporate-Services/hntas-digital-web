@@ -93,8 +93,6 @@
                             <a class="govuk-link" href="@Url.Action("HeatNetworkName", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> heat network description</span></a>
                         </dd>
                     </div>
-                    @if (heatNetworkType != HNTAS.Web.UI.Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN)
-                    {
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Main energy centre address and postcode</dt>
                         <dd class="govuk-summary-list__value">@energyCentreAddress</dd>
@@ -102,8 +100,6 @@
                             <a class="govuk-link" href="@Url.Action("DoesHNHaveAPostcode", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> main energy centre address and postcode</span></a>
                         </dd>
                     </div>
-                    }
-                    
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Phase</dt>
                         <dd class="govuk-summary-list__value">@heatNetworkPhase</dd>
