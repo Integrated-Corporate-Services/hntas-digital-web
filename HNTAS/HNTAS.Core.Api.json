@@ -6311,11 +6311,35 @@
       },
       "NullableOfUserStatus": {
         "enum": [
-          "Active",
-          "InActive",
-          "InvitationSent",
-          "InvitationAccepted",
-          "InvitationDeclined",
+          "Landline",
+          "Mobile",
+          "PreferNotToSay",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfSoaStage": {
+        "enum": [
+          "Stage1",
+          "Stage2",
+          "Stage3",
+          "Stage4",
+          "Stage5",
+          "Stage6",
+          "Stage7",
+          "Stage8",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfUserRole": {
+        "enum": [
+          "ResponsiblePerson",
+          "NetworkManager",
+          "DesignatedDutyHolder",
+          "Contributor",
+          "Assessor",
+          "Certifier",
           null
         ],
         "nullable": true
