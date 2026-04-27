@@ -2,7 +2,7 @@
 @model HeatNetworkSuccessRedirection
 
 @{
-    ViewData["Title"] = "";
+    ViewData["Title"] = "Next Steps";
     var fieldOrder = new[] { nameof(Model.NextAction) };
     var elementId = Html.GenerateIdFromName(nameof(Model.NextAction)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel

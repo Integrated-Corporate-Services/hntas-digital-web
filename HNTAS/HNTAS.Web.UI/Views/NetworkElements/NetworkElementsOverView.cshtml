@@ -1,6 +1,10 @@
 ﻿﻿@using HNTAS.Web.UI.Models.NetworkElements
 @model NetworkElementsOverViewModel
 
+@{
+    ViewData["Title"] = "Network elements overview";
+}
+
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <form asp-action="NetworkElementsOverViewAsync" method="post">

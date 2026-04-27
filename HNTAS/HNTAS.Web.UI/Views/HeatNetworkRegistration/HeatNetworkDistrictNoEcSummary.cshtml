@@ -2,6 +2,7 @@
 @model HeatNetworkConnectionsViewModel
 
 @{
+    ViewData["Title"] = "Heat network summary";
     var connections = new List<string>();
     if (Model.IsCommunalBuilding){
         connections.Add($"{Model.NoOfCommunalBuilding} communal buildings");
