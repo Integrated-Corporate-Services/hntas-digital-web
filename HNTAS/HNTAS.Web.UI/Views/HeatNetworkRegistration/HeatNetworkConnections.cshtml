@@ -2,6 +2,7 @@
 @model HeatNetworkConnectionsViewModel
 
 @{
+    ViewData["Title"] = "What connections does this heat network have?";
     bool isDistrictWithOwnEC = (bool?)(ViewBag.IsDistrictWithOwnEC) ?? false;
     bool hasHnConnectionsError = ViewData.ModelState["HeatNetworkConnections"]?.Errors?.Count > 0;
     bool hasCommunalBuildingError = ViewData.ModelState["NoOfCommunalBuilding"]?.Errors.Count > 0;
