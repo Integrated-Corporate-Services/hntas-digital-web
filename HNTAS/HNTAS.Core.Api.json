@@ -300,6 +300,75 @@
         }
       }
     },
+    "/api/AssignedAssessor/assigned-assessor": {
+      "get": {
+        "tags": [
+          "AssignedAssessor"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignedAssessorRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignedAssessorRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignedAssessorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignedAssessorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignedAssessorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignedAssessorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Audit/heat-network-audit-logs": {
       "get": {
         "tags": [
@@ -4332,6 +4401,90 @@
           }
         }
       },
+      "AssignedAssessor": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "heatNetworkName": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementsAssigned": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementsAssignedList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/NullableOfUserStatus"
+          },
+          "assessorUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "AssignedAssessorRequest": {
+        "type": "object",
+        "properties": {
+          "sortBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortDirection": {
+            "type": "string",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AssignedAssessorResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssignedAssessor"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "AuditLog": {
         "type": "object",
         "properties": {
@@ -6156,6 +6309,17 @@
         ],
         "nullable": true
       },
+      "NullableOfUserStatus": {
+        "enum": [
+          "Active",
+          "InActive",
+          "InvitationSent",
+          "InvitationAccepted",
+          "InvitationDeclined",
+          null
+        ],
+        "nullable": true
+      },
       "Organisation": {
         "type": "object",
         "properties": {
@@ -7261,6 +7425,9 @@
     },
     {
       "name": "Assessor"
+    },
+    {
+      "name": "AssignedAssessor"
     },
     {
       "name": "Audit"
