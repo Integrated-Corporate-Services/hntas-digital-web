@@ -2,7 +2,7 @@
 @model IsHNLocatedInEnglandScotlandWalesModel
 
 @{
-    ViewData["Title"] = "Check your eligibility to register a heat network";
+    ViewData["Title"] = "Are any of your new heat networks in England, Scotland or Wales? - Check your eligibility to register a heat network";
     var fieldOrder = new[] { nameof(Model.IsHNLocatedInEnglandScotlandWales) };
     var elementId = Html.GenerateIdFromName(nameof(Model.IsHNLocatedInEnglandScotlandWales)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel

@@ -59,7 +59,7 @@
                         <dt class="govuk-summary-list__key">Network Type</dt>
                         <dd class="govuk-summary-list__value">@hnTypeToDisplay</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("HeatNetworkType", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HeatNetworkType</span></a>
+                            <a class="govuk-link" href="@Url.Action("HeatNetworkType", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> heatNetworkType</span></a>
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
@@ -68,7 +68,7 @@
                         <dd class="govuk-summary-list__actions">
                             @if (!disableHnConnectionsLink)
                             {
-                                <a class="govuk-link" href="@Url.Action("HeatNetworkConnections", "HeatNetworkRegistration" )">Change<span class="govuk-visually-hidden">HeatNetworkConnections</span></a>
+                                <a class="govuk-link" href="@Url.Action("HeatNetworkConnections", "HeatNetworkRegistration" )">Change<span class="govuk-visually-hidden"> heatNetworkConnections</span></a>
                             }                            
                         </dd>
                     </div>
@@ -76,39 +76,35 @@
                         <dt class="govuk-summary-list__key">Coordinates</dt>
                         <dd class="govuk-summary-list__value">@heatNetworkCoordinates</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("ECCoordinates", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HNLocation</span></a>
+                            <a class="govuk-link" href="@Url.Action("ECCoordinates", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> heat network Location</span></a>
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Heat Network Name</dt>
                         <dd class="govuk-summary-list__value">@heatNetworkName</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("HeatNetworkName", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                            <a class="govuk-link" href="@Url.Action("HeatNetworkName", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> heat network Name</span></a>
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Additional description</dt>
                         <dd class="govuk-summary-list__value">@(!string.IsNullOrEmpty(additionalDescription) ? additionalDescription : "Not provided")</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("HeatNetworkName", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                            <a class="govuk-link" href="@Url.Action("HeatNetworkName", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> heat network description</span></a>
                         </dd>
                     </div>
-                    @if (heatNetworkType != HNTAS.Web.UI.Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN)
-                    {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Main energy centre address and postcode</dt>
-                            <dd class="govuk-summary-list__value">@energyCentreAddress</dd>
-                            <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link" href="@Url.Action("DoesHNHaveAPostcode", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HNName</span></a>
-                            </dd>
-                        </div>
-                    }
-                    
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Main energy centre address and postcode</dt>
+                        <dd class="govuk-summary-list__value">@energyCentreAddress</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("DoesHNHaveAPostcode", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> main energy centre address and postcode</span></a>
+                        </dd>
+                    </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Phase</dt>
                         <dd class="govuk-summary-list__value">@heatNetworkPhase</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("HeatNetworkPhase", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden">HNName</span></a>
+                            <a class="govuk-link" href="@Url.Action("HeatNetworkPhase", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> heat network phase</span></a>
                         </dd>
                     </div>
                 </dl>

@@ -2,7 +2,7 @@
 @model HowManyDwellingsIncludedModel
 
 @{
-    ViewData["Title"] = "Check your eligibility to register a heat network";
+    ViewData["Title"] = "Do any of your new heat networks have the equivalent of 6 or more dwellings? - Check your eligibility to register a heat network";
     var fieldOrder = new[] { nameof(Model.HowManyDwellingsIncluded) };
     var elementId = Html.GenerateIdFromName(nameof(Model.HowManyDwellingsIncluded)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel

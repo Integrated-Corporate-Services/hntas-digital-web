@@ -2,7 +2,7 @@
 @model AreYouTheRPModel
 
 @{
-    ViewData["Title"] = "Check your eligibility to register a heat network";
+    ViewData["Title"] = "Responsible Party - Check your eligibility to register a heat network";
     var fieldOrder = new[] { nameof(Model.AreYouTheRP) };
     var elementId = Html.GenerateIdFromName(nameof(Model.AreYouTheRP)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
