@@ -131,6 +131,8 @@ namespace HNTAS.Api.Client.Client
                 return NullableOfSoaStageValueConverter.ToJsonValue(nullableOfSoaStage);
             if (obj is NullableOfUserRole nullableOfUserRole)
                 return NullableOfUserRoleValueConverter.ToJsonValue(nullableOfUserRole);
+            if (obj is NullableOfUserStatus nullableOfUserStatus)
+                return NullableOfUserStatusValueConverter.ToJsonValue(nullableOfUserStatus);
             if (obj is OrganisationType organisationType)
                 return OrganisationTypeValueConverter.ToJsonValue(organisationType);
             if (obj is RegistrationSource registrationSource)

@@ -7,6 +7,7 @@ servers:
 tags:
 - name: Arms
 - name: Assessor
+- name: AssignedAssessor
 - name: Audit
 - name: CarbonCalculator
 - name: CountriesAndTerritories
@@ -198,6 +199,47 @@ paths:
           description: OK
       tags:
       - Assessor
+  /api/AssignedAssessor/assigned-assessor:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssignedAssessorRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/AssignedAssessorRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/AssignedAssessorRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/AssignedAssessorResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssignedAssessorResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AssignedAssessorResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - AssignedAssessor
   /api/Audit/heat-network-audit-logs:
     get:
       requestBody:
@@ -2778,6 +2820,105 @@ components:
           type: string
         fullNameWithEmail:
           type: string
+      type: object
+    AssignedAssessor:
+      example:
+        elementsAssigned: elementsAssigned
+        elementsAssignedList:
+        - elementsAssignedList
+        - elementsAssignedList
+        name: name
+        assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        heatNetworkName: heatNetworkName
+        email: email
+        status: Active
+      properties:
+        name:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        heatNetworkName:
+          nullable: true
+          type: string
+        elementsAssigned:
+          nullable: true
+          type: string
+        elementsAssignedList:
+          items:
+            type: string
+          nullable: true
+          type: array
+        status:
+          $ref: "#/components/schemas/NullableOfUserStatus"
+        assessorUpdatedAt:
+          format: date-time
+          nullable: true
+          type: string
+      type: object
+    AssignedAssessorRequest:
+      example:
+        sortDirection: sortDirection
+        pageSize: 6
+        sortBy: sortBy
+        page: 0
+      properties:
+        sortBy:
+          nullable: true
+          type: string
+        sortDirection:
+          nullable: true
+          type: string
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+      type: object
+    AssignedAssessorResponse:
+      example:
+        pageNumber: 0
+        totalPages: 5
+        pageSize: 6
+        totalCount: 1
+        items:
+        - elementsAssigned: elementsAssigned
+          elementsAssignedList:
+          - elementsAssignedList
+          - elementsAssignedList
+          name: name
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          heatNetworkName: heatNetworkName
+          email: email
+          status: Active
+        - elementsAssigned: elementsAssigned
+          elementsAssignedList:
+          - elementsAssignedList
+          - elementsAssignedList
+          name: name
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          heatNetworkName: heatNetworkName
+          email: email
+          status: Active
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/AssignedAssessor"
+          type: array
+        pageNumber:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
       type: object
     AuditLog:
       example:
@@ -5682,6 +5823,16 @@ components:
       - Contributor
       - Assessor
       - Certifier
+      - null
+      nullable: true
+      type: string
+    NullableOfUserStatus:
+      enum:
+      - Active
+      - InActive
+      - InvitationSent
+      - InvitationAccepted
+      - InvitationDeclined
       - null
       nullable: true
       type: string

@@ -5,6 +5,7 @@ api/openapi.yaml
 appveyor.yml
 docs/apis/ArmsApi.md
 docs/apis/AssessorApi.md
+docs/apis/AssignedAssessorApi.md
 docs/apis/AuditApi.md
 docs/apis/CarbonCalculatorApi.md
 docs/apis/CountriesAndTerritoriesApi.md
@@ -22,6 +23,9 @@ docs/models/Address.md
 docs/models/AssessmentPlan.md
 docs/models/AssessmentPlanResponse.md
 docs/models/AssessorSearchResult.md
+docs/models/AssignedAssessor.md
+docs/models/AssignedAssessorRequest.md
+docs/models/AssignedAssessorResponse.md
 docs/models/AuditLog.md
 docs/models/AuditLogRequest.md
 docs/models/AuditLogResponse.md
@@ -88,6 +92,7 @@ docs/models/NotificationHistoryResponse.md
 docs/models/NullableOfPreferredContactType.md
 docs/models/NullableOfSoaStage.md
 docs/models/NullableOfUserRole.md
+docs/models/NullableOfUserStatus.md
 docs/models/OrgDetails.md
 docs/models/Organisation.md
 docs/models/OrganisationRequest.md
@@ -136,6 +141,7 @@ src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/AssessorApi.cs
+src/HNTAS.Api.Client/Api/AssignedAssessorApi.cs
 src/HNTAS.Api.Client/Api/AuditApi.cs
 src/HNTAS.Api.Client/Api/CarbonCalculatorApi.cs
 src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
@@ -176,6 +182,9 @@ src/HNTAS.Api.Client/Model/Address.cs
 src/HNTAS.Api.Client/Model/AssessmentPlan.cs
 src/HNTAS.Api.Client/Model/AssessmentPlanResponse.cs
 src/HNTAS.Api.Client/Model/AssessorSearchResult.cs
+src/HNTAS.Api.Client/Model/AssignedAssessor.cs
+src/HNTAS.Api.Client/Model/AssignedAssessorRequest.cs
+src/HNTAS.Api.Client/Model/AssignedAssessorResponse.cs
 src/HNTAS.Api.Client/Model/AuditLog.cs
 src/HNTAS.Api.Client/Model/AuditLogRequest.cs
 src/HNTAS.Api.Client/Model/AuditLogResponse.cs
@@ -242,6 +251,7 @@ src/HNTAS.Api.Client/Model/NotificationHistoryResponse.cs
 src/HNTAS.Api.Client/Model/NullableOfPreferredContactType.cs
 src/HNTAS.Api.Client/Model/NullableOfSoaStage.cs
 src/HNTAS.Api.Client/Model/NullableOfUserRole.cs
+src/HNTAS.Api.Client/Model/NullableOfUserStatus.cs
 src/HNTAS.Api.Client/Model/OrgDetails.cs
 src/HNTAS.Api.Client/Model/Organisation.cs
 src/HNTAS.Api.Client/Model/OrganisationRequest.cs
