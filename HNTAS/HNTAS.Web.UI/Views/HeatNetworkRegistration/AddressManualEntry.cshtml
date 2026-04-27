@@ -2,7 +2,7 @@
 @model AddressByStreetOrTownModel
 
 @{
-    ViewData["Title"] = "Organisation Address";
+    ViewData["Title"] = "What is the address of your Heat Network?";
 
     bool HasError(string key) => ViewData.ModelState.TryGetValue(key, out var entry) && entry.Errors.Count > 0;
     var StreetAddressId = Html.GenerateIdFromName(nameof(Model.StreetAddress)).ToLowerInvariant();

@@ -2,6 +2,7 @@
 @model AssessorAssessmentSelectionViewModel
 
 @{
+    ViewData["Title"] = "Which step of the assessment will they carry out for the energy centre?";
     var hasError = ViewData.ModelState.ContainsKey(nameof(Model.SelectedAssessmentOption)) && ViewData.ModelState[nameof(Model.SelectedAssessmentOption)].Errors.Any();
 }
 

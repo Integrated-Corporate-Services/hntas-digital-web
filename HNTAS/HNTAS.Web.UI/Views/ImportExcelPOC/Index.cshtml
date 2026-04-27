@@ -1,44 +1,47 @@
 ﻿@model List<List<string>>
 
+@{
+    ViewData["Title"] = "Excel Import PoC";
+}
+
 <div class="govuk-width-container">
-    <main class="govuk-main-wrapper">
-        <h1 class="govuk-heading-l">Excel Import PoC</h1>
+    <h1 class="govuk-heading-l">Excel Import PoC</h1>
 
-        <form asp-action="Index" method="post" enctype="multipart/form-data">
-            <div class="govuk-form-group">
-                <label class="govuk-label" for="excelFile">Upload your spreadsheet</label>
-                <input class="govuk-file-upload" id="excelFile" name="excelFile" type="file" accept=".xlsx">
-            </div>
-            <button type="submit" class="govuk-button">Upload and preview</button>
-        </form>
+    <form asp-action="Index" method="post" enctype="multipart/form-data">
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="excelFile">Upload your spreadsheet</label>
+            <input class="govuk-file-upload" id="excelFile" name="excelFile" type="file" accept=".xlsx">
+        </div>
+        <button type="submit" class="govuk-button">Upload and preview</button>
+    </form>
 
-        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-        @if (Model != null && Model.Any())
-        {
-            <h2 class="govuk-heading-m">Previewing @(Model.Count - 1) rows</h2>
+    @if (Model != null && Model.Any())
+    {
+        <h2 class="govuk-heading-m">Previewing @(Model.Count - 1) rows</h2>
 
-            <table class="govuk-table">
-                <thead class="govuk-table__head">
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    @foreach (var header in Model.First())
+                    {
+                        <th scope="col" class="govuk-table__header">@header</th>
+                    }
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                @foreach (var row in Model.Skip(1))
+                {
                     <tr class="govuk-table__row">
-                        @foreach (var header in Model.First())
+                        @foreach (var cell in row)
                         {
-                            <th scope="col" class="govuk-table__header">@header</th>
+                            <td class="govuk-table__cell">@cell</td>
                         }
                     </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                    @foreach (var row in Model.Skip(1))
-                    {
-                        <tr class="govuk-table__row">
-                            @foreach (var cell in row)
-                            {
-                                <td class="govuk-table__cell">@cell</td>
-                            }
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-    </main>
+                }
+            </tbody>
+        </table>
+    }
+
 </div>

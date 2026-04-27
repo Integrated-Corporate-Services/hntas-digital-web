@@ -1,29 +1,52 @@
 ﻿@using HNTAS.Web.UI.Models
-@model IsHNLocatedInEnglandScotlandWalesModel
+<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/RegistrationEligibility/IsYourOrgWorkingOnANewHN.cshtml
+@model IsYourOrgWorkingOnANewHNModel
 
 @{
     ViewData["Title"] = "Check your eligibility to register a heat network";
+    var fieldOrder = new[] { nameof(Model.IsYourOrgWorkingOnANewHN) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.IsYourOrgWorkingOnANewHN)).ToLowerInvariant();
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "HeatNetworkEligibility",
+        Action = "IsYourOrgWorkingOnANewHN",
+========
+@model IsHNLocatedInEnglandScotlandWalesModel
+
+@{
+    ViewData["Title"] = "Are any of your new heat networks in England, Scotland or Wales? - Check your eligibility to register a heat network";
     var fieldOrder = new[] { nameof(Model.IsHNLocatedInEnglandScotlandWales) };
     var elementId = Html.GenerateIdFromName(nameof(Model.IsHNLocatedInEnglandScotlandWales)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "HeatNetworkEligibility",
         Action = "IsHNLocatedInEnglandScotlandWales",
+>>>>>>>> dev:HNTAS/HNTAS.Web.UI/Views/RegistrationEligibility/IsHNLocatedInEnglandScotlandWales.cshtml
         FieldOrder = fieldOrder,
         Questions = new List<Question>
         {
             new Question
             {
                 QId = elementId,
+<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/RegistrationEligibility/IsYourOrgWorkingOnANewHN.cshtml
+                QText = "Is your organisation working on any new heat networks that are not yet operational?",
+                QDescText = null,
+                QHintText = "This includes any new heat networks across your organisation's portfolio that are in feasibility, design or construction.",
+========
                 QText = "Are any of your new heat networks in England, Scotland or Wales?",
                 QDescText = null,
                 QHintText = "Heat networks in Northern Ireland are currently exempt from HNTAS. You do not need to use this service for them.",
+>>>>>>>> dev:HNTAS/HNTAS.Web.UI/Views/RegistrationEligibility/IsHNLocatedInEnglandScotlandWales.cshtml
                 Options = new List<Option>
                 {
                     new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
                     new Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = null }
                 },
+<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/RegistrationEligibility/IsYourOrgWorkingOnANewHN.cshtml
+                SeletedOption = Model.IsYourOrgWorkingOnANewHN
+========
                 SeletedOption = Model.IsHNLocatedInEnglandScotlandWales
+>>>>>>>> dev:HNTAS/HNTAS.Web.UI/Views/RegistrationEligibility/IsHNLocatedInEnglandScotlandWales.cshtml
             },
         }
     };
