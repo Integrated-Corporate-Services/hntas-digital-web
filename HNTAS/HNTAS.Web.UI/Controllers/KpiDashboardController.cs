@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HNTAS.Web.UI.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    public class ArmsDashboardPOCController : Controller
+    public class KpiDashboardController : Controller
     {
         public IActionResult Index(string? searchTerm, int? month, int? year)
         {
+            this.ShowBackButton("UserAccount", "Dashboard");
+
             ModelState.Clear();
 
             // 1. Year defaults to current, but Month is now null (empty) by default
