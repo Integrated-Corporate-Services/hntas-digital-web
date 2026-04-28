@@ -10,7 +10,7 @@
 <head>
     <meta name="robots" content="noindex, nofollow">
     <meta charset="utf-8">
-    <title>GOV.UK - Heat network technical assurance scheme</title>
+    <title>@ViewData["Title"] - GOV.UK - Heat network technical assurance scheme</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="blue">
     <link rel="icon" sizes="48x48" href="/assets/rebrand/images/favicon.ico">
@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="/assets/css/main.min.css">
     <meta property="og:image" content="YOUR-DOMAIN/images/govuk-opengraph-image.png">
 </head>
-<environment names="qa">
+<environment names="qa, staging">
     <!-- Google Tag Manager -->
     <script>
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -53,7 +53,7 @@
 }
 
 <body class="govuk-template__body app-body-class">
-    <environment names="qa">
+    <environment names="qa, staging">
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5SWB2T5S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- End Google Tag Manager (noscript) -->
