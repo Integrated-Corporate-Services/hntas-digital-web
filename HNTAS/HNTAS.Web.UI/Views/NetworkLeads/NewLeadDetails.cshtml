@@ -3,6 +3,7 @@
 @model NewLeadDetailsViewModel
 
 @{
+    ViewData["Title"] = "Invite a network manager";
     bool hasFirstNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.FirstName)) && ViewData.ModelState[nameof(Model.FirstName)].Errors.Any();
     bool hasLastNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.LastName)) && ViewData.ModelState[nameof(Model.LastName)].Errors.Any();
     bool hasEmailErrors = ViewData.ModelState.ContainsKey(nameof(Model.EmailId)) && ViewData.ModelState[nameof(Model.EmailId)].Errors.Any();

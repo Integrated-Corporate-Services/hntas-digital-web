@@ -2,6 +2,7 @@
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models.NetworkLeads;
 using HNTAS.Web.UI.Models.User;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
 using Mono.TextTemplating;
@@ -15,13 +16,15 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ISessionHelper _sessionHelper;
         private readonly IInvitationService _invitationService;
         private readonly IUserService _userService;
+        private readonly IInvitationTokenService _iInvitationTokenService;
 
-        public NetworkLeadsController(ILogger<NetworkLeadsController> logger, ISessionHelper sessionHelper, IInvitationService invitationService, IUserService userService)
+        public NetworkLeadsController(ILogger<NetworkLeadsController> logger, ISessionHelper sessionHelper, IInvitationService invitationService, IUserService userService, IInvitationTokenService invitationTokenService)
         {
             _logger = logger;
             _sessionHelper = sessionHelper;
             _invitationService = invitationService;
             _userService = userService;
+            _iInvitationTokenService = invitationTokenService;
         }
 
         [HttpGet]
@@ -70,10 +73,21 @@ namespace HNTAS.Web.UI.Controllers
                            firstName: model.FirstName,
                            lastName: model.LastName,
                            orgId: _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId),
-                           contributorRoles: new List<ContributorRole> { ContributorRole.Coordinator },
+                           contributorRoles: new List<ContributorRole> { ContributorRole.NetworkManager },
                            status: InvitationStatus.Invited
                        )
                    );
+                if (string.IsNullOrWhiteSpace(invitationId))
+                {
+                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                    return RedirectToAction("ManageLeads");
+                }
+
+                _logger.LogInformation("Successfully submitted new organisation user details.");
+                var token = _iInvitationTokenService.GenerateToken(invitationId, model.EmailId);
+
+                //send invitation email
+                await _invitationService.SendInvitationEmailAsync(invitationId, new SendInvitationEmailRequest(token));
             }
             catch(Exception ex)
             {

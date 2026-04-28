@@ -1,4 +1,8 @@
-﻿@section BeforeMain {
+﻿@{
+    ViewData["Title"] = "New build";
+}
+
+@section BeforeMain {
 
     <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
         <ol class="govuk-breadcrumbs__list">
@@ -14,14 +18,12 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <fieldset class="govuk-fieldset" aria-describedby="contributor-required-hint">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-heading-l">
                 New build
-            </legend>
-        </fieldset>
+        </h1>
 
         <!--Section 1-->
-        <div class="govuk-heading-m">Overview</div>
+        <h2 class="govuk-heading-m">Overview</h2>
 
         <p class="govuk-body">Use this section to find the Technical Specification and Assessment Procedures for new build heat networks under the Heat Network Technical Assurance Scheme (HNTAS).</p>
         <p class="govuk-body">

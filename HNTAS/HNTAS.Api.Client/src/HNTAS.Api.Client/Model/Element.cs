@@ -40,7 +40,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="count">count</param>
         /// <param name="soaStages">soaStages</param>
         [JsonConstructor]
-        public Element(Option<string?> elementId = default, Option<string?> elementType = default, Option<HeatNetworkElementDisplayType?> type = default, Option<string?> networkElementInstanceName = default, Option<int?> count = default, Option<List<SoaStages>?> soaStages = default)
+        public Element(Option<string?> elementId = default, Option<string?> elementType = default, Option<HeatNetworkElementType?> type = default, Option<string?> networkElementInstanceName = default, Option<int?> count = default, Option<List<SoaStages>?> soaStages = default)
         {
             ElementIdOption = elementId;
             ElementTypeOption = elementType;
@@ -58,13 +58,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<HeatNetworkElementDisplayType?> TypeOption { get; private set; }
+        public Option<HeatNetworkElementType?> TypeOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Type
         /// </summary>
         [JsonPropertyName("type")]
-        public HeatNetworkElementDisplayType? Type { get { return this.TypeOption; } set { this.TypeOption = new(value); } }
+        public HeatNetworkElementType? Type { get { return this.TypeOption; } set { this.TypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ElementId
@@ -184,7 +184,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> elementId = default;
             Option<string?> elementType = default;
-            Option<HeatNetworkElementDisplayType?> type = default;
+            Option<HeatNetworkElementType?> type = default;
             Option<string?> networkElementInstanceName = default;
             Option<int?> count = default;
             Option<List<SoaStages>?> soaStages = default;
@@ -213,7 +213,7 @@ namespace HNTAS.Api.Client.Model
                         case "type":
                             string? typeRawValue = utf8JsonReader.GetString();
                             if (typeRawValue != null)
-                                type = new Option<HeatNetworkElementDisplayType?>(HeatNetworkElementDisplayTypeValueConverter.FromStringOrDefault(typeRawValue));
+                                type = new Option<HeatNetworkElementType?>(HeatNetworkElementTypeValueConverter.FromStringOrDefault(typeRawValue));
                             break;
                         case "networkElementInstanceName":
                             networkElementInstanceName = new Option<string?>(utf8JsonReader.GetString());
@@ -274,7 +274,7 @@ namespace HNTAS.Api.Client.Model
 
             if (element.TypeOption.IsSet)
             {
-                var typeRawValue = HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(element.Type!.Value);
+                var typeRawValue = HeatNetworkElementTypeValueConverter.ToJsonValue(element.Type!.Value);
                 writer.WriteString("type", typeRawValue);
             }
             if (element.NetworkElementInstanceNameOption.IsSet)

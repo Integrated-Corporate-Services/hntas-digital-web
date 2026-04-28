@@ -41,10 +41,9 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <main class="govuk-main-wrapper" id="main-content" role="main">
-                <h1 class="govuk-heading-l">Check your answers</h1>
+            <h1 class="govuk-heading-l">Check your answers</h1>
 
-                <form asp-controller="UserDetails" asp-action="SubmitAnswers" method="post" novalidate>
+            <form asp-controller="UserDetails" asp-action="SubmitAnswers" method="post" novalidate>
                     @Html.AntiForgeryToken()
 
                     <h2 class="govuk-heading-m">Your details</h2>
@@ -73,7 +72,10 @@
                         </div>
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Job title</dt>
-                            <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.JobTitle</dd>                            
+                            <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.JobTitle</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> first name</span></a>
+                            </dd>
                         </div>
                     </dl>                    
 
@@ -81,7 +83,6 @@
                         Continue
                     </button>
                 </form>
-            </main>
         </div>
     </div>
 </div>

@@ -4,27 +4,25 @@
 
 
 <div class="govuk-width-container">
-    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-                <h1 class="govuk-visually-hidden">Heat network successfully registered</h1>
-                <div class="govuk-panel govuk-panel--confirmation">
-                    <span class="govuk-!-font-weight-bold">Heat network successfully registered</span><br/>
-                    <span class="govuk-!-font-weight-regular">@ViewBag.HNName</span><br />
-                    <span class="govuk-!-font-weight-regular">UHNID</span><span class="govuk-!-font-weight-bold">@ViewBag.HNId</span>
-                </div><br/>
-                <p class="govuk-body">We've:</p>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>registered your heat network service under @ViewBag.CompanyName's organisation</li>
-                    <li>sent an email confirmation, with the unique heat network id (UHNID): @ViewBag.HNId</li>
-                </ul>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-visually-hidden">Heat network successfully registered</h1>
+            <div class="govuk-panel govuk-panel--confirmation">
+                <span class="govuk-!-font-weight-bold">Heat network successfully registered</span><br/>
+                <span class="govuk-!-font-weight-regular">@ViewBag.HNNameWithDescription</span><br />
+                <span class="govuk-!-font-weight-regular">UHNID </span><span class="govuk-!-font-weight-bold">@ViewBag.HNId</span>
+            </div><br/>
+            <p class="govuk-body">We've:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>registered your heat network service under @ViewBag.CompanyName's organisation</li>
+                <li>sent an email confirmation, with the unique heat network id (UHNID): @ViewBag.HNId</li>
+            </ul>
 
-                <p class="govuk-body">As the responsible party, you can now designate team members to help provide technical information for your heat network.</p>                
+            <p class="govuk-body">As the responsible person, you can now provide technical information on your heat network and add team members to help you.</p>
                 
-                <a class="govuk-button" role="button" draggable="false" asp-controller="UserManagement" asp-action="HeatNetworks">
-                    Continue
-                </a>
-            </div>
+            <a class="govuk-button" role="button" draggable="false" asp-controller="HeatNetworkRegistration" asp-action="HeatNetworkSuccessRedirection">
+                Continue
+            </a>
         </div>
-    </main>
+    </div>
 </div>

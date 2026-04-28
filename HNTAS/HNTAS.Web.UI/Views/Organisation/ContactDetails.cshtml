@@ -143,14 +143,13 @@
                             <input class="govuk-radios__input" id="PreferredContactType-Landline" name="PreferredContactType" type="radio"
                                    value="@PreferredContactType.Landline"
                                    data-aria-controls="conditional-Landline"
-                                   @(isLandlineSelected ? "checked" : "")
-                                   aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+                                   @(isLandlineSelected ? "checked" : "")>
                             <label class="govuk-label govuk-radios__label" for="PreferredContactType-Landline">
                                 Landline
                             </label>
                         </div>
                         <div class="govuk-radios__conditional @(!isLandlineSelected ? "govuk-radios__conditional--hidden" : "")" id="conditional-Landline"> @* Conditional visibility logic needs updating too *@
-                            <div class="govuk-form-group @(hasLandlineNumberErrors ? "govuk-form-group--error" : "")">
+                            <div class="govuk-form-group @(hasLandlineNumberErrors ? "govuk-form-group--error" : "")" aria-describedby="@(hasLandlineNumberErrors ? "LandlineNumber-error" : "")">
                                 <label class="govuk-label" for="LandlineNumber">
                                     Landline number
                                 </label>
@@ -161,11 +160,10 @@
                                     </p>
                                 }
                                 <input class="govuk-input govuk-input--width-20" id="LandlineNumber" name="LandlineNumber" type="tel" autocomplete="tel"
-                                       asp-for="LandlineNumber"
-                                       aria-describedby="@(hasLandlineNumberErrors ? "LandlineNumber-error" : "")">
+                                       asp-for="LandlineNumber">
                             </div>
 
-                            <div class="govuk-form-group @(hasContactNumberExtensionErrors ? "govuk-form-group--error" : "")">
+                            <div class="govuk-form-group @(hasContactNumberExtensionErrors ? "govuk-form-group--error" : "")" aria-describedby="@(hasContactNumberExtensionErrors ? "ContactNumberExtension-error" : "")">
                                 <label class="govuk-label" for="ContactNumberExtension">
                                     Extension (optional)
                                 </label>
@@ -176,8 +174,7 @@
                                     </p>
                                 }
                                 <input class="govuk-input govuk-input--width-5" id="ContactNumberExtension" name="ContactNumberExtension" type="text"
-                                       asp-for="ContactNumberExtension"
-                                       aria-describedby="@(hasContactNumberExtensionErrors ? "ContactNumberExtension-error" : "")">
+                                       asp-for="ContactNumberExtension">
                             </div>
                         </div>
 
@@ -186,15 +183,14 @@
                             <input class="govuk-radios__input" id="PreferredContactType-Mobile" name="PreferredContactType" type="radio"
                                    value="@PreferredContactType.Mobile"
                                    data-aria-controls="conditional-Mobile"
-                                   @(Model.PreferredContactType == PreferredContactType.Mobile ? "checked" : "")
-                                   aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+                                   @(Model.PreferredContactType == PreferredContactType.Mobile ? "checked" : "")>
                             <label class="govuk-label govuk-radios__label" for="PreferredContactType-Mobile">
                                 Mobile
                             </label>
                         </div>
                         <div class="govuk-radios__conditional @(Model.PreferredContactType != PreferredContactType.Mobile ? "govuk-radios__conditional--hidden" : "")" id="conditional-Mobile">
                             @* Conditional visibility logic needs updating too *@
-                            <div class="govuk-form-group @(hasMobileNumberErrors ? "govuk-form-group--error" : "")">
+                            <div class="govuk-form-group @(hasMobileNumberErrors ? "govuk-form-group--error" : "")" aria-describedby="@(hasMobileNumberErrors ? "MobileNumber-error" : "")">
                                 <label class="govuk-label" for="MobileNumber">
                                     Mobile number
                                 </label>
@@ -205,18 +201,16 @@
                                     </p>
                                 }
                                 <input class="govuk-input govuk-input--width-20" id="MobileNumber" name="MobileNumber" type="tel" autocomplete="tel"
-                                       asp-for="MobileNumber"
-                                       aria-describedby="@(hasMobileNumberErrors ? "MobileNumber-error" : "")">
+                                       asp-for="MobileNumber">
                             </div>
                         </div>
 
                         @if (ViewBag.IsRegulatoryContact != true)
                         {
-                            <div class="govuk-radios__item">
+                            <div class="govuk-radios__item" aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
                                 <input class="govuk-radios__input" id="PreferredContactType-PreferNotToSay" name="PreferredContactType" type="radio"
                                        value="@PreferredContactType.PreferNotToSay"
-                                       @(isPreferNotToSaySelected ? "checked" : "")
-                                       aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+                                       @(isPreferNotToSaySelected ? "checked" : "")>
                                 <label class="govuk-label govuk-radios__label" for="PreferredContactType-PreferNotToSay">
                                     Prefer not to say
                                 </label>

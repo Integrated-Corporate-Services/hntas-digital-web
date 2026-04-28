@@ -15,7 +15,7 @@
                 (opens in a new tab) and right click the location of your energy centre. The coordinates will be the first option in the list. Click the coordinates to copy.
             </p>
 
-            <form asp-controller="HeatNetwork" asp-action="ECCoordinates" method="post" novalidate>
+            <form asp-controller="HeatNetworkRegistration" asp-action="ECCoordinates" method="post" novalidate>
                 @Html.AntiForgeryToken()
 
                 <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.LatitudeLongitude)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
@@ -40,11 +40,7 @@
                 </div>
 
                 <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
-            </form>
-
-            @* <p class="govuk-body govuk-!-margin-top-4">
-                <a class="govuk-link" asp-controller="Address" asp-action="AddressManualEntry">Enter address manually</a>
-            </p> *@
+            </form>            
         </div>
     </div>
 </div>

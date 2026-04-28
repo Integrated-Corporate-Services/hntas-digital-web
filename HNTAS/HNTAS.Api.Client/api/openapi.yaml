@@ -7,6 +7,7 @@ servers:
 tags:
 - name: Arms
 - name: Assessor
+- name: AssignedAssessor
 - name: Audit
 - name: CarbonCalculator
 - name: CountriesAndTerritories
@@ -14,12 +15,13 @@ tags:
 - name: HeatNetworks
 - name: HNDataImportExport
 - name: Invitations
+- name: NotificationHistory
 - name: Organisations
 - name: OrganisationUser
 - name: SOA
 - name: Users
 paths:
-  /api/arms/v1/hn/kpis:
+  /arms/v1/hn/kpis:
     post:
       requestBody:
         content:
@@ -74,6 +76,98 @@ paths:
           description: Service Unavailable
       tags:
       - Arms
+  /arms/v1/hn/{networkId}/kpi-config:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: networkId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/KpiConfigResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KpiConfigResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/KpiConfigResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Internal Server Error
+      tags:
+      - Arms
+  /arms/v1/hn/kpi-config:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KpiConfigRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/KpiConfigRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/KpiConfigRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Internal Server Error
+      tags:
+      - Arms
   /api/Assessor/search:
     get:
       parameters:
@@ -105,6 +199,47 @@ paths:
           description: OK
       tags:
       - Assessor
+  /api/AssignedAssessor/assigned-assessor:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssignedAssessorRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/AssignedAssessorRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/AssignedAssessorRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/AssignedAssessorResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssignedAssessorResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AssignedAssessorResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - AssignedAssessor
   /api/Audit/heat-network-audit-logs:
     get:
       requestBody:
@@ -489,7 +624,7 @@ paths:
           description: Not Found
       tags:
       - HeatNetworks
-  /api/external/heat-networks:
+  /external/heat-networks:
     get:
       responses:
         "200":
@@ -512,7 +647,7 @@ paths:
           description: OK
       tags:
       - HeatNetworks
-  /api/external/heat-network/{hnId}:
+  /external/heat-network/{hnId}:
     get:
       parameters:
       - explode: false
@@ -549,7 +684,7 @@ paths:
           description: Not Found
       tags:
       - HeatNetworks
-  /api/external/heat-networks/search:
+  /external/heat-networks/search:
     get:
       parameters:
       - explode: true
@@ -805,6 +940,47 @@ paths:
           description: Bad Request
       tags:
       - Invitations
+  /api/NotificationHistory/notification-history:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationHistoryRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/NotificationHistoryRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/NotificationHistoryRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/NotificationHistoryResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationHistoryResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/NotificationHistoryResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - NotificationHistory
   /api/Organisations/{orgId}/edit-org-details:
     patch:
       parameters:
@@ -2645,6 +2821,105 @@ components:
         fullNameWithEmail:
           type: string
       type: object
+    AssignedAssessor:
+      example:
+        elementsAssigned: elementsAssigned
+        elementsAssignedList:
+        - elementsAssignedList
+        - elementsAssignedList
+        name: name
+        assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        heatNetworkName: heatNetworkName
+        email: email
+        status: Active
+      properties:
+        name:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        heatNetworkName:
+          nullable: true
+          type: string
+        elementsAssigned:
+          nullable: true
+          type: string
+        elementsAssignedList:
+          items:
+            type: string
+          nullable: true
+          type: array
+        status:
+          $ref: "#/components/schemas/NullableOfUserStatus"
+        assessorUpdatedAt:
+          format: date-time
+          nullable: true
+          type: string
+      type: object
+    AssignedAssessorRequest:
+      example:
+        sortDirection: sortDirection
+        pageSize: 6
+        sortBy: sortBy
+        page: 0
+      properties:
+        sortBy:
+          nullable: true
+          type: string
+        sortDirection:
+          nullable: true
+          type: string
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+      type: object
+    AssignedAssessorResponse:
+      example:
+        pageNumber: 0
+        totalPages: 5
+        pageSize: 6
+        totalCount: 1
+        items:
+        - elementsAssigned: elementsAssigned
+          elementsAssignedList:
+          - elementsAssignedList
+          - elementsAssignedList
+          name: name
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          heatNetworkName: heatNetworkName
+          email: email
+          status: Active
+        - elementsAssigned: elementsAssigned
+          elementsAssignedList:
+          - elementsAssignedList
+          - elementsAssignedList
+          name: name
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          heatNetworkName: heatNetworkName
+          email: email
+          status: Active
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/AssignedAssessor"
+          type: array
+        pageNumber:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+      type: object
     AuditLog:
       example:
         phase: phase
@@ -3201,7 +3476,7 @@ components:
       - ContributingOperator
       - Assessor
       - Certifier
-      - Coordinator
+      - NetworkManager
       - ResponsiblePerson
       type: string
     CountryAndTerritory:
@@ -3322,6 +3597,7 @@ components:
         elementId: elementId
         soaStages:
         - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessorUpdatedBy: assessorUpdatedBy
           assessor:
             firstName: firstName
             lastName: lastName
@@ -3330,8 +3606,10 @@ components:
             status: Active
           soaStatus: soaStatus
           soaStatusUpdatedBy: soaStatusUpdatedBy
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           stageId: Stage1
         - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessorUpdatedBy: assessorUpdatedBy
           assessor:
             firstName: firstName
             lastName: lastName
@@ -3340,8 +3618,9 @@ components:
             status: Active
           soaStatus: soaStatus
           soaStatusUpdatedBy: soaStatusUpdatedBy
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           stageId: Stage1
-        count: 3
+        count: 9
         networkElementInstanceName: networkElementInstanceName
         type: EnergyCentre
         elementType: elementType
@@ -3353,7 +3632,7 @@ components:
           nullable: true
           type: string
         type:
-          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+          $ref: "#/components/schemas/HeatNetworkElementType"
         networkElementInstanceName:
           nullable: true
           type: string
@@ -3431,14 +3710,6 @@ components:
       required:
       - hnId
       type: object
-    ElementType:
-      enum:
-      - EnergyCentre
-      - Substation
-      - DistrictDistribution
-      - CommunalDistribution
-      - ConsumerConnection
-      type: string
     Energy:
       example:
         heatPumpCount: 5
@@ -3789,6 +4060,7 @@ components:
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -3797,8 +4069,10 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -3807,14 +4081,16 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            count: 3
+            count: 9
             networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -3823,8 +4099,10 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -3833,8 +4111,9 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            count: 3
+            count: 9
             networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
@@ -3860,14 +4139,13 @@ components:
           isNonDomesticConsumer: true
           noOfDownstreamDistrictHeatNetworkConnections: 7
           isCommunalBuilding: true
-          noOfUpstreamDistrictHeatNetworkConnections: 9
           noOfDomesticConsumer: 5
-          isUpstreamDistrictHeatNetworkConnections: true
           isDownstreamDistrictHeatNetworkConnections: true
           noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
+        additionalDescription: additionalDescription
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -3878,7 +4156,6 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
-        hnDescription: hnDescription
         registrationSource: HNTAS
         pathway: pathway
         designConstructionLog:
@@ -3904,7 +4181,7 @@ components:
           type: string
         name:
           type: string
-        hnDescription:
+        additionalDescription:
           nullable: true
           type: string
         address:
@@ -3944,9 +4221,7 @@ components:
         isNonDomesticConsumer: true
         noOfDownstreamDistrictHeatNetworkConnections: 7
         isCommunalBuilding: true
-        noOfUpstreamDistrictHeatNetworkConnections: 9
         noOfDomesticConsumer: 5
-        isUpstreamDistrictHeatNetworkConnections: true
         isDownstreamDistrictHeatNetworkConnections: true
         noOfCommunalBuilding: 5
       nullable: true
@@ -3975,12 +4250,6 @@ components:
           format: int32
           nullable: true
           type: integer
-        isUpstreamDistrictHeatNetworkConnections:
-          type: boolean
-        noOfUpstreamDistrictHeatNetworkConnections:
-          format: int32
-          nullable: true
-          type: integer
       type: object
     HeatNetworkElement:
       example:
@@ -4004,7 +4273,7 @@ components:
         - locations
       properties:
         name:
-          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+          $ref: "#/components/schemas/HeatNetworkElementType"
         count:
           format: int32
           type: integer
@@ -4017,14 +4286,6 @@ components:
             $ref: "#/components/schemas/UploadedDocument"
           type: array
       type: object
-    HeatNetworkElementDisplayType:
-      enum:
-      - EnergyCentre
-      - Substation
-      - DistrictDistributionNetwork
-      - CommunalDistributionNetwork
-      - ConsumerConnections
-      type: string
     HeatNetworkElementResponse:
       example:
         documents:
@@ -4060,6 +4321,14 @@ components:
             $ref: "#/components/schemas/UploadedDocumentResponse"
           type: array
       type: object
+    HeatNetworkElementType:
+      enum:
+      - EnergyCentre
+      - Substation
+      - DistrictDistribution
+      - CommunalDistribution
+      - ConsumerConnection
+      type: string
     HeatNetworkExternalResponse:
       example:
         hnId: hnId
@@ -4238,6 +4507,7 @@ components:
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -4246,8 +4516,10 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -4256,14 +4528,16 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            count: 3
+            count: 9
             networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
             soaStages:
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -4272,8 +4546,10 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
                 lastName: lastName
@@ -4282,8 +4558,9 @@ components:
                 status: Active
               soaStatus: soaStatus
               soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            count: 3
+            count: 9
             networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
@@ -4309,14 +4586,13 @@ components:
           isNonDomesticConsumer: true
           noOfDownstreamDistrictHeatNetworkConnections: 7
           isCommunalBuilding: true
-          noOfUpstreamDistrictHeatNetworkConnections: 9
           noOfDomesticConsumer: 5
-          isUpstreamDistrictHeatNetworkConnections: true
           isDownstreamDistrictHeatNetworkConnections: true
           noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
+        additionalDescription: additionalDescription
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -4327,7 +4603,6 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
-        hnDescription: hnDescription
         pathway: pathway
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4353,7 +4628,7 @@ components:
           $ref: "#/components/schemas/RegisteredAddress"
         name:
           type: string
-        hnDescription:
+        additionalDescription:
           nullable: true
           type: string
         pathway:
@@ -4693,6 +4968,58 @@ components:
             $ref: "#/components/schemas/UploadedCertifierDocumentResponse"
           type: array
       type: object
+    KpiConfigRequest:
+      example:
+        network_id: network_id
+        elements:
+          key:
+            key:
+              lower_limit: 0.8008281904610115
+              unit: unit
+              threshold_rule:
+                delta: 5.637376656633329
+                type: type
+                value: 1.4658129805029452
+                target: 5.962133916683182
+              upper_limit: 6.027456183070403
+              is_mandatory: true
+      properties:
+        network_id:
+          type: string
+        elements:
+          additionalProperties:
+            additionalProperties:
+              $ref: "#/components/schemas/KpiRule"
+            type: object
+          type: object
+      required:
+      - network_id
+      type: object
+    KpiConfigResponse:
+      example:
+        network_id: network_id
+        elements:
+          key:
+            key:
+              lower_limit: 0.8008281904610115
+              unit: unit
+              threshold_rule:
+                delta: 5.637376656633329
+                type: type
+                value: 1.4658129805029452
+                target: 5.962133916683182
+              upper_limit: 6.027456183070403
+              is_mandatory: true
+      properties:
+        network_id:
+          type: string
+        elements:
+          additionalProperties:
+            additionalProperties:
+              $ref: "#/components/schemas/KpiRule"
+            type: object
+          type: object
+      type: object
     KpiMetadata:
       additionalProperties: false
       example:
@@ -4714,6 +5041,31 @@ components:
       required:
       - network_id
       - period_start
+      type: object
+    KpiRule:
+      example:
+        lower_limit: 0.8008281904610115
+        unit: unit
+        threshold_rule:
+          delta: 5.637376656633329
+          type: type
+          value: 1.4658129805029452
+          target: 5.962133916683182
+        upper_limit: 6.027456183070403
+        is_mandatory: true
+      properties:
+        lower_limit:
+          format: double
+          type: number
+        upper_limit:
+          format: double
+          type: number
+        unit:
+          type: string
+        is_mandatory:
+          type: boolean
+        threshold_rule:
+          $ref: "#/components/schemas/KpiThresholdRule"
       type: object
     KpiSubmissionRequest:
       additionalProperties: false
@@ -4746,17 +5098,48 @@ components:
           $ref: "#/components/schemas/KpiMetadata"
         consumer_connection_aggregated_kpis:
           additionalProperties:
-            $ref: "#/components/schemas/KpiValueAggregated"
+            $ref: "#/components/schemas/KpiValueAggregatedRequest"
           nullable: true
           type: object
         elements:
           items:
-            $ref: "#/components/schemas/NetworkElement"
+            $ref: "#/components/schemas/NetworkElementRequest"
           type: array
       required:
       - meta_data
       type: object
-    KpiValue:
+    KpiThresholdRule:
+      example:
+        delta: 5.637376656633329
+        type: type
+        value: 1.4658129805029452
+        target: 5.962133916683182
+      properties:
+        type:
+          type: string
+        value:
+          format: double
+          nullable: true
+          type: number
+        target:
+          format: double
+          nullable: true
+          type: number
+        delta:
+          format: double
+          nullable: true
+          type: number
+      type: object
+    KpiValueAggregatedRequest:
+      additionalProperties: false
+      example:
+        value: 0.8008281904610115
+      properties:
+        value:
+          format: double
+          type: number
+      type: object
+    KpiValueRequest:
       additionalProperties: false
       example:
         is_kpi_imputed: true
@@ -4771,15 +5154,8 @@ components:
         kpi_imputation_details:
           nullable: true
           type: string
-      type: object
-    KpiValueAggregated:
-      additionalProperties: false
-      example:
-        value: 0.8008281904610115
-      properties:
-        value:
-          format: double
-          type: number
+      required:
+      - value
       type: object
     ManagedUserResponse:
       example:
@@ -4947,7 +5323,7 @@ components:
         uploadedBy:
           type: string
       type: object
-    NetworkElement:
+    NetworkElementRequest:
       additionalProperties: false
       example:
         elementId: elementId
@@ -4961,10 +5337,10 @@ components:
         elementId:
           type: string
         type:
-          $ref: "#/components/schemas/ElementType"
+          $ref: "#/components/schemas/HeatNetworkElementType"
         kpis:
           additionalProperties:
-            $ref: "#/components/schemas/KpiValue"
+            $ref: "#/components/schemas/KpiValueRequest"
           type: object
       required:
       - elementId
@@ -4981,6 +5357,7 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -4989,8 +5366,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -4999,14 +5378,16 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5015,8 +5396,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5025,8 +5408,9 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
@@ -5065,6 +5449,7 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5073,8 +5458,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5083,14 +5470,16 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5099,8 +5488,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5109,8 +5500,9 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
@@ -5148,6 +5540,7 @@ components:
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5156,8 +5549,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5166,14 +5561,16 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
           soaStages:
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5182,8 +5579,10 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
               lastName: lastName
@@ -5192,8 +5591,9 @@ components:
               status: Active
             soaStatus: soaStatus
             soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          count: 3
+          count: 9
           networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
@@ -5257,6 +5657,143 @@ components:
           nullable: true
           type: string
       type: object
+    NotificationHistoryData:
+      example:
+        eligibleRoles:
+        - eligibleRoles
+        - eligibleRoles
+        createdBy: createdBy
+        subject: subject
+        actorsId:
+        - actorsId
+        - actorsId
+        description: description
+        action: action
+        id: id
+        notificationType: 0
+        heatNetworkId: heatNetworkId
+        actionLink: actionLink
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          nullable: true
+          type: string
+        notificationType:
+          type: integer
+        actorsId:
+          items:
+            type: string
+          type: array
+        subject:
+          type: string
+        description:
+          nullable: true
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        action:
+          nullable: true
+          type: string
+        actionLink:
+          nullable: true
+          type: string
+        eligibleRoles:
+          items:
+            type: string
+          type: array
+        heatNetworkId:
+          nullable: true
+          type: string
+        createdBy:
+          nullable: true
+          type: string
+      type: object
+    NotificationHistoryRequest:
+      example:
+        sortDirection: sortDirection
+        pageSize: 6
+        sortBy: sortBy
+        page: 0
+        userId: userId
+      properties:
+        userId:
+          nullable: true
+          type: string
+        sortBy:
+          nullable: true
+          type: string
+        sortDirection:
+          nullable: true
+          type: string
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+      type: object
+    NotificationHistoryResponse:
+      example:
+        pageNumber: 6
+        totalPages: 5
+        pageSize: 1
+        totalCount: 5
+        items:
+        - eligibleRoles:
+          - eligibleRoles
+          - eligibleRoles
+          createdBy: createdBy
+          subject: subject
+          actorsId:
+          - actorsId
+          - actorsId
+          description: description
+          action: action
+          id: id
+          notificationType: 0
+          heatNetworkId: heatNetworkId
+          actionLink: actionLink
+          timestamp: 2000-01-23T04:56:07.000+00:00
+        - eligibleRoles:
+          - eligibleRoles
+          - eligibleRoles
+          createdBy: createdBy
+          subject: subject
+          actorsId:
+          - actorsId
+          - actorsId
+          description: description
+          action: action
+          id: id
+          notificationType: 0
+          heatNetworkId: heatNetworkId
+          actionLink: actionLink
+          timestamp: 2000-01-23T04:56:07.000+00:00
+        userId: userId
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/NotificationHistoryData"
+          type: array
+        pageNumber:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        userId:
+          nullable: true
+          type: string
+      type: object
+    NotificationHistoryType:
+      type: integer
     NullableOfPreferredContactType:
       enum:
       - Landline
@@ -5281,11 +5818,21 @@ components:
     NullableOfUserRole:
       enum:
       - ResponsiblePerson
-      - Coordinator
+      - NetworkManager
       - DesignatedDutyHolder
       - Contributor
       - Assessor
       - Certifier
+      - null
+      nullable: true
+      type: string
+    NullableOfUserStatus:
+      enum:
+      - Active
+      - InActive
+      - InvitationSent
+      - InvitationAccepted
+      - InvitationDeclined
       - null
       nullable: true
       type: string
@@ -5972,6 +6519,7 @@ components:
     SoaStages:
       example:
         soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        assessorUpdatedBy: assessorUpdatedBy
         assessor:
           firstName: firstName
           lastName: lastName
@@ -5980,6 +6528,7 @@ components:
           status: Active
         soaStatus: soaStatus
         soaStatusUpdatedBy: soaStatusUpdatedBy
+        assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
         stageId: Stage1
       properties:
         stageId:
@@ -5992,6 +6541,13 @@ components:
           nullable: true
           type: string
         soaStatusUpdatedBy:
+          nullable: true
+          type: string
+        assessorUpdatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        assessorUpdatedBy:
           nullable: true
           type: string
         assessor:
@@ -6083,7 +6639,7 @@ components:
         hnId:
           type: string
         elementType:
-          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+          $ref: "#/components/schemas/HeatNetworkElementType"
         updatedBy:
           type: string
         documents:
@@ -6105,7 +6661,7 @@ components:
         updatedBy:
           type: string
         elementType:
-          $ref: "#/components/schemas/HeatNetworkElementDisplayType"
+          $ref: "#/components/schemas/HeatNetworkElementType"
         locations:
           items:
             type: string
@@ -6591,7 +7147,7 @@ components:
     UserRole:
       enum:
       - ResponsiblePerson
-      - Coordinator
+      - NetworkManager
       - DesignatedDutyHolder
       - Contributor
       - Assessor

@@ -213,7 +213,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 HeatNetworks = heatNetworks,
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
-                IsHntasCoordinator = user.Roles?.Contains(UserRole.Coordinator) ?? false,
+                IsHntasCoordinator = user.Roles?.Contains(UserRole.NetworkManager) ?? false,
             };
 
             var isRegistrationEnabledString = Environment.GetEnvironmentVariable("IS_REGISTRATION_ENABLED");
@@ -263,13 +263,12 @@ namespace HNTAS.Web.UI.Controllers
         private void ClearNetworkDetailsSession()
         {
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.PreviousStepKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SelectedElementsSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ECDetailsModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
         }
     }
 }

@@ -432,13 +432,13 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        //[ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult ContactDetails()
         {
             this.ShowBackButton("DeedPoll");
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-            var model = _sessionHelper.GetFromSession<OrganisationContactDetailsModel>(HttpContext, SessionKeys.OrganisationContactDetailsModelSessionKey) ?? userModel.ContactDetails;
+            var model = userModel.ContactDetails;
             return View(model);
         }
 
@@ -793,7 +793,6 @@ namespace HNTAS.Web.UI.Controllers
                     .ToArray();
 
                 _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
-                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "Organisation");
                 return RedirectToAction("SearchByPostcodeResults");
             }
             catch (HttpRequestException)

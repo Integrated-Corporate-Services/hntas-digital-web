@@ -18,8 +18,11 @@
         <p class="govuk-body">If you are registering a district network with connected communal networks that you do not own, those communal networks must be registered separately by their owners.</p>
 
         <div class="govuk-!-margin-top-6"></div>
-        <div class="app-button-wrapper">
-            <a asp-controller="HeatNetworkRegistration" asp-action="HeatNetworkType" asp-method="GET" role="button" data-module="govuk-button" draggable="false" class="govuk-button">Continue</a>
-        </div>
+        <form asp-controller="HeatNetworkRegistration" asp-action="HeatNetworkType" method="GET">
+            <button type="submit" class="govuk-button">
+                Continue
+            </button>
+        </form>
+
     </div>
 </div>
