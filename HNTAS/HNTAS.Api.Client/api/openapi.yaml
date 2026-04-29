@@ -981,6 +981,53 @@ paths:
           description: Not Found
       tags:
       - NotificationHistory
+  /api/NotificationHistory/unread-notification-count:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: role
+        required: false
+        schema:
+          $ref: "#/components/schemas/UserRole"
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                format: int32
+                type: integer
+            application/json:
+              schema:
+                format: int32
+                type: integer
+            text/json:
+              schema:
+                format: int32
+                type: integer
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - NotificationHistory
   /api/Organisations/{orgId}/edit-org-details:
     patch:
       parameters:
