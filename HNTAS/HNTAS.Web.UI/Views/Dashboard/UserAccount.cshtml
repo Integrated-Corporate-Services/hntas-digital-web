@@ -128,15 +128,17 @@
                     <p class="govuk-body-s">View assessors assigned to your networks</p>
                 </div>
             </div>
-
-            <div class="dashboard-grid__item">
-                <div class="dashboard-card">
-                    <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="ImportExcelPOC">Import Excel POC</a>
-                    </h3>
-                    <p class="govuk-body-s">Search for active assessors using the fast typeahead proof-of-concept.</p>
+            <environment names="Local,qa">
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="ImportExcelPOC">Import Excel POC</a>
+                        </h3>
+                        <p class="govuk-body-s">Search for active assessors using the fast typeahead proof-of-concept.</p>
+                    </div>
                 </div>
-            </div>           
+            </environment>
+                      
         }
         else if (userIsAssessor)
         {

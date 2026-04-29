@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="/assets/css/main.min.css">
     <meta property="og:image" content="YOUR-DOMAIN/images/govuk-opengraph-image.png">
 </head>
-<environment names="qa, staging">
+<environment names="qa,staging">
     <!-- Google Tag Manager -->
     <script>
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -32,28 +32,28 @@
     <!-- End Google Tag Manager -->
 </environment>
 @{
-        bool hasOrg = false;
-        var userId = string.Empty;
-        if (User?.Identity?.IsAuthenticated == true)
+    bool hasOrg = false;
+    var userId = string.Empty;
+    if (User?.Identity?.IsAuthenticated == true)
+    {
+        userId = _sessionHelper.GetFromSession<string>(HttpContextAccessor.HttpContext, "UserModelIdDataKey");
+        if (!string.IsNullOrEmpty(userId))
         {
-                userId = _sessionHelper.GetFromSession<string>(HttpContextAccessor.HttpContext, "UserModelIdDataKey");
-                if (!string.IsNullOrEmpty(userId))
-                {
-                        try
-                        {
-                                var fetched = await _userService.GetUserById(userId);
-                                hasOrg = !string.IsNullOrWhiteSpace(fetched.OrgId);
-                        }
-                        catch
-                        {
-                                _logger.LogError("An error occurred while trying to check user's organisation details.");
-                        }
-                }
+            try
+            {
+                    var fetched = await _userService.GetUserById(userId);
+                    hasOrg = !string.IsNullOrWhiteSpace(fetched.OrgId);
+            }
+            catch
+            {
+                    _logger.LogError("An error occurred while trying to check user's organisation details.");
+            }
         }
+    }
 }
 
 <body class="govuk-template__body app-body-class">
-    <environment names="qa, staging">
+    <environment names="qa,staging">
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5SWB2T5S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- End Google Tag Manager (noscript) -->
