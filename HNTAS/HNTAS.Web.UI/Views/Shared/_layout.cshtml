@@ -2,6 +2,7 @@
 @inject HNTAS.Web.UI.Services.Core.IUserService _userService
 @inject HNTAS.Web.UI.Helpers.ISessionHelper _sessionHelper
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject HNTAS.Web.UI.Services.Core.INotificationHistoryService _notificationHistoryService
 @inject Microsoft.Extensions.Logging.ILogger<HNTAS.Web.UI.Services.Core.UserService> _logger
 
 <!DOCTYPE html>
@@ -19,9 +20,9 @@
     <link rel="apple-touch-icon" href="/assets/rebrand/images/govuk-icon-180.png">
     <link rel="manifest" href="/assets/rebrand/manifest.json">
     <link rel="stylesheet" href="/assets/css/main.min.css">
-    <meta property="og:image" content="YOUR-DOMAIN/images/govuk-opengraph-image.png">
+    <meta property="og:image" content="YOUR-DOMAIN/images/govuk-opengraph-image.png">    
 </head>
-<environment names="qa, staging">
+<environment names="qa,staging">
     <!-- Google Tag Manager -->
     <script>
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -32,28 +33,32 @@
     <!-- End Google Tag Manager -->
 </environment>
 @{
-    bool hasOrg = false;
-    var userId = string.Empty;
-    if (User?.Identity?.IsAuthenticated == true)
-    {
-        userId = _sessionHelper.GetFromSession<string>(HttpContextAccessor.HttpContext, "UserModelIdDataKey");
-        if (!string.IsNullOrEmpty(userId))
+        bool hasOrg = false;
+        var userId = string.Empty;
+            var unreadNotifications = 0;
+        if (User?.Identity?.IsAuthenticated == true)
         {
-            try
-            {
-                    var fetched = await _userService.GetUserById(userId);
-                    hasOrg = !string.IsNullOrWhiteSpace(fetched.OrgId);
-            }
-            catch
-            {
-                    _logger.LogError("An error occurred while trying to check user's organisation details.");
-            }
+                userId = _sessionHelper.GetFromSession<string>(HttpContextAccessor.HttpContext, "UserModelIdDataKey");
+                if (!string.IsNullOrEmpty(userId))
+                {
+                        try
+                        {
+                                var fetched = await _userService.GetUserById(userId);
+                                hasOrg = !string.IsNullOrWhiteSpace(fetched.OrgId);
+
+                                unreadNotifications = await _notificationHistoryService.GetUnreadNotificationCount(userId, fetched.Roles!.FirstOrDefault());
+                        }
+                        catch
+                        {
+                                _logger.LogError("An error occurred while trying to check user's organisation details.");
+                        }
+                }
         }
     }
 }
 
 <body class="govuk-template__body app-body-class">
-    <environment names="qa, staging">
+    <environment names="qa,staging">
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5SWB2T5S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- End Google Tag Manager (noscript) -->
@@ -149,6 +154,13 @@
                                 <a class="govuk-service-navigation__link" href="@Url.Action("Index", "Notification", new { userId = userId })"
                                    @(currentAction == "Index" && currentController == "Notification" ? "aria-current=page" : "")>
                                     <strong>Notifications</strong>
+                                    @if (unreadNotifications > 0)
+                                    {
+                                    <span class="moj-notification-badge">
+                                            <span aria-hidden="true">@unreadNotifications</span>
+                                            <span class="govuk-visually-hidden">(@unreadNotifications unread)</span>
+                                    </span>
+                                    }                                    
                                 </a>
                             </li>
                         }

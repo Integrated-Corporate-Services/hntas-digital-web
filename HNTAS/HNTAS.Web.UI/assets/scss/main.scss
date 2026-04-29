@@ -76,3 +76,38 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
 .details-text {
     white-space: pre-line;
 }
+
+.moj-notification-badge {
+    display: inline-block;
+    min-width: 0.75em;
+    min-height: 1.25em;
+    margin-left: 0.5em;
+    padding: 1px 0.25em 0;
+    border-radius: 10em;
+    outline: 4px solid #d4351c;
+    outline-offset: -0.1em;
+    color: #ffffff;
+    background-color: #d4351c;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.25;
+    // Ensure good visibility
+    .govuk-visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .moj-notification-badge {
+        font-size: 1rem;
+        line-height: 1.25;
+    }
+}
