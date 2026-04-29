@@ -1,7 +1,10 @@
 ﻿@using HNTAS.Web.UI.Helpers
 @using HNTAS.Web.UI.Models.ElementSoa
-
 @model ElementSoaViewModel
+
+@{
+    ViewData["Title"] = "Statements of applicability (SOAs)";
+}
 
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
@@ -57,7 +60,9 @@
                             <table class="govuk-table">
                                 <thead class="govuk-table__head">
                                     <tr class="govuk-table__row">
-                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter"></th>
+                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
+                                            <span class="govuk-visually-hidden">Element</span>
+                                        </th>
                                         <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Status</th>
                                         <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Updated</th>
                                         <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Assessor</th>
@@ -108,10 +113,9 @@
                                                         fullNameWithEmail = element.AssessorFirstName + " " + element.AssessorLastName + " (" + element.AssessorEmailId + ")";
                                                 }
                                                 <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2"
-                                                   href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type})"
-                                                   aria-describedby="Update status"
+                                                   href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type})"                                                   
                                                    onclick="event.stopPropagation();">
-                                                    Update status
+                                                    Update status<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span>
                                                 </a>
                                             </td>
                                             <td class="govuk-table__cell govuk-!-width-one-quarter">
@@ -120,8 +124,8 @@
                                             <td class="govuk-table__cell govuk-!-width-one-quarter">
                                                 <span class="@assessorClass">
                                                     @assessorName
-                                                </span>                                                
-                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, selectedAssessor = fullNameWithEmail, selectedAssessorFirstName = element.AssessorFirstName, selectedAssessorLastName = element.AssessorLastName, selectedAssessorEmail = element.AssessorEmailId })">Assign assessor</a>
+                                                </span>
+                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, selectedAssessor = fullNameWithEmail, selectedAssessorFirstName = element.AssessorFirstName, selectedAssessorLastName = element.AssessorLastName, selectedAssessorEmail = element.AssessorEmailId })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
                                             </td>
                                         </tr>                                        
                                     }

@@ -2,7 +2,7 @@
 @model IsYourOrgWorkingOnANewHNModel
 
 @{
-    ViewData["Title"] = "Check your eligibility to register a heat network";
+    ViewData["Title"] = "Is your organisation working on any new heat networks that are not yet operational? - Check your eligibility to register a heat network";
     var fieldOrder = new[] { nameof(Model.IsYourOrgWorkingOnANewHN) };
     var elementId = Html.GenerateIdFromName(nameof(Model.IsYourOrgWorkingOnANewHN)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel

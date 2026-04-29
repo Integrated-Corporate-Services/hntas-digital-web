@@ -108,14 +108,14 @@
                 <h2 class="govuk-heading-m">Your details</h2>
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Are you the regulatory contact?</dt>
+                        <dt class="govuk-summary-list__key">Confirmed responsibility for heat networks</dt>
                         <dd class="govuk-summary-list__value">
                             @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
                             </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("ConfirmRegulatoryContact")">Change<span class="govuk-visually-hidden"> regulatory contact</span></a>
+                            <a class="govuk-link" href="@Url.Action("ConfirmResponsibility")">Change<span class="govuk-visually-hidden"> regulatory contact</span></a>
                         </dd>
-                    </div>
+                    </div>                    
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">First name</dt>
                         <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.FirstName</dd>

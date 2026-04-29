@@ -4,7 +4,7 @@
 @model ChooseHeatNetworkModel
 
 @{
-    ViewData["Title"] = "Heat network information";
+    ViewData["Title"] = "Choose the heat network";
     var selectedHeatNetworkId = Html.LowercaseIdFor(m => m.SelectedHeatNetworkId);
     var hasErrors = ViewData.ModelState.TryGetValue(nameof(Model.SelectedHeatNetworkId), out var entry) && entry.Errors.Any();
     var errorId = $"{selectedHeatNetworkId}-error";
@@ -40,7 +40,9 @@
                             @Html.ValidationMessageFor(m => m.SelectedHeatNetworkId)
                         </p>
                     }
-
+                    <label class="govuk-visually-hidden" for="@selectedHeatNetworkId" id="@selectedHeatNetworkId-label">
+                        Select a heat network
+                    </label>
                     <select class="govuk-select" id="@selectedHeatNetworkId" name="@nameof(Model.SelectedHeatNetworkId)" aria-describedby="@ariaDescribedBy">
                         <option value="">Select a heat network</option>
                     

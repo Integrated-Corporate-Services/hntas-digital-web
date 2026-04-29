@@ -278,13 +278,11 @@ namespace HNTAS.Web.UI.Controllers
             if (organisationModel?.CompanyDetails == null)
                 return RedirectToAction("CompanyNumber");
             if (!string.IsNullOrEmpty(organisationModel.CompanyNumber))
-            {
-                this.ShowBackButton("CompanyNumber");
+            {                
                 ViewBag.ChangeUrl = Url.Action("CompanyNumber");
             }
             else
-            {
-                this.ShowBackButton("OrganisationAddress");
+            {                
                 ViewBag.ChangeUrl = Url.Action("OrganisationAddress");
             }
             return View("CompanyConfirm", organisationModel.CompanyDetails);
@@ -339,9 +337,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         public IActionResult AlreadyRegistered()
-        {
-            ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("CompanyConfirm");
+        {            
             return View();
         }
 
@@ -436,13 +432,13 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        //[ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
+        [ServiceFilter(typeof(EnsureSessionForOrganisationFlowOnGetAttribute))]
         public IActionResult ContactDetails()
         {
             this.ShowBackButton("DeedPoll");
             var orgModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
-            var model = _sessionHelper.GetFromSession<OrganisationContactDetailsModel>(HttpContext, SessionKeys.OrganisationContactDetailsModelSessionKey) ?? userModel.ContactDetails;
+            var model = userModel.ContactDetails;
             return View(model);
         }
 
@@ -797,7 +793,6 @@ namespace HNTAS.Web.UI.Controllers
                     .ToArray();
 
                 _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
-                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.PreviousStepKey, "Organisation");
                 return RedirectToAction("SearchByPostcodeResults");
             }
             catch (HttpRequestException)

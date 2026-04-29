@@ -56,27 +56,7 @@ namespace HNTAS.Web.UI.Services.Core
                 _logger.LogError(ex, "Error submitting heat network answers.");
                 throw;
             }
-        }
-
-        //public async Task<HeatNetworkResponse> UpdateNetworkCharacteristics(string hnId, NetworkCharacteristics2 request)
-        //{
-        //    try
-        //    {
-        //        var response = await _heatNetworksApi.ApiHeatNetworksNetworkCharacteristicsPutAsync(request, hnId);
-        //        if (response.IsOk)
-        //        {
-        //            var updatedNetwork = response.Ok();
-        //            _logger.LogInformation("Updated network characteristics for heat network ID: {HnId}", hnId);
-        //            return updatedNetwork;
-        //        }
-        //        throw new Exception($"Failed to update network characteristics for heat network '{hnId}' with status code: {response.StatusCode}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Error updating network characteristics for heat network ID: {HnId}", hnId);
-        //        throw;
-        //    }
-        //}
+        }        
 
         public async Task<HeatNetworkResponse> UpdateNetworkElements(string hnId, NetworkElements2 request)
         {

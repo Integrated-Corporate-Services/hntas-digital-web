@@ -37,7 +37,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="consumerConnectionAggregatedKpis">consumerConnectionAggregatedKpis</param>
         /// <param name="elements">elements</param>
         [JsonConstructor]
-        public KpiSubmissionRequest(KpiMetadata metaData, Option<Dictionary<string, KpiValueAggregated>?> consumerConnectionAggregatedKpis = default, Option<List<NetworkElement>?> elements = default)
+        public KpiSubmissionRequest(KpiMetadata metaData, Option<Dictionary<string, KpiValueAggregatedRequest>?> consumerConnectionAggregatedKpis = default, Option<List<NetworkElementRequest>?> elements = default)
         {
             MetaData = metaData;
             ConsumerConnectionAggregatedKpisOption = consumerConnectionAggregatedKpis;
@@ -58,26 +58,26 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<Dictionary<string, KpiValueAggregated>?> ConsumerConnectionAggregatedKpisOption { get; private set; }
+        public Option<Dictionary<string, KpiValueAggregatedRequest>?> ConsumerConnectionAggregatedKpisOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets ConsumerConnectionAggregatedKpis
         /// </summary>
         [JsonPropertyName("consumer_connection_aggregated_kpis")]
-        public Dictionary<string, KpiValueAggregated>? ConsumerConnectionAggregatedKpis { get { return this.ConsumerConnectionAggregatedKpisOption; } set { this.ConsumerConnectionAggregatedKpisOption = new(value); } }
+        public Dictionary<string, KpiValueAggregatedRequest>? ConsumerConnectionAggregatedKpis { get { return this.ConsumerConnectionAggregatedKpisOption; } set { this.ConsumerConnectionAggregatedKpisOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Elements
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<NetworkElement>?> ElementsOption { get; private set; }
+        public Option<List<NetworkElementRequest>?> ElementsOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Elements
         /// </summary>
         [JsonPropertyName("elements")]
-        public List<NetworkElement>? Elements { get { return this.ElementsOption; } set { this.ElementsOption = new(value); } }
+        public List<NetworkElementRequest>? Elements { get { return this.ElementsOption; } set { this.ElementsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -128,8 +128,8 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<KpiMetadata?> metaData = default;
-            Option<Dictionary<string, KpiValueAggregated>?> consumerConnectionAggregatedKpis = default;
-            Option<List<NetworkElement>?> elements = default;
+            Option<Dictionary<string, KpiValueAggregatedRequest>?> consumerConnectionAggregatedKpis = default;
+            Option<List<NetworkElementRequest>?> elements = default;
 
             while (utf8JsonReader.Read())
             {
@@ -150,10 +150,10 @@ namespace HNTAS.Api.Client.Model
                             metaData = new Option<KpiMetadata?>(JsonSerializer.Deserialize<KpiMetadata>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "consumer_connection_aggregated_kpis":
-                            consumerConnectionAggregatedKpis = new Option<Dictionary<string, KpiValueAggregated>?>(JsonSerializer.Deserialize<Dictionary<string, KpiValueAggregated>>(ref utf8JsonReader, jsonSerializerOptions));
+                            consumerConnectionAggregatedKpis = new Option<Dictionary<string, KpiValueAggregatedRequest>?>(JsonSerializer.Deserialize<Dictionary<string, KpiValueAggregatedRequest>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "elements":
-                            elements = new Option<List<NetworkElement>?>(JsonSerializer.Deserialize<List<NetworkElement>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            elements = new Option<List<NetworkElementRequest>?>(JsonSerializer.Deserialize<List<NetworkElementRequest>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;

@@ -5,31 +5,29 @@
 
 
 <div class="govuk-width-container">
-    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-                <div class="govuk-panel govuk-panel--confirmation">
-                    <h1 class="govuk-panel__title">Your organisation is ready to use this service</h1>
-                    <div class="govuk-panel__body">
-                        Organisation reference number<br />
-                        <strong>@ViewBag.OrganisationId</strong>
-                    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-panel govuk-panel--confirmation">
+                <h1 class="govuk-panel__title">Your organisation is ready to use this service</h1>
+                <div class="govuk-panel__body">
+                    Organisation reference number<br />
+                    <strong>@ViewBag.OrganisationId</strong>
                 </div>
-
-                <p class="govuk-body">We've:</p>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>set up @ViewBag.CompanyName to use this service</li>
-                    <li>sent a confirmation email with your reference number</li>
-                </ul>
-
-                <p class="govuk-body">
-                    You can now add heat networks for your organisation and invite others to help provide information.
-                </p>
-
-                <a role="button" draggable="false" asp-controller="HeatNetwork" asp-action="EnterHNName" class="govuk-button">
-                    Continue
-                </a>
             </div>
+
+            <p class="govuk-body">We've:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>set up @ViewBag.CompanyName to use this service</li>
+                <li>sent a confirmation email with your reference number</li>
+            </ul>
+
+            <p class="govuk-body">
+                You can now add heat networks for your organisation and invite others to help provide information.
+            </p>
+
+            <a role="button" draggable="false" asp-controller="HeatNetwork" asp-action="EnterHNName" class="govuk-button">
+                Continue
+            </a>
         </div>
-    </main>
+    </div>
 </div>

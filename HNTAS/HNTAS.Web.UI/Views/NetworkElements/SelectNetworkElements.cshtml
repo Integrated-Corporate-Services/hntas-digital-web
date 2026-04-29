@@ -3,19 +3,24 @@
 @using HNTAS.Web.UI.Models.Soa
 @model NetworkElementViewModel
 
+@{
+    ViewData["Title"] = "Select network elements";
+}
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-xl">@ViewBag.HnId @ViewBag.HnName</span>
-        <h1 class="govuk-heading-l">
-            @ViewBag.Heading
-        </h1>
+        <span class="govuk-caption-xl">@ViewBag.HnId @ViewBag.HnName</span>        
         <form asp-action="SelectNetworkElements" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
-
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-heading-l">
+                            @ViewBag.Heading
+                        </h1>
+                    </legend>
+                    
                     <div id="soa-elements-hint" class="govuk-hint">
                         Select the elements that apply
                     </div>
@@ -61,7 +66,7 @@
 
                                 <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
 
-                                    <label class="govuk-label" for="ElementCounts_@item.Id">
+                                    <label class="govuk-label" for="elementcounts[@item.Id.ToString().ToLowerInvariant()]">
                                         Number of @item.SubLabel.ToLower()
                                     </label>
 
@@ -76,7 +81,7 @@
                                            id="elementcounts[@item.Id.ToString().ToLowerInvariant()]"
                                            name="ElementCounts[@item.Id]"
                                            type="number"
-                                           value="@(Model.ElementCounts.ContainsKey(item.Id) ? Model.ElementCounts[item.Id] : null)" />
+                                           value="@(Model.ElementCounts.ContainsKey(item.Id) ? Model.ElementCounts[item.Id] : null)" />                                    
                                 </div>
                             </div>
                         }

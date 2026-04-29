@@ -96,7 +96,8 @@ namespace HNTAS.Web.UI.Controllers
             else
             {
                 ViewBag.RPLoggedInForFirstTime = false;
-            }                
+            }
+            ViewBag.UserId = user.Id;
             return View(dashboardModel);
         }
 

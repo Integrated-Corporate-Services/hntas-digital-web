@@ -11,8 +11,7 @@
         <span class="govuk-caption-l">Add a heat network</span>
     <form method="post" novalidate>
         @Html.AntiForgeryToken()
-            
-        <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0 || ViewData.ModelState[nameof(Model.HasPostcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
             <fieldset class="govuk-fieldset" aria-describedby="has-postcode-hint">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">@ViewBag.Heading</h1>
@@ -35,14 +34,14 @@
                                name="HasPostcode"
                                type="radio"
                                value="true"
-                               @(Model.HasPostcode ? "checked" : "")
+                               @(Model.HasPostcode == true ? "checked" : "")
                                data-aria-controls="conditional-haspostcode">
                         <label class="govuk-label govuk-radios__label" for="haspostcode-yes">
                             Yes
                         </label>
                     </div>
 
-                    <div class="govuk-radios__conditional @(Model.HasPostcode ? "" : "govuk-radios__conditional--hidden")" id="conditional-haspostcode">
+                    <div class="govuk-radios__conditional @(Model.HasPostcode == true ? "" : "govuk-radios__conditional--hidden")" id="conditional-haspostcode">
                         <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
                             <label class="govuk-label" for="postcode">Postcode</label>
                             <div id="postcode-hint" class="govuk-hint">For example, NG9 3JE</div>
@@ -71,7 +70,7 @@
                                name="HasPostcode"
                                type="radio"
                                value="false"
-                               @(!Model.HasPostcode ? "checked" : "")>
+                               @(Model.HasPostcode == false ? "checked" : "")>
                         <label class="govuk-label govuk-radios__label" for="haspostcode-no">
                             No
                         </label>

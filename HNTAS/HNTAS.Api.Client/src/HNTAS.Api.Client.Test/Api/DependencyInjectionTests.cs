@@ -72,6 +72,9 @@ namespace HNTAS.Api.Client.Test.Api
             var assessorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
+            var assignedAssessorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAssignedAssessorApi>();
+            Assert.True(assignedAssessorApi.HttpClient.BaseAddress != null);
+
             var auditApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAuditApi>();
             Assert.True(auditApi.HttpClient.BaseAddress != null);
 
@@ -92,6 +95,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var invitationsApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+
+            var notificationHistoryApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<INotificationHistoryApi>();
+            Assert.True(notificationHistoryApi.HttpClient.BaseAddress != null);
 
             var organisationUserApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IOrganisationUserApi>();
             Assert.True(organisationUserApi.HttpClient.BaseAddress != null);
@@ -118,6 +124,9 @@ namespace HNTAS.Api.Client.Test.Api
             var assessorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
+            var assignedAssessorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAssignedAssessorApi>();
+            Assert.True(assignedAssessorApi.HttpClient.BaseAddress != null);
+
             var auditApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAuditApi>();
             Assert.True(auditApi.HttpClient.BaseAddress != null);
 
@@ -138,6 +147,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var invitationsApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+
+            var notificationHistoryApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<INotificationHistoryApi>();
+            Assert.True(notificationHistoryApi.HttpClient.BaseAddress != null);
 
             var organisationUserApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IOrganisationUserApi>();
             Assert.True(organisationUserApi.HttpClient.BaseAddress != null);
@@ -164,6 +176,9 @@ namespace HNTAS.Api.Client.Test.Api
             var assessorApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
             
+            var assignedAssessorApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAssignedAssessorApi>();
+            Assert.True(assignedAssessorApi.HttpClient.BaseAddress != null);
+            
             var auditApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAuditApi>();
             Assert.True(auditApi.HttpClient.BaseAddress != null);
             
@@ -184,6 +199,9 @@ namespace HNTAS.Api.Client.Test.Api
             
             var invitationsApi = _hostUsingAddWithAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+            
+            var notificationHistoryApi = _hostUsingAddWithAClient.Services.GetRequiredService<INotificationHistoryApi>();
+            Assert.True(notificationHistoryApi.HttpClient.BaseAddress != null);
             
             var organisationUserApi = _hostUsingAddWithAClient.Services.GetRequiredService<IOrganisationUserApi>();
             Assert.True(organisationUserApi.HttpClient.BaseAddress != null);
@@ -210,6 +228,9 @@ namespace HNTAS.Api.Client.Test.Api
             var assessorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
+            var assignedAssessorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAssignedAssessorApi>();
+            Assert.True(assignedAssessorApi.HttpClient.BaseAddress != null);
+
             var auditApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAuditApi>();
             Assert.True(auditApi.HttpClient.BaseAddress != null);
 
@@ -230,6 +251,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var invitationsApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IInvitationsApi>();
             Assert.True(invitationsApi.HttpClient.BaseAddress != null);
+
+            var notificationHistoryApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<INotificationHistoryApi>();
+            Assert.True(notificationHistoryApi.HttpClient.BaseAddress != null);
 
             var organisationUserApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IOrganisationUserApi>();
             Assert.True(organisationUserApi.HttpClient.BaseAddress != null);
