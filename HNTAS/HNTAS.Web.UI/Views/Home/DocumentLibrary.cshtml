@@ -2,80 +2,105 @@
     ViewData["Title"] = "Document Library";
 }
 
+@section BeforeMain {
+
+    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="@Url.Action("StartPage", "Home")">Home</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                Document Library
+            </li>
+        </ol>
+    </nav>
+}
+
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
 
         <div class="govuk-grid-column-two-thirds">
             <div class="govuk-form-group">
-                <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 class="govuk-fieldset__heading">
-                            Document library for Heat Network Technical Assurance Scheme (HNTAS)
-                        </h1>
-                    </legend>
+                <h1 class="govuk-heading-l">
+                    Document library for HNTAS
+                </h1>
+                
+                <p class="govuk-body govuk-!-margin-top-0">
+                    Use this page to find technical standards and assessment procedures for new build heat networks under the Heat Network Technical Assurance Scheme (HNTAS).
+                </p>
 
-                    <div id="hntas-overview" class="govuk-!-margin-top-6">
-                        <h2 class="govuk-heading-m">HNTAS overview</h2>
-                        <p class="govuk-body">
-                            The Heat Network Technical Assurance Scheme (HNTAS) is a voluntary scheme for heat network operators to demonstrate that their 
-                            heat networks meet good practice technical standards. The scheme is managed by the 
-                            Heat Trust and supported by the Department for Business, Energy & Industrial Strategy (BEIS).
-                        </p>
-                    </div>
+                <p class="govuk-body">
+                    All documents are published on GOV.UK.
+                </p>
 
-                    <div id="new-build-overview" class="govuk-!-margin-top-8">
-                        <h2 class="govuk-heading-m">New build overview</h2>
-                        <p class="govuk-body">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-                            Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.
-                        </p>
-                        <p class="govuk-body">
-                            <a href="@Url.Action("NewBuild", "DocumentLibrary")" class="govuk-link">
-                                Read more
-                                <span class="govuk-visually-hidden">
-                                    about New build overview
-                                </span>
-                            </a>
-                        </p>
-                    </div>
+                <p class="govuk-body">
+                    Use this library to:
+                </p>
 
-                    <div id="existing-overview" class="govuk-!-margin-top-8">
-                        <h2 class="govuk-heading-m">Existing overview</h2>
-                        <p class="govuk-body">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </p>
-                        <p class="govuk-body">
-                            <a href="@Url.Action("ExistingBuild", "DocumentLibrary")" class="govuk-link">
-                                Read more
-                                <span class="govuk-visually-hidden">
-                                    about Existing overview
-                                </span>
-                            </a>
-                        </p>
-                    </div>
-                    <div id="certified-overview" class="govuk-!-margin-top-8">
-                        <h2 class="govuk-heading-m">Certified overview</h2>
-                        <p class="govuk-body">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </p>
-                        <p class="govuk-body">
-                            <a href="@Url.Action("CertifiedBuild", "DocumentLibrary")" class="govuk-link">Read more
-                                <span class="govuk-visually-hidden">
-                                    about Certified overview
-                                </span>
-                            </a>
-                        </p>
-                        <p class="govuk-body govuk-!-margin-bottom-6">
-                            <a href="#" class="govuk-link">Terms and Conditions</a>
-                        </p>
-                    </div>
+                <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
+                    <li>find documents by heat network element</li>
+                    <li>understand what applies at each stage of development</li>
+                    <li>access technical specifications and assessment procedures</li>
+                </ul>
+
+                <div class="govuk-!-margin-top-8">
+                    <h2 class="govuk-heading-m govuk-!-margin-top-2">New build heat network documents</h2>
+                    <p class="govuk-body">
+                        These documents apply to new build heat networks at different stages of design, construction and early operation.
+                    </p>
+
+                    <p class="govuk-body">
+                        Use this section to:
+                    </p>
+
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-4">
+                        <li>find the technical requirements that apply at each stage</li>
+                        <li>access assessment procedures for specific heat network elements</li>
+                        <li>prepare evidence to support assessment under HNTAS</li>
+                    </ul>
+
+                    <p class="govuk-body">
+                        <a href="@Url.Action("NewBuild", "DocumentLibrary")" class="govuk-link govuk-!-font-weight-bold">
+                            View new build heat network documents
+                        </a>
+                    </p>
+                </div>                    
+
+                <div id="existing-overview" class="govuk-!-margin-top-8">
+                    <h2 class="govuk-heading-m">Existing overview</h2>
+                    <p class="govuk-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                    <p class="govuk-body">
+                        <a href="@Url.Action("ExistingBuild", "DocumentLibrary")" class="govuk-link">
+                            Read more
+                            <span class="govuk-visually-hidden">
+                                about Existing overview
+                            </span>
+                        </a>
+                    </p>
+                </div>
+                <div id="certified-overview" class="govuk-!-margin-top-8">
+                    <h2 class="govuk-heading-m">Certified overview</h2>
+                    <p class="govuk-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+                    <p class="govuk-body">
+                        <a href="@Url.Action("CertifiedBuild", "DocumentLibrary")" class="govuk-link">
+                            Read more
+                            <span class="govuk-visually-hidden">
+                                about Certified overview
+                            </span>
+                        </a>
+                    </p>
+                    <p class="govuk-body govuk-!-margin-bottom-6">
+                        <a href="#" class="govuk-link">Terms and Conditions</a>
+                    </p>
+                </div>
                 </fieldset>
             </div>
         </div>
