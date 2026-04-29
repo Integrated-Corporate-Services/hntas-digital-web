@@ -36,9 +36,9 @@ namespace HNTAS.Api.Client.Model
         ResponsiblePerson = 1,
 
         /// <summary>
-        /// Enum Coordinator for value: Coordinator
+        /// Enum NetworkManager for value: NetworkManager
         /// </summary>
-        Coordinator = 2,
+        NetworkManager = 2,
 
         /// <summary>
         /// Enum DesignatedDutyHolder for value: DesignatedDutyHolder
@@ -76,8 +76,8 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("ResponsiblePerson"))
                 return NullableOfUserRole.ResponsiblePerson;
 
-            if (value.Equals("Coordinator"))
-                return NullableOfUserRole.Coordinator;
+            if (value.Equals("NetworkManager"))
+                return NullableOfUserRole.NetworkManager;
 
             if (value.Equals("DesignatedDutyHolder"))
                 return NullableOfUserRole.DesignatedDutyHolder;
@@ -104,8 +104,8 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("ResponsiblePerson"))
                 return NullableOfUserRole.ResponsiblePerson;
 
-            if (value.Equals("Coordinator"))
-                return NullableOfUserRole.Coordinator;
+            if (value.Equals("NetworkManager"))
+                return NullableOfUserRole.NetworkManager;
 
             if (value.Equals("DesignatedDutyHolder"))
                 return NullableOfUserRole.DesignatedDutyHolder;
@@ -133,8 +133,8 @@ namespace HNTAS.Api.Client.Model
             if (value == NullableOfUserRole.ResponsiblePerson)
                 return "ResponsiblePerson";
 
-            if (value == NullableOfUserRole.Coordinator)
-                return "Coordinator";
+            if (value == NullableOfUserRole.NetworkManager)
+                return "NetworkManager";
 
             if (value == NullableOfUserRole.DesignatedDutyHolder)
                 return "DesignatedDutyHolder";

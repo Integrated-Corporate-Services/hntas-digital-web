@@ -2,12 +2,12 @@
 @model HeatNetworkConnectionsViewModel
 
 @{
+    ViewData["Title"] = "What connections does this heat network have?";
     bool isDistrictWithOwnEC = (bool?)(ViewBag.IsDistrictWithOwnEC) ?? false;
     bool hasHnConnectionsError = ViewData.ModelState["HeatNetworkConnections"]?.Errors?.Count > 0;
     bool hasCommunalBuildingError = ViewData.ModelState["NoOfCommunalBuilding"]?.Errors.Count > 0;
     bool hasDomesticConsumerError = ViewData.ModelState["NoOfDomesticConsumer"]?.Errors.Count > 0;
-    bool hasNonDomesticConsumerError = ViewData.ModelState["NoOfNonDomesticConsumer"]?.Errors.Count > 0;
-    bool hasUpstreamDistrictConnectionsError = ViewData.ModelState["NoOfUpstreamDistrictHeatNetworkConnections"]?.Errors.Count > 0;
+    bool hasNonDomesticConsumerError = ViewData.ModelState["NoOfNonDomesticConsumer"]?.Errors.Count > 0;    
     bool hasDownstreamDistrictConnectionsError = ViewData.ModelState["NoOfDownstreamDistrictHeatNetworkConnections"]?.Errors.Count > 0;
 }
 
@@ -37,7 +37,7 @@
                         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input"
-                                       id="iscommunalbuilding"
+                                       id="IsCommunalBuilding"
                                        name="IsCommunalBuilding"
                                        type="checkbox"
                                        value="true"
@@ -65,7 +65,7 @@
                                         <span asp-validation-for="NoOfCommunalBuilding" class="govuk-error-message"></span>
                                     </p>
                                     <input class="govuk-input govuk-input--width-3 @(hasCommunalBuildingError ? "govuk-input--error" : "")"
-                                           id="noofcommunalbuilding"
+                                           id="NoOfCommunalBuilding"
                                            name="NoOfCommunalBuilding"
                                            type="number"
                                            asp-for="NoOfCommunalBuilding"
@@ -77,7 +77,7 @@
                         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input"
-                                       id="isdomesticonsumer"
+                                       id="IsDomesticConsumer"
                                        name="IsDomesticConsumer"
                                        type="checkbox"
                                        value="true"
@@ -105,7 +105,7 @@
                                         <span asp-validation-for="NoOfDomesticConsumer" class="govuk-error-message"></span>
                                     </p>
                                     <input class="govuk-input govuk-input--width-3 @(hasDomesticConsumerError ? "govuk-input--error" : "")"
-                                           id="noofdomesticconsumer"
+                                           id="NoOfDomesticConsumer"
                                            name="NoOfDomesticConsumer"
                                            type="number"
                                            asp-for="NoOfDomesticConsumer"
@@ -117,7 +117,7 @@
                         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input"
-                                       id="isnondomesticconsumer"
+                                       id="IsNonDomesticConsumer"
                                        name="IsNonDomesticConsumer"
                                        type="checkbox"
                                        value="true"
@@ -146,7 +146,7 @@
                                         <span asp-validation-for="NoOfNonDomesticConsumer" class="govuk-error-message"></span>
                                     </p>
                                     <input class="govuk-input govuk-input--width-3 @(hasNonDomesticConsumerError ? "govuk-input--error" : "")"
-                                           id="noofnondomesticconsumer"
+                                           id="NoOfNonDomesticConsumer"
                                            name="NoOfNonDomesticConsumer"
                                            type="number"
                                            asp-for="NoOfNonDomesticConsumer"
@@ -159,7 +159,7 @@
                             <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                                 <div class="govuk-checkboxes__item">
                                     <input class="govuk-checkboxes__input"
-                                           id="isdownstreamdistrictheatnetworkconnections"
+                                           id="IsDownstreamDistrictHeatNetworkConnections"
                                            name="IsDownstreamDistrictHeatNetworkConnections"
                                            type="checkbox"
                                            value="true"
@@ -189,7 +189,7 @@
                                             <span asp-validation-for="NoOfDownstreamDistrictHeatNetworkConnections" class="govuk-error-message"></span>
                                         </p>
                                         <input class="govuk-input govuk-input--width-3 @(hasDownstreamDistrictConnectionsError ? "govuk-input--error" : "")"
-                                               id="noofdownstreamdistrictheatnetworkconnections"
+                                               id="NoOfDownstreamDistrictHeatNetworkConnections"
                                                name="NoOfDownstreamDistrictHeatNetworkConnections"
                                                type="number"
                                                asp-for="NoOfDownstreamDistrictHeatNetworkConnections"
@@ -197,52 +197,7 @@
                                     </div>
                                 </div>
                             </div>
-                        }
-                        else
-                        {
-                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="isupstreamdistrictheatnetworkconnections"
-                                           name="IsUpstreamDistrictHeatNetworkConnections"
-                                           type="checkbox"
-                                           value="true"
-                                           data-aria-controls="conditional-IsUpstreamDistrictHeatNetworkConnections"
-                                           @(Model.IsUpstreamDistrictHeatNetworkConnections ? "checked" : "") />
-
-                                    <label class="govuk-label govuk-checkboxes__label"
-                                           for="IsUpstreamDistrictHeatNetworkConnections">
-                                        Upstream district heat network connections
-                                    </label>
-
-                                    <div id="IsUpstreamDistrictHeatNetworkConnections-hhint" class="govuk-hint govuk-checkboxes__hint">
-                                        
-                                    </div>
-
-                                    <input type="hidden" name="IsUpstreamDistrictHeatNetworkConnections" value="false" />
-                                </div>
-
-                                <div class="govuk-checkboxes__conditional @(Model.IsUpstreamDistrictHeatNetworkConnections ? "" : "govuk-checkboxes__conditional--hidden")"
-                                     id="conditional-IsUpstreamDistrictHeatNetworkConnections">
-                                    <div class="govuk-form-group @(hasUpstreamDistrictConnectionsError ? "govuk-form-group--error" : "")" id="fg-NoOfUpstreamDistrictHeatNetworkConnections">
-                                        <label class="govuk-label" for="NoOfUpstreamDistrictHeatNetworkConnections">
-                                            Number of district connections
-                                        </label>
-                                        <p id="NoOfUpstreamDistrictHeatNetworkConnections-error" class="govuk-error-message">
-                                            <span class="govuk-visually-hidden">Error:</span>
-                                            <span asp-validation-for="NoOfUpstreamDistrictHeatNetworkConnections" class="govuk-error-message"></span>
-                                        </p>
-                                        <input class="govuk-input govuk-input--width-3 @(hasUpstreamDistrictConnectionsError ? "govuk-input--error" : "")"
-                                               id="noofupstreamdistrictheatnetworkconnections"
-                                               name="NoOfUpstreamDistrictHeatNetworkConnections"
-                                               type="number"
-                                               asp-for="NoOfUpstreamDistrictHeatNetworkConnections"
-                                               aria-describedby="@(hasUpstreamDistrictConnectionsError ? "NoOfUpstreamDistrictHeatNetworkConnections-error" : "")" />
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                          
+                        }                          
                         
                     </div>
                 </fieldset>

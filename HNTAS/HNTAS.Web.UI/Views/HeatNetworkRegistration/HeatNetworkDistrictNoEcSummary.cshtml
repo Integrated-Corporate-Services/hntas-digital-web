@@ -2,6 +2,7 @@
 @model HeatNetworkConnectionsViewModel
 
 @{
+    ViewData["Title"] = "Heat network summary";
     var connections = new List<string>();
     if (Model.IsCommunalBuilding){
         connections.Add($"{Model.NoOfCommunalBuilding} communal buildings");
@@ -11,10 +12,7 @@
     }
      if(Model.IsNonDomesticConsumer){
         connections.Add($"{Model.NoOfNonDomesticConsumer} non domestic consumers");
-    }
-    if(Model.IsUpstreamDistrictHeatNetworkConnections){
-        connections.Add($"{Model.NoOfUpstreamDistrictHeatNetworkConnections} district connections");
-    }
+    }    
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -39,8 +37,8 @@
             }                
         </ul>
 
-        <div class="app-button-wrapper">
-            <a asp-controller="HeatNetworkRegistration" asp-action="HeatNetworkSummary" asp-method="GET" role="button" data-module="govuk-button" draggable="false" class="govuk-button">Continue</a>
-        </div>
+        <button class="govuk-button" onclick="location.href='@Url.Action("HeatNetworkName", "HeatNetworkRegistration")'">
+            Continue
+        </button>
     </div>
 </div>

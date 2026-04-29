@@ -10,8 +10,8 @@
             @Html.AntiForgeryToken()
 
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.CompanyNumber)) && ViewData.ModelState[nameof(Model.CompanyNumber)].Errors.Any() ? "govuk-form-group--error" : "")">
-                <label class="govuk-label govuk-label--l" for="@companyNumberId">
-                    What is the company number?
+                <label class="govuk-label" for="@companyNumberId">
+                    <h1 class="govuk-heading-l">What is the company number?</h1>
                 </label>
                 <div id="company-number-hint" class="govuk-hint">
                     You can find this in the <a href="https://find-and-update.company-information.service.gov.uk/" target="_blank" rel="noreferrer noopener" class="govuk-link govuk-link--no-visited-state">Companies House register (opens in new tab)</a>.
@@ -29,7 +29,7 @@
                 }
 
                 <input class="govuk-input govuk-input--width-10" id="@companyNumberId" name="@companyNumberId" type="text"
-                       autocomplete="organization-id" spellcheck="false"
+                       autocomplete="off" spellcheck="false"
                        aria-describedby="@(ViewData.ModelState.ContainsKey(nameof(Model.CompanyNumber)) && ViewData.ModelState[nameof(Model.CompanyNumber)].Errors.Any() ? "company-number-hint company-number-error" : "company-number-hint")"
                        value="@Model.CompanyNumber">
             </div>

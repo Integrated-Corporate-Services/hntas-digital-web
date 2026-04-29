@@ -3,7 +3,6 @@ using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models.ElementSoa;
-using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -118,7 +117,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 new Element
                 {
                     ElementId = "00001",
-                    Type = HeatNetworkElementDisplayType.EnergyCentre,
+                    Type = HeatNetworkElementType.EnergyCentre,
                     SoaStages = new List<SoaStages>
                     {
                         new SoaStages
@@ -178,7 +177,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Arrange
             var stage = SoaStage.Stage1;
             var elementId = "00001";
-            var elementType = HeatNetworkElementDisplayType.EnergyCentre;
+            var elementType = HeatNetworkElementType.EnergyCentre;
             var hnId = "HN0000001";
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.HnId))

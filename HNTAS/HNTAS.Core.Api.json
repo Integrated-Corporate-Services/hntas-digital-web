@@ -10,7 +10,7 @@
     }
   ],
   "paths": {
-    "/api/arms/v1/hn/kpis": {
+    "/arms/v1/hn/kpis": {
       "post": {
         "tags": [
           "Arms"
@@ -102,6 +102,157 @@
         }
       }
     },
+    "/arms/v1/hn/{networkId}/kpi-config": {
+      "get": {
+        "tags": [
+          "Arms"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiConfigResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiConfigResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiConfigResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/arms/v1/hn/kpi-config": {
+      "post": {
+        "tags": [
+          "Arms"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiConfigRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiConfigRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiConfigRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Assessor/search": {
       "get": {
         "tags": [
@@ -142,6 +293,75 @@
                   "items": {
                     "$ref": "#/components/schemas/AssessorSearchResult"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/AssignedAssessor/assigned-assessor": {
+      "get": {
+        "tags": [
+          "AssignedAssessor"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignedAssessorRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignedAssessorRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignedAssessorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignedAssessorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignedAssessorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignedAssessorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -805,7 +1025,7 @@
         }
       }
     },
-    "/api/external/heat-networks": {
+    "/external/heat-networks": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -843,7 +1063,7 @@
         }
       }
     },
-    "/api/external/heat-network/{hnId}": {
+    "/external/heat-network/{hnId}": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -902,7 +1122,7 @@
         }
       }
     },
-    "/api/external/heat-networks/search": {
+    "/external/heat-networks/search": {
       "get": {
         "tags": [
           "HeatNetworks"
@@ -1277,6 +1497,75 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/NotificationHistory/notification-history": {
+      "get": {
+        "tags": [
+          "NotificationHistory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationHistoryRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationHistoryRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationHistoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationHistoryResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationHistoryResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationHistoryResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "text/plain": {
                 "schema": {
@@ -4112,6 +4401,90 @@
           }
         }
       },
+      "AssignedAssessor": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "heatNetworkName": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementsAssigned": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementsAssignedList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/NullableOfUserStatus"
+          },
+          "assessorUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "AssignedAssessorRequest": {
+        "type": "object",
+        "properties": {
+          "sortBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortDirection": {
+            "type": "string",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AssignedAssessorResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssignedAssessor"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "AuditLog": {
         "type": "object",
         "properties": {
@@ -4470,7 +4843,7 @@
           "ContributingOperator",
           "Assessor",
           "Certifier",
-          "Coordinator",
+          "NetworkManager",
           "ResponsiblePerson"
         ]
       },
@@ -4601,7 +4974,7 @@
             "nullable": true
           },
           "type": {
-            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
+            "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "networkElementInstanceName": {
             "type": "string",
@@ -4686,15 +5059,6 @@
             "nullable": true
           }
         }
-      },
-      "ElementType": {
-        "enum": [
-          "EnergyCentre",
-          "Substation",
-          "DistrictDistribution",
-          "CommunalDistribution",
-          "ConsumerConnection"
-        ]
       },
       "Energy": {
         "type": "object",
@@ -4830,7 +5194,7 @@
           "name": {
             "type": "string"
           },
-          "hnDescription": {
+          "additionalDescription": {
             "type": "string",
             "nullable": true
           },
@@ -4913,14 +5277,6 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
-          },
-          "isUpstreamDistrictHeatNetworkConnections": {
-            "type": "boolean"
-          },
-          "noOfUpstreamDistrictHeatNetworkConnections": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         },
         "nullable": true
@@ -4929,7 +5285,7 @@
         "type": "object",
         "properties": {
           "name": {
-            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
+            "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "count": {
             "type": "integer",
@@ -4948,15 +5304,6 @@
             }
           }
         }
-      },
-      "HeatNetworkElementDisplayType": {
-        "enum": [
-          "EnergyCentre",
-          "Substation",
-          "DistrictDistributionNetwork",
-          "CommunalDistributionNetwork",
-          "ConsumerConnections"
-        ]
       },
       "HeatNetworkElementResponse": {
         "type": "object",
@@ -4981,6 +5328,15 @@
             }
           }
         }
+      },
+      "HeatNetworkElementType": {
+        "enum": [
+          "EnergyCentre",
+          "Substation",
+          "DistrictDistribution",
+          "CommunalDistribution",
+          "ConsumerConnection"
+        ]
       },
       "HeatNetworkExternalResponse": {
         "type": "object",
@@ -5050,7 +5406,7 @@
           "name": {
             "type": "string"
           },
-          "hnDescription": {
+          "additionalDescription": {
             "type": "string",
             "nullable": true
           },
@@ -5330,6 +5686,43 @@
         },
         "nullable": true
       },
+      "KpiConfigRequest": {
+        "required": [
+          "network_id"
+        ],
+        "type": "object",
+        "properties": {
+          "network_id": {
+            "type": "string"
+          },
+          "elements": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/components/schemas/KpiRule"
+              }
+            }
+          }
+        }
+      },
+      "KpiConfigResponse": {
+        "type": "object",
+        "properties": {
+          "network_id": {
+            "type": "string"
+          },
+          "elements": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/components/schemas/KpiRule"
+              }
+            }
+          }
+        }
+      },
       "KpiMetadata": {
         "required": [
           "network_id",
@@ -5354,6 +5747,28 @@
         },
         "additionalProperties": false
       },
+      "KpiRule": {
+        "type": "object",
+        "properties": {
+          "lower_limit": {
+            "type": "number",
+            "format": "double"
+          },
+          "upper_limit": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "is_mandatory": {
+            "type": "boolean"
+          },
+          "threshold_rule": {
+            "$ref": "#/components/schemas/KpiThresholdRule"
+          }
+        }
+      },
       "KpiSubmissionRequest": {
         "required": [
           "meta_data"
@@ -5366,20 +5781,56 @@
           "consumer_connection_aggregated_kpis": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/KpiValueAggregated"
+              "$ref": "#/components/schemas/KpiValueAggregatedRequest"
             },
             "nullable": true
           },
           "elements": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkElement"
+              "$ref": "#/components/schemas/NetworkElementRequest"
             }
           }
         },
         "additionalProperties": false
       },
-      "KpiValue": {
+      "KpiThresholdRule": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "target": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "delta": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        }
+      },
+      "KpiValueAggregatedRequest": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "KpiValueRequest": {
+        "required": [
+          "value"
+        ],
         "type": "object",
         "properties": {
           "value": {
@@ -5392,16 +5843,6 @@
           "kpi_imputation_details": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "KpiValueAggregated": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "format": "double"
           }
         },
         "additionalProperties": false
@@ -5561,7 +6002,7 @@
           }
         }
       },
-      "NetworkElement": {
+      "NetworkElementRequest": {
         "required": [
           "elementId",
           "type"
@@ -5572,12 +6013,12 @@
             "type": "string"
           },
           "type": {
-            "$ref": "#/components/schemas/ElementType"
+            "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "kpis": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/KpiValue"
+              "$ref": "#/components/schemas/KpiValueRequest"
             }
           }
         },
@@ -5723,6 +6164,116 @@
           }
         }
       },
+      "NotificationHistoryData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "notificationType": {
+            "$ref": "#/components/schemas/NotificationHistoryType"
+          },
+          "actorsId": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subject": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "action": {
+            "type": "string",
+            "nullable": true
+          },
+          "actionLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "eligibleRoles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "heatNetworkId": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "NotificationHistoryRequest": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortDirection": {
+            "type": "string",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "NotificationHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotificationHistoryData"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "NotificationHistoryType": {
+        "type": "integer"
+      },
       "NullableOfPreferredContactType": {
         "enum": [
           "Landline",
@@ -5749,11 +6300,22 @@
       "NullableOfUserRole": {
         "enum": [
           "ResponsiblePerson",
-          "Coordinator",
+          "NetworkManager",
           "DesignatedDutyHolder",
           "Contributor",
           "Assessor",
           "Certifier",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfUserStatus": {
+        "enum": [
+          "Active",
+          "InActive",
+          "InvitationSent",
+          "InvitationAccepted",
+          "InvitationDeclined",
           null
         ],
         "nullable": true
@@ -6222,6 +6784,15 @@
             "type": "string",
             "nullable": true
           },
+          "assessorUpdatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "assessorUpdatedBy": {
+            "type": "string",
+            "nullable": true
+          },
           "assessor": {
             "$ref": "#/components/schemas/SoaAssessor"
           }
@@ -6302,7 +6873,7 @@
             "type": "string"
           },
           "elementType": {
-            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
+            "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "updatedBy": {
             "type": "string"
@@ -6331,7 +6902,7 @@
             "type": "string"
           },
           "elementType": {
-            "$ref": "#/components/schemas/HeatNetworkElementDisplayType"
+            "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "locations": {
             "minItems": 1,
@@ -6778,7 +7349,7 @@
       "UserRole": {
         "enum": [
           "ResponsiblePerson",
-          "Coordinator",
+          "NetworkManager",
           "DesignatedDutyHolder",
           "Contributor",
           "Assessor",
@@ -6856,6 +7427,9 @@
       "name": "Assessor"
     },
     {
+      "name": "AssignedAssessor"
+    },
+    {
       "name": "Audit"
     },
     {
@@ -6875,6 +7449,9 @@
     },
     {
       "name": "Invitations"
+    },
+    {
+      "name": "NotificationHistory"
     },
     {
       "name": "Organisations"

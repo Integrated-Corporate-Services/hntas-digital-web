@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using HNTAS.Api.Client.Api;
+﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
@@ -16,20 +15,20 @@ namespace HNTAS.Web.UI.Controllers
     {
         private readonly ISessionHelper _sessionHelper;
         private readonly ISoaService _soaProjectService;
-        private readonly IHeatNetworkService _heatNetworkService;        
+        private readonly IHeatNetworkService _heatNetworkService;
         private readonly IAssessorApi _assessorApi;
         private readonly ILogger<ElementSoaController> _logger;
 
         public ElementSoaController(ISessionHelper sessionHelper,
             ISoaService soaProjectService,
             ILogger<ElementSoaController> logger,
-            IHeatNetworkService heatNetworkService,            
+            IHeatNetworkService heatNetworkService,
             IAssessorApi assessorApi)
         {
             _sessionHelper = sessionHelper;
             _soaProjectService = soaProjectService;
             _logger = logger;
-            _heatNetworkService = heatNetworkService;            
+            _heatNetworkService = heatNetworkService;
             _assessorApi = assessorApi;
         }
 
@@ -96,7 +95,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SoaUpdateStatus([FromQuery] SoaStage stage, [FromQuery] string elementId, [FromQuery] HeatNetworkElementDisplayType elementType)
+        public async Task<IActionResult> SoaUpdateStatus([FromQuery] SoaStage stage, [FromQuery] string elementId, [FromQuery] HeatNetworkElementType elementType)
         {
             var tempDataKey = $"Soa_{elementId}_{stage}";
             string soaPhase = TempData[$"{tempDataKey}_Phase"] as string;
@@ -200,13 +199,13 @@ namespace HNTAS.Web.UI.Controllers
                     selectedAssessorFullNameWithEmail = $"{assessorDetails.FirstName} {assessorDetails.LastName} ({assessorDetails.Email})";
                 }
             }
-                
+
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey, currentStageIndex);
             var targetFragment = string.Concat("stage-", currentStageIndex);
             this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
-            ViewBag.SelectedAssessor = selectedAssessorFullNameWithEmail;            
+            ViewBag.SelectedAssessor = selectedAssessorFullNameWithEmail;
             return View();
         }
 
@@ -238,9 +237,9 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SelectedAssessorOnboarding(string firstName, string lastName, string emailId, string fullNameFromInput)
         {
-            
+
             var selectedAssessor = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.DefaultSelectedAssessor);
-            
+
             if (fullNameFromInput == null)
             {
                 var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
@@ -250,7 +249,7 @@ namespace HNTAS.Web.UI.Controllers
             var assessorSearchResults = _sessionHelper.GetFromSession<List<AssessorSearchResult>>(HttpContext, SessionKeys.AssessorSearchResultsSessionKey);
             if (selectedAssessor?.FullNameWithEmail?.ToLower() != fullNameFromInput?.ToLower())
             {
-                
+
                 var isCorrectAssessor = assessorSearchResults?.Exists(a => a.FullNameWithEmail?.ToLower() == fullNameFromInput?.ToLower());
 
                 if (!isCorrectAssessor ?? false)
@@ -268,7 +267,7 @@ namespace HNTAS.Web.UI.Controllers
                 FirstName = assessorFromList?.FirstName! ?? selectedAssessor?.FirstName!,
                 LastName = assessorFromList?.LastName! ?? selectedAssessor?.LastName!,
                 Email = assessorFromList?.Email! ?? selectedAssessor?.Email!
-            };            
+            };
 
             // Store in session
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorDetailsSessionKey, model);
@@ -306,15 +305,15 @@ namespace HNTAS.Web.UI.Controllers
                     var assignedAssessor = item.SoaStages?
                         .Select(s => s.Assessor)
                         .FirstOrDefault(a => a != null);
-                    
-                    model.ElementOptions?.Add(new AssessorSelectElementsOption 
-                    { 
-                        Label = item.NetworkElementInstanceName!, 
+
+                    model.ElementOptions?.Add(new AssessorSelectElementsOption
+                    {
+                        Label = item.NetworkElementInstanceName!,
                         ElementId = item.ElementId!,
                         AssignedAssessorName = assignedAssessor != null ? $"(Assessor Assigned: {assignedAssessor.FirstName} {assignedAssessor.LastName})" : ""
                     });
-                }                
-            }            
+                }
+            }
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorSelectedElementSessionKey, model);
             return View("AssessorSelectElements", model);
         }
@@ -329,18 +328,18 @@ namespace HNTAS.Web.UI.Controllers
             //this.ShowBackButton("AssessorOnboarding", "ElementSoa", new { stage, selectedAssessor });
             this.ShowBackButton("AssessorOnboarding", "ElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            ViewBag.HnId = hnId;            
+            ViewBag.HnId = hnId;
             var modelFromSession = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             if (!ModelState.IsValid)
             {
-                
+
                 return View("AssessorSelectElements", modelFromSession);
             }
 
             foreach (var item in model.SelectedElementIds!)
             {
-                foreach(var option in modelFromSession?.ElementOptions!)
-                {                     
+                foreach (var option in modelFromSession?.ElementOptions!)
+                {
                     if (option.ElementId == item)
                     {
                         model.SelectedElementLabel?.Add(option.Label);
@@ -363,7 +362,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey) ?? new AssessorAssessmentSelectionViewModel();
             model.AssessmentOptions = ElementSoaHelper.GetAssessmentOptions();
-            
+
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey, model);
             return View(model);
         }
@@ -404,7 +403,7 @@ namespace HNTAS.Web.UI.Controllers
                 AssessorDetails = assessorDetails!,
                 HeatNetworkPhase = phase ?? string.Empty,
                 HeatNetworkStage = ElementSoaHelper.GetStageFromPhase(phase!)
-            };   
+            };
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorElementSelectionOverviewModelSessionKey, model);
 
             return View(model);
@@ -420,7 +419,7 @@ namespace HNTAS.Web.UI.Controllers
             var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var assessmentSelectionModel = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey);
-            
+
             var requestModel = new ElementSoaAssignAssessorRequest
             {
                 HnId = hnId!,
@@ -432,7 +431,7 @@ namespace HNTAS.Web.UI.Controllers
                 UpdatedBy = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey)
 
             };
-            await _soaProjectService.AssignAssessor(requestModel);            
+            await _soaProjectService.AssignAssessor(requestModel);
             return RedirectToAction("AssessorAssignedConfirmation", "ElementSoa");
         }
 

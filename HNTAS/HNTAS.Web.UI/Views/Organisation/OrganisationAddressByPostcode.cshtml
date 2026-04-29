@@ -15,12 +15,14 @@
 
             @* Display specific error message for Street Address if it exists *@
             <span asp-validation-for="Postcode" class="govuk-error-message" id="@(Html.IdFor(m => m.Postcode))-error"></span>
-            <input class="govuk-input govuk-input--width-10" asp-for="Postcode" id="Postcode" name="Postcode" type="text" value="@Model?.Postcode" spellcheck="false" autocomplete="off"
-                   aria-describedby="@(ViewData.ModelState.ContainsKey(nameof(Model.Postcode)) && ViewData.ModelState[nameof(Model.Postcode)]?.Errors.Any() == true ? Html.IdFor(m => m.Postcode) + "-error" : "")">
+            <label class="govuk-visually-hidden" for="Postcode" id="@(Html.IdFor(m => m.Postcode))-label">
+                Postcode
+            </label>
+            <input class="govuk-input govuk-input--width-10" asp-for="Postcode" id="@(Html.IdFor(m => m.Postcode))" name="@(Html.IdFor(m => m.Postcode))" type="text" value="@Model?.Postcode" spellcheck="false" autocomplete="off"
+                   aria-describedby="@(Html.IdFor(m => m.Postcode))">
         </div>
         <button type="submit" class="govuk-button" data-module="govuk-button">Search</button>
         <h2 class="govuk-heading-m">Other ways to search</h2>
         <a href="@Url.Action("OrganisationAddress", "Organisation")" class="govuk-link govuk-body">Search by street and town</a>
     </form>
 </div>
-

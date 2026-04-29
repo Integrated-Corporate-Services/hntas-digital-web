@@ -24,19 +24,18 @@
                             <dt class="govuk-summary-list__key">
                                 Element list
                             </dt>
-                            <dd class="govuk-summary-list__value">
-                                @foreach (var element in Model.Elements)
-                                {
+                            @foreach (var element in Model.Elements)
+                            {
+                                <dd class="govuk-summary-list__value">
                                     @($"{element.Name} ({element.Count})")
-                                
-                                    <br />
-                                }
-                            </dd>
-                            <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link" href="/change-elements">
-                                    Change
-                                </a>
-                            </dd>
+                                    <br />                                    
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="/change-elements">
+                                        Change<span class="govuk-visually-hidden"> @($"{element.Name} ({element.Count})")</span>
+                                    </a>
+                                </dd>
+                            }
                         </div>
                     </dl>
 
@@ -51,19 +50,18 @@
                                 <dt class="govuk-summary-list__key">
                                     @eleDoc.Name
                                 </dt>
-                                <dd class="govuk-summary-list__value">
-                                    @foreach (var doc in eleDoc.Documents)
-                                    {
+                                @foreach (var doc in eleDoc.Documents)
+                                {
+                                    <dd class="govuk-summary-list__value">                                        
                                         @($"[{doc.FileName}]")
-
-                                        <br />
-                                    }
-                                </dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="#">
-                                        Change
-                                    </a>
-                                </dd>
+                                        <br />                                        
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions">
+                                        <a class="govuk-link" href="#">
+                                            Change<span class="govuk-visually-hidden"> @($"[{doc.FileName}]")</span>
+                                        </a>
+                                    </dd>
+                                }                                
                             </div>
                         }
                     </dl>
@@ -82,7 +80,7 @@
                             </dd>
                             <dd class="govuk-summary-list__actions">
                                 <a class="govuk-link" href="#">
-                                    Change
+                                    Change<span class="govuk-visually-hidden"> @($"[{Model.AssessmentPlanDocument.Documents.FirstOrDefault().FileName}]")</span>
                                 </a>
                             </dd>
                         </div>

@@ -74,16 +74,13 @@
 
             @* Email address - DISPLAY ONLY FIELD (No changes needed) *@
             <div class="govuk-form-group @(hasEmailAddressErrors ? "govuk-form-group--error" : "")">
-                <label class="govuk-label" for="EmailAddressDisplay">
+                <span class="govuk-body">
                     Email address
-                </label>
-                @if (hasEmailAddressErrors)
-                {
-                    <p id="EmailAddress-error" class="govuk-error-message">
-                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.EmailAddress)
-                    </p>
-                }
-                <span class="govuk-body" id="EmailAddressDisplay">@Model.EmailAddress</span>
+                </span><br/>
+                <span class="govuk-body">
+                    @Model.EmailAddress
+                </span>
+
                 <input type="hidden" asp-for="EmailAddress" />
             </div>
 

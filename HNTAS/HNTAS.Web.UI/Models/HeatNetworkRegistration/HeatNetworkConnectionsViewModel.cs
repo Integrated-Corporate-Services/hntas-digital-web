@@ -20,10 +20,6 @@ namespace HNTAS.Web.UI.Models.HeatNetworkRegistration
         public bool IsDownstreamDistrictHeatNetworkConnections { get; set; }
 
         [Range(1, 9999, ErrorMessage = "Value must be between 1 and 9999")]
-        public int? NoOfDownstreamDistrictHeatNetworkConnections { get; set; }
-        public bool IsUpstreamDistrictHeatNetworkConnections { get; set; }
-
-        [Range(1, 9999, ErrorMessage = "Value must be between 1 and 9999")]
-        public int? NoOfUpstreamDistrictHeatNetworkConnections { get; set; }
+        public int? NoOfDownstreamDistrictHeatNetworkConnections { get; set; }        
     }
 }

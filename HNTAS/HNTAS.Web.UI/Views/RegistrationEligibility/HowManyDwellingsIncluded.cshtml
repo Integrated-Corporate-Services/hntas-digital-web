@@ -2,7 +2,7 @@
 @model HowManyDwellingsIncludedModel
 
 @{
-    ViewData["Title"] = "Check your eligibility to register a heat network";
+    ViewData["Title"] = "Do any of your new heat networks have the equivalent of 6 or more dwellings? - Check your eligibility to register a heat network";
     var fieldOrder = new[] { nameof(Model.HowManyDwellingsIncluded) };
     var elementId = Html.GenerateIdFromName(nameof(Model.HowManyDwellingsIncluded)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
@@ -20,9 +20,9 @@
                 <p class='govuk-body'>This applies to domestic, non-domestic or mixed-use networks</p>
                 <details class= 'govuk-details'>
                     <summary class='govuk-details__summary'>
-                        <span class= 'govuk-details__summary-text'>
+                        <a class= 'govuk-details__summary-text'>
                             Help with equivalent dwellings
-                        </span>
+                        </a>
                     </summary>
                     <div class= 'govuk-details__text'>
                         <p class='govuk-body'>

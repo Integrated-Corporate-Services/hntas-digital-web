@@ -117,10 +117,8 @@ namespace HNTAS.Api.Client.Client
                 return ContributorRoleValueConverter.ToJsonValue(contributorRole);
             if (obj is DocumentType documentType)
                 return DocumentTypeValueConverter.ToJsonValue(documentType);
-            if (obj is ElementType elementType)
-                return ElementTypeValueConverter.ToJsonValue(elementType);
-            if (obj is HeatNetworkElementDisplayType heatNetworkElementDisplayType)
-                return HeatNetworkElementDisplayTypeValueConverter.ToJsonValue(heatNetworkElementDisplayType);
+            if (obj is HeatNetworkElementType heatNetworkElementType)
+                return HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElementType);
             if (obj is HeatNetworkType heatNetworkType)
                 return HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType);
             if (obj is InvitationStatus invitationStatus)
@@ -133,6 +131,8 @@ namespace HNTAS.Api.Client.Client
                 return NullableOfSoaStageValueConverter.ToJsonValue(nullableOfSoaStage);
             if (obj is NullableOfUserRole nullableOfUserRole)
                 return NullableOfUserRoleValueConverter.ToJsonValue(nullableOfUserRole);
+            if (obj is NullableOfUserStatus nullableOfUserStatus)
+                return NullableOfUserStatusValueConverter.ToJsonValue(nullableOfUserStatus);
             if (obj is OrganisationType organisationType)
                 return OrganisationTypeValueConverter.ToJsonValue(organisationType);
             if (obj is RegistrationSource registrationSource)
