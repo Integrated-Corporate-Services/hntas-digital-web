@@ -4,6 +4,7 @@ README.md
 api/openapi.yaml
 appveyor.yml
 docs/apis/ArmsApi.md
+docs/apis/ArmsDashboardApi.md
 docs/apis/AssessorApi.md
 docs/apis/AssignedAssessorApi.md
 docs/apis/AuditApi.md
@@ -43,6 +44,7 @@ docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
 docs/models/Element.md
+docs/models/ElementGroupDto.md
 docs/models/ElementSoaAssignAssessorRequest.md
 docs/models/ElementSoaStatusUpdateRequest.md
 docs/models/Energy.md
@@ -50,6 +52,9 @@ docs/models/EnergyCentreDetails.md
 docs/models/EnumItemResponse.md
 docs/models/HeatNetwork.md
 docs/models/HeatNetworkConnections.md
+docs/models/HeatNetworkDashboardResponse.md
+docs/models/HeatNetworkDashboardRow.md
+docs/models/HeatNetworkDetailsResponse.md
 docs/models/HeatNetworkElement.md
 docs/models/HeatNetworkElementResponse.md
 docs/models/HeatNetworkElementType.md
@@ -67,6 +72,8 @@ docs/models/InvitedUserResponse.md
 docs/models/JourneyDataResponse.md
 docs/models/KpiConfigRequest.md
 docs/models/KpiConfigResponse.md
+docs/models/KpiDetailDto.md
+docs/models/KpiHistoryResponse.md
 docs/models/KpiMetadata.md
 docs/models/KpiRule.md
 docs/models/KpiSubmissionRequest.md
@@ -140,6 +147,7 @@ src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
+src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
 src/HNTAS.Api.Client/Api/AssessorApi.cs
 src/HNTAS.Api.Client/Api/AssignedAssessorApi.cs
 src/HNTAS.Api.Client/Api/AuditApi.cs
@@ -202,6 +210,7 @@ src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs
 src/HNTAS.Api.Client/Model/Element.cs
+src/HNTAS.Api.Client/Model/ElementGroupDto.cs
 src/HNTAS.Api.Client/Model/ElementSoaAssignAssessorRequest.cs
 src/HNTAS.Api.Client/Model/ElementSoaStatusUpdateRequest.cs
 src/HNTAS.Api.Client/Model/Energy.cs
@@ -209,6 +218,9 @@ src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetwork.cs
 src/HNTAS.Api.Client/Model/HeatNetworkConnections.cs
+src/HNTAS.Api.Client/Model/HeatNetworkDashboardResponse.cs
+src/HNTAS.Api.Client/Model/HeatNetworkDashboardRow.cs
+src/HNTAS.Api.Client/Model/HeatNetworkDetailsResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElement.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElementResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetworkElementType.cs
@@ -226,6 +238,8 @@ src/HNTAS.Api.Client/Model/InvitedUserResponse.cs
 src/HNTAS.Api.Client/Model/JourneyDataResponse.cs
 src/HNTAS.Api.Client/Model/KpiConfigRequest.cs
 src/HNTAS.Api.Client/Model/KpiConfigResponse.cs
+src/HNTAS.Api.Client/Model/KpiDetailDto.cs
+src/HNTAS.Api.Client/Model/KpiHistoryResponse.cs
 src/HNTAS.Api.Client/Model/KpiMetadata.cs
 src/HNTAS.Api.Client/Model/KpiRule.cs
 src/HNTAS.Api.Client/Model/KpiSubmissionRequest.cs
