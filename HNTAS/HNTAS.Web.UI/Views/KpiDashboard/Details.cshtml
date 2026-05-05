@@ -1,157 +1,263 @@
 ﻿@using static HNTAS.Web.UI.Controllers.KpiDashboardController
 @model ArmsDetailsViewModel
 
-<a href="@Model.BackToListUrl" class="govuk-back-link">Back to networks</a>
+@{
+    var types = new Dictionary<string, string> {
+                { "EnergyCentre", "Energy centre" },
+                { "Substation", "Substation" },
+                { "DistrictDistribution", "District Distribution Network" },
+                { "CommunalDistribution", "Communal Distribution Network" },
+                { "ConsumerConnection", "Consumer Connection" }
+                };
+}
 
-<div class="govuk-grid-row govuk-!-margin-top-6">
-    <div class="govuk-grid-column-one-third">
-        <form asp-action="Details" method="get">
-            <!-- Preserve route values -->
-            <input type="hidden" name="hnid" value="@Model.Hnid" />
-            <input type="hidden" name="month" value="@Model.SelectedMonth" />
-            <input type="hidden" name="year" value="@Model.SelectedYear" />
+<a href="@Model.BackToListUrl" class="govuk-back-link">Back</a>
 
-            <div class="govuk-form-group">
-                <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                        KPI Status
-                    </legend>
+<div class="govuk-tabs" data-module="govuk-tabs">
+    <h2 class="govuk-tabs__title">Contents</h2>
+    <ul class="govuk-tabs__list">
+        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+            <a class="govuk-tabs__tab" href="#details">Details</a>
+        </li>
+        <li class="govuk-tabs__list-item">
+            <a class="govuk-tabs__tab" href="#history">Audit History</a>
+        </li>
+    </ul>
 
-                    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+    <!-- DETAILS TAB -->
+    <div class="govuk-tabs__panel" id="details">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-third">
+                <form asp-action="Details" method="get">
+                    <!-- Use submissionId as the primary identifier -->
+                    <input type="hidden" name="submissionId" value="@Model.SubmissionId" />
+                    <input type="hidden" name="month" value="@Model.SelectedMonth" />
+                    <input type="hidden" name="year" value="@Model.SelectedYear" />
 
-                        <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input"
-                                   id="fail"
-                                   name="statusFilter"
-                                   type="checkbox"
-                                   value="Fail"
-                                   @(Model.StatusFilter.Contains("Fail") ? "checked" : "") />
-                            <label class="govuk-label govuk-checkboxes__label" for="fail">
-                                Fail
-                            </label>
-                        </div>
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                KPI Status
+                            </legend>
 
-                        <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input"
-                                   id="outside"
-                                   name="statusFilter"
-                                   type="checkbox"
-                                   value="OutsideLimit"
-                                   @(Model.StatusFilter.Contains("OutsideLimit") ? "checked" : "") />
-                            <label class="govuk-label govuk-checkboxes__label" for="outside">
-                                Outside Limit
-                            </label>
-                        </div>
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input"
+                                           id="pass"
+                                           name="statusFilter"
+                                           type="checkbox"
+                                           value="Pass"
+                                           @(Model.StatusFilter.Contains("Pass") ? "checked" : "") />
+                                    <label class="govuk-label govuk-checkboxes__label" for="pass">Pass</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input"
+                                           id="fail"
+                                           name="statusFilter"
+                                           type="checkbox"
+                                           value="Fail"
+                                           @(Model.StatusFilter.Contains("Fail") ? "checked" : "") />
+                                    <label class="govuk-label govuk-checkboxes__label" for="fail">Fail</label>
+                                </div>
 
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input"
+                                           id="outside"
+                                           name="statusFilter"
+                                           type="checkbox"
+                                           value="OutsideLimit"
+                                           @(Model.StatusFilter.Contains("OutsideLimit") ? "checked" : "") />
+                                    <label class="govuk-label govuk-checkboxes__label" for="outside">Outside Limit</label>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
-                </fieldset>
+
+
+                    <!-- NETWORK TYPE FILTERS -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Network Type</legend>
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                               
+                                @foreach (var type in types)
+                                {
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="type-@type.Key" name="typeFilter" type="checkbox" value="@type.Key"
+                                               @(Model.TypeFilter.Contains(type.Key) ? "checked" : "") />
+                                        <label class="govuk-label govuk-checkboxes__label" for="type-@type.Key">@type.Value</label>
+                                    </div>
+                                }
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <button type="submit" class="govuk-button govuk-!-margin-top-2">Apply filters</button>
+
+                    <p class="govuk-body govuk-!-margin-top-2">
+                        <a href="@Url.Action("Details", new { submissionId = Model.SubmissionId })"
+                           class="govuk-link govuk-link--no-visited-state">
+                            Reset status filters
+                        </a>
+                    </p>
+                </form>
             </div>
 
-            <button type="submit" class="govuk-button govuk-!-margin-top-2">
-                Apply filters
-            </button>
+            <div class="govuk-grid-column-two-thirds">
+                <span class="govuk-caption-l">@Model.Hnid</span>
+                <h1 class="govuk-heading-l">@Model.NetworkName</h1>
+                <h2 class="govuk-heading-m">
+                    Elements for @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth) @Model.SelectedYear
+                </h2>
 
-            <p class="govuk-body govuk-!-margin-top-2">
-                <a href="@Url.Action("Details", new { hnid = Model.Hnid, month = Model.SelectedMonth, year = Model.SelectedYear })"
-                   class="govuk-link govuk-link--no-visited-state">
-                    Reset status filters
-                </a>
-            </p>
-        </form>
+                @foreach (var group in Model.GroupedElements)
+                {
+                    // Split the composite key "Type|Id"
+                    var keyParts = group.Key.Split('|');
+                    var rawType = keyParts.Length > 0 ? keyParts[0] : "Unknown";
+                    var elementId = keyParts.Length > 1 ? keyParts[1] : "";
+
+                    var displayType = types.ContainsKey(rawType) ? types[rawType] : rawType;
+
+                    <details class="govuk-details" data-module="govuk-details"
+                             @(group.Value.Any(x => x.Status == "Fail") ? "open" : "")>
+
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                @* Display the Type and ID separately *@
+                                <strong>@displayType</strong>: @elementId
+
+                                @if (group.Value.Any(x => x.Status == "Fail"))
+                                {
+                                    <strong class="govuk-tag govuk-tag--red govuk-!-margin-left-2">Fail</strong>
+                                }
+                            </span>
+                        </summary>
+
+                        <div class="govuk-details__text">
+                            <table class="govuk-table">
+                                <thead class="govuk-table__head">
+                                    <tr class="govuk-table__row">
+                                        <th class="govuk-table__header">KPI Name</th>
+                                        <th class="govuk-table__header">Value</th>
+                                        <th class="govuk-table__header">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="govuk-table__body">
+                                    @foreach (var kpi in group.Value)
+                                    {
+                                        <tr class="govuk-table__row">
+                                            <td class="govuk-table__cell">@kpi.KpiId</td>
+                                            <td class="govuk-table__cell">@kpi.Value</td>
+                                            <td class="govuk-table__cell">
+                                                <strong class="govuk-tag @(kpi.Status == "Pass" ? "govuk-tag--green" : "govuk-tag--red")">
+                                                    @kpi.Status
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+                }
+
+                <nav class="govuk-pagination" role="navigation" aria-label="results">
+                    @if (Model.CurrentPage > 1)
+                    {
+                        <div class="govuk-pagination__prev">
+                            <a class="govuk-link govuk-pagination__link"
+                               href="@Url.Action("Details", new { submissionId = Model.SubmissionId, month = Model.SelectedMonth, year = Model.SelectedYear, statusFilter = Model.StatusFilter, page = Model.CurrentPage - 1 })" rel="prev">
+                                <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                    <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
+                                </svg>
+                                <span class="govuk-pagination__link-title">Previous</span>
+                            </a>
+                        </div>
+                    }
+
+                    <ul class="govuk-pagination__list">
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="govuk-pagination__item @(i == Model.CurrentPage ? "govuk-pagination__item--current" : "")">
+                                <a class="govuk-link govuk-pagination__link"
+                                   href="@Url.Action("Details", new { submissionId = Model.SubmissionId, month = Model.SelectedMonth, year = Model.SelectedYear, statusFilter = Model.StatusFilter, page = i })" aria-label="Page @i">
+                                    @i
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    @if (Model.CurrentPage < Model.TotalPages)
+                    {
+                        <div class="govuk-pagination__next">
+                            <a class="govuk-link govuk-pagination__link"
+                               href="@Url.Action("Details", new { submissionId = Model.SubmissionId, month = Model.SelectedMonth, year = Model.SelectedYear, statusFilter = Model.StatusFilter, page = Model.CurrentPage + 1 })" rel="next">
+                                <span class="govuk-pagination__link-title">Next</span>
+                                <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                    <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    }
+                </nav>
+
+                <p class="govuk-body govuk-!-margin-top-4">
+                    Showing <b>@(((Model.CurrentPage - 1) * Model.PageSize) + 1)</b>
+                    to <b>@(Math.Min(Model.CurrentPage * Model.PageSize, Model.TotalElements))</b>
+                    of <b>@Model.TotalElements</b> elements
+                </p>
+            </div>
+        </div>
     </div>
 
+    <!-- HISTORY TAB -->
+    <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="history">
+        <h2 class="govuk-heading-m">Submission Audit Trail</h2>
 
-    <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-l">@Model.Hnid</span>
-        <h1 class="govuk-heading-l">@Model.NetworkName</h1>
-        <h2 class="govuk-heading-m">
-            Elements for @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth) @Model.SelectedYear
-        </h2>
-
-        @foreach (var group in Model.GroupedElements)
+        @if (Model.AuditHistory == null || !Model.AuditHistory.Any())
         {
-            <details class="govuk-details" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        Element ID: @group.Key
-                        @if (group.Value.Any(x => x.Status == KPIAssessmentStatus.Fail))
-                        {
-                            <strong class="govuk-tag govuk-tag--red govuk-!-margin-left-2">Fail</strong>
-                        }
-                    </span>
-                </summary>
-                <div class="govuk-details__text">
-                    <table class="govuk-table">
-                        <thead class="govuk-table__head">
-                            <tr class="govuk-table__row">
-                                <th class="govuk-table__header">KPI ID</th>
-                                <th class="govuk-table__header">Value</th>
-                                <th class="govuk-table__header">Threshold</th>
-                                <th class="govuk-table__header">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="govuk-table__body">
-                            @foreach (var kpi in group.Value)
-                            {
-                                <tr class="govuk-table__row">
-                                    <td class="govuk-table__cell">@kpi.KpiId</td>
-                                    <td class="govuk-table__cell">@kpi.Value</td>
-                                    <td class="govuk-table__cell">@kpi.Threshold</td>
-                                    <td class="govuk-table__cell">
-                                        <strong class="govuk-tag @(kpi.Status == KPIAssessmentStatus.Pass ? "govuk-tag--green" : "govuk-tag--red")">
-                                            @kpi.Status
-                                        </strong>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </details>
+            <p class="govuk-body">No history found for this submission.</p>
         }
-
-        <nav class="govuk-pagination" role="navigation" aria-label="results">
-            @if (Model.HasPreviousPage)
-            {
-                <div class="govuk-pagination__prev">
-                    <a class="govuk-link govuk-pagination__link"
-                       href="@Url.Action("Details", new { hnid = Model.Hnid, month = Model.SelectedMonth, year = Model.SelectedYear, statusFilter = Model.StatusFilter, page = Model.CurrentPage - 1 })" rel="prev">
-                        <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
-                            <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
-                        </svg>
-                        <span class="govuk-pagination__link-title">Previous</span>
-                    </a>
-                </div>
-            }
-
-            <ul class="govuk-pagination__list">
-                @for (int i = 1; i <= Model.TotalPages; i++)
-                {
-                    <li class="govuk-pagination__item @(i == Model.CurrentPage ? "govuk-pagination__item--current" : "")">
-                        <a class="govuk-link govuk-pagination__link"
-                           href="@Url.Action("Details", new { hnid = Model.Hnid, month = Model.SelectedMonth, year = Model.SelectedYear, statusFilter = Model.StatusFilter, page = i })" aria-label="Page @i">
-                            @i
-                        </a>
-                    </li>
-                }
-            </ul>
-
-            @if (Model.HasNextPage)
-            {
-                <div class="govuk-pagination__next">
-                    <a class="govuk-link govuk-pagination__link"
-                       href="@Url.Action("Details", new { hnid = Model.Hnid, month = Model.SelectedMonth, year = Model.SelectedYear, statusFilter = Model.StatusFilter, page = Model.CurrentPage + 1 })" rel="next">
-                        <span class="govuk-pagination__link-title">Next</span>
-                        <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
-                            <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
-                        </svg>
-                    </a>
-                </div>
-            }
-        </nav>
-
-        <p class="govuk-body govuk-!-margin-top-4">
-            Showing <b>@Model.FromRecord</b> to <b>@Model.ToRecord</b> of <b>@Model.TotalElements</b> elements
-        </p>
+        else
+        {
+            <table class="govuk-table">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th class="govuk-table__header">Date</th>
+                        <th class="govuk-table__header">Target</th>
+                        <th class="govuk-table__header">KPI</th>
+                        <th class="govuk-table__header">Change</th>
+                        <th class="govuk-table__header">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                    @foreach (var item in Model.AuditHistory)
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell" style="white-space: nowrap;">
+                                @item.Timestamp?.ToString("dd MMM yyyy, HH:mm")
+                            </td>
+                            <td class="govuk-table__cell">
+                                <strong>@(item.IsAggregated == true ? "Network" : $"ID: {item.ElementId}")</strong>
+                            </td>
+                            <td class="govuk-table__cell">@item.KpiId</td>
+                            <td class="govuk-table__cell">
+                                <span class="govuk-hint" style="text-decoration: line-through; margin-right: 5px;">
+                                    @(item.OldValue ?? "N/A")
+                                </span>
+                                &rarr; <b>@item.NewValue</b>
+                            </td>
+                            <td class="govuk-table__cell">
+                                <strong class="govuk-tag @(item.NewStatus == "Pass" ? "govuk-tag--green" : "govuk-tag--red")">
+                                    @item.NewStatus
+                                </strong>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     </div>
 </div>
+

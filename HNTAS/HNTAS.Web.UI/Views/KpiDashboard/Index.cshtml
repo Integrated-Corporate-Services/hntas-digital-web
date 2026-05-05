@@ -2,6 +2,7 @@
 @model NetworkListViewModel
 
 <div class="govuk-grid-row">
+    @* Left Column: Filters *@
     <div class="govuk-grid-column-one-third">
         <form method="get">
             <div class="govuk-form-group">
@@ -18,7 +19,7 @@
                     <div class="govuk-form-group govuk-!-margin-bottom-2">
                         <label class="govuk-label" for="month">Month</label>
                         <select class="govuk-select govuk-!-width-full" id="month" name="month">
-                            <option value="">All months</option> @* This is your new default *@
+                            <option value="">All months</option>
                             @foreach (var m in Model.Months)
                             {
                                 <option value="@m.Key" selected="@(Model.SelectedMonth == m.Key ? "selected" : null)">
@@ -50,33 +51,84 @@
         </form>
     </div>
 
+    @* Right Column: Results Table *@
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Heat Networks</h1>
 
-        <table class="govuk-table">
-            <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th class="govuk-table__header">HNID</th>
-                    <th class="govuk-table__header">Network Name</th>
-                    <th class="govuk-table__header">Provider</th>
-                    <th class="govuk-table__header">Data Period</th>
-                </tr>
-            </thead>
-            <tbody class="govuk-table__body">
-                @foreach (var network in Model.Networks)
-                {
+        @if (Model.Networks.Any())
+        {
+            <table class="govuk-table">
+                <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
-                        <td class="govuk-table__cell">
-                            <a href="/arms-dashboard-poc/details?hnid=@network.Hnid&month=@(Model.SelectedMonth ?? network.LastPostDate.Month)&year=@network.LastPostDate.Year" class="govuk-link govuk-!-font-weight-bold">
+                        <th class="govuk-table__header">HNID</th>
+                        <th class="govuk-table__header">Network Name</th>
+                        <th class="govuk-table__header">Provider</th>
+                        <th class="govuk-table__header">Data Period</th>
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                    @foreach (var network in Model.Networks)
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">
+                            @* Updated Link to use submissionId *@
+                                <a href="@Url.Action("Details", new { submissionId = network.SubmissionId, month = Model.SelectedMonth, year = Model.SelectedYear })" class="govuk-link govuk-!-font-weight-bold">
                                 @network.Hnid
                             </a>
                         </td>
                         <td class="govuk-table__cell">@network.Name</td>
                         <td class="govuk-table__cell">@network.Provider</td>
-                        <td class="govuk-table__cell">@network.LastPostDate.ToString("MMMM yyyy")</td>
+                        <td class="govuk-table__cell">@network.DataPeriod</td>
                     </tr>
                 }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="govuk-inset-text">
+                No heat network data is available for the selected period.
+            </div>
+        }
+        @* GOV.UK Pagination Component *@
+        @if (Model.TotalPages > 1)
+        {
+            <nav class="govuk-pagination" role="navigation" aria-label="results">
+                @if (Model.CurrentPage > 1)
+                {
+                    <div class="govuk-pagination__prev">
+                        <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { searchTerm = Model.SearchTerm, month = Model.SelectedMonth, year = Model.SelectedYear, page = Model.CurrentPage - 1 })" rel="prev">
+                            <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.0095-3.8031h11.027v-2.0406h-11.053l4.029-4.029z"></path>
+                            </svg>
+                            <span class="govuk-pagination__link-title">Previous</span>
+                        </a>
+                    </div>
+                }
+
+                <ul class="govuk-pagination__list">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="govuk-pagination__item @(i == Model.CurrentPage ? "govuk-pagination__item--current" : "")">
+                            <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { searchTerm = Model.SearchTerm, month = Model.SelectedMonth, year = Model.SelectedYear, page = i })" aria-label="Page @i">
+                                @i
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <div class="govuk-pagination__next">
+                        <a class="govuk-link govuk-pagination__link" href="@Url.Action("Index", new { searchTerm = Model.SearchTerm, month = Model.SelectedMonth, year = Model.SelectedYear, page = Model.CurrentPage + 1 })" rel="next">
+                            <span class="govuk-pagination__link-title">Next</span>
+                            <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                <path d="m8.107-0.0078125-1.4136 1.414 4.1856 4.1856h-11.565v2.0406h11.568l-4.1887 4.1887 1.414 1.414 6.7469-6.7469z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                }
+            </nav>
+        }
     </div>
 </div>
