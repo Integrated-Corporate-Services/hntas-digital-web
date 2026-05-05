@@ -6,6 +6,7 @@ servers:
 - url: https://localhost:7117/
 tags:
 - name: Arms
+- name: ArmsDashboard
 - name: Assessor
 - name: AssignedAssessor
 - name: Audit
@@ -168,6 +169,199 @@ paths:
           description: Internal Server Error
       tags:
       - Arms
+  /api/ArmsDashboard/get-kpi-networks-by-rp-user:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: month
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: year
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageNumber
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkDashboardResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkDashboardResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkDashboardResponse"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - ArmsDashboard
+  /api/ArmsDashboard/get-kpi-network-details:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: submissionId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: statusFilter
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: typeFilter
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkDetailsResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkDetailsResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkDetailsResponse"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - ArmsDashboard
+  /api/ArmsDashboard/{submissionId}/history:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: submissionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/KpiHistoryResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/KpiHistoryResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/KpiHistoryResponse"
+                type: array
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - ArmsDashboard
   /api/Assessor/search:
     get:
       parameters:
@@ -3693,6 +3887,31 @@ components:
           nullable: true
           type: array
       type: object
+    ElementGroupDto:
+      example:
+        elementId: elementId
+        elementType: elementType
+        kpis:
+        - isImputed: true
+          kpiName: kpiName
+          imputationDetails: imputationDetails
+          value: 1.4658129805029452
+          status: status
+        - isImputed: true
+          kpiName: kpiName
+          imputationDetails: imputationDetails
+          value: 1.4658129805029452
+          status: status
+      properties:
+        elementId:
+          type: string
+        elementType:
+          type: string
+        kpis:
+          items:
+            $ref: "#/components/schemas/KpiDetailDto"
+          type: array
+      type: object
     ElementSoaAssignAssessorRequest:
       example:
         assessment: assessment
@@ -4296,6 +4515,125 @@ components:
         noOfDownstreamDistrictHeatNetworkConnections:
           format: int32
           nullable: true
+          type: integer
+      type: object
+    HeatNetworkDashboardResponse:
+      example:
+        totalPages: 6
+        totalCount: 0
+        currentPage: 1
+        items:
+        - dataPeriod: dataPeriod
+          hnId: hnId
+          lastUpdated: 2000-01-23T04:56:07.000+00:00
+          submissionId: submissionId
+          provider: provider
+          networkName: networkName
+        - dataPeriod: dataPeriod
+          hnId: hnId
+          lastUpdated: 2000-01-23T04:56:07.000+00:00
+          submissionId: submissionId
+          provider: provider
+          networkName: networkName
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/HeatNetworkDashboardRow"
+          type: array
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        currentPage:
+          format: int32
+          type: integer
+      type: object
+    HeatNetworkDashboardRow:
+      example:
+        dataPeriod: dataPeriod
+        hnId: hnId
+        lastUpdated: 2000-01-23T04:56:07.000+00:00
+        submissionId: submissionId
+        provider: provider
+        networkName: networkName
+      properties:
+        hnId:
+          type: string
+        networkName:
+          type: string
+        provider:
+          type: string
+        dataPeriod:
+          type: string
+        submissionId:
+          nullable: true
+          type: string
+        lastUpdated:
+          format: date-time
+          nullable: true
+          type: string
+      type: object
+    HeatNetworkDetailsResponse:
+      example:
+        hnId: hnId
+        selectedMonth: 0
+        selectedYear: 6
+        networkName: networkName
+        totalPages: 5
+        currentPage: 5
+        groupedElements:
+        - elementId: elementId
+          elementType: elementType
+          kpis:
+          - isImputed: true
+            kpiName: kpiName
+            imputationDetails: imputationDetails
+            value: 1.4658129805029452
+            status: status
+          - isImputed: true
+            kpiName: kpiName
+            imputationDetails: imputationDetails
+            value: 1.4658129805029452
+            status: status
+        - elementId: elementId
+          elementType: elementType
+          kpis:
+          - isImputed: true
+            kpiName: kpiName
+            imputationDetails: imputationDetails
+            value: 1.4658129805029452
+            status: status
+          - isImputed: true
+            kpiName: kpiName
+            imputationDetails: imputationDetails
+            value: 1.4658129805029452
+            status: status
+        totalElements: 2
+      properties:
+        hnId:
+          type: string
+        networkName:
+          type: string
+        selectedMonth:
+          format: int32
+          type: integer
+        selectedYear:
+          format: int32
+          type: integer
+        groupedElements:
+          items:
+            $ref: "#/components/schemas/ElementGroupDto"
+          type: array
+        currentPage:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        totalElements:
+          format: int32
           type: integer
       type: object
     HeatNetworkElement:
@@ -5066,6 +5404,62 @@ components:
               $ref: "#/components/schemas/KpiRule"
             type: object
           type: object
+      type: object
+    KpiDetailDto:
+      example:
+        isImputed: true
+        kpiName: kpiName
+        imputationDetails: imputationDetails
+        value: 1.4658129805029452
+        status: status
+      properties:
+        kpiName:
+          type: string
+        value:
+          format: double
+          type: number
+        status:
+          type: string
+        isImputed:
+          type: boolean
+        imputationDetails:
+          nullable: true
+          type: string
+      type: object
+    KpiHistoryResponse:
+      example:
+        elementId: elementId
+        newValue: newValue
+        isImputed: true
+        newStatus: newStatus
+        oldStatus: oldStatus
+        sourceSystem: sourceSystem
+        isAggregated: true
+        kpiId: kpiId
+        oldValue: oldValue
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        timestamp:
+          format: date-time
+          type: string
+        sourceSystem:
+          type: string
+        kpiId:
+          type: string
+        elementId:
+          type: string
+        isAggregated:
+          type: boolean
+        oldValue:
+          type: string
+        newValue:
+          type: string
+        oldStatus:
+          type: string
+        newStatus:
+          type: string
+        isImputed:
+          type: boolean
       type: object
     KpiMetadata:
       additionalProperties: false
