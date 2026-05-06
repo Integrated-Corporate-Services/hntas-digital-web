@@ -48,7 +48,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="page"> (optional, default to 1)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse"/>&gt;</returns>
-        Task<IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse> ApiArmsDashboardGetKpiNetworkDetailsGetAsync(Option<string> submissionId = default, Option<List<string>> statusFilter = default, Option<List<string>> typeFilter = default, Option<int> page = default, System.Threading.CancellationToken cancellationToken = default);
+        Task<IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse> ApiArmsDashboardGetKpiNetworkDetailsGetAsync(Option<string> submissionId = default, Option<string> statusFilter = default, Option<string> typeFilter = default, Option<int> page = default, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -62,7 +62,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="page"> (optional, default to 1)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse"/>?&gt;</returns>
-        Task<IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse?> ApiArmsDashboardGetKpiNetworkDetailsGetOrDefaultAsync(Option<string> submissionId = default, Option<List<string>> statusFilter = default, Option<List<string>> typeFilter = default, Option<int> page = default, System.Threading.CancellationToken cancellationToken = default);
+        Task<IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse?> ApiArmsDashboardGetKpiNetworkDetailsGetOrDefaultAsync(Option<string> submissionId = default, Option<string> statusFilter = default, Option<string> typeFilter = default, Option<int> page = default, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -289,7 +289,7 @@ namespace HNTAS.Api.Client.Api
             Events = armsDashboardApiEvents;
         }
 
-        partial void FormatApiArmsDashboardGetKpiNetworkDetailsGet(ref Option<string> submissionId, Option<List<string>> statusFilter, Option<List<string>> typeFilter, ref Option<int> page);
+        partial void FormatApiArmsDashboardGetKpiNetworkDetailsGet(ref Option<string> submissionId, ref Option<string> statusFilter, ref Option<string> typeFilter, ref Option<int> page);
 
         /// <summary>
         /// Validates the request parameters
@@ -298,7 +298,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="statusFilter"></param>
         /// <param name="typeFilter"></param>
         /// <returns></returns>
-        private void ValidateApiArmsDashboardGetKpiNetworkDetailsGet(Option<string> submissionId, Option<List<string>> statusFilter, Option<List<string>> typeFilter)
+        private void ValidateApiArmsDashboardGetKpiNetworkDetailsGet(Option<string> submissionId, Option<string> statusFilter, Option<string> typeFilter)
         {
             if (submissionId.IsSet && submissionId.Value == null)
                 throw new ArgumentNullException(nameof(submissionId));
@@ -318,7 +318,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="statusFilter"></param>
         /// <param name="typeFilter"></param>
         /// <param name="page"></param>
-        private void AfterApiArmsDashboardGetKpiNetworkDetailsGetDefaultImplementation(IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse apiResponseLocalVar, Option<string> submissionId, Option<List<string>> statusFilter, Option<List<string>> typeFilter, Option<int> page)
+        private void AfterApiArmsDashboardGetKpiNetworkDetailsGetDefaultImplementation(IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse apiResponseLocalVar, Option<string> submissionId, Option<string> statusFilter, Option<string> typeFilter, Option<int> page)
         {
             bool suppressDefaultLog = false;
             AfterApiArmsDashboardGetKpiNetworkDetailsGet(ref suppressDefaultLog, apiResponseLocalVar, submissionId, statusFilter, typeFilter, page);
@@ -335,7 +335,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="statusFilter"></param>
         /// <param name="typeFilter"></param>
         /// <param name="page"></param>
-        partial void AfterApiArmsDashboardGetKpiNetworkDetailsGet(ref bool suppressDefaultLog, IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse apiResponseLocalVar, Option<string> submissionId, Option<List<string>> statusFilter, Option<List<string>> typeFilter, Option<int> page);
+        partial void AfterApiArmsDashboardGetKpiNetworkDetailsGet(ref bool suppressDefaultLog, IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse apiResponseLocalVar, Option<string> submissionId, Option<string> statusFilter, Option<string> typeFilter, Option<int> page);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -347,7 +347,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="statusFilter"></param>
         /// <param name="typeFilter"></param>
         /// <param name="page"></param>
-        private void OnErrorApiArmsDashboardGetKpiNetworkDetailsGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> submissionId, Option<List<string>> statusFilter, Option<List<string>> typeFilter, Option<int> page)
+        private void OnErrorApiArmsDashboardGetKpiNetworkDetailsGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> submissionId, Option<string> statusFilter, Option<string> typeFilter, Option<int> page)
         {
             bool suppressDefaultLogLocalVar = false;
             OnErrorApiArmsDashboardGetKpiNetworkDetailsGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, submissionId, statusFilter, typeFilter, page);
@@ -366,7 +366,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="statusFilter"></param>
         /// <param name="typeFilter"></param>
         /// <param name="page"></param>
-        partial void OnErrorApiArmsDashboardGetKpiNetworkDetailsGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> submissionId, Option<List<string>> statusFilter, Option<List<string>> typeFilter, Option<int> page);
+        partial void OnErrorApiArmsDashboardGetKpiNetworkDetailsGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> submissionId, Option<string> statusFilter, Option<string> typeFilter, Option<int> page);
 
         /// <summary>
         ///  
@@ -377,7 +377,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="page"> (optional, default to 1)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse"/>&gt;</returns>
-        public async Task<IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse?> ApiArmsDashboardGetKpiNetworkDetailsGetOrDefaultAsync(Option<string> submissionId = default, Option<List<string>> statusFilter = default, Option<List<string>> typeFilter = default, Option<int> page = default, System.Threading.CancellationToken cancellationToken = default)
+        public async Task<IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse?> ApiArmsDashboardGetKpiNetworkDetailsGetOrDefaultAsync(Option<string> submissionId = default, Option<string> statusFilter = default, Option<string> typeFilter = default, Option<int> page = default, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
@@ -399,7 +399,7 @@ namespace HNTAS.Api.Client.Api
         /// <param name="page"> (optional, default to 1)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse"/>&gt;</returns>
-        public async Task<IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse> ApiArmsDashboardGetKpiNetworkDetailsGetAsync(Option<string> submissionId = default, Option<List<string>> statusFilter = default, Option<List<string>> typeFilter = default, Option<int> page = default, System.Threading.CancellationToken cancellationToken = default)
+        public async Task<IApiArmsDashboardGetKpiNetworkDetailsGetApiResponse> ApiArmsDashboardGetKpiNetworkDetailsGetAsync(Option<string> submissionId = default, Option<string> statusFilter = default, Option<string> typeFilter = default, Option<int> page = default, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
@@ -407,7 +407,7 @@ namespace HNTAS.Api.Client.Api
             {
                 ValidateApiArmsDashboardGetKpiNetworkDetailsGet(submissionId, statusFilter, typeFilter);
 
-                FormatApiArmsDashboardGetKpiNetworkDetailsGet(ref submissionId, statusFilter, typeFilter, ref page);
+                FormatApiArmsDashboardGetKpiNetworkDetailsGet(ref submissionId, ref statusFilter, ref typeFilter, ref page);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
