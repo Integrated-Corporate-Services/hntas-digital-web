@@ -1,25 +1,30 @@
 ﻿@{
-    ViewData["Title"] = "About heat networks - Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
+    ViewData["Title"] = "Communal and district networks - Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+
+        <a class="govuk-back-link" href="javascript:history.back()">Back</a>
+
         <span class="govuk-caption-l">Add a heat network</span>
-        <h1 class="govuk-heading-l">
-            Heat networks and HNTAS
-        </h1>
-        <p class="govuk-body">In this service, a heat network includes the elements used to supply heat to one or more buildings. This includes the elements that distribute heat to individual dwellings within a communal building. </p>
-        <h2 class="govuk-heading-m">Network types</h2>
-        <p class="govuk-body"><strong>Communal networks</strong> are individual communal buildings with or without their own energy centre.</p>
+        <h1 class="govuk-heading-l">Communal and district networks</h1>
 
-        <p class="govuk-body"><strong>District networks</strong> supply to more than one building and include the connecting elements between those buildings. </p>
+        <p class="govuk-body"><strong>Communal networks</strong> consist of the heat network elements that supply dwellings or units within one communal building.</p>
 
-        <p class="govuk-body">Each communal and district heat network must be registered separately, even if a communal network is stand-alone or connected to a district network.</p>
-        <p class="govuk-body">If you are registering a district network with connected communal networks that you do not own, those communal networks must be registered separately by their owners.</p>
+        <p class="govuk-body"><strong>District networks</strong> consist of the elements that supply more than one building, including the connecting elements between those buildings.</p>
+
+        <div class="govuk-warning-text" data-module="govuk-warning-text" style="margin-top: 1.5rem;">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                <span class="govuk-warning-text__message">An energy centre within a communal building that also supplies other buildings must be registered as part of a district network.</span>
+            </strong>
+        </div>
 
         <div class="govuk-!-margin-top-6"></div>
         <form asp-controller="HeatNetworkRegistration" asp-action="HeatNetworkType" method="GET">
-            <button type="submit" class="govuk-button">
+            <button type="submit" class="govuk-button govuk-button--start-green">
                 Continue
             </button>
         </form>
