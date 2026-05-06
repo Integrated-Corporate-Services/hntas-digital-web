@@ -20,10 +20,19 @@ namespace HNTAS.Web.UI.Services.Core
         {
             try
             {
+                // Convert List<string> to a single comma-separated string for the API
+                string statusParam = (statusFilter != null && statusFilter.Any())
+                    ? string.Join(",", statusFilter)
+                    : string.Empty;
+
+                string typeParam = (typeFilter != null && typeFilter.Any())
+                    ? string.Join(",", typeFilter)
+                    : string.Empty;
+
                 var response = await _armsDashboardApi.ApiArmsDashboardGetKpiNetworkDetailsGetOrDefaultAsync(
                     submissionId,
-                    statusFilter ?? new List<string>(),
-                    typeFilter ?? new List<string>(),
+                    statusParam,
+                    typeParam,
                     page);
 
                 if (response != null && response.IsOk)

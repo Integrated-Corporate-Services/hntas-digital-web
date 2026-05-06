@@ -213,7 +213,7 @@
 
     <!-- HISTORY TAB -->
     <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="history">
-        <h2 class="govuk-heading-m">Submission Audit Trail</h2>
+        <h2 class="govuk-heading-m">Audit Trail</h2>
 
         @if (Model.AuditHistory == null || !Model.AuditHistory.Any())
         {
@@ -224,11 +224,11 @@
             <table class="govuk-table">
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
-                        <th class="govuk-table__header">Date</th>
-                        <th class="govuk-table__header">Target</th>
-                        <th class="govuk-table__header">KPI</th>
-                        <th class="govuk-table__header">Change</th>
-                        <th class="govuk-table__header">Status</th>
+                        <th scope="col" class="govuk-table__header">Date Time</th>
+                        <th scope="col" class="govuk-table__header">Element ID</th>
+                        <th scope="col" class="govuk-table__header">KPI</th>
+                        <th scope="col" class="govuk-table__header">Change</th>
+                        <th scope="col" class="govuk-table__header">Status</th>
                     </tr>
                 </thead>
                 <tbody class="govuk-table__body">
@@ -239,7 +239,7 @@
                                 @item.Timestamp?.ToString("dd MMM yyyy, HH:mm")
                             </td>
                             <td class="govuk-table__cell">
-                                <strong>@(item.IsAggregated == true ? "Network" : $"ID: {item.ElementId}")</strong>
+                                <strong>@(item.IsAggregated == true ? "Network" : $"{item.ElementId}")</strong>
                             </td>
                             <td class="govuk-table__cell">@item.KpiId</td>
                             <td class="govuk-table__cell">
