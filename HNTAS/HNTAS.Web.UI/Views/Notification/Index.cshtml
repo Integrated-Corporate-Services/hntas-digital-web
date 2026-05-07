@@ -101,7 +101,9 @@
                             <td class="govuk-table__cell">
                                 @if (log.Timestamp.HasValue)
                                 {
-                                    @log.Timestamp.Value.ToString("dd/MM/yyyy HH:mm")
+                                    <time class="local-time" datetime="@log.Timestamp.Value.ToString("o")">
+                                        @log.Timestamp.Value.ToString("dd/MM/yyyy HH:mm")
+                                    </time>
                                 }
                                 else
                                 {
@@ -178,3 +180,23 @@
 
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Convert all times to local timezone
+            document.querySelectorAll('.local-time').forEach(function(timeElement) {
+                const utcDate = new Date(timeElement.getAttribute('datetime'));
+
+                // Format to dd/MM/yyyy HH:mm in local timezone
+                const day = String(utcDate.getDate()).padStart(2, '0');
+                const month = String(utcDate.getMonth() + 1).padStart(2, '0');
+                const year = utcDate.getFullYear();
+                const hours = String(utcDate.getHours()).padStart(2, '0');
+                const minutes = String(utcDate.getMinutes()).padStart(2, '0');
+
+                timeElement.textContent = `${day}/${month}/${year} ${hours}:${minutes}`;
+            });
+        });
+    </script>
+}
