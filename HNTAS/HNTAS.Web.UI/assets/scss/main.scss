@@ -51,6 +51,10 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
 }
 
 @media screen and (max-width: 640px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
     .govuk-grid-row {
         flex-wrap: wrap;
     }
