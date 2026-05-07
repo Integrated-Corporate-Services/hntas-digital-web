@@ -137,16 +137,65 @@ namespace HNTAS.Web.UI.Helpers
             }
         }
 
-        public static string GetNetworkElementHeadingForNetworkType(Api.Client.Model.HeatNetworkType? networkType)
+        public static List<NetworkElementOption> GetNetworkElementOptionsForNetworkType(string networkType, bool isOwnEnergyCentre)
         {
-            return networkType switch
+            if (networkType == "Communal")
             {
-                Api.Client.Model.HeatNetworkType.CommunalWithIntegralEC => "Communal network elements",
-                Api.Client.Model.HeatNetworkType.CommunalWithSeparateUpstreamHN => "Communal network elements",
-                Api.Client.Model.HeatNetworkType.DistrictWithOwnEC => "District network elements",
-                Api.Client.Model.HeatNetworkType.DistrictWithSeparateUpstreamHN => "District network elements",
-                _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
-            };
+                return new List<NetworkElementOption>
+                {
+                    new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Communal substation (within the communal building)", SubLabel = "Substations", Hint = "Helps supply a communal distribution network" },
+                    new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal Distribution Network", SubLabel = "Communal Distribution Networks", Hint = "Pipework running inside a communal building to dwellings or units"},
+                    new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connections", Hint = "Connects the network to individual dwellings or units" },
+                };
+            }
+            else if (networkType == "District" && isOwnEnergyCentre)
+            {
+                return new List<NetworkElementOption>
+                {
+                    new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre (excluding the main energy centre)", SubLabel = "Energy Centres", Hint = "The plant room containing heat generation and connection equipment to an energy source" },
+                    new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connections", Hint = "The connection between a district or communal distribution network and a single consumer heat system"},
+                };
+            }
+            else if (networkType == "District" && !isOwnEnergyCentre)
+            {
+                return new List<NetworkElementOption>
+                {
+                    new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre (not including the supplying energy centre)", SubLabel = "Energy Centres", Hint = "The plant room containing heat generation and connection equipment to an energy source" },
+                    new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connections", Hint = "The connection between a district or communal distribution network and a single consumer heat system"},
+                };
+            }            
+            else
+            {
+                return new List<NetworkElementOption>
+                {
+                };
+            }
+        }
+
+        //public static string GetNetworkElementHeadingForNetworkType(Api.Client.Model.HeatNetworkType? networkType)
+        //{
+        //    return networkType switch
+        //    {
+        //        Api.Client.Model.HeatNetworkType.CommunalWithIntegralEC => "Communal network elements",
+        //        Api.Client.Model.HeatNetworkType.CommunalWithSeparateUpstreamHN => "Communal network elements",
+        //        Api.Client.Model.HeatNetworkType.DistrictWithOwnEC => "District network elements",
+        //        Api.Client.Model.HeatNetworkType.DistrictWithSeparateUpstreamHN => "District network elements",
+        //        _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
+        //    };
+        //}
+
+        public static string GetNetworkElementHeadingForNetworkType(string networkType)
+        {
+            if (networkType == "Communal")
+            {
+                return "Communal network elements";
+            }
+            else if (networkType == "District")
+            {
+                return "District network elements";
+            }
+            
+            return "";
         }
 
         public static string GetNetworkTypeLabelForNetworkType(Api.Client.Model.HeatNetworkType? networkType)
