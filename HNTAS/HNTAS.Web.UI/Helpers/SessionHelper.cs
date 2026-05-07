@@ -63,7 +63,7 @@ namespace HNTAS.Web.UI.Helpers
         public void ClearAllHNRegistrationFlowRelatedSessionData(HttpContext context)
         {
             ClearFromSession(context, SessionKeys.HowManyDwellingsIncludedModelKey);
-            ClearFromSession(context, SessionKeys.HeatNetworkTypeViewModelKey);
+            //ClearFromSession(context, SessionKeys.HeatNetworkTypeViewModelKey);
             ClearFromSession(context, SessionKeys.HeatNetworkConnectionsViewModelKey);
             ClearFromSession(context, SessionKeys.HeatNetworkNameModelKey);
             ClearFromSession(context, SessionKeys.DoesHNHaveAPostcodeViewModelKey);

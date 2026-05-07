@@ -1,92 +1,96 @@
 ﻿@using HNTAS.Web.UI.Models;
 @model DeedPollViewModel
 @{
-    ViewData["Title"] = "Agree to HNTAS Terms and Conditions";
+    ViewData["Title"] = "Agree to HNTAS terms and conditions";
 }
 
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-l">
-            Agree to HNTAS Terms and Conditions
-        </h1>
+            <a class="govuk-back-link" href="javascript:history.back()">Back</a>
 
-        <p class="govuk-body">
-            The terms and conditions set out what your organisation must do when registering heat networks for certification.
-        </p>
+            <h1 class="govuk-heading-l">
+                Agree to HNTAS terms and conditions
+            </h1>
 
-        <p class="govuk-body">
-            <strong>By agreeing, your organisation will:</strong>
-        </p>
+            <p class="govuk-body">
+                The terms and conditions set out what your organisation must do when registering heat networks for certification.
+            </p>
 
-        <ul class="govuk-list govuk-list--bullet">
-            <li>comply with HNTAS scheme rules</li>
-            <li>follow HNTAS processes for registering heat networks and undergoing assessment</li>
-            <li>accept decisions made by the HNTAS Code Manager, including the outcome of any appeals</li>
-        </ul>
+            <p class="govuk-body">
+                <strong>By agreeing, your organisation will:</strong>
+            </p>
 
-        <p class="govuk-body">
-            The detailed requirements of HNTAS are set out in the
-            <a class="govuk-link" href="#">HNTAS Terms and Conditions</a>
-            and related scheme documents.
-        </p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>comply with HNTAS scheme rules</li>
+                <li>follow HNTAS processes for registering heat networks and undergoing assessment</li>
+                <li>accept decisions made by the HNTAS, including the outcome of any appeals</li>
+            </ul>
 
-        <h2 class="govuk-heading-m">Confirm your organisation's agreement</h2>
+            <p class="govuk-body">
+                The detailed requirements of HNTAS are set out in the
+                <a class="govuk-link" href="#">HNTAS terms and conditions</a>
+                and related scheme documents.
+            </p>
 
-        @* Error summary (if validation fails) *@
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1"
-                    data-module="govuk-error-summary">
-                <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
-                <div class="govuk-error-summary__body">
-                    <ul class="govuk-list govuk-error-summary__list">
-                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                        {
-                            <li><a href="#IsDeedPollAccepted">@error.ErrorMessage</a></li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        }
+            <h2 class="govuk-heading-m">Confirm your organisation's agreement</h2>
 
-        <form asp-action="DeedPoll" method="post" novalidate>
-            @Html.AntiForgeryToken()
-
-            <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.IsDeedPollAccepted)) && ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.Any() ? "govuk-form-group--error" : "")">
-
-                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                    <div class="govuk-checkboxes__item">
-
-                        <input class="govuk-checkboxes__input"
-                               id="IsDeedPollAccepted"
-                               name="IsDeedPollAccepted"
-                               type="checkbox"
-                               value="true"
-                               @(Model.IsDeedPollAccepted == true ? "checked" : "") />
-
-                        <label class="govuk-label govuk-checkboxes__label" for="IsDeedPollAccepted">
-                            I confirm that I am authorised to act on behalf of this organisation and that it agrees to the HNTAS Terms and Conditions
-                        </label>
-
-                        <input type="hidden" name="IsDeedPollAccepted" value="false" />
+            @* Error summary (if validation fails) *@
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1"
+                     data-module="govuk-error-summary">
+                    <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li><a href="#IsDeedPollAccepted">@error.ErrorMessage</a></li>
+                            }
+                        </ul>
                     </div>
                 </div>
+            }
 
-                @if (ViewData.ModelState.ContainsKey(nameof(Model.IsDeedPollAccepted)) &&
-                            ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.Any())
-                {
-                    <p id="IsDeedPollAccepted-error" class="govuk-error-message">
-                        <span class="govuk-visually-hidden">Error:</span>
-                        @ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.First().ErrorMessage
-                    </p>
-                }
+            <form asp-action="DeedPoll" method="post" novalidate>
+                @Html.AntiForgeryToken()
 
-            </div>
+                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.IsDeedPollAccepted)) && ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.Any() ? "govuk-form-group--error" : "")">
 
-            <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                        <div class="govuk-checkboxes__item">
 
-        </form>
+                            <input class="govuk-checkboxes__input"
+                                   id="IsDeedPollAccepted"
+                                   name="IsDeedPollAccepted"
+                                   type="checkbox"
+                                   value="true"
+                                   @(Model.IsDeedPollAccepted == true ? "checked" : "") />
 
+                            <label class="govuk-label govuk-checkboxes__label" for="IsDeedPollAccepted">
+                                I confirm that I am authorised to act on behalf of this organisation and that it agrees to the HNTAS terms and conditions
+                            </label>
+
+                            <input type="hidden" name="IsDeedPollAccepted" value="false" />
+                        </div>
+                    </div>
+
+                    @if (ViewData.ModelState.ContainsKey(nameof(Model.IsDeedPollAccepted)) &&
+                                        ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.Any())
+                    {
+                        <p id="IsDeedPollAccepted-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @ViewData.ModelState[nameof(Model.IsDeedPollAccepted)].Errors.First().ErrorMessage
+                        </p>
+                    }
+
+                </div>
+
+                <button type="submit" class="govuk-button govuk-button--start-green" data-module="govuk-button">Continue</button>
+
+            </form>
+
+        </div>
     </div>
 </div>

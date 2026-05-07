@@ -51,7 +51,7 @@ namespace HNTAS.Web.UI.Models
         public AddressByStreetOrTownModel? HeatNetworkAddressModel { get; set; }
         public ECDetailsModel ECDetailsModel { get; set; }
         public HeatNetworkPhaseModel HeatNetworkPhaseModel { get; set; }        
-        public HeatNetworkTypeViewModel HeatNetworkTypeModel { get; set; }
+        //public HeatNetworkTypeViewModel HeatNetworkTypeModel { get; set; }
         public HeatNetworkConnectionsViewModel? HeatNetworkConnectionsModel { get; set; }
         public PathwayModel PathwayModel { get; set; }
 
