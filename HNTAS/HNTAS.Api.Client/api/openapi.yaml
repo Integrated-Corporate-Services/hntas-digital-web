@@ -258,18 +258,14 @@ paths:
         name: statusFilter
         required: false
         schema:
-          items:
-            type: string
-          type: array
+          type: string
         style: form
       - explode: true
         in: query
         name: typeFilter
         required: false
         schema:
-          items:
-            type: string
-          type: array
+          type: string
         style: form
       - explode: true
         in: query
