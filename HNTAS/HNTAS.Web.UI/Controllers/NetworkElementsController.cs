@@ -51,10 +51,11 @@ namespace HNTAS.Web.UI.Controllers
             model = new NetworkElementViewModel();
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
-            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
-            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
+            //model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
+            //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
 
-
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("District", true);
+            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType("District");
             var selectedNetworkElements = heatNetworkData?.NetworkElements;
 
             if (selectedNetworkElements != null)
@@ -85,8 +86,12 @@ namespace HNTAS.Web.UI.Controllers
 
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
-            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
-            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
+
+            var testNetworkType = "District";
+            //model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
+            //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("District", true);
+            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType("District");
             var elements = new List<Element>();
 
             foreach (var selectedId in model.SelectedElementIds)
@@ -100,14 +105,15 @@ namespace HNTAS.Web.UI.Controllers
                 elements.Add(ele);
                 if ((!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
                 {
-                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == selectedId);
+                    //var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == selectedId);
+                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("District", true).FirstOrDefault(x => x.Id == selectedId);
                     if (element == null)
                     {
                         return BadRequest();
                     }
                     // Remove the automatic ModelState entry first
                     ModelState.Remove($"ElementCounts.{selectedId}");
-                    ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter number of {element.Label}.");
+                    ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter number of {element.SubLabel.ToLower()}.");
                 }
             }
 
@@ -128,7 +134,8 @@ namespace HNTAS.Web.UI.Controllers
             {
                 Elements = elements.Select(e =>
                 {
-                    var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.Type);
+                    //var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.Type);
+                    var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("District", true).FirstOrDefault(x => x.Id == e.Type);
                     var label = elementOption != null ? elementOption.Label : e.Type.ToString();
                     label = label.ToSentenceCase();
 
@@ -143,7 +150,81 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementsOverViewModel);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, elements);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey, model);
+            
+            if (testNetworkType == "District")
+            {
+                return RedirectToAction("Substations", "NetworkElements");
+            }
             return RedirectToAction("NetworkElementsOverView", "NetworkElements");
+        }
+
+        [HttpGet]
+        public IActionResult Substations()
+        {
+            this.ShowBackButton("SelectNetworkElements", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnId = hnId?.ToUpper();
+            ViewBag.HnName = hnName;
+            var model = new SubstationsViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Substations(SubstationsViewModel model)
+        {
+            this.ShowBackButton("SelectNetworkElements", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnId = hnId?.ToUpper();
+            ViewBag.HnName = hnName;
+            
+            if (model.HasDistrictSubstation == false)
+            {
+                model.NumberOfSubstations = null;
+                ModelState.Remove(nameof(model.NumberOfSubstations));
+            }
+            else if (model.HasDistrictSubstation == true && (model.NumberOfSubstations == null))
+            {
+                ModelState.AddModelError("NumberOfSubstations", "Enter the number of substations");
+            }
+            
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            return RedirectToAction("DistributionNetworks");
+        }       
+
+
+        [HttpGet]
+        public IActionResult DistributionNetworks()
+        {
+            this.ShowBackButton("Substations", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnId = hnId?.ToUpper();
+            ViewBag.HnName = hnName;
+            var model = new DistributionNetworksViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DistributionNetworks(DistributionNetworksViewModel model)
+        {
+            this.ShowBackButton("Substations", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnId = hnId?.ToUpper();
+            ViewBag.HnName = hnName;
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            return RedirectToAction("NetworkElementsOverView");
         }
 
         [HttpGet]

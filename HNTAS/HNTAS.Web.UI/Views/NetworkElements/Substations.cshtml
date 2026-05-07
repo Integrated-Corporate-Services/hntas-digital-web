@@ -1,7 +1,12 @@
-﻿
+﻿@using HNTAS.Web.UI.Models.NetworkElements
+@model SubstationsViewModel
+@{
+    bool hasDistrictSubstationErrors = ViewData.ModelState.ContainsKey(nameof(Model.HasDistrictSubstation)) && ViewData.ModelState[nameof(Model.HasDistrictSubstation)].Errors.Any();
+    bool hasNumberOfSubstationsErrors = ViewData.ModelState.ContainsKey(nameof(Model.NumberOfSubstations)) && ViewData.ModelState[nameof(Model.NumberOfSubstations)].Errors.Any();
+}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-l">HN2000154 sdf, asdf</span>
+        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
 
         <h1 class="govuk-heading-l">Distribution networks and substations</h1>
         <p class="govuk-body"><strong>Substations</strong></p>
@@ -20,40 +25,57 @@
             network sections. If you have two substations, you will have three district
             distribution network sections.
         </p>
-        <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                    Do you have any district substations in your network?
-                </legend>
-                <div class="govuk-radios" data-module="govuk-radios" data-govuk-radios-init="">
+        <form asp-action="Substations" asp-controller="NetworkElements" method="post">
+            <div class="govuk-form-group @(hasDistrictSubstationErrors ? " govuk-form-group--error" : "" )">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        Do you have any district substations in your network?
+                    </legend>
+                    <div class="govuk-radios" data-module="govuk-radios">
 
-                    <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="hasDistrictSubstation" name="hasDistrictSubstation" type="radio" value="yes" aria-controls="conditional-hasDistrictSubstation" aria-expanded="false">
-                        <label class="govuk-label govuk-radios__label" for="hasDistrictSubstation">
-                            Yes
-                        </label>
-                    </div>
-                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-hasDistrictSubstation">
-                        <div class="govuk-form-group">
-                            <label class="govuk-label" for="no-of-thermal-substation">
-                                Number of substations
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input"
+                                   id="hasdistrictsubstation"
+                                   name="HasDistrictSubstation"
+                                   type="radio"
+                                   value="true"
+                                   checked="@(Model?.HasDistrictSubstation)"
+                                   data-aria-controls="conditional-hasdistrictsubstation">
+                            <label class="govuk-label govuk-radios__label" for="hasdistrictsubstation">
+                                Yes
                             </label>
-                            <input class="govuk-input govuk-input--width-3" id="no-of-thermal-substation" name="noOfThermalSubstation" type="number" value="">
+                        </div>
+                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
+                             id="conditional-hasdistrictsubstation">
+                            <div class="govuk-form-group @(hasNumberOfSubstationsErrors ? "govuk-form-group--error" : "")">
+                                <label class="govuk-label" for="numberofsubstations">
+                                    Number of substations
+                                </label>
+                                <input class="govuk-input govuk-input--width-3"
+                                       id="numberofsubstations"
+                                       name="NumberOfSubstations"
+                                       type="number"
+                                       value="@Model?.NumberOfSubstations">
+                            </div>
+                        </div>
+
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input"
+                                   id="hasDistrictSubstation-2"
+                                   name="HasDistrictSubstation"
+                                   type="radio"
+                                   value="false"
+                                   checked="@(!Model?.HasDistrictSubstation)">
+                            <label class="govuk-label govuk-radios__label" for="hasDistrictSubstation-2">
+                                No
+                            </label>
                         </div>
                     </div>
-
-                    <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="hasDistrictSubstation-2" name="hasDistrictSubstation" type="radio" value="no" checked="">
-                        <label class="govuk-label govuk-radios__label" for="hasDistrictSubstation-2">
-                            No
-                        </label>
-
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-        <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
-            Continue
-        </button>
+                </fieldset>
+            </div>
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>        
     </div>
 </div>
