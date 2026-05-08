@@ -82,7 +82,9 @@
         public const string AssessorElementSelectionOverviewModelSessionKey = "AssessorElementSelectionOverviewModelSessionKey";
         public const string SoaStageOfAssessorOnboarding = "SoaStageOfAssessorOnboarding";
         public const string DefaultSelectedAssessor = "DefaultSelectedAssessor";
-        public const string AssessorSearchResultsSessionKey = "AssessorSearchResultsSessionKey"; 
+        public const string AssessorSearchResultsSessionKey = "AssessorSearchResultsSessionKey";
+        public const string SubstationViewModelKey = "SubstationViewModelKey";
+        public const string DistributionNetworksViewModelKey = "DistributionNetworksViewModelKey";
 
     }
 }

@@ -8,6 +8,7 @@ using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 using Element = HNTAS.Web.UI.Models.NetworkElements.Element;
 
 namespace HNTAS.Web.UI.Controllers
@@ -54,8 +55,8 @@ namespace HNTAS.Web.UI.Controllers
             //model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
             //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
 
-            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("District", true);
-            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType("District");
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("Communal", true);
+            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType("Communal");
             var selectedNetworkElements = heatNetworkData?.NetworkElements;
 
             if (selectedNetworkElements != null)
@@ -87,11 +88,11 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
 
-            var testNetworkType = "District";
+            var testNetworkType = "Communal";
             //model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
             //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
-            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("District", true);
-            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType("District");
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("Communal", true);
+            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType("Communal");
             var elements = new List<Element>();
 
             foreach (var selectedId in model.SelectedElementIds)
@@ -106,7 +107,7 @@ namespace HNTAS.Web.UI.Controllers
                 if ((!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
                 {
                     //var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == selectedId);
-                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("District", true).FirstOrDefault(x => x.Id == selectedId);
+                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("Communal", true).FirstOrDefault(x => x.Id == selectedId);
                     if (element == null)
                     {
                         return BadRequest();
@@ -135,7 +136,7 @@ namespace HNTAS.Web.UI.Controllers
                 Elements = elements.Select(e =>
                 {
                     //var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.Type);
-                    var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("District", true).FirstOrDefault(x => x.Id == e.Type);
+                    var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.Type);
                     var label = elementOption != null ? elementOption.Label : e.Type.ToString();
                     label = label.ToSentenceCase();
 
@@ -166,7 +167,12 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
-            var model = new SubstationsViewModel();
+            var model = _sessionHelper.GetFromSession<SubstationsViewModel>(HttpContext, SessionKeys.SubstationViewModelKey);
+            if (model != null)
+            {
+                return View(model);
+            }
+            model = new SubstationsViewModel();
             return View(model);
         }
 
@@ -194,7 +200,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.SubstationViewModelKey, model);
             return RedirectToAction("DistributionNetworks");
         }       
 
@@ -207,7 +213,12 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
-            var model = new DistributionNetworksViewModel();
+            var model = _sessionHelper.GetFromSession<DistributionNetworksViewModel>(HttpContext, SessionKeys.DistributionNetworksViewModelKey);
+            if (model != null)
+            {
+                return View(model);
+            }
+            model = new DistributionNetworksViewModel();
             return View(model);
         }
 
@@ -224,13 +235,58 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.DistributionNetworksViewModelKey, model);
+
+
+            var elements = _sessionHelper.GetFromSession<List<Element>>(HttpContext, SessionKeys.SelectedElementsSessionKey);
+            var substation = _sessionHelper.GetFromSession<SubstationsViewModel>(HttpContext, SessionKeys.SubstationViewModelKey);
+            if (substation?.NumberOfSubstations > 0)
+            {
+                // Delete any existing substation element to avoid duplication in case user goes back and changes the number of substations
+                elements?.RemoveAll(e => e.Type == HeatNetworkElementType.Substation);
+                var substationElement = new Element
+                {
+                    Count = substation?.NumberOfSubstations,
+                    Type = HeatNetworkElementType.Substation
+                };
+                elements?.Add(substationElement);
+            }
+            if (model?.NumberOfDistributionNetworks > 0)
+            {
+                // Delete any existing distribution network element to avoid duplication in case user goes back and changes the number of distribution networks
+                elements?.RemoveAll(e => e.Type == HeatNetworkElementType.DistrictDistribution);
+                var distributionNetworkElement = new Element
+                {
+                    Count = model?.NumberOfDistributionNetworks,
+                    Type = HeatNetworkElementType.DistrictDistribution
+                };
+                elements?.Add(distributionNetworkElement);
+            }
+            var networkElementOverview = _sessionHelper.GetFromSession<NetworkElementsOverViewModel>(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey);
+            networkElementOverview!.Elements = elements!.Select(e =>
+            {
+                //var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.Type);
+                var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.Type);
+                var label = elementOption != null ? elementOption.Label : e.Type.ToString();
+                label = label.ToSentenceCase();
+
+                return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
+            }).ToList();
+
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementOverview);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, elements);
+
             return RedirectToAction("NetworkElementsOverView");
         }
 
         [HttpGet]
         public IActionResult NetworkElementsOverView()
         {
-            this.ShowBackButton("SelectNetworkElements", "NetworkElements");
+            var substationModel = _sessionHelper.GetFromSession<SubstationsViewModel>(HttpContext, SessionKeys.SubstationViewModelKey);
+            if (substationModel != null)
+                this.ShowBackButton("DistributionNetworks", "NetworkElements");
+            else
+                this.ShowBackButton("SelectNetworkElements", "NetworkElements");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId?.ToUpper();
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -255,36 +311,9 @@ namespace HNTAS.Web.UI.Controllers
 
             var elements = _sessionHelper.GetFromSession<List<Element>>(HttpContext, SessionKeys.SelectedElementsSessionKey);
 
-            var elementInstances = new List<Element>();
-            var instanceCounter = 1;
-            foreach (var element in elements!)
-            {
-                if (element.Count == 1)
-                {
-                    element.NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(element.Type);
-                    elementInstances.Add(element);
-                    continue;
-                }
-                instanceCounter = 1;
-                element.NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(element.Type) + " - " + instanceCounter;
-                elementInstances.Add(element);
-                for (int i = 1; i < (element.Count); i++)
-                {
-                    instanceCounter++;                    
-                    elementInstances.Add(
-                        new Element
-                        {
-                            Type = element.Type,
-                            Count = element.Count,
-                            NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(element.Type) + " - " + instanceCounter
-                        });
-                }                
-            }
-            
-
             var request = new NetworkElements2
             {
-                Elements = elementInstances?.Select(e => new Api.Client.Model.Element(type: e.Type, count: e.Count, networkElementInstanceName: e.NetworkElementInstanceName    )).ToList(),
+                Elements = elements?.Select(e => new Api.Client.Model.Element(type: e.Type, count: e.Count)).ToList(),
                 NetworkElementStatus = NetworkDetailsStatus.Complete,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId,

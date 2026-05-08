@@ -54,6 +54,7 @@ namespace HNTAS.Web.UI.Helpers
                 "DistrictDistribution" => "DDN",
                 "ConsumerConnection" => "CC",
                 "CommunalDistribution" => "CDN",
+                "CommunalSubstation" => "CSS",
                 _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element type value: {elementType}")
             };
         }
@@ -137,13 +138,13 @@ namespace HNTAS.Web.UI.Helpers
         //    }
         //}
 
-        public static List<NetworkElementOption> GetNetworkElementOptionsForNetworkType(string networkType, bool isOwnEnergyCentre)
+        public static List<NetworkElementOption> GetNetworkElementOptionsForNetworkType(string networkType = "", bool isOwnEnergyCentre = false)
         {
             if (networkType == "Communal")
             {
                 return new List<NetworkElementOption>
                 {
-                    new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Communal substation (within the communal building)", SubLabel = "Substations", Hint = "Helps supply a communal distribution network" },
+                    new() { Id = HeatNetworkElementType.CommunalSubstation, Label = "Communal substation (within the communal building)", SubLabel = "Substations", Hint = "Helps supply a communal distribution network" },
                     new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal Distribution Network", SubLabel = "Communal Distribution Networks", Hint = "Pipework running inside a communal building to dwellings or units"},
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connections", Hint = "Connects the network to individual dwellings or units" },
                 };
@@ -168,6 +169,11 @@ namespace HNTAS.Web.UI.Helpers
             {
                 return new List<NetworkElementOption>
                 {
+                    new() { Id = HeatNetworkElementType.CommunalSubstation, Label = "Communal substation" },
+                    new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal Distribution Network"},
+                    new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection" },
+                    new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre" },
+                    new() { Id = HeatNetworkElementType.DistrictDistribution, Label = "District Distribution Network"},
                 };
             }
         }
