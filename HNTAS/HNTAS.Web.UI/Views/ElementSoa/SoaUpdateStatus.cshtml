@@ -1,9 +1,32 @@
-﻿@using HNTAS.Web.UI.Models.ElementSoa
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.ElementSoa
 @model ElementSoaUpdateStatusViewModel
 
 @{
     ViewData["Title"] = ViewBag.Heading;
-    var hasError = ViewData.ModelState.ContainsKey(nameof(Model.SelectedSoaStatus)) && ViewData.ModelState[nameof(Model.SelectedSoaStatus)].Errors.Any();
+    //var hasError = ViewData.ModelState.ContainsKey(nameof(Model.SelectedSoaStatus)) && ViewData.ModelState[nameof(Model.SelectedSoaStatus)].Errors.Any();
+    var hasError = false;
+    bool hasCommunalBuildingError = false;
+
+    string StatusDisplayName(SoaStatus status)
+    {
+        switch (status)
+        {
+            case SoaStatus.NotStarted:
+                return "Not started";
+            case SoaStatus.InProgress:
+                return "In progress";
+            case SoaStatus.BeingAssessed:
+                return "Being assessed";
+            case SoaStatus.SoAAgreed:
+                return "SoA agreed";
+            case SoaStatus.SoACompleted:
+                return "SoA completed";
+            default:
+                return status.ToString();
+        }   
+        
+    }
 }
 
 <div class="govuk-grid-row">
@@ -19,20 +42,55 @@
                     </legend>
                     <div id="status-hint" class="govuk-hint">
                         Select the current stage
-                    </div>
-                    <div class="govuk-radios" data-module="govuk-radios">
+                    </div>                    
+                    
+                     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                         @for (var i = 0; i < Model.SoaStatus.Count; i++)
                         {
-                            var option = Model.SoaStatus[i];
-                            var optionId = $"option-{i}";
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="@optionId" name="SelectedSoaStatus" type="radio" value="@option" @( Model.SelectedSoaStatus == option ? "checked" : "")>
-                                <label class="govuk-label govuk-radios__label" for="@optionId">
-                                    @option<br />
-                                </label>
+                            var soaStatusWithCount = Model.SoaStatus[i];
+                            var option = soaStatusWithCount.SoaStatusType.ToString();
+                            var count = soaStatusWithCount.Count;
+                            var isChecked = count > 0;
+                            var optionCountInputId = $"{option}-count";                            
+
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input"
+                                           id="@option"
+                                           name="@option"
+                                           type="checkbox"
+                                           value="true"
+                                           data-aria-controls="conditional-@option"
+                                           @(isChecked ? "checked" : "") />
+
+                                    <label class="govuk-label govuk-checkboxes__label" for="@option">
+                                        @StatusDisplayName((SoaStatus)soaStatusWithCount.SoaStatusType!)
+                                    </label>
+                                    <input type="hidden" name="@option" value="false" />
+                                </div>
+
+                                <div class="govuk-checkboxes__conditional @(count > 0 ? "" : "govuk-checkboxes__conditional--hidden")" id="conditional-@option">
+
+                                    <div class="govuk-form-group @(hasCommunalBuildingError ? "govuk-form-group--error" : "")" id="fg-NoOfCommunalBuilding">
+                                        <label class="govuk-label" for="@optionCountInputId">
+                                            Number of connections
+                                        </label>
+                                        <p id="@optionCountInputId-error" class="govuk-error-message">
+                                            <span class="govuk-visually-hidden">Error:</span>
+                                            <span asp-validation-for="@optionCountInputId" class="govuk-error-message"></span>
+                                        </p>
+                                        <input class="govuk-input govuk-input--width-5 @(hasCommunalBuildingError ? "govuk-input--error" : "")"
+                                               id="@optionCountInputId"
+                                               name="@optionCountInputId"
+                                               type="number"
+                                               asp-for="@optionCountInputId"
+                                               aria-describedby="@(hasCommunalBuildingError ? @optionCountInputId+"-error" : "")" />
+                                    </div>
+                                </div>
                             </div>
                         }
-                    </div>                    
+                        
+                    </div> 
                 </fieldset>
             </div>
             @Html.HiddenFor(m => m.SoaStatus)

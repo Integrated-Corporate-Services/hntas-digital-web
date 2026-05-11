@@ -31,39 +31,29 @@ namespace HNTAS.Api.Client.Model
     public enum SoaStatus
     {
         /// <summary>
+        /// Enum NotStarted for value: NotStarted
+        /// </summary>
+        NotStarted = 1,
+
+        /// <summary>
         /// Enum InProgress for value: InProgress
         /// </summary>
-        InProgress = 1,
+        InProgress = 2,
 
         /// <summary>
-        /// Enum Submitted for value: Submitted
+        /// Enum SoACompleted for value: SoACompleted
         /// </summary>
-        Submitted = 2,
+        SoACompleted = 3,
 
         /// <summary>
-        /// Enum Complete for value: Complete
+        /// Enum SoAAgreed for value: SoAAgreed
         /// </summary>
-        Complete = 3,
+        SoAAgreed = 4,
 
         /// <summary>
-        /// Enum Archived for value: Archived
+        /// Enum BeingAssessed for value: BeingAssessed
         /// </summary>
-        Archived = 4,
-
-        /// <summary>
-        /// Enum ReadyToStart for value: ReadyToStart
-        /// </summary>
-        ReadyToStart = 5,
-
-        /// <summary>
-        /// Enum CannotStartYet for value: CannotStartYet
-        /// </summary>
-        CannotStartYet = 6,
-
-        /// <summary>
-        /// Enum Incomplete for value: Incomplete
-        /// </summary>
-        Incomplete = 7
+        BeingAssessed = 5
     }
 
     /// <summary>
@@ -78,26 +68,20 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static SoaStatus FromString(string value)
         {
+            if (value.Equals("NotStarted"))
+                return SoaStatus.NotStarted;
+
             if (value.Equals("InProgress"))
                 return SoaStatus.InProgress;
 
-            if (value.Equals("Submitted"))
-                return SoaStatus.Submitted;
+            if (value.Equals("SoACompleted"))
+                return SoaStatus.SoACompleted;
 
-            if (value.Equals("Complete"))
-                return SoaStatus.Complete;
+            if (value.Equals("SoAAgreed"))
+                return SoaStatus.SoAAgreed;
 
-            if (value.Equals("Archived"))
-                return SoaStatus.Archived;
-
-            if (value.Equals("ReadyToStart"))
-                return SoaStatus.ReadyToStart;
-
-            if (value.Equals("CannotStartYet"))
-                return SoaStatus.CannotStartYet;
-
-            if (value.Equals("Incomplete"))
-                return SoaStatus.Incomplete;
+            if (value.Equals("BeingAssessed"))
+                return SoaStatus.BeingAssessed;
 
             throw new NotImplementedException($"Could not convert value to type SoaStatus: '{value}'");
         }
@@ -109,26 +93,20 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static SoaStatus? FromStringOrDefault(string value)
         {
+            if (value.Equals("NotStarted"))
+                return SoaStatus.NotStarted;
+
             if (value.Equals("InProgress"))
                 return SoaStatus.InProgress;
 
-            if (value.Equals("Submitted"))
-                return SoaStatus.Submitted;
+            if (value.Equals("SoACompleted"))
+                return SoaStatus.SoACompleted;
 
-            if (value.Equals("Complete"))
-                return SoaStatus.Complete;
+            if (value.Equals("SoAAgreed"))
+                return SoaStatus.SoAAgreed;
 
-            if (value.Equals("Archived"))
-                return SoaStatus.Archived;
-
-            if (value.Equals("ReadyToStart"))
-                return SoaStatus.ReadyToStart;
-
-            if (value.Equals("CannotStartYet"))
-                return SoaStatus.CannotStartYet;
-
-            if (value.Equals("Incomplete"))
-                return SoaStatus.Incomplete;
+            if (value.Equals("BeingAssessed"))
+                return SoaStatus.BeingAssessed;
 
             return null;
         }
@@ -141,26 +119,20 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(SoaStatus value)
         {
+            if (value == SoaStatus.NotStarted)
+                return "NotStarted";
+
             if (value == SoaStatus.InProgress)
                 return "InProgress";
 
-            if (value == SoaStatus.Submitted)
-                return "Submitted";
+            if (value == SoaStatus.SoACompleted)
+                return "SoACompleted";
 
-            if (value == SoaStatus.Complete)
-                return "Complete";
+            if (value == SoaStatus.SoAAgreed)
+                return "SoAAgreed";
 
-            if (value == SoaStatus.Archived)
-                return "Archived";
-
-            if (value == SoaStatus.ReadyToStart)
-                return "ReadyToStart";
-
-            if (value == SoaStatus.CannotStartYet)
-                return "CannotStartYet";
-
-            if (value == SoaStatus.Incomplete)
-                return "Incomplete";
+            if (value == SoaStatus.BeingAssessed)
+                return "BeingAssessed";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }

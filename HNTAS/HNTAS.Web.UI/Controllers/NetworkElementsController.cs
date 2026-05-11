@@ -52,6 +52,7 @@ namespace HNTAS.Web.UI.Controllers
             model = new NetworkElementViewModel();
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
+            //ToDo: Integrate networkType and isOwnEnergyCentre
             //model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
             //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
 
@@ -89,6 +90,7 @@ namespace HNTAS.Web.UI.Controllers
             var networkType = heatNetworkData?.HeatNetworkType;
 
             var testNetworkType = "Communal";
+            //ToDo: Integrate networkType and isOwnEnergyCentre
             //model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
             //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
             model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("Communal", true);
@@ -151,7 +153,8 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementsOverViewModel);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, elements);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey, model);
-            
+
+            //ToDo: Integrate networkType and isOwnEnergyCentre
             if (testNetworkType == "District")
             {
                 return RedirectToAction("Substations", "NetworkElements");

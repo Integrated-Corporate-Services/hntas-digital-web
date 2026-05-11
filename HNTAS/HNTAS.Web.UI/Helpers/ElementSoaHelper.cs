@@ -146,17 +146,42 @@ namespace HNTAS.Web.UI.Helpers
             };
         }
 
-        public static ElementSoaUpdateStatusViewModel GetSoaStatuses()
+        //public static ElementSoaUpdateStatusViewModel GetSoaStatuses()
+        //{
+        //    return new ElementSoaUpdateStatusViewModel
+        //    {
+        //        SoaStatus = new List<string> {
+        //            ElementSoaUpdateStatusConstants.InProgress,
+        //            ElementSoaUpdateStatusConstants.InRevision,
+        //            ElementSoaUpdateStatusConstants.CompletedSoaAndEvidenceWithAssessor,
+        //            ElementSoaUpdateStatusConstants.StatementOfApplicabilityAgreedWithAssessor,
+        //            ElementSoaUpdateStatusConstants.BeingAssessed }
+        //    };
+        //}
+
+        public static List<SoaStatusWithCount> GetSoaStatuses(List<SoaStatusWithCount> soaStatuses)
         {
-            return new ElementSoaUpdateStatusViewModel
+            var allStatuses = new List<SoaStatusWithCount>
             {
-                SoaStatus = new List<string> {
-                    ElementSoaUpdateStatusConstants.InProgress,
-                    ElementSoaUpdateStatusConstants.InRevision,
-                    ElementSoaUpdateStatusConstants.CompletedSoaAndEvidenceWithAssessor,
-                    ElementSoaUpdateStatusConstants.StatementOfApplicabilityAgreedWithAssessor,
-                    ElementSoaUpdateStatusConstants.BeingAssessed }
+                new SoaStatusWithCount { SoaStatusType = SoaStatus.NotStarted, Count = 0 },
+                new SoaStatusWithCount { SoaStatusType = SoaStatus.InProgress, Count = 0 },
+                new SoaStatusWithCount { SoaStatusType = SoaStatus.SoACompleted, Count = 0 },
+                new SoaStatusWithCount { SoaStatusType = SoaStatus.SoAAgreed, Count = 0 },
+                new SoaStatusWithCount { SoaStatusType = SoaStatus.BeingAssessed, Count = 0 }
             };
+            if (soaStatuses == null || !soaStatuses.Any())
+            {
+                return allStatuses;
+            }
+            foreach (var status in allStatuses)
+            {
+                var matchingStatus = soaStatuses.FirstOrDefault(s => s.SoaStatusType == status.SoaStatusType);
+                if (matchingStatus != null)
+                {
+                    status.Count = matchingStatus.Count;
+                }
+            }
+            return allStatuses;
         }
 
         public static List<AssessmentOption> GetAssessmentOptions()
@@ -200,13 +225,14 @@ namespace HNTAS.Web.UI.Helpers
         private static List<SoaElementsView> GetElementsForStage(List<Element>? elements)
         {
             var soaElements = new List<SoaElementsView>();
-            foreach (var element in elements ?? [])
+            foreach (var element in elements ?? new List<Element>())
             {
                 soaElements.Add(new SoaElementsView
                 {
                     ElementId = element.ElementId,
                     Type = element.Type,
-                    Name = element.NetworkElementInstanceName
+                    //Name = element.NetworkElementInstanceName
+                    Name = $"{ NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(n => n.Id == element.Type)?.Label }{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}"
                 });
             }
             return soaElements;

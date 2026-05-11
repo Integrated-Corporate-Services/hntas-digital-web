@@ -7274,7 +7274,10 @@
             "$ref": "#/components/schemas/NullableOfSoaStage"
           },
           "soaStatus": {
-            "type": "string",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SoaStatusWithCount"
+            },
             "nullable": true
           },
           "soaStatusUpdatedAt": {
@@ -7302,14 +7305,25 @@
       },
       "SoaStatus": {
         "enum": [
+          "NotStarted",
           "InProgress",
-          "Submitted",
-          "Complete",
-          "Archived",
-          "ReadyToStart",
-          "CannotStartYet",
-          "Incomplete"
+          "SoACompleted",
+          "SoAAgreed",
+          "BeingAssessed"
         ]
+      },
+      "SoaStatusWithCount": {
+        "type": "object",
+        "properties": {
+          "soaStatusType": {
+            "$ref": "#/components/schemas/SoaStatus"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
       },
       "UpdateConnectionsRequest": {
         "required": [

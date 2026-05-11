@@ -121,6 +121,7 @@ docs/models/SoaResponse2.md
 docs/models/SoaStage.md
 docs/models/SoaStages.md
 docs/models/SoaStatus.md
+docs/models/SoaStatusWithCount.md
 docs/models/UpdateConnectionsRequest.md
 docs/models/UpdateDocumentRequest.md
 docs/models/UpdateElementDocumentsRequest.md
@@ -145,6 +146,7 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/SoaStatusWithCountTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -287,6 +289,7 @@ src/HNTAS.Api.Client/Model/SoaResponse2.cs
 src/HNTAS.Api.Client/Model/SoaStage.cs
 src/HNTAS.Api.Client/Model/SoaStages.cs
 src/HNTAS.Api.Client/Model/SoaStatus.cs
+src/HNTAS.Api.Client/Model/SoaStatusWithCount.cs
 src/HNTAS.Api.Client/Model/UpdateConnectionsRequest.cs
 src/HNTAS.Api.Client/Model/UpdateDocumentRequest.cs
 src/HNTAS.Api.Client/Model/UpdateElementDocumentsRequest.cs

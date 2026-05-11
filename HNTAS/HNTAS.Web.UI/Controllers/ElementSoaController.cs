@@ -76,7 +76,7 @@ namespace HNTAS.Web.UI.Controllers
 
                             if (modelElement != null)
                             {
-                                modelElement.SoaStatus = elementStage?.SoaStatus ?? "Not started";
+                                //modelElement.SoaStatus = elementStage?.SoaStatus ?? "Not started";
                                 modelElement.SoaStatusUpdatedAt = elementStage?.SoaStatusUpdatedAt.HasValue == true
                                     ? elementStage.SoaStatusUpdatedAt.Value.DateTime
                                     : (DateTime?)null;
@@ -120,8 +120,10 @@ namespace HNTAS.Web.UI.Controllers
                 .Find(e => e.ElementId == elementId)?.SoaStages?
                 .Find(s => s.StageId.HasValue && (SoaStage)s.StageId.Value == stage)?.SoaStatus;
 
-            var model = ElementSoaHelper.GetSoaStatuses();
-            model.SelectedSoaStatus = selectedStatusForElement;
+            //var model = ElementSoaHelper.GetSoaStatuses();
+            //model.SelectedSoaStatus = selectedStatusForElement;
+            var model = new ElementSoaUpdateStatusViewModel();
+            model.SoaStatus = ElementSoaHelper.GetSoaStatuses(selectedStatusForElement);
             model.SoaStage = stage;
             model.ElementId = elementId;
             model.ElementName = elementName;
@@ -129,7 +131,8 @@ namespace HNTAS.Web.UI.Controllers
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaStatusUpdateModelSessionKey, model);
 
-            return View("SoaUpdateStatus", model);
+            //return View("SoaUpdateStatus", model);
+            return View(model);
         }
 
         [HttpPost]
@@ -151,7 +154,8 @@ namespace HNTAS.Web.UI.Controllers
             var incompleteSoa = _sessionHelper.GetFromSession<ElementSoaProgressStatusTracking>(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey);
             var targetStatus = NetworkDetailsStatus.InProgress;
 
-            var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: modelFromSession?.SoaStage, elementId: model?.ElementId, soaStatus: model?.SelectedSoaStatus, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: modelFromSession?.SoaPhase, elementDisplayName: modelFromSession?.ElementName);
+            //var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: modelFromSession?.SoaStage, elementId: model?.ElementId, soaStatus: model?.SelectedSoaStatus, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: modelFromSession?.SoaPhase, elementDisplayName: modelFromSession?.ElementName);
+            var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: modelFromSession?.SoaStage, elementId: model?.ElementId, soaStatus: null, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: modelFromSession?.SoaPhase, elementDisplayName: modelFromSession?.ElementName);
             await _soaProjectService.UpdateElementSoaStatus(request);
             ClearSoaStatusUpdateSpecificSession();
             return RedirectToAction("SoaStages", "ElementSoa", targetFragment);

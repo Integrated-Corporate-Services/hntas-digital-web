@@ -169,7 +169,7 @@ namespace HNTAS.Web.UI.Helpers
             {
                 return new List<NetworkElementOption>
                 {
-                    new() { Id = HeatNetworkElementType.CommunalSubstation, Label = "Communal substation" },
+                    new() { Id = HeatNetworkElementType.CommunalSubstation, Label = "Communal Substation" },
                     new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal Distribution Network"},
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection" },
                     new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre" },

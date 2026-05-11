@@ -203,7 +203,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                                     new SoaStages
                                     {
                                         StageId = (NullableOfSoaStage)stage,
-                                        SoaStatus = "Not started"
+                                        //SoaStatus = "Not started"
                                     }
                                 }
                             },
