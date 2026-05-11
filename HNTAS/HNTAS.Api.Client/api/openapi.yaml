@@ -43,13 +43,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/ValidationProblemDetails"
+                $ref: "#/components/schemas/KpiSubmissionApiErrorResponse"
             application/json:
               schema:
-                $ref: "#/components/schemas/ValidationProblemDetails"
+                $ref: "#/components/schemas/KpiSubmissionApiErrorResponse"
             text/json:
               schema:
-                $ref: "#/components/schemas/ValidationProblemDetails"
+                $ref: "#/components/schemas/KpiSubmissionApiErrorResponse"
           description: Bad Request
         "500":
           content:
@@ -5447,6 +5447,7 @@ components:
         isAggregated:
           type: boolean
         oldValue:
+          nullable: true
           type: string
         newValue:
           type: string
@@ -5504,19 +5505,72 @@ components:
         threshold_rule:
           $ref: "#/components/schemas/KpiThresholdRule"
       type: object
+    KpiSubmissionApiError:
+      example:
+        elementId: elementId
+        code: code
+        message: message
+        kpis:
+        - kpis
+        - kpis
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        elementId:
+          nullable: true
+          type: string
+        kpis:
+          items:
+            type: string
+          nullable: true
+          type: array
+      type: object
+    KpiSubmissionApiErrorResponse:
+      example:
+        detail: detail
+        title: title
+        errors:
+        - elementId: elementId
+          code: code
+          message: message
+          kpis:
+          - kpis
+          - kpis
+        - elementId: elementId
+          code: code
+          message: message
+          kpis:
+          - kpis
+          - kpis
+        status: 0
+      properties:
+        title:
+          type: string
+        status:
+          format: int32
+          type: integer
+        detail:
+          type: string
+        errors:
+          items:
+            $ref: "#/components/schemas/KpiSubmissionApiError"
+          type: array
+      type: object
     KpiSubmissionRequest:
       additionalProperties: false
       example:
         elements:
         - elementId: elementId
-          type: EnergyCentre
+          type: type
           kpis:
             key:
               is_kpi_imputed: true
               value: 6.027456183070403
               kpi_imputation_details: kpi_imputation_details
         - elementId: elementId
-          type: EnergyCentre
+          type: type
           kpis:
             key:
               is_kpi_imputed: true
@@ -5764,7 +5818,7 @@ components:
       additionalProperties: false
       example:
         elementId: elementId
-        type: EnergyCentre
+        type: type
         kpis:
           key:
             is_kpi_imputed: true
@@ -5774,7 +5828,7 @@ components:
         elementId:
           type: string
         type:
-          $ref: "#/components/schemas/HeatNetworkElementType"
+          type: string
         kpis:
           additionalProperties:
             $ref: "#/components/schemas/KpiValueRequest"
@@ -7614,41 +7668,6 @@ components:
       - InvitationAccepted
       - InvitationDeclined
       type: string
-    ValidationProblemDetails:
-      example:
-        instance: instance
-        detail: detail
-        type: type
-        title: title
-        errors:
-          key:
-          - errors
-          - errors
-        status: 0
-      properties:
-        type:
-          nullable: true
-          type: string
-        title:
-          nullable: true
-          type: string
-        status:
-          format: int32
-          nullable: true
-          type: integer
-        detail:
-          nullable: true
-          type: string
-        instance:
-          nullable: true
-          type: string
-        errors:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          type: object
-      type: object
     _api_Import_upload_csv_post_request:
       properties:
         ContentType:
