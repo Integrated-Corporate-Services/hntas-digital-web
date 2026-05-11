@@ -1,12 +1,13 @@
-# HNTAS.Api.Client.Model.NetworkElementRequest
+# HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ElementId** | **string** |  | 
-**Type** | **string** |  | 
-**Kpis** | [**Dictionary&lt;string, KpiValueRequest&gt;**](KpiValueRequest.md) |  | [optional] 
+**Title** | **string** |  | [optional] 
+**Status** | **int** |  | [optional] 
+**Detail** | **string** |  | [optional] 
+**Errors** | [**List&lt;KpiSubmissionApiError&gt;**](KpiSubmissionApiError.md) |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

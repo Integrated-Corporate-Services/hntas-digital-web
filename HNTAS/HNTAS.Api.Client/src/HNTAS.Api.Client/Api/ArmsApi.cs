@@ -132,7 +132,7 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// The <see cref="IArmsV1HnKpisPostApiResponse"/>
     /// </summary>
-    public interface IArmsV1HnKpisPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ValidationProblemDetails?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>, IServiceUnavailable<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IArmsV1HnKpisPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>, IServiceUnavailable<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -772,11 +772,11 @@ namespace HNTAS.Api.Client.Api
             /// Deserializes the response if the response is 400 BadRequest
             /// </summary>
             /// <returns></returns>
-            public HNTAS.Api.Client.Model.ValidationProblemDetails? BadRequest()
+            public HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse? BadRequest()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsBadRequest
-                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ValidationProblemDetails>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -785,7 +785,7 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ValidationProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse? result)
             {
                 result = null;
 

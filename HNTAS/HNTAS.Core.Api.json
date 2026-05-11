@@ -44,17 +44,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                  "$ref": "#/components/schemas/KpiSubmissionApiErrorResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                  "$ref": "#/components/schemas/KpiSubmissionApiErrorResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                  "$ref": "#/components/schemas/KpiSubmissionApiErrorResponse"
                 }
               }
             }
@@ -6208,7 +6208,8 @@
             "type": "boolean"
           },
           "oldValue": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "newValue": {
             "type": "string"
@@ -6267,6 +6268,49 @@
           },
           "threshold_rule": {
             "$ref": "#/components/schemas/KpiThresholdRule"
+          }
+        }
+      },
+      "KpiSubmissionApiError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "elementId": {
+            "type": "string",
+            "nullable": true
+          },
+          "kpis": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "KpiSubmissionApiErrorResponse": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KpiSubmissionApiError"
+            }
           }
         }
       },
@@ -6514,7 +6558,7 @@
             "type": "string"
           },
           "type": {
-            "$ref": "#/components/schemas/HeatNetworkElementType"
+            "type": "string"
           },
           "kpis": {
             "type": "object",
@@ -7882,41 +7926,6 @@
           "InvitationAccepted",
           "InvitationDeclined"
         ]
-      },
-      "ValidationProblemDetails": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "detail": {
-            "type": "string",
-            "nullable": true
-          },
-          "instance": {
-            "type": "string",
-            "nullable": true
-          },
-          "errors": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
       }
     }
   },
