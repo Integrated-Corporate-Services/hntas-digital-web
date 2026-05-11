@@ -4709,6 +4709,7 @@ components:
       - DistrictDistribution
       - CommunalDistribution
       - ConsumerConnection
+      - CommunalSubstation
       type: string
     HeatNetworkExternalResponse:
       example:
