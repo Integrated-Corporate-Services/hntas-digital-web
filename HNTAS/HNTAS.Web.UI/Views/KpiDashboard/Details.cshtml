@@ -110,6 +110,46 @@
                     Elements for @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth) @Model.SelectedYear
                 </h2>
 
+                @if (Model.AggregatedKpis != null && Model.AggregatedKpis.Any()){
+
+                    <details class="govuk-details" data-module="govuk-details">
+
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                <strong>Aggregated KPIs</strong>
+                            </span>
+                        </summary>
+
+                        <div class="govuk-details__text">
+                            <table class="govuk-table">
+                                <thead class="govuk-table__head">
+                                    <tr class="govuk-table__row">
+                                        <th class="govuk-table__header">KPI Name</th>
+                                        <th class="govuk-table__header">Value</th>
+                                        <th class="govuk-table__header">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var kpi in Model.AggregatedKpis)
+                                    {
+                                        <tr class="govuk-table__row">
+                                            <td class="govuk-table__cell">@kpi.KpiId</td>
+                                            <td class="govuk-table__cell">@kpi.Value</td>
+                                            <td class="govuk-table__cell">
+                                                <strong class="govuk-tag @(kpi.Status == "Pass" ? "govuk-tag--green" : "govuk-tag--red")">
+                                                    @kpi.Status
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+                }
+
+                
+
                 @foreach (var group in Model.GroupedElements)
                 {
                     // Split the composite key "Type|Id"
@@ -213,7 +253,7 @@
 
     <!-- HISTORY TAB -->
     <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="history">
-        <h2 class="govuk-heading-m">Submission Audit Trail</h2>
+        <h2 class="govuk-heading-m">Audit Trail</h2>
 
         @if (Model.AuditHistory == null || !Model.AuditHistory.Any())
         {
@@ -224,11 +264,11 @@
             <table class="govuk-table">
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
-                        <th class="govuk-table__header">Date</th>
-                        <th class="govuk-table__header">Target</th>
-                        <th class="govuk-table__header">KPI</th>
-                        <th class="govuk-table__header">Change</th>
-                        <th class="govuk-table__header">Status</th>
+                        <th scope="col" class="govuk-table__header">Date Time</th>
+                        <th scope="col" class="govuk-table__header">Element ID</th>
+                        <th scope="col" class="govuk-table__header">KPI</th>
+                        <th scope="col" class="govuk-table__header">Value Change</th>
+                        <th scope="col" class="govuk-table__header">Status Change</th>
                     </tr>
                 </thead>
                 <tbody class="govuk-table__body">
@@ -236,20 +276,41 @@
                     {
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell" style="white-space: nowrap;">
-                                @item.Timestamp?.ToString("dd MMM yyyy, HH:mm")
+                                @item.Timestamp?.ToLocalTime().ToString("dd MMM yyyy, HH:mm")
                             </td>
                             <td class="govuk-table__cell">
-                                <strong>@(item.IsAggregated == true ? "Network" : $"ID: {item.ElementId}")</strong>
+                                <strong>@(item.IsAggregated == true ? "Aggregated" : $"{item.ElementId}")</strong>
                             </td>
                             <td class="govuk-table__cell">@item.KpiId</td>
                             <td class="govuk-table__cell">
-                                <span class="govuk-hint" style="text-decoration: line-through; margin-right: 5px;">
-                                    @(item.OldValue ?? "N/A")
-                                </span>
-                                &rarr; <b>@item.NewValue</b>
+                                @if (string.IsNullOrEmpty(item.OldValue))
+                                {
+                                    // First time submission: Just show the value
+                                    <b>@item.NewValue</b>
+                                }
+                                else
+                                {
+                                    <span class="govuk-hint" style="text-decoration: line-through; margin-right: 5px;">
+                                        @(item.OldValue ?? "null")
+                                    </span>
+                                    <span>&rarr;</span>
+                                    <b>@item.NewValue</b>
+                                }
+                              
                             </td>
                             <td class="govuk-table__cell">
-                                <strong class="govuk-tag @(item.NewStatus == "Pass" ? "govuk-tag--green" : "govuk-tag--red")">
+                                @{
+                                    // Determine the color class based on the status
+                                    string tagClass = item.NewStatus switch
+                                    {
+                                        "Pass" => "govuk-tag--green",
+                                        "Fail" => "govuk-tag--red",
+                                        "Outside Limit" => "govuk-tag--red",
+                                        "No Change" => "govuk-tag--grey",
+                                        _ => "govuk-tag--grey" // Covers "N/A" or "Undefined"
+                                    };
+                                }
+                                <strong class="govuk-tag @tagClass">
                                     @item.NewStatus
                                 </strong>
                             </td>
