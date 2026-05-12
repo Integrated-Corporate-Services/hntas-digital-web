@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **SelectedMonth** | **int** |  | [optional] 
 **SelectedYear** | **int** |  | [optional] 
 **GroupedElements** | [**List&lt;ElementGroupDto&gt;**](ElementGroupDto.md) |  | [optional] 
+**AggregatedKpis** | [**List&lt;AggregatedKpi&gt;**](AggregatedKpi.md) |  | [optional] 
 **CurrentPage** | **int** |  | [optional] 
 **TotalPages** | **int** |  | [optional] 
 **TotalElements** | **int** |  | [optional] 

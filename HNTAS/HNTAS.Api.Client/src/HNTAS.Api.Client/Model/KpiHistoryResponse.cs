@@ -296,7 +296,7 @@ namespace HNTAS.Api.Client.Model
                             oldValue = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "newValue":
-                            newValue = new Option<string?>(utf8JsonReader.GetString()!);
+                            newValue = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "oldStatus":
                             oldStatus = new Option<string?>(utf8JsonReader.GetString()!);
@@ -327,9 +327,6 @@ namespace HNTAS.Api.Client.Model
 
             if (isAggregated.IsSet && isAggregated.Value == null)
                 throw new ArgumentNullException(nameof(isAggregated), "Property is not nullable for class KpiHistoryResponse.");
-
-            if (newValue.IsSet && newValue.Value == null)
-                throw new ArgumentNullException(nameof(newValue), "Property is not nullable for class KpiHistoryResponse.");
 
             if (oldStatus.IsSet && oldStatus.Value == null)
                 throw new ArgumentNullException(nameof(oldStatus), "Property is not nullable for class KpiHistoryResponse.");
@@ -376,9 +373,6 @@ namespace HNTAS.Api.Client.Model
             if (kpiHistoryResponse.ElementIdOption.IsSet && kpiHistoryResponse.ElementId == null)
                 throw new ArgumentNullException(nameof(kpiHistoryResponse.ElementId), "Property is required for class KpiHistoryResponse.");
 
-            if (kpiHistoryResponse.NewValueOption.IsSet && kpiHistoryResponse.NewValue == null)
-                throw new ArgumentNullException(nameof(kpiHistoryResponse.NewValue), "Property is required for class KpiHistoryResponse.");
-
             if (kpiHistoryResponse.OldStatusOption.IsSet && kpiHistoryResponse.OldStatus == null)
                 throw new ArgumentNullException(nameof(kpiHistoryResponse.OldStatus), "Property is required for class KpiHistoryResponse.");
 
@@ -407,7 +401,10 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("oldValue");
 
             if (kpiHistoryResponse.NewValueOption.IsSet)
-                writer.WriteString("newValue", kpiHistoryResponse.NewValue);
+                if (kpiHistoryResponse.NewValueOption.Value != null)
+                    writer.WriteString("newValue", kpiHistoryResponse.NewValue);
+                else
+                    writer.WriteNull("newValue");
 
             if (kpiHistoryResponse.OldStatusOption.IsSet)
                 writer.WriteString("oldStatus", kpiHistoryResponse.OldStatus);
