@@ -31,14 +31,14 @@ namespace HNTAS.Api.Client.Model
     public enum ConnectionType
     {
         /// <summary>
-        /// Enum ChildConnections for value: ChildConnections
+        /// Enum CommunalBuildings for value: CommunalBuildings
         /// </summary>
-        ChildConnections = 1,
+        CommunalBuildings = 1,
 
         /// <summary>
-        /// Enum CommunalHeatNetworkConnection for value: CommunalHeatNetworkConnection
+        /// Enum IndividualHomes for value: IndividualHomes
         /// </summary>
-        CommunalHeatNetworkConnection = 2,
+        IndividualHomes = 2,
 
         /// <summary>
         /// Enum CommercialConnection for value: CommercialConnection
@@ -46,9 +46,9 @@ namespace HNTAS.Api.Client.Model
         CommercialConnection = 3,
 
         /// <summary>
-        /// Enum ParentConnection for value: ParentConnection
+        /// Enum OtherDistrictNetwork for value: OtherDistrictNetwork
         /// </summary>
-        ParentConnection = 4
+        OtherDistrictNetwork = 4
     }
 
     /// <summary>
@@ -63,17 +63,17 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static ConnectionType FromString(string value)
         {
-            if (value.Equals("ChildConnections"))
-                return ConnectionType.ChildConnections;
+            if (value.Equals("CommunalBuildings"))
+                return ConnectionType.CommunalBuildings;
 
-            if (value.Equals("CommunalHeatNetworkConnection"))
-                return ConnectionType.CommunalHeatNetworkConnection;
+            if (value.Equals("IndividualHomes"))
+                return ConnectionType.IndividualHomes;
 
             if (value.Equals("CommercialConnection"))
                 return ConnectionType.CommercialConnection;
 
-            if (value.Equals("ParentConnection"))
-                return ConnectionType.ParentConnection;
+            if (value.Equals("OtherDistrictNetwork"))
+                return ConnectionType.OtherDistrictNetwork;
 
             throw new NotImplementedException($"Could not convert value to type ConnectionType: '{value}'");
         }
@@ -85,17 +85,17 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static ConnectionType? FromStringOrDefault(string value)
         {
-            if (value.Equals("ChildConnections"))
-                return ConnectionType.ChildConnections;
+            if (value.Equals("CommunalBuildings"))
+                return ConnectionType.CommunalBuildings;
 
-            if (value.Equals("CommunalHeatNetworkConnection"))
-                return ConnectionType.CommunalHeatNetworkConnection;
+            if (value.Equals("IndividualHomes"))
+                return ConnectionType.IndividualHomes;
 
             if (value.Equals("CommercialConnection"))
                 return ConnectionType.CommercialConnection;
 
-            if (value.Equals("ParentConnection"))
-                return ConnectionType.ParentConnection;
+            if (value.Equals("OtherDistrictNetwork"))
+                return ConnectionType.OtherDistrictNetwork;
 
             return null;
         }
@@ -108,17 +108,17 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(ConnectionType value)
         {
-            if (value == ConnectionType.ChildConnections)
-                return "ChildConnections";
+            if (value == ConnectionType.CommunalBuildings)
+                return "CommunalBuildings";
 
-            if (value == ConnectionType.CommunalHeatNetworkConnection)
-                return "CommunalHeatNetworkConnection";
+            if (value == ConnectionType.IndividualHomes)
+                return "IndividualHomes";
 
             if (value == ConnectionType.CommercialConnection)
                 return "CommercialConnection";
 
-            if (value == ConnectionType.ParentConnection)
-                return "ParentConnection";
+            if (value == ConnectionType.OtherDistrictNetwork)
+                return "OtherDistrictNetwork";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
