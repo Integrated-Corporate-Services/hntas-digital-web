@@ -148,6 +148,8 @@ namespace HNTAS.Web.UI.Controllers
             // Fetch history on the server
             viewModel.AuditHistory = await _armsDashboardService.GetSubmissionHistory(submissionId);
 
+            this.ShowBackButton("Index", "KpiDashboard", new { month, year });
+
             return View(viewModel);
         }
 
