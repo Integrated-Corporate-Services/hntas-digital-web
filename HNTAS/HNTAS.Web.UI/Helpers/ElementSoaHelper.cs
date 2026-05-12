@@ -76,32 +76,32 @@ namespace HNTAS.Web.UI.Helpers
             };
         }
 
-        public static ElementSoaProgressStatusTracking GetElementSoaProgressStatusTracking(ElementSoaViewModel model)
-        {
-            var totalElementsInAllActiveStages = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count());
-            var totalElementsWithStatusUpdated = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count(e => e.SoaStatus != null && e.SoaStatus != "Not started"));
-            ElementSoaProgressStatusTracking incompleteSoa = new ElementSoaProgressStatusTracking();
-            if (totalElementsInAllActiveStages > 0 && (totalElementsInAllActiveStages - totalElementsWithStatusUpdated) == 1)
-            {
-                incompleteSoa.AllElementsCompleted = false;
-                // find the one stage and element that doesn't have a status
-                var stageWithMissingDoc = model.Stages.FirstOrDefault(s => s.IsActive && s.Elements.Any(e => e.SoaStatus == null || e.SoaStatus == "Not started"));
-                if (stageWithMissingDoc != null)
-                {
-                    incompleteSoa.IncompleteSoaStageId = stageWithMissingDoc.StageId;
-                    var elementWithMissingDoc = stageWithMissingDoc.Elements.FirstOrDefault(e => e.SoaStatus == null || e.SoaStatus == "Not started");
-                    if (elementWithMissingDoc != null)
-                    {
-                        incompleteSoa.IncompleteElementId = elementWithMissingDoc.ElementId;
-                    }
-                }
-            }
-            else if (totalElementsInAllActiveStages - totalElementsWithStatusUpdated == 0)
-            {
-                incompleteSoa.AllElementsCompleted = true;
-            }
-            return incompleteSoa;
-        }
+        //public static ElementSoaProgressStatusTracking GetElementSoaProgressStatusTracking(ElementSoaViewModel model)
+        //{
+        //    var totalElementsInAllActiveStages = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count());
+        //    var totalElementsWithStatusUpdated = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count(e => e.SoaStatus != null && e.SoaStatus != "Not started"));
+        //    ElementSoaProgressStatusTracking incompleteSoa = new ElementSoaProgressStatusTracking();
+        //    if (totalElementsInAllActiveStages > 0 && (totalElementsInAllActiveStages - totalElementsWithStatusUpdated) == 1)
+        //    {
+        //        incompleteSoa.AllElementsCompleted = false;
+        //        // find the one stage and element that doesn't have a status
+        //        var stageWithMissingDoc = model.Stages.FirstOrDefault(s => s.IsActive && s.Elements.Any(e => e.SoaStatus == null || e.SoaStatus == "Not started"));
+        //        if (stageWithMissingDoc != null)
+        //        {
+        //            incompleteSoa.IncompleteSoaStageId = stageWithMissingDoc.StageId;
+        //            var elementWithMissingDoc = stageWithMissingDoc.Elements.FirstOrDefault(e => e.SoaStatus == null || e.SoaStatus == "Not started");
+        //            if (elementWithMissingDoc != null)
+        //            {
+        //                incompleteSoa.IncompleteElementId = elementWithMissingDoc.ElementId;
+        //            }
+        //        }
+        //    }
+        //    else if (totalElementsInAllActiveStages - totalElementsWithStatusUpdated == 0)
+        //    {
+        //        incompleteSoa.AllElementsCompleted = true;
+        //    }
+        //    return incompleteSoa;
+        //}
 
         public static (string Heading, string Description1, string Description2) GetSoaElementContent(HeatNetworkElementType? elementType)
         {
@@ -158,16 +158,27 @@ namespace HNTAS.Web.UI.Helpers
         //            ElementSoaUpdateStatusConstants.BeingAssessed }
         //    };
         //}
+        public static List<SoaStatusOption> GetSoaStatuses()
+        {
+            return new List<SoaStatusOption>()
+            {
+                new() { Id = SoaStatus.NotStarted },
+                new() { Id = SoaStatus.InProgress },
+                new() { Id = SoaStatus.SoACompleted },
+                new() { Id = SoaStatus.SoAAgreed },
+                new() { Id = SoaStatus.BeingAssessed }
+            };
+        }
 
         public static List<SoaStatusWithCount> GetSoaStatuses(List<SoaStatusWithCount> soaStatuses)
         {
             var allStatuses = new List<SoaStatusWithCount>
             {
-                new SoaStatusWithCount { SoaStatusType = SoaStatus.NotStarted, Count = 0 },
-                new SoaStatusWithCount { SoaStatusType = SoaStatus.InProgress, Count = 0 },
-                new SoaStatusWithCount { SoaStatusType = SoaStatus.SoACompleted, Count = 0 },
-                new SoaStatusWithCount { SoaStatusType = SoaStatus.SoAAgreed, Count = 0 },
-                new SoaStatusWithCount { SoaStatusType = SoaStatus.BeingAssessed, Count = 0 }
+                new SoaStatusWithCount { SoaStatus = SoaStatus.NotStarted, Count = 0 },
+                new SoaStatusWithCount { SoaStatus = SoaStatus.InProgress, Count = 0 },
+                new SoaStatusWithCount { SoaStatus = SoaStatus.SoACompleted, Count = 0 },
+                new SoaStatusWithCount { SoaStatus = SoaStatus.SoAAgreed, Count = 0 },
+                new SoaStatusWithCount { SoaStatus = SoaStatus.BeingAssessed, Count = 0 }
             };
             if (soaStatuses == null || !soaStatuses.Any())
             {
@@ -175,7 +186,7 @@ namespace HNTAS.Web.UI.Helpers
             }
             foreach (var status in allStatuses)
             {
-                var matchingStatus = soaStatuses.FirstOrDefault(s => s.SoaStatusType == status.SoaStatusType);
+                var matchingStatus = soaStatuses.FirstOrDefault(s => s.SoaStatus == status.SoaStatus);
                 if (matchingStatus != null)
                 {
                     status.Count = matchingStatus.Count;
@@ -228,7 +239,7 @@ namespace HNTAS.Web.UI.Helpers
             foreach (var element in elements ?? new List<Element>())
             {
                 soaElements.Add(new SoaElementsView
-                {
+                {                    
                     ElementId = element.ElementId,
                     Type = element.Type,
                     //Name = element.NetworkElementInstanceName

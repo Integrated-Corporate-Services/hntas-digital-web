@@ -33,12 +33,12 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="SoaStatusWithCount" /> class.
         /// </summary>
-        /// <param name="soaStatusType">soaStatusType</param>
+        /// <param name="soaStatus">soaStatus</param>
         /// <param name="count">count</param>
         [JsonConstructor]
-        public SoaStatusWithCount(Option<SoaStatus?> soaStatusType = default, Option<int?> count = default)
+        public SoaStatusWithCount(Option<SoaStatus?> soaStatus = default, Option<int?> count = default)
         {
-            SoaStatusTypeOption = soaStatusType;
+            SoaStatusOption = soaStatus;
             CountOption = count;
             OnCreated();
         }
@@ -46,17 +46,17 @@ namespace HNTAS.Api.Client.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of SoaStatusType
+        /// Used to track the state of SoaStatus
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<SoaStatus?> SoaStatusTypeOption { get; private set; }
+        public Option<SoaStatus?> SoaStatusOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets SoaStatusType
+        /// Gets or Sets SoaStatus
         /// </summary>
-        [JsonPropertyName("soaStatusType")]
-        public SoaStatus? SoaStatusType { get { return this.SoaStatusTypeOption; } set { this.SoaStatusTypeOption = new(value); } }
+        [JsonPropertyName("soaStatus")]
+        public SoaStatus? SoaStatus { get { return this.SoaStatusOption; } set { this.SoaStatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Count
@@ -79,7 +79,7 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class SoaStatusWithCount {\n");
-            sb.Append("  SoaStatusType: ").Append(SoaStatusType).Append("\n");
+            sb.Append("  SoaStatus: ").Append(SoaStatus).Append("\n");
             sb.Append("  Count: ").Append(Count).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -118,7 +118,7 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<SoaStatus?> soaStatusType = default;
+            Option<SoaStatus?> soaStatus = default;
             Option<int?> count = default;
 
             while (utf8JsonReader.Read())
@@ -136,10 +136,10 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "soaStatusType":
-                            string? soaStatusTypeRawValue = utf8JsonReader.GetString();
-                            if (soaStatusTypeRawValue != null)
-                                soaStatusType = new Option<SoaStatus?>(SoaStatusValueConverter.FromStringOrDefault(soaStatusTypeRawValue));
+                        case "soaStatus":
+                            string? soaStatusRawValue = utf8JsonReader.GetString();
+                            if (soaStatusRawValue != null)
+                                soaStatus = new Option<SoaStatus?>(SoaStatusValueConverter.FromStringOrDefault(soaStatusRawValue));
                             break;
                         case "count":
                             count = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
@@ -150,10 +150,10 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (soaStatusType.IsSet && soaStatusType.Value == null)
-                throw new ArgumentNullException(nameof(soaStatusType), "Property is not nullable for class SoaStatusWithCount.");
+            if (soaStatus.IsSet && soaStatus.Value == null)
+                throw new ArgumentNullException(nameof(soaStatus), "Property is not nullable for class SoaStatusWithCount.");
 
-            return new SoaStatusWithCount(soaStatusType, count);
+            return new SoaStatusWithCount(soaStatus, count);
         }
 
         /// <summary>
@@ -180,10 +180,10 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, SoaStatusWithCount soaStatusWithCount, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (soaStatusWithCount.SoaStatusTypeOption.IsSet)
+            if (soaStatusWithCount.SoaStatusOption.IsSet)
             {
-                var soaStatusTypeRawValue = SoaStatusValueConverter.ToJsonValue(soaStatusWithCount.SoaStatusType!.Value);
-                writer.WriteString("soaStatusType", soaStatusTypeRawValue);
+                var soaStatusRawValue = SoaStatusValueConverter.ToJsonValue(soaStatusWithCount.SoaStatus!.Value);
+                writer.WriteString("soaStatus", soaStatusRawValue);
             }
             if (soaStatusWithCount.CountOption.IsSet)
                 if (soaStatusWithCount.CountOption.Value != null)

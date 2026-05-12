@@ -3833,7 +3833,12 @@ components:
       example:
         elementId: elementId
         soaStages:
-        - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        - soaStatuses:
+          - soaStatus: null
+            count: 3
+          - soaStatus: null
+            count: 3
+          soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           assessor:
             firstName: firstName
@@ -3841,15 +3846,15 @@ components:
             assessment: assessment
             email: email
             status: Active
-          soaStatus:
-          - soaStatusType: null
-            count: 3
-          - soaStatusType: null
-            count: 3
           soaStatusUpdatedBy: soaStatusUpdatedBy
           assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           stageId: Stage1
-        - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        - soaStatuses:
+          - soaStatus: null
+            count: 3
+          - soaStatus: null
+            count: 3
+          soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           assessor:
             firstName: firstName
@@ -3857,11 +3862,6 @@ components:
             assessment: assessment
             email: email
             status: Active
-          soaStatus:
-          - soaStatusType: null
-            count: 3
-          - soaStatusType: null
-            count: 3
           soaStatusUpdatedBy: soaStatusUpdatedBy
           assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           stageId: Stage1
@@ -3950,9 +3950,13 @@ components:
         elementId: elementId
         elementSoaStatus: InProgress
         hnId: hnId
+        soaStatuses:
+        - soaStatus: null
+          count: 3
+        - soaStatus: null
+          count: 3
         elementDisplayName: elementDisplayName
         stage: Stage1
-        soaStatus: soaStatus
         soaStatusUpdatedBy: soaStatusUpdatedBy
         soaPhase: soaPhase
       properties:
@@ -3961,9 +3965,11 @@ components:
         elementId:
           nullable: true
           type: string
-        soaStatus:
+        soaStatuses:
+          items:
+            $ref: "#/components/schemas/SoaStatusWithCount"
           nullable: true
-          type: string
+          type: array
         elementSoaStatus:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         soaStatusUpdatedBy:
@@ -4329,7 +4335,12 @@ components:
           elements:
           - elementId: elementId
             soaStages:
-            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - soaStatuses:
+              - soaStatus: null
+                count: 3
+              - soaStatus: null
+                count: 3
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
@@ -4337,15 +4348,15 @@ components:
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatus:
-              - soaStatusType: null
-                count: 3
-              - soaStatusType: null
-                count: 3
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - soaStatuses:
+              - soaStatus: null
+                count: 3
+              - soaStatus: null
+                count: 3
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
@@ -4353,11 +4364,6 @@ components:
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatus:
-              - soaStatusType: null
-                count: 3
-              - soaStatusType: null
-                count: 3
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
@@ -4367,7 +4373,12 @@ components:
             elementType: elementType
           - elementId: elementId
             soaStages:
-            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - soaStatuses:
+              - soaStatus: null
+                count: 3
+              - soaStatus: null
+                count: 3
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
@@ -4375,15 +4386,15 @@ components:
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatus:
-              - soaStatusType: null
-                count: 3
-              - soaStatusType: null
-                count: 3
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - soaStatuses:
+              - soaStatus: null
+                count: 3
+              - soaStatus: null
+                count: 3
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
@@ -4391,11 +4402,6 @@ components:
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatus:
-              - soaStatusType: null
-                count: 3
-              - soaStatusType: null
-                count: 3
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
@@ -4912,7 +4918,12 @@ components:
           elements:
           - elementId: elementId
             soaStages:
-            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - soaStatuses:
+              - soaStatus: null
+                count: 3
+              - soaStatus: null
+                count: 3
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
@@ -4920,15 +4931,15 @@ components:
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatus:
-              - soaStatusType: null
-                count: 3
-              - soaStatusType: null
-                count: 3
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - soaStatuses:
+              - soaStatus: null
+                count: 3
+              - soaStatus: null
+                count: 3
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
@@ -4936,11 +4947,6 @@ components:
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatus:
-              - soaStatusType: null
-                count: 3
-              - soaStatusType: null
-                count: 3
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
@@ -4950,7 +4956,12 @@ components:
             elementType: elementType
           - elementId: elementId
             soaStages:
-            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - soaStatuses:
+              - soaStatus: null
+                count: 3
+              - soaStatus: null
+                count: 3
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
@@ -4958,15 +4969,15 @@ components:
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatus:
-              - soaStatusType: null
-                count: 3
-              - soaStatusType: null
-                count: 3
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
-            - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - soaStatuses:
+              - soaStatus: null
+                count: 3
+              - soaStatus: null
+                count: 3
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               assessor:
                 firstName: firstName
@@ -4974,11 +4985,6 @@ components:
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatus:
-              - soaStatusType: null
-                count: 3
-              - soaStatusType: null
-                count: 3
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
@@ -5834,7 +5840,12 @@ components:
         elements:
         - elementId: elementId
           soaStages:
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -5842,15 +5853,15 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -5858,11 +5869,6 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
@@ -5872,7 +5878,12 @@ components:
           elementType: elementType
         - elementId: elementId
           soaStages:
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -5880,15 +5891,15 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -5896,11 +5907,6 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
@@ -5942,7 +5948,12 @@ components:
         elements:
         - elementId: elementId
           soaStages:
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -5950,15 +5961,15 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -5966,11 +5977,6 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
@@ -5980,7 +5986,12 @@ components:
           elementType: elementType
         - elementId: elementId
           soaStages:
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -5988,15 +5999,15 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -6004,11 +6015,6 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
@@ -6049,7 +6055,12 @@ components:
         elements:
         - elementId: elementId
           soaStages:
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -6057,15 +6068,15 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -6073,11 +6084,6 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
@@ -6087,7 +6093,12 @@ components:
           elementType: elementType
         - elementId: elementId
           soaStages:
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -6095,15 +6106,15 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
-          - soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             assessor:
               firstName: firstName
@@ -6111,11 +6122,6 @@ components:
               assessment: assessment
               email: email
               status: Active
-            soaStatus:
-            - soaStatusType: null
-              count: 3
-            - soaStatusType: null
-              count: 3
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
@@ -7044,6 +7050,11 @@ components:
       type: string
     SoaStages:
       example:
+        soaStatuses:
+        - soaStatus: null
+          count: 3
+        - soaStatus: null
+          count: 3
         soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
         assessorUpdatedBy: assessorUpdatedBy
         assessor:
@@ -7052,18 +7063,13 @@ components:
           assessment: assessment
           email: email
           status: Active
-        soaStatus:
-        - soaStatusType: null
-          count: 3
-        - soaStatusType: null
-          count: 3
         soaStatusUpdatedBy: soaStatusUpdatedBy
         assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
         stageId: Stage1
       properties:
         stageId:
           $ref: "#/components/schemas/NullableOfSoaStage"
-        soaStatus:
+        soaStatuses:
           items:
             $ref: "#/components/schemas/SoaStatusWithCount"
           nullable: true
@@ -7095,10 +7101,10 @@ components:
       type: string
     SoaStatusWithCount:
       example:
-        soaStatusType: null
+        soaStatus: null
         count: 3
       properties:
-        soaStatusType:
+        soaStatus:
           $ref: "#/components/schemas/SoaStatus"
         count:
           format: int32

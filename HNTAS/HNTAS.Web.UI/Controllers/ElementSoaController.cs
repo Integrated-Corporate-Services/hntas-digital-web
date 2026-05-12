@@ -7,6 +7,7 @@ using HNTAS.Web.UI.Models.NetworkElements;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -76,7 +77,16 @@ namespace HNTAS.Web.UI.Controllers
 
                             if (modelElement != null)
                             {
-                                //modelElement.SoaStatus = elementStage?.SoaStatus ?? "Not started";
+                                if (elementStage?.SoaStatuses == null)
+                                {
+                                    modelElement.SoaStatuses = new List<SoaStatusWithCount>() { 
+                                        new SoaStatusWithCount { SoaStatus = SoaStatus.NotStarted, Count = elementSoaElement.Count },
+                                    };
+                                }
+                                else
+                                {
+                                    modelElement.SoaStatuses = elementStage?.SoaStatuses;
+                                }                                    
                                 modelElement.SoaStatusUpdatedAt = elementStage?.SoaStatusUpdatedAt.HasValue == true
                                     ? elementStage.SoaStatusUpdatedAt.Value.DateTime
                                     : (DateTime?)null;
@@ -89,8 +99,6 @@ namespace HNTAS.Web.UI.Controllers
                     }
                 }
             }
-            var incompleteSoa = ElementSoaHelper.GetElementSoaProgressStatusTracking(model);
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey, incompleteSoa);
             return View("SoaStages", model);
         }
 
@@ -115,23 +123,44 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.Heading = content.Heading;
             ViewBag.Description1 = content.Description1;
             ViewBag.Description2 = content.Description2;
-
-            var selectedStatusForElement = heatNetworkData?.NetworkElements?.Elements?
-                .Find(e => e.ElementId == elementId)?.SoaStages?
-                .Find(s => s.StageId.HasValue && (SoaStage)s.StageId.Value == stage)?.SoaStatus;
-
-            //var model = ElementSoaHelper.GetSoaStatuses();
-            //model.SelectedSoaStatus = selectedStatusForElement;
-            var model = new ElementSoaUpdateStatusViewModel();
-            model.SoaStatus = ElementSoaHelper.GetSoaStatuses(selectedStatusForElement);
+            var selectedNetworkElement = heatNetworkData?.NetworkElements?.Elements?.Where(e => e.ElementId == elementId).FirstOrDefault();
+            
+            var model = new ElementSoaUpdateStatusViewModel();            
             model.SoaStage = stage;
             model.ElementId = elementId;
             model.ElementName = elementName;
             model.SoaPhase = soaPhase;
+            model.ElementCount = selectedNetworkElement?.Count;
+            model.SoaStatusOptions = ElementSoaHelper.GetSoaStatuses();            
+
+            var soaStatusesForStage = selectedNetworkElement?.SoaStages?
+                .Where(s => s.StageId.HasValue && (SoaStage)s.StageId.Value == stage)
+                .SelectMany(s => s.SoaStatuses!)
+                .ToList();
+
+            if (soaStatusesForStage == null || soaStatusesForStage.Count == 0)
+            {
+                // If there are no statuses for the element at the current stage, initialize with NotStarted
+                soaStatusesForStage = new List<SoaStatusWithCount>
+                {
+                    new SoaStatusWithCount { SoaStatus = SoaStatus.NotStarted, Count = selectedNetworkElement?.Count }
+                };
+            }
+
+            model.SelectedSoaStatusOptions = soaStatusesForStage != null
+                ? soaStatusesForStage.Select(s => (SoaStatus)s.SoaStatus!).ToList()
+                : new List<SoaStatus>();
+
+            model.SoaStatusOptions.ForEach(option =>
+            {
+                var count = soaStatusesForStage
+                    .Where(s => s.SoaStatus == option.Id)
+                    .Sum(s => s.Count);
+                model.SoaStatusCounts[option.Id] = count == 0 ? null : count;
+            });            
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaStatusUpdateModelSessionKey, model);
 
-            //return View("SoaUpdateStatus", model);
             return View(model);
         }
 
@@ -141,21 +170,50 @@ namespace HNTAS.Web.UI.Controllers
         {
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
             var targetFragment = string.Concat("stage-", currentStageIndex);
-            this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);
-            var modelFromSession = _sessionHelper.GetFromSession<ElementSoaUpdateStatusViewModel>(HttpContext, SessionKeys.ElementSoaStatusUpdateModelSessionKey);
+            this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);            
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
-            if (!ModelState.IsValid)
-            {
-                return View(modelFromSession);
+
+            var notStartedCount = model.SoaStatusCounts.ContainsKey(SoaStatus.NotStarted) ? model.SoaStatusCounts[SoaStatus.NotStarted] : 0;
+
+            var allSoaAllStatusesCount = model.SoaStatusCounts.Where(a => a.Value != null).Sum(kv => kv.Value ?? 0);
+            var totalCountFromElement = model.ElementCount ?? 0;
+
+            ModelState.Remove("TotalCountCheck");
+            if (allSoaAllStatusesCount > totalCountFromElement)
+            {                
+                ModelState.AddModelError("TotalCountCheck", $"The total count of all SoA statuses cannot exceed {totalCountFromElement}");
             }
 
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var incompleteSoa = _sessionHelper.GetFromSession<ElementSoaProgressStatusTracking>(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey);
+            foreach (var selectedId in model.SelectedSoaStatusOptions)
+            {                
+                if ((!model.SoaStatusCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
+                {                    
+                    ModelState.Remove($"SoaStatusCounts.{selectedId}");
+                    ModelState.AddModelError($"SoaStatusCounts[{selectedId}]", $"Enter number of connections.");
+                }
+            }            
+
+            if (!ModelState.IsValid)
+            {
+                model.SoaStatusOptions = ElementSoaHelper.GetSoaStatuses();
+                return View(model);
+            }
+
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);            
             var targetStatus = NetworkDetailsStatus.InProgress;
 
-            //var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: modelFromSession?.SoaStage, elementId: model?.ElementId, soaStatus: model?.SelectedSoaStatus, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: modelFromSession?.SoaPhase, elementDisplayName: modelFromSession?.ElementName);
-            var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: modelFromSession?.SoaStage, elementId: model?.ElementId, soaStatus: null, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: modelFromSession?.SoaPhase, elementDisplayName: modelFromSession?.ElementName);
+            var soaStatusWithCountList = new List<SoaStatusWithCount>();
+            
+            model.SelectedSoaStatusOptions.ForEach(s =>
+            {
+                var soaStatusWithCount = new SoaStatusWithCount();
+                soaStatusWithCount.SoaStatus = s;
+                soaStatusWithCount.Count = model.SoaStatusCounts.ContainsKey(s) ? model.SoaStatusCounts[s] : null;
+                soaStatusWithCountList.Add(soaStatusWithCount);
+            });
+            
+            var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: model.SoaStage, elementId: model?.ElementId, soaStatuses: soaStatusWithCountList, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: model.SoaPhase, elementDisplayName: model.ElementName);
             await _soaProjectService.UpdateElementSoaStatus(request);
             ClearSoaStatusUpdateSpecificSession();
             return RedirectToAction("SoaStages", "ElementSoa", targetFragment);
@@ -461,7 +519,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ElementSoaStatusUpdateModelSessionKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey);
+            //_sessionHelper.ClearFromSession(HttpContext, SessionKeys.ElementSoaIncompleteSoaSessionKey);
         }
 
         private void ClearSoaAssessorSpecificSession()

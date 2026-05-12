@@ -5393,8 +5393,11 @@
             "type": "string",
             "nullable": true
           },
-          "soaStatus": {
-            "type": "string",
+          "soaStatuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SoaStatusWithCount"
+            },
             "nullable": true
           },
           "elementSoaStatus": {
@@ -7273,7 +7276,7 @@
           "stageId": {
             "$ref": "#/components/schemas/NullableOfSoaStage"
           },
-          "soaStatus": {
+          "soaStatuses": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SoaStatusWithCount"
@@ -7315,7 +7318,7 @@
       "SoaStatusWithCount": {
         "type": "object",
         "properties": {
-          "soaStatusType": {
+          "soaStatus": {
             "$ref": "#/components/schemas/SoaStatus"
           },
           "count": {

@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **StageId** | **NullableOfSoaStage** |  | [optional] 
-**SoaStatus** | [**List&lt;SoaStatusWithCount&gt;**](SoaStatusWithCount.md) |  | [optional] 
+**SoaStatuses** | [**List&lt;SoaStatusWithCount&gt;**](SoaStatusWithCount.md) |  | [optional] 
 **SoaStatusUpdatedAt** | **DateTimeOffset** |  | [optional] 
 **SoaStatusUpdatedBy** | **string** |  | [optional] 
 **AssessorUpdatedAt** | **DateTimeOffset** |  | [optional] 
