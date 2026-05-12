@@ -20,6 +20,6 @@ namespace HNTAS.Web.UI.Models
     public class  HowManyDwellingsIncludedModel
     {
         [Required(ErrorMessage = "Please select an option.")]
-        public string? HowManyDwellingsIncluded { get; set; }
+        public string HowManyDwellingsIncluded { get; set; }
     }
 }

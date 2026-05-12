@@ -3,47 +3,17 @@
 
 @{
     ViewData["Title"] = "Check your answers";
+    var energyCentreChangeAction = Model.HeatNetworkType == "Communal" ? "HeatNetworkEcCommunal" : "HeatNetworkEcDistrict";
     var heatNetworkName = Model.HeatNetworkNameModel.HeatNetworkName;
     var additionalDescription = Model.HeatNetworkNameModel.AdditionalDescription;
     var heatNetworkCoordinates = Model.ECDetailsModel.LatitudeLongitude;
-    var energyCentreAddress = Model.HeatNetworkAddressModel?.Fulladdress;
+    var energyCentreAddress = Model.HeatNetworkAddressModel?.Fulladdress ?? "Not provided";
     var heatNetworkPhase = Model.HeatNetworkPhaseModel.HeatNetworkPhase;
-    // var heatNetworkType = Model.HeatNetworkTypeModel.HeatNetworkType;
     var heatNetworkConnections = Model.HeatNetworkConnectionsModel;
     var pathway = Model.PathwayModel.Pathway;
     bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) &&
-                                ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
-    // string hnTypeToDisplay = heatNetworkType switch
-    // {
-    //     HNTAS.Web.UI.Models.Enums.HeatNetworkType.CommunalWithIntegralEC => "Communal (with an integral energy centre)",
-    //     HNTAS.Web.UI.Models.Enums.HeatNetworkType.CommunalWithSeparateUpstreamHN => "Communal (supplied by a separate upstream heat network)",
-    //     HNTAS.Web.UI.Models.Enums.HeatNetworkType.DistrictWithOwnEC => "District (with its own main energy centre)",
-    //     HNTAS.Web.UI.Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN => "District (supplied by a separate upstream heat network)",
-    //     _ => ""
-    // };
-    var connections = new List<string>();
-    if (heatNetworkConnections.IsCommunalBuilding)
-    {
-        connections.Add($"{heatNetworkConnections.NoOfCommunalBuilding} communal buildings");
-    }
-    if (heatNetworkConnections.IsDomesticConsumer)
-    {
-        connections.Add($"{heatNetworkConnections.NoOfDomesticConsumer} domestic consumers");
-    }
-    if (heatNetworkConnections.IsNonDomesticConsumer)
-    {
-        connections.Add($"{heatNetworkConnections.NoOfNonDomesticConsumer} non domestic consumers");
-    }
-    if (heatNetworkConnections.IsDownstreamDistrictHeatNetworkConnections)
-    {
-        connections.Add($"{heatNetworkConnections.NoOfDownstreamDistrictHeatNetworkConnections} district connections");
-    }    
-    string hnConnectionsToDisplay = connections.Any() ? string.Join(", ", connections) : "No connections";
-    var fieldOrder = new[] { nameof(Model.ConfirmedDeclaration) };
-
-    // bool disableHnConnectionsLink =
-    //     heatNetworkType == HNTAS.Web.UI.Models.Enums.HeatNetworkType.CommunalWithIntegralEC ||
-    //     heatNetworkType == HNTAS.Web.UI.Models.Enums.HeatNetworkType.CommunalWithSeparateUpstreamHN;
+                                ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();    
+    var fieldOrder = new[] { nameof(Model.ConfirmedDeclaration) };   
 }
 
 
@@ -56,22 +26,44 @@
                 <h2 class="govuk-heading-m">Heat Network registration</h2>
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Number of dwellings more than 6</dt>
+                        <dd class="govuk-summary-list__value">@Model.DoesHnHaveMoreThan6Dwellings</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("HeatNetworkDwellingsCheck", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> heatNetworkType</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Network Type</dt>
-                        @* <dd class="govuk-summary-list__value">@hnTypeToDisplay</dd> *@
+                        <dd class="govuk-summary-list__value">@Model.HeatNetworkType</dd>
                         <dd class="govuk-summary-list__actions">
                             <a class="govuk-link" href="@Url.Action("HeatNetworkType", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> heatNetworkType</span></a>
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Connections heat network has</dt>
-                        <dd class="govuk-summary-list__value">@hnConnectionsToDisplay</dd>
+                        <dt class="govuk-summary-list__key">Main energy centre</dt>
+                        <dd class="govuk-summary-list__value">@Model.HasOwnEnergyCenter</dd>
                         <dd class="govuk-summary-list__actions">
-                            @* @if (!disableHnConnectionsLink)
-                            {
-                                <a class="govuk-link" href="@Url.Action("HeatNetworkConnections", "HeatNetworkRegistration" )">Change<span class="govuk-visually-hidden"> heatNetworkConnections</span></a>
-                            }                             *@
+                            <a class="govuk-link" href="@Url.Action(energyCentreChangeAction, "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> main energy centre</span></a>
                         </dd>
                     </div>
+                    @if (Model.HeatNetworkType == "District" && Model.HeatNetworkConnectionsModel.ConnectionsToDisplay.Any())
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Connections</dt>
+                            <dd class="govuk-summary-list__value">
+                                <ul class="govuk-list">
+                                    @foreach (var c in Model.HeatNetworkConnectionsModel.ConnectionsToDisplay)
+                                    {
+                                        <li>@c</li>
+                                    }
+                                </ul>
+                            </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("HeatNetworkConnections", "HeatNetworkRegistration")">Change<span class="govuk-visually-hidden"> heatNetworkConnections</span></a>
+                            </dd>
+                        </div>
+                    }
+
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Coordinates</dt>
                         <dd class="govuk-summary-list__value">@heatNetworkCoordinates</dd>
@@ -132,7 +124,7 @@
 
                                 <label for="confirmeddeclaration" class="govuk-label govuk-checkboxes__label">
                                     I confirm that the summary above is correct for @heatNetworkName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription + "." : ".")
-</label>
+                                </label>
                             </div>
                         </div>
                     </fieldset>

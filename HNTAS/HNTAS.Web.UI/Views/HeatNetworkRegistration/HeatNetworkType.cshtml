@@ -27,7 +27,7 @@
                     new Option { OptId = $"{elementId}", OptValue = "true", OptText = "Communal", OptHintText = null },
                     new Option { OptId = $"{elementId}-2", OptValue = "false", OptText = "District", OptHintText = null }
                 },
-                SeletedOption = Model.IsHnTypeCommunal.ToString()
+                SeletedOption = Model.IsHnTypeCommunal.ToString().ToLowerInvariant()
             },
         }
     };

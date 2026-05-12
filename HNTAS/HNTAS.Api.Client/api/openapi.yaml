@@ -43,13 +43,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/ValidationProblemDetails"
+                $ref: "#/components/schemas/KpiSubmissionApiErrorResponse"
             application/json:
               schema:
-                $ref: "#/components/schemas/ValidationProblemDetails"
+                $ref: "#/components/schemas/KpiSubmissionApiErrorResponse"
             text/json:
               schema:
-                $ref: "#/components/schemas/ValidationProblemDetails"
+                $ref: "#/components/schemas/KpiSubmissionApiErrorResponse"
           description: Bad Request
         "500":
           content:
@@ -258,18 +258,14 @@ paths:
         name: statusFilter
         required: false
         schema:
-          items:
-            type: string
-          type: array
+          type: string
         style: form
       - explode: true
         in: query
         name: typeFilter
         required: false
         schema:
-          items:
-            type: string
-          type: array
+          type: string
         style: form
       - explode: true
         in: query
@@ -348,18 +344,8 @@ paths:
                   $ref: "#/components/schemas/KpiHistoryResponse"
                 type: array
           description: OK
-        "404":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Not Found
+        "500":
+          description: Internal Server Error
       tags:
       - ArmsDashboard
   /api/Assessor/search:
@@ -2979,6 +2965,20 @@ components:
           nullable: true
           type: string
       type: object
+    AggregatedKpi:
+      example:
+        kpiName: kpiName
+        value: 5.962133916683182
+        status: status
+      properties:
+        kpiName:
+          type: string
+        value:
+          format: double
+          type: number
+        status:
+          type: string
+      type: object
     AssessmentPlan:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -3702,10 +3702,10 @@ components:
       type: object
     ConnectionType:
       enum:
-      - ChildConnections
-      - CommunalHeatNetworkConnection
+      - CommunalBuildings
+      - IndividualHomes
       - CommercialConnection
-      - ParentConnection
+      - OtherDistrictNetwork
       type: string
     ContributorRole:
       enum:
@@ -4311,8 +4311,8 @@ components:
             - ""
             - ""
             connectionTypes:
-            - ChildConnections
-            - ChildConnections
+            - CommunalBuildings
+            - CommunalBuildings
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         uHnId: uHnId
@@ -4403,10 +4403,10 @@ components:
           isDomesticConsumer: true
           noOfNonDomesticConsumer: 2
           isNonDomesticConsumer: true
-          noOfDownstreamDistrictHeatNetworkConnections: 7
           isCommunalBuilding: true
+          isOtherDistrictNetwork: true
+          noOfOtherDistrictNetwork: 7
           noOfDomesticConsumer: 5
-          isDownstreamDistrictHeatNetworkConnections: true
           noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4434,7 +4434,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: CommunalWithIntegralEC
+        heatNetworkType: CommunalWithEnergyCentre
       properties:
         id:
           nullable: true
@@ -4485,10 +4485,10 @@ components:
         isDomesticConsumer: true
         noOfNonDomesticConsumer: 2
         isNonDomesticConsumer: true
-        noOfDownstreamDistrictHeatNetworkConnections: 7
         isCommunalBuilding: true
+        isOtherDistrictNetwork: true
+        noOfOtherDistrictNetwork: 7
         noOfDomesticConsumer: 5
-        isDownstreamDistrictHeatNetworkConnections: true
         noOfCommunalBuilding: 5
       nullable: true
       properties:
@@ -4510,9 +4510,9 @@ components:
           format: int32
           nullable: true
           type: integer
-        isDownstreamDistrictHeatNetworkConnections:
+        isOtherDistrictNetwork:
           type: boolean
-        noOfDownstreamDistrictHeatNetworkConnections:
+        noOfOtherDistrictNetwork:
           format: int32
           nullable: true
           type: integer
@@ -4578,10 +4578,17 @@ components:
     HeatNetworkDetailsResponse:
       example:
         hnId: hnId
+        aggregatedKpis:
+        - kpiName: kpiName
+          value: 5.962133916683182
+          status: status
+        - kpiName: kpiName
+          value: 5.962133916683182
+          status: status
         selectedMonth: 0
         selectedYear: 6
         networkName: networkName
-        totalPages: 5
+        totalPages: 2
         currentPage: 5
         groupedElements:
         - elementId: elementId
@@ -4610,7 +4617,7 @@ components:
             imputationDetails: imputationDetails
             value: 1.4658129805029452
             status: status
-        totalElements: 2
+        totalElements: 7
       properties:
         hnId:
           type: string
@@ -4625,6 +4632,11 @@ components:
         groupedElements:
           items:
             $ref: "#/components/schemas/ElementGroupDto"
+          type: array
+        aggregatedKpis:
+          items:
+            $ref: "#/components/schemas/AggregatedKpi"
+          nullable: true
           type: array
         currentPage:
           format: int32
@@ -4969,10 +4981,10 @@ components:
           isDomesticConsumer: true
           noOfNonDomesticConsumer: 2
           isNonDomesticConsumer: true
-          noOfDownstreamDistrictHeatNetworkConnections: 7
           isCommunalBuilding: true
+          isOtherDistrictNetwork: true
+          noOfOtherDistrictNetwork: 7
           noOfDomesticConsumer: 5
-          isDownstreamDistrictHeatNetworkConnections: true
           noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4999,7 +5011,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: CommunalWithIntegralEC
+        heatNetworkType: CommunalWithEnergyCentre
       properties:
         id:
           type: string
@@ -5043,10 +5055,10 @@ components:
       type: object
     HeatNetworkType:
       enum:
-      - CommunalWithIntegralEC
-      - CommunalWithSeparateUpstreamHN
-      - DistrictWithOwnEC
-      - DistrictWithSeparateUpstreamHN
+      - CommunalWithEnergyCentre
+      - CommunalWithoutEnergyCentre
+      - DistrictWithOwnMainEnergyCentre
+      - DistrictWithoutOwnMainEnergyCentre
       type: string
     HeatNetworkUserResponse:
       example:
@@ -5451,8 +5463,10 @@ components:
         isAggregated:
           type: boolean
         oldValue:
+          nullable: true
           type: string
         newValue:
+          nullable: true
           type: string
         oldStatus:
           type: string
@@ -5508,19 +5522,72 @@ components:
         threshold_rule:
           $ref: "#/components/schemas/KpiThresholdRule"
       type: object
+    KpiSubmissionApiError:
+      example:
+        elementId: elementId
+        code: code
+        message: message
+        kpis:
+        - kpis
+        - kpis
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        elementId:
+          nullable: true
+          type: string
+        kpis:
+          items:
+            type: string
+          nullable: true
+          type: array
+      type: object
+    KpiSubmissionApiErrorResponse:
+      example:
+        detail: detail
+        title: title
+        errors:
+        - elementId: elementId
+          code: code
+          message: message
+          kpis:
+          - kpis
+          - kpis
+        - elementId: elementId
+          code: code
+          message: message
+          kpis:
+          - kpis
+          - kpis
+        status: 0
+      properties:
+        title:
+          type: string
+        status:
+          format: int32
+          type: integer
+        detail:
+          type: string
+        errors:
+          items:
+            $ref: "#/components/schemas/KpiSubmissionApiError"
+          type: array
+      type: object
     KpiSubmissionRequest:
       additionalProperties: false
       example:
         elements:
         - elementId: elementId
-          type: EnergyCentre
+          type: type
           kpis:
             key:
               is_kpi_imputed: true
               value: 6.027456183070403
               kpi_imputation_details: kpi_imputation_details
         - elementId: elementId
-          type: EnergyCentre
+          type: type
           kpis:
             key:
               is_kpi_imputed: true
@@ -5768,7 +5835,7 @@ components:
       additionalProperties: false
       example:
         elementId: elementId
-        type: EnergyCentre
+        type: type
         kpis:
           key:
             is_kpi_imputed: true
@@ -5778,7 +5845,7 @@ components:
         elementId:
           type: string
         type:
-          $ref: "#/components/schemas/HeatNetworkElementType"
+          type: string
         kpis:
           additionalProperties:
             $ref: "#/components/schemas/KpiValueRequest"
@@ -6090,7 +6157,7 @@ components:
     NetworkTypeSelection2:
       example:
         otherNetworkDescription: otherNetworkDescription
-        type: CommunalWithIntegralEC
+        type: CommunalWithEnergyCentre
       properties:
         type:
           $ref: "#/components/schemas/HeatNetworkType"
@@ -6623,8 +6690,8 @@ components:
           - ""
           - ""
           connectionTypes:
-          - ChildConnections
-          - ChildConnections
+          - CommunalBuildings
+          - CommunalBuildings
         status: InProgress
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
@@ -6702,8 +6769,8 @@ components:
           - ""
           - ""
           connectionTypes:
-          - ChildConnections
-          - ChildConnections
+          - CommunalBuildings
+          - CommunalBuildings
         status: InProgress
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
@@ -6796,8 +6863,8 @@ components:
         - ""
         - ""
         connectionTypes:
-        - ChildConnections
-        - ChildConnections
+        - CommunalBuildings
+        - CommunalBuildings
       nullable: true
       properties:
         networkType:
@@ -7009,8 +7076,8 @@ components:
         hnId: hnId
         updatedBy: updatedBy
         connectionTypes:
-        - ChildConnections
-        - ChildConnections
+        - CommunalBuildings
+        - CommunalBuildings
       properties:
         hnId:
           type: string
@@ -7618,41 +7685,6 @@ components:
       - InvitationAccepted
       - InvitationDeclined
       type: string
-    ValidationProblemDetails:
-      example:
-        instance: instance
-        detail: detail
-        type: type
-        title: title
-        errors:
-          key:
-          - errors
-          - errors
-        status: 0
-      properties:
-        type:
-          nullable: true
-          type: string
-        title:
-          nullable: true
-          type: string
-        status:
-          format: int32
-          nullable: true
-          type: integer
-        detail:
-          nullable: true
-          type: string
-        instance:
-          nullable: true
-          type: string
-        errors:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          type: object
-      type: object
     _api_Import_upload_csv_post_request:
       properties:
         ContentType:

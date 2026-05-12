@@ -10,7 +10,7 @@ All URIs are relative to *https://localhost:7117*
 
 <a id="apiarmsdashboardgetkpinetworkdetailsget"></a>
 # **ApiArmsDashboardGetKpiNetworkDetailsGet**
-> HeatNetworkDetailsResponse ApiArmsDashboardGetKpiNetworkDetailsGet (string submissionId = null, List<string> statusFilter = null, List<string> typeFilter = null, int page = null)
+> HeatNetworkDetailsResponse ApiArmsDashboardGetKpiNetworkDetailsGet (string submissionId = null, string statusFilter = null, string typeFilter = null, int page = null)
 
 
 
@@ -20,8 +20,8 @@ All URIs are relative to *https://localhost:7117*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | **submissionId** | **string** |  | [optional]  |
-| **statusFilter** | [**List&lt;string&gt;**](string.md) |  | [optional]  |
-| **typeFilter** | [**List&lt;string&gt;**](string.md) |  | [optional]  |
+| **statusFilter** | **string** |  | [optional]  |
+| **typeFilter** | **string** |  | [optional]  |
 | **page** | **int** |  | [optional] [default to 1] |
 
 ### Return type
@@ -117,7 +117,7 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
-| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

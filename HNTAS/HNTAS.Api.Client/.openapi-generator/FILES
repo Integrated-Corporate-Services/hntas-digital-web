@@ -21,6 +21,7 @@ docs/apis/SOAApi.md
 docs/apis/UsersApi.md
 docs/models/AddInvitationRequest.md
 docs/models/Address.md
+docs/models/AggregatedKpi.md
 docs/models/AssessmentPlan.md
 docs/models/AssessmentPlanResponse.md
 docs/models/AssessorSearchResult.md
@@ -76,6 +77,8 @@ docs/models/KpiDetailDto.md
 docs/models/KpiHistoryResponse.md
 docs/models/KpiMetadata.md
 docs/models/KpiRule.md
+docs/models/KpiSubmissionApiError.md
+docs/models/KpiSubmissionApiErrorResponse.md
 docs/models/KpiSubmissionRequest.md
 docs/models/KpiThresholdRule.md
 docs/models/KpiValueAggregatedRequest.md
@@ -140,11 +143,11 @@ docs/models/UserResponse.md
 docs/models/UserRole.md
 docs/models/UserRoleDetailResponse.md
 docs/models/UserStatus.md
-docs/models/ValidationProblemDetails.md
 docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/AggregatedKpiTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -187,6 +190,7 @@ src/HNTAS.Api.Client/Extensions/IServiceCollectionExtensions.cs
 src/HNTAS.Api.Client/HNTAS.Api.Client.csproj
 src/HNTAS.Api.Client/Model/AddInvitationRequest.cs
 src/HNTAS.Api.Client/Model/Address.cs
+src/HNTAS.Api.Client/Model/AggregatedKpi.cs
 src/HNTAS.Api.Client/Model/AssessmentPlan.cs
 src/HNTAS.Api.Client/Model/AssessmentPlanResponse.cs
 src/HNTAS.Api.Client/Model/AssessorSearchResult.cs
@@ -242,6 +246,8 @@ src/HNTAS.Api.Client/Model/KpiDetailDto.cs
 src/HNTAS.Api.Client/Model/KpiHistoryResponse.cs
 src/HNTAS.Api.Client/Model/KpiMetadata.cs
 src/HNTAS.Api.Client/Model/KpiRule.cs
+src/HNTAS.Api.Client/Model/KpiSubmissionApiError.cs
+src/HNTAS.Api.Client/Model/KpiSubmissionApiErrorResponse.cs
 src/HNTAS.Api.Client/Model/KpiSubmissionRequest.cs
 src/HNTAS.Api.Client/Model/KpiThresholdRule.cs
 src/HNTAS.Api.Client/Model/KpiValueAggregatedRequest.cs
@@ -306,5 +312,4 @@ src/HNTAS.Api.Client/Model/UserResponse.cs
 src/HNTAS.Api.Client/Model/UserRole.cs
 src/HNTAS.Api.Client/Model/UserRoleDetailResponse.cs
 src/HNTAS.Api.Client/Model/UserStatus.cs
-src/HNTAS.Api.Client/Model/ValidationProblemDetails.cs
 src/HNTAS.Api.Client/README.md

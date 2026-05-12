@@ -1,6 +1,5 @@
 ﻿@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.HeatNetworkRegistration
-@using HNTAS.Web.UI.Models.Enums
 @model DoesDistrictHnHaveOwnEcViewModel
 
 @{
@@ -26,8 +25,8 @@
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = $"{elementId}", OptValue = "true", OptText = "Yes", OptHintText = null },
-                    new Option { OptId = $"{elementId}-2", OptValue = "false", OptText = "No, it is supplied by another network", OptHintText = null }
+                    new Option { OptId = $"{elementId}", OptValue = "True", OptText = "Yes", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = "False", OptText = "No, it is supplied by another network", OptHintText = null }
                 },
                 SeletedOption = Model.HasOwnEc.ToString()
             },
