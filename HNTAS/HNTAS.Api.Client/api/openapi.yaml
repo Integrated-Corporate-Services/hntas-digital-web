@@ -3702,10 +3702,10 @@ components:
       type: object
     ConnectionType:
       enum:
-      - ChildConnections
-      - CommunalHeatNetworkConnection
+      - CommunalBuildings
+      - IndividualHomes
       - CommercialConnection
-      - ParentConnection
+      - OtherDistrictNetwork
       type: string
     ContributorRole:
       enum:
@@ -4311,8 +4311,8 @@ components:
             - ""
             - ""
             connectionTypes:
-            - ChildConnections
-            - ChildConnections
+            - CommunalBuildings
+            - CommunalBuildings
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         uHnId: uHnId
@@ -4403,10 +4403,10 @@ components:
           isDomesticConsumer: true
           noOfNonDomesticConsumer: 2
           isNonDomesticConsumer: true
-          noOfDownstreamDistrictHeatNetworkConnections: 7
           isCommunalBuilding: true
+          isOtherDistrictNetwork: true
+          noOfOtherDistrictNetwork: 7
           noOfDomesticConsumer: 5
-          isDownstreamDistrictHeatNetworkConnections: true
           noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4434,7 +4434,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: CommunalWithIntegralEC
+        heatNetworkType: CommunalWithEnergyCentre
       properties:
         id:
           nullable: true
@@ -4485,10 +4485,10 @@ components:
         isDomesticConsumer: true
         noOfNonDomesticConsumer: 2
         isNonDomesticConsumer: true
-        noOfDownstreamDistrictHeatNetworkConnections: 7
         isCommunalBuilding: true
+        isOtherDistrictNetwork: true
+        noOfOtherDistrictNetwork: 7
         noOfDomesticConsumer: 5
-        isDownstreamDistrictHeatNetworkConnections: true
         noOfCommunalBuilding: 5
       nullable: true
       properties:
@@ -4510,9 +4510,9 @@ components:
           format: int32
           nullable: true
           type: integer
-        isDownstreamDistrictHeatNetworkConnections:
+        isOtherDistrictNetwork:
           type: boolean
-        noOfDownstreamDistrictHeatNetworkConnections:
+        noOfOtherDistrictNetwork:
           format: int32
           nullable: true
           type: integer
@@ -4636,6 +4636,7 @@ components:
         aggregatedKpis:
           items:
             $ref: "#/components/schemas/AggregatedKpi"
+          nullable: true
           type: array
         currentPage:
           format: int32
@@ -4980,10 +4981,10 @@ components:
           isDomesticConsumer: true
           noOfNonDomesticConsumer: 2
           isNonDomesticConsumer: true
-          noOfDownstreamDistrictHeatNetworkConnections: 7
           isCommunalBuilding: true
+          isOtherDistrictNetwork: true
+          noOfOtherDistrictNetwork: 7
           noOfDomesticConsumer: 5
-          isDownstreamDistrictHeatNetworkConnections: true
           noOfCommunalBuilding: 5
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -5010,7 +5011,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: CommunalWithIntegralEC
+        heatNetworkType: CommunalWithEnergyCentre
       properties:
         id:
           type: string
@@ -5054,10 +5055,10 @@ components:
       type: object
     HeatNetworkType:
       enum:
-      - CommunalWithIntegralEC
-      - CommunalWithSeparateUpstreamHN
-      - DistrictWithOwnEC
-      - DistrictWithSeparateUpstreamHN
+      - CommunalWithEnergyCentre
+      - CommunalWithoutEnergyCentre
+      - DistrictWithOwnMainEnergyCentre
+      - DistrictWithoutOwnMainEnergyCentre
       type: string
     HeatNetworkUserResponse:
       example:
@@ -6156,7 +6157,7 @@ components:
     NetworkTypeSelection2:
       example:
         otherNetworkDescription: otherNetworkDescription
-        type: CommunalWithIntegralEC
+        type: CommunalWithEnergyCentre
       properties:
         type:
           $ref: "#/components/schemas/HeatNetworkType"
@@ -6689,8 +6690,8 @@ components:
           - ""
           - ""
           connectionTypes:
-          - ChildConnections
-          - ChildConnections
+          - CommunalBuildings
+          - CommunalBuildings
         status: InProgress
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
@@ -6768,8 +6769,8 @@ components:
           - ""
           - ""
           connectionTypes:
-          - ChildConnections
-          - ChildConnections
+          - CommunalBuildings
+          - CommunalBuildings
         status: InProgress
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
@@ -6862,8 +6863,8 @@ components:
         - ""
         - ""
         connectionTypes:
-        - ChildConnections
-        - ChildConnections
+        - CommunalBuildings
+        - CommunalBuildings
       nullable: true
       properties:
         networkType:
@@ -7075,8 +7076,8 @@ components:
         hnId: hnId
         updatedBy: updatedBy
         connectionTypes:
-        - ChildConnections
-        - ChildConnections
+        - CommunalBuildings
+        - CommunalBuildings
       properties:
         hnId:
           type: string

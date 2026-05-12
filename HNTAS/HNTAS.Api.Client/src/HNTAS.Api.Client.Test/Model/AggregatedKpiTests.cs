@@ -54,6 +54,15 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'KpiName'
+        /// </summary>
+        [Fact]
+        public void KpiNameTest()
+        {
+            // TODO unit test for the property 'KpiName'
+        }
+
+        /// <summary>
         /// Test the property 'Value'
         /// </summary>
         [Fact]

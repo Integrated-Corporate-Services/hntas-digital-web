@@ -507,6 +507,23 @@
           }
         }
       }
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/api/Assessor/search": {
       "get": {
@@ -5165,10 +5182,10 @@
       },
       "ConnectionType": {
         "enum": [
-          "ChildConnections",
-          "CommunalHeatNetworkConnection",
+          "CommunalBuildings",
+          "IndividualHomes",
           "CommercialConnection",
-          "ParentConnection"
+          "OtherDistrictNetwork"
         ]
       },
       "ContributorRole": {
@@ -5625,10 +5642,10 @@
             "format": "int32",
             "nullable": true
           },
-          "isDownstreamDistrictHeatNetworkConnections": {
+          "isOtherDistrictNetwork": {
             "type": "boolean"
           },
-          "noOfDownstreamDistrictHeatNetworkConnections": {
+          "noOfOtherDistrictNetwork": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -5691,6 +5708,12 @@
           "hnId": {
             "type": "string"
           },
+          "aggregatedKpis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AggregatedKpi"
+            }
+          },
           "networkName": {
             "type": "string"
           },
@@ -5706,12 +5729,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ElementGroupDto"
-            }
-          },
-          "aggregatedKpis": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AggregatedKpi"
             }
           },
           "currentPage": {
@@ -5896,10 +5913,10 @@
       },
       "HeatNetworkType": {
         "enum": [
-          "CommunalWithIntegralEC",
-          "CommunalWithSeparateUpstreamHN",
-          "DistrictWithOwnEC",
-          "DistrictWithSeparateUpstreamHN"
+          "CommunalWithEnergyCentre",
+          "CommunalWithoutEnergyCentre",
+          "DistrictWithOwnMainEnergyCentre",
+          "DistrictWithoutOwnMainEnergyCentre"
         ]
       },
       "HeatNetworkUserResponse": {
