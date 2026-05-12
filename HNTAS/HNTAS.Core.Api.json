@@ -502,25 +502,8 @@
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -4659,6 +4642,21 @@
           }
         }
       },
+      "AggregatedKpi": {
+        "type": "object",
+        "properties": {
+          "kpiName": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
       "AssessmentPlan": {
         "type": "object",
         "properties": {
@@ -5710,6 +5708,12 @@
               "$ref": "#/components/schemas/ElementGroupDto"
             }
           },
+          "aggregatedKpis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AggregatedKpi"
+            }
+          },
           "currentPage": {
             "type": "integer",
             "format": "int32"
@@ -6212,7 +6216,8 @@
             "nullable": true
           },
           "newValue": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "oldStatus": {
             "type": "string"

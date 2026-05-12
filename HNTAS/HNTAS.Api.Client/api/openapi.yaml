@@ -344,18 +344,8 @@ paths:
                   $ref: "#/components/schemas/KpiHistoryResponse"
                 type: array
           description: OK
-        "404":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Not Found
+        "500":
+          description: Internal Server Error
       tags:
       - ArmsDashboard
   /api/Assessor/search:
@@ -2975,6 +2965,20 @@ components:
           nullable: true
           type: string
       type: object
+    AggregatedKpi:
+      example:
+        kpiName: kpiName
+        value: 5.962133916683182
+        status: status
+      properties:
+        kpiName:
+          type: string
+        value:
+          format: double
+          type: number
+        status:
+          type: string
+      type: object
     AssessmentPlan:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4574,10 +4578,17 @@ components:
     HeatNetworkDetailsResponse:
       example:
         hnId: hnId
+        aggregatedKpis:
+        - kpiName: kpiName
+          value: 5.962133916683182
+          status: status
+        - kpiName: kpiName
+          value: 5.962133916683182
+          status: status
         selectedMonth: 0
         selectedYear: 6
         networkName: networkName
-        totalPages: 5
+        totalPages: 2
         currentPage: 5
         groupedElements:
         - elementId: elementId
@@ -4606,7 +4617,7 @@ components:
             imputationDetails: imputationDetails
             value: 1.4658129805029452
             status: status
-        totalElements: 2
+        totalElements: 7
       properties:
         hnId:
           type: string
@@ -4621,6 +4632,10 @@ components:
         groupedElements:
           items:
             $ref: "#/components/schemas/ElementGroupDto"
+          type: array
+        aggregatedKpis:
+          items:
+            $ref: "#/components/schemas/AggregatedKpi"
           type: array
         currentPage:
           format: int32
@@ -5450,6 +5465,7 @@ components:
           nullable: true
           type: string
         newValue:
+          nullable: true
           type: string
         oldStatus:
           type: string
