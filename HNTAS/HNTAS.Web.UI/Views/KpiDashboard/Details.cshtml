@@ -11,8 +11,6 @@
                 };
 }
 
-<a href="@Model.BackToListUrl" class="govuk-back-link">Back</a>
-
 <div class="govuk-tabs" data-module="govuk-tabs">
     <h2 class="govuk-tabs__title">Contents</h2>
     <ul class="govuk-tabs__list">
@@ -276,7 +274,15 @@
                     {
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell" style="white-space: nowrap;">
-                                @item.Timestamp?.ToLocalTime().ToString("dd MMM yyyy, HH:mm")
+                                @{
+                                    // Define the UK Time Zone (covers both GMT and BST automatically)
+                                    var ukZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+
+                                    // Convert the DateTimeOffset to the UK Time Zone
+                                    var ukTime = TimeZoneInfo.ConvertTime(item.Timestamp.Value, ukZone);
+                                }
+
+                                @(ukTime.ToString("dd MMM yyyy, HH:mm") ?? "N/A")
                             </td>
                             <td class="govuk-table__cell">
                                 <strong>@(item.IsAggregated == true ? "Aggregated" : $"{item.ElementId}")</strong>

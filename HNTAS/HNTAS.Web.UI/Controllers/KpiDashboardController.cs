@@ -118,10 +118,7 @@ namespace HNTAS.Web.UI.Controllers
                 CurrentPage = response.CurrentPage.Value,
                 TotalPages = response.TotalPages.Value,
                 TotalElements = response.TotalElements.Value,
-                PageSize = pageSize,
-
-                // Maintain the filter state for the back button
-                BackToListUrl = Url.Action("Index", new { month, year })
+                PageSize = pageSize
             };
 
 
@@ -147,6 +144,8 @@ namespace HNTAS.Web.UI.Controllers
 
             // Fetch history on the server
             viewModel.AuditHistory = await _armsDashboardService.GetSubmissionHistory(submissionId);
+
+            this.ShowBackButton("Index", "KpiDashboard", new { month, year });
 
             return View(viewModel);
         }
