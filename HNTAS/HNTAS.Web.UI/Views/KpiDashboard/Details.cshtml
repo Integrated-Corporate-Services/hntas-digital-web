@@ -110,6 +110,46 @@
                     Elements for @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth) @Model.SelectedYear
                 </h2>
 
+                @if (Model.AggregatedKpis != null && Model.AggregatedKpis.Any()){
+
+                    <details class="govuk-details" data-module="govuk-details">
+
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                <strong>Aggregated KPIs</strong>
+                            </span>
+                        </summary>
+
+                        <div class="govuk-details__text">
+                            <table class="govuk-table">
+                                <thead class="govuk-table__head">
+                                    <tr class="govuk-table__row">
+                                        <th class="govuk-table__header">KPI Name</th>
+                                        <th class="govuk-table__header">Value</th>
+                                        <th class="govuk-table__header">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var kpi in Model.AggregatedKpis)
+                                    {
+                                        <tr class="govuk-table__row">
+                                            <td class="govuk-table__cell">@kpi.KpiId</td>
+                                            <td class="govuk-table__cell">@kpi.Value</td>
+                                            <td class="govuk-table__cell">
+                                                <strong class="govuk-tag @(kpi.Status == "Pass" ? "govuk-tag--green" : "govuk-tag--red")">
+                                                    @kpi.Status
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+                }
+
+                
+
                 @foreach (var group in Model.GroupedElements)
                 {
                     // Split the composite key "Type|Id"

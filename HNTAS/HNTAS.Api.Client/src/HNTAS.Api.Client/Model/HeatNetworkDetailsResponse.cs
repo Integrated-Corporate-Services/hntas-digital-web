@@ -38,17 +38,19 @@ namespace HNTAS.Api.Client.Model
         /// <param name="selectedMonth">selectedMonth</param>
         /// <param name="selectedYear">selectedYear</param>
         /// <param name="groupedElements">groupedElements</param>
+        /// <param name="aggregatedKpis">aggregatedKpis</param>
         /// <param name="currentPage">currentPage</param>
         /// <param name="totalPages">totalPages</param>
         /// <param name="totalElements">totalElements</param>
         [JsonConstructor]
-        public HeatNetworkDetailsResponse(Option<string?> hnId = default, Option<string?> networkName = default, Option<int?> selectedMonth = default, Option<int?> selectedYear = default, Option<List<ElementGroupDto>?> groupedElements = default, Option<int?> currentPage = default, Option<int?> totalPages = default, Option<int?> totalElements = default)
+        public HeatNetworkDetailsResponse(Option<string?> hnId = default, Option<string?> networkName = default, Option<int?> selectedMonth = default, Option<int?> selectedYear = default, Option<List<ElementGroupDto>?> groupedElements = default, Option<List<AggregatedKpi>?> aggregatedKpis = default, Option<int?> currentPage = default, Option<int?> totalPages = default, Option<int?> totalElements = default)
         {
             HnIdOption = hnId;
             NetworkNameOption = networkName;
             SelectedMonthOption = selectedMonth;
             SelectedYearOption = selectedYear;
             GroupedElementsOption = groupedElements;
+            AggregatedKpisOption = aggregatedKpis;
             CurrentPageOption = currentPage;
             TotalPagesOption = totalPages;
             TotalElementsOption = totalElements;
@@ -123,6 +125,19 @@ namespace HNTAS.Api.Client.Model
         public List<ElementGroupDto>? GroupedElements { get { return this.GroupedElementsOption; } set { this.GroupedElementsOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of AggregatedKpis
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<AggregatedKpi>?> AggregatedKpisOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets AggregatedKpis
+        /// </summary>
+        [JsonPropertyName("aggregatedKpis")]
+        public List<AggregatedKpi>? AggregatedKpis { get { return this.AggregatedKpisOption; } set { this.AggregatedKpisOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of CurrentPage
         /// </summary>
         [JsonIgnore]
@@ -174,6 +189,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  SelectedMonth: ").Append(SelectedMonth).Append("\n");
             sb.Append("  SelectedYear: ").Append(SelectedYear).Append("\n");
             sb.Append("  GroupedElements: ").Append(GroupedElements).Append("\n");
+            sb.Append("  AggregatedKpis: ").Append(AggregatedKpis).Append("\n");
             sb.Append("  CurrentPage: ").Append(CurrentPage).Append("\n");
             sb.Append("  TotalPages: ").Append(TotalPages).Append("\n");
             sb.Append("  TotalElements: ").Append(TotalElements).Append("\n");
@@ -219,6 +235,7 @@ namespace HNTAS.Api.Client.Model
             Option<int?> selectedMonth = default;
             Option<int?> selectedYear = default;
             Option<List<ElementGroupDto>?> groupedElements = default;
+            Option<List<AggregatedKpi>?> aggregatedKpis = default;
             Option<int?> currentPage = default;
             Option<int?> totalPages = default;
             Option<int?> totalElements = default;
@@ -253,6 +270,9 @@ namespace HNTAS.Api.Client.Model
                         case "groupedElements":
                             groupedElements = new Option<List<ElementGroupDto>?>(JsonSerializer.Deserialize<List<ElementGroupDto>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
+                        case "aggregatedKpis":
+                            aggregatedKpis = new Option<List<AggregatedKpi>?>(JsonSerializer.Deserialize<List<AggregatedKpi>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
                         case "currentPage":
                             currentPage = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
@@ -283,6 +303,9 @@ namespace HNTAS.Api.Client.Model
             if (groupedElements.IsSet && groupedElements.Value == null)
                 throw new ArgumentNullException(nameof(groupedElements), "Property is not nullable for class HeatNetworkDetailsResponse.");
 
+            if (aggregatedKpis.IsSet && aggregatedKpis.Value == null)
+                throw new ArgumentNullException(nameof(aggregatedKpis), "Property is not nullable for class HeatNetworkDetailsResponse.");
+
             if (currentPage.IsSet && currentPage.Value == null)
                 throw new ArgumentNullException(nameof(currentPage), "Property is not nullable for class HeatNetworkDetailsResponse.");
 
@@ -292,7 +315,7 @@ namespace HNTAS.Api.Client.Model
             if (totalElements.IsSet && totalElements.Value == null)
                 throw new ArgumentNullException(nameof(totalElements), "Property is not nullable for class HeatNetworkDetailsResponse.");
 
-            return new HeatNetworkDetailsResponse(hnId, networkName, selectedMonth, selectedYear, groupedElements, currentPage, totalPages, totalElements);
+            return new HeatNetworkDetailsResponse(hnId, networkName, selectedMonth, selectedYear, groupedElements, aggregatedKpis, currentPage, totalPages, totalElements);
         }
 
         /// <summary>
@@ -328,6 +351,9 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkDetailsResponse.GroupedElementsOption.IsSet && heatNetworkDetailsResponse.GroupedElements == null)
                 throw new ArgumentNullException(nameof(heatNetworkDetailsResponse.GroupedElements), "Property is required for class HeatNetworkDetailsResponse.");
 
+            if (heatNetworkDetailsResponse.AggregatedKpisOption.IsSet && heatNetworkDetailsResponse.AggregatedKpis == null)
+                throw new ArgumentNullException(nameof(heatNetworkDetailsResponse.AggregatedKpis), "Property is required for class HeatNetworkDetailsResponse.");
+
             if (heatNetworkDetailsResponse.HnIdOption.IsSet)
                 writer.WriteString("hnId", heatNetworkDetailsResponse.HnId);
 
@@ -344,6 +370,11 @@ namespace HNTAS.Api.Client.Model
             {
                 writer.WritePropertyName("groupedElements");
                 JsonSerializer.Serialize(writer, heatNetworkDetailsResponse.GroupedElements, jsonSerializerOptions);
+            }
+            if (heatNetworkDetailsResponse.AggregatedKpisOption.IsSet)
+            {
+                writer.WritePropertyName("aggregatedKpis");
+                JsonSerializer.Serialize(writer, heatNetworkDetailsResponse.AggregatedKpis, jsonSerializerOptions);
             }
             if (heatNetworkDetailsResponse.CurrentPageOption.IsSet)
                 writer.WriteNumber("currentPage", heatNetworkDetailsResponse.CurrentPageOption.Value!.Value);

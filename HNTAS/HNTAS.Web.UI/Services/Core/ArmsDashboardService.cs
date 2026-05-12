@@ -87,24 +87,35 @@ namespace HNTAS.Web.UI.Services.Core
 
         public async Task<List<KpiHistoryResponse?>> GetSubmissionHistory(string submissionId)
         {
+            _logger.LogInformation("Attempting to fetch submission history for ID: {SubmissionId}", submissionId);
+
             try
             {
                 var response = await _armsDashboardApi.ApiArmsDashboardSubmissionIdHistoryGetOrDefaultAsync(submissionId);
 
+                // Handle success
                 if (response != null && response.IsOk)
                 {
                     return response.Ok();
                 }
 
-                if (response != null && response.IsNotFound)
+                // Handle specific failure cases
+                if (response == null)
                 {
-                    _logger.LogWarning("KPI Details not found for submission {submissionId}", submissionId);
+                    _logger.LogError("API response was null for submission {SubmissionId}", submissionId);
                     return null;
                 }
+
+                // Log any other non-success status codes (e.g., 400, 500)
+                _logger.LogError("Failed to fetch KPI history for {SubmissionId}. Status: {StatusCode}",
+                    submissionId, response.StatusCode);
+
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error fetching KPI details for submission {submissionId}", submissionId);
+                // This remains your most critical log for the screenshot error
+                _logger.LogError(ex, "Exception occurred while calling GetSubmissionHistory for {SubmissionId}. Message: {Message}",
+                    submissionId, ex.Message);
                 throw;
             }
 
