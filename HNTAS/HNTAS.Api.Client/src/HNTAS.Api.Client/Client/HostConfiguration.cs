@@ -106,6 +106,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new KpiHistoryResponseJsonConverter());
             _jsonOptions.Converters.Add(new KpiMetadataJsonConverter());
             _jsonOptions.Converters.Add(new KpiRuleJsonConverter());
+            _jsonOptions.Converters.Add(new KpiSubmissionApiErrorJsonConverter());
+            _jsonOptions.Converters.Add(new KpiSubmissionApiErrorResponseJsonConverter());
             _jsonOptions.Converters.Add(new KpiSubmissionRequestJsonConverter());
             _jsonOptions.Converters.Add(new KpiThresholdRuleJsonConverter());
             _jsonOptions.Converters.Add(new KpiValueAggregatedRequestJsonConverter());
@@ -182,7 +184,6 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new UserRoleDetailResponseJsonConverter());
             _jsonOptions.Converters.Add(new UserStatusJsonConverter());
             _jsonOptions.Converters.Add(new UserStatusNullableJsonConverter());
-            _jsonOptions.Converters.Add(new ValidationProblemDetailsJsonConverter());
             JsonSerializerOptionsProvider jsonSerializerOptionsProvider = new(_jsonOptions);
             _services.AddSingleton(jsonSerializerOptionsProvider);
             _services.AddSingleton<IApiFactory, ApiFactory>();
