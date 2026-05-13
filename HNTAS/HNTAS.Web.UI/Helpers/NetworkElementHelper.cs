@@ -86,7 +86,7 @@ namespace HNTAS.Web.UI.Helpers
 
         public static List<NetworkElementOption> GetNetworkElementOptionsForNetworkType(Api.Client.Model.HeatNetworkType? networkType = null)
         {
-            if (networkType == Api.Client.Model.HeatNetworkType.CommunalWithIntegralEC)
+            if (networkType == Api.Client.Model.HeatNetworkType.CommunalWithEnergyCentre)
             {
                 return new List<NetworkElementOption>
                 {
@@ -96,7 +96,7 @@ namespace HNTAS.Web.UI.Helpers
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connection", Hint = "for example, a heat interface unit (HIU) connecting a dwelling" },
                 };
             }
-            else if (networkType == Api.Client.Model.HeatNetworkType.CommunalWithSeparateUpstreamHN)
+            else if (networkType == Api.Client.Model.HeatNetworkType.CommunalWithoutEnergyCentre)
             {
                 return new List<NetworkElementOption>
                 {
@@ -105,7 +105,7 @@ namespace HNTAS.Web.UI.Helpers
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connection", Hint = "for example, a heat interface unit (HIU) connecting a dwelling" },
                 };
             }
-            else if (networkType == Api.Client.Model.HeatNetworkType.DistrictWithOwnEC)
+            else if (networkType == Api.Client.Model.HeatNetworkType.DistrictWithOwnMainEnergyCentre)
             {
                 return new List<NetworkElementOption>
                 {
@@ -115,7 +115,7 @@ namespace HNTAS.Web.UI.Helpers
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connection", Hint = "for example, a heat interface unit (HIU) connecting a dwelling" },
                 };
             }
-            else if (networkType == Api.Client.Model.HeatNetworkType.DistrictWithSeparateUpstreamHN)
+            else if (networkType == Api.Client.Model.HeatNetworkType.DistrictWithoutOwnMainEnergyCentre)
             {
                 return new List<NetworkElementOption>
                 {
@@ -141,10 +141,10 @@ namespace HNTAS.Web.UI.Helpers
         {
             return networkType switch
             {
-                Api.Client.Model.HeatNetworkType.CommunalWithIntegralEC => "Communal network elements",
-                Api.Client.Model.HeatNetworkType.CommunalWithSeparateUpstreamHN => "Communal network elements",
-                Api.Client.Model.HeatNetworkType.DistrictWithOwnEC => "District network elements",
-                Api.Client.Model.HeatNetworkType.DistrictWithSeparateUpstreamHN => "District network elements",
+                Api.Client.Model.HeatNetworkType.CommunalWithEnergyCentre => "Communal network elements",
+                Api.Client.Model.HeatNetworkType.CommunalWithoutEnergyCentre => "Communal network elements",
+                Api.Client.Model.HeatNetworkType.DistrictWithOwnMainEnergyCentre => "District network elements",
+                Api.Client.Model.HeatNetworkType.DistrictWithoutOwnMainEnergyCentre => "District network elements",
                 _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
             };
         }
@@ -153,10 +153,10 @@ namespace HNTAS.Web.UI.Helpers
         {
             return networkType switch
             {
-                Api.Client.Model.HeatNetworkType.CommunalWithIntegralEC => HeatNetworkTypeConstants.CommunalWithIntegralEC,
-                Api.Client.Model.HeatNetworkType.CommunalWithSeparateUpstreamHN => HeatNetworkTypeConstants.CommunalWithSeparateUpstreamHN,
-                Api.Client.Model.HeatNetworkType.DistrictWithOwnEC => HeatNetworkTypeConstants.DistrictWithOwnEC,
-                Api.Client.Model.HeatNetworkType.DistrictWithSeparateUpstreamHN => HeatNetworkTypeConstants.DistrictWithSeparateUpstreamHN,
+                Api.Client.Model.HeatNetworkType.CommunalWithEnergyCentre => HeatNetworkTypeConstants.CommunalWithIntegralEC,
+                Api.Client.Model.HeatNetworkType.CommunalWithoutEnergyCentre => HeatNetworkTypeConstants.CommunalWithSeparateUpstreamHN,
+                Api.Client.Model.HeatNetworkType.DistrictWithOwnMainEnergyCentre => HeatNetworkTypeConstants.DistrictWithOwnEC,
+                Api.Client.Model.HeatNetworkType.DistrictWithoutOwnMainEnergyCentre => HeatNetworkTypeConstants.DistrictWithSeparateUpstreamHN,
                 _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
             };
         }

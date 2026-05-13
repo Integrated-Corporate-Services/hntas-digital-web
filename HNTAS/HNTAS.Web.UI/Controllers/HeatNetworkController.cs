@@ -36,7 +36,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+            _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);
             //start
             return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
         }

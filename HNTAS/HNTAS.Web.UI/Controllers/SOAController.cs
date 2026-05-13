@@ -101,7 +101,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new NetworkConnectionTypeViewModel
             {
-                ConnectionTypes = GetConnectionTypeOptions()
+                //ConnectionTypes = GetConnectionTypeOptions()
             };
             return View(model);
         }
@@ -112,7 +112,7 @@ namespace HNTAS.Web.UI.Controllers
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("HeatNetworkType");
-                model.ConnectionTypes = GetConnectionTypeOptions();
+                //model.ConnectionTypes = GetConnectionTypeOptions();
                 return View("NetworkConnectionType", model);
             }
 
@@ -825,35 +825,6 @@ namespace HNTAS.Web.UI.Controllers
                 }
             };
             return heatNetworkOptions;
-        }
-
-
-        private List<SelectItemOption> GetConnectionTypeOptions()
-        {
-            var companyTypeOptions = new List<SelectItemOption>
-            {
-                new() {
-                    Value = ConnectionType.ChildConnections.ToString(),
-                    Text = "Child connections (Are you supplying any other networks)",
-                    Hint = "Are you supplying any other district HN?"
-                },
-                new() {
-                    Value = ConnectionType.CommunalHeatNetworkConnection.ToString(),
-                    Text = "Communal heat network connection",
-                    Hint = "Are you supplying residential communally heated blocks"
-                },
-                new() {
-                    Value = ConnectionType.CommercialConnection.ToString(),
-                    Text = "Commercial connection (hotel, office)",
-                    Hint = "Are you supplying any other large public/commercial buildings (office, hotel, retail)"
-                },
-                new() {
-                    Value = ConnectionType.ParentConnection.ToString(),
-                    Text = "Parent connection (Are you being supplied by another network)",
-                    Hint = "Are you being supplied by a district HN"
-                }
-            };
-            return companyTypeOptions;
-        }
+        }        
     }
 }
