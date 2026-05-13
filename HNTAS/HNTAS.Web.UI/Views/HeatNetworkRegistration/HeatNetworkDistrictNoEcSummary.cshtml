@@ -1,18 +1,9 @@
 ﻿@using HNTAS.Web.UI.Models.HeatNetworkRegistration
+@using HNTAS.Api.Client.Model
 @model HeatNetworkConnectionsViewModel
 
 @{
     ViewData["Title"] = "Heat network summary";
-    var connections = new List<string>();
-    if (Model.IsCommunalBuilding){
-        connections.Add($"{Model.NoOfCommunalBuilding} communal buildings");
-    }
-    if(Model.IsDomesticConsumer){
-        connections.Add($"{Model.NoOfDomesticConsumer} domestic consumers");
-    }
-     if(Model.IsNonDomesticConsumer){
-        connections.Add($"{Model.NoOfNonDomesticConsumer} non domestic consumers");
-    }    
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -28,9 +19,9 @@
         <h2 class="govuk-heading-m">Connections</h2>
 
         <ul class="govuk-list govuk-list--bullet">
-            @if (connections.Any())
+            @if (Model.ConnectionsToDisplay.Any())
             {
-                foreach (var c in connections)
+                foreach (var c in Model.ConnectionsToDisplay)
                 {
                     <li>@c</li>
                 }

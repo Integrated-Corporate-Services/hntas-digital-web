@@ -118,7 +118,10 @@ namespace HNTAS.Web.UI.Controllers
                 CurrentPage = response.CurrentPage.Value,
                 TotalPages = response.TotalPages.Value,
                 TotalElements = response.TotalElements.Value,
-                PageSize = pageSize
+                PageSize = pageSize,
+
+                // Maintain the filter state for the back button
+                BackToListUrl = Url.Action("Index", new { month, year })
             };
 
 

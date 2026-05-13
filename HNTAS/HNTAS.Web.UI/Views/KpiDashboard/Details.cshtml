@@ -269,11 +269,13 @@
                         <th scope="col" class="govuk-table__header">Status Change</th>
                     </tr>
                 </thead>
-                <tbody class="govuk-table__body">
+                <tbody class="govuk-table__body">             
+
                     @foreach (var item in Model.AuditHistory)
                     {
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell" style="white-space: nowrap;">
+
                                 @{
                                     // Define the UK Time Zone (covers both GMT and BST automatically)
                                     var ukZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
