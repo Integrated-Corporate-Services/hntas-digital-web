@@ -129,7 +129,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new HeatNetworkDetailsResponseJsonConverter(),
         new ElementGroupDtoJsonConverter(),
         new KpiDetailDtoJsonConverter(),
-        new KpiHistoryResponseJsonConverter()
+        new KpiHistoryResponseJsonConverter(),  
+        new SoaStatusWithCountJsonConverter(),
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

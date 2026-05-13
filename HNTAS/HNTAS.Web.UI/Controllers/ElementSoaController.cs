@@ -120,9 +120,7 @@ namespace HNTAS.Web.UI.Controllers
 
             // Set element-specific ViewBag properties
             var content = ElementSoaHelper.GetSoaElementContent(elementType);
-            ViewBag.Heading = content.Heading;
-            ViewBag.Description1 = content.Description1;
-            ViewBag.Description2 = content.Description2;
+            ViewBag.Heading = content;            
             var selectedNetworkElement = heatNetworkData?.NetworkElements?.Elements?.Where(e => e.ElementId == elementId).FirstOrDefault();
             
             var model = new ElementSoaUpdateStatusViewModel();            
@@ -130,6 +128,7 @@ namespace HNTAS.Web.UI.Controllers
             model.ElementId = elementId;
             model.ElementName = elementName;
             model.SoaPhase = soaPhase;
+            model.ElementType = elementType;
             model.ElementCount = selectedNetworkElement?.Count;
             model.SoaStatusOptions = ElementSoaHelper.GetSoaStatuses();            
 
@@ -173,6 +172,9 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);            
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
+            // Set element-specific ViewBag properties
+            var content = ElementSoaHelper.GetSoaElementContent(model.ElementType);
+            ViewBag.Heading = content;
 
             var notStartedCount = model.SoaStatusCounts.ContainsKey(SoaStatus.NotStarted) ? model.SoaStatusCounts[SoaStatus.NotStarted] : 0;
 

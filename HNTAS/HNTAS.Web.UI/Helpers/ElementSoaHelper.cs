@@ -103,31 +103,29 @@ namespace HNTAS.Web.UI.Helpers
         //    return incompleteSoa;
         //}
 
-        public static (string Heading, string Description1, string Description2) GetSoaElementContent(HeatNetworkElementType? elementType)
+        public static string GetSoaElementContent(HeatNetworkElementType? elementType)
         {
             return elementType switch
             {
                 HeatNetworkElementType.EnergyCentre => (
-                    "What is the status of the statement of applicability for the energy centre?",
-                    "Intro to Energy centre...",
-                    "Upload the statement of applicability (SOA) for the energy centre"
+                    "What is the status of the statement of applicability for the Consumer Connection?"
                 ),
                 HeatNetworkElementType.ConsumerConnection => (
-                    "What is the status of the statement of applicability for the consumer connections",
-                    "Intro to Consumer connections...",
-                    "Upload the statement of applicability (SOA) for the consumer connections"
+                    "What is the status of the statement of applicability for the Energy Centre?"
                 ),
                 HeatNetworkElementType.DistrictDistribution => (
-                    "What is the status of the statement of applicability for the district distribution network",
-                    "Intro to District distribution network...",
-                    "Upload the statement of applicability (SOA) for the district distribution network"
+                    "What is the status of the statement of applicability for the District Distribution Network?"
                 ),
                 HeatNetworkElementType.Substation => (
-                    "What is the status of the statement of applicability for the substation",
-                    "Intro to substation",
-                    "Upload the statement of applicability (SOA) for the substation"
+                    "What is the status of the statement of applicability for the Substation?"
                 ),
-                _ => (string.Empty, string.Empty, string.Empty)
+                HeatNetworkElementType.CommunalDistribution => (
+                    "What is the status of the statement of applicability for the Communal Distribution Network?"
+                ),
+                HeatNetworkElementType.CommunalSubstation => (
+                    "What is the status of the statement of applicability for the Communal Substation?"
+                ),
+                _ => (string.Empty)
             };
         }
 
