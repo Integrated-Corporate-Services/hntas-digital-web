@@ -13,7 +13,7 @@
     var userIsContributor = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Contributor.ToString();
     var userIsDesignatedDutyHolder = Model.UserRole == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString();
     var RPLoggedInForFirstTime = ViewBag.RPLoggedInForFirstTime;
-    var showCarbonCalculator = true;//userIsRP || userIsActingRP || userIsAssessor || userIsCertifier && !RPLoggedInForFirstTime;
+    // var showCarbonCalculator = userIsRP || userIsActingRP || userIsAssessor || userIsCertifier && !RPLoggedInForFirstTime;
 }
 
 <div class="govuk-width-container">
@@ -39,7 +39,7 @@
                 </h3>
                 <p class="govuk-body-s">Network, element and personnel updates</p>
             </div>
-        </div>       
+        </div>
 
         <!-- Organisation Details -->
         <div class="dashboard-grid__item">
@@ -224,9 +224,7 @@
                 </div>   
             }
         }
-        
-        @if (showCarbonCalculator)
-        {
+        <environment names="dev">
             <!-- Carbon Calculator-->
             <div class="dashboard-grid__item">
                 <div class="dashboard-card">
@@ -236,7 +234,7 @@
                     <p class="govuk-body-s">Calculate carbon emission for your heat network.</p>
                 </div>
             </div>
-        }
+        </environment>
 
     </div>
     @if (userIsRP)
