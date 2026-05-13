@@ -208,10 +208,10 @@ namespace HNTAS.Web.UI.Helpers
         {
             return networkType switch
             {
-                Api.Client.Model.HeatNetworkType.CommunalWithIntegralEC => HeatNetworkTypeConstants.CommunalWithIntegralEC,
-                Api.Client.Model.HeatNetworkType.CommunalWithSeparateUpstreamHN => HeatNetworkTypeConstants.CommunalWithSeparateUpstreamHN,
-                Api.Client.Model.HeatNetworkType.DistrictWithOwnEC => HeatNetworkTypeConstants.DistrictWithOwnEC,
-                Api.Client.Model.HeatNetworkType.DistrictWithSeparateUpstreamHN => HeatNetworkTypeConstants.DistrictWithSeparateUpstreamHN,
+                Api.Client.Model.HeatNetworkType.CommunalWithEnergyCentre => HeatNetworkTypeConstants.CommunalWithIntegralEC,
+                Api.Client.Model.HeatNetworkType.CommunalWithoutEnergyCentre => HeatNetworkTypeConstants.CommunalWithSeparateUpstreamHN,
+                Api.Client.Model.HeatNetworkType.DistrictWithOwnMainEnergyCentre => HeatNetworkTypeConstants.DistrictWithOwnEC,
+                Api.Client.Model.HeatNetworkType.DistrictWithoutOwnMainEnergyCentre => HeatNetworkTypeConstants.DistrictWithSeparateUpstreamHN,
                 _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
             };
         }

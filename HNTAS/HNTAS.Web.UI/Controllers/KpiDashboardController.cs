@@ -135,8 +135,20 @@ namespace HNTAS.Web.UI.Controllers
                 }).ToList()
             );
 
+            if (response.AggregatedKpis != null)
+            {
+                viewModel.AggregatedKpis = response.AggregatedKpis.Select(k => new KpiRowViewModel
+                {
+                    KpiId = k.KpiName,
+                    Value = k.Value.Value,
+                    Status = k.Status
+                }).ToList();
+            }
+
             // Fetch history on the server
             viewModel.AuditHistory = await _armsDashboardService.GetSubmissionHistory(submissionId);
+
+            this.ShowBackButton("Index", "KpiDashboard", new { month, year });
 
             return View(viewModel);
         }
@@ -177,6 +189,8 @@ namespace HNTAS.Web.UI.Controllers
 
             // The Data: Grouped by Element ID
             public Dictionary<string, List<KpiRowViewModel>> GroupedElements { get; set; } = new();
+
+            public List<KpiRowViewModel> AggregatedKpis { get; set; } = new();
 
             // Helper for the "Back" link
             public string BackToListUrl { get; set; } = string.Empty;

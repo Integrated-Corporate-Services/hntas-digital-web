@@ -1,12 +1,12 @@
-# HNTAS.Api.Client.Model.NetworkElementRequest
+# HNTAS.Api.Client.Model.AggregatedKpi
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ElementId** | **string** |  | 
-**Type** | **string** |  | 
-**Kpis** | [**Dictionary&lt;string, KpiValueRequest&gt;**](KpiValueRequest.md) |  | [optional] 
+**KpiName** | **string** |  | [optional] 
+**Value** | **double** |  | [optional] 
+**Status** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

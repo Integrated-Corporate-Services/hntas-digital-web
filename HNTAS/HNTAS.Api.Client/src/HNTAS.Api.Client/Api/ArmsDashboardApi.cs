@@ -168,7 +168,7 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// The <see cref="IApiArmsDashboardSubmissionIdHistoryGetApiResponse"/>
     /// </summary>
-    public interface IApiArmsDashboardSubmissionIdHistoryGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<KpiHistoryResponse>?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IApiArmsDashboardSubmissionIdHistoryGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<KpiHistoryResponse>?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -177,10 +177,10 @@ namespace HNTAS.Api.Client.Api
         bool IsOk { get; }
 
         /// <summary>
-        /// Returns true if the response is 404 NotFound
+        /// Returns true if the response is 500 InternalServerError
         /// </summary>
         /// <returns></returns>
-        bool IsNotFound { get; }
+        bool IsInternalServerError { get; }
     }
 
     /// <summary>
@@ -1237,42 +1237,10 @@ namespace HNTAS.Api.Client.Api
             }
 
             /// <summary>
-            /// Returns true if the response is 404 NotFound
+            /// Returns true if the response is 500 InternalServerError
             /// </summary>
             /// <returns></returns>
-            public bool IsNotFound => 404 == (int)StatusCode;
-
-            /// <summary>
-            /// Deserializes the response if the response is 404 NotFound
-            /// </summary>
-            /// <returns></returns>
-            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
-            {
-                // This logic may be modified with the AsModel.mustache template
-                return IsNotFound
-                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
-                    : null;
-            }
-
-            /// <summary>
-            /// Returns true if the response is 404 NotFound and the deserialized response is not null
-            /// </summary>
-            /// <param name="result"></param>
-            /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
-            {
-                result = null;
-
-                try
-                {
-                    result = NotFound();
-                } catch (Exception e)
-                {
-                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
-                }
-
-                return result != null;
-            }
+            public bool IsInternalServerError => 500 == (int)StatusCode;
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {

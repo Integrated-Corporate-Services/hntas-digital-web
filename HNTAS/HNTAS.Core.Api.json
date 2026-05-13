@@ -44,17 +44,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                  "$ref": "#/components/schemas/KpiSubmissionApiErrorResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                  "$ref": "#/components/schemas/KpiSubmissionApiErrorResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                  "$ref": "#/components/schemas/KpiSubmissionApiErrorResponse"
                 }
               }
             }
@@ -502,11 +502,11 @@
               }
             }
           },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
@@ -4659,6 +4659,21 @@
           }
         }
       },
+      "AggregatedKpi": {
+        "type": "object",
+        "properties": {
+          "kpiName": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
       "AssessmentPlan": {
         "type": "object",
         "properties": {
@@ -5167,10 +5182,10 @@
       },
       "ConnectionType": {
         "enum": [
-          "ChildConnections",
-          "CommunalHeatNetworkConnection",
+          "CommunalBuildings",
+          "IndividualHomes",
           "CommercialConnection",
-          "ParentConnection"
+          "OtherDistrictNetwork"
         ]
       },
       "ContributorRole": {
@@ -5630,10 +5645,10 @@
             "format": "int32",
             "nullable": true
           },
-          "isDownstreamDistrictHeatNetworkConnections": {
+          "isOtherDistrictNetwork": {
             "type": "boolean"
           },
-          "noOfDownstreamDistrictHeatNetworkConnections": {
+          "noOfOtherDistrictNetwork": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -5695,6 +5710,12 @@
         "properties": {
           "hnId": {
             "type": "string"
+          },
+          "aggregatedKpis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AggregatedKpi"
+            }
           },
           "networkName": {
             "type": "string"
@@ -5896,10 +5917,10 @@
       },
       "HeatNetworkType": {
         "enum": [
-          "CommunalWithIntegralEC",
-          "CommunalWithSeparateUpstreamHN",
-          "DistrictWithOwnEC",
-          "DistrictWithSeparateUpstreamHN"
+          "CommunalWithEnergyCentre",
+          "CommunalWithoutEnergyCentre",
+          "DistrictWithOwnMainEnergyCentre",
+          "DistrictWithoutOwnMainEnergyCentre"
         ]
       },
       "HeatNetworkUserResponse": {
@@ -6212,10 +6233,12 @@
             "type": "boolean"
           },
           "oldValue": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "newValue": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "oldStatus": {
             "type": "string"
@@ -6271,6 +6294,49 @@
           },
           "threshold_rule": {
             "$ref": "#/components/schemas/KpiThresholdRule"
+          }
+        }
+      },
+      "KpiSubmissionApiError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "elementId": {
+            "type": "string",
+            "nullable": true
+          },
+          "kpis": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "KpiSubmissionApiErrorResponse": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KpiSubmissionApiError"
+            }
           }
         }
       },
@@ -6518,7 +6584,7 @@
             "type": "string"
           },
           "type": {
-            "$ref": "#/components/schemas/HeatNetworkElementType"
+            "type": "string"
           },
           "kpis": {
             "type": "object",
@@ -7900,41 +7966,6 @@
           "InvitationAccepted",
           "InvitationDeclined"
         ]
-      },
-      "ValidationProblemDetails": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "detail": {
-            "type": "string",
-            "nullable": true
-          },
-          "instance": {
-            "type": "string",
-            "nullable": true
-          },
-          "errors": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
       }
     }
   },
