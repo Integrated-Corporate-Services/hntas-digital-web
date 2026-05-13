@@ -138,9 +138,9 @@ namespace HNTAS.Web.UI.Helpers
         //    }
         //}
 
-        public static List<NetworkElementOption> GetNetworkElementOptionsForNetworkType(string networkType = "", bool isOwnEnergyCentre = false)
+        public static List<NetworkElementOption> GetNetworkElementOptionsForNetworkType(Api.Client.Model.HeatNetworkType? networkType = null)
         {
-            if (networkType == "Communal")
+            if (networkType == Api.Client.Model.HeatNetworkType.CommunalWithoutEnergyCentre || networkType == Api.Client.Model.HeatNetworkType.CommunalWithEnergyCentre)
             {
                 return new List<NetworkElementOption>
                 {
@@ -149,7 +149,7 @@ namespace HNTAS.Web.UI.Helpers
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connections", Hint = "Connects the network to individual dwellings or units" },
                 };
             }
-            else if (networkType == "District" && isOwnEnergyCentre)
+            else if (networkType == Api.Client.Model.HeatNetworkType.DistrictWithOwnMainEnergyCentre)
             {
                 return new List<NetworkElementOption>
                 {
@@ -157,7 +157,7 @@ namespace HNTAS.Web.UI.Helpers
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connections", Hint = "The connection between a district or communal distribution network and a single consumer heat system"},
                 };
             }
-            else if (networkType == "District" && !isOwnEnergyCentre)
+            else if (networkType == Api.Client.Model.HeatNetworkType.DistrictWithoutOwnMainEnergyCentre)
             {
                 return new List<NetworkElementOption>
                 {
@@ -174,6 +174,7 @@ namespace HNTAS.Web.UI.Helpers
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection" },
                     new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre" },
                     new() { Id = HeatNetworkElementType.DistrictDistribution, Label = "District Distribution Network"},
+                    new() { Id = HeatNetworkElementType.Substation, Label = "Substation"},
                 };
             }
         }
@@ -190,13 +191,13 @@ namespace HNTAS.Web.UI.Helpers
         //    };
         //}
 
-        public static string GetNetworkElementHeadingForNetworkType(string networkType)
+        public static string GetNetworkElementHeadingForNetworkType(Api.Client.Model.HeatNetworkType? networkType)
         {
-            if (networkType == "Communal")
+            if (networkType == Api.Client.Model.HeatNetworkType.CommunalWithoutEnergyCentre || networkType == Api.Client.Model.HeatNetworkType.CommunalWithEnergyCentre)
             {
                 return "Communal network elements";
             }
-            else if (networkType == "District")
+            else if (networkType == Api.Client.Model.HeatNetworkType.DistrictWithoutOwnMainEnergyCentre || networkType == Api.Client.Model.HeatNetworkType.DistrictWithOwnMainEnergyCentre)
             {
                 return "District network elements";
             }

@@ -31,9 +31,9 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <form method="post" asp-action="SoaUpdateStatus" asp-controller="ElementSoa">            
-                <span class="govuk-caption-l">@ViewBag.HnId</span>                
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
                         <h1 class="govuk-heading-l">
-                             @ViewBag.Heading                 
+                             @ViewBag.Heading
                         </h1>                    
                     <p class="govuk-body">
                         If your connections are in different states of completion, you'll be able to number them for each status option

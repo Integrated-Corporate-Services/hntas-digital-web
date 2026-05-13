@@ -74,44 +74,17 @@ namespace HNTAS.Web.UI.Helpers
 
                 }
             };
-        }
-
-        //public static ElementSoaProgressStatusTracking GetElementSoaProgressStatusTracking(ElementSoaViewModel model)
-        //{
-        //    var totalElementsInAllActiveStages = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count());
-        //    var totalElementsWithStatusUpdated = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count(e => e.SoaStatus != null && e.SoaStatus != "Not started"));
-        //    ElementSoaProgressStatusTracking incompleteSoa = new ElementSoaProgressStatusTracking();
-        //    if (totalElementsInAllActiveStages > 0 && (totalElementsInAllActiveStages - totalElementsWithStatusUpdated) == 1)
-        //    {
-        //        incompleteSoa.AllElementsCompleted = false;
-        //        // find the one stage and element that doesn't have a status
-        //        var stageWithMissingDoc = model.Stages.FirstOrDefault(s => s.IsActive && s.Elements.Any(e => e.SoaStatus == null || e.SoaStatus == "Not started"));
-        //        if (stageWithMissingDoc != null)
-        //        {
-        //            incompleteSoa.IncompleteSoaStageId = stageWithMissingDoc.StageId;
-        //            var elementWithMissingDoc = stageWithMissingDoc.Elements.FirstOrDefault(e => e.SoaStatus == null || e.SoaStatus == "Not started");
-        //            if (elementWithMissingDoc != null)
-        //            {
-        //                incompleteSoa.IncompleteElementId = elementWithMissingDoc.ElementId;
-        //            }
-        //        }
-        //    }
-        //    else if (totalElementsInAllActiveStages - totalElementsWithStatusUpdated == 0)
-        //    {
-        //        incompleteSoa.AllElementsCompleted = true;
-        //    }
-        //    return incompleteSoa;
-        //}
+        }        
 
         public static string GetSoaElementContent(HeatNetworkElementType? elementType)
         {
             return elementType switch
             {
                 HeatNetworkElementType.EnergyCentre => (
-                    "What is the status of the statement of applicability for the Consumer Connection?"
+                    "What is the status of the statement of applicability for the Energy Centre?"
                 ),
                 HeatNetworkElementType.ConsumerConnection => (
-                    "What is the status of the statement of applicability for the Energy Centre?"
+                    "What is the status of the statement of applicability for the Consumer Connection?"
                 ),
                 HeatNetworkElementType.DistrictDistribution => (
                     "What is the status of the statement of applicability for the District Distribution Network?"
@@ -143,19 +116,7 @@ namespace HNTAS.Web.UI.Helpers
                 _ => 0
             };
         }
-
-        //public static ElementSoaUpdateStatusViewModel GetSoaStatuses()
-        //{
-        //    return new ElementSoaUpdateStatusViewModel
-        //    {
-        //        SoaStatus = new List<string> {
-        //            ElementSoaUpdateStatusConstants.InProgress,
-        //            ElementSoaUpdateStatusConstants.InRevision,
-        //            ElementSoaUpdateStatusConstants.CompletedSoaAndEvidenceWithAssessor,
-        //            ElementSoaUpdateStatusConstants.StatementOfApplicabilityAgreedWithAssessor,
-        //            ElementSoaUpdateStatusConstants.BeingAssessed }
-        //    };
-        //}
+        
         public static List<SoaStatusOption> GetSoaStatuses()
         {
             return new List<SoaStatusOption>()

@@ -15,10 +15,8 @@
 
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 class="govuk-heading-l">
-                            @ViewBag.Heading
-                        </h1>
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">                        
+                        @ViewBag.Heading
                     </legend>
                     
                     <div id="soa-elements-hint" class="govuk-hint">

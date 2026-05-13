@@ -3870,7 +3870,6 @@ components:
           assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           stageId: Stage1
         count: 9
-        networkElementInstanceName: networkElementInstanceName
         type: EnergyCentre
         elementType: elementType
       properties:
@@ -3882,9 +3881,6 @@ components:
           type: string
         type:
           $ref: "#/components/schemas/HeatNetworkElementType"
-        networkElementInstanceName:
-          nullable: true
-          type: string
         count:
           format: int32
           nullable: true
@@ -4327,7 +4323,7 @@ components:
             connectionTypes:
             - CommunalBuildings
             - CommunalBuildings
-          status: InProgress
+          status: NotStarted
           updatedAt: 2000-01-23T04:56:07.000+00:00
         uHnId: uHnId
         networkElements:
@@ -4372,7 +4368,6 @@ components:
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 9
-            networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
@@ -4410,7 +4405,6 @@ components:
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 9
-            networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -4967,7 +4961,6 @@ components:
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 9
-            networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
           - elementId: elementId
@@ -5005,7 +4998,6 @@ components:
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 9
-            networkElementInstanceName: networkElementInstanceName
             type: EnergyCentre
             elementType: elementType
           updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -5944,7 +5936,6 @@ components:
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 9
-          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -5982,7 +5973,6 @@ components:
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 9
-          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -6052,7 +6042,6 @@ components:
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 9
-          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -6090,7 +6079,6 @@ components:
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 9
-          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -6159,7 +6147,6 @@ components:
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 9
-          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         - elementId: elementId
@@ -6197,7 +6184,6 @@ components:
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 9
-          networkElementInstanceName: networkElementInstanceName
           type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
@@ -6787,7 +6773,7 @@ components:
           connectionTypes:
           - CommunalBuildings
           - CommunalBuildings
-        status: InProgress
+        status: NotStarted
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
@@ -6866,7 +6852,7 @@ components:
           connectionTypes:
           - CommunalBuildings
           - CommunalBuildings
-        status: InProgress
+        status: NotStarted
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         status:

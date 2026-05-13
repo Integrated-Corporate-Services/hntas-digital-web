@@ -507,23 +507,6 @@
           }
         }
       }
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
     },
     "/api/Assessor/search": {
       "get": {
@@ -5331,10 +5314,6 @@
           "type": {
             "$ref": "#/components/schemas/HeatNetworkElementType"
           },
-          "networkElementInstanceName": {
-            "type": "string",
-            "nullable": true
-          },
           "count": {
             "type": "integer",
             "format": "int32",
@@ -5711,12 +5690,6 @@
           "hnId": {
             "type": "string"
           },
-          "aggregatedKpis": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AggregatedKpi"
-            }
-          },
           "networkName": {
             "type": "string"
           },
@@ -5733,6 +5706,13 @@
             "items": {
               "$ref": "#/components/schemas/ElementGroupDto"
             }
+          },
+          "aggregatedKpis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AggregatedKpi"
+            },
+            "nullable": true
           },
           "currentPage": {
             "type": "integer",

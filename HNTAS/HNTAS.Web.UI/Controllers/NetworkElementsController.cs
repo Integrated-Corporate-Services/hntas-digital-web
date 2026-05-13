@@ -51,13 +51,10 @@ namespace HNTAS.Web.UI.Controllers
 
             model = new NetworkElementViewModel();
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
-            var networkType = heatNetworkData?.HeatNetworkType;
-            //ToDo: Integrate networkType and isOwnEnergyCentre
-            //model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
-            //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
+            var networkType = heatNetworkData?.HeatNetworkType;            
 
-            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("Communal", true);
-            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType("Communal");
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
+            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
             var selectedNetworkElements = heatNetworkData?.NetworkElements;
 
             if (selectedNetworkElements != null)
@@ -89,12 +86,8 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
 
-            var testNetworkType = "Communal";
-            //ToDo: Integrate networkType and isOwnEnergyCentre
-            //model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
-            //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
-            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("Communal", true);
-            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType("Communal");
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
+            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
             var elements = new List<Element>();
 
             foreach (var selectedId in model.SelectedElementIds)
@@ -107,9 +100,8 @@ namespace HNTAS.Web.UI.Controllers
                 };
                 elements.Add(ele);
                 if ((!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
-                {
-                    //var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == selectedId);
-                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType("Communal", true).FirstOrDefault(x => x.Id == selectedId);
+                {                    
+                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType).FirstOrDefault(x => x.Id == selectedId);
                     if (element == null)
                     {
                         return BadRequest();
@@ -125,19 +117,16 @@ namespace HNTAS.Web.UI.Controllers
                 return View("SelectNetworkElements", model);
             }
 
-
             var address = heatNetworkData?.Address;
             var coordinates = heatNetworkData?.EcDetails;
             var phase = heatNetworkData?.Phase;
-
             var latlong = coordinates != null ? $"{coordinates.Latitude},{coordinates.Longitude}" : null;
             var addressByStreetOrTownModel = address != null ? (AddressByStreetOrTownModel)address! : null;
 
             var networkElementsOverViewModel = new NetworkElementsOverViewModel
             {
                 Elements = elements.Select(e =>
-                {
-                    //var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.Type);
+                {                    
                     var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.Type);
                     var label = elementOption != null ? elementOption.Label : e.Type.ToString();
                     label = label.ToSentenceCase();
@@ -154,8 +143,7 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, elements);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey, model);
 
-            //ToDo: Integrate networkType and isOwnEnergyCentre
-            if (testNetworkType == "District")
+            if (networkType == HeatNetworkType.DistrictWithOwnMainEnergyCentre || networkType == HeatNetworkType.DistrictWithoutOwnMainEnergyCentre)
             {
                 return RedirectToAction("Substations", "NetworkElements");
             }
@@ -339,6 +327,9 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SelectedElementsSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SubstationViewModelKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DistributionNetworksViewModelKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
         }
     }
 }
