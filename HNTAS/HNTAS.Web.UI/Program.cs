@@ -130,7 +130,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new ElementGroupDtoJsonConverter(),
         new KpiDetailDtoJsonConverter(),
         new KpiHistoryResponseJsonConverter(),
-        new AggregatedKpiJsonConverter()
+        new AggregatedKpiJsonConverter(),
+        new SoaStatusWithCountJsonConverter(),
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

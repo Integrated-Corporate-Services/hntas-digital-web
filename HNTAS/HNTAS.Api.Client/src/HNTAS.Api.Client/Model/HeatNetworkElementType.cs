@@ -53,7 +53,12 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Enum ConsumerConnection for value: ConsumerConnection
         /// </summary>
-        ConsumerConnection = 5
+        ConsumerConnection = 5,
+
+        /// <summary>
+        /// Enum CommunalSubstation for value: CommunalSubstation
+        /// </summary>
+        CommunalSubstation = 6
     }
 
     /// <summary>
@@ -83,6 +88,9 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("ConsumerConnection"))
                 return HeatNetworkElementType.ConsumerConnection;
 
+            if (value.Equals("CommunalSubstation"))
+                return HeatNetworkElementType.CommunalSubstation;
+
             throw new NotImplementedException($"Could not convert value to type HeatNetworkElementType: '{value}'");
         }
 
@@ -107,6 +115,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("ConsumerConnection"))
                 return HeatNetworkElementType.ConsumerConnection;
+
+            if (value.Equals("CommunalSubstation"))
+                return HeatNetworkElementType.CommunalSubstation;
 
             return null;
         }
@@ -133,6 +144,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value == HeatNetworkElementType.ConsumerConnection)
                 return "ConsumerConnection";
+
+            if (value == HeatNetworkElementType.CommunalSubstation)
+                return "CommunalSubstation";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
@@ -173,7 +187,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkElementType heatNetworkElementType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkElementType.ToString());
+            writer.WriteStringValue(HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElementType).ToString());
         }
     }
 
@@ -204,14 +218,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the HeatNetworkElementType to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="heatNetworkElementType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkElementType? heatNetworkElementType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkElementType?.ToString() ?? "null");
+            writer.WriteStringValue(heatNetworkElementType.HasValue ? HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElementType.Value).ToString() : "null");
         }
     }
 }

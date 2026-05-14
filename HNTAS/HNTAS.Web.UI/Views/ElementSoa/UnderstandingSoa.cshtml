@@ -1,36 +1,33 @@
 ﻿@{
-    ViewData["Title"] = "Before you complete your Statements of Applicability (SOAs)";
+    ViewData["Title"] = "Before you complete Statements of Applicability (SOA)";
 }
 
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">Before you complete your Statements of Applicability (SOAs)</h1>
+            <h1 class="govuk-heading-l">Before you complete Statements of Applicability (SOA)</h1>
 
             <p class="govuk-body">
-                The SOAs confirm which HNTAS requirements apply to each heat network element and what evidence should be provided.
+                An SOA is a record of which HNTAS requirements (found in the <a class="govuk-link" asp-controller="Home" asp-action="DocumentLibrary" asp-method="GET">Document Library</a>) apply to a heat network element and what evidence is needed.
             </p>
 
             <p class="govuk-body">
-                SOAs are completed for every element at each stage of development.
+                You will complete each SOA outside this service with your assessor and project team. Use this part of the service to update the status and track your progress for each part of your heat network.
             </p>
 
             <p class="govuk-body">
-                Assessors use completed SOAs so they can issue a Statement of Conformity (SOC). This enables certification of the heat network element before operation.
-            </p>
+                An SOA must be completed for each element at different stages of development.
+            </p>            
 
-            <p class="govuk-body">
-                The <a class="govuk-link" asp-controller="Home" asp-action="DocumentLibrary" asp-method="GET">Document Library</a> contains requirement specifications for each element and the supporting <a href="https://assets.publishing.service.gov.uk/media/691c938cd140bbbaa59a29b9/heat-network-technical-standard-1-draft.pdf" target="_blank">TS1 Heat Network Standards</a> (opens in new tab).
-            </p>
+            <p class="govuk-body"><strong>An SoA must contain:</strong> </p>
 
-            <h2 class="govuk-heading-s">An SOA must contain:</h2>
             <ul class="govuk-list govuk-list--bullet">
                 <li>which HNTAS technical requirements apply to the element</li>
                 <li>which performance metrics apply</li>
                 <li>how key network failures are avoided</li>
             </ul>
 
-                       
+            <p class="govuk-body">An assessor will review each SOA to issue a Statement of Conformity (SOC). This is needed to certify your heat network before it can operate.</p>
 
             <form asp-action="SubmitUnderstandingSoa" method="post">
                 <button type="submit" class="govuk-button" data-module="govuk-button">

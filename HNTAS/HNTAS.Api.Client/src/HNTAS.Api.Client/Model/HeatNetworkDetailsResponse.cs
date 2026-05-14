@@ -271,7 +271,7 @@ namespace HNTAS.Api.Client.Model
                             groupedElements = new Option<List<ElementGroupDto>?>(JsonSerializer.Deserialize<List<ElementGroupDto>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "aggregatedKpis":
-                            aggregatedKpis = new Option<List<AggregatedKpi>?>(JsonSerializer.Deserialize<List<AggregatedKpi>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            aggregatedKpis = new Option<List<AggregatedKpi>?>(JsonSerializer.Deserialize<List<AggregatedKpi>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "currentPage":
                             currentPage = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
@@ -302,9 +302,6 @@ namespace HNTAS.Api.Client.Model
 
             if (groupedElements.IsSet && groupedElements.Value == null)
                 throw new ArgumentNullException(nameof(groupedElements), "Property is not nullable for class HeatNetworkDetailsResponse.");
-
-            if (aggregatedKpis.IsSet && aggregatedKpis.Value == null)
-                throw new ArgumentNullException(nameof(aggregatedKpis), "Property is not nullable for class HeatNetworkDetailsResponse.");
 
             if (currentPage.IsSet && currentPage.Value == null)
                 throw new ArgumentNullException(nameof(currentPage), "Property is not nullable for class HeatNetworkDetailsResponse.");
@@ -351,9 +348,6 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkDetailsResponse.GroupedElementsOption.IsSet && heatNetworkDetailsResponse.GroupedElements == null)
                 throw new ArgumentNullException(nameof(heatNetworkDetailsResponse.GroupedElements), "Property is required for class HeatNetworkDetailsResponse.");
 
-            if (heatNetworkDetailsResponse.AggregatedKpisOption.IsSet && heatNetworkDetailsResponse.AggregatedKpis == null)
-                throw new ArgumentNullException(nameof(heatNetworkDetailsResponse.AggregatedKpis), "Property is required for class HeatNetworkDetailsResponse.");
-
             if (heatNetworkDetailsResponse.HnIdOption.IsSet)
                 writer.WriteString("hnId", heatNetworkDetailsResponse.HnId);
 
@@ -372,10 +366,13 @@ namespace HNTAS.Api.Client.Model
                 JsonSerializer.Serialize(writer, heatNetworkDetailsResponse.GroupedElements, jsonSerializerOptions);
             }
             if (heatNetworkDetailsResponse.AggregatedKpisOption.IsSet)
-            {
-                writer.WritePropertyName("aggregatedKpis");
-                JsonSerializer.Serialize(writer, heatNetworkDetailsResponse.AggregatedKpis, jsonSerializerOptions);
-            }
+                if (heatNetworkDetailsResponse.AggregatedKpisOption.Value != null)
+                {
+                    writer.WritePropertyName("aggregatedKpis");
+                    JsonSerializer.Serialize(writer, heatNetworkDetailsResponse.AggregatedKpis, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("aggregatedKpis");
             if (heatNetworkDetailsResponse.CurrentPageOption.IsSet)
                 writer.WriteNumber("currentPage", heatNetworkDetailsResponse.CurrentPageOption.Value!.Value);
 
