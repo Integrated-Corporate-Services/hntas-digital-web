@@ -27,7 +27,7 @@
                     new Option { OptId = $"{elementId}", OptValue = "true", OptText = "Yes", OptHintText = null },
                     new Option { OptId = $"{elementId}-2", OptValue = "false", OptText = "No, it is supplied by another network", OptHintText = null }
                 },
-                SeletedOption = Model.HasOwnEc.ToString()
+                SeletedOption = Model.HasOwnEc.ToString().ToLowerInvariant()
             },
         }
     };
