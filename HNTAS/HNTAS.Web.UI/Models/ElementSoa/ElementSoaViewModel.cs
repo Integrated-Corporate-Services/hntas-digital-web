@@ -23,9 +23,9 @@ namespace HNTAS.Web.UI.Models.ElementSoa
     public class SoaElementsView
     {
         public string? Name { get; set; }
-        public HeatNetworkElementType? Type { get; set; }
+        public HeatNetworkElementType? ElementDisplayType { get; set; }
         public string? ElementId { get; set; }
-
+        public string? ElementType { get; set; }
         public string? SoaStatus { get; set; }
         public List<SoaStatusWithCount>? SoaStatuses { get; set; }
         public DateTime? SoaStatusUpdatedAt { get; set; }

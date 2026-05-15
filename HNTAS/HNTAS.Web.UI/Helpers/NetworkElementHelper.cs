@@ -72,18 +72,18 @@ namespace HNTAS.Web.UI.Helpers
             };
         }
 
-        public static string GetNetworkElementLabelByElementType(HeatNetworkElementType elementType)
-        {
-            return elementType switch
-            {
-                HeatNetworkElementType.EnergyCentre => "Energy Centre",
-                HeatNetworkElementType.Substation => "Substation",
-                HeatNetworkElementType.DistrictDistribution => "District Distribution Network",
-                HeatNetworkElementType.ConsumerConnection => "Consumer Connection",
-                HeatNetworkElementType.CommunalDistribution => "Communal Distribution Network",
-                _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element ID value: {elementType}")
-            };
-        }
+        //public static string GetNetworkElementLabelByElementType(HeatNetworkElementType elementType)
+        //{
+        //    return elementType switch
+        //    {
+        //        HeatNetworkElementType.EnergyCentre => "Energy Centre",
+        //        HeatNetworkElementType.Substation => "Substation",
+        //        HeatNetworkElementType.DistrictDistribution => "District Distribution Network",
+        //        HeatNetworkElementType.ConsumerConnection => "Consumer Connection",
+        //        HeatNetworkElementType.CommunalDistribution => "Communal Distribution Network",
+        //        _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element ID value: {elementType}")
+        //    };
+        //}
 
         //public static List<NetworkElementOption> GetNetworkElementOptionsForNetworkType(Api.Client.Model.HeatNetworkType? networkType = null)
         //{
@@ -144,7 +144,7 @@ namespace HNTAS.Web.UI.Helpers
             {
                 return new List<NetworkElementOption>
                 {
-                    new() { Id = HeatNetworkElementType.CommunalSubstation, Label = "Communal substation (within the communal building)", SubLabel = "Substations", Hint = "Helps supply a communal distribution network" },
+                    new() { Id = HeatNetworkElementType.Substation, Label = "Communal substation (within the communal building)", SubLabel = "Substations", Hint = "Helps supply a communal distribution network" },
                     new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal Distribution Network", SubLabel = "Communal Distribution Networks", Hint = "Pipework running inside a communal building to dwellings or units"},
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connections", Hint = "Connects the network to individual dwellings or units" },
                 };
@@ -169,7 +169,7 @@ namespace HNTAS.Web.UI.Helpers
             {
                 return new List<NetworkElementOption>
                 {
-                    new() { Id = HeatNetworkElementType.CommunalSubstation, Label = "Communal Substation" },
+                    //new() { Id = HeatNetworkElementType.CommunalSubstation, Label = "Communal Substation" },
                     new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal Distribution Network"},
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection" },
                     new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre" },

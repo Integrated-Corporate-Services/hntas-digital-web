@@ -58,7 +58,7 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var phase = heatNetworkData?.Phase;
 
-            var networkElements = heatNetworkData?.NetworkElements?.Elements;
+            var networkElements = heatNetworkData?.NetworkElements?.ElementsGroup;
             var eligibleIndex = phase == "Design" ? 1 : phase == "Construction" ? 2 : 0;
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
             var model = ElementSoaHelper.GetElementSoaViewModel(eligibleIndex, currentStageIndex, networkElements);
@@ -69,9 +69,9 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     foreach (var elementSoaElement in networkElements)
                     {
-                        if (elementSoaElement.ElementId == stageInModel.Elements?.FirstOrDefault(e => e.ElementId == elementSoaElement.ElementId)?.ElementId)
+                        if (elementSoaElement.ElementType == stageInModel.Elements?.FirstOrDefault(e => e.ElementType == elementSoaElement.ElementType)?.ElementType)
                         {
-                            var modelElement = stageInModel.Elements?.Find(e => e.ElementId == elementSoaElement.ElementId);
+                            var modelElement = stageInModel.Elements?.Find(e => e.ElementType == elementSoaElement.ElementType);
                             var elementStage = elementSoaElement.SoaStages?
                                 .Find(s => s.StageId.HasValue && stageInModel.StageId.HasValue && (int)s.StageId.Value == (int)stageInModel.StageId.Value);
 
@@ -103,9 +103,9 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SoaUpdateStatus([FromQuery] SoaStage stage, [FromQuery] string elementId, [FromQuery] HeatNetworkElementType elementType)
+        public async Task<IActionResult> SoaUpdateStatus([FromQuery] SoaStage stage, [FromQuery] string elementType, [FromQuery] HeatNetworkElementType elementDisplayType)
         {
-            var tempDataKey = $"Soa_{elementId}_{stage}";
+            var tempDataKey = $"Soa_{elementType}_{stage}";
             string soaPhase = TempData[$"{tempDataKey}_Phase"] as string;
             string elementName = TempData[$"{tempDataKey}_Element"] as string;
             var currentStageIndex = ElementSoaHelper.GetStageIndex(stage);
@@ -120,16 +120,16 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
             // Set element-specific ViewBag properties
-            var content = ElementSoaHelper.GetSoaElementContent(elementType);
+            var content = ElementSoaHelper.GetSoaElementContent(elementDisplayType);
             ViewBag.Heading = content;            
-            var selectedNetworkElement = heatNetworkData?.NetworkElements?.Elements?.Where(e => e.ElementId == elementId).FirstOrDefault();
+            var selectedNetworkElement = heatNetworkData?.NetworkElements?.ElementsGroup?.Where(e => e.ElementType == elementType).FirstOrDefault();
             
             var model = new ElementSoaUpdateStatusViewModel();            
             model.SoaStage = stage;
-            model.ElementId = elementId;
+            model.ElementType = elementType;
             model.ElementName = elementName;
             model.SoaPhase = soaPhase;
-            model.ElementType = elementType;
+            model.ElementDisplayType = elementDisplayType;
             model.ElementCount = selectedNetworkElement?.Count;
             model.SoaStatusOptions = ElementSoaHelper.GetSoaStatuses();            
 
@@ -176,7 +176,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
             // Set element-specific ViewBag properties
-            var content = ElementSoaHelper.GetSoaElementContent(model.ElementType);
+            var content = ElementSoaHelper.GetSoaElementContent(model.ElementDisplayType);
             ViewBag.Heading = content;
 
             var totalCountFromElement = model.ElementCount ?? 0;
@@ -219,7 +219,7 @@ namespace HNTAS.Web.UI.Controllers
 
             
             
-            var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: model.SoaStage, elementId: model?.ElementId, soaStatuses: soaStatusWithCountList, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: model.SoaPhase, elementDisplayName: model.ElementName);
+            var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: model.SoaStage, elementType: model?.ElementType, soaStatuses: soaStatusWithCountList, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: model.SoaPhase, elementDisplayName: model.ElementName);
             await _soaProjectService.UpdateElementSoaStatus(request);
             ClearSoaStatusUpdateSpecificSession();
             return RedirectToAction("SoaStages", "ElementSoa", targetFragment);
@@ -372,7 +372,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (selectedNetworkElements != null)
             {
-                foreach (var item in selectedNetworkElements.Elements!)
+                foreach (var item in selectedNetworkElements.ElementsGroup!)
                 {
                     var assignedAssessor = item.SoaStages?
                         .Select(s => s.Assessor)
@@ -381,7 +381,7 @@ namespace HNTAS.Web.UI.Controllers
                     model.ElementOptions?.Add(new AssessorSelectElementsOption
                     {
                         //Label = item.NetworkElementInstanceName!,
-                        ElementId = item.ElementId!,
+                        //ElementId = item.ElementId!,
                         AssignedAssessorName = assignedAssessor != null ? $"(Assessor Assigned: {assignedAssessor.FirstName} {assignedAssessor.LastName})" : ""
                     });
                 }

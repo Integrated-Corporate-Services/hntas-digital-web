@@ -53,12 +53,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Enum ConsumerConnection for value: ConsumerConnection
         /// </summary>
-        ConsumerConnection = 5,
-
-        /// <summary>
-        /// Enum CommunalSubstation for value: CommunalSubstation
-        /// </summary>
-        CommunalSubstation = 6
+        ConsumerConnection = 5
     }
 
     /// <summary>
@@ -88,9 +83,6 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("ConsumerConnection"))
                 return HeatNetworkElementType.ConsumerConnection;
 
-            if (value.Equals("CommunalSubstation"))
-                return HeatNetworkElementType.CommunalSubstation;
-
             throw new NotImplementedException($"Could not convert value to type HeatNetworkElementType: '{value}'");
         }
 
@@ -115,9 +107,6 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("ConsumerConnection"))
                 return HeatNetworkElementType.ConsumerConnection;
-
-            if (value.Equals("CommunalSubstation"))
-                return HeatNetworkElementType.CommunalSubstation;
 
             return null;
         }
@@ -144,9 +133,6 @@ namespace HNTAS.Api.Client.Model
 
             if (value == HeatNetworkElementType.ConsumerConnection)
                 return "ConsumerConnection";
-
-            if (value == HeatNetworkElementType.CommunalSubstation)
-                return "CommunalSubstation";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }

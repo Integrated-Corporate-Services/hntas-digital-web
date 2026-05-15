@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Models.Enums;
 
 namespace HNTAS.Web.UI.Models.NetworkElements
 {
@@ -16,5 +17,13 @@ namespace HNTAS.Web.UI.Models.NetworkElements
         public HeatNetworkElementType Type { get; set; }
         public int? Count { get; set; }
         //public string? NetworkElementInstanceName { get; set; }
+    }
+
+    public class NetworkElementGroup
+    {
+        public HeatNetworkElementType ElementDisplayType { get; set; }
+        public int? Count { get; set; }
+        public List<SoaStages>? SoaStages { get; set; } = [];
+        public string? ElementType { get; set; }
     }
 }
