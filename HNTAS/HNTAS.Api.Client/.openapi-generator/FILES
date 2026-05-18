@@ -45,6 +45,7 @@ docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
 docs/models/Element.md
+docs/models/ElementGroup.md
 docs/models/ElementGroupDto.md
 docs/models/ElementSoaAssignAssessorRequest.md
 docs/models/ElementSoaStatusUpdateRequest.md
@@ -214,6 +215,7 @@ src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs
 src/HNTAS.Api.Client/Model/Element.cs
+src/HNTAS.Api.Client/Model/ElementGroup.cs
 src/HNTAS.Api.Client/Model/ElementGroupDto.cs
 src/HNTAS.Api.Client/Model/ElementSoaAssignAssessorRequest.cs
 src/HNTAS.Api.Client/Model/ElementSoaStatusUpdateRequest.cs

@@ -69,7 +69,7 @@
                                     @foreach (var element in stage.Elements)
                                     {
                                         // Create a unique key for this navigation
-                                        var tempDataKey = $"Soa_{element.ElementId}_{stage.StageId}";
+                                        var tempDataKey = $"Soa_{element.ElementType}_{stage.StageId}";
                                         TempData[$"{tempDataKey}_Phase"] = stage.Title;
                                         TempData[$"{tempDataKey}_Element"] = element.Name;
                                         TempData.Keep($"{tempDataKey}_Phase");
@@ -126,7 +126,7 @@
                                                         }
                                                     }                                                    
                                                     <a class="govuk-link"
-                                                       href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementId = element.ElementId, elementType = element.Type })"
+                                                       href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementType = element.ElementType, elementDisplayType = element.ElementDisplayType })"
                                                        onclick="event.stopPropagation();">
                                                         Update status<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span>
                                                     </a>

@@ -36,17 +36,19 @@ namespace HNTAS.Api.Client.Model
         /// <param name="hnId">hnId</param>
         /// <param name="stage">stage</param>
         /// <param name="elementId">elementId</param>
+        /// <param name="elementType">elementType</param>
         /// <param name="soaStatuses">soaStatuses</param>
         /// <param name="elementSoaStatus">elementSoaStatus</param>
         /// <param name="soaStatusUpdatedBy">soaStatusUpdatedBy</param>
         /// <param name="soaPhase">soaPhase</param>
         /// <param name="elementDisplayName">elementDisplayName</param>
         [JsonConstructor]
-        public ElementSoaStatusUpdateRequest(string hnId, Option<SoaStage?> stage = default, Option<string?> elementId = default, Option<List<SoaStatusWithCount>?> soaStatuses = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<string?> soaStatusUpdatedBy = default, Option<string?> soaPhase = default, Option<string?> elementDisplayName = default)
+        public ElementSoaStatusUpdateRequest(string hnId, Option<SoaStage?> stage = default, Option<string?> elementId = default, Option<string?> elementType = default, Option<List<SoaStatusWithCount>?> soaStatuses = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<string?> soaStatusUpdatedBy = default, Option<string?> soaPhase = default, Option<string?> elementDisplayName = default)
         {
             HnId = hnId;
             StageOption = stage;
             ElementIdOption = elementId;
+            ElementTypeOption = elementType;
             SoaStatusesOption = soaStatuses;
             ElementSoaStatusOption = elementSoaStatus;
             SoaStatusUpdatedByOption = soaStatusUpdatedBy;
@@ -101,6 +103,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("elementId")]
         public string? ElementId { get { return this.ElementIdOption; } set { this.ElementIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ElementType
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> ElementTypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementType
+        /// </summary>
+        [JsonPropertyName("elementType")]
+        public string? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of SoaStatuses
@@ -165,6 +180,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  Stage: ").Append(Stage).Append("\n");
             sb.Append("  ElementId: ").Append(ElementId).Append("\n");
+            sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("  SoaStatuses: ").Append(SoaStatuses).Append("\n");
             sb.Append("  ElementSoaStatus: ").Append(ElementSoaStatus).Append("\n");
             sb.Append("  SoaStatusUpdatedBy: ").Append(SoaStatusUpdatedBy).Append("\n");
@@ -210,6 +226,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> hnId = default;
             Option<SoaStage?> stage = default;
             Option<string?> elementId = default;
+            Option<string?> elementType = default;
             Option<List<SoaStatusWithCount>?> soaStatuses = default;
             Option<NetworkDetailsStatus?> elementSoaStatus = default;
             Option<string?> soaStatusUpdatedBy = default;
@@ -241,6 +258,9 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "elementId":
                             elementId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "elementType":
+                            elementType = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "soaStatuses":
                             soaStatuses = new Option<List<SoaStatusWithCount>?>(JsonSerializer.Deserialize<List<SoaStatusWithCount>>(ref utf8JsonReader, jsonSerializerOptions));
@@ -277,7 +297,7 @@ namespace HNTAS.Api.Client.Model
             if (elementSoaStatus.IsSet && elementSoaStatus.Value == null)
                 throw new ArgumentNullException(nameof(elementSoaStatus), "Property is not nullable for class ElementSoaStatusUpdateRequest.");
 
-            return new ElementSoaStatusUpdateRequest(hnId.Value!, stage, elementId, soaStatuses, elementSoaStatus, soaStatusUpdatedBy, soaPhase, elementDisplayName);
+            return new ElementSoaStatusUpdateRequest(hnId.Value!, stage, elementId, elementType, soaStatuses, elementSoaStatus, soaStatusUpdatedBy, soaPhase, elementDisplayName);
         }
 
         /// <summary>
@@ -319,6 +339,12 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("elementId", elementSoaStatusUpdateRequest.ElementId);
                 else
                     writer.WriteNull("elementId");
+
+            if (elementSoaStatusUpdateRequest.ElementTypeOption.IsSet)
+                if (elementSoaStatusUpdateRequest.ElementTypeOption.Value != null)
+                    writer.WriteString("elementType", elementSoaStatusUpdateRequest.ElementType);
+                else
+                    writer.WriteNull("elementType");
 
             if (elementSoaStatusUpdateRequest.SoaStatusesOption.IsSet)
                 if (elementSoaStatusUpdateRequest.SoaStatusesOption.Value != null)

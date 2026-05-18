@@ -5307,11 +5307,20 @@
             "type": "string",
             "nullable": true
           },
-          "elementType": {
+          "networkElementInstanceName": {
             "type": "string",
             "nullable": true
           },
-          "type": {
+          "elementType": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ElementGroup": {
+        "type": "object",
+        "properties": {
+          "elementDisplayType": {
             "$ref": "#/components/schemas/HeatNetworkElementType"
           },
           "count": {
@@ -5324,6 +5333,10 @@
             "items": {
               "$ref": "#/components/schemas/SoaStages"
             },
+            "nullable": true
+          },
+          "elementType": {
+            "type": "string",
             "nullable": true
           }
         }
@@ -5384,6 +5397,10 @@
             "$ref": "#/components/schemas/SoaStage"
           },
           "elementId": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementType": {
             "type": "string",
             "nullable": true
           },
@@ -5782,8 +5799,7 @@
           "Substation",
           "DistrictDistribution",
           "CommunalDistribution",
-          "ConsumerConnection",
-          "CommunalSubstation"
+          "ConsumerConnection"
         ]
       },
       "HeatNetworkExternalResponse": {
@@ -6588,6 +6604,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Element"
+            },
+            "nullable": true
+          },
+          "elementsGroup": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ElementGroup"
             }
           },
           "createdAt": {
@@ -6622,6 +6645,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Element"
+            },
+            "nullable": true
+          },
+          "elementsGroup": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ElementGroup"
             }
           },
           "createdAt": {
@@ -6651,10 +6681,10 @@
           "elementSoaStatus": {
             "$ref": "#/components/schemas/NetworkDetailsStatus"
           },
-          "elements": {
+          "elementsGroup": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Element"
+              "$ref": "#/components/schemas/ElementGroup"
             }
           },
           "createdAt": {
