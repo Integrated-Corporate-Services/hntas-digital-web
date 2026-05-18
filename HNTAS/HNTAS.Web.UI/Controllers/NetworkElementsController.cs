@@ -9,8 +9,6 @@ using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
-using Element = HNTAS.Web.UI.Models.NetworkElements.Element;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -138,17 +136,7 @@ namespace HNTAS.Web.UI.Controllers
                 NetworkType = NetworkElementHelper.GetNetworkTypeLabelForNetworkType(networkType),
                 Phase = phase ?? string.Empty
             };
-
-            //var elTests = new List<NetworkElementGroup>();
-            //foreach (var element in elements)
-            //{
-            //    var elTest = new NetworkElementGroup
-            //    {
-            //        ElementDisplayType = (HeatNetworkElementType)element.ElementDisplayType,
-            //        Count = element.Count
-            //    };
-            //    elTests.Add(elTest);
-            //}
+            
             var networkElementGroups = GetNetworkElementGroup(elements);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementsOverViewModel);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, networkElementGroups);
@@ -266,8 +254,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             var networkElementOverview = _sessionHelper.GetFromSession<NetworkElementsOverViewModel>(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey);
             networkElementOverview!.Elements = elements!.Select(e =>
-            {
-                //var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.Type);
+            {                
                 var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.ElementDisplayType);
                 var label = elementOption != null ? elementOption.Label : e.ElementDisplayType.ToString();
                 label = label.ToSentenceCase();
@@ -325,8 +312,7 @@ namespace HNTAS.Web.UI.Controllers
             if (request.ElementsGroup != null)
             {
                 request.ElementsGroup = request.ElementsGroup.Select((element, index) =>
-                {
-                    //element.ElementId = (index + 1).ToString("D5");
+                {                    
                     element.ElementType = NetworkElementHelper.GetNetworkElementIdByType(element.ElementDisplayType.ToString()!);
                     return element;
                 }).ToList();

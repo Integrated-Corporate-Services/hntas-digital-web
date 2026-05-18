@@ -94,10 +94,7 @@ namespace HNTAS.Web.UI.Helpers
                 ),
                 HeatNetworkElementType.CommunalDistribution => (
                     "What is the status of the statement of applicability for the Communal Distribution Network?"
-                ),
-                //HeatNetworkElementType.CommunalSubstation => (
-                //    "What is the status of the statement of applicability for the Communal Substation?"
-                //),
+                ),                
                 _ => (string.Empty)
             };
         }
@@ -205,8 +202,7 @@ namespace HNTAS.Web.UI.Helpers
                 soaElements.Add(new SoaElementsView
                 {                    
                     ElementType = element.ElementType,
-                    ElementDisplayType = elementType,
-                    //Name = element.NetworkElementInstanceName
+                    ElementDisplayType = elementType,                    
                     Name = $"{ NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(n => n.Id == elementType)?.Label }{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}"
                 });
             }
