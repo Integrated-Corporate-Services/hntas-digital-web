@@ -3836,6 +3836,22 @@ components:
     Element:
       example:
         elementId: elementId
+        networkElementInstanceName: networkElementInstanceName
+        elementType: elementType
+      properties:
+        elementId:
+          nullable: true
+          type: string
+        networkElementInstanceName:
+          nullable: true
+          type: string
+        elementType:
+          nullable: true
+          type: string
+      type: object
+    ElementGroup:
+      example:
+        elementDisplayType: EnergyCentre
         soaStages:
         - soaStatuses:
           - soaStatus: null
@@ -3870,16 +3886,9 @@ components:
           assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           stageId: Stage1
         count: 9
-        type: EnergyCentre
         elementType: elementType
       properties:
-        elementId:
-          nullable: true
-          type: string
-        elementType:
-          nullable: true
-          type: string
-        type:
+        elementDisplayType:
           $ref: "#/components/schemas/HeatNetworkElementType"
         count:
           format: int32
@@ -3890,6 +3899,9 @@ components:
             $ref: "#/components/schemas/SoaStages"
           nullable: true
           type: array
+        elementType:
+          nullable: true
+          type: string
       type: object
     ElementGroupDto:
       example:
@@ -3958,11 +3970,15 @@ components:
         elementDisplayName: elementDisplayName
         stage: Stage1
         soaStatusUpdatedBy: soaStatusUpdatedBy
+        elementType: elementType
         soaPhase: soaPhase
       properties:
         stage:
           $ref: "#/components/schemas/SoaStage"
         elementId:
+          nullable: true
+          type: string
+        elementType:
           nullable: true
           type: string
         soaStatuses:
@@ -4334,43 +4350,13 @@ components:
           createdBy: createdBy
           elements:
           - elementId: elementId
-            soaStages:
-            - soaStatuses:
-              - soaStatus: null
-                count: 3
-              - soaStatus: null
-                count: 3
-              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessorUpdatedBy: assessorUpdatedBy
-              assessor:
-                firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: Active
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              stageId: Stage1
-            - soaStatuses:
-              - soaStatus: null
-                count: 3
-              - soaStatus: null
-                count: 3
-              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessorUpdatedBy: assessorUpdatedBy
-              assessor:
-                firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: Active
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              stageId: Stage1
-            count: 9
-            type: EnergyCentre
+            networkElementInstanceName: networkElementInstanceName
             elementType: elementType
           - elementId: elementId
+            networkElementInstanceName: networkElementInstanceName
+            elementType: elementType
+          elementsGroup:
+          - elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
               - soaStatus: null
@@ -4405,7 +4391,42 @@ components:
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 9
-            type: EnergyCentre
+            elementType: elementType
+          - elementDisplayType: EnergyCentre
+            soaStages:
+            - soaStatuses:
+              - soaStatus: null
+                count: 3
+              - soaStatus: null
+                count: 3
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              stageId: Stage1
+            - soaStatuses:
+              - soaStatus: null
+                count: 3
+              - soaStatus: null
+                count: 3
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              assessor:
+                firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              stageId: Stage1
+            count: 9
             elementType: elementType
           updatedAt: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
@@ -4749,7 +4770,6 @@ components:
       - DistrictDistribution
       - CommunalDistribution
       - ConsumerConnection
-      - CommunalSubstation
       type: string
     HeatNetworkExternalResponse:
       example:
@@ -4925,8 +4945,8 @@ components:
           networkElementStatus: InProgress
           updatedBy: updatedBy
           createdBy: createdBy
-          elements:
-          - elementId: elementId
+          elementsGroup:
+          - elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
               - soaStatus: null
@@ -4961,9 +4981,8 @@ components:
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 9
-            type: EnergyCentre
             elementType: elementType
-          - elementId: elementId
+          - elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
               - soaStatus: null
@@ -4998,7 +5017,6 @@ components:
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               stageId: Stage1
             count: 9
-            type: EnergyCentre
             elementType: elementType
           updatedAt: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
@@ -5902,43 +5920,13 @@ components:
         createdBy: createdBy
         elements:
         - elementId: elementId
-          soaStages:
-          - soaStatuses:
-            - soaStatus: null
-              count: 3
-            - soaStatus: null
-              count: 3
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            stageId: Stage1
-          - soaStatuses:
-            - soaStatus: null
-              count: 3
-            - soaStatus: null
-              count: 3
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            stageId: Stage1
-          count: 9
-          type: EnergyCentre
+          networkElementInstanceName: networkElementInstanceName
           elementType: elementType
         - elementId: elementId
+          networkElementInstanceName: networkElementInstanceName
+          elementType: elementType
+        elementsGroup:
+        - elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
             - soaStatus: null
@@ -5973,7 +5961,42 @@ components:
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 9
-          type: EnergyCentre
+          elementType: elementType
+        - elementDisplayType: EnergyCentre
+          soaStages:
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            stageId: Stage1
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            stageId: Stage1
+          count: 9
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
@@ -5985,6 +6008,11 @@ components:
         elements:
           items:
             $ref: "#/components/schemas/Element"
+          nullable: true
+          type: array
+        elementsGroup:
+          items:
+            $ref: "#/components/schemas/ElementGroup"
           type: array
         createdAt:
           format: date-time
@@ -6008,43 +6036,13 @@ components:
         createdBy: createdBy
         elements:
         - elementId: elementId
-          soaStages:
-          - soaStatuses:
-            - soaStatus: null
-              count: 3
-            - soaStatus: null
-              count: 3
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            stageId: Stage1
-          - soaStatuses:
-            - soaStatus: null
-              count: 3
-            - soaStatus: null
-              count: 3
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            stageId: Stage1
-          count: 9
-          type: EnergyCentre
+          networkElementInstanceName: networkElementInstanceName
           elementType: elementType
         - elementId: elementId
+          networkElementInstanceName: networkElementInstanceName
+          elementType: elementType
+        elementsGroup:
+        - elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
             - soaStatus: null
@@ -6079,7 +6077,42 @@ components:
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 9
-          type: EnergyCentre
+          elementType: elementType
+        - elementDisplayType: EnergyCentre
+          soaStages:
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            stageId: Stage1
+          - soaStatuses:
+            - soaStatus: null
+              count: 3
+            - soaStatus: null
+              count: 3
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            assessor:
+              firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            stageId: Stage1
+          count: 9
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
@@ -6090,6 +6123,11 @@ components:
         elements:
           items:
             $ref: "#/components/schemas/Element"
+          nullable: true
+          type: array
+        elementsGroup:
+          items:
+            $ref: "#/components/schemas/ElementGroup"
           type: array
         createdAt:
           format: date-time
@@ -6111,8 +6149,8 @@ components:
         networkElementStatus: InProgress
         updatedBy: updatedBy
         createdBy: createdBy
-        elements:
-        - elementId: elementId
+        elementsGroup:
+        - elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
             - soaStatus: null
@@ -6147,9 +6185,8 @@ components:
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 9
-          type: EnergyCentre
           elementType: elementType
-        - elementId: elementId
+        - elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
             - soaStatus: null
@@ -6184,7 +6221,6 @@ components:
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             stageId: Stage1
           count: 9
-          type: EnergyCentre
           elementType: elementType
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
@@ -6193,9 +6229,9 @@ components:
           $ref: "#/components/schemas/NetworkDetailsStatus"
         elementSoaStatus:
           $ref: "#/components/schemas/NetworkDetailsStatus"
-        elements:
+        elementsGroup:
           items:
-            $ref: "#/components/schemas/Element"
+            $ref: "#/components/schemas/ElementGroup"
           type: array
         createdAt:
           format: date-time
