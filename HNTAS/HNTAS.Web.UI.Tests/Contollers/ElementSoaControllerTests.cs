@@ -203,7 +203,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                                     new SoaStages
                                     {
                                         StageId = (NullableOfSoaStage)stage,
-                                        SoaStatus = "Not started"
+                                        SoaStatuses = new List<SoaStatusWithCount>()
                                     }
                                 }
                             },
@@ -235,7 +235,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 {
                     SoaStage = stage,
                     ElementId = elementId,
-                    SelectedSoaStatus = "In Progress"
+                    //SelectedSoaStatus = "In Progress"
                 });
 
             _sessionHelperMock
@@ -257,7 +257,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             {
                 SoaStage = stage,
                 ElementId = elementId,
-                SelectedSoaStatus = "In progress"
+                //SelectedSoaStatus = "In progress"
             };
 
             _controller.Url = SetUpBackLink("NetworkDetails", "HeatNetwork", "someFragment").Object;

@@ -34,17 +34,17 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="SoaStages" /> class.
         /// </summary>
         /// <param name="stageId">stageId</param>
-        /// <param name="soaStatus">soaStatus</param>
+        /// <param name="soaStatuses">soaStatuses</param>
         /// <param name="soaStatusUpdatedAt">soaStatusUpdatedAt</param>
         /// <param name="soaStatusUpdatedBy">soaStatusUpdatedBy</param>
         /// <param name="assessorUpdatedAt">assessorUpdatedAt</param>
         /// <param name="assessorUpdatedBy">assessorUpdatedBy</param>
         /// <param name="assessor">assessor</param>
         [JsonConstructor]
-        public SoaStages(Option<NullableOfSoaStage?> stageId = default, Option<string?> soaStatus = default, Option<DateTimeOffset?> soaStatusUpdatedAt = default, Option<string?> soaStatusUpdatedBy = default, Option<DateTimeOffset?> assessorUpdatedAt = default, Option<string?> assessorUpdatedBy = default, Option<SoaAssessor?> assessor = default)
+        public SoaStages(Option<NullableOfSoaStage?> stageId = default, Option<List<SoaStatusWithCount>?> soaStatuses = default, Option<DateTimeOffset?> soaStatusUpdatedAt = default, Option<string?> soaStatusUpdatedBy = default, Option<DateTimeOffset?> assessorUpdatedAt = default, Option<string?> assessorUpdatedBy = default, Option<SoaAssessor?> assessor = default)
         {
             StageIdOption = stageId;
-            SoaStatusOption = soaStatus;
+            SoaStatusesOption = soaStatuses;
             SoaStatusUpdatedAtOption = soaStatusUpdatedAt;
             SoaStatusUpdatedByOption = soaStatusUpdatedBy;
             AssessorUpdatedAtOption = assessorUpdatedAt;
@@ -69,17 +69,17 @@ namespace HNTAS.Api.Client.Model
         public NullableOfSoaStage? StageId { get { return this.StageIdOption; } set { this.StageIdOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of SoaStatus
+        /// Used to track the state of SoaStatuses
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> SoaStatusOption { get; private set; }
+        public Option<List<SoaStatusWithCount>?> SoaStatusesOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets SoaStatus
+        /// Gets or Sets SoaStatuses
         /// </summary>
-        [JsonPropertyName("soaStatus")]
-        public string? SoaStatus { get { return this.SoaStatusOption; } set { this.SoaStatusOption = new(value); } }
+        [JsonPropertyName("soaStatuses")]
+        public List<SoaStatusWithCount>? SoaStatuses { get { return this.SoaStatusesOption; } set { this.SoaStatusesOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of SoaStatusUpdatedAt
@@ -155,7 +155,7 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class SoaStages {\n");
             sb.Append("  StageId: ").Append(StageId).Append("\n");
-            sb.Append("  SoaStatus: ").Append(SoaStatus).Append("\n");
+            sb.Append("  SoaStatuses: ").Append(SoaStatuses).Append("\n");
             sb.Append("  SoaStatusUpdatedAt: ").Append(SoaStatusUpdatedAt).Append("\n");
             sb.Append("  SoaStatusUpdatedBy: ").Append(SoaStatusUpdatedBy).Append("\n");
             sb.Append("  AssessorUpdatedAt: ").Append(AssessorUpdatedAt).Append("\n");
@@ -209,7 +209,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<NullableOfSoaStage?> stageId = default;
-            Option<string?> soaStatus = default;
+            Option<List<SoaStatusWithCount>?> soaStatuses = default;
             Option<DateTimeOffset?> soaStatusUpdatedAt = default;
             Option<string?> soaStatusUpdatedBy = default;
             Option<DateTimeOffset?> assessorUpdatedAt = default;
@@ -236,8 +236,8 @@ namespace HNTAS.Api.Client.Model
                             if (stageIdRawValue != null)
                                 stageId = new Option<NullableOfSoaStage?>(NullableOfSoaStageValueConverter.FromStringOrDefault(stageIdRawValue));
                             break;
-                        case "soaStatus":
-                            soaStatus = new Option<string?>(utf8JsonReader.GetString());
+                        case "soaStatuses":
+                            soaStatuses = new Option<List<SoaStatusWithCount>?>(JsonSerializer.Deserialize<List<SoaStatusWithCount>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "soaStatusUpdatedAt":
                             soaStatusUpdatedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
@@ -260,7 +260,7 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            return new SoaStages(stageId, soaStatus, soaStatusUpdatedAt, soaStatusUpdatedBy, assessorUpdatedAt, assessorUpdatedBy, assessor);
+            return new SoaStages(stageId, soaStatuses, soaStatusUpdatedAt, soaStatusUpdatedBy, assessorUpdatedAt, assessorUpdatedBy, assessor);
         }
 
         /// <summary>
@@ -295,12 +295,14 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("stageId");
-            if (soaStages.SoaStatusOption.IsSet)
-                if (soaStages.SoaStatusOption.Value != null)
-                    writer.WriteString("soaStatus", soaStages.SoaStatus);
+            if (soaStages.SoaStatusesOption.IsSet)
+                if (soaStages.SoaStatusesOption.Value != null)
+                {
+                    writer.WritePropertyName("soaStatuses");
+                    JsonSerializer.Serialize(writer, soaStages.SoaStatuses, jsonSerializerOptions);
+                }
                 else
-                    writer.WriteNull("soaStatus");
-
+                    writer.WriteNull("soaStatuses");
             if (soaStages.SoaStatusUpdatedAtOption.IsSet)
                 if (soaStages.SoaStatusUpdatedAtOption.Value != null)
                     writer.WriteString("soaStatusUpdatedAt", soaStages.SoaStatusUpdatedAtOption.Value!.Value.ToString(SoaStatusUpdatedAtFormat));

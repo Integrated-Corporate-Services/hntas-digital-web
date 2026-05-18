@@ -1,0 +1,31 @@
+﻿@using HNTAS.Web.UI.Models.NetworkElements
+@model DistributionNetworksViewModel
+
+@{
+    bool hasNumberOfDistributionNetworksErrors = ViewData.ModelState.ContainsKey(nameof(Model.NumberOfDistributionNetworks)) && ViewData.ModelState[nameof(Model.NumberOfDistributionNetworks)].Errors.Any();
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+
+        <h1 class="govuk-heading-l">Distribution networks and substations</h1>
+        <p class="govuk-body"><strong>District distribution network</strong></p>
+        <p class="govuk-body">A district distribution network is a pipework system that is external to buildings and which distributes thermal energy from one location within a heat network to another. This pipework can be comprised of buried or above-ground pipework, and typically contains pipework, valves, heat meters and other ancillary equipment.</p>
+        <form asp-action="DistributionNetworks" asp-controller="NetworkElements" method="post">
+            <div class="govuk-form-group @(hasNumberOfDistributionNetworksErrors ? " govuk-form-group--error" : "")">
+                <label class="govuk-label govuk-label--m" for="numberofdistributionnetworks">
+                    How many district distribution networks does your heat network have?
+                </label>
+
+                <div id="numberofdistributionnetworks-hint" class="govuk-hint">
+                    This should match the substations you told us about earlier, if any
+                </div>
+                <input class="govuk-input govuk-input--width-3" id="numberofdistributionnetworks" name="NumberOfDistributionNetworks" type="number" value="@Model.NumberOfDistributionNetworks" aria-describedby="numberofdistributionnetworks-hint">
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>

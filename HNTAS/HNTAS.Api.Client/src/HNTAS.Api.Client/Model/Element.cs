@@ -36,16 +36,14 @@ namespace HNTAS.Api.Client.Model
         /// <param name="elementId">elementId</param>
         /// <param name="elementType">elementType</param>
         /// <param name="type">type</param>
-        /// <param name="networkElementInstanceName">networkElementInstanceName</param>
         /// <param name="count">count</param>
         /// <param name="soaStages">soaStages</param>
         [JsonConstructor]
-        public Element(Option<string?> elementId = default, Option<string?> elementType = default, Option<HeatNetworkElementType?> type = default, Option<string?> networkElementInstanceName = default, Option<int?> count = default, Option<List<SoaStages>?> soaStages = default)
+        public Element(Option<string?> elementId = default, Option<string?> elementType = default, Option<HeatNetworkElementType?> type = default, Option<int?> count = default, Option<List<SoaStages>?> soaStages = default)
         {
             ElementIdOption = elementId;
             ElementTypeOption = elementType;
             TypeOption = type;
-            NetworkElementInstanceNameOption = networkElementInstanceName;
             CountOption = count;
             SoaStagesOption = soaStages;
             OnCreated();
@@ -93,19 +91,6 @@ namespace HNTAS.Api.Client.Model
         public string? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of NetworkElementInstanceName
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> NetworkElementInstanceNameOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets NetworkElementInstanceName
-        /// </summary>
-        [JsonPropertyName("networkElementInstanceName")]
-        public string? NetworkElementInstanceName { get { return this.NetworkElementInstanceNameOption; } set { this.NetworkElementInstanceNameOption = new(value); } }
-
-        /// <summary>
         /// Used to track the state of Count
         /// </summary>
         [JsonIgnore]
@@ -142,7 +127,6 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  ElementId: ").Append(ElementId).Append("\n");
             sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("  Type: ").Append(Type).Append("\n");
-            sb.Append("  NetworkElementInstanceName: ").Append(NetworkElementInstanceName).Append("\n");
             sb.Append("  Count: ").Append(Count).Append("\n");
             sb.Append("  SoaStages: ").Append(SoaStages).Append("\n");
             sb.Append("}\n");
@@ -185,7 +169,6 @@ namespace HNTAS.Api.Client.Model
             Option<string?> elementId = default;
             Option<string?> elementType = default;
             Option<HeatNetworkElementType?> type = default;
-            Option<string?> networkElementInstanceName = default;
             Option<int?> count = default;
             Option<List<SoaStages>?> soaStages = default;
 
@@ -215,9 +198,6 @@ namespace HNTAS.Api.Client.Model
                             if (typeRawValue != null)
                                 type = new Option<HeatNetworkElementType?>(HeatNetworkElementTypeValueConverter.FromStringOrDefault(typeRawValue));
                             break;
-                        case "networkElementInstanceName":
-                            networkElementInstanceName = new Option<string?>(utf8JsonReader.GetString());
-                            break;
                         case "count":
                             count = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
@@ -233,7 +213,7 @@ namespace HNTAS.Api.Client.Model
             if (type.IsSet && type.Value == null)
                 throw new ArgumentNullException(nameof(type), "Property is not nullable for class Element.");
 
-            return new Element(elementId, elementType, type, networkElementInstanceName, count, soaStages);
+            return new Element(elementId, elementType, type, count, soaStages);
         }
 
         /// <summary>
@@ -277,12 +257,6 @@ namespace HNTAS.Api.Client.Model
                 var typeRawValue = HeatNetworkElementTypeValueConverter.ToJsonValue(element.Type!.Value);
                 writer.WriteString("type", typeRawValue);
             }
-            if (element.NetworkElementInstanceNameOption.IsSet)
-                if (element.NetworkElementInstanceNameOption.Value != null)
-                    writer.WriteString("networkElementInstanceName", element.NetworkElementInstanceName);
-                else
-                    writer.WriteNull("networkElementInstanceName");
-
             if (element.CountOption.IsSet)
                 if (element.CountOption.Value != null)
                     writer.WriteNumber("count", element.CountOption.Value!.Value);

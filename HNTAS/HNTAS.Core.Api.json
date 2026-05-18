@@ -507,23 +507,6 @@
           }
         }
       }
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
     },
     "/api/Assessor/search": {
       "get": {
@@ -5331,10 +5314,6 @@
           "type": {
             "$ref": "#/components/schemas/HeatNetworkElementType"
           },
-          "networkElementInstanceName": {
-            "type": "string",
-            "nullable": true
-          },
           "count": {
             "type": "integer",
             "format": "int32",
@@ -5408,8 +5387,11 @@
             "type": "string",
             "nullable": true
           },
-          "soaStatus": {
-            "type": "string",
+          "soaStatuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SoaStatusWithCount"
+            },
             "nullable": true
           },
           "elementSoaStatus": {
@@ -5708,12 +5690,6 @@
           "hnId": {
             "type": "string"
           },
-          "aggregatedKpis": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AggregatedKpi"
-            }
-          },
           "networkName": {
             "type": "string"
           },
@@ -5730,6 +5706,13 @@
             "items": {
               "$ref": "#/components/schemas/ElementGroupDto"
             }
+          },
+          "aggregatedKpis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AggregatedKpi"
+            },
+            "nullable": true
           },
           "currentPage": {
             "type": "integer",
@@ -5799,7 +5782,8 @@
           "Substation",
           "DistrictDistribution",
           "CommunalDistribution",
-          "ConsumerConnection"
+          "ConsumerConnection",
+          "CommunalSubstation"
         ]
       },
       "HeatNetworkExternalResponse": {
@@ -7338,8 +7322,11 @@
           "stageId": {
             "$ref": "#/components/schemas/NullableOfSoaStage"
           },
-          "soaStatus": {
-            "type": "string",
+          "soaStatuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SoaStatusWithCount"
+            },
             "nullable": true
           },
           "soaStatusUpdatedAt": {
@@ -7367,14 +7354,25 @@
       },
       "SoaStatus": {
         "enum": [
+          "NotStarted",
           "InProgress",
-          "Submitted",
-          "Complete",
-          "Archived",
-          "ReadyToStart",
-          "CannotStartYet",
-          "Incomplete"
+          "SoACompleted",
+          "SoAAgreed",
+          "BeingAssessed"
         ]
+      },
+      "SoaStatusWithCount": {
+        "type": "object",
+        "properties": {
+          "soaStatus": {
+            "$ref": "#/components/schemas/SoaStatus"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
       },
       "UpdateConnectionsRequest": {
         "required": [
