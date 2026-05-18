@@ -74,60 +74,31 @@ namespace HNTAS.Web.UI.Helpers
 
                 }
             };
-        }
+        }        
 
-        public static ElementSoaProgressStatusTracking GetElementSoaProgressStatusTracking(ElementSoaViewModel model)
-        {
-            var totalElementsInAllActiveStages = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count());
-            var totalElementsWithStatusUpdated = model.Stages.Where(w => w.IsActive).Sum(s => s.Elements.Count(e => e.SoaStatus != null && e.SoaStatus != "Not started"));
-            ElementSoaProgressStatusTracking incompleteSoa = new ElementSoaProgressStatusTracking();
-            if (totalElementsInAllActiveStages > 0 && (totalElementsInAllActiveStages - totalElementsWithStatusUpdated) == 1)
-            {
-                incompleteSoa.AllElementsCompleted = false;
-                // find the one stage and element that doesn't have a status
-                var stageWithMissingDoc = model.Stages.FirstOrDefault(s => s.IsActive && s.Elements.Any(e => e.SoaStatus == null || e.SoaStatus == "Not started"));
-                if (stageWithMissingDoc != null)
-                {
-                    incompleteSoa.IncompleteSoaStageId = stageWithMissingDoc.StageId;
-                    var elementWithMissingDoc = stageWithMissingDoc.Elements.FirstOrDefault(e => e.SoaStatus == null || e.SoaStatus == "Not started");
-                    if (elementWithMissingDoc != null)
-                    {
-                        incompleteSoa.IncompleteElementId = elementWithMissingDoc.ElementId;
-                    }
-                }
-            }
-            else if (totalElementsInAllActiveStages - totalElementsWithStatusUpdated == 0)
-            {
-                incompleteSoa.AllElementsCompleted = true;
-            }
-            return incompleteSoa;
-        }
-
-        public static (string Heading, string Description1, string Description2) GetSoaElementContent(HeatNetworkElementType? elementType)
+        public static string GetSoaElementContent(HeatNetworkElementType? elementType)
         {
             return elementType switch
             {
                 HeatNetworkElementType.EnergyCentre => (
-                    "What is the status of the statement of applicability for the energy centre?",
-                    "Intro to Energy centre...",
-                    "Upload the statement of applicability (SOA) for the energy centre"
+                    "What is the status of the statement of applicability for the Energy Centre?"
                 ),
                 HeatNetworkElementType.ConsumerConnection => (
-                    "What is the status of the statement of applicability for the consumer connections",
-                    "Intro to Consumer connections...",
-                    "Upload the statement of applicability (SOA) for the consumer connections"
+                    "What is the status of the statement of applicability for the Consumer Connection?"
                 ),
                 HeatNetworkElementType.DistrictDistribution => (
-                    "What is the status of the statement of applicability for the district distribution network",
-                    "Intro to District distribution network...",
-                    "Upload the statement of applicability (SOA) for the district distribution network"
+                    "What is the status of the statement of applicability for the District Distribution Network?"
                 ),
                 HeatNetworkElementType.Substation => (
-                    "What is the status of the statement of applicability for the substation",
-                    "Intro to substation",
-                    "Upload the statement of applicability (SOA) for the substation"
+                    "What is the status of the statement of applicability for the Substation?"
                 ),
-                _ => (string.Empty, string.Empty, string.Empty)
+                HeatNetworkElementType.CommunalDistribution => (
+                    "What is the status of the statement of applicability for the Communal Distribution Network?"
+                ),
+                HeatNetworkElementType.CommunalSubstation => (
+                    "What is the status of the statement of applicability for the Communal Substation?"
+                ),
+                _ => (string.Empty)
             };
         }
 
@@ -145,18 +116,42 @@ namespace HNTAS.Web.UI.Helpers
                 _ => 0
             };
         }
-
-        public static ElementSoaUpdateStatusViewModel GetSoaStatuses()
+        
+        public static List<SoaStatusOption> GetSoaStatuses()
         {
-            return new ElementSoaUpdateStatusViewModel
+            return new List<SoaStatusOption>()
             {
-                SoaStatus = new List<string> {
-                    ElementSoaUpdateStatusConstants.InProgress,
-                    ElementSoaUpdateStatusConstants.InRevision,
-                    ElementSoaUpdateStatusConstants.CompletedSoaAndEvidenceWithAssessor,
-                    ElementSoaUpdateStatusConstants.StatementOfApplicabilityAgreedWithAssessor,
-                    ElementSoaUpdateStatusConstants.BeingAssessed }
+                new() { Id = SoaStatus.NotStarted },
+                new() { Id = SoaStatus.InProgress },
+                new() { Id = SoaStatus.SoACompleted },
+                new() { Id = SoaStatus.SoAAgreed },
+                new() { Id = SoaStatus.BeingAssessed }
             };
+        }
+
+        public static List<SoaStatusWithCount> GetSoaStatuses(List<SoaStatusWithCount> soaStatuses)
+        {
+            var allStatuses = new List<SoaStatusWithCount>
+            {
+                new SoaStatusWithCount { SoaStatus = SoaStatus.NotStarted, Count = 0 },
+                new SoaStatusWithCount { SoaStatus = SoaStatus.InProgress, Count = 0 },
+                new SoaStatusWithCount { SoaStatus = SoaStatus.SoACompleted, Count = 0 },
+                new SoaStatusWithCount { SoaStatus = SoaStatus.SoAAgreed, Count = 0 },
+                new SoaStatusWithCount { SoaStatus = SoaStatus.BeingAssessed, Count = 0 }
+            };
+            if (soaStatuses == null || !soaStatuses.Any())
+            {
+                return allStatuses;
+            }
+            foreach (var status in allStatuses)
+            {
+                var matchingStatus = soaStatuses.FirstOrDefault(s => s.SoaStatus == status.SoaStatus);
+                if (matchingStatus != null)
+                {
+                    status.Count = matchingStatus.Count;
+                }
+            }
+            return allStatuses;
         }
 
         public static List<AssessmentOption> GetAssessmentOptions()
@@ -200,13 +195,14 @@ namespace HNTAS.Web.UI.Helpers
         private static List<SoaElementsView> GetElementsForStage(List<Element>? elements)
         {
             var soaElements = new List<SoaElementsView>();
-            foreach (var element in elements ?? [])
+            foreach (var element in elements ?? new List<Element>())
             {
                 soaElements.Add(new SoaElementsView
-                {
+                {                    
                     ElementId = element.ElementId,
                     Type = element.Type,
-                    Name = element.NetworkElementInstanceName
+                    //Name = element.NetworkElementInstanceName
+                    Name = $"{ NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(n => n.Id == element.Type)?.Label }{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}"
                 });
             }
             return soaElements;

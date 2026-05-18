@@ -25,7 +25,7 @@
                     new Option { OptId = $"{elementId}", OptValue = "true", OptText = "Yes", OptHintText = null },
                     new Option { OptId = $"{elementId}-2", OptValue = "false", OptText = "No", OptHintText = null }
                 },
-                SeletedOption = Model.SuppliesOneBlock.ToString()
+                SeletedOption = Model.SuppliesOneBlock.ToString().ToLowerInvariant()
             },
         }
     };

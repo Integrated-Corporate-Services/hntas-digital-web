@@ -768,7 +768,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
 
-            await _soaProjectService.UpdateSOAStatus(new UpdateSoaStatusRequest(hnId, hnName, userId, SoaStatus.Submitted));
+            //await _soaProjectService.UpdateSOAStatus(new UpdateSoaStatusRequest(hnId, hnName, userId, SoaStatus.Submitted));
 
             return RedirectToAction("Confirmation");
         }
