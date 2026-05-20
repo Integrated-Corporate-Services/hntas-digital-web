@@ -48,6 +48,16 @@
         public const string HnName = "HnNameKey";
 
 
+        // Session for adding DDH and contributor
+        public const string WhoDoYouWantToAddSessionKey = "WhoDoYouWantToAddSessionKey";
+        public const string NewContributorRoleViewModelSessionKey = "NewContributorRoleViewModel";
+        public const string AddContributorViewModelSessionKey = "AddContributorViewModel";
+        public const string NewContributorDetailsViewModelSessionKey = "NewContributorDetailsViewModel";
+        public const string ExistingContributorsListViewModelSessionKey = "ExistingContributorsListViewModelSessionKey";
+        public const string ContributorsHeatNetworkPhaseViewModelSessionKey = "ContributorsHeatNetworkPhaseViewModelSessionKey";
+        public const string NewContributorHeatNetworkViewModelSessionKey = "NewContributorHeatNetworkViewModel";
+        public const string CheckYourAnswersContributorsModelSessionKey = "CheckYourAnswersContributorsModelSessionKey";        
+
         // Session keys for invitations
         public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";
         public const string InvitedTokenEmail = "InvitedTokenEmailKey";
