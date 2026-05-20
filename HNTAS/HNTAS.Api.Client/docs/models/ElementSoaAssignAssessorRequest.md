@@ -4,11 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ElementIds** | **List&lt;string&gt;** |  | [optional] 
+**ElementsAndAssessments** | [**List&lt;ElementAndAssessment&gt;**](ElementAndAssessment.md) |  | [optional] 
 **AssessorEmail** | **string** |  | [optional] 
 **AssessorFirstName** | **string** |  | [optional] 
 **AssessorLastName** | **string** |  | [optional] 
-**Assessment** | **string** |  | [optional] 
+**SoaStage** | **SoaStage** |  | [optional] 
 **HnId** | **string** |  | [optional] 
 **UpdatedBy** | **string** |  | [optional] 
 

@@ -45,6 +45,7 @@ docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
 docs/models/Element.md
+docs/models/ElementAndAssessment.md
 docs/models/ElementGroup.md
 docs/models/ElementGroupDto.md
 docs/models/ElementSoaAssignAssessorRequest.md
@@ -149,6 +150,7 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/ElementAndAssessmentTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -215,6 +217,7 @@ src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs
 src/HNTAS.Api.Client/Model/Element.cs
+src/HNTAS.Api.Client/Model/ElementAndAssessment.cs
 src/HNTAS.Api.Client/Model/ElementGroup.cs
 src/HNTAS.Api.Client/Model/ElementGroupDto.cs
 src/HNTAS.Api.Client/Model/ElementSoaAssignAssessorRequest.cs

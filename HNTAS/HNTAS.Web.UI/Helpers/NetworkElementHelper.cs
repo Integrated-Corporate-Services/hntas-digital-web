@@ -136,5 +136,18 @@ namespace HNTAS.Web.UI.Helpers
                 _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
             };
         }
+
+        public static string GetNetworkTypeLabelForNetworkType(HeatNetworkElementType? networkType)
+        {
+            return networkType switch
+            {
+                HeatNetworkElementType.Substation => "Substation",
+                HeatNetworkElementType.EnergyCentre => "Energy centre",
+                HeatNetworkElementType.ConsumerConnection => "Consumer connections",
+                HeatNetworkElementType.DistrictDistribution => "District distribution network",
+                HeatNetworkElementType.CommunalDistribution => "Communal distribution network",
+                _ => throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}")
+            };
+        }
     }
 }

@@ -72,6 +72,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());
             _jsonOptions.Converters.Add(new ECDetails2JsonConverter());
             _jsonOptions.Converters.Add(new ElementJsonConverter());
+            _jsonOptions.Converters.Add(new ElementAndAssessmentJsonConverter());
             _jsonOptions.Converters.Add(new ElementGroupJsonConverter());
             _jsonOptions.Converters.Add(new ElementGroupDtoJsonConverter());
             _jsonOptions.Converters.Add(new ElementSoaAssignAssessorRequestJsonConverter());

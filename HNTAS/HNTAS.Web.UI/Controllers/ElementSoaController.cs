@@ -379,8 +379,8 @@ namespace HNTAS.Web.UI.Controllers
 
                     model.ElementOptions?.Add(new AssessorSelectElementsOption
                     {
-                        //Label = item.NetworkElementInstanceName!,
-                        //ElementId = item.ElementId!,
+                        Label = NetworkElementHelper.GetNetworkTypeLabelForNetworkType(item.ElementDisplayType),
+                        ElementType = item.ElementType!,
                         AssignedAssessorName = assignedAssessor != null ? $"(Assessor Assigned: {assignedAssessor.FirstName} {assignedAssessor.LastName})" : ""
                     });
                 }
@@ -413,7 +413,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 foreach (var option in modelFromSession?.ElementOptions!)
                 {
-                    if (option.ElementId == item)
+                    if (option.ElementType == item)
                     {
                         model.SelectedElementLabel?.Add(option.Label);
                     }
@@ -499,15 +499,16 @@ namespace HNTAS.Web.UI.Controllers
             var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var assessmentSelectionModel = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey);
-
+            var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
             var requestModel = new ElementSoaAssignAssessorRequest
             {
                 HnId = hnId!,
                 AssessorEmail = assessorDetails?.Email,
                 AssessorFirstName = assessorDetails?.FirstName,
                 AssessorLastName = assessorDetails?.LastName,
-                ElementIds = selectedElements?.SelectedElementIds,
-                Assessment = assessmentSelectionModel?.SelectedAssessmentOption,
+                //ElementIds = selectedElements?.SelectedElementIds,
+                //Assessment = assessmentSelectionModel?.SelectedAssessmentOption,
+                SoaStage = stage,
                 UpdatedBy = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey)
 
             };

@@ -3849,6 +3849,16 @@ components:
           nullable: true
           type: string
       type: object
+    ElementAndAssessment:
+      example:
+        assessment: assessment
+        elementType: elementType
+      properties:
+        assessment:
+          type: string
+        elementType:
+          type: string
+      type: object
     ElementGroup:
       example:
         elementDisplayType: EnergyCentre
@@ -3930,19 +3940,21 @@ components:
       type: object
     ElementSoaAssignAssessorRequest:
       example:
-        assessment: assessment
+        soaStage: Stage1
         hnId: hnId
+        elementsAndAssessments:
+        - assessment: assessment
+          elementType: elementType
+        - assessment: assessment
+          elementType: elementType
         updatedBy: updatedBy
         assessorLastName: assessorLastName
         assessorEmail: assessorEmail
         assessorFirstName: assessorFirstName
-        elementIds:
-        - elementIds
-        - elementIds
       properties:
-        elementIds:
+        elementsAndAssessments:
           items:
-            type: string
+            $ref: "#/components/schemas/ElementAndAssessment"
           type: array
         assessorEmail:
           type: string
@@ -3950,8 +3962,8 @@ components:
           type: string
         assessorLastName:
           type: string
-        assessment:
-          type: string
+        soaStage:
+          $ref: "#/components/schemas/SoaStage"
         hnId:
           type: string
         updatedBy:

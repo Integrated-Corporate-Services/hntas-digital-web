@@ -5317,6 +5317,17 @@
           }
         }
       },
+      "ElementAndAssessment": {
+        "type": "object",
+        "properties": {
+          "assessment": {
+            "type": "string"
+          },
+          "elementType": {
+            "type": "string"
+          }
+        }
+      },
       "ElementGroup": {
         "type": "object",
         "properties": {
@@ -5361,10 +5372,10 @@
       "ElementSoaAssignAssessorRequest": {
         "type": "object",
         "properties": {
-          "elementIds": {
+          "elementsAndAssessments": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/ElementAndAssessment"
             }
           },
           "assessorEmail": {
@@ -5376,8 +5387,8 @@
           "assessorLastName": {
             "type": "string"
           },
-          "assessment": {
-            "type": "string"
+          "soaStage": {
+            "$ref": "#/components/schemas/SoaStage"
           },
           "hnId": {
             "type": "string"

@@ -31,7 +31,7 @@ namespace HNTAS.Web.UI.Models.NetworkElements
     public class AssessorSelectElementsOption
     {
         public string Label { get; set; } = null!;
-        public string ElementId { get; set; } = null!;
+        public string ElementType { get; set; } = null!;
         public string AssignedAssessorName { get; set; } = null!;
     }
 }

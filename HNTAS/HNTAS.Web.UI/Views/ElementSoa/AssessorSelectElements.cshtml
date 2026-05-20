@@ -34,7 +34,7 @@
                             {
                                 var item = Model.ElementOptions[i];
                                 var checkboxId = $"SelectedElementIds_{i}";                                
-                                var isChecked = Model.SelectedElementIds?.Contains(item.ElementId) ?? false;
+                                var isChecked = Model.SelectedElementIds?.Contains(item.ElementType) ?? false;
                                 var hintId = $"{checkboxId}-item-hint";
 
                                 <div class="govuk-checkboxes__item">
@@ -42,7 +42,7 @@
                                     id="@checkboxId"
                                     name="SelectedElementIds" 
                                     type="checkbox" 
-                                    value="@item.ElementId"
+                                    value="@item.ElementType"
                                     @(isChecked ? "checked" : "")
                                     >
                                     <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
