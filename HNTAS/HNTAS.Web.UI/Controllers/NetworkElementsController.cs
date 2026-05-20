@@ -174,7 +174,6 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
-
             if (model.HasDistrictSubstation == false)
             {
                 model.NumberOfSubstations = null;
@@ -184,7 +183,6 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError("NumberOfSubstations", "Enter the number of substations");
             }
-
             if (!ModelState.IsValid)
             {
                 return View(model);
