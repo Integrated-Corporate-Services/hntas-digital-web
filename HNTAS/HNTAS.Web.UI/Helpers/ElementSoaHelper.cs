@@ -5,7 +5,7 @@ namespace HNTAS.Web.UI.Helpers
 {
     public class ElementSoaHelper
     {
-        public static ElementSoaViewModel GetElementSoaViewModel(int eligibleIndex, int currentStageIndex, List<Element> networkElements)
+        public static ElementSoaViewModel GetElementSoaViewModel(int eligibleIndex, int currentStageIndex, List<ElementGroup> networkElements)
         {
             return new ElementSoaViewModel
             {
@@ -94,10 +94,7 @@ namespace HNTAS.Web.UI.Helpers
                 ),
                 HeatNetworkElementType.CommunalDistribution => (
                     "What is the status of the statement of applicability for the Communal Distribution Network?"
-                ),
-                HeatNetworkElementType.CommunalSubstation => (
-                    "What is the status of the statement of applicability for the Communal Substation?"
-                ),
+                ),                
                 _ => (string.Empty)
             };
         }
@@ -192,17 +189,21 @@ namespace HNTAS.Web.UI.Helpers
                 _ => "NA"
             };
         }
-        private static List<SoaElementsView> GetElementsForStage(List<Element>? elements)
+        private static List<SoaElementsView> GetElementsForStage(List<ElementGroup>? elements)
         {
             var soaElements = new List<SoaElementsView>();
-            foreach (var element in elements ?? new List<Element>())
+            foreach (var element in elements ?? new List<ElementGroup>())
             {
+                // Convert NullableOfHeatNetworkElementType? to HeatNetworkElementType? for comparison and lookup
+                HeatNetworkElementType? elementType = element.ElementDisplayType.HasValue
+                    ? (HeatNetworkElementType)(int)element.ElementDisplayType.Value
+                    : (HeatNetworkElementType?)null;
+
                 soaElements.Add(new SoaElementsView
                 {                    
-                    ElementId = element.ElementId,
-                    Type = element.Type,
-                    //Name = element.NetworkElementInstanceName
-                    Name = $"{ NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(n => n.Id == element.Type)?.Label }{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}"
+                    ElementType = element.ElementType,
+                    ElementDisplayType = elementType,                    
+                    Name = $"{ NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(n => n.Id == elementType)?.Label }{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}"
                 });
             }
             return soaElements;

@@ -121,7 +121,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("HeatNetworkType");
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(model);
             }
             string nextAction = model.HasOwnEc switch
             {
@@ -163,6 +163,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult HeatNetworkCommunalECSummary()
         {
             this.ShowBackButton("HeatNetworkCommunalOneBlock");
+            _sessionHelper.SaveToSession(HttpContext, "backActionFromHnName", "HeatNetworkCommunalECSummary");
             return View();
         }
 
@@ -170,6 +171,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult HeatNetworkCommunalOneBlockSummary()
         {
             this.ShowBackButton("HeatNetworkCommunalOneBlock");
+            _sessionHelper.SaveToSession(HttpContext, "backActionFromHnName", "HeatNetworkCommunalOneBlockSummary");
             return View();
         }        
 
@@ -177,6 +179,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult HeatNetworkCommunalNoECSummary()
         {
             this.ShowBackButton("HeatNetworkEcCommunal");
+            _sessionHelper.SaveToSession(HttpContext, "backActionFromHnName", "HeatNetworkCommunalNoECSummary");
             return View();
         }
         

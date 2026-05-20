@@ -72,7 +72,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             model.Contributors = await GetContributorSelectListAsync(userId);
-
+            ViewBag.NoUsers = (model.Contributors == null || !model.Contributors.Any()) ? true : false;
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("AddContributor", "UserManagement");
