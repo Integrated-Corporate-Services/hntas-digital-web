@@ -121,7 +121,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("HeatNetworkType");
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(model);
             }
             string nextAction = model.HasOwnEc switch
             {
