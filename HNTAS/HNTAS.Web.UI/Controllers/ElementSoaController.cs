@@ -196,10 +196,9 @@ namespace HNTAS.Web.UI.Controllers
 
             var allSoaAllStatusesCount = soaStatusWithCountList.Where(s => s.Count != null).Sum(s => s.Count ?? 0);
 
-            ModelState.Remove("TotalCountCheck");
             if (allSoaAllStatusesCount > totalCountFromElement)
             {                
-                ModelState.AddModelError("TotalCountCheck", $"The total count of all SoA statuses cannot exceed {totalCountFromElement}");
+                ModelState.AddModelError($"soastatuscounts[{model.SelectedSoaStatusOptions.FirstOrDefault().ToString()}]", $"The total count of all SoA statuses cannot exceed {totalCountFromElement}");
             }
 
             foreach (var selectedId in model.SelectedSoaStatusOptions)
