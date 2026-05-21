@@ -10,11 +10,8 @@ namespace HNTAS.Web.UI.Models.Components
     }
 
     public class InvitationStatusTag : StatusTag
-    {
-
-        [AllowedValues("invited", "active", "pending", "inactive")]
-        public string Text { get; set; }
-        public InvitationStatusTag(string text)
+    {        
+        public InvitationStatusTag([AllowedValues("invited", "active", "pending", "inactive")]  string text)
         {
             Text = text;
             switch (text.ToLower())

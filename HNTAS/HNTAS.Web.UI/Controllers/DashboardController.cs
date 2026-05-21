@@ -96,7 +96,7 @@ namespace HNTAS.Web.UI.Controllers
                 UserRole = user.Roles[0].ToString(),
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
                 HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any()
-            };            
+            };
             var managedUsers = await _userService.GetManagedUsers(user.Id);
             if(dashboardModel.IsResponsiblePerson && managedUsers.Count <= 1 && !dashboardModel.HasHeatNetworks)
             {
