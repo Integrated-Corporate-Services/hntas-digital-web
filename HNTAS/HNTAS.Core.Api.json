@@ -5173,12 +5173,8 @@
       },
       "ContributorRole": {
         "enum": [
-          "DesignatedDesigner",
-          "DesignatedContractor",
-          "DesignatedOperator",
-          "ContributingDesigner",
-          "ContributingContractor",
-          "ContributingOperator",
+          "DesignatedDutyHolder",
+          "Contributor",
           "Assessor",
           "Certifier",
           "NetworkManager",

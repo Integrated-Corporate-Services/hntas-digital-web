@@ -1,0 +1,31 @@
+﻿@model HNTAS.Web.UI.Models.Contributors.NewContributorHeatNetworkViewModel
+
+@{
+    ViewData["Title"] = "Which heat network is this person being added to?";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Your network team</span>
+
+            <h1 class="govuk-heading-l">
+                Which heat network is this person being added to?
+            </h1>
+
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <div class="govuk-form-group">
+                    <span class="govuk-error-message" asp-validation-for="SelectedHeatNetwork"></span>
+                    <select class="govuk-select" asp-for="SelectedHeatNetwork" asp-items="Model.HeatNetworks.Select(x => new SelectListItem { Value = x.Value, Text = x.Text })">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+
+                <button class="govuk-button" type="submit">
+                    Continue
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

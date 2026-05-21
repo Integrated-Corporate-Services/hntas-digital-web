@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 VisualStudioVersion = 12.0.0.0
 MinimumVisualStudioVersion = 10.0.0.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HNTAS.Api.Client", "src\HNTAS.Api.Client\HNTAS.Api.Client.csproj", "{977418D7-3328-4680-A12B-CF093C90BDF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HNTAS.Api.Client", "src\HNTAS.Api.Client\HNTAS.Api.Client.csproj", "{F12163DC-E2FB-467E-942F-9363115F7FB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HNTAS.Api.Client.Test", "src\HNTAS.Api.Client.Test\HNTAS.Api.Client.Test.csproj", "{19F1DEBC-DE5E-4517-8062-F000CD499087}"
 EndProject
@@ -12,10 +12,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{977418D7-3328-4680-A12B-CF093C90BDF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{977418D7-3328-4680-A12B-CF093C90BDF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{977418D7-3328-4680-A12B-CF093C90BDF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{977418D7-3328-4680-A12B-CF093C90BDF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F12163DC-E2FB-467E-942F-9363115F7FB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F12163DC-E2FB-467E-942F-9363115F7FB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F12163DC-E2FB-467E-942F-9363115F7FB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F12163DC-E2FB-467E-942F-9363115F7FB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19F1DEBC-DE5E-4517-8062-F000CD499087}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19F1DEBC-DE5E-4517-8062-F000CD499087}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19F1DEBC-DE5E-4517-8062-F000CD499087}.Release|Any CPU.ActiveCfg = Release|Any CPU

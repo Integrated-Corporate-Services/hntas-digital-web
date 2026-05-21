@@ -31,54 +31,34 @@ namespace HNTAS.Api.Client.Model
     public enum ContributorRole
     {
         /// <summary>
-        /// Enum DesignatedDesigner for value: DesignatedDesigner
+        /// Enum DesignatedDutyHolder for value: DesignatedDutyHolder
         /// </summary>
-        DesignatedDesigner = 1,
+        DesignatedDutyHolder = 1,
 
         /// <summary>
-        /// Enum DesignatedContractor for value: DesignatedContractor
+        /// Enum Contributor for value: Contributor
         /// </summary>
-        DesignatedContractor = 2,
-
-        /// <summary>
-        /// Enum DesignatedOperator for value: DesignatedOperator
-        /// </summary>
-        DesignatedOperator = 3,
-
-        /// <summary>
-        /// Enum ContributingDesigner for value: ContributingDesigner
-        /// </summary>
-        ContributingDesigner = 4,
-
-        /// <summary>
-        /// Enum ContributingContractor for value: ContributingContractor
-        /// </summary>
-        ContributingContractor = 5,
-
-        /// <summary>
-        /// Enum ContributingOperator for value: ContributingOperator
-        /// </summary>
-        ContributingOperator = 6,
+        Contributor = 2,
 
         /// <summary>
         /// Enum Assessor for value: Assessor
         /// </summary>
-        Assessor = 7,
+        Assessor = 3,
 
         /// <summary>
         /// Enum Certifier for value: Certifier
         /// </summary>
-        Certifier = 8,
+        Certifier = 4,
 
         /// <summary>
         /// Enum NetworkManager for value: NetworkManager
         /// </summary>
-        NetworkManager = 9,
+        NetworkManager = 5,
 
         /// <summary>
         /// Enum ResponsiblePerson for value: ResponsiblePerson
         /// </summary>
-        ResponsiblePerson = 10
+        ResponsiblePerson = 6
     }
 
     /// <summary>
@@ -93,23 +73,11 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static ContributorRole FromString(string value)
         {
-            if (value.Equals("DesignatedDesigner"))
-                return ContributorRole.DesignatedDesigner;
+            if (value.Equals("DesignatedDutyHolder"))
+                return ContributorRole.DesignatedDutyHolder;
 
-            if (value.Equals("DesignatedContractor"))
-                return ContributorRole.DesignatedContractor;
-
-            if (value.Equals("DesignatedOperator"))
-                return ContributorRole.DesignatedOperator;
-
-            if (value.Equals("ContributingDesigner"))
-                return ContributorRole.ContributingDesigner;
-
-            if (value.Equals("ContributingContractor"))
-                return ContributorRole.ContributingContractor;
-
-            if (value.Equals("ContributingOperator"))
-                return ContributorRole.ContributingOperator;
+            if (value.Equals("Contributor"))
+                return ContributorRole.Contributor;
 
             if (value.Equals("Assessor"))
                 return ContributorRole.Assessor;
@@ -133,23 +101,11 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static ContributorRole? FromStringOrDefault(string value)
         {
-            if (value.Equals("DesignatedDesigner"))
-                return ContributorRole.DesignatedDesigner;
+            if (value.Equals("DesignatedDutyHolder"))
+                return ContributorRole.DesignatedDutyHolder;
 
-            if (value.Equals("DesignatedContractor"))
-                return ContributorRole.DesignatedContractor;
-
-            if (value.Equals("DesignatedOperator"))
-                return ContributorRole.DesignatedOperator;
-
-            if (value.Equals("ContributingDesigner"))
-                return ContributorRole.ContributingDesigner;
-
-            if (value.Equals("ContributingContractor"))
-                return ContributorRole.ContributingContractor;
-
-            if (value.Equals("ContributingOperator"))
-                return ContributorRole.ContributingOperator;
+            if (value.Equals("Contributor"))
+                return ContributorRole.Contributor;
 
             if (value.Equals("Assessor"))
                 return ContributorRole.Assessor;
@@ -174,23 +130,11 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(ContributorRole value)
         {
-            if (value == ContributorRole.DesignatedDesigner)
-                return "DesignatedDesigner";
+            if (value == ContributorRole.DesignatedDutyHolder)
+                return "DesignatedDutyHolder";
 
-            if (value == ContributorRole.DesignatedContractor)
-                return "DesignatedContractor";
-
-            if (value == ContributorRole.DesignatedOperator)
-                return "DesignatedOperator";
-
-            if (value == ContributorRole.ContributingDesigner)
-                return "ContributingDesigner";
-
-            if (value == ContributorRole.ContributingContractor)
-                return "ContributingContractor";
-
-            if (value == ContributorRole.ContributingOperator)
-                return "ContributingOperator";
+            if (value == ContributorRole.Contributor)
+                return "Contributor";
 
             if (value == ContributorRole.Assessor)
                 return "Assessor";
@@ -243,7 +187,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, ContributorRole contributorRole, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(ContributorRoleValueConverter.ToJsonValue(contributorRole).ToString());
+            writer.WriteStringValue(contributorRole.ToString());
         }
     }
 
@@ -274,14 +218,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the ContributorRole to the json writer
+        /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="contributorRole"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, ContributorRole? contributorRole, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(contributorRole.HasValue ? ContributorRoleValueConverter.ToJsonValue(contributorRole.Value).ToString() : "null");
+            writer.WriteStringValue(contributorRole?.ToString() ?? "null");
         }
     }
 }
