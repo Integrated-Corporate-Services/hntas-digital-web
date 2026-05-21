@@ -1,4 +1,5 @@
-﻿using HNTAS.Api.Client.Api;
+﻿using DocumentFormat.OpenXml.EMMA;
+using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
@@ -67,13 +68,21 @@ namespace HNTAS.Web.UI.Controllers
             {
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new DashboardModel());
-            }
+            }            
             var isAssessorOrCertifier = "false";
             if (user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Assessor.ToString() || user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Certifier.ToString())
             {
                 isAssessorOrCertifier = "true";
             }
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsAssessorOrCertifier, isAssessorOrCertifier);
+            if(user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString())
+            {
+                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey, "Contributors");
+            }
+            else
+            {
+                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey, null);
+            }
             if (user.Organisation?.Name != null)
             {
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
