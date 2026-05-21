@@ -96,9 +96,7 @@ namespace HNTAS.Web.UI.Controllers
                 UserRole = user.Roles[0].ToString(),
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
                 HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any()
-            };
-            var userIsContributor = dashboardModel.UserRole == HNTAS.Api.Client.Model.UserRole.Contributor.ToString();
-            var userIsDesignatedDutyHolder = dashboardModel.UserRole == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString();
+            };            
             var managedUsers = await _userService.GetManagedUsers(user.Id);
             if(dashboardModel.IsResponsiblePerson && managedUsers.Count <= 1 && !dashboardModel.HasHeatNetworks)
             {
