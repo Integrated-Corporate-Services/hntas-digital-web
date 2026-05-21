@@ -2897,8 +2897,8 @@ components:
         hnId: hnId
         emailAddress: emailAddress
         contributorRoles:
-        - DesignatedDesigner
-        - DesignatedDesigner
+        - DesignatedDutyHolder
+        - DesignatedDutyHolder
         rolesToReplace:
         - null
         - null
@@ -3709,12 +3709,8 @@ components:
       type: string
     ContributorRole:
       enum:
-      - DesignatedDesigner
-      - DesignatedContractor
-      - DesignatedOperator
-      - ContributingDesigner
-      - ContributingContractor
-      - ContributingOperator
+      - DesignatedDutyHolder
+      - Contributor
       - Assessor
       - Certifier
       - NetworkManager
@@ -5210,7 +5206,7 @@ components:
     HnRoleMapping:
       example:
         hnId: hnId
-        role: DesignatedDesigner
+        role: DesignatedDutyHolder
       properties:
         hnId:
           type: string
@@ -5262,8 +5258,8 @@ components:
         lastName: lastName
         inviterUserId: inviterUserId
         roles:
-        - DesignatedDesigner
-        - DesignatedDesigner
+        - DesignatedDutyHolder
+        - DesignatedDutyHolder
         fullName: fullName
         invitedHnId: invitedHnId
         firstName: firstName
@@ -7554,9 +7550,9 @@ components:
         lastName: lastName
         hnRoleMappings:
         - hnId: hnId
-          role: DesignatedDesigner
+          role: DesignatedDutyHolder
         - hnId: hnId
-          role: DesignatedDesigner
+          role: DesignatedDutyHolder
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
@@ -7721,9 +7717,9 @@ components:
         lastName: lastName
         hnRoleMappings:
         - hnId: hnId
-          role: DesignatedDesigner
+          role: DesignatedDutyHolder
         - hnId: hnId
-          role: DesignatedDesigner
+          role: DesignatedDutyHolder
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle

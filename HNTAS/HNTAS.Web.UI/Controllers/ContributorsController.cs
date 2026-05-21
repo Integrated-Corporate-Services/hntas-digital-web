@@ -3,8 +3,10 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.Components;
 using HNTAS.Web.UI.Models.Contributors;
+using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
+using Mono.TextTemplating;
 using System.Threading.Tasks;
 
 namespace HNTAS.Web.UI.Controllers
@@ -15,12 +17,16 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ISessionHelper _sessionHelper;
         private readonly ILogger<ContributorsController> _logger;
         private readonly IUserService _userService;
+        private readonly IInvitationService _invitationService;
+        private readonly IInvitationTokenService _invitationTokenService;
 
-        public ContributorsController(ISessionHelper sessionHelper, ILogger<ContributorsController> logger, IUserService userService)
+        public ContributorsController(ISessionHelper sessionHelper, ILogger<ContributorsController> logger, IUserService userService, IInvitationService invitationService, IInvitationTokenService invitationTokenService)
         {
             _sessionHelper = sessionHelper;
             _logger = logger;
             _userService = userService;
+            _invitationService = invitationService;
+            _invitationTokenService = invitationTokenService;
         }
 
         [HttpGet]
@@ -334,7 +340,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CheckYourAnswers(CheckYourAnswersViewModel model)
+        public async Task<IActionResult> CheckYourAnswers(CheckYourAnswersViewModel model)
         {
             this.ShowBackButton("HeatNetworkPhase");
             model = CreateCYAModel();
@@ -342,6 +348,44 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
+            var inviteeRole = model.RoleAssigned == "contributor" ? ContributorRole.Contributor : ContributorRole.DesignatedDutyHolder;            
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            try
+            {
+                var invitationId = await _invitationService.AddInvitedUserAsync(
+                     userId,
+                     new AddInvitationRequest(
+                         emailAddress: model.EmailAddress,
+                         firstName: model.FirstName,
+                         lastName: model.LastName,
+                         hnId: model.HeatNetwork,
+                         contributorRoles: new List<ContributorRole> { inviteeRole },
+                         replacedUserId: null,
+                         rolesToReplace: new List<ContributorRole> { inviteeRole },
+                         status: InvitationStatus.Invited
+                     )
+                 );
+
+                if (string.IsNullOrWhiteSpace(invitationId))
+                {
+                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                    return RedirectToAction("CheckYourAnswers");
+                }
+
+                _logger.LogInformation("Successfully submitted new contributor details for email: {Email}", model.EmailAddress);
+                var token = _invitationTokenService.GenerateToken(invitationId, model.EmailAddress);
+
+                //send invitation email
+                await _invitationService.SendInvitationEmailAsync(invitationId, new SendInvitationEmailRequest(token));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error submitting new contributor details for email: {Email}", model.EmailAddress);
+                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                return RedirectToAction("CheckYourAnswers");
+            }
+
+
             _sessionHelper.SaveToSession<CheckYourAnswersViewModel>(HttpContext, SessionKeys.CheckYourAnswersContributorsModelSessionKey, model);
             return RedirectToAction("UserConfirmation");
         }

@@ -68,7 +68,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new DashboardModel());
-            }
+            }            
             var isAssessorOrCertifier = "false";
             if (user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Assessor.ToString() || user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Certifier.ToString())
             {
@@ -97,6 +97,8 @@ namespace HNTAS.Web.UI.Controllers
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
                 HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any()
             };
+            var userIsContributor = dashboardModel.UserRole == HNTAS.Api.Client.Model.UserRole.Contributor.ToString();
+            var userIsDesignatedDutyHolder = dashboardModel.UserRole == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString();
             var managedUsers = await _userService.GetManagedUsers(user.Id);
             if(dashboardModel.IsResponsiblePerson && managedUsers.Count <= 1 && !dashboardModel.HasHeatNetworks)
             {

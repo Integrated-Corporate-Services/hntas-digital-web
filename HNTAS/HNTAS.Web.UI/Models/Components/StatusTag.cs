@@ -12,13 +12,16 @@ namespace HNTAS.Web.UI.Models.Components
     public class InvitationStatusTag : StatusTag
     {
 
-        [AllowedValues("active", "pending", "inactive")]
+        [AllowedValues("invited", "active", "pending", "inactive")]
         public string Text { get; set; }
         public InvitationStatusTag(string text)
         {
             Text = text;
             switch (text.ToLower())
             {
+                case "invited":
+                    CssClass = "govuk-tag--blue";
+                    break;
                 case "active":
                     CssClass = "govuk-tag--green";
                     break;
