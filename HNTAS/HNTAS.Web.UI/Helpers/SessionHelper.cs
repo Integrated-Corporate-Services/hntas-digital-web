@@ -70,6 +70,16 @@ namespace HNTAS.Web.UI.Helpers
             ClearFromSession(context, SessionKeys.CheckYourAnswersHeatNetworkModelKey);
         }
 
+        public void ClearAllContributoFlowRelatedSessionData(HttpContext context) 
+        {
+            ClearFromSession(context, SessionKeys.NewContributorRoleViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.AddContributorViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.NewContributorDetailsViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.ExistingContributorsListViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.NewContributorHeatNetworkViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.CheckYourAnswersContributorsModelSessionKey);
+        }
+
         #endregion
 
         #region Flow State Methods
