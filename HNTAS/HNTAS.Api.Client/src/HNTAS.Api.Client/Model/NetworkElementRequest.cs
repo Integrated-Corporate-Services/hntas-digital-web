@@ -37,7 +37,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="type">type</param>
         /// <param name="kpis">kpis</param>
         [JsonConstructor]
-        public NetworkElementRequest(string elementId, HeatNetworkElementType type, Option<Dictionary<string, KpiValueRequest>?> kpis = default)
+        public NetworkElementRequest(string elementId, string type, Option<Dictionary<string, KpiValueRequest>?> kpis = default)
         {
             ElementId = elementId;
             Type = type;
@@ -48,16 +48,16 @@ namespace HNTAS.Api.Client.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Gets or Sets Type
-        /// </summary>
-        [JsonPropertyName("type")]
-        public HeatNetworkElementType Type { get; set; }
-
-        /// <summary>
         /// Gets or Sets ElementId
         /// </summary>
         [JsonPropertyName("elementId")]
         public string ElementId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Type
+        /// </summary>
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// Used to track the state of Kpis
@@ -121,7 +121,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> elementId = default;
-            Option<HeatNetworkElementType?> type = default;
+            Option<string?> type = default;
             Option<Dictionary<string, KpiValueRequest>?> kpis = default;
 
             while (utf8JsonReader.Read())
@@ -143,9 +143,7 @@ namespace HNTAS.Api.Client.Model
                             elementId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "type":
-                            string? typeRawValue = utf8JsonReader.GetString();
-                            if (typeRawValue != null)
-                                type = new Option<HeatNetworkElementType?>(HeatNetworkElementTypeValueConverter.FromStringOrDefault(typeRawValue));
+                            type = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "kpis":
                             kpis = new Option<Dictionary<string, KpiValueRequest>?>(JsonSerializer.Deserialize<Dictionary<string, KpiValueRequest>>(ref utf8JsonReader, jsonSerializerOptions)!);
@@ -171,7 +169,7 @@ namespace HNTAS.Api.Client.Model
             if (kpis.IsSet && kpis.Value == null)
                 throw new ArgumentNullException(nameof(kpis), "Property is not nullable for class NetworkElementRequest.");
 
-            return new NetworkElementRequest(elementId.Value!, type.Value!.Value!, kpis);
+            return new NetworkElementRequest(elementId.Value!, type.Value!, kpis);
         }
 
         /// <summary>
@@ -201,13 +199,15 @@ namespace HNTAS.Api.Client.Model
             if (networkElementRequest.ElementId == null)
                 throw new ArgumentNullException(nameof(networkElementRequest.ElementId), "Property is required for class NetworkElementRequest.");
 
+            if (networkElementRequest.Type == null)
+                throw new ArgumentNullException(nameof(networkElementRequest.Type), "Property is required for class NetworkElementRequest.");
+
             if (networkElementRequest.KpisOption.IsSet && networkElementRequest.Kpis == null)
                 throw new ArgumentNullException(nameof(networkElementRequest.Kpis), "Property is required for class NetworkElementRequest.");
 
             writer.WriteString("elementId", networkElementRequest.ElementId);
 
-            var typeRawValue = HeatNetworkElementTypeValueConverter.ToJsonValue(networkElementRequest.Type);
-            writer.WriteString("type", typeRawValue);
+            writer.WriteString("type", networkElementRequest.Type);
 
             if (networkElementRequest.KpisOption.IsSet)
             {

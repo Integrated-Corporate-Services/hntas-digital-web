@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Designated duty holder invited";    
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-panel govuk-panel--confirmation">
+                <h1 class="govuk-panel__title">
+                    @ViewBag.whoDoYouWantToAdd invited
+                </h1>
+            </div>
+
+            <p class="govuk-body">
+                We have emailed them to let them know they have been invited to be a @ViewBag.whoDoYouWantToAdd.ToLower() for your network.
+            </p>
+
+            <h2 class="govuk-heading-m">What happens next:</h2>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>if they accept, you’ll confirm their access</li>
+                <li>if they decline, you’ll be notified</li>
+                <li>once confirmed, they can add information and contributors to this heat network</li>
+            </ul>
+
+            <a href="@Url.Action("UserAccount", "Dashboard")" class="govuk-button">Continue</a>
+        </div>
+    </div>
+</div>

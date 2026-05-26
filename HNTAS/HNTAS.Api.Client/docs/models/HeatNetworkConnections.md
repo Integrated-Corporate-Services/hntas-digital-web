@@ -10,8 +10,8 @@ Name | Type | Description | Notes
 **NoOfDomesticConsumer** | **int** |  | [optional] 
 **IsNonDomesticConsumer** | **bool** |  | [optional] 
 **NoOfNonDomesticConsumer** | **int** |  | [optional] 
-**IsDownstreamDistrictHeatNetworkConnections** | **bool** |  | [optional] 
-**NoOfDownstreamDistrictHeatNetworkConnections** | **int** |  | [optional] 
+**IsOtherDistrictNetwork** | **bool** |  | [optional] 
+**NoOfOtherDistrictNetwork** | **int** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

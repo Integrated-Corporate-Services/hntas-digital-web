@@ -36,7 +36,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            _sessionHelper.ClearAllFlowRelatedSessionData(HttpContext);
+            _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);
             //start
             return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
         }
@@ -138,6 +138,8 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> SelectNetworkDetail([FromQuery] string hnid, [FromQuery] NetworkDetailsType networkDetailId)
         {
             _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, hnid.ToUpper());
+            ClearNetworkElementSpecificSession();
+            ClearSoaAssessorSpecificSession();
             switch (networkDetailId)
             {
                 case NetworkDetailsType.NetworkElements:
@@ -148,6 +150,26 @@ namespace HNTAS.Web.UI.Controllers
                     return BadRequest();
             }
 
+        }
+
+        private void ClearNetworkElementSpecificSession()
+        {
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SelectedElementsSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SubstationViewModelKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DistributionNetworksViewModelKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+        }
+
+        private void ClearSoaAssessorSpecificSession()
+        {
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorDetailsSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorElementSelectionOverviewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DefaultSelectedAssessor);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorSearchResultsSessionKey);
         }
 
     }
