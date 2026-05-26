@@ -30,7 +30,10 @@
         public const string HowManyDwellingsIncludedModelKey = "HowManyDwellingsIncluded";
 
         // Session keys for heat network registration
-        public const string HeatNetworkTypeViewModelKey = "HeatNetworkTypeViewModelKey";
+        public const string IsHnTypeCommunalViewModel = "IsHnTypeCommunalViewModelKey";
+        public const string DoesCommunalHnHaveOwnEcViewModel = "DoesCommunalHnHaveOwnEcViewModel";
+        public const string DoesDistrictHnHaveOwnEcViewModel = "DoesDistrictHnHaveOwnEcViewModel";
+        public const string DoesCommunalEcSupplyOneBlockViewModel = "DoesCommunalEcSupplyOneBlockViewModel";
         public const string HeatNetworkConnectionsViewModelKey = "HeatNetworkConnectionsViewModelKey";
         public const string HeatNetworkNameModelKey = "HeatNetworkName";
         public const string DoesHNHaveAPostcodeViewModelKey = "DoesHNHaveAPostcodeViewModel";
@@ -44,6 +47,16 @@
         public const string HnId = "HnIdkey";
         public const string HnName = "HnNameKey";
 
+
+        // Session for adding DDH and contributor
+        public const string WhoDoYouWantToAddSessionKey = "WhoDoYouWantToAddSessionKey";
+        public const string NewContributorRoleViewModelSessionKey = "NewContributorRoleViewModel";
+        public const string AddContributorViewModelSessionKey = "AddContributorViewModel";
+        public const string NewContributorDetailsViewModelSessionKey = "NewContributorDetailsViewModel";
+        public const string ExistingContributorsListViewModelSessionKey = "ExistingContributorsListViewModelSessionKey";
+        public const string ContributorsHeatNetworkPhaseViewModelSessionKey = "ContributorsHeatNetworkPhaseViewModelSessionKey";
+        public const string NewContributorHeatNetworkViewModelSessionKey = "NewContributorHeatNetworkViewModel";
+        public const string CheckYourAnswersContributorsModelSessionKey = "CheckYourAnswersContributorsModelSessionKey";        
 
         // Session keys for invitations
         public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";
@@ -70,9 +83,9 @@
         public const string ElementSoaUploadViewModelSessionKey = "ElementSoaUploadViewModelSessionKey";
         public const string ElementSoaIncompleteSoaSessionKey = "ElementSoaIncompleteSoaSessionKey";
         public const string CurrentStageIndexSessionKey = "CurrentStageIndexSessionKey";
-        public const string ElementSoaStatusUpdateModelSessionKey = "ElementSoaStatusUpdateModelSessionKey";
-
-        public const string NetworkElementsOverViewModelSessionKey = "NetworkElementsOverViewModelSessionKey";
+        public const string ElementSoaStatusUpdateModelSessionKey = "ElementSoaStatusUpdateModelSessionKey";       
+        
+        public const string NetworkElementsOverViewModelSessionKey = "NetworkElementsOverViewModelSessionKey";        
         public const string IsAddOrganisationDetailsRPJourneySessionKey = "IsAddOrganisationDetailsRPJourneySessionKey";
         public const string AssessorSelectElementsViewModelSessionKey = "AssessorSelectElementsViewModelSessionKey";
         public const string AssessorSelectedElementSessionKey = "AssessorSelectedElementSessionKey";
@@ -83,6 +96,8 @@
         public const string SoaStageOfAssessorOnboarding = "SoaStageOfAssessorOnboarding";
         public const string DefaultSelectedAssessor = "DefaultSelectedAssessor";
         public const string AssessorSearchResultsSessionKey = "AssessorSearchResultsSessionKey";
+        public const string SubstationViewModelKey = "SubstationViewModelKey";
+        public const string DistributionNetworksViewModelKey = "DistributionNetworksViewModelKey";
 
     }
 }

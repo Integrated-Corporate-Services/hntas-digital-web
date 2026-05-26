@@ -1,211 +1,97 @@
-﻿@using HNTAS.Web.UI.Models.HeatNetworkRegistration
-@model HeatNetworkConnectionsViewModel
+﻿@model HNTAS.Web.UI.Models.HeatNetworkRegistration.HeatNetworkConnectionsViewModel
 
 @{
     ViewData["Title"] = "What connections does this heat network have?";
-    bool isDistrictWithOwnEC = (bool?)(ViewBag.IsDistrictWithOwnEC) ?? false;
-    bool hasHnConnectionsError = ViewData.ModelState["HeatNetworkConnections"]?.Errors?.Count > 0;
-    bool hasCommunalBuildingError = ViewData.ModelState["NoOfCommunalBuilding"]?.Errors.Count > 0;
-    bool hasDomesticConsumerError = ViewData.ModelState["NoOfDomesticConsumer"]?.Errors.Count > 0;
-    bool hasNonDomesticConsumerError = ViewData.ModelState["NoOfNonDomesticConsumer"]?.Errors.Count > 0;    
-    bool hasDownstreamDistrictConnectionsError = ViewData.ModelState["NoOfDownstreamDistrictHeatNetworkConnections"]?.Errors.Count > 0;
+
+    var hasConnectionsError = ViewData.ModelState["Connections"]?.Errors.Count > 0;
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        
+
         <span class="govuk-caption-l">Add a heat network</span>
-        <h1 class="govuk-heading-l">Connections</h1>
+        <form asp-action="HeatNetworkConnections" asp-controller="HeatNetworkRegistration" method="post" aria-describedby="connections-error">
+            <fieldset class="govuk-fieldset">
 
-        <form id="heatNetworkConnectionsForm" asp-action="HeatNetworkConnections" asp-controller="HeatNetworkRegistration" method="post" novalidate>
-            @Html.AntiForgeryToken()
-            <div class="govuk-form-group @(hasHnConnectionsError ? "govuk-form-group--error" : "")" id="heatnetworkconnections">
-                <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                        <h1 class="govuk-fieldset__heading">
-                            What connections does this heat network have?
-                        </h1>
-                    </legend>
-                    <p id="heat-network-connections-error" class="@(hasHnConnectionsError ? " govuk-error-message" : "")">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                        What connections does this heat network have?
+                    </h1>
+                </legend>
+
+                @if (hasConnectionsError)
+                {
+                    <p id="connections-error" class="govuk-error-message">
                         <span class="govuk-visually-hidden">Error:</span>
-                        @if(hasHnConnectionsError){
-                            <span class="govuk-error-message">Select at least one connection type</span>
-                        }
+                        @Html.ValidationMessage("Connections")
                     </p>
+                }
 
-                    <div class="govuk-checkboxes" data-module="govuk-checkboxes" data-govuk-checkboxes-init="">
-                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                            <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input"
-                                       id="IsCommunalBuilding"
-                                       name="IsCommunalBuilding"
-                                       type="checkbox"
-                                       value="true"
-                                       data-aria-controls="conditional-IsCommunalBuilding"
-                                       @(Model.IsCommunalBuilding ? "checked" : "") />
+                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
 
-                                <label class="govuk-label govuk-checkboxes__label" for="IsCommunalBuilding">
-                                    Communal building
+                    @for (int i = 0; i < Model.Connections.Count; i++)
+                    {
+                        var item = Model.Connections[i];
+                        var itemId = i == 0 ? "connections" : $"connections-{i}";
+                        var conditionalId = $"conditional-{i}";
+                        var itemErrorKey = $"Connections[{i}].ConditionalValue";
+                        var hasItemError = ViewData.ModelState[itemErrorKey]?.Errors.Count > 0;
+                        var inputId = $"connections[{i}].conditionalvalue";
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input"
+                                   type="checkbox"
+                                   id="@itemId"
+                                   asp-for="Connections[i].IsSelected"
+                                   data-aria-controls="@conditionalId" />
+
+                            <label class="govuk-label govuk-checkboxes__label"
+                                   for="@itemId">
+                                @item.Label
+                            </label>
+
+                            @if (!string.IsNullOrEmpty(item.HintText))
+                            {
+                                <div class="govuk-hint govuk-checkboxes__hint">
+                                    @item.HintText
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Conditional input -->
+                        <div id="@conditionalId" class="govuk-checkboxes__conditional @(item.IsSelected ? "" : "govuk-checkboxes__conditional--hidden")">
+
+                            <div class="govuk-form-group @(hasItemError ? "govuk-form-group--error" : "")">
+
+                                <label class="govuk-label">
+                                    @item.ConditionalLabel
                                 </label>
 
-                                <div id="IsCommunalBuilding-hint" class="govuk-hint govuk-checkboxes__hint">
-                                    Multiple consumers in a residential, office, commercial or mixed-use building
-                                </div>
-                                <input type="hidden" name="IsCommunalBuilding" value="false" />
-                            </div>
-
-                            <div class="govuk-checkboxes__conditional @(Model.IsCommunalBuilding ? "" : "govuk-checkboxes__conditional--hidden")" id="conditional-IsCommunalBuilding">
-
-                                <div class="govuk-form-group @(hasCommunalBuildingError ? "govuk-form-group--error" : "")" id="fg-NoOfCommunalBuilding">
-                                    <label class="govuk-label" for="NoOfCommunalBuilding">
-                                        Number of communal buildings
-                                    </label>
-                                    <p id="NoOfCommunalBuilding-error" class="govuk-error-message">
+                                @if (hasItemError)
+                                {
+                                    <p class="govuk-error-message">
                                         <span class="govuk-visually-hidden">Error:</span>
-                                        <span asp-validation-for="NoOfCommunalBuilding" class="govuk-error-message"></span>
+                                        @ViewData.ModelState[itemErrorKey].Errors.First().ErrorMessage
                                     </p>
-                                    <input class="govuk-input govuk-input--width-3 @(hasCommunalBuildingError ? "govuk-input--error" : "")"
-                                           id="NoOfCommunalBuilding"
-                                           name="NoOfCommunalBuilding"
-                                           type="number"
-                                           asp-for="NoOfCommunalBuilding"
-                                           aria-describedby="@(hasCommunalBuildingError ? "NoOfCommunalBuilding-error" : "")" />
-                                </div>
-                            </div>
-                        </div>                        
+                                }
 
-                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                            <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input"
-                                       id="IsDomesticConsumer"
-                                       name="IsDomesticConsumer"
-                                       type="checkbox"
-                                       value="true"
-                                       data-aria-controls="conditional-IsDomesticConsumer"
-                                       @(Model.IsDomesticConsumer ? "checked" : "") />
-
-                                <label class="govuk-label govuk-checkboxes__label" for="IsDomesticConsumer">
-                                    Domestic consumer
-                                </label>
-
-                                <div id="IsDomesticConsumer-hhint" class="govuk-hint govuk-checkboxes__hint">
-                                    Single consumers in dwelling such as houses (not communal dwellings)
-                                </div>
-
-                                <input type="hidden" name="IsDomesticConsumer" value="false" />
-                            </div>
-
-                            <div class="govuk-checkboxes__conditional @(Model.IsDomesticConsumer ? "" : "govuk-checkboxes__conditional--hidden")" id="conditional-IsDomesticConsumer">
-                                <div class="govuk-form-group @(hasDomesticConsumerError ? "govuk-form-group--error" : "")" id="fg-NoOfDomesticConsumer">
-                                    <label class="govuk-label" for="NoOfDomesticConsumer">
-                                        Number of domestic consumers
-                                    </label>
-                                    <p id="NoOfDomesticConsumer-error" class="govuk-error-message">
-                                        <span class="govuk-visually-hidden">Error:</span>
-                                        <span asp-validation-for="NoOfDomesticConsumer" class="govuk-error-message"></span>
-                                    </p>
-                                    <input class="govuk-input govuk-input--width-3 @(hasDomesticConsumerError ? "govuk-input--error" : "")"
-                                           id="NoOfDomesticConsumer"
-                                           name="NoOfDomesticConsumer"
-                                           type="number"
-                                           asp-for="NoOfDomesticConsumer"
-                                           aria-describedby="@(hasDomesticConsumerError ? "NoOfDomesticConsumer-error" : "")" />
-                                </div>
+                                <input class="govuk-input govuk-input--width-3 @(hasItemError ? "govuk-input--error" : "")"
+                                       type="number"
+                                       asp-for="Connections[i].ConditionalValue"
+                                       id="@inputId"
+                                       min="1"
+                                       max="9999" />
                             </div>
                         </div>
-                        
-                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                            <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input"
-                                       id="IsNonDomesticConsumer"
-                                       name="IsNonDomesticConsumer"
-                                       type="checkbox"
-                                       value="true"
-                                       data-aria-controls="conditional-IsNonDomesticConsumer"
-                                       @(Model.IsNonDomesticConsumer ? "checked" : "") />
+                    }
 
-                                <label class="govuk-label govuk-checkboxes__label" for="IsNonDomesticConsumer">
-                                    Non-domestic consumer
-                                </label>
+                </div>
+            </fieldset>
 
-                                <div id="IsNonDomesticConsumer-hhint" class="govuk-hint govuk-checkboxes__hint">
-                                    Single consumers in a large public or commercial building (for example, retail, commercial, offices, hotels, or schools)
-                                </div>
-
-                                <input type="hidden" name="IsNonDomesticConsumer" value="false" />
-                            </div>
-
-                            <div class="govuk-checkboxes__conditional @(Model.IsNonDomesticConsumer ? "" : "govuk-checkboxes__conditional--hidden")"
-                                 id="conditional-IsNonDomesticConsumer">
-                                <div class="govuk-form-group @(hasNonDomesticConsumerError ? "govuk-form-group--error" : "")" id="fg-NoOfNonDomesticConsumer">
-                                    <label class="govuk-label" for="NoOfNonDomesticConsumer">
-                                        Number of non-domestic consumers
-                                    </label>
-                                    <p id="NoOfNonDomesticConsumer-error" class="govuk-error-message">
-                                        <span class="govuk-visually-hidden">Error:</span>
-                                        <span asp-validation-for="NoOfNonDomesticConsumer" class="govuk-error-message"></span>
-                                    </p>
-                                    <input class="govuk-input govuk-input--width-3 @(hasNonDomesticConsumerError ? "govuk-input--error" : "")"
-                                           id="NoOfNonDomesticConsumer"
-                                           name="NoOfNonDomesticConsumer"
-                                           type="number"
-                                           asp-for="NoOfNonDomesticConsumer"
-                                           aria-describedby="@(hasNonDomesticConsumerError ? "NoOfNonDomesticConsumer-error" : "")" />
-                                </div>
-                            </div>
-                        </div>
-                        @if (isDistrictWithOwnEC)
-                        {
-                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="IsDownstreamDistrictHeatNetworkConnections"
-                                           name="IsDownstreamDistrictHeatNetworkConnections"
-                                           type="checkbox"
-                                           value="true"
-                                           data-aria-controls="conditional-IsDownstreamDistrictHeatNetworkConnections"
-                                           @(Model.IsDownstreamDistrictHeatNetworkConnections ? "checked" : "") />
-
-                                    <label class="govuk-label govuk-checkboxes__label"
-                                           for="IsDownstreamDistrictHeatNetworkConnections">
-                                        Downstream district heat network connections
-                                    </label>
-
-                                    <div id="IsDownstreamDistrictHeatNetworkConnections-hhint" class="govuk-hint govuk-checkboxes__hint">
-                                        As your network has a main energy centre, you could be supplying other networks
-                                    </div>
-
-                                    <input type="hidden" name="IsDownstreamDistrictHeatNetworkConnections" value="false" />
-                                </div>
-
-                                <div class="govuk-checkboxes__conditional @(Model.IsDownstreamDistrictHeatNetworkConnections ? "" : "govuk-checkboxes__conditional--hidden")"
-                                     id="conditional-IsDownstreamDistrictHeatNetworkConnections">
-                                    <div class="govuk-form-group @(hasDownstreamDistrictConnectionsError ? "govuk-form-group--error" : "")" id="fg-NoOfDownstreamDistrictHeatNetworkConnections">
-                                        <label class="govuk-label" for="NoOfDownstreamDistrictHeatNetworkConnections">
-                                            Number of district connections
-                                        </label>
-                                        <p id="NoOfDownstreamDistrictHeatNetworkConnections-error" class="govuk-error-message">
-                                            <span class="govuk-visually-hidden">Error:</span>
-                                            <span asp-validation-for="NoOfDownstreamDistrictHeatNetworkConnections" class="govuk-error-message"></span>
-                                        </p>
-                                        <input class="govuk-input govuk-input--width-3 @(hasDownstreamDistrictConnectionsError ? "govuk-input--error" : "")"
-                                               id="NoOfDownstreamDistrictHeatNetworkConnections"
-                                               name="NoOfDownstreamDistrictHeatNetworkConnections"
-                                               type="number"
-                                               asp-for="NoOfDownstreamDistrictHeatNetworkConnections"
-                                               aria-describedby="@(hasDownstreamDistrictConnectionsError ? "NoOfDownstreamDistrictHeatNetworkConnections-error" : "")" />
-                                    </div>
-                                </div>
-                            </div>
-                        }                          
-                        
-                    </div>
-                </fieldset>
-            </div>
-            
-            <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
+            <button class="govuk-button" type="submit">
                 Continue
             </button>
         </form>
+
     </div>
 </div>

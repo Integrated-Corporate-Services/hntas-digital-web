@@ -872,13 +872,17 @@ namespace HNTAS.Web.UI.Controllers
 
             // 3. Project and sort the data
             var countryListItems = countryAndTerritories
-                .Select(c => new SelectListItem
-                {
-                    Text = c.Name,
-                    Value = c.FullValue
-                })
-                .OrderBy(c => c.Text)
-                .ToList();
+            .Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.FullValue
+            })
+            .OrderBy(c =>
+                c.Text.StartsWith("UK Crown Dependency -") ? 0 :
+                c.Text.StartsWith("UK Territories -") ? 1 :
+                2)
+            .ThenBy(c => c.Text)
+            .ToList();
 
             return countryListItems;
         }

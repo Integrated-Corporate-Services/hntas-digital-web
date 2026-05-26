@@ -9,16 +9,14 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-xl">@ViewBag.HnId @ViewBag.HnName</span>        
+        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>        
         <form asp-action="SelectNetworkElements" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 class="govuk-heading-l">
-                            @ViewBag.Heading
-                        </h1>
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">                        
+                        @ViewBag.Heading
                     </legend>
                     
                     <div id="soa-elements-hint" class="govuk-hint">
@@ -37,7 +35,7 @@
                         @for (int i = 0; i < Model.ElementOptions.Count; i++)
                         {
                             var item = Model.ElementOptions[i];
-                            var checkboxId = $"SelectedElementIds_{item.Id.ToString()}";
+                            var checkboxId = i == 0 ? "selectedelementids" : $"selectedelementids-{i}";
                             var conditionalId = $"conditional-{item.Id.ToString().ToLowerInvariant()}";
                             var isChecked = Model.SelectedElementIds.Contains(item.Id);
                             var hintId = $"{checkboxId}-item-hint";

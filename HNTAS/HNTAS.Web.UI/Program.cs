@@ -124,6 +124,15 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new AssignedAssessorRequestJsonConverter(),
         new AssignedAssessorResponseJsonConverter(),
         new AssignedAssessorJsonConverter(),
+        new HeatNetworkDashboardResponseJsonConverter(),
+        new HeatNetworkDashboardRowJsonConverter(),
+        new HeatNetworkDetailsResponseJsonConverter(),
+        new ElementGroupDtoJsonConverter(),
+        new KpiDetailDtoJsonConverter(),
+        new KpiHistoryResponseJsonConverter(),
+        new AggregatedKpiJsonConverter(),
+        new SoaStatusWithCountJsonConverter(),
+        new ElementGroupJsonConverter(),        
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -223,6 +232,13 @@ builder.Services.AddHttpClient<IAssignedAssessorApi, AssignedAssessorApi>(client
 });
 
 
+builder.Services.AddSingleton<ArmsDashboardApiEvents>();
+builder.Services.AddHttpClient<IArmsDashboardApi, ArmsDashboardApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
 builder.Services.AddScoped<IWorkflowManager, WorkflowManager>();
@@ -253,6 +269,7 @@ builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
 builder.Services.AddScoped<IAuditService, AuditService>();
 builder.Services.AddScoped<INotificationHistoryService, NotificationHistoryService>();
 builder.Services.AddScoped<IAssignedAssessorService, AssignedAssessorService>();
+builder.Services.AddScoped<IArmsDashboardService, ArmsDashboardService>();
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
 

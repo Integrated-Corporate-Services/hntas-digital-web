@@ -46,24 +46,20 @@ namespace HNTAS.Web.UI.Helpers
         public void ClearAllFlowRelatedSessionData(HttpContext context)
         {
             ClearFromSession(context, SessionKeys.WhatDoYouWantToDoViewModelKey);
-            ClearFromSession(context, SessionKeys.HowManyDwellingsIncludedModelKey);
-
             ClearFromSession(context, SessionKeys.UserCreation_SessionKey);
             ClearFromSession(context, SessionKeys.OrganisationCreation_SessionKey);
-            ClearFromSession(context, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
             ClearFromSession(context, SessionKeys.AddressByStreetOrTownModelSessionKey);
-            ClearFromSession(context, SessionKeys.ECDetailsModelSessionKey);
-            ClearFromSession(context, SessionKeys.HeatNetworkPhaseModelKey);
-            ClearFromSession(context, SessionKeys.HeatNetworkLocationModelKey);
-            ClearFromSession(context, SessionKeys.HeatNetworkNameModelKey);
-
+            ClearAllHNRegistrationFlowRelatedSessionData(context);
             context.Session.Remove(SessionKeys.IsCheckAnswerFlowKey);
         }
 
         public void ClearAllHNRegistrationFlowRelatedSessionData(HttpContext context)
         {
             ClearFromSession(context, SessionKeys.HowManyDwellingsIncludedModelKey);
-            ClearFromSession(context, SessionKeys.HeatNetworkTypeViewModelKey);
+            ClearFromSession(context, SessionKeys.IsHnTypeCommunalViewModel);
+            ClearFromSession(context, SessionKeys.DoesCommunalHnHaveOwnEcViewModel);
+            ClearFromSession(context, SessionKeys.DoesDistrictHnHaveOwnEcViewModel);
+            ClearFromSession(context, SessionKeys.DoesCommunalEcSupplyOneBlockViewModel);
             ClearFromSession(context, SessionKeys.HeatNetworkConnectionsViewModelKey);
             ClearFromSession(context, SessionKeys.HeatNetworkNameModelKey);
             ClearFromSession(context, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
@@ -72,6 +68,16 @@ namespace HNTAS.Web.UI.Helpers
             ClearFromSession(context, SessionKeys.HeatNetworkPhaseModelKey);
             ClearFromSession(context, SessionKeys.PathwayModelKey);
             ClearFromSession(context, SessionKeys.CheckYourAnswersHeatNetworkModelKey);
+        }
+
+        public void ClearAllContributoFlowRelatedSessionData(HttpContext context) 
+        {
+            ClearFromSession(context, SessionKeys.NewContributorRoleViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.AddContributorViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.NewContributorDetailsViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.ExistingContributorsListViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.NewContributorHeatNetworkViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.CheckYourAnswersContributorsModelSessionKey);
         }
 
         #endregion

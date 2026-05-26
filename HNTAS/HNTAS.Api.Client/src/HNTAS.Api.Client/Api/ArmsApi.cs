@@ -132,7 +132,7 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// The <see cref="IArmsV1HnKpisPostApiResponse"/>
     /// </summary>
-    public interface IArmsV1HnKpisPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ValidationProblemDetails?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>, IServiceUnavailable<HNTAS.Api.Client.Model.ProblemDetails?>
+    public interface IArmsV1HnKpisPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>, IServiceUnavailable<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -312,7 +312,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterArmsV1HnKpiConfigPost(ref suppressDefaultLog, apiResponseLocalVar, kpiConfigRequest);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -426,17 +426,11 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
                         ILogger<ArmsV1HnKpiConfigPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ArmsV1HnKpiConfigPostApiResponse>();
-                        ArmsV1HnKpiConfigPostApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
-                            default: {
-                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/arms/v1/hn/kpi-config", requestedAtLocalVar, _jsonSerializerOptions);
-
-                                break;
-                            }
-                        }
+                        ArmsV1HnKpiConfigPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/arms/v1/hn/kpi-config", requestedAtLocalVar, _jsonSerializerOptions);
 
                         AfterArmsV1HnKpiConfigPostDefaultImplementation(apiResponseLocalVar, kpiConfigRequest);
 
@@ -475,22 +469,6 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ArmsV1HnKpiConfigPostApiResponse(ILogger<ArmsV1HnKpiConfigPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
-            {
-                Logger = logger;
-                OnCreated(httpRequestMessage, httpResponseMessage);
-            }
-
-            /// <summary>
-            /// The <see cref="ArmsV1HnKpiConfigPostApiResponse"/>
-            /// </summary>
-            /// <param name="logger"></param>
-            /// <param name="httpRequestMessage"></param>
-            /// <param name="httpResponseMessage"></param>
-            /// <param name="contentStream"></param>
-            /// <param name="path"></param>
-            /// <param name="requestedAt"></param>
-            /// <param name="jsonSerializerOptions"></param>
-            public ArmsV1HnKpiConfigPostApiResponse(ILogger<ArmsV1HnKpiConfigPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -614,7 +592,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterArmsV1HnKpisPost(ref suppressDefaultLog, apiResponseLocalVar, kpiSubmissionRequest);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -728,17 +706,11 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
                         ILogger<ArmsV1HnKpisPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ArmsV1HnKpisPostApiResponse>();
-                        ArmsV1HnKpisPostApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
-                            default: {
-                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/arms/v1/hn/kpis", requestedAtLocalVar, _jsonSerializerOptions);
-
-                                break;
-                            }
-                        }
+                        ArmsV1HnKpisPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/arms/v1/hn/kpis", requestedAtLocalVar, _jsonSerializerOptions);
 
                         AfterArmsV1HnKpisPostDefaultImplementation(apiResponseLocalVar, kpiSubmissionRequest);
 
@@ -782,22 +754,6 @@ namespace HNTAS.Api.Client.Api
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
-            /// <summary>
-            /// The <see cref="ArmsV1HnKpisPostApiResponse"/>
-            /// </summary>
-            /// <param name="logger"></param>
-            /// <param name="httpRequestMessage"></param>
-            /// <param name="httpResponseMessage"></param>
-            /// <param name="contentStream"></param>
-            /// <param name="path"></param>
-            /// <param name="requestedAt"></param>
-            /// <param name="jsonSerializerOptions"></param>
-            public ArmsV1HnKpisPostApiResponse(ILogger<ArmsV1HnKpisPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
-            {
-                Logger = logger;
-                OnCreated(httpRequestMessage, httpResponseMessage);
-            }
-
             partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
 
             /// <summary>
@@ -816,11 +772,11 @@ namespace HNTAS.Api.Client.Api
             /// Deserializes the response if the response is 400 BadRequest
             /// </summary>
             /// <returns></returns>
-            public HNTAS.Api.Client.Model.ValidationProblemDetails? BadRequest()
+            public HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse? BadRequest()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsBadRequest
-                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ValidationProblemDetails>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -829,7 +785,7 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ValidationProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse? result)
             {
                 result = null;
 
@@ -954,7 +910,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterArmsV1HnNetworkIdKpiConfigGet(ref suppressDefaultLog, apiResponseLocalVar, networkId);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -1054,17 +1010,11 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
                         ILogger<ArmsV1HnNetworkIdKpiConfigGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ArmsV1HnNetworkIdKpiConfigGetApiResponse>();
-                        ArmsV1HnNetworkIdKpiConfigGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
-                            default: {
-                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/arms/v1/hn/{networkId}/kpi-config", requestedAtLocalVar, _jsonSerializerOptions);
-
-                                break;
-                            }
-                        }
+                        ArmsV1HnNetworkIdKpiConfigGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/arms/v1/hn/{networkId}/kpi-config", requestedAtLocalVar, _jsonSerializerOptions);
 
                         AfterArmsV1HnNetworkIdKpiConfigGetDefaultImplementation(apiResponseLocalVar, networkId);
 
@@ -1103,22 +1053,6 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ArmsV1HnNetworkIdKpiConfigGetApiResponse(ILogger<ArmsV1HnNetworkIdKpiConfigGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
-            {
-                Logger = logger;
-                OnCreated(httpRequestMessage, httpResponseMessage);
-            }
-
-            /// <summary>
-            /// The <see cref="ArmsV1HnNetworkIdKpiConfigGetApiResponse"/>
-            /// </summary>
-            /// <param name="logger"></param>
-            /// <param name="httpRequestMessage"></param>
-            /// <param name="httpResponseMessage"></param>
-            /// <param name="contentStream"></param>
-            /// <param name="path"></param>
-            /// <param name="requestedAt"></param>
-            /// <param name="jsonSerializerOptions"></param>
-            public ArmsV1HnNetworkIdKpiConfigGetApiResponse(ILogger<ArmsV1HnNetworkIdKpiConfigGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);

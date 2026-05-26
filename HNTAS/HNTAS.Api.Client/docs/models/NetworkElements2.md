@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **NetworkElementStatus** | **NetworkDetailsStatus** |  | [optional] 
 **ElementSoaStatus** | **NetworkDetailsStatus** |  | [optional] 
 **Elements** | [**List&lt;Element&gt;**](Element.md) |  | [optional] 
+**ElementsGroup** | [**List&lt;ElementGroup&gt;**](ElementGroup.md) |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **UpdatedAt** | **DateTimeOffset** |  | [optional] 

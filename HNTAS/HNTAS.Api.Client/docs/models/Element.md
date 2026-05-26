@@ -5,11 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ElementId** | **string** |  | [optional] 
-**ElementType** | **string** |  | [optional] 
-**Type** | **HeatNetworkElementType** |  | [optional] 
 **NetworkElementInstanceName** | **string** |  | [optional] 
-**Count** | **int** |  | [optional] 
-**SoaStages** | [**List&lt;SoaStages&gt;**](SoaStages.md) |  | [optional] 
+**ElementType** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

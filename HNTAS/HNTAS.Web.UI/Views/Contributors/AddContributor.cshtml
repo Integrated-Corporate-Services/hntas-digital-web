@@ -1,0 +1,40 @@
+﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.Contributors
+@model AddContributorViewModel
+
+@{
+    ViewData["Title"] = "New Contributor role";
+    var fieldOrder = new[] { nameof(Model.InviteNewContributor) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.InviteNewContributor)).ToLowerInvariant();
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "Contributors",
+        Action = "AddContributor",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = "Invite a "+ViewBag.whoDoYouWantToAdd.ToLower(),
+                QDescText =null,
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = $"{elementId}", OptValue = "true", OptText = "Invite someone new via email", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = "false", OptText = "Choose from your current list", OptHintText = null }
+                },
+                SeletedOption = Model.InviteNewContributor.ToString().ToLowerInvariant()
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-xl">Your network team</span>
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div>
