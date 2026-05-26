@@ -74,12 +74,20 @@
                                         TempData[$"{tempDataKey}_Element"] = element.Name;
                                         TempData.Keep($"{tempDataKey}_Phase");
                                         TempData.Keep($"{tempDataKey}_Element");
-                                        var assessorName = element.AssessorEmailId != null ? element.AssessorFirstName + " " + element.AssessorLastName + " (" + element.Assessment + ")" : "Not yet assigned";
-                                        var assessorClass = element.AssessorEmailId != null ? "" : "govuk-tag govuk-tag--blue";
-                                        var fullNameWithEmail = "";
+
+                                        var assessorNameWithAssessmentList = new List<string>();
+                                        foreach (var assessorDetail in element.AssessorDetails)
+                                        {
+                                            assessorNameWithAssessmentList.Add(
+                                                $"{assessorDetail.FirstName} {assessorDetail.LastName} ({assessorDetail.Assessment})"
+                                            );
+                                        }
+                                        //var assessorName = element.AssessorEmailId != null ? element.AssessorFirstName + " " + element.AssessorLastName + " (" + element.Assessment + ")" : "Not yet assigned";
+                                        //var assessorClass = element.AssessorEmailId != null ? "" : "govuk-tag govuk-tag--blue";
+                                        @* var fullNameWithEmail = "";
                                         if (element.AssessorFirstName != null && element.AssessorLastName != null && element.AssessorEmailId != null)
                                             fullNameWithEmail = element.AssessorFirstName + " " + element.AssessorLastName + " (" + element.AssessorEmailId + ")";
-                                                
+                                                 *@
                                         <tr class="govuk-table__row">                                            
                                             <th scope="row" class="govuk-table__header govuk-!-width-one-quarter">@element.Name</th>
 
@@ -138,10 +146,25 @@
                                                 @element.SoaStatusUpdatedAt?.ToString("dd MMM yyyy")
                                             </td>
                                             <td class="govuk-table__cell govuk-!-width-one-quarter">
-                                                <span class="@assessorClass">
+                                                @if (assessorNameWithAssessmentList.Any())
+                                                {
+                                                   @foreach (var assessorNameWithAssessment in assessorNameWithAssessmentList)
+                                                    {
+                                                        <span>@assessorNameWithAssessment</span><br />
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="govuk-tag govuk-tag--blue">
+                                                        Not yet assigned
+                                                    </span>
+                                                }
+
+                                                @* <span class="@assessorClass">
                                                     @assessorName
-                                                </span>
-                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, selectedAssessor = fullNameWithEmail, selectedAssessorFirstName = element.AssessorFirstName, selectedAssessorLastName = element.AssessorLastName, selectedAssessorEmail = element.AssessorEmailId })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
+                                                </span> *@
+                                                @* <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, selectedAssessor = fullNameWithEmail, selectedAssessorFirstName = element.AssessorFirstName, selectedAssessorLastName = element.AssessorLastName, selectedAssessorEmail = element.AssessorEmailId })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a> *@
+                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, stageTitle = stage.Title })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
                                             </td>
                                         </tr>                                        
                                     }

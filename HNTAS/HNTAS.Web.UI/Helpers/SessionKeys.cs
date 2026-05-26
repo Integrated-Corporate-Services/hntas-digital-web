@@ -79,11 +79,14 @@
         public const string IsAddOrganisationDetailsRPJourneySessionKey = "IsAddOrganisationDetailsRPJourneySessionKey";
         public const string AssessorSelectElementsViewModelSessionKey = "AssessorSelectElementsViewModelSessionKey";
         public const string AssessorSelectedElementSessionKey = "AssessorSelectedElementSessionKey";
-        public const string AssessorAssessmentSelectionViewModelSessionKey = "AssessorAssessmentSelectionViewModelSessionKey";
+        public const string AssessorAssessmentSelectionEcViewModelSessionKey = "AssessorAssessmentSelectionEcViewModelSessionKey";
+        public const string AssessorAssessmentSelectionSsViewModelSessionKey = "AssessorAssessmentSelectionSsViewModelSessionKey";
+        public const string TraceAssessmentRoutingSessionKey = "TraceAssessmentRoutingSessionKey";
         public const string AssessorDetailsSessionKey = "AssessorDetailsSessionKey";
         public const string NewLeadDetailsViewModelSessionKey = "NewLeadDetailsViewModelSessionKey";
         public const string AssessorElementSelectionOverviewModelSessionKey = "AssessorElementSelectionOverviewModelSessionKey";
         public const string SoaStageOfAssessorOnboarding = "SoaStageOfAssessorOnboarding";
+        public const string SoaStageTitleOfAssessorOnboarding = "SoaStageTitleOfAssessorOnboarding";
         public const string DefaultSelectedAssessor = "DefaultSelectedAssessor";
         public const string AssessorSearchResultsSessionKey = "AssessorSearchResultsSessionKey";
         public const string SubstationViewModelKey = "SubstationViewModelKey";

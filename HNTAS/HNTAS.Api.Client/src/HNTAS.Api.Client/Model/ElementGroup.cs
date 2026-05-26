@@ -38,7 +38,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="soaStages">soaStages</param>
         /// <param name="elementType">elementType</param>
         [JsonConstructor]
-        public ElementGroup(Option<HeatNetworkElementType?> elementDisplayType = default, Option<int?> count = default, Option<List<SoaStages>?> soaStages = default, Option<string?> elementType = default)
+        public ElementGroup(Option<HeatNetworkElementType?> elementDisplayType = default, Option<int?> count = default, Option<List<SoaStages>?> soaStages = default, Option<ElementTypeInShort?> elementType = default)
         {
             ElementDisplayTypeOption = elementDisplayType;
             CountOption = count;
@@ -61,6 +61,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("elementDisplayType")]
         public HeatNetworkElementType? ElementDisplayType { get { return this.ElementDisplayTypeOption; } set { this.ElementDisplayTypeOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ElementType
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<ElementTypeInShort?> ElementTypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementType
+        /// </summary>
+        [JsonPropertyName("elementType")]
+        public ElementTypeInShort? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Count
@@ -87,19 +100,6 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("soaStages")]
         public List<SoaStages>? SoaStages { get { return this.SoaStagesOption; } set { this.SoaStagesOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of ElementType
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ElementTypeOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets ElementType
-        /// </summary>
-        [JsonPropertyName("elementType")]
-        public string? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -153,7 +153,7 @@ namespace HNTAS.Api.Client.Model
             Option<HeatNetworkElementType?> elementDisplayType = default;
             Option<int?> count = default;
             Option<List<SoaStages>?> soaStages = default;
-            Option<string?> elementType = default;
+            Option<ElementTypeInShort?> elementType = default;
 
             while (utf8JsonReader.Read())
             {
@@ -182,7 +182,9 @@ namespace HNTAS.Api.Client.Model
                             soaStages = new Option<List<SoaStages>?>(JsonSerializer.Deserialize<List<SoaStages>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "elementType":
-                            elementType = new Option<string?>(utf8JsonReader.GetString());
+                            string? elementTypeRawValue = utf8JsonReader.GetString();
+                            if (elementTypeRawValue != null)
+                                elementType = new Option<ElementTypeInShort?>(ElementTypeInShortValueConverter.FromStringOrDefault(elementTypeRawValue));
                             break;
                         default:
                             break;
@@ -192,6 +194,9 @@ namespace HNTAS.Api.Client.Model
 
             if (elementDisplayType.IsSet && elementDisplayType.Value == null)
                 throw new ArgumentNullException(nameof(elementDisplayType), "Property is not nullable for class ElementGroup.");
+
+            if (elementType.IsSet && elementType.Value == null)
+                throw new ArgumentNullException(nameof(elementType), "Property is not nullable for class ElementGroup.");
 
             return new ElementGroup(elementDisplayType, count, soaStages, elementType);
         }
@@ -240,10 +245,10 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("soaStages");
             if (elementGroup.ElementTypeOption.IsSet)
-                if (elementGroup.ElementTypeOption.Value != null)
-                    writer.WriteString("elementType", elementGroup.ElementType);
-                else
-                    writer.WriteNull("elementType");
+            {
+                var elementTypeRawValue = ElementTypeInShortValueConverter.ToJsonValue(elementGroup.ElementType!.Value);
+                writer.WriteString("elementType", elementTypeRawValue);
+            }
         }
     }
 }

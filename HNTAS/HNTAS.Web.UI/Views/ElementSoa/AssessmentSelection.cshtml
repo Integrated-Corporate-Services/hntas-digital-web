@@ -1,31 +1,54 @@
-﻿@using HNTAS.Web.UI.Models.ElementSoa
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.ElementSoa
 @model AssessorAssessmentSelectionViewModel
 
 @{
-    ViewData["Title"] = "Which step of the assessment will they carry out for the energy centre?";
+    var titlePart = string.Empty;
+    var targetActionMethod = "";
+    if (Model.ElementType == ElementTypeInShort.EC)
+    {
+        titlePart = "energy centre";
+        targetActionMethod = "AssessmentSelectionEc";
+    }
+    else if (Model.ElementType == ElementTypeInShort.SS)
+    {
+        titlePart = "substation";
+        targetActionMethod = "AssessmentSelectionSs";
+    }
+    ViewData["Title"] = $"Which step of the assessment will they carry out for the {titlePart}?";
     var hasError = ViewData.ModelState.ContainsKey(nameof(Model.SelectedAssessmentOption)) && ViewData.ModelState[nameof(Model.SelectedAssessmentOption)].Errors.Any();
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        <span class="govuk-caption-xl">@ViewBag.HnId</span>
-        <h1 class="govuk-heading-xl">
-            Which step of the assessment will they carry out for the energy centre?
-        </h1>
-        <form method="post" asp-action="AssessmentSelection" asp-controller="ElementSoa">
+        <span class="govuk-caption-l">@ViewBag.HnId</span>
+        @* <h1 class="govuk-heading-l">
+            Which step of the assessment will they carry out for the @titlePart?
+        </h1> *@
+        <form method="post" asp-action="@targetActionMethod" asp-controller="ElementSoa">
             <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        Which step of the assessment will they carry out for the @titlePart?
+                    </legend>
                     <div id="status-hint" class="govuk-hint">
                         Assign an independent assessor to one of the following steps.
                     </div>
+                    @if (hasError)
+                    {
+                        <p class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @ViewData.ModelState[nameof(Model.SelectedAssessmentOption)].Errors.First().ErrorMessage
+                        </p>
+                    }
                     <div class="govuk-radios" data-module="govuk-radios">
                         @for (var i = 0; i < Model.AssessmentOptions.Count; i++)
                         {
                             var option = Model.AssessmentOptions[i];
-                            var optionId = $"option-{i}";
+                            var optionId = i == 0 ? "selectedassessmentoption" : $"selectedassessmentoption-{i}";
                             var hintId = $"{optionId}-item-hint";
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="@optionId" name="SelectedAssessmentOption" type="radio" value="@option.Label" @( Model.SelectedAssessmentOption == option.Label ? "checked" : "")>
+                                <input class="govuk-radios__input" id="@optionId" name="SelectedAssessmentOption" type="radio" value="@option.Label" disabled="@option.IsDisabled" @( Model.SelectedAssessmentOption == option.Label ? "checked" : "")>
                                 <label class="govuk-label govuk-radios__label" for="@optionId">
                                     @option.Label<br />
                                 </label>
@@ -72,6 +95,7 @@
 
                 </div>
             </details>
+            @Html.HiddenFor(m => m.ElementType)
             @* @Html.HiddenFor(m => m.SoaStatus)
             @Html.HiddenFor(m => m.ElementId) *@
             <button type="submit" class="govuk-button">Continue</button>

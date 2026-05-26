@@ -33,20 +33,14 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementSoaAssignAssessorRequest" /> class.
         /// </summary>
-        /// <param name="elementsAndAssessments">elementsAndAssessments</param>
-        /// <param name="assessorEmail">assessorEmail</param>
-        /// <param name="assessorFirstName">assessorFirstName</param>
-        /// <param name="assessorLastName">assessorLastName</param>
+        /// <param name="assessorAssessmentForElements">assessorAssessmentForElements</param>
         /// <param name="soaStage">soaStage</param>
         /// <param name="hnId">hnId</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public ElementSoaAssignAssessorRequest(Option<List<ElementAndAssessment>?> elementsAndAssessments = default, Option<string?> assessorEmail = default, Option<string?> assessorFirstName = default, Option<string?> assessorLastName = default, Option<SoaStage?> soaStage = default, Option<string?> hnId = default, Option<string?> updatedBy = default)
+        public ElementSoaAssignAssessorRequest(Option<List<AssessorAssessmentForElement>?> assessorAssessmentForElements = default, Option<SoaStage?> soaStage = default, Option<string?> hnId = default, Option<string?> updatedBy = default)
         {
-            ElementsAndAssessmentsOption = elementsAndAssessments;
-            AssessorEmailOption = assessorEmail;
-            AssessorFirstNameOption = assessorFirstName;
-            AssessorLastNameOption = assessorLastName;
+            AssessorAssessmentForElementsOption = assessorAssessmentForElements;
             SoaStageOption = soaStage;
             HnIdOption = hnId;
             UpdatedByOption = updatedBy;
@@ -69,56 +63,17 @@ namespace HNTAS.Api.Client.Model
         public SoaStage? SoaStage { get { return this.SoaStageOption; } set { this.SoaStageOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of ElementsAndAssessments
+        /// Used to track the state of AssessorAssessmentForElements
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<ElementAndAssessment>?> ElementsAndAssessmentsOption { get; private set; }
+        public Option<List<AssessorAssessmentForElement>?> AssessorAssessmentForElementsOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets ElementsAndAssessments
+        /// Gets or Sets AssessorAssessmentForElements
         /// </summary>
-        [JsonPropertyName("elementsAndAssessments")]
-        public List<ElementAndAssessment>? ElementsAndAssessments { get { return this.ElementsAndAssessmentsOption; } set { this.ElementsAndAssessmentsOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of AssessorEmail
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> AssessorEmailOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets AssessorEmail
-        /// </summary>
-        [JsonPropertyName("assessorEmail")]
-        public string? AssessorEmail { get { return this.AssessorEmailOption; } set { this.AssessorEmailOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of AssessorFirstName
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> AssessorFirstNameOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets AssessorFirstName
-        /// </summary>
-        [JsonPropertyName("assessorFirstName")]
-        public string? AssessorFirstName { get { return this.AssessorFirstNameOption; } set { this.AssessorFirstNameOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of AssessorLastName
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> AssessorLastNameOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets AssessorLastName
-        /// </summary>
-        [JsonPropertyName("assessorLastName")]
-        public string? AssessorLastName { get { return this.AssessorLastNameOption; } set { this.AssessorLastNameOption = new(value); } }
+        [JsonPropertyName("assessorAssessmentForElements")]
+        public List<AssessorAssessmentForElement>? AssessorAssessmentForElements { get { return this.AssessorAssessmentForElementsOption; } set { this.AssessorAssessmentForElementsOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of HnId
@@ -154,10 +109,7 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class ElementSoaAssignAssessorRequest {\n");
-            sb.Append("  ElementsAndAssessments: ").Append(ElementsAndAssessments).Append("\n");
-            sb.Append("  AssessorEmail: ").Append(AssessorEmail).Append("\n");
-            sb.Append("  AssessorFirstName: ").Append(AssessorFirstName).Append("\n");
-            sb.Append("  AssessorLastName: ").Append(AssessorLastName).Append("\n");
+            sb.Append("  AssessorAssessmentForElements: ").Append(AssessorAssessmentForElements).Append("\n");
             sb.Append("  SoaStage: ").Append(SoaStage).Append("\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
@@ -198,10 +150,7 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<List<ElementAndAssessment>?> elementsAndAssessments = default;
-            Option<string?> assessorEmail = default;
-            Option<string?> assessorFirstName = default;
-            Option<string?> assessorLastName = default;
+            Option<List<AssessorAssessmentForElement>?> assessorAssessmentForElements = default;
             Option<SoaStage?> soaStage = default;
             Option<string?> hnId = default;
             Option<string?> updatedBy = default;
@@ -221,17 +170,8 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "elementsAndAssessments":
-                            elementsAndAssessments = new Option<List<ElementAndAssessment>?>(JsonSerializer.Deserialize<List<ElementAndAssessment>>(ref utf8JsonReader, jsonSerializerOptions)!);
-                            break;
-                        case "assessorEmail":
-                            assessorEmail = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "assessorFirstName":
-                            assessorFirstName = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "assessorLastName":
-                            assessorLastName = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "assessorAssessmentForElements":
+                            assessorAssessmentForElements = new Option<List<AssessorAssessmentForElement>?>(JsonSerializer.Deserialize<List<AssessorAssessmentForElement>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "soaStage":
                             string? soaStageRawValue = utf8JsonReader.GetString();
@@ -250,17 +190,8 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (elementsAndAssessments.IsSet && elementsAndAssessments.Value == null)
-                throw new ArgumentNullException(nameof(elementsAndAssessments), "Property is not nullable for class ElementSoaAssignAssessorRequest.");
-
-            if (assessorEmail.IsSet && assessorEmail.Value == null)
-                throw new ArgumentNullException(nameof(assessorEmail), "Property is not nullable for class ElementSoaAssignAssessorRequest.");
-
-            if (assessorFirstName.IsSet && assessorFirstName.Value == null)
-                throw new ArgumentNullException(nameof(assessorFirstName), "Property is not nullable for class ElementSoaAssignAssessorRequest.");
-
-            if (assessorLastName.IsSet && assessorLastName.Value == null)
-                throw new ArgumentNullException(nameof(assessorLastName), "Property is not nullable for class ElementSoaAssignAssessorRequest.");
+            if (assessorAssessmentForElements.IsSet && assessorAssessmentForElements.Value == null)
+                throw new ArgumentNullException(nameof(assessorAssessmentForElements), "Property is not nullable for class ElementSoaAssignAssessorRequest.");
 
             if (soaStage.IsSet && soaStage.Value == null)
                 throw new ArgumentNullException(nameof(soaStage), "Property is not nullable for class ElementSoaAssignAssessorRequest.");
@@ -271,7 +202,7 @@ namespace HNTAS.Api.Client.Model
             if (updatedBy.IsSet && updatedBy.Value == null)
                 throw new ArgumentNullException(nameof(updatedBy), "Property is not nullable for class ElementSoaAssignAssessorRequest.");
 
-            return new ElementSoaAssignAssessorRequest(elementsAndAssessments, assessorEmail, assessorFirstName, assessorLastName, soaStage, hnId, updatedBy);
+            return new ElementSoaAssignAssessorRequest(assessorAssessmentForElements, soaStage, hnId, updatedBy);
         }
 
         /// <summary>
@@ -298,17 +229,8 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, ElementSoaAssignAssessorRequest elementSoaAssignAssessorRequest, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (elementSoaAssignAssessorRequest.ElementsAndAssessmentsOption.IsSet && elementSoaAssignAssessorRequest.ElementsAndAssessments == null)
-                throw new ArgumentNullException(nameof(elementSoaAssignAssessorRequest.ElementsAndAssessments), "Property is required for class ElementSoaAssignAssessorRequest.");
-
-            if (elementSoaAssignAssessorRequest.AssessorEmailOption.IsSet && elementSoaAssignAssessorRequest.AssessorEmail == null)
-                throw new ArgumentNullException(nameof(elementSoaAssignAssessorRequest.AssessorEmail), "Property is required for class ElementSoaAssignAssessorRequest.");
-
-            if (elementSoaAssignAssessorRequest.AssessorFirstNameOption.IsSet && elementSoaAssignAssessorRequest.AssessorFirstName == null)
-                throw new ArgumentNullException(nameof(elementSoaAssignAssessorRequest.AssessorFirstName), "Property is required for class ElementSoaAssignAssessorRequest.");
-
-            if (elementSoaAssignAssessorRequest.AssessorLastNameOption.IsSet && elementSoaAssignAssessorRequest.AssessorLastName == null)
-                throw new ArgumentNullException(nameof(elementSoaAssignAssessorRequest.AssessorLastName), "Property is required for class ElementSoaAssignAssessorRequest.");
+            if (elementSoaAssignAssessorRequest.AssessorAssessmentForElementsOption.IsSet && elementSoaAssignAssessorRequest.AssessorAssessmentForElements == null)
+                throw new ArgumentNullException(nameof(elementSoaAssignAssessorRequest.AssessorAssessmentForElements), "Property is required for class ElementSoaAssignAssessorRequest.");
 
             if (elementSoaAssignAssessorRequest.HnIdOption.IsSet && elementSoaAssignAssessorRequest.HnId == null)
                 throw new ArgumentNullException(nameof(elementSoaAssignAssessorRequest.HnId), "Property is required for class ElementSoaAssignAssessorRequest.");
@@ -316,20 +238,11 @@ namespace HNTAS.Api.Client.Model
             if (elementSoaAssignAssessorRequest.UpdatedByOption.IsSet && elementSoaAssignAssessorRequest.UpdatedBy == null)
                 throw new ArgumentNullException(nameof(elementSoaAssignAssessorRequest.UpdatedBy), "Property is required for class ElementSoaAssignAssessorRequest.");
 
-            if (elementSoaAssignAssessorRequest.ElementsAndAssessmentsOption.IsSet)
+            if (elementSoaAssignAssessorRequest.AssessorAssessmentForElementsOption.IsSet)
             {
-                writer.WritePropertyName("elementsAndAssessments");
-                JsonSerializer.Serialize(writer, elementSoaAssignAssessorRequest.ElementsAndAssessments, jsonSerializerOptions);
+                writer.WritePropertyName("assessorAssessmentForElements");
+                JsonSerializer.Serialize(writer, elementSoaAssignAssessorRequest.AssessorAssessmentForElements, jsonSerializerOptions);
             }
-            if (elementSoaAssignAssessorRequest.AssessorEmailOption.IsSet)
-                writer.WriteString("assessorEmail", elementSoaAssignAssessorRequest.AssessorEmail);
-
-            if (elementSoaAssignAssessorRequest.AssessorFirstNameOption.IsSet)
-                writer.WriteString("assessorFirstName", elementSoaAssignAssessorRequest.AssessorFirstName);
-
-            if (elementSoaAssignAssessorRequest.AssessorLastNameOption.IsSet)
-                writer.WriteString("assessorLastName", elementSoaAssignAssessorRequest.AssessorLastName);
-
             if (elementSoaAssignAssessorRequest.SoaStageOption.IsSet)
             {
                 var soaStageRawValue = SoaStageValueConverter.ToJsonValue(elementSoaAssignAssessorRequest.SoaStage!.Value);

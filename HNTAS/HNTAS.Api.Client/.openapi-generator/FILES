@@ -24,6 +24,8 @@ docs/models/Address.md
 docs/models/AggregatedKpi.md
 docs/models/AssessmentPlan.md
 docs/models/AssessmentPlanResponse.md
+docs/models/AssessorAssessment.md
+docs/models/AssessorAssessmentForElement.md
 docs/models/AssessorSearchResult.md
 docs/models/AssignedAssessor.md
 docs/models/AssignedAssessorRequest.md
@@ -45,11 +47,11 @@ docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/ECDetails2.md
 docs/models/Element.md
-docs/models/ElementAndAssessment.md
 docs/models/ElementGroup.md
 docs/models/ElementGroupDto.md
 docs/models/ElementSoaAssignAssessorRequest.md
 docs/models/ElementSoaStatusUpdateRequest.md
+docs/models/ElementTypeInShort.md
 docs/models/Energy.md
 docs/models/EnergyCentreDetails.md
 docs/models/EnumItemResponse.md
@@ -150,7 +152,6 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/ElementAndAssessmentTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -196,6 +197,8 @@ src/HNTAS.Api.Client/Model/Address.cs
 src/HNTAS.Api.Client/Model/AggregatedKpi.cs
 src/HNTAS.Api.Client/Model/AssessmentPlan.cs
 src/HNTAS.Api.Client/Model/AssessmentPlanResponse.cs
+src/HNTAS.Api.Client/Model/AssessorAssessment.cs
+src/HNTAS.Api.Client/Model/AssessorAssessmentForElement.cs
 src/HNTAS.Api.Client/Model/AssessorSearchResult.cs
 src/HNTAS.Api.Client/Model/AssignedAssessor.cs
 src/HNTAS.Api.Client/Model/AssignedAssessorRequest.cs
@@ -217,11 +220,11 @@ src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/ECDetails2.cs
 src/HNTAS.Api.Client/Model/Element.cs
-src/HNTAS.Api.Client/Model/ElementAndAssessment.cs
 src/HNTAS.Api.Client/Model/ElementGroup.cs
 src/HNTAS.Api.Client/Model/ElementGroupDto.cs
 src/HNTAS.Api.Client/Model/ElementSoaAssignAssessorRequest.cs
 src/HNTAS.Api.Client/Model/ElementSoaStatusUpdateRequest.cs
+src/HNTAS.Api.Client/Model/ElementTypeInShort.cs
 src/HNTAS.Api.Client/Model/Energy.cs
 src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs

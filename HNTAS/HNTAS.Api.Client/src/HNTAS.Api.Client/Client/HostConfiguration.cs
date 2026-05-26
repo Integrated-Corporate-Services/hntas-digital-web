@@ -48,6 +48,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new AggregatedKpiJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanResponseJsonConverter());
+            _jsonOptions.Converters.Add(new AssessorAssessmentJsonConverter());
+            _jsonOptions.Converters.Add(new AssessorAssessmentForElementJsonConverter());
             _jsonOptions.Converters.Add(new AssessorSearchResultJsonConverter());
             _jsonOptions.Converters.Add(new AssignedAssessorJsonConverter());
             _jsonOptions.Converters.Add(new AssignedAssessorRequestJsonConverter());
@@ -72,11 +74,12 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());
             _jsonOptions.Converters.Add(new ECDetails2JsonConverter());
             _jsonOptions.Converters.Add(new ElementJsonConverter());
-            _jsonOptions.Converters.Add(new ElementAndAssessmentJsonConverter());
             _jsonOptions.Converters.Add(new ElementGroupJsonConverter());
             _jsonOptions.Converters.Add(new ElementGroupDtoJsonConverter());
             _jsonOptions.Converters.Add(new ElementSoaAssignAssessorRequestJsonConverter());
             _jsonOptions.Converters.Add(new ElementSoaStatusUpdateRequestJsonConverter());
+            _jsonOptions.Converters.Add(new ElementTypeInShortJsonConverter());
+            _jsonOptions.Converters.Add(new ElementTypeInShortNullableJsonConverter());
             _jsonOptions.Converters.Add(new EnergyJsonConverter());
             _jsonOptions.Converters.Add(new EnergyCentreDetailsJsonConverter());
             _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
