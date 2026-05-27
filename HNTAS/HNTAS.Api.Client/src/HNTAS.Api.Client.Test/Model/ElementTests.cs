@@ -54,21 +54,30 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Type'
+        /// Test the property 'ElementId'
         /// </summary>
         [Fact]
-        public void TypeTest()
+        public void ElementIdTest()
         {
-            // TODO unit test for the property 'Type'
+            // TODO unit test for the property 'ElementId'
         }
 
         /// <summary>
-        /// Test the property 'Count'
+        /// Test the property 'NetworkElementInstanceName'
         /// </summary>
         [Fact]
-        public void CountTest()
+        public void NetworkElementInstanceNameTest()
         {
-            // TODO unit test for the property 'Count'
+            // TODO unit test for the property 'NetworkElementInstanceName'
+        }
+
+        /// <summary>
+        /// Test the property 'ElementType'
+        /// </summary>
+        [Fact]
+        public void ElementTypeTest()
+        {
+            // TODO unit test for the property 'ElementType'
         }
     }
 }

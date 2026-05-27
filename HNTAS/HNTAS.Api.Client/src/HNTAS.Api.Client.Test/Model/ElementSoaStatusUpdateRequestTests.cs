@@ -81,12 +81,30 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'SoaStatus'
+        /// Test the property 'ElementType'
         /// </summary>
         [Fact]
-        public void SoaStatusTest()
+        public void ElementTypeTest()
         {
-            // TODO unit test for the property 'SoaStatus'
+            // TODO unit test for the property 'ElementType'
+        }
+
+        /// <summary>
+        /// Test the property 'SoaStatuses'
+        /// </summary>
+        [Fact]
+        public void SoaStatusesTest()
+        {
+            // TODO unit test for the property 'SoaStatuses'
+        }
+
+        /// <summary>
+        /// Test the property 'ElementSoaStatus'
+        /// </summary>
+        [Fact]
+        public void ElementSoaStatusTest()
+        {
+            // TODO unit test for the property 'ElementSoaStatus'
         }
 
         /// <summary>
@@ -96,6 +114,24 @@ namespace HNTAS.Api.Client.Test.Model
         public void SoaStatusUpdatedByTest()
         {
             // TODO unit test for the property 'SoaStatusUpdatedBy'
+        }
+
+        /// <summary>
+        /// Test the property 'SoaPhase'
+        /// </summary>
+        [Fact]
+        public void SoaPhaseTest()
+        {
+            // TODO unit test for the property 'SoaPhase'
+        }
+
+        /// <summary>
+        /// Test the property 'ElementDisplayName'
+        /// </summary>
+        [Fact]
+        public void ElementDisplayNameTest()
+        {
+            // TODO unit test for the property 'ElementDisplayName'
         }
     }
 }

@@ -57,9 +57,10 @@ namespace HNTAS.Api.Client.Test.Api
         public async Task ApiArmsDashboardGetKpiNetworkDetailsGetAsyncTest()
         {
             Client.Option<string> submissionId = default!;
-            Client.Option<List<string>> statusFilter = default!;
+            Client.Option<string> statusFilter = default!;
+            Client.Option<string> typeFilter = default!;
             Client.Option<int> page = default!;
-            var response = await _instance.ApiArmsDashboardGetKpiNetworkDetailsGetAsync(submissionId, statusFilter, page);
+            var response = await _instance.ApiArmsDashboardGetKpiNetworkDetailsGetAsync(submissionId, statusFilter, typeFilter, page);
             var model = response.Ok();
             Assert.IsType<HeatNetworkDetailsResponse>(model);
         }
@@ -77,6 +78,18 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiArmsDashboardGetKpiNetworksByRpUserGetAsync(userId, month, year, pageNumber);
             var model = response.Ok();
             Assert.IsType<HeatNetworkDashboardResponse>(model);
+        }
+
+        /// <summary>
+        /// Test ApiArmsDashboardSubmissionIdHistoryGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiArmsDashboardSubmissionIdHistoryGetAsyncTest()
+        {
+            string submissionId = default!;
+            var response = await _instance.ApiArmsDashboardSubmissionIdHistoryGetAsync(submissionId);
+            var model = response.Ok();
+            Assert.IsType<List<KpiHistoryResponse>>(model);
         }
     }
 }

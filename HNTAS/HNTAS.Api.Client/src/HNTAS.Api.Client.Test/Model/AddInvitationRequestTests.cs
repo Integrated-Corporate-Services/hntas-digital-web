@@ -81,12 +81,12 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'PreferredContactType'
+        /// Test the property 'Status'
         /// </summary>
         [Fact]
-        public void PreferredContactTypeTest()
+        public void StatusTest()
         {
-            // TODO unit test for the property 'PreferredContactType'
+            // TODO unit test for the property 'Status'
         }
 
         /// <summary>
@@ -99,6 +99,15 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'OrgId'
+        /// </summary>
+        [Fact]
+        public void OrgIdTest()
+        {
+            // TODO unit test for the property 'OrgId'
+        }
+
+        /// <summary>
         /// Test the property 'ContributorRoles'
         /// </summary>
         [Fact]
@@ -108,48 +117,21 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Status'
+        /// Test the property 'ReplacedUserId'
         /// </summary>
         [Fact]
-        public void StatusTest()
+        public void ReplacedUserIdTest()
         {
-            // TODO unit test for the property 'Status'
+            // TODO unit test for the property 'ReplacedUserId'
         }
 
         /// <summary>
-        /// Test the property 'Token'
+        /// Test the property 'RolesToReplace'
         /// </summary>
         [Fact]
-        public void TokenTest()
+        public void RolesToReplaceTest()
         {
-            // TODO unit test for the property 'Token'
-        }
-
-        /// <summary>
-        /// Test the property 'LandlineNumber'
-        /// </summary>
-        [Fact]
-        public void LandlineNumberTest()
-        {
-            // TODO unit test for the property 'LandlineNumber'
-        }
-
-        /// <summary>
-        /// Test the property 'MobileNumber'
-        /// </summary>
-        [Fact]
-        public void MobileNumberTest()
-        {
-            // TODO unit test for the property 'MobileNumber'
-        }
-
-        /// <summary>
-        /// Test the property 'ContactNumberExtension'
-        /// </summary>
-        [Fact]
-        public void ContactNumberExtensionTest()
-        {
-            // TODO unit test for the property 'ContactNumberExtension'
+            // TODO unit test for the property 'RolesToReplace'
         }
     }
 }

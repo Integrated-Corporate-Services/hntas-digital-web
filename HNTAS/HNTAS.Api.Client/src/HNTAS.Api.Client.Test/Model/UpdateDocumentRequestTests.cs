@@ -54,21 +54,21 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'HnId'
-        /// </summary>
-        [Fact]
-        public void HnIdTest()
-        {
-            // TODO unit test for the property 'HnId'
-        }
-
-        /// <summary>
         /// Test the property 'Phase'
         /// </summary>
         [Fact]
         public void PhaseTest()
         {
             // TODO unit test for the property 'Phase'
+        }
+
+        /// <summary>
+        /// Test the property 'HnId'
+        /// </summary>
+        [Fact]
+        public void HnIdTest()
+        {
+            // TODO unit test for the property 'HnId'
         }
 
         /// <summary>
