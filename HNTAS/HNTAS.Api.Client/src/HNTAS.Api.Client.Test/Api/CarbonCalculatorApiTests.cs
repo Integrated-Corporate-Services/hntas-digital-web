@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
 
 
 /* *********************************************************************************
@@ -50,13 +51,15 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-        /// Test ApiCarbonCalcRunPost
+        /// Test ApiCarbonCalculatorRunPost
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiCarbonCalcRunPostAsyncTest()
+        public async Task ApiCarbonCalculatorRunPostAsyncTest()
         {
-            Client.Option<string> hnId = default!;
-            await _instance.ApiCarbonCalcRunPostAsync(hnId);
+            CarbonCalculatorRequest carbonCalculatorRequest = default!;
+            var response = await _instance.ApiCarbonCalculatorRunPostAsync(carbonCalculatorRequest);
+            var model = response.Ok();
+            Assert.IsType<CarbonCalculatorResponse>(model);
         }
     }
 }

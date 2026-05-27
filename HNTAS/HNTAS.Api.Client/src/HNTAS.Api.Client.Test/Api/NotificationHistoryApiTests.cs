@@ -59,7 +59,20 @@ namespace HNTAS.Api.Client.Test.Api
             NotificationHistoryRequest notificationHistoryRequest = default!;
             var response = await _instance.ApiNotificationHistoryNotificationHistoryGetAsync(notificationHistoryRequest);
             var model = response.Ok();
-            Assert.IsType<List<NotificationHistoryResponse>>(model);
+            Assert.IsType<NotificationHistoryResponse>(model);
+        }
+
+        /// <summary>
+        /// Test ApiNotificationHistoryUnreadNotificationCountGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiNotificationHistoryUnreadNotificationCountGetAsyncTest()
+        {
+            Client.Option<string> userId = default!;
+            Client.Option<UserRole> role = default!;
+            var response = await _instance.ApiNotificationHistoryUnreadNotificationCountGetAsync(userId, role);
+            var model = response.Ok();
+            Assert.IsType<int>(model);
         }
     }
 }

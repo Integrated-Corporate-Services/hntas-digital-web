@@ -54,12 +54,39 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Status'
+        /// Test the property 'NetworkElementStatus'
         /// </summary>
         [Fact]
-        public void StatusTest()
+        public void NetworkElementStatusTest()
         {
-            // TODO unit test for the property 'Status'
+            // TODO unit test for the property 'NetworkElementStatus'
+        }
+
+        /// <summary>
+        /// Test the property 'ElementSoaStatus'
+        /// </summary>
+        [Fact]
+        public void ElementSoaStatusTest()
+        {
+            // TODO unit test for the property 'ElementSoaStatus'
+        }
+
+        /// <summary>
+        /// Test the property 'Elements'
+        /// </summary>
+        [Fact]
+        public void ElementsTest()
+        {
+            // TODO unit test for the property 'Elements'
+        }
+
+        /// <summary>
+        /// Test the property 'ElementsGroup'
+        /// </summary>
+        [Fact]
+        public void ElementsGroupTest()
+        {
+            // TODO unit test for the property 'ElementsGroup'
         }
 
         /// <summary>

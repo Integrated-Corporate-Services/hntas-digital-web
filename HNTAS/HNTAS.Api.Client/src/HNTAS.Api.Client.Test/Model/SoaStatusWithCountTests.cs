@@ -54,12 +54,12 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'SoaStatusType'
+        /// Test the property 'SoaStatus'
         /// </summary>
         [Fact]
-        public void SoaStatusTypeTest()
+        public void SoaStatusTest()
         {
-            // TODO unit test for the property 'SoaStatusType'
+            // TODO unit test for the property 'SoaStatus'
         }
 
         /// <summary>
