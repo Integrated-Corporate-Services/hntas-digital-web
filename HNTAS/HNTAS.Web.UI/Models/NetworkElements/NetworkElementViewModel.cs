@@ -32,18 +32,19 @@ namespace HNTAS.Web.UI.Models.NetworkElements
     {
         public string Label { get; set; } = null!;
         public ElementTypeInShort? ElementType { get; set; }
-        public string AssignedAssessorName { get; set; } = null!;
+        public bool IsDisabled { get; set; }
+        //public string AssignedAssessorName { get; set; } = null!;
     }
 
-    public class TraceAssessmentRouting
-    {
-        public ElementTypeInShort LastVisitedElement { get; set; }
-        public List<TraceAssessment> TraceAssessments { get; set; }
-    }
+    //public class TraceAssessmentRouting
+    //{
+    //    public ElementTypeInShort LastVisitedElement { get; set; }
+    //    public List<TraceAssessment> TraceAssessments { get; set; }
+    //}
 
-    public class TraceAssessment
-    {
-        public ElementTypeInShort ElementId { get; set; }
-        public bool IsRouted { get; set; }
-    }
+    //public class TraceAssessment
+    //{
+    //    public ElementTypeInShort ElementId { get; set; }
+    //    public bool IsRouted { get; set; }
+    //}
 }

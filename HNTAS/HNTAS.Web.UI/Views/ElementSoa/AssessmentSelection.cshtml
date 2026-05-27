@@ -15,6 +15,21 @@
         titlePart = "substation";
         targetActionMethod = "AssessmentSelectionSs";
     }
+    else if (Model.ElementType == ElementTypeInShort.CC)
+    {
+        titlePart = "Consumer connection";
+        targetActionMethod = "AssessmentSelectionCc";
+    }
+    else if (Model.ElementType == ElementTypeInShort.CDN)
+    {
+        titlePart = "Communal distribution network";
+        targetActionMethod = "AssessmentSelectionCdn";
+    }
+    else if (Model.ElementType == ElementTypeInShort.DDN)
+    {
+        titlePart = "District distribution network";
+        targetActionMethod = "AssessmentSelectionDdn";
+    }
     ViewData["Title"] = $"Which step of the assessment will they carry out for the {titlePart}?";
     var hasError = ViewData.ModelState.ContainsKey(nameof(Model.SelectedAssessmentOption)) && ViewData.ModelState[nameof(Model.SelectedAssessmentOption)].Errors.Any();
 }
@@ -42,25 +57,30 @@
                         </p>
                     }
                     <div class="govuk-radios" data-module="govuk-radios">
-                        @for (var i = 0; i < Model.AssessmentOptions.Count; i++)
-                        {
-                            var option = Model.AssessmentOptions[i];
-                            var optionId = i == 0 ? "selectedassessmentoption" : $"selectedassessmentoption-{i}";
-                            var hintId = $"{optionId}-item-hint";
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="@optionId" name="SelectedAssessmentOption" type="radio" value="@option.Label" disabled="@option.IsDisabled" @( Model.SelectedAssessmentOption == option.Label ? "checked" : "")>
-                                <label class="govuk-label govuk-radios__label" for="@optionId">
-                                    @option.Label<br />
-                                </label>
-                                @if (!string.IsNullOrEmpty(option.Hint))
-                                {
-                                    <div id="@hintId" class="govuk-hint govuk-radios__hint">
-                                        @option.Hint
-                                    </div>
-                                }
+                        @{
+                            var optionIdList = new List<string>();
+                            for (var i = 0; i < Model.AssessmentOptions.Count; i++)
+                            {
+                                var option = Model.AssessmentOptions[i];
+                                var optionId = !option.IsDisabled && !optionIdList.Contains("selectedassessmentoption") ? "selectedassessmentoption" : $"selectedassessmentoption-{i}";
+                                optionIdList.Add(optionId);
+                                var hintId = $"{optionId}-item-hint";
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="@optionId" name="SelectedAssessmentOption" type="radio" value="@option.Label" disabled="@option.IsDisabled" @( Model.SelectedAssessmentOption == option.Label ? "checked" : "")>
+                                    <label class="govuk-label govuk-radios__label" for="@optionId">
+                                        @option.Label<br />
+                                    </label>
+                                    @if (!string.IsNullOrEmpty(option.Hint))
+                                    {
+                                        <div id="@hintId" class="govuk-hint govuk-radios__hint">
+                                            @option.Hint
+                                        </div>
+                                    }
                                 
-                            </div>
+                                </div>
+                            }
                         }
+                        
                     </div>
                 </fieldset>
             </div>

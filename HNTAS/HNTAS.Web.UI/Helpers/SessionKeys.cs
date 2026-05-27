@@ -81,6 +81,9 @@
         public const string AssessorSelectedElementSessionKey = "AssessorSelectedElementSessionKey";
         public const string AssessorAssessmentSelectionEcViewModelSessionKey = "AssessorAssessmentSelectionEcViewModelSessionKey";
         public const string AssessorAssessmentSelectionSsViewModelSessionKey = "AssessorAssessmentSelectionSsViewModelSessionKey";
+        public const string AssessorAssessmentSelectionCcViewModelSessionKey = "AssessorAssessmentSelectionCcViewModelSessionKey";
+        public const string AssessorAssessmentSelectionCdnViewModelSessionKey = "AssessorAssessmentSelectionCdnViewModelSessionKey";
+        public const string AssessorAssessmentSelectionDdnViewModelSessionKey = "AssessorAssessmentSelectionDdnViewModelSessionKey";
         public const string TraceAssessmentRoutingSessionKey = "TraceAssessmentRoutingSessionKey";
         public const string AssessorDetailsSessionKey = "AssessorDetailsSessionKey";
         public const string NewLeadDetailsViewModelSessionKey = "NewLeadDetailsViewModelSessionKey";
