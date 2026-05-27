@@ -448,17 +448,8 @@ namespace HNTAS.Web.UI.Controllers
         #region Coordinates input
         [HttpGet]
         public IActionResult ECCoordinates()
-        {
-            //var hnTypeModel = _sessionHelper.GetFromSession<HeatNetworkTypeViewModel>(HttpContext, SessionKeys.HeatNetworkTypeViewModelKey);
-            //if (hnTypeModel.HeatNetworkType == Models.Enums.HeatNetworkType.DistrictWithSeparateUpstreamHN)
-            //{
-            //    this.ShowBackButton("HeatNetworkName");
-            //}
-            //else
-            //{
-            //    this.ShowBackButton("DoesHNHaveAPostcode");
-            //}            
-            
+        {                        
+            this.ShowBackButton("DoesHNHaveAPostcode");
             var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
             return View(model);
         }
