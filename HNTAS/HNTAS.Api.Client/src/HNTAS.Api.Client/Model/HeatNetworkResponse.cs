@@ -46,13 +46,14 @@ namespace HNTAS.Api.Client.Model
         /// <param name="createdAt">createdAt</param>
         /// <param name="phase">phase</param>
         /// <param name="heatNetworkType">heatNetworkType</param>
+        /// <param name="hasOwnEnergyCentre">hasOwnEnergyCentre</param>
         /// <param name="heatNetworkConnections">heatNetworkConnections</param>
         /// <param name="networkElements">networkElements</param>
         /// <param name="meteringAndMonitoringStrategy">meteringAndMonitoringStrategy</param>
         /// <param name="assessmentPlan">assessmentPlan</param>
         /// <param name="designConstructionLog">designConstructionLog</param>
         [JsonConstructor]
-        public HeatNetworkResponse(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<string?> pathway = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<HeatNetworkType?> heatNetworkType = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default)
+        public HeatNetworkResponse(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<string?> pathway = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<HeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCentre = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default)
         {
             IdOption = id;
             UHnIdOption = uHnId;
@@ -67,6 +68,7 @@ namespace HNTAS.Api.Client.Model
             CreatedAtOption = createdAt;
             PhaseOption = phase;
             HeatNetworkTypeOption = heatNetworkType;
+            HasOwnEnergyCentreOption = hasOwnEnergyCentre;
             HeatNetworkConnectionsOption = heatNetworkConnections;
             NetworkElementsOption = networkElements;
             MeteringAndMonitoringStrategyOption = meteringAndMonitoringStrategy;
@@ -247,6 +249,19 @@ namespace HNTAS.Api.Client.Model
         public string? Phase { get { return this.PhaseOption; } set { this.PhaseOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of HasOwnEnergyCentre
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> HasOwnEnergyCentreOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HasOwnEnergyCentre
+        /// </summary>
+        [JsonPropertyName("hasOwnEnergyCentre")]
+        public bool? HasOwnEnergyCentre { get { return this.HasOwnEnergyCentreOption; } set { this.HasOwnEnergyCentreOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of HeatNetworkConnections
         /// </summary>
         [JsonIgnore]
@@ -332,6 +347,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  Phase: ").Append(Phase).Append("\n");
             sb.Append("  HeatNetworkType: ").Append(HeatNetworkType).Append("\n");
+            sb.Append("  HasOwnEnergyCentre: ").Append(HasOwnEnergyCentre).Append("\n");
             sb.Append("  HeatNetworkConnections: ").Append(HeatNetworkConnections).Append("\n");
             sb.Append("  NetworkElements: ").Append(NetworkElements).Append("\n");
             sb.Append("  MeteringAndMonitoringStrategy: ").Append(MeteringAndMonitoringStrategy).Append("\n");
@@ -392,6 +408,7 @@ namespace HNTAS.Api.Client.Model
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> phase = default;
             Option<HeatNetworkType?> heatNetworkType = default;
+            Option<bool?> hasOwnEnergyCentre = default;
             Option<HeatNetworkConnections?> heatNetworkConnections = default;
             Option<NetworkElementsResponse?> networkElements = default;
             Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default;
@@ -454,6 +471,9 @@ namespace HNTAS.Api.Client.Model
                             if (heatNetworkTypeRawValue != null)
                                 heatNetworkType = new Option<HeatNetworkType?>(HeatNetworkTypeValueConverter.FromStringOrDefault(heatNetworkTypeRawValue));
                             break;
+                        case "hasOwnEnergyCentre":
+                            hasOwnEnergyCentre = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
                         case "heatNetworkConnections":
                             heatNetworkConnections = new Option<HeatNetworkConnections?>(JsonSerializer.Deserialize<HeatNetworkConnections>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -502,7 +522,10 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkType.IsSet && heatNetworkType.Value == null)
                 throw new ArgumentNullException(nameof(heatNetworkType), "Property is not nullable for class HeatNetworkResponse.");
 
-            return new HeatNetworkResponse(id, uHnId, hnId, ecDetails, address, name, additionalDescription, pathway, soa, createdBy, createdAt, phase, heatNetworkType, heatNetworkConnections, networkElements, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog);
+            if (hasOwnEnergyCentre.IsSet && hasOwnEnergyCentre.Value == null)
+                throw new ArgumentNullException(nameof(hasOwnEnergyCentre), "Property is not nullable for class HeatNetworkResponse.");
+
+            return new HeatNetworkResponse(id, uHnId, hnId, ecDetails, address, name, additionalDescription, pathway, soa, createdBy, createdAt, phase, heatNetworkType, hasOwnEnergyCentre, heatNetworkConnections, networkElements, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog);
         }
 
         /// <summary>
@@ -609,6 +632,9 @@ namespace HNTAS.Api.Client.Model
                 var heatNetworkTypeRawValue = HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkResponse.HeatNetworkType!.Value);
                 writer.WriteString("heatNetworkType", heatNetworkTypeRawValue);
             }
+            if (heatNetworkResponse.HasOwnEnergyCentreOption.IsSet)
+                writer.WriteBoolean("hasOwnEnergyCentre", heatNetworkResponse.HasOwnEnergyCentreOption.Value!.Value);
+
             if (heatNetworkResponse.HeatNetworkConnectionsOption.IsSet)
                 if (heatNetworkResponse.HeatNetworkConnectionsOption.Value != null)
                 {

@@ -4453,6 +4453,7 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
         additionalDescription: additionalDescription
+        hasOwnEnergyCenter: true
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -4475,7 +4476,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: CommunalWithEnergyCentre
+        heatNetworkType: Communal
       properties:
         id:
           nullable: true
@@ -4501,6 +4502,8 @@ components:
           $ref: "#/components/schemas/RegistrationSource"
         heatNetworkType:
           $ref: "#/components/schemas/HeatNetworkType"
+        hasOwnEnergyCenter:
+          type: boolean
         heatNetworkConnections:
           $ref: "#/components/schemas/HeatNetworkConnections"
         networkElements:
@@ -5039,6 +5042,7 @@ components:
           noOfOtherDistrictNetwork: 7
           noOfDomesticConsumer: 5
           noOfCommunalBuilding: 5
+        hasOwnEnergyCentre: true
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
@@ -5064,7 +5068,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: CommunalWithEnergyCentre
+        heatNetworkType: Communal
       properties:
         id:
           type: string
@@ -5095,6 +5099,8 @@ components:
           type: string
         heatNetworkType:
           $ref: "#/components/schemas/HeatNetworkType"
+        hasOwnEnergyCentre:
+          type: boolean
         heatNetworkConnections:
           $ref: "#/components/schemas/HeatNetworkConnections"
         networkElements:
@@ -5108,10 +5114,8 @@ components:
       type: object
     HeatNetworkType:
       enum:
-      - CommunalWithEnergyCentre
-      - CommunalWithoutEnergyCentre
-      - DistrictWithOwnMainEnergyCentre
-      - DistrictWithoutOwnMainEnergyCentre
+      - Communal
+      - District
       type: string
     HeatNetworkUserResponse:
       example:
@@ -6270,7 +6274,7 @@ components:
     NetworkTypeSelection2:
       example:
         otherNetworkDescription: otherNetworkDescription
-        type: CommunalWithEnergyCentre
+        type: Communal
       properties:
         type:
           $ref: "#/components/schemas/HeatNetworkType"

@@ -51,9 +51,10 @@ namespace HNTAS.Web.UI.Controllers
             model = new NetworkElementViewModel();
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
+            bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
 
-            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
-            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType, hasOwnEc);
+            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType, hasOwnEc);
             var selectedNetworkElements = heatNetworkData?.NetworkElements;
 
             if (selectedNetworkElements != null)
@@ -84,9 +85,10 @@ namespace HNTAS.Web.UI.Controllers
 
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
+            bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
 
-            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType);
-            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType);
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType, hasOwnEc);
+            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType(networkType, hasOwnEc);
             var elements = new List<ElementGroup>();
 
             foreach (var selectedId in model.SelectedElementIds)
@@ -99,7 +101,7 @@ namespace HNTAS.Web.UI.Controllers
                 elements.Add(ele);
                 if ((!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
                 {
-                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType).FirstOrDefault(x => x.Id == selectedId);
+                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType, hasOwnEc).FirstOrDefault(x => x.Id == selectedId);
                     if (element == null)
                     {
                         return BadRequest();
@@ -125,7 +127,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 Elements = elements.Select(e =>
                 {
-                    var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.ElementDisplayType);
+                    var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType(networkType, hasOwnEc).FirstOrDefault(x => x.Id == e.ElementDisplayType);
                     var label = elementOption != null ? elementOption.Label : e.ElementDisplayType.ToString();
                     label = label.ToSentenceCase();
 
@@ -133,7 +135,7 @@ namespace HNTAS.Web.UI.Controllers
                 }).ToList(),
                 HeatNetworkAddress = addressByStreetOrTownModel?.Fulladdress,
                 Coordinates = latlong,
-                NetworkType = NetworkElementHelper.GetNetworkTypeLabelForNetworkType(networkType),
+                NetworkType = NetworkElementHelper.GetNetworkTypeLabelForNetworkType(networkType, hasOwnEc),
                 Phase = phase ?? string.Empty
             };
             
@@ -141,7 +143,7 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementsOverViewModel);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, networkElementGroups);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey, model);
-            if (networkType == Api.Client.Model.HeatNetworkType.DistrictWithOwnMainEnergyCentre || networkType == Api.Client.Model.HeatNetworkType.DistrictWithoutOwnMainEnergyCentre)
+            if (networkType == Api.Client.Model.HeatNetworkType.District)
             {
                 return RedirectToAction("Substations", "NetworkElements");
             }

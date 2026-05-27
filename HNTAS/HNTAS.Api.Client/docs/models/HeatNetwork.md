@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **Pathway** | **string** |  | [optional] 
 **RegistrationSource** | **RegistrationSource** |  | [optional] 
 **HeatNetworkType** | **HeatNetworkType** |  | [optional] 
+**HasOwnEnergyCenter** | **bool** |  | [optional] 
 **HeatNetworkConnections** | [**HeatNetworkConnections**](HeatNetworkConnections.md) |  | [optional] 
 **NetworkElements** | [**NetworkElements**](NetworkElements.md) |  | [optional] 
 **Soa** | [**Soa**](Soa.md) |  | [optional] 
