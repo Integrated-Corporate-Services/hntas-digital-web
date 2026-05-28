@@ -56,6 +56,7 @@ namespace HNTAS.Web.UI.Helpers
         public void ClearAllHNRegistrationFlowRelatedSessionData(HttpContext context)
         {
             ClearFromSession(context, SessionKeys.HowManyDwellingsIncludedModelKey);
+            ClearFromSession(context, SessionKeys.HeatNetworkOrganisationModelKey);
             ClearFromSession(context, SessionKeys.IsHnTypeCommunalViewModel);
             ClearFromSession(context, SessionKeys.DoesCommunalHnHaveOwnEcViewModel);
             ClearFromSession(context, SessionKeys.DoesDistrictHnHaveOwnEcViewModel);

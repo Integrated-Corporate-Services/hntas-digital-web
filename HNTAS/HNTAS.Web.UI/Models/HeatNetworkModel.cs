@@ -4,7 +4,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
 {
-    
+    public class HeatNetworkOrganisationModel
+    {
+        public List<string> OrganisationList { get; set; } = new List<string>();
+        [Required(ErrorMessage = "Select an organisation to add the network")]
+        public string SelectedOrganisation { get; set; }
+    }
+
     public class HeatNetworkNameModel
     {
         [Required(ErrorMessage = "Please enter the heat network name.")]
@@ -48,6 +54,7 @@ namespace HNTAS.Web.UI.Models
     public class CheckYourAnswersHeatNetworkModel
     {
         public string DoesHnHaveMoreThan6Dwellings { get; set; }
+        public string OrgId { get; set; }
         public string HeatNetworkType { get; set; }
         public string HasOwnEnergyCenter { get; set; }
         public HeatNetworkConnectionsViewModel? HeatNetworkConnectionsModel { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace HNTAS.Web.UI.Models
+﻿using HNTAS.Api.Client.Model;
+
+namespace HNTAS.Web.UI.Models
 {
     public class HeatNetworksViewModel
     {
@@ -14,6 +16,6 @@
         public string HnId { get; set; }
         public string Name { get; set; }
         public string OrganisationName { get; set; }
-        public string Status { get; set; } // Default
+        public string Role { get; set; }
     }
 }

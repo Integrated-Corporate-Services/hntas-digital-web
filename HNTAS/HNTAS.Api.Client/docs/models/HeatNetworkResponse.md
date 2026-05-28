@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **Id** | **string** |  | [optional] 
 **UHnId** | **string** |  | [optional] 
 **HnId** | **string** |  | [optional] 
+**OrgId** | **string** |  | [optional] 
 **EcDetails** | [**ECDetails**](ECDetails.md) |  | [optional] 
 **Address** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 
 **Name** | **string** |  | [optional] 
