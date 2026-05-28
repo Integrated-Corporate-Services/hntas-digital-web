@@ -30,6 +30,7 @@
         public const string HowManyDwellingsIncludedModelKey = "HowManyDwellingsIncluded";
 
         // Session keys for heat network registration
+        public const string HeatNetworkOrganisationModelKey = "HeatNetworkOrganisationModelKey";
         public const string IsHnTypeCommunalViewModel = "IsHnTypeCommunalViewModelKey";
         public const string DoesCommunalHnHaveOwnEcViewModel = "DoesCommunalHnHaveOwnEcViewModel";
         public const string DoesDistrictHnHaveOwnEcViewModel = "DoesDistrictHnHaveOwnEcViewModel";

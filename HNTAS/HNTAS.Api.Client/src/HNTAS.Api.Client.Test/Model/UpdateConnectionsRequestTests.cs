@@ -54,12 +54,21 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'ProjectId'
+        /// Test the property 'HnId'
         /// </summary>
         [Fact]
-        public void ProjectIdTest()
+        public void HnIdTest()
         {
-            // TODO unit test for the property 'ProjectId'
+            // TODO unit test for the property 'HnId'
+        }
+
+        /// <summary>
+        /// Test the property 'UpdatedBy'
+        /// </summary>
+        [Fact]
+        public void UpdatedByTest()
+        {
+            // TODO unit test for the property 'UpdatedBy'
         }
 
         /// <summary>

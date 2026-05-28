@@ -81,6 +81,15 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Assessment'
+        /// </summary>
+        [Fact]
+        public void AssessmentTest()
+        {
+            // TODO unit test for the property 'Assessment'
+        }
+
+        /// <summary>
         /// Test the property 'Status'
         /// </summary>
         [Fact]

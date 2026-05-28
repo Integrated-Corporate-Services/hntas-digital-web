@@ -63,12 +63,12 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'InviterUserId'
+        /// Test the property 'InvitationId'
         /// </summary>
         [Fact]
-        public void InviterUserIdTest()
+        public void InvitationIdTest()
         {
-            // TODO unit test for the property 'InviterUserId'
+            // TODO unit test for the property 'InvitationId'
         }
 
         /// <summary>
@@ -78,15 +78,6 @@ namespace HNTAS.Api.Client.Test.Model
         public void OneLoginIdTest()
         {
             // TODO unit test for the property 'OneLoginId'
-        }
-
-        /// <summary>
-        /// Test the property 'OrgId'
-        /// </summary>
-        [Fact]
-        public void OrgIdTest()
-        {
-            // TODO unit test for the property 'OrgId'
         }
     }
 }

@@ -54,21 +54,66 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Stage'
+        /// Test the property 'StageId'
         /// </summary>
         [Fact]
-        public void StageTest()
+        public void StageIdTest()
         {
-            // TODO unit test for the property 'Stage'
+            // TODO unit test for the property 'StageId'
         }
 
         /// <summary>
-        /// Test the property 'Elements'
+        /// Test the property 'SoaStatuses'
         /// </summary>
         [Fact]
-        public void ElementsTest()
+        public void SoaStatusesTest()
         {
-            // TODO unit test for the property 'Elements'
+            // TODO unit test for the property 'SoaStatuses'
+        }
+
+        /// <summary>
+        /// Test the property 'SoaStatusUpdatedAt'
+        /// </summary>
+        [Fact]
+        public void SoaStatusUpdatedAtTest()
+        {
+            // TODO unit test for the property 'SoaStatusUpdatedAt'
+        }
+
+        /// <summary>
+        /// Test the property 'SoaStatusUpdatedBy'
+        /// </summary>
+        [Fact]
+        public void SoaStatusUpdatedByTest()
+        {
+            // TODO unit test for the property 'SoaStatusUpdatedBy'
+        }
+
+        /// <summary>
+        /// Test the property 'AssessorUpdatedAt'
+        /// </summary>
+        [Fact]
+        public void AssessorUpdatedAtTest()
+        {
+            // TODO unit test for the property 'AssessorUpdatedAt'
+        }
+
+        /// <summary>
+        /// Test the property 'AssessorUpdatedBy'
+        /// </summary>
+        [Fact]
+        public void AssessorUpdatedByTest()
+        {
+            // TODO unit test for the property 'AssessorUpdatedBy'
+        }
+
+        /// <summary>
+        /// Test the property 'Assessor'
+        /// </summary>
+        [Fact]
+        public void AssessorTest()
+        {
+            // TODO unit test for the property 'Assessor'
         }
     }
 }

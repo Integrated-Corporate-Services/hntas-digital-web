@@ -117,6 +117,15 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'ActionLink'
+        /// </summary>
+        [Fact]
+        public void ActionLinkTest()
+        {
+            // TODO unit test for the property 'ActionLink'
+        }
+
+        /// <summary>
         /// Test the property 'EligibleRoles'
         /// </summary>
         [Fact]

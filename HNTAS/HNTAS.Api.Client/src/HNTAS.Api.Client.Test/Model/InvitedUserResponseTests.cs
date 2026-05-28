@@ -54,12 +54,75 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Id'
+        /// </summary>
+        [Fact]
+        public void IdTest()
+        {
+            // TODO unit test for the property 'Id'
+        }
+
+        /// <summary>
+        /// Test the property 'InviterUserId'
+        /// </summary>
+        [Fact]
+        public void InviterUserIdTest()
+        {
+            // TODO unit test for the property 'InviterUserId'
+        }
+
+        /// <summary>
         /// Test the property 'Email'
         /// </summary>
         [Fact]
         public void EmailTest()
         {
             // TODO unit test for the property 'Email'
+        }
+
+        /// <summary>
+        /// Test the property 'FirstName'
+        /// </summary>
+        [Fact]
+        public void FirstNameTest()
+        {
+            // TODO unit test for the property 'FirstName'
+        }
+
+        /// <summary>
+        /// Test the property 'LastName'
+        /// </summary>
+        [Fact]
+        public void LastNameTest()
+        {
+            // TODO unit test for the property 'LastName'
+        }
+
+        /// <summary>
+        /// Test the property 'FullName'
+        /// </summary>
+        [Fact]
+        public void FullNameTest()
+        {
+            // TODO unit test for the property 'FullName'
+        }
+
+        /// <summary>
+        /// Test the property 'InvitedHnId'
+        /// </summary>
+        [Fact]
+        public void InvitedHnIdTest()
+        {
+            // TODO unit test for the property 'InvitedHnId'
+        }
+
+        /// <summary>
+        /// Test the property 'InvitedOrgId'
+        /// </summary>
+        [Fact]
+        public void InvitedOrgIdTest()
+        {
+            // TODO unit test for the property 'InvitedOrgId'
         }
 
         /// <summary>

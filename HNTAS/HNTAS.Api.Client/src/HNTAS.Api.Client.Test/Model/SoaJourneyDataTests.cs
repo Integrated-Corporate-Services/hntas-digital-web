@@ -70,5 +70,41 @@ namespace HNTAS.Api.Client.Test.Model
         {
             // TODO unit test for the property 'ConnectionTypes'
         }
+
+        /// <summary>
+        /// Test the property 'HeatNetworkElements'
+        /// </summary>
+        [Fact]
+        public void HeatNetworkElementsTest()
+        {
+            // TODO unit test for the property 'HeatNetworkElements'
+        }
+
+        /// <summary>
+        /// Test the property 'AssessmentDocs'
+        /// </summary>
+        [Fact]
+        public void AssessmentDocsTest()
+        {
+            // TODO unit test for the property 'AssessmentDocs'
+        }
+
+        /// <summary>
+        /// Test the property 'AssessorDocs'
+        /// </summary>
+        [Fact]
+        public void AssessorDocsTest()
+        {
+            // TODO unit test for the property 'AssessorDocs'
+        }
+
+        /// <summary>
+        /// Test the property 'CertifierDocs'
+        /// </summary>
+        [Fact]
+        public void CertifierDocsTest()
+        {
+            // TODO unit test for the property 'CertifierDocs'
+        }
     }
 }

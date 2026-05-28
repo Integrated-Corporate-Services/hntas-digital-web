@@ -181,7 +181,10 @@ namespace HNTAS.Web.UI.Controllers
             ClearNetworkDetailsSession();
 
             this.ShowBackButton("UserAccount", "Dashboard");
-            var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var user = await _userService.GetUserDetails(userId);
+            var userWithHnRoles = await _userService.GetUserById(userId);
+            var hnRoleMappings = userWithHnRoles.HnRoleMappings;            
 
             ViewBag.UserRole = user?.Roles[0].ToString();
             ViewBag.HasDeclaredImpartiality = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(HttpContext, SessionKeys.DeclarationOfImpartialityModelKey)?.HasDeclaredImpartiality;
@@ -199,12 +202,22 @@ namespace HNTAS.Web.UI.Controllers
             {
                 foreach (var network in user?.HeatNetworks)
                 {
+                    var role = hnRoleMappings.FirstOrDefault(x => x.HnId == network.HnId)?.Role switch
+                    {
+                        ContributorRole.ResponsiblePerson => "Responsible Person",
+                        ContributorRole.NetworkManager => "Network Manager",
+                        ContributorRole.DesignatedDutyHolder => "Designated Duty Holder",
+                        ContributorRole.Contributor => "Contributor",
+                        ContributorRole.Assessor => "Assessor",
+                        ContributorRole.Certifier => "Certifier",
+                        _ => "Not specified"
+                    };
                     heatNetworks.Add(new HeatNetworkModel
                     {
                         HnId = network.HnId,
                         Name = network.Name,
                         OrganisationName = user.Organisation?.Name,
-                        Status = "Active"
+                        Role = role
                     });
                 }
             }
