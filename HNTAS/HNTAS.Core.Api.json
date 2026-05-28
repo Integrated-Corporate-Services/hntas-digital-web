@@ -5583,6 +5583,9 @@
           "heatNetworkType": {
             "$ref": "#/components/schemas/HeatNetworkType"
           },
+          "hasOwnEnergyCenter": {
+            "type": "boolean"
+          },
           "heatNetworkConnections": {
             "$ref": "#/components/schemas/HeatNetworkConnections"
           },
@@ -5896,6 +5899,9 @@
           "heatNetworkType": {
             "$ref": "#/components/schemas/HeatNetworkType"
           },
+          "hasOwnEnergyCentre": {
+            "type": "boolean"
+          },
           "heatNetworkConnections": {
             "$ref": "#/components/schemas/HeatNetworkConnections"
           },
@@ -5915,10 +5921,8 @@
       },
       "HeatNetworkType": {
         "enum": [
-          "CommunalWithEnergyCentre",
-          "CommunalWithoutEnergyCentre",
-          "DistrictWithOwnMainEnergyCentre",
-          "DistrictWithoutOwnMainEnergyCentre"
+          "Communal",
+          "District"
         ]
       },
       "HeatNetworkUserResponse": {

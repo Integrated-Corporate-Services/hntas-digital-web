@@ -18,6 +18,7 @@ Name | Type | Description | Notes
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **Phase** | **string** |  | [optional] 
 **HeatNetworkType** | **HeatNetworkType** |  | [optional] 
+**HasOwnEnergyCentre** | **bool** |  | [optional] 
 **HeatNetworkConnections** | [**HeatNetworkConnections**](HeatNetworkConnections.md) |  | [optional] 
 **NetworkElements** | [**NetworkElementsResponse**](NetworkElementsResponse.md) |  | [optional] 
 **MeteringAndMonitoringStrategy** | [**MeteringAndMonitoringStrategyResponse**](MeteringAndMonitoringStrategyResponse.md) |  | [optional] 
