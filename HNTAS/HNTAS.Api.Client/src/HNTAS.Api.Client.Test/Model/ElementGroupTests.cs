@@ -54,12 +54,12 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Type'
+        /// Test the property 'ElementDisplayType'
         /// </summary>
         [Fact]
-        public void TypeTest()
+        public void ElementDisplayTypeTest()
         {
-            // TODO unit test for the property 'Type'
+            // TODO unit test for the property 'ElementDisplayType'
         }
 
         /// <summary>

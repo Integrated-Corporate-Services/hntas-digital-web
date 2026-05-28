@@ -5558,6 +5558,9 @@
             "type": "string",
             "nullable": true
           },
+          "orgId": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
@@ -5579,6 +5582,9 @@
           },
           "heatNetworkType": {
             "$ref": "#/components/schemas/HeatNetworkType"
+          },
+          "hasOwnEnergyCenter": {
+            "type": "boolean"
           },
           "heatNetworkConnections": {
             "$ref": "#/components/schemas/HeatNetworkConnections"
@@ -5857,6 +5863,9 @@
           "hnId": {
             "type": "string"
           },
+          "orgId": {
+            "type": "string"
+          },
           "ecDetails": {
             "$ref": "#/components/schemas/ECDetails"
           },
@@ -5890,6 +5899,9 @@
           "heatNetworkType": {
             "$ref": "#/components/schemas/HeatNetworkType"
           },
+          "hasOwnEnergyCentre": {
+            "type": "boolean"
+          },
           "heatNetworkConnections": {
             "$ref": "#/components/schemas/HeatNetworkConnections"
           },
@@ -5909,10 +5921,8 @@
       },
       "HeatNetworkType": {
         "enum": [
-          "CommunalWithEnergyCentre",
-          "CommunalWithoutEnergyCentre",
-          "DistrictWithOwnMainEnergyCentre",
-          "DistrictWithoutOwnMainEnergyCentre"
+          "Communal",
+          "District"
         ]
       },
       "HeatNetworkUserResponse": {
@@ -7803,6 +7813,13 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "contributingOrganisations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
           }
         }
       },
@@ -7866,6 +7883,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/HeatNetworkUserResponse"
+            },
+            "nullable": true
+          },
+          "contributingOrganisations": {
+            "type": "array",
+            "items": {
+              "type": "string"
             },
             "nullable": true
           }
@@ -7932,6 +7956,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/HnRoleMapping"
+            },
+            "nullable": true
+          },
+          "contributingOrganisations": {
+            "type": "array",
+            "items": {
+              "type": "string"
             },
             "nullable": true
           }

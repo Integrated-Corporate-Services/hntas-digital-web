@@ -51,14 +51,49 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-        /// Test ApiInvitationsIdInvitationPost
+        /// Test ApiInvitationsIdAddUserInvitationPost
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiInvitationsIdInvitationPostAsyncTest()
+        public async Task ApiInvitationsIdAddUserInvitationPostAsyncTest()
         {
             string id = default!;
-            UpdateInvitationRequest updateInvitationRequest = default!;
-            await _instance.ApiInvitationsIdInvitationPostAsync(id, updateInvitationRequest);
+            AddInvitationRequest addInvitationRequest = default!;
+            var response = await _instance.ApiInvitationsIdAddUserInvitationPostAsync(id, addInvitationRequest);
+            var model = response.Created();
+            Assert.IsType<string>(model);
+        }
+
+        /// <summary>
+        /// Test ApiInvitationsIdGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiInvitationsIdGetAsyncTest()
+        {
+            string id = default!;
+            var response = await _instance.ApiInvitationsIdGetAsync(id);
+            var model = response.Ok();
+            Assert.IsType<InvitedUserResponse>(model);
+        }
+
+        /// <summary>
+        /// Test ApiInvitationsInvitationIdRejectPost
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiInvitationsInvitationIdRejectPostAsyncTest()
+        {
+            string invitationId = default!;
+            await _instance.ApiInvitationsInvitationIdRejectPostAsync(invitationId);
+        }
+
+        /// <summary>
+        /// Test ApiInvitationsInvitationIdSendEmailPost
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiInvitationsInvitationIdSendEmailPostAsyncTest()
+        {
+            string invitationId = default!;
+            SendInvitationEmailRequest sendInvitationEmailRequest = default!;
+            await _instance.ApiInvitationsInvitationIdSendEmailPostAsync(invitationId, sendInvitationEmailRequest);
         }
     }
 }

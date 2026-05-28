@@ -51,6 +51,20 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
+        /// Test ApiOrganisationsExistsByDetailsGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiOrganisationsExistsByDetailsGetAsyncTest()
+        {
+            Client.Option<string> name = default!;
+            Client.Option<string> postCode = default!;
+            Client.Option<string> country = default!;
+            var response = await _instance.ApiOrganisationsExistsByDetailsGetAsync(name, postCode, country);
+            var model = response.Ok();
+            Assert.IsType<bool>(model);
+        }
+
+        /// <summary>
         /// Test ApiOrganisationsOrgIdEditOrgDetailsPatch
         /// </summary>
         [Fact (Skip = "not implemented")]
@@ -58,9 +72,46 @@ namespace HNTAS.Api.Client.Test.Api
         {
             string orgId = default!;
             OrganisationRequest organisationRequest = default!;
-            var response = await _instance.ApiOrganisationsOrgIdEditOrgDetailsPatchAsync(orgId, organisationRequest);
+            Client.Option<string> userId = default!;
+            var response = await _instance.ApiOrganisationsOrgIdEditOrgDetailsPatchAsync(orgId, organisationRequest, userId);
             var model = response.Ok();
             Assert.IsType<User>(model);
+        }
+
+        /// <summary>
+        /// Test ApiOrganisationsOrgIdGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiOrganisationsOrgIdGetAsyncTest()
+        {
+            string orgId = default!;
+            var response = await _instance.ApiOrganisationsOrgIdGetAsync(orgId);
+            var model = response.Ok();
+            Assert.IsType<Organisation>(model);
+        }
+
+        /// <summary>
+        /// Test ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchAsyncTest()
+        {
+            string orgId = default!;
+            string userId = default!;
+            string heatNetworkId = default!;
+            await _instance.ApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchAsync(orgId, userId, heatNetworkId);
+        }
+
+        /// <summary>
+        /// Test ApiOrganisationsSearchGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiOrganisationsSearchGetAsyncTest()
+        {
+            Client.Option<string> term = default!;
+            var response = await _instance.ApiOrganisationsSearchGetAsync(term);
+            var model = response.Ok();
+            Assert.IsType<Organisation>(model);
         }
     }
 }

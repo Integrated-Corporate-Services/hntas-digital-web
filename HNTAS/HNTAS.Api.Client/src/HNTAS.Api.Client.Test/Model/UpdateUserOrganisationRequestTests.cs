@@ -54,6 +54,24 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Organisation'
+        /// </summary>
+        [Fact]
+        public void OrganisationTest()
+        {
+            // TODO unit test for the property 'Organisation'
+        }
+
+        /// <summary>
+        /// Test the property 'Role'
+        /// </summary>
+        [Fact]
+        public void RoleTest()
+        {
+            // TODO unit test for the property 'Role'
+        }
+
+        /// <summary>
         /// Test the property 'FirstName'
         /// </summary>
         [Fact]
@@ -72,15 +90,6 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'PreferredContactType'
-        /// </summary>
-        [Fact]
-        public void PreferredContactTypeTest()
-        {
-            // TODO unit test for the property 'PreferredContactType'
-        }
-
-        /// <summary>
         /// Test the property 'JobTitle'
         /// </summary>
         [Fact]
@@ -90,21 +99,12 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Role'
+        /// Test the property 'PreferredContactType'
         /// </summary>
         [Fact]
-        public void RoleTest()
+        public void PreferredContactTypeTest()
         {
-            // TODO unit test for the property 'Role'
-        }
-
-        /// <summary>
-        /// Test the property 'Organisation'
-        /// </summary>
-        [Fact]
-        public void OrganisationTest()
-        {
-            // TODO unit test for the property 'Organisation'
+            // TODO unit test for the property 'PreferredContactType'
         }
 
         /// <summary>

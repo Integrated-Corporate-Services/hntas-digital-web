@@ -51,6 +51,29 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
+        /// Test ApiUsersAcceptInvitationPatch
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersAcceptInvitationPatchAsyncTest()
+        {
+            InvitedUserRequest invitedUserRequest = default!;
+            var response = await _instance.ApiUsersAcceptInvitationPatchAsync(invitedUserRequest);
+            var model = response.Ok();
+            Assert.IsType<string>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersContributorRolesGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersContributorRolesGetAsyncTest()
+        {
+            var response = await _instance.ApiUsersContributorRolesGetAsync();
+            var model = response.Ok();
+            Assert.IsType<List<EnumItemResponse>>(model);
+        }
+
+        /// <summary>
         /// Test ApiUsersGet
         /// </summary>
         [Fact (Skip = "not implemented")]
@@ -58,7 +81,19 @@ namespace HNTAS.Api.Client.Test.Api
         {
             var response = await _instance.ApiUsersGetAsync();
             var model = response.Ok();
-            Assert.IsType<List<User>>(model);
+            Assert.IsType<List<UserResponse>>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersHeatNetworkHnIdRolesGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersHeatNetworkHnIdRolesGetAsyncTest()
+        {
+            string hnId = default!;
+            var response = await _instance.ApiUsersHeatNetworkHnIdRolesGetAsync(hnId);
+            var model = response.Ok();
+            Assert.IsType<List<UserRoleDetailResponse>>(model);
         }
 
         /// <summary>
@@ -78,10 +113,21 @@ namespace HNTAS.Api.Client.Test.Api
         public async Task ApiUsersIdOrgDetailsPatchAsyncTest()
         {
             string id = default!;
-            UpdateOrgDetailsAndRolesRequest updateOrgDetailsAndRolesRequest = default!;
-            var response = await _instance.ApiUsersIdOrgDetailsPatchAsync(id, updateOrgDetailsAndRolesRequest);
+            UpdateUserOrganisationRequest updateUserOrganisationRequest = default!;
+            var response = await _instance.ApiUsersIdOrgDetailsPatchAsync(id, updateUserOrganisationRequest);
             var model = response.Ok();
             Assert.IsType<User>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersIdUserDetailsPatch
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersIdUserDetailsPatchAsyncTest()
+        {
+            string id = default!;
+            UpdateUserDetailsRequest updateUserDetailsRequest = default!;
+            await _instance.ApiUsersIdUserDetailsPatchAsync(id, updateUserDetailsRequest);
         }
 
         /// <summary>
@@ -93,7 +139,126 @@ namespace HNTAS.Api.Client.Test.Api
             InitialUserRegistrationRequest initialUserRegistrationRequest = default!;
             var response = await _instance.ApiUsersInitialEntryPostAsync(initialUserRegistrationRequest);
             var model = response.Created();
-            Assert.IsType<User>(model);
+            Assert.IsType<string>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersIsActiveUserEmailIdGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersIsActiveUserEmailIdGetAsyncTest()
+        {
+            string emailId = default!;
+            var response = await _instance.ApiUsersIsActiveUserEmailIdGetAsync(emailId);
+            var model = response.Ok();
+            Assert.IsType<bool>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersIsRpUserEmailIdGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersIsRpUserEmailIdGetAsyncTest()
+        {
+            string emailId = default!;
+            var response = await _instance.ApiUsersIsRpUserEmailIdGetAsync(emailId);
+            var model = response.Ok();
+            Assert.IsType<bool>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersManagedUsersGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersManagedUsersGetAsyncTest()
+        {
+            Client.Option<string> userId = default!;
+            Client.Option<bool> networkManagersOnly = default!;
+            var response = await _instance.ApiUsersManagedUsersGetAsync(userId, networkManagersOnly);
+            var model = response.Ok();
+            Assert.IsType<List<ManagedUserResponse>>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersOrganisationExistsGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersOrganisationExistsGetAsyncTest()
+        {
+            Client.Option<string> companiesHouseNumber = default!;
+            var response = await _instance.ApiUsersOrganisationExistsGetAsync(companiesHouseNumber);
+            var model = response.Ok();
+            Assert.IsType<bool>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersOrganisationOrganisationIdGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersOrganisationOrganisationIdGetAsyncTest()
+        {
+            string organisationId = default!;
+            var response = await _instance.ApiUsersOrganisationOrganisationIdGetAsync(organisationId);
+            var model = response.Ok();
+            Assert.IsType<List<UserResponse>>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersRegisterOrgAndLinkUserIdPost
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersRegisterOrgAndLinkUserIdPostAsyncTest()
+        {
+            string userId = default!;
+            OrganisationRequest organisationRequest = default!;
+            var response = await _instance.ApiUsersRegisterOrgAndLinkUserIdPostAsync(userId, organisationRequest);
+            var model = response.Created();
+            Assert.IsType<Organisation>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersRegisteredUsersGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersRegisteredUsersGetAsyncTest()
+        {
+            Client.Option<string> userId = default!;
+            var response = await _instance.ApiUsersRegisteredUsersGetAsync(userId);
+            var model = response.Ok();
+            Assert.IsType<List<UserResponse>>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersUpdateOrgidPatch
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersUpdateOrgidPatchAsyncTest()
+        {
+            UpdateUserOrgIdRequest updateUserOrgIdRequest = default!;
+            await _instance.ApiUsersUpdateOrgidPatchAsync(updateUserOrgIdRequest);
+        }
+
+        /// <summary>
+        /// Test ApiUsersUserDetailsByIdGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersUserDetailsByIdGetAsyncTest()
+        {
+            Client.Option<string> id = default!;
+            var response = await _instance.ApiUsersUserDetailsByIdGetAsync(id);
+            var model = response.Ok();
+            Assert.IsType<UserDetailsResponse>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersUserRolesGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersUserRolesGetAsyncTest()
+        {
+            var response = await _instance.ApiUsersUserRolesGetAsync();
+            var model = response.Ok();
+            Assert.IsType<List<EnumItemResponse>>(model);
         }
 
         /// <summary>
@@ -105,7 +270,19 @@ namespace HNTAS.Api.Client.Test.Api
             string id = default!;
             var response = await _instance.GetUserByIdAsync(id);
             var model = response.Ok();
-            Assert.IsType<User>(model);
+            Assert.IsType<UserResponse>(model);
+        }
+
+        /// <summary>
+        /// Test GetUserByOneLoginId
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task GetUserByOneLoginIdAsyncTest()
+        {
+            string oneLoginId = default!;
+            var response = await _instance.GetUserByOneLoginIdAsync(oneLoginId);
+            var model = response.Ok();
+            Assert.IsType<UserResponse>(model);
         }
     }
 }
