@@ -4449,6 +4449,7 @@ components:
           noOfOtherDistrictNetwork: 7
           noOfDomesticConsumer: 5
           noOfCommunalBuilding: 5
+        orgId: orgId
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
@@ -4485,6 +4486,8 @@ components:
           type: string
         hnId:
           nullable: true
+          type: string
+        orgId:
           type: string
         name:
           type: string
@@ -5039,6 +5042,7 @@ components:
           noOfOtherDistrictNetwork: 7
           noOfDomesticConsumer: 5
           noOfCommunalBuilding: 5
+        orgId: orgId
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
@@ -5071,6 +5075,8 @@ components:
         uHnId:
           type: string
         hnId:
+          type: string
+        orgId:
           type: string
         ecDetails:
           $ref: "#/components/schemas/ECDetails"
@@ -7562,6 +7568,9 @@ components:
         oneLoginId: oneLoginId
         emailId: emailId
         landlineNumber: landlineNumber
+        contributingOrganisations:
+        - contributingOrganisations
+        - contributingOrganisations
         orgId: orgId
         contactNumberExtension: contactNumberExtension
         firstName: firstName
@@ -7612,6 +7621,11 @@ components:
         createdAt:
           format: date-time
           type: string
+        contributingOrganisations:
+          items:
+            type: string
+          nullable: true
+          type: array
       type: object
     UserDetailsResponse:
       example:
@@ -7638,6 +7652,9 @@ components:
           orgId: orgId
         emailId: emailId
         landlineNumber: landlineNumber
+        contributingOrganisations:
+        - contributingOrganisations
+        - contributingOrganisations
         contactNumberExtension: contactNumberExtension
         firstName: firstName
         heatNetworks:
@@ -7711,6 +7728,11 @@ components:
             $ref: "#/components/schemas/HeatNetworkUserResponse"
           nullable: true
           type: array
+        contributingOrganisations:
+          items:
+            type: string
+          nullable: true
+          type: array
       type: object
     UserResponse:
       example:
@@ -7730,6 +7752,9 @@ components:
         fullName: fullName
         emailId: emailId
         landlineNumber: landlineNumber
+        contributingOrganisations:
+        - contributingOrganisations
+        - contributingOrganisations
         contactNumberExtension: contactNumberExtension
         orgId: orgId
         firstName: firstName
@@ -7778,6 +7803,11 @@ components:
         hnRoleMappings:
           items:
             $ref: "#/components/schemas/HnRoleMapping"
+          nullable: true
+          type: array
+        contributingOrganisations:
+          items:
+            type: string
           nullable: true
           type: array
       type: object

@@ -6,12 +6,12 @@ Create a config.yaml file similar to what is below, then run the following power
 
 ```yaml
 generatorName: csharp
-inputSpec: C:\Users\ManokaranSivasankar(\source\repos\hntas-digital-web\HNTAS\HNTAS.Core.Api.json
+inputSpec: C:\Users\MohantySushree(Energ\source\repos\hntas-digital-web\HNTAS\HNTAS.Core.Api.json
 outputDir: out
 
 # https://openapi-generator.tech/docs/generators/csharp
 additionalProperties:
-  packageGuid: '{353CB4FB-1025-4CF8-B913-344332FB85EB}'
+  packageGuid: '{F95822FD-A776-42CE-8FCF-8193FCF99059}'
 
 # https://openapi-generator.tech/docs/integrations/#github-integration
 # gitHost:
