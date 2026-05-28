@@ -5558,6 +5558,9 @@
             "type": "string",
             "nullable": true
           },
+          "orgId": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
@@ -5858,6 +5861,9 @@
             "type": "string"
           },
           "hnId": {
+            "type": "string"
+          },
+          "orgId": {
             "type": "string"
           },
           "ecDetails": {
@@ -7807,6 +7813,13 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "contributingOrganisations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
           }
         }
       },
@@ -7870,6 +7883,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/HeatNetworkUserResponse"
+            },
+            "nullable": true
+          },
+          "contributingOrganisations": {
+            "type": "array",
+            "items": {
+              "type": "string"
             },
             "nullable": true
           }
@@ -7936,6 +7956,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/HnRoleMapping"
+            },
+            "nullable": true
+          },
+          "contributingOrganisations": {
+            "type": "array",
+            "items": {
+              "type": "string"
             },
             "nullable": true
           }

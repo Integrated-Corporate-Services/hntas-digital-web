@@ -63,12 +63,30 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Quantity'
+        /// Test the property 'Count'
         /// </summary>
         [Fact]
-        public void QuantityTest()
+        public void CountTest()
         {
-            // TODO unit test for the property 'Quantity'
+            // TODO unit test for the property 'Count'
+        }
+
+        /// <summary>
+        /// Test the property 'Locations'
+        /// </summary>
+        [Fact]
+        public void LocationsTest()
+        {
+            // TODO unit test for the property 'Locations'
+        }
+
+        /// <summary>
+        /// Test the property 'Documents'
+        /// </summary>
+        [Fact]
+        public void DocumentsTest()
+        {
+            // TODO unit test for the property 'Documents'
         }
     }
 }

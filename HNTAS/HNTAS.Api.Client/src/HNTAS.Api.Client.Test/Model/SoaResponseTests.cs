@@ -63,6 +63,15 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'JourneyData'
+        /// </summary>
+        [Fact]
+        public void JourneyDataTest()
+        {
+            // TODO unit test for the property 'JourneyData'
+        }
+
+        /// <summary>
         /// Test the property 'CreatedAt'
         /// </summary>
         [Fact]

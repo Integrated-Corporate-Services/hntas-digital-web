@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **Id** | **string** |  | [optional] 
 **UHnId** | **string** |  | [optional] 
 **HnId** | **string** |  | [optional] 
+**OrgId** | **string** |  | [optional] 
 **Name** | **string** |  | [optional] 
 **AdditionalDescription** | **string** |  | [optional] 
 **Address** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 

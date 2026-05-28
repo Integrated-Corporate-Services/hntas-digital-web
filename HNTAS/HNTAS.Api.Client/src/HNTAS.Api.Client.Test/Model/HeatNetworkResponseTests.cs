@@ -54,12 +54,48 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Id'
+        /// </summary>
+        [Fact]
+        public void IdTest()
+        {
+            // TODO unit test for the property 'Id'
+        }
+
+        /// <summary>
+        /// Test the property 'UHnId'
+        /// </summary>
+        [Fact]
+        public void UHnIdTest()
+        {
+            // TODO unit test for the property 'UHnId'
+        }
+
+        /// <summary>
         /// Test the property 'HnId'
         /// </summary>
         [Fact]
         public void HnIdTest()
         {
             // TODO unit test for the property 'HnId'
+        }
+
+        /// <summary>
+        /// Test the property 'EcDetails'
+        /// </summary>
+        [Fact]
+        public void EcDetailsTest()
+        {
+            // TODO unit test for the property 'EcDetails'
+        }
+
+        /// <summary>
+        /// Test the property 'Address'
+        /// </summary>
+        [Fact]
+        public void AddressTest()
+        {
+            // TODO unit test for the property 'Address'
         }
 
         /// <summary>
@@ -72,12 +108,111 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Location'
+        /// Test the property 'AdditionalDescription'
         /// </summary>
         [Fact]
-        public void LocationTest()
+        public void AdditionalDescriptionTest()
         {
-            // TODO unit test for the property 'Location'
+            // TODO unit test for the property 'AdditionalDescription'
+        }
+
+        /// <summary>
+        /// Test the property 'Pathway'
+        /// </summary>
+        [Fact]
+        public void PathwayTest()
+        {
+            // TODO unit test for the property 'Pathway'
+        }
+
+        /// <summary>
+        /// Test the property 'Soa'
+        /// </summary>
+        [Fact]
+        public void SoaTest()
+        {
+            // TODO unit test for the property 'Soa'
+        }
+
+        /// <summary>
+        /// Test the property 'CreatedBy'
+        /// </summary>
+        [Fact]
+        public void CreatedByTest()
+        {
+            // TODO unit test for the property 'CreatedBy'
+        }
+
+        /// <summary>
+        /// Test the property 'CreatedAt'
+        /// </summary>
+        [Fact]
+        public void CreatedAtTest()
+        {
+            // TODO unit test for the property 'CreatedAt'
+        }
+
+        /// <summary>
+        /// Test the property 'Phase'
+        /// </summary>
+        [Fact]
+        public void PhaseTest()
+        {
+            // TODO unit test for the property 'Phase'
+        }
+
+        /// <summary>
+        /// Test the property 'HeatNetworkType'
+        /// </summary>
+        [Fact]
+        public void HeatNetworkTypeTest()
+        {
+            // TODO unit test for the property 'HeatNetworkType'
+        }
+
+        /// <summary>
+        /// Test the property 'HeatNetworkConnections'
+        /// </summary>
+        [Fact]
+        public void HeatNetworkConnectionsTest()
+        {
+            // TODO unit test for the property 'HeatNetworkConnections'
+        }
+
+        /// <summary>
+        /// Test the property 'NetworkElements'
+        /// </summary>
+        [Fact]
+        public void NetworkElementsTest()
+        {
+            // TODO unit test for the property 'NetworkElements'
+        }
+
+        /// <summary>
+        /// Test the property 'MeteringAndMonitoringStrategy'
+        /// </summary>
+        [Fact]
+        public void MeteringAndMonitoringStrategyTest()
+        {
+            // TODO unit test for the property 'MeteringAndMonitoringStrategy'
+        }
+
+        /// <summary>
+        /// Test the property 'AssessmentPlan'
+        /// </summary>
+        [Fact]
+        public void AssessmentPlanTest()
+        {
+            // TODO unit test for the property 'AssessmentPlan'
+        }
+
+        /// <summary>
+        /// Test the property 'DesignConstructionLog'
+        /// </summary>
+        [Fact]
+        public void DesignConstructionLogTest()
+        {
+            // TODO unit test for the property 'DesignConstructionLog'
         }
     }
 }
