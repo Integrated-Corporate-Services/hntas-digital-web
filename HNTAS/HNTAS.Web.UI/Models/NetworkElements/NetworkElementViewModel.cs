@@ -23,7 +23,7 @@ namespace HNTAS.Web.UI.Models.NetworkElements
     public class AssessorSelectElementsViewModel
     {
         public List<AssessorSelectElementsOption>? ElementOptions { get; set; } = new();
-        [MustHaveOneItem(ErrorMessage = "Select at least one element before continuing.")]
+        //[MustHaveOneItem(ErrorMessage = "Select at least one element before continuing.")]
         public List<ElementTypeInShort>? SelectedElementIds { get; set; } = new();
         public List<string>? SelectedElementLabel { get; set; } = new();
     }
@@ -32,7 +32,7 @@ namespace HNTAS.Web.UI.Models.NetworkElements
     {
         public string Label { get; set; } = null!;
         public ElementTypeInShort? ElementType { get; set; }
-        public bool IsDisabled { get; set; }
+        public bool IsHidden { get; set; }
         //public string AssignedAssessorName { get; set; } = null!;
     }
 

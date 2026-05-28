@@ -4,6 +4,8 @@
 
 @{
     ViewData["Title"] = $"Will they be assessing other elements in {ViewBag.StageTitle}?";
+    // Fix: Pre-filter non-hidden elements into a list to avoid nullable method group and nullability issues
+    var visibleElementOptions = Model.ElementOptions?.Where(a => !a.IsHidden).ToList() ?? new List<AssessorSelectElementsOption>();
 }
 
 <div class="govuk-width-container">
@@ -31,9 +33,9 @@
                             </p>
                         }
                         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                            @for (int i = 0; i < Model.ElementOptions?.Count; i++)
+                            @for (int i = 0; i < visibleElementOptions.Count; i++)
                             {
-                                var item = Model.ElementOptions[i];
+                                var item = visibleElementOptions[i];
                                 var checkboxId = i == 0 ? "selectedelementids" : $"selectedelementids_{i}";
                                 var isChecked = Model.SelectedElementIds?.Contains((ElementTypeInShort)item.ElementType!) ?? false;
                                 var hintId = $"{checkboxId}-item-hint";

@@ -90,6 +90,7 @@
         public const string AssessorElementSelectionOverviewModelSessionKey = "AssessorElementSelectionOverviewModelSessionKey";
         public const string SoaStageOfAssessorOnboarding = "SoaStageOfAssessorOnboarding";
         public const string SoaStageTitleOfAssessorOnboarding = "SoaStageTitleOfAssessorOnboarding";
+        public const string SoaElementTypeOfAssessorOnboarding = "SoaElementTypeOfAssessorOnboarding";
         public const string DefaultSelectedAssessor = "DefaultSelectedAssessor";
         public const string AssessorSearchResultsSessionKey = "AssessorSearchResultsSessionKey";
         public const string SubstationViewModelKey = "SubstationViewModelKey";

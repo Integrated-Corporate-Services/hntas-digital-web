@@ -164,7 +164,7 @@
                                                     @assessorName
                                                 </span> *@
                                                 @* <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, selectedAssessor = fullNameWithEmail, selectedAssessorFirstName = element.AssessorFirstName, selectedAssessorLastName = element.AssessorLastName, selectedAssessorEmail = element.AssessorEmailId })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a> *@
-                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, stageTitle = stage.Title })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
+                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, stageTitle = stage.Title, elementType = element.ElementType, })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
                                             </td>
                                         </tr>                                        
                                     }
