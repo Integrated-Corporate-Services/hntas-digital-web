@@ -70,5 +70,41 @@ namespace HNTAS.Api.Client.Test.Model
         {
             // TODO unit test for the property 'FullName'
         }
+
+        /// <summary>
+        /// Test the property 'FirstName'
+        /// </summary>
+        [Fact]
+        public void FirstNameTest()
+        {
+            // TODO unit test for the property 'FirstName'
+        }
+
+        /// <summary>
+        /// Test the property 'LastName'
+        /// </summary>
+        [Fact]
+        public void LastNameTest()
+        {
+            // TODO unit test for the property 'LastName'
+        }
+
+        /// <summary>
+        /// Test the property 'Email'
+        /// </summary>
+        [Fact]
+        public void EmailTest()
+        {
+            // TODO unit test for the property 'Email'
+        }
+
+        /// <summary>
+        /// Test the property 'FullNameWithEmail'
+        /// </summary>
+        [Fact]
+        public void FullNameWithEmailTest()
+        {
+            // TODO unit test for the property 'FullNameWithEmail'
+        }
     }
 }

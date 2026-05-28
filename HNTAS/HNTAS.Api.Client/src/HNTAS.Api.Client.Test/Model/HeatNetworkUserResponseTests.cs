@@ -72,12 +72,21 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Location'
+        /// Test the property 'EcDetails'
         /// </summary>
         [Fact]
-        public void LocationTest()
+        public void EcDetailsTest()
         {
-            // TODO unit test for the property 'Location'
+            // TODO unit test for the property 'EcDetails'
+        }
+
+        /// <summary>
+        /// Test the property 'Address'
+        /// </summary>
+        [Fact]
+        public void AddressTest()
+        {
+            // TODO unit test for the property 'Address'
         }
     }
 }

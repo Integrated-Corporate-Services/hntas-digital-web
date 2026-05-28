@@ -108,21 +108,21 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'IsUpstreamDistrictHeatNetworkConnections'
+        /// Test the property 'IsOtherDistrictNetwork'
         /// </summary>
         [Fact]
-        public void IsUpstreamDistrictHeatNetworkConnectionsTest()
+        public void IsOtherDistrictNetworkTest()
         {
-            // TODO unit test for the property 'IsUpstreamDistrictHeatNetworkConnections'
+            // TODO unit test for the property 'IsOtherDistrictNetwork'
         }
 
         /// <summary>
-        /// Test the property 'NoOfUpstreamDistrictHeatNetworkConnections'
+        /// Test the property 'NoOfOtherDistrictNetwork'
         /// </summary>
         [Fact]
-        public void NoOfUpstreamDistrictHeatNetworkConnectionsTest()
+        public void NoOfOtherDistrictNetworkTest()
         {
-            // TODO unit test for the property 'NoOfUpstreamDistrictHeatNetworkConnections'
+            // TODO unit test for the property 'NoOfOtherDistrictNetwork'
         }
     }
 }

@@ -51,15 +51,15 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-        /// Test ApiAuditHeatNetworkHnIdGet
+        /// Test ApiAuditHeatNetworkAuditLogsGet
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiAuditHeatNetworkHnIdGetAsyncTest()
+        public async Task ApiAuditHeatNetworkAuditLogsGetAsyncTest()
         {
-            string hnId = default!;
-            var response = await _instance.ApiAuditHeatNetworkHnIdGetAsync(hnId);
+            AuditLogRequest auditLogRequest = default!;
+            var response = await _instance.ApiAuditHeatNetworkAuditLogsGetAsync(auditLogRequest);
             var model = response.Ok();
-            Assert.IsType<List<AuditLogResponse>>(model);
+            Assert.IsType<AuditLogResponse>(model);
         }
     }
 }
