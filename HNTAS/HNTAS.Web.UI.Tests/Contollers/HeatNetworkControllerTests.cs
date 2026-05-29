@@ -64,24 +64,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
                     ctx.Action == action && ctx.Controller == controller)))
                 .Returns($"{controller}/{action}");
             return urlHelperMock;
-        }
-
-
-        //[Fact]
-        //public async Task Details_WhenResponseIsNull_ReturnsBadRequest()
-        //{
-        //    // Arrange
-        //    var hnid = "hn123";
-
-        //    _heatNetworkServiceMock.Setup(x => x.GetAsync(hnid.ToUpper()))
-        //        .ReturnsAsync((HeatNetworkResponse)null);
-        //    _controller.Url = SetUpBackLink("HeatNetworks", "UserManagement").Object;
-
-        //    // Act
-        //    var result = await _controller.Details(hnid);
-
-        //    // Assert
-        //    Assert.IsType<BadRequestResult>(result);
-        //}
+        }        
     }
 }
