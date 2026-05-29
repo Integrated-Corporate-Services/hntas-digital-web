@@ -62,6 +62,14 @@ namespace HNTAS.Web.UI.Tests.Contollers
             mockUserService
                 .Setup(u => u.GetUserDetails(userId))
                 .ReturnsAsync(userDetails);
+            mockUserService.Setup(u => u.GetUserById(userId)).ReturnsAsync(new UserResponse {
+                Id = userId,
+                Roles = new List<UserRole> { UserRole.ResponsiblePerson },
+                HnRoleMappings = new List<HnRoleMapping>
+                {
+                    new HnRoleMapping { HnId = "hn-1", Role = ContributorRole.ResponsiblePerson }
+                }
+            });
 
             var controller = new UserManagementController(
                 mockUserService.Object,
