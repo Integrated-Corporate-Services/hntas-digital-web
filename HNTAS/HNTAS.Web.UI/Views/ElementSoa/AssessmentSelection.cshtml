@@ -66,7 +66,7 @@
                                 optionIdList.Add(optionId);
                                 var hintId = $"{optionId}-item-hint";
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="@optionId" name="SelectedAssessmentOption" type="radio" value="@option.Label" disabled="@option.IsDisabled" @( Model.SelectedAssessmentOption == option.Label ? "checked" : "")>
+                                    <input class="govuk-radios__input" id="@optionId" name="SelectedAssessmentOption" type="radio" value="@option.Label" @( Model.SelectedAssessmentOption == option.Label ? "checked" : "")>
                                     <label class="govuk-label govuk-radios__label" for="@optionId">
                                         @option.Label<br />
                                     </label>

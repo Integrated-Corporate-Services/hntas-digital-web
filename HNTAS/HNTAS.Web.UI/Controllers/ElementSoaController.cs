@@ -919,49 +919,49 @@ namespace HNTAS.Web.UI.Controllers
             var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
             var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
-            var existingElementSoas = heatNetworkData?.NetworkElements?.ElementsGroup?.Where(a => a.ElementType == elementType).FirstOrDefault()!.SoaStages;
-            if (existingElementSoas != null)
-            {
-                var existingElementSoa = existingElementSoas.Where(s => s.StageId.HasValue && (SoaStage)s.StageId!.Value == stage).FirstOrDefault()!;
+            //var existingElementSoas = heatNetworkData?.NetworkElements?.ElementsGroup?.Where(a => a.ElementType == elementType).FirstOrDefault()!.SoaStages;
+            //if (existingElementSoas != null)
+            //{
+            //    var existingElementSoa = existingElementSoas.Where(s => s.StageId.HasValue && (SoaStage)s.StageId!.Value == stage).FirstOrDefault()!;
 
-                if (existingElementSoa != null && existingElementSoa.Assessors != null)
-                {
-                    var isReviewOrDecesion = existingElementSoa.Assessors.Any(a => a.Assessment == AssessmentConstants.Review || a.Assessment == AssessmentConstants.Decision);
-                    if (isReviewOrDecesion)
-                    {
-                        model.AssessmentOptions.ForEach(option =>
-                        {
-                            if (option.Label == AssessmentConstants.ReviewAndDecision)
-                            {
-                                option.IsDisabled = true;
-                            }
-                        });
-                    }
+            //    if (existingElementSoa != null && existingElementSoa.Assessors != null)
+            //    {
+            //        var isReviewOrDecesion = existingElementSoa.Assessors.Any(a => a.Assessment == AssessmentConstants.Review || a.Assessment == AssessmentConstants.Decision);
+            //        if (isReviewOrDecesion)
+            //        {
+            //            model.AssessmentOptions.ForEach(option =>
+            //            {
+            //                if (option.Label == AssessmentConstants.ReviewAndDecision)
+            //                {
+            //                    option.IsDisabled = true;
+            //                }
+            //            });
+            //        }
 
-                    var isReviewAndDecesion = existingElementSoa.Assessors.Any(a => a.Assessment == AssessmentConstants.ReviewAndDecision);
-                    if (isReviewAndDecesion)
-                    {
-                        model.AssessmentOptions.ForEach(option =>
-                        {
-                            if (option.Label == AssessmentConstants.Review || option.Label == AssessmentConstants.Decision)
-                            {
-                                option.IsDisabled = true;
-                            }
-                        });
-                    }
+            //        var isReviewAndDecesion = existingElementSoa.Assessors.Any(a => a.Assessment == AssessmentConstants.ReviewAndDecision);
+            //        if (isReviewAndDecesion)
+            //        {
+            //            model.AssessmentOptions.ForEach(option =>
+            //            {
+            //                if (option.Label == AssessmentConstants.Review || option.Label == AssessmentConstants.Decision)
+            //                {
+            //                    option.IsDisabled = true;
+            //                }
+            //            });
+            //        }
 
-                    foreach (var existingElementAssessor in existingElementSoa.Assessors!)
-                    {
-                        model.AssessmentOptions.ForEach(option =>
-                        {
-                            if (option.Label == existingElementAssessor.Assessment)
-                            {
-                                option.IsDisabled = true;
-                            }
-                        });
-                    }
-                }
-            }
+            //        foreach (var existingElementAssessor in existingElementSoa.Assessors!)
+            //        {
+            //            model.AssessmentOptions.ForEach(option =>
+            //            {
+            //                if (option.Label == existingElementAssessor.Assessment)
+            //                {
+            //                    option.IsDisabled = true;
+            //                }
+            //            });
+            //        }
+            //    }
+            //}
 
             return model;
         }
