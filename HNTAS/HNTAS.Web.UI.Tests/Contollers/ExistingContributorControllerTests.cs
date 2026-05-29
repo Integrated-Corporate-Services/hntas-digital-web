@@ -92,42 +92,42 @@ namespace HNTAS.Web.UI.Tests.Contollers
             Assert.Equal(organisationName, _controller.ViewBag.OrganisationName);
         }
 
-        [Fact(Skip = "// TODO(Sushree) - this test case doesn't pass yet, mocking needs to be fixed")]
-        public async Task ChooseUserAsync_ReturnsView_WithError_WhenNoContributorsFound()
-        {
-            // Arrange
-            var userId = "User123";
-            var workflowState = new WorkflowState<AddExistingContributorWorkflowModel>
-            {
-                Data = new AddExistingContributorWorkflowModel
-                {
-                    ChooseContributorModel = new ChooseContributorModel()
-                }
-            };
-            _mockWorkflowManager.Setup(w => w.GetState<AddExistingContributorWorkflowModel>()).Returns(workflowState);
-            _mockSessionHelper.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey)).Returns(userId);
-            _mockUserService.Setup(u => u.GetRegisteredUsersAsync(userId)).ReturnsAsync(new List<UserResponse>()); // Mock API response as empty
-            //_controller.Url = TestingUtility.SetUpBackLink("AddContributor", "UserManagement").Object;
+        //[Fact(Skip = "// TODO(Sushree) - this test case doesn't pass yet, mocking needs to be fixed")]
+        //public async Task ChooseUserAsync_ReturnsView_WithError_WhenNoContributorsFound()
+        //{
+        //    // Arrange
+        //    var userId = "User123";
+        //    var workflowState = new WorkflowState<AddExistingContributorWorkflowModel>
+        //    {
+        //        Data = new AddExistingContributorWorkflowModel
+        //        {
+        //            ChooseContributorModel = new ChooseContributorModel()
+        //        }
+        //    };
+        //    _mockWorkflowManager.Setup(w => w.GetState<AddExistingContributorWorkflowModel>()).Returns(workflowState);
+        //    _mockSessionHelper.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey)).Returns(userId);
+        //    _mockUserService.Setup(u => u.GetRegisteredUsersAsync(userId)).ReturnsAsync(new List<UserResponse>()); // Mock API response as empty
+        //    //_controller.Url = TestingUtility.SetUpBackLink("AddContributor", "UserManagement").Object;
 
-            // Act
-            var result = await _controller.ChooseUserAsync();
+        //    // Act
+        //    var result = await _controller.ChooseUserAsync();
 
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsType<ChooseContributorModel>(viewResult.Model);
+        //    // Assert
+        //    var viewResult = Assert.IsType<ViewResult>(result);
+        //    var model = Assert.IsType<ChooseContributorModel>(viewResult.Model);
 
-            Assert.True(viewResult.ViewData.ContainsKey("ErrorMessage"));
-            Assert.Equal("No users found. Please contact support.", viewResult.ViewData["ErrorMessage"]);
-            Assert.Empty(model.Contributors);
-            _mockLogger.Verify(
-            l => l.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("No contributors found for the current user.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Once);
-        }        
+        //    Assert.True(viewResult.ViewData.ContainsKey("ErrorMessage"));
+        //    Assert.Equal("No users found. Please contact support.", viewResult.ViewData["ErrorMessage"]);
+        //    Assert.Empty(model.Contributors);
+        //    _mockLogger.Verify(
+        //    l => l.Log(
+        //        LogLevel.Error,
+        //        It.IsAny<EventId>(),
+        //        It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("No contributors found for the current user.")),
+        //        It.IsAny<Exception>(),
+        //        It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+        //    Times.Once);
+        //}        
 
         [Fact]
         public async Task SaveChooseUserAsync_RedirectsToChooseHeatNetwork_WhenModelIsValid()
