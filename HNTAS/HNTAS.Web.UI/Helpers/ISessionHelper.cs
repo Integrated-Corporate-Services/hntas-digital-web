@@ -7,6 +7,7 @@
         void ClearFromSession(HttpContext httpContext, string sessionKey);
         void ClearAllFlowRelatedSessionData(HttpContext context);
         void ClearAllHNRegistrationFlowRelatedSessionData(HttpContext context);
+        void ClearAllContributoFlowRelatedSessionData(HttpContext context);
         void SetIsCheckAnswerFlow(HttpContext httpContext, bool isCheckAnswerFlow);
         bool GetIsCheckAnswerFlow(HttpContext httpContext);
     }

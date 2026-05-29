@@ -2897,8 +2897,8 @@ components:
         hnId: hnId
         emailAddress: emailAddress
         contributorRoles:
-        - DesignatedDesigner
-        - DesignatedDesigner
+        - DesignatedDutyHolder
+        - DesignatedDutyHolder
         rolesToReplace:
         - null
         - null
@@ -3745,12 +3745,8 @@ components:
       type: string
     ContributorRole:
       enum:
-      - DesignatedDesigner
-      - DesignatedContractor
-      - DesignatedOperator
-      - ContributingDesigner
-      - ContributingContractor
-      - ContributingOperator
+      - DesignatedDutyHolder
+      - Contributor
       - Assessor
       - Certifier
       - NetworkManager
@@ -4533,10 +4529,12 @@ components:
           noOfOtherDistrictNetwork: 7
           noOfDomesticConsumer: 5
           noOfCommunalBuilding: 5
+        orgId: orgId
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
         additionalDescription: additionalDescription
+        hasOwnEnergyCenter: true
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -4559,7 +4557,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: CommunalWithEnergyCentre
+        heatNetworkType: Communal
       properties:
         id:
           nullable: true
@@ -4569,6 +4567,8 @@ components:
           type: string
         hnId:
           nullable: true
+          type: string
+        orgId:
           type: string
         name:
           type: string
@@ -4585,6 +4585,8 @@ components:
           $ref: "#/components/schemas/RegistrationSource"
         heatNetworkType:
           $ref: "#/components/schemas/HeatNetworkType"
+        hasOwnEnergyCenter:
+          type: boolean
         heatNetworkConnections:
           $ref: "#/components/schemas/HeatNetworkConnections"
         networkElements:
@@ -5143,6 +5145,8 @@ components:
           noOfOtherDistrictNetwork: 7
           noOfDomesticConsumer: 5
           noOfCommunalBuilding: 5
+        orgId: orgId
+        hasOwnEnergyCentre: true
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         createdBy: createdBy
@@ -5168,13 +5172,15 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: CommunalWithEnergyCentre
+        heatNetworkType: Communal
       properties:
         id:
           type: string
         uHnId:
           type: string
         hnId:
+          type: string
+        orgId:
           type: string
         ecDetails:
           $ref: "#/components/schemas/ECDetails"
@@ -5199,6 +5205,8 @@ components:
           type: string
         heatNetworkType:
           $ref: "#/components/schemas/HeatNetworkType"
+        hasOwnEnergyCentre:
+          type: boolean
         heatNetworkConnections:
           $ref: "#/components/schemas/HeatNetworkConnections"
         networkElements:
@@ -5212,10 +5220,8 @@ components:
       type: object
     HeatNetworkType:
       enum:
-      - CommunalWithEnergyCentre
-      - CommunalWithoutEnergyCentre
-      - DistrictWithOwnMainEnergyCentre
-      - DistrictWithoutOwnMainEnergyCentre
+      - Communal
+      - District
       type: string
     HeatNetworkUserResponse:
       example:
@@ -5310,7 +5316,7 @@ components:
     HnRoleMapping:
       example:
         hnId: hnId
-        role: DesignatedDesigner
+        role: DesignatedDutyHolder
       properties:
         hnId:
           type: string
@@ -5362,8 +5368,8 @@ components:
         lastName: lastName
         inviterUserId: inviterUserId
         roles:
-        - DesignatedDesigner
-        - DesignatedDesigner
+        - DesignatedDutyHolder
+        - DesignatedDutyHolder
         fullName: fullName
         invitedHnId: invitedHnId
         firstName: firstName
@@ -6434,7 +6440,7 @@ components:
     NetworkTypeSelection2:
       example:
         otherNetworkDescription: otherNetworkDescription
-        type: CommunalWithEnergyCentre
+        type: Communal
       properties:
         type:
           $ref: "#/components/schemas/HeatNetworkType"
@@ -7721,9 +7727,9 @@ components:
         lastName: lastName
         hnRoleMappings:
         - hnId: hnId
-          role: DesignatedDesigner
+          role: DesignatedDutyHolder
         - hnId: hnId
-          role: DesignatedDesigner
+          role: DesignatedDutyHolder
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
@@ -7733,6 +7739,9 @@ components:
         oneLoginId: oneLoginId
         emailId: emailId
         landlineNumber: landlineNumber
+        contributingOrganisations:
+        - contributingOrganisations
+        - contributingOrganisations
         orgId: orgId
         contactNumberExtension: contactNumberExtension
         firstName: firstName
@@ -7783,6 +7792,11 @@ components:
         createdAt:
           format: date-time
           type: string
+        contributingOrganisations:
+          items:
+            type: string
+          nullable: true
+          type: array
       type: object
     UserDetailsResponse:
       example:
@@ -7809,6 +7823,9 @@ components:
           orgId: orgId
         emailId: emailId
         landlineNumber: landlineNumber
+        contributingOrganisations:
+        - contributingOrganisations
+        - contributingOrganisations
         contactNumberExtension: contactNumberExtension
         firstName: firstName
         heatNetworks:
@@ -7882,15 +7899,20 @@ components:
             $ref: "#/components/schemas/HeatNetworkUserResponse"
           nullable: true
           type: array
+        contributingOrganisations:
+          items:
+            type: string
+          nullable: true
+          type: array
       type: object
     UserResponse:
       example:
         lastName: lastName
         hnRoleMappings:
         - hnId: hnId
-          role: DesignatedDesigner
+          role: DesignatedDutyHolder
         - hnId: hnId
-          role: DesignatedDesigner
+          role: DesignatedDutyHolder
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
@@ -7901,6 +7923,9 @@ components:
         fullName: fullName
         emailId: emailId
         landlineNumber: landlineNumber
+        contributingOrganisations:
+        - contributingOrganisations
+        - contributingOrganisations
         contactNumberExtension: contactNumberExtension
         orgId: orgId
         firstName: firstName
@@ -7949,6 +7974,11 @@ components:
         hnRoleMappings:
           items:
             $ref: "#/components/schemas/HnRoleMapping"
+          nullable: true
+          type: array
+        contributingOrganisations:
+          items:
+            type: string
           nullable: true
           type: array
       type: object

@@ -54,48 +54,48 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Name'
+        /// Test the property 'Items'
         /// </summary>
         [Fact]
-        public void NameTest()
+        public void ItemsTest()
         {
-            // TODO unit test for the property 'Name'
+            // TODO unit test for the property 'Items'
         }
 
         /// <summary>
-        /// Test the property 'Email'
+        /// Test the property 'PageNumber'
         /// </summary>
         [Fact]
-        public void EmailTest()
+        public void PageNumberTest()
         {
-            // TODO unit test for the property 'Email'
+            // TODO unit test for the property 'PageNumber'
         }
 
         /// <summary>
-        /// Test the property 'HeatNetworkName'
+        /// Test the property 'PageSize'
         /// </summary>
         [Fact]
-        public void HeatNetworkNameTest()
+        public void PageSizeTest()
         {
-            // TODO unit test for the property 'HeatNetworkName'
+            // TODO unit test for the property 'PageSize'
         }
 
         /// <summary>
-        /// Test the property 'ElementAssigned'
+        /// Test the property 'TotalCount'
         /// </summary>
         [Fact]
-        public void ElementAssignedTest()
+        public void TotalCountTest()
         {
-            // TODO unit test for the property 'ElementAssigned'
+            // TODO unit test for the property 'TotalCount'
         }
 
         /// <summary>
-        /// Test the property 'Status'
+        /// Test the property 'TotalPages'
         /// </summary>
         [Fact]
-        public void StatusTest()
+        public void TotalPagesTest()
         {
-            // TODO unit test for the property 'Status'
+            // TODO unit test for the property 'TotalPages'
         }
     }
 }

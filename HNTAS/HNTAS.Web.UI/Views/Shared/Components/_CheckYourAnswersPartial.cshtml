@@ -15,9 +15,11 @@
                     @item.Value
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="@item.ChangeLink">
-                        @item.ChangeLinkText<span class="govuk-visually-hidden"> @item.Key</span>
-                    </a>
+                    @if (item.ChangeLink != null) {
+                        <a class="govuk-link" href="@item.ChangeLink">
+                            @item.ChangeLinkText<span class="govuk-visually-hidden"> @item.Key</span>
+                        </a>
+                    }
                 </dd>
             </div>
         }

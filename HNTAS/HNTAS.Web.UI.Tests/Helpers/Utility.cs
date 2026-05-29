@@ -190,7 +190,7 @@ namespace HNTAS.Web.UI.Tests.Helpers
                         new HnRoleMapping
                         {
                             HnId = "hn-1",
-                            Role = ContributorRole.DesignatedContractor
+                            Role = ContributorRole.DesignatedDutyHolder
                         }
                     }
                 }

@@ -72,12 +72,39 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'OrgDetails'
+        /// Test the property 'OrgId'
         /// </summary>
         [Fact]
-        public void OrgDetailsTest()
+        public void OrgIdTest()
         {
-            // TODO unit test for the property 'OrgDetails'
+            // TODO unit test for the property 'OrgId'
+        }
+
+        /// <summary>
+        /// Test the property 'FirstName'
+        /// </summary>
+        [Fact]
+        public void FirstNameTest()
+        {
+            // TODO unit test for the property 'FirstName'
+        }
+
+        /// <summary>
+        /// Test the property 'LastName'
+        /// </summary>
+        [Fact]
+        public void LastNameTest()
+        {
+            // TODO unit test for the property 'LastName'
+        }
+
+        /// <summary>
+        /// Test the property 'JobTitle'
+        /// </summary>
+        [Fact]
+        public void JobTitleTest()
+        {
+            // TODO unit test for the property 'JobTitle'
         }
 
         /// <summary>
@@ -90,12 +117,39 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'HnIds'
+        /// Test the property 'PreferredContactType'
         /// </summary>
         [Fact]
-        public void HnIdsTest()
+        public void PreferredContactTypeTest()
         {
-            // TODO unit test for the property 'HnIds'
+            // TODO unit test for the property 'PreferredContactType'
+        }
+
+        /// <summary>
+        /// Test the property 'LandlineNumber'
+        /// </summary>
+        [Fact]
+        public void LandlineNumberTest()
+        {
+            // TODO unit test for the property 'LandlineNumber'
+        }
+
+        /// <summary>
+        /// Test the property 'MobileNumber'
+        /// </summary>
+        [Fact]
+        public void MobileNumberTest()
+        {
+            // TODO unit test for the property 'MobileNumber'
+        }
+
+        /// <summary>
+        /// Test the property 'ContactNumberExtension'
+        /// </summary>
+        [Fact]
+        public void ContactNumberExtensionTest()
+        {
+            // TODO unit test for the property 'ContactNumberExtension'
         }
 
         /// <summary>
@@ -108,6 +162,15 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'HnRoleMappings'
+        /// </summary>
+        [Fact]
+        public void HnRoleMappingsTest()
+        {
+            // TODO unit test for the property 'HnRoleMappings'
+        }
+
+        /// <summary>
         /// Test the property 'Status'
         /// </summary>
         [Fact]
@@ -117,12 +180,12 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Invitations'
+        /// Test the property 'CreatedAt'
         /// </summary>
         [Fact]
-        public void InvitationsTest()
+        public void CreatedAtTest()
         {
-            // TODO unit test for the property 'Invitations'
+            // TODO unit test for the property 'CreatedAt'
         }
     }
 }

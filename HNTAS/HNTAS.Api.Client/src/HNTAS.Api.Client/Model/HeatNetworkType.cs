@@ -31,24 +31,14 @@ namespace HNTAS.Api.Client.Model
     public enum HeatNetworkType
     {
         /// <summary>
-        /// Enum CommunalWithEnergyCentre for value: CommunalWithEnergyCentre
+        /// Enum Communal for value: Communal
         /// </summary>
-        CommunalWithEnergyCentre = 1,
+        Communal = 1,
 
         /// <summary>
-        /// Enum CommunalWithoutEnergyCentre for value: CommunalWithoutEnergyCentre
+        /// Enum District for value: District
         /// </summary>
-        CommunalWithoutEnergyCentre = 2,
-
-        /// <summary>
-        /// Enum DistrictWithOwnMainEnergyCentre for value: DistrictWithOwnMainEnergyCentre
-        /// </summary>
-        DistrictWithOwnMainEnergyCentre = 3,
-
-        /// <summary>
-        /// Enum DistrictWithoutOwnMainEnergyCentre for value: DistrictWithoutOwnMainEnergyCentre
-        /// </summary>
-        DistrictWithoutOwnMainEnergyCentre = 4
+        District = 2
     }
 
     /// <summary>
@@ -63,17 +53,11 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static HeatNetworkType FromString(string value)
         {
-            if (value.Equals("CommunalWithEnergyCentre"))
-                return HeatNetworkType.CommunalWithEnergyCentre;
+            if (value.Equals("Communal"))
+                return HeatNetworkType.Communal;
 
-            if (value.Equals("CommunalWithoutEnergyCentre"))
-                return HeatNetworkType.CommunalWithoutEnergyCentre;
-
-            if (value.Equals("DistrictWithOwnMainEnergyCentre"))
-                return HeatNetworkType.DistrictWithOwnMainEnergyCentre;
-
-            if (value.Equals("DistrictWithoutOwnMainEnergyCentre"))
-                return HeatNetworkType.DistrictWithoutOwnMainEnergyCentre;
+            if (value.Equals("District"))
+                return HeatNetworkType.District;
 
             throw new NotImplementedException($"Could not convert value to type HeatNetworkType: '{value}'");
         }
@@ -85,17 +69,11 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static HeatNetworkType? FromStringOrDefault(string value)
         {
-            if (value.Equals("CommunalWithEnergyCentre"))
-                return HeatNetworkType.CommunalWithEnergyCentre;
+            if (value.Equals("Communal"))
+                return HeatNetworkType.Communal;
 
-            if (value.Equals("CommunalWithoutEnergyCentre"))
-                return HeatNetworkType.CommunalWithoutEnergyCentre;
-
-            if (value.Equals("DistrictWithOwnMainEnergyCentre"))
-                return HeatNetworkType.DistrictWithOwnMainEnergyCentre;
-
-            if (value.Equals("DistrictWithoutOwnMainEnergyCentre"))
-                return HeatNetworkType.DistrictWithoutOwnMainEnergyCentre;
+            if (value.Equals("District"))
+                return HeatNetworkType.District;
 
             return null;
         }
@@ -108,17 +86,11 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(HeatNetworkType value)
         {
-            if (value == HeatNetworkType.CommunalWithEnergyCentre)
-                return "CommunalWithEnergyCentre";
+            if (value == HeatNetworkType.Communal)
+                return "Communal";
 
-            if (value == HeatNetworkType.CommunalWithoutEnergyCentre)
-                return "CommunalWithoutEnergyCentre";
-
-            if (value == HeatNetworkType.DistrictWithOwnMainEnergyCentre)
-                return "DistrictWithOwnMainEnergyCentre";
-
-            if (value == HeatNetworkType.DistrictWithoutOwnMainEnergyCentre)
-                return "DistrictWithoutOwnMainEnergyCentre";
+            if (value == HeatNetworkType.District)
+                return "District";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
@@ -159,7 +131,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkType heatNetworkType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType).ToString());
+            writer.WriteStringValue(heatNetworkType.ToString());
         }
     }
 
@@ -190,14 +162,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the HeatNetworkType to the json writer
+        /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="heatNetworkType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkType? heatNetworkType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkType.HasValue ? HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType.Value).ToString() : "null");
+            writer.WriteStringValue(heatNetworkType?.ToString() ?? "null");
         }
     }
 }

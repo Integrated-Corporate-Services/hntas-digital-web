@@ -1,5 +1,6 @@
 ﻿@model HNTAS.Web.UI.Models.HeatNetworksViewModel
 
+<h1 class="govuk-heading-l">Heat networks</h1>
 @if (Model.IsResponsiblePerson || Model.IsHntasCoordinator)
 {
     <p class="govuk-!-margin-top-6">
@@ -9,56 +10,31 @@
     </p>
 }
 
-
 @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
-{
-    <h1 class="govuk-heading-m" style="margin-top: 2rem;">Heat network list</h1>
+{    
     <table class="govuk-table">
         <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-                <th class="govuk-table__header" scope="col">Heat Network Id</th>
-                <th class="govuk-table__header" scope="col">Heat Network Name</th>
-                
-                <th class="govuk-table__header" scope="col">Status</th>
+                <th class="govuk-table__header" scope="col">Organisation</th>
+                <th class="govuk-table__header" scope="col">Heat network</th>
+                <th class="govuk-table__header" scope="col">Your Role</th>                
                 <th class="govuk-table__header" scope="col">Action</th>
                 @if (ViewBag.IsRegistrationEnabled == true)
                 {
                     <th class="govuk-table__header" scope="col">Certification history</th>
                 }
-                <th class="govuk-table__header" scope="col">Users</th>
-                
-                
             </tr>
         </thead>
         <tbody class="govuk-table__body">
             @foreach (var heatNetwork in Model.HeatNetworks)
             {
                 <tr class="govuk-table__row">
-                    <td class="govuk-table__cell">@heatNetwork.HnId</td>
-                    <td class="govuk-table__cell">@heatNetwork.Name</td>
-                    
+                    <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
                     <td class="govuk-table__cell">
-                        @{
-                            // You can add logic here to dynamically apply classes based on status
-                            var statusClass = "";
-                            switch (heatNetwork.Status.ToLower())
-                            {
-                                case "active":
-                                    statusClass = "govuk-tag--green";
-                                    break;
-                                case "pending":
-                                    statusClass = "govuk-tag--yellow";
-                                    break;
-                                case "inactive":
-                                    statusClass = "govuk-tag--red";
-                                    break;
-                                default:
-                                    statusClass = "govuk-tag--grey"; // Default for unknown status
-                                    break;
-                            }
-                        }
-                        <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
-                    </td>                    
+                        @heatNetwork.HnId<br />
+                        @heatNetwork.Name
+                    </td>
+                    <td class="govuk-table__cell">@heatNetwork.Role</td>                                    
                     
                     <td class="govuk-table__cell">
                         <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("AddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId })">Add network details</a>
@@ -69,10 +45,7 @@
                         <td class="govuk-table__cell">
                             <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistoryPOC", new { hnId = heatNetwork.HnId })">View history</a>
                         </td>
-                    }
-                    <td class="govuk-table__cell" style="white-space: nowrap;">
-                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("HeatNetworkUserRoles", "UserManagement", new { hnId = @heatNetwork.HnId })">View Users</a>
-                    </td>                        
+                    }                                          
                 </tr>
             }
         </tbody>

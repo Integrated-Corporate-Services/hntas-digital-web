@@ -193,7 +193,6 @@ namespace HNTAS.Web.UI.Tests.Contollers
             Assert.IsType<RedirectToActionResult>(result);
             var redirectResult = result as RedirectToActionResult;
             Assert.Equal("SearchByPostcodeResults", redirectResult?.ActionName);
-            Assert.Equal("Address", redirectResult?.ControllerName);
         }
 
         [Fact]

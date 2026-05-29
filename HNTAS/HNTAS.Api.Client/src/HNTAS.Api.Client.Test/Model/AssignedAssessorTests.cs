@@ -81,21 +81,21 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'ElementAssigned'
+        /// Test the property 'ElementsAssigned'
         /// </summary>
         [Fact]
-        public void ElementAssignedTest()
+        public void ElementsAssignedTest()
         {
-            // TODO unit test for the property 'ElementAssigned'
+            // TODO unit test for the property 'ElementsAssigned'
         }
 
         /// <summary>
-        /// Test the property 'ElementAssignedList'
+        /// Test the property 'ElementsAssignedList'
         /// </summary>
         [Fact]
-        public void ElementAssignedListTest()
+        public void ElementsAssignedListTest()
         {
-            // TODO unit test for the property 'ElementAssignedList'
+            // TODO unit test for the property 'ElementsAssignedList'
         }
 
         /// <summary>
@@ -105,6 +105,15 @@ namespace HNTAS.Api.Client.Test.Model
         public void StatusTest()
         {
             // TODO unit test for the property 'Status'
+        }
+
+        /// <summary>
+        /// Test the property 'AssessorUpdatedAt'
+        /// </summary>
+        [Fact]
+        public void AssessorUpdatedAtTest()
+        {
+            // TODO unit test for the property 'AssessorUpdatedAt'
         }
     }
 }

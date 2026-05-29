@@ -1,0 +1,69 @@
+﻿@using HNTAS.Web.UI.Models.Components
+@model HNTAS.Web.UI.Models.Contributors.NewContributorDetailsViewModel
+
+@{
+    ViewData["Title"] = "Enter their contact details";
+    bool hasFirstNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.FirstName)) && ViewData.ModelState[nameof(Model.FirstName)].Errors.Any();
+    bool hasLastNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.LastName)) && ViewData.ModelState[nameof(Model.LastName)].Errors.Any();
+    bool hasEmailErrors = ViewData.ModelState.ContainsKey(nameof(Model.EmailAddress)) && ViewData.ModelState[nameof(Model.EmailAddress)].Errors.Any();
+    var firstNameInputComponentData = new GovUkInputModel
+    {
+        Id = nameof(Model.FirstName),
+        Name = nameof(Model.FirstName),
+        Label = "First name",
+        HasError = hasFirstNameErrors,
+        AdditionalClasses = "govuk-input--width-20",
+        ErrorMessage = hasFirstNameErrors ? ViewData.ModelState[nameof(Model.FirstName)].Errors[0].ErrorMessage : null,
+        Value = Model.FirstName
+    };
+    var lastNameInputComponentData = new GovUkInputModel
+    {
+        Id = nameof(Model.LastName),
+        Name = nameof(Model.LastName),
+        Label = "Last name",
+        HasError = hasLastNameErrors,
+        AdditionalClasses = "govuk-input--width-20",
+        ErrorMessage = hasLastNameErrors ? ViewData.ModelState[nameof(Model.LastName)].Errors[0].ErrorMessage : null,
+        Value = Model.LastName
+    };
+    var emailInputComponentData = new GovUkInputModel
+    {
+        Id = nameof(Model.EmailAddress),
+        Name = nameof(Model.EmailAddress),
+        Label = "Email",
+        HasError = hasEmailErrors,
+        AdditionalClasses = "govuk-input--width-20",
+        ErrorMessage = hasEmailErrors ? ViewData.ModelState[nameof(Model.EmailAddress)].Errors[0].ErrorMessage : null,
+        Value = Model.EmailAddress
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Your network team</span>
+            <h1 class="govuk-heading-l">
+                Enter their contact details
+            </h1>
+            <p class="govuk-body">
+                You are adding a designated duty holder.
+            </p>
+            <form method="post">
+                @Html.AntiForgeryToken()
+
+                <!-- First Name -->
+                @await Html.PartialAsync("Components/_GovUkInput", firstNameInputComponentData)
+
+                <!-- Last Name -->
+                @await Html.PartialAsync("Components/_GovUkInput", lastNameInputComponentData)
+
+                <!-- Email Add -->
+                @await Html.PartialAsync("Components/_GovUkInput", emailInputComponentData)
+
+                <button class="govuk-button" type="submit">
+                    Continue
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

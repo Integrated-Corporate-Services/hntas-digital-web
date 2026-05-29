@@ -60,36 +60,19 @@ namespace HNTAS.Web.UI.Helpers
             {
                 return new List<SelectItemOption>
                     {
-                        new SelectItemOption { Value = ((int)ContributorRole.DesignatedDesigner).ToString(), Text = "Designated designer" },
-                        new SelectItemOption { Value = ((int)ContributorRole.DesignatedContractor).ToString(), Text = "Designated contractor" },
-                        new SelectItemOption { Value = ((int)ContributorRole.DesignatedOperator).ToString(), Text = "Designated operator" },
+                        new SelectItemOption { Value = ((int)ContributorRole.DesignatedDutyHolder).ToString(), Text = "Designated duty holder" },
+                        new SelectItemOption { Value = ((int)ContributorRole.Contributor).ToString(), Text = " Contributor" },
                         new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
             }
-            else if (userRole == ContributorRole.DesignatedDesigner.ToString())
+            else if (userRole == ContributorRole.DesignatedDutyHolder.ToString())
             {
                 return new List<SelectItemOption>
                     {
-                        new SelectItemOption { Value = ((int)ContributorRole.ContributingDesigner).ToString(), Text = "Contributing designer" },
+                        new SelectItemOption { Value = ((int)ContributorRole.Contributor).ToString(), Text = "Contributor" },
                         new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
                     };
-            }
-            else if (userRole == ContributorRole.DesignatedContractor.ToString())
-            {
-                return new List<SelectItemOption>
-                    {
-                        new SelectItemOption { Value = ((int)ContributorRole.ContributingContractor).ToString(), Text = "Contributing contractor" },
-                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
-                    };
-            }
-            else if (userRole == ContributorRole.DesignatedOperator.ToString())
-            {
-                return new List<SelectItemOption>
-                    {
-                        new SelectItemOption { Value = ((int)ContributorRole.ContributingOperator).ToString(), Text = "Contributing operator" },
-                        new SelectItemOption { Value = ((int)ContributorRole.Assessor).ToString(), Text = "Assessor" }
-                    };
-            }
+            }            
             else if (userRole == ContributorRole.Assessor.ToString())
             {
                 return new List<SelectItemOption>

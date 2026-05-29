@@ -30,6 +30,7 @@
         public const string HowManyDwellingsIncludedModelKey = "HowManyDwellingsIncluded";
 
         // Session keys for heat network registration
+        public const string HeatNetworkOrganisationModelKey = "HeatNetworkOrganisationModelKey";
         public const string IsHnTypeCommunalViewModel = "IsHnTypeCommunalViewModelKey";
         public const string DoesCommunalHnHaveOwnEcViewModel = "DoesCommunalHnHaveOwnEcViewModel";
         public const string DoesDistrictHnHaveOwnEcViewModel = "DoesDistrictHnHaveOwnEcViewModel";
@@ -47,6 +48,16 @@
         public const string HnId = "HnIdkey";
         public const string HnName = "HnNameKey";
 
+
+        // Session for adding DDH and contributor
+        public const string WhoDoYouWantToAddSessionKey = "WhoDoYouWantToAddSessionKey";
+        public const string NewContributorRoleViewModelSessionKey = "NewContributorRoleViewModel";
+        public const string AddContributorViewModelSessionKey = "AddContributorViewModel";
+        public const string NewContributorDetailsViewModelSessionKey = "NewContributorDetailsViewModel";
+        public const string ExistingContributorsListViewModelSessionKey = "ExistingContributorsListViewModelSessionKey";
+        public const string ContributorsHeatNetworkPhaseViewModelSessionKey = "ContributorsHeatNetworkPhaseViewModelSessionKey";
+        public const string NewContributorHeatNetworkViewModelSessionKey = "NewContributorHeatNetworkViewModel";
+        public const string CheckYourAnswersContributorsModelSessionKey = "CheckYourAnswersContributorsModelSessionKey";        
 
         // Session keys for invitations
         public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";

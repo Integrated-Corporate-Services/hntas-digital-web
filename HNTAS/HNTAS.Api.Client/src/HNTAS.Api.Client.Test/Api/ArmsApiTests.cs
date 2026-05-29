@@ -51,13 +51,35 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-        /// Test ApiArmsV1HnKpisPost
+        /// Test ArmsV1HnKpiConfigPost
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiArmsV1HnKpisPostAsyncTest()
+        public async Task ArmsV1HnKpiConfigPostAsyncTest()
+        {
+            KpiConfigRequest kpiConfigRequest = default!;
+            await _instance.ArmsV1HnKpiConfigPostAsync(kpiConfigRequest);
+        }
+
+        /// <summary>
+        /// Test ArmsV1HnKpisPost
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ArmsV1HnKpisPostAsyncTest()
         {
             KpiSubmissionRequest kpiSubmissionRequest = default!;
-            await _instance.ApiArmsV1HnKpisPostAsync(kpiSubmissionRequest);
+            await _instance.ArmsV1HnKpisPostAsync(kpiSubmissionRequest);
+        }
+
+        /// <summary>
+        /// Test ArmsV1HnNetworkIdKpiConfigGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ArmsV1HnNetworkIdKpiConfigGetAsyncTest()
+        {
+            string networkId = default!;
+            var response = await _instance.ArmsV1HnNetworkIdKpiConfigGetAsync(networkId);
+            var model = response.Ok();
+            Assert.IsType<KpiConfigResponse>(model);
         }
     }
 }

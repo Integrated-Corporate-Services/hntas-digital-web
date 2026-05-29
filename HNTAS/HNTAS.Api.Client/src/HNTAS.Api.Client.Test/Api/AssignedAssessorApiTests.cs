@@ -51,18 +51,15 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-        /// Test ApiAssignedAssessorGet
+        /// Test ApiAssignedAssessorAssignedAssessorGet
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiAssignedAssessorGetAsyncTest()
+        public async Task ApiAssignedAssessorAssignedAssessorGetAsyncTest()
         {
-            Client.Option<string> sortBy = default!;
-            Client.Option<string> sortDirection = default!;
-            Client.Option<int> page = default!;
-            Client.Option<int> pageSize = default!;
-            var response = await _instance.ApiAssignedAssessorGetAsync(sortBy, sortDirection, page, pageSize);
+            AssignedAssessorRequest assignedAssessorRequest = default!;
+            var response = await _instance.ApiAssignedAssessorAssignedAssessorGetAsync(assignedAssessorRequest);
             var model = response.Ok();
-            Assert.IsType<List<AssignedAssessorResponse>>(model);
+            Assert.IsType<AssignedAssessorResponse>(model);
         }
     }
 }

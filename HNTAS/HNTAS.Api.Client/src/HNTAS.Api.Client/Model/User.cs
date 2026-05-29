@@ -48,8 +48,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="hnRoleMappings">hnRoleMappings</param>
         /// <param name="status">status</param>
         /// <param name="createdAt">createdAt</param>
+        /// <param name="contributingOrganisations">contributingOrganisations</param>
         [JsonConstructor]
-        public User(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> orgId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> jobTitle = default, Option<string?> emailId = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<List<UserRole>?> roles = default, Option<List<HnRoleMapping>?> hnRoleMappings = default, Option<UserStatus?> status = default, Option<DateTimeOffset?> createdAt = default)
+        public User(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> orgId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> jobTitle = default, Option<string?> emailId = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<List<UserRole>?> roles = default, Option<List<HnRoleMapping>?> hnRoleMappings = default, Option<UserStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<List<string>?> contributingOrganisations = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
@@ -66,6 +67,7 @@ namespace HNTAS.Api.Client.Model
             HnRoleMappingsOption = hnRoleMappings;
             StatusOption = status;
             CreatedAtOption = createdAt;
+            ContributingOrganisationsOption = contributingOrganisations;
             OnCreated();
         }
 
@@ -267,6 +269,19 @@ namespace HNTAS.Api.Client.Model
         public DateTimeOffset? CreatedAt { get { return this.CreatedAtOption; } set { this.CreatedAtOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of ContributingOrganisations
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<string>?> ContributingOrganisationsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ContributingOrganisations
+        /// </summary>
+        [JsonPropertyName("contributingOrganisations")]
+        public List<string>? ContributingOrganisations { get { return this.ContributingOrganisationsOption; } set { this.ContributingOrganisationsOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -289,6 +304,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  HnRoleMappings: ").Append(HnRoleMappings).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
+            sb.Append("  ContributingOrganisations: ").Append(ContributingOrganisations).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -346,6 +362,7 @@ namespace HNTAS.Api.Client.Model
             Option<List<HnRoleMapping>?> hnRoleMappings = default;
             Option<UserStatus?> status = default;
             Option<DateTimeOffset?> createdAt = default;
+            Option<List<string>?> contributingOrganisations = default;
 
             while (utf8JsonReader.Read())
             {
@@ -411,6 +428,9 @@ namespace HNTAS.Api.Client.Model
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "contributingOrganisations":
+                            contributingOrganisations = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         default:
                             break;
                     }
@@ -435,7 +455,7 @@ namespace HNTAS.Api.Client.Model
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class User.");
 
-            return new User(id, oneLoginId, orgId, firstName, lastName, jobTitle, emailId, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, roles, hnRoleMappings, status, createdAt);
+            return new User(id, oneLoginId, orgId, firstName, lastName, jobTitle, emailId, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, roles, hnRoleMappings, status, createdAt, contributingOrganisations);
         }
 
         /// <summary>
@@ -553,6 +573,15 @@ namespace HNTAS.Api.Client.Model
             }
             if (user.CreatedAtOption.IsSet)
                 writer.WriteString("createdAt", user.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
+
+            if (user.ContributingOrganisationsOption.IsSet)
+                if (user.ContributingOrganisationsOption.Value != null)
+                {
+                    writer.WritePropertyName("contributingOrganisations");
+                    JsonSerializer.Serialize(writer, user.ContributingOrganisations, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("contributingOrganisations");
         }
     }
 }

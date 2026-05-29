@@ -17,7 +17,7 @@
             <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0 || ViewData.ModelState[nameof(Model.HasPostcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
             <fieldset class="govuk-fieldset" aria-describedby="has-postcode-hint">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 class="govuk-fieldset__heading">Does your main energy centre have an address and postcode?</h1>
+                        <h1 class="govuk-fieldset__heading">Does your @ViewBag.addressFor have an address and postcode?</h1>
                 </legend>
 
                     <div id="has-postcode-hint" class="govuk-hint">Choose 'Yes', only if you have a full address and postcode</div>
