@@ -19,9 +19,9 @@
                 QText = "Designated duty holders and contributors",
                 QDescText =
                     @"
-                    <p class='govuk-body'>A designated duty holder leads a particular phase of the development and is given responsibility for the information entered. You may have separate leads for design, construction and operation.</p>
+                    <p class='govuk-body'>A <strong>designated duty holder</strong> leads a particular phase of the development and is given responsibility for the information entered. You may have separate leads for design, construction and operation.</p>
 
-                    <p class='govuk-body'>Contributors with specific expertise can be added to provide network detail where required.</p>
+                    <p class='govuk-body'><strong>Contributors</strong> with specific expertise can be added to provide network detail where required.</p>
                     
                     <legend class='govuk-fieldset__legend govuk-fieldset__legend--m'>
                         <h1 class='govuk-fieldset__heading'>
@@ -31,8 +31,8 @@
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = $"{elementId}", OptValue = "true", OptText = "Designated duty holder", OptHintText = "A designated duty holder is both responsible for and able to add network information." },
-                    new Option { OptId = $"{elementId}-2", OptValue = "false", OptText = "Contributor", OptHintText = "A contributor can only add network information" }
+                    new Option { OptId = $"{elementId}", OptValue = "true", OptText = "Designated duty holder", OptHintText = "Leads a phase of development and can add network information" },
+                    new Option { OptId = $"{elementId}-2", OptValue = "false", OptText = "Contributor", OptHintText = "Can add network information only" }
                 },
                 SeletedOption = Model.IsDDH.ToString().ToLowerInvariant()
             },
