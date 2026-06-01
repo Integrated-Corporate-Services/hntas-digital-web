@@ -316,6 +316,14 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
+            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel).IsHnTypeCommunal ?? false;
+            bool hasOwnEc = isCommunalHn
+                ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
+                : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);
+            if (!isCommunalHn && !hasOwnEc) 
+            {
+                return RedirectToAction("ECCoordinates");
+            }
             return RedirectToAction("DoesHNHaveAPostcode");
         }
 
@@ -331,8 +339,7 @@ namespace HNTAS.Web.UI.Controllers
             var addressFor =
                 isCommunalHn && hasOwnEc ? "energy centre" :
                 isCommunalHn && !hasOwnEc ? "communal network" :
-                !isCommunalHn && hasOwnEc ? "main energy centre" :
-                "communal network"; // !isCommunalHn && !hasOwnEc
+                !isCommunalHn && hasOwnEc ? "main energy centre" : "";
             _sessionHelper.SaveToSession<string>(HttpContext, "addressFor", addressFor);
             ViewBag.addressFor = addressFor;
             var model = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey) ?? new DoesHNHaveAPostcodeViewModel();
@@ -493,7 +500,11 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult ECCoordinates()
         {
-            this.ShowBackButton("DoesHNHaveAPostcode", "HeatNetworkRegistration");
+            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel).IsHnTypeCommunal ?? false;
+            bool hasOwnEc = isCommunalHn
+                ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
+                : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);
+            this.ShowBackButton(!isCommunalHn && !hasOwnEc ? "HeatNetworkName" : "DoesHNHaveAPostcode");
             ViewBag.addressFor = _sessionHelper.GetFromSession<string>(HttpContext, "addressFor");
             var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
             return View(model);
@@ -503,8 +514,14 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ECCoordinates(ECDetailsModel model)
         {
-            this.ShowBackButton("DoesHNHaveAPostcode", "HeatNetworkRegistration");
+            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel).IsHnTypeCommunal ?? false;
+            bool hasOwnEc = isCommunalHn
+                ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
+                : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);            
+            this.ShowBackButton(!isCommunalHn && !hasOwnEc ? "HeatNetworkName" : "DoesHNHaveAPostcode");
             ViewBag.addressFor = _sessionHelper.GetFromSession<string>(HttpContext, "addressFor");
+            ViewBag.QuestionForDistWithoutEC = "What are the grid coordinates for the connection point with the supplying network?";
+            ViewBag.DistWithoutOwnEC = !isCommunalHn && !hasOwnEc;
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -826,13 +843,13 @@ namespace HNTAS.Web.UI.Controllers
                 new() {
                     Label = "Non-domestic buildings or consumers",
                     Value = ConnectionType.CommercialConnection.ToString(),
-                    HintText = "Single consumers in a large public or commercial building (for example, retail, commercial, offices, hotels, or schools)",
+                    HintText = "Buildings such as offices, hotels, schools or retail units",
                     IsSelected = false,
-                    ConditionalLabel = "Number of non-domestic buildings or consumers",
+                    ConditionalLabel = "Number of non-domestic buildings",
                     ConditionalValue = null
                 },
                 new() {
-                    Label = "Other district networks",
+                    Label = "Other district heat networks supplied by this network",
                     Value = ConnectionType.OtherDistrictNetwork.ToString(),
                     HintText = "As your network has a main energy centre, you could be supplying other district networks",
                     IsSelected = false,

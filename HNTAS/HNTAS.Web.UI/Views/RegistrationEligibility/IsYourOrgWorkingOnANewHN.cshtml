@@ -2,7 +2,7 @@
 @model IsYourOrgWorkingOnANewHNModel
 
 @{
-    ViewData["Title"] = "Is your organisation working on any new heat networks that are not yet operational? - Check your eligibility to register a heat network";
+    ViewData["Title"] = "Is your organisation working on any new heat networks that are not yet operational?";
     var fieldOrder = new[] { nameof(Model.IsYourOrgWorkingOnANewHN) };
     var elementId = Html.GenerateIdFromName(nameof(Model.IsYourOrgWorkingOnANewHN)).ToLowerInvariant();
     var pageData = new QuestionWithRadiobuttonsModel
@@ -17,7 +17,7 @@
                 QId = elementId,
                 QText = "Is your organisation working on any new heat networks that are not yet operational?",
                 QDescText = null,
-                QHintText = "This includes any new heat networks across your organisation's portfolio that are in feasibility, design or construction.",
+                QHintText = "This includes heat networks in feasibility, design or construction across your organisation",
                 Options = new List<Option>
                 {
                     new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = null },
