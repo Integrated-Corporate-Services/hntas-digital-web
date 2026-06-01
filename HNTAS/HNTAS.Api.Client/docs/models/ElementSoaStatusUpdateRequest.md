@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **HnId** | **string** |  | 
 **Stage** | **SoaStage** |  | [optional] 
 **ElementId** | **string** |  | [optional] 
-**ElementType** | **string** |  | [optional] 
+**ElementType** | **ElementTypeInShort** |  | [optional] 
 **SoaStatuses** | [**List&lt;SoaStatusWithCount&gt;**](SoaStatusWithCount.md) |  | [optional] 
 **ElementSoaStatus** | **NetworkDetailsStatus** |  | [optional] 
 **SoaStatusUpdatedBy** | **string** |  | [optional] 

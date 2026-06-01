@@ -43,7 +43,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="soaPhase">soaPhase</param>
         /// <param name="elementDisplayName">elementDisplayName</param>
         [JsonConstructor]
-        public ElementSoaStatusUpdateRequest(string hnId, Option<SoaStage?> stage = default, Option<string?> elementId = default, Option<string?> elementType = default, Option<List<SoaStatusWithCount>?> soaStatuses = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<string?> soaStatusUpdatedBy = default, Option<string?> soaPhase = default, Option<string?> elementDisplayName = default)
+        public ElementSoaStatusUpdateRequest(string hnId, Option<SoaStage?> stage = default, Option<string?> elementId = default, Option<ElementTypeInShort?> elementType = default, Option<List<SoaStatusWithCount>?> soaStatuses = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<string?> soaStatusUpdatedBy = default, Option<string?> soaPhase = default, Option<string?> elementDisplayName = default)
         {
             HnId = hnId;
             StageOption = stage;
@@ -71,6 +71,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("stage")]
         public SoaStage? Stage { get { return this.StageOption; } set { this.StageOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of ElementType
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<ElementTypeInShort?> ElementTypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementType
+        /// </summary>
+        [JsonPropertyName("elementType")]
+        public ElementTypeInShort? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ElementSoaStatus
@@ -103,19 +116,6 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("elementId")]
         public string? ElementId { get { return this.ElementIdOption; } set { this.ElementIdOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of ElementType
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ElementTypeOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets ElementType
-        /// </summary>
-        [JsonPropertyName("elementType")]
-        public string? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of SoaStatuses
@@ -226,7 +226,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> hnId = default;
             Option<SoaStage?> stage = default;
             Option<string?> elementId = default;
-            Option<string?> elementType = default;
+            Option<ElementTypeInShort?> elementType = default;
             Option<List<SoaStatusWithCount>?> soaStatuses = default;
             Option<NetworkDetailsStatus?> elementSoaStatus = default;
             Option<string?> soaStatusUpdatedBy = default;
@@ -260,7 +260,9 @@ namespace HNTAS.Api.Client.Model
                             elementId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "elementType":
-                            elementType = new Option<string?>(utf8JsonReader.GetString());
+                            string? elementTypeRawValue = utf8JsonReader.GetString();
+                            if (elementTypeRawValue != null)
+                                elementType = new Option<ElementTypeInShort?>(ElementTypeInShortValueConverter.FromStringOrDefault(elementTypeRawValue));
                             break;
                         case "soaStatuses":
                             soaStatuses = new Option<List<SoaStatusWithCount>?>(JsonSerializer.Deserialize<List<SoaStatusWithCount>>(ref utf8JsonReader, jsonSerializerOptions));
@@ -293,6 +295,9 @@ namespace HNTAS.Api.Client.Model
 
             if (stage.IsSet && stage.Value == null)
                 throw new ArgumentNullException(nameof(stage), "Property is not nullable for class ElementSoaStatusUpdateRequest.");
+
+            if (elementType.IsSet && elementType.Value == null)
+                throw new ArgumentNullException(nameof(elementType), "Property is not nullable for class ElementSoaStatusUpdateRequest.");
 
             if (elementSoaStatus.IsSet && elementSoaStatus.Value == null)
                 throw new ArgumentNullException(nameof(elementSoaStatus), "Property is not nullable for class ElementSoaStatusUpdateRequest.");
@@ -341,11 +346,10 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("elementId");
 
             if (elementSoaStatusUpdateRequest.ElementTypeOption.IsSet)
-                if (elementSoaStatusUpdateRequest.ElementTypeOption.Value != null)
-                    writer.WriteString("elementType", elementSoaStatusUpdateRequest.ElementType);
-                else
-                    writer.WriteNull("elementType");
-
+            {
+                var elementTypeRawValue = ElementTypeInShortValueConverter.ToJsonValue(elementSoaStatusUpdateRequest.ElementType!.Value);
+                writer.WriteString("elementType", elementTypeRawValue);
+            }
             if (elementSoaStatusUpdateRequest.SoaStatusesOption.IsSet)
                 if (elementSoaStatusUpdateRequest.SoaStatusesOption.Value != null)
                 {

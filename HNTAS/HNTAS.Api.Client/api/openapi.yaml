@@ -3040,6 +3040,42 @@ components:
           nullable: true
           type: string
       type: object
+    AssessorAssessment:
+      example:
+        assessment: assessment
+        assessorLastName: assessorLastName
+        assessorEmail: assessorEmail
+        assessorFirstName: assessorFirstName
+      properties:
+        assessorEmail:
+          type: string
+        assessorFirstName:
+          type: string
+        assessorLastName:
+          type: string
+        assessment:
+          type: string
+      type: object
+    AssessorAssessmentForElement:
+      example:
+        assessorAssessments:
+        - assessment: assessment
+          assessorLastName: assessorLastName
+          assessorEmail: assessorEmail
+          assessorFirstName: assessorFirstName
+        - assessment: assessment
+          assessorLastName: assessorLastName
+          assessorEmail: assessorEmail
+          assessorFirstName: assessorFirstName
+        elementType: EC
+      properties:
+        elementType:
+          $ref: "#/components/schemas/ElementTypeInShort"
+        assessorAssessments:
+          items:
+            $ref: "#/components/schemas/AssessorAssessment"
+          type: array
+      type: object
     AssessorSearchResult:
       example:
         firstName: firstName
@@ -3833,7 +3869,7 @@ components:
       example:
         elementId: elementId
         networkElementInstanceName: networkElementInstanceName
-        elementType: elementType
+        elementType: EC
       properties:
         elementId:
           nullable: true
@@ -3842,8 +3878,7 @@ components:
           nullable: true
           type: string
         elementType:
-          nullable: true
-          type: string
+          $ref: "#/components/schemas/ElementTypeInShort"
       type: object
     ElementGroup:
       example:
@@ -3856,14 +3891,19 @@ components:
             count: 3
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
-          assessor:
-            firstName: firstName
+          soaStatusUpdatedBy: soaStatusUpdatedBy
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessors:
+          - firstName: firstName
             lastName: lastName
             assessment: assessment
             email: email
             status: Active
-          soaStatusUpdatedBy: soaStatusUpdatedBy
-          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: Active
           stageId: Stage1
         - soaStatuses:
           - soaStatus: null
@@ -3872,17 +3912,22 @@ components:
             count: 3
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
-          assessor:
-            firstName: firstName
+          soaStatusUpdatedBy: soaStatusUpdatedBy
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessors:
+          - firstName: firstName
             lastName: lastName
             assessment: assessment
             email: email
             status: Active
-          soaStatusUpdatedBy: soaStatusUpdatedBy
-          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          - firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: Active
           stageId: Stage1
         count: 9
-        elementType: elementType
+        elementType: EC
       properties:
         elementDisplayType:
           $ref: "#/components/schemas/HeatNetworkElementType"
@@ -3896,8 +3941,7 @@ components:
           nullable: true
           type: array
         elementType:
-          nullable: true
-          type: string
+          $ref: "#/components/schemas/ElementTypeInShort"
       type: object
     ElementGroupDto:
       example:
@@ -3926,28 +3970,37 @@ components:
       type: object
     ElementSoaAssignAssessorRequest:
       example:
-        assessment: assessment
+        soaStage: Stage1
         hnId: hnId
         updatedBy: updatedBy
-        assessorLastName: assessorLastName
-        assessorEmail: assessorEmail
-        assessorFirstName: assessorFirstName
-        elementIds:
-        - elementIds
-        - elementIds
+        assessorAssessmentForElements:
+        - assessorAssessments:
+          - assessment: assessment
+            assessorLastName: assessorLastName
+            assessorEmail: assessorEmail
+            assessorFirstName: assessorFirstName
+          - assessment: assessment
+            assessorLastName: assessorLastName
+            assessorEmail: assessorEmail
+            assessorFirstName: assessorFirstName
+          elementType: EC
+        - assessorAssessments:
+          - assessment: assessment
+            assessorLastName: assessorLastName
+            assessorEmail: assessorEmail
+            assessorFirstName: assessorFirstName
+          - assessment: assessment
+            assessorLastName: assessorLastName
+            assessorEmail: assessorEmail
+            assessorFirstName: assessorFirstName
+          elementType: EC
       properties:
-        elementIds:
+        assessorAssessmentForElements:
           items:
-            type: string
+            $ref: "#/components/schemas/AssessorAssessmentForElement"
           type: array
-        assessorEmail:
-          type: string
-        assessorFirstName:
-          type: string
-        assessorLastName:
-          type: string
-        assessment:
-          type: string
+        soaStage:
+          $ref: "#/components/schemas/SoaStage"
         hnId:
           type: string
         updatedBy:
@@ -3966,7 +4019,7 @@ components:
         elementDisplayName: elementDisplayName
         stage: Stage1
         soaStatusUpdatedBy: soaStatusUpdatedBy
-        elementType: elementType
+        elementType: EC
         soaPhase: soaPhase
       properties:
         stage:
@@ -3975,8 +4028,7 @@ components:
           nullable: true
           type: string
         elementType:
-          nullable: true
-          type: string
+          $ref: "#/components/schemas/ElementTypeInShort"
         soaStatuses:
           items:
             $ref: "#/components/schemas/SoaStatusWithCount"
@@ -3998,6 +4050,14 @@ components:
       required:
       - hnId
       type: object
+    ElementTypeInShort:
+      enum:
+      - EC
+      - SS
+      - DDN
+      - CDN
+      - CC
+      type: string
     Energy:
       example:
         heatPumpCount: 5
@@ -4347,10 +4407,10 @@ components:
           elements:
           - elementId: elementId
             networkElementInstanceName: networkElementInstanceName
-            elementType: elementType
+            elementType: EC
           - elementId: elementId
             networkElementInstanceName: networkElementInstanceName
-            elementType: elementType
+            elementType: EC
           elementsGroup:
           - elementDisplayType: EnergyCentre
             soaStages:
@@ -4361,14 +4421,19 @@ components:
                 count: 3
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
-              assessor:
-                firstName: firstName
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
                 lastName: lastName
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
@@ -4377,17 +4442,22 @@ components:
                 count: 3
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
-              assessor:
-                firstName: firstName
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
                 lastName: lastName
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               stageId: Stage1
             count: 9
-            elementType: elementType
+            elementType: EC
           - elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
@@ -4397,14 +4467,19 @@ components:
                 count: 3
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
-              assessor:
-                firstName: firstName
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
                 lastName: lastName
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
@@ -4413,17 +4488,22 @@ components:
                 count: 3
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
-              assessor:
-                firstName: firstName
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
                 lastName: lastName
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               stageId: Stage1
             count: 9
-            elementType: elementType
+            elementType: EC
           updatedAt: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4957,14 +5037,19 @@ components:
                 count: 3
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
-              assessor:
-                firstName: firstName
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
                 lastName: lastName
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
@@ -4973,17 +5058,22 @@ components:
                 count: 3
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
-              assessor:
-                firstName: firstName
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
                 lastName: lastName
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               stageId: Stage1
             count: 9
-            elementType: elementType
+            elementType: EC
           - elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
@@ -4993,14 +5083,19 @@ components:
                 count: 3
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
-              assessor:
-                firstName: firstName
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
                 lastName: lastName
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
@@ -5009,17 +5104,22 @@ components:
                 count: 3
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
-              assessor:
-                firstName: firstName
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
                 lastName: lastName
                 assessment: assessment
                 email: email
                 status: Active
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: Active
               stageId: Stage1
             count: 9
-            elementType: elementType
+            elementType: EC
           updatedAt: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -5927,10 +6027,10 @@ components:
         elements:
         - elementId: elementId
           networkElementInstanceName: networkElementInstanceName
-          elementType: elementType
+          elementType: EC
         - elementId: elementId
           networkElementInstanceName: networkElementInstanceName
-          elementType: elementType
+          elementType: EC
         elementsGroup:
         - elementDisplayType: EnergyCentre
           soaStages:
@@ -5941,14 +6041,19 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
@@ -5957,17 +6062,22 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           count: 9
-          elementType: elementType
+          elementType: EC
         - elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
@@ -5977,14 +6087,19 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
@@ -5993,17 +6108,22 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           count: 9
-          elementType: elementType
+          elementType: EC
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
@@ -6043,10 +6163,10 @@ components:
         elements:
         - elementId: elementId
           networkElementInstanceName: networkElementInstanceName
-          elementType: elementType
+          elementType: EC
         - elementId: elementId
           networkElementInstanceName: networkElementInstanceName
-          elementType: elementType
+          elementType: EC
         elementsGroup:
         - elementDisplayType: EnergyCentre
           soaStages:
@@ -6057,14 +6177,19 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
@@ -6073,17 +6198,22 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           count: 9
-          elementType: elementType
+          elementType: EC
         - elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
@@ -6093,14 +6223,19 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
@@ -6109,17 +6244,22 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           count: 9
-          elementType: elementType
+          elementType: EC
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         networkElementStatus:
@@ -6165,14 +6305,19 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
@@ -6181,17 +6326,22 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           count: 9
-          elementType: elementType
+          elementType: EC
         - elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
@@ -6201,14 +6351,19 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
@@ -6217,17 +6372,22 @@ components:
               count: 3
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
-            assessor:
-              firstName: firstName
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
               lastName: lastName
               assessment: assessment
               email: email
               status: Active
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: Active
             stageId: Stage1
           count: 9
-          elementType: elementType
+          elementType: EC
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
@@ -6921,7 +7081,6 @@ components:
         assessment: assessment
         email: email
         status: Active
-      nullable: true
       properties:
         firstName:
           type: string
@@ -7156,14 +7315,19 @@ components:
           count: 3
         soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
         assessorUpdatedBy: assessorUpdatedBy
-        assessor:
-          firstName: firstName
+        soaStatusUpdatedBy: soaStatusUpdatedBy
+        assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        assessors:
+        - firstName: firstName
           lastName: lastName
           assessment: assessment
           email: email
           status: Active
-        soaStatusUpdatedBy: soaStatusUpdatedBy
-        assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        - firstName: firstName
+          lastName: lastName
+          assessment: assessment
+          email: email
+          status: Active
         stageId: Stage1
       properties:
         stageId:
@@ -7187,8 +7351,11 @@ components:
         assessorUpdatedBy:
           nullable: true
           type: string
-        assessor:
-          $ref: "#/components/schemas/SoaAssessor"
+        assessors:
+          items:
+            $ref: "#/components/schemas/SoaAssessor"
+          nullable: true
+          type: array
       type: object
     SoaStatus:
       enum:
