@@ -81,15 +81,6 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Role'
-        /// </summary>
-        [Fact]
-        public void RoleTest()
-        {
-            // TODO unit test for the property 'Role'
-        }
-
-        /// <summary>
         /// Test the property 'PreferredContactType'
         /// </summary>
         [Fact]
@@ -123,6 +114,15 @@ namespace HNTAS.Api.Client.Test.Model
         public void MobileNumberTest()
         {
             // TODO unit test for the property 'MobileNumber'
+        }
+
+        /// <summary>
+        /// Test the property 'Role'
+        /// </summary>
+        [Fact]
+        public void RoleTest()
+        {
+            // TODO unit test for the property 'Role'
         }
     }
 }

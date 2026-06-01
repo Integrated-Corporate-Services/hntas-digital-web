@@ -63,6 +63,15 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'HnName'
+        /// </summary>
+        [Fact]
+        public void HnNameTest()
+        {
+            // TODO unit test for the property 'HnName'
+        }
+
+        /// <summary>
         /// Test the property 'UpdatedBy'
         /// </summary>
         [Fact]
