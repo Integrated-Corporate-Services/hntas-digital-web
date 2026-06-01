@@ -68,7 +68,7 @@
                                 @if (item.Value == OrganisationType.OtherUkOrganisation.ToString())
                                 {
                                     <div id="org-type-other-uk-hint" class="govuk-hint govuk-radios__hint">
-                                        For example, local authorities, charities, mutual or sole traders
+                                        Local authorities, housing associations or charities, for example
                                     </div>
                                 }
                                 @if (item.Value == OrganisationType.OverseasOrganisation.ToString())
@@ -81,10 +81,10 @@
 
                             itemsRendered++;
 
-                            @if (itemsRendered == 2)
+                            @* @if (itemsRendered == 2)
                             {
                                 <div class="govuk-radios__divider">or</div>
-                            }
+                            } *@
                         }
                     </div>
                 </fieldset>
