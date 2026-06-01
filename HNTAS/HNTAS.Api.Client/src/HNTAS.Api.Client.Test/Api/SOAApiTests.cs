@@ -51,16 +51,6 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-        /// Test ApiSOAAssessmentPlanPost
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiSOAAssessmentPlanPostAsyncTest()
-        {
-            UpdateAssessmentPlanRequest updateAssessmentPlanRequest = default!;
-            await _instance.ApiSOAAssessmentPlanPostAsync(updateAssessmentPlanRequest);
-        }
-
-        /// <summary>
         /// Test ApiSOAConnectionsPatch
         /// </summary>
         [Fact (Skip = "not implemented")]
@@ -79,28 +69,38 @@ namespace HNTAS.Api.Client.Test.Api
             Client.Option<string> hnId = default!;
             Client.Option<string> createdBy = default!;
             var response = await _instance.ApiSOACreatePostAsync(hnId, createdBy);
-            var model = response.Created();
+            var model = response.Ok();
             Assert.IsType<Soa2>(model);
         }
 
         /// <summary>
-        /// Test ApiSOAElementDocumentsPost
+        /// Test ApiSOADocumentUpdatePatch
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiSOAElementDocumentsPostAsyncTest()
+        public async Task ApiSOADocumentUpdatePatchAsyncTest()
         {
-            UpdateElementDocumentsRequest updateElementDocumentsRequest = default!;
-            await _instance.ApiSOAElementDocumentsPostAsync(updateElementDocumentsRequest);
+            UpdateDocumentRequest updateDocumentRequest = default!;
+            await _instance.ApiSOADocumentUpdatePatchAsync(updateDocumentRequest);
         }
 
         /// <summary>
-        /// Test ApiSOAElementLocationsPost
+        /// Test ApiSOAElementDocumentsPatch
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiSOAElementLocationsPostAsyncTest()
+        public async Task ApiSOAElementDocumentsPatchAsyncTest()
+        {
+            UpdateElementDocumentsRequest updateElementDocumentsRequest = default!;
+            await _instance.ApiSOAElementDocumentsPatchAsync(updateElementDocumentsRequest);
+        }
+
+        /// <summary>
+        /// Test ApiSOAElementLocationsPatch
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiSOAElementLocationsPatchAsyncTest()
         {
             UpdateElementLocationsRequest updateElementLocationsRequest = default!;
-            await _instance.ApiSOAElementLocationsPostAsync(updateElementLocationsRequest);
+            await _instance.ApiSOAElementLocationsPatchAsync(updateElementLocationsRequest);
         }
 
         /// <summary>
@@ -147,6 +147,59 @@ namespace HNTAS.Api.Client.Test.Api
             Client.Option<string> hnId = default!;
             Client.Option<string> updatedBy = default!;
             await _instance.ApiSOANetworkTypePatchAsync(networkTypeSelection2, hnId, updatedBy);
+        }
+
+        /// <summary>
+        /// Test ApiSOASendAssessorAssessmentEmailPost
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiSOASendAssessorAssessmentEmailPostAsyncTest()
+        {
+            string hnName = default!;
+            string hnId = default!;
+            string assessmentResult = default!;
+            await _instance.ApiSOASendAssessorAssessmentEmailPostAsync(hnName, hnId, assessmentResult);
+        }
+
+        /// <summary>
+        /// Test ApiSOASendCertificationCompleteEmailPost
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiSOASendCertificationCompleteEmailPostAsyncTest()
+        {
+            string hnName = default!;
+            string hnId = default!;
+            await _instance.ApiSOASendCertificationCompleteEmailPostAsync(hnName, hnId);
+        }
+
+        /// <summary>
+        /// Test ApiSOASoaAssignAssessorPatch
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiSOASoaAssignAssessorPatchAsyncTest()
+        {
+            ElementSoaAssignAssessorRequest elementSoaAssignAssessorRequest = default!;
+            await _instance.ApiSOASoaAssignAssessorPatchAsync(elementSoaAssignAssessorRequest);
+        }
+
+        /// <summary>
+        /// Test ApiSOAUpdateSoaStatusPatch
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiSOAUpdateSoaStatusPatchAsyncTest()
+        {
+            ElementSoaStatusUpdateRequest elementSoaStatusUpdateRequest = default!;
+            await _instance.ApiSOAUpdateSoaStatusPatchAsync(elementSoaStatusUpdateRequest);
+        }
+
+        /// <summary>
+        /// Test ApiSOAUpdateSoaStatusPut
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiSOAUpdateSoaStatusPutAsyncTest()
+        {
+            UpdateSoaStatusRequest updateSoaStatusRequest = default!;
+            await _instance.ApiSOAUpdateSoaStatusPutAsync(updateSoaStatusRequest);
         }
     }
 }

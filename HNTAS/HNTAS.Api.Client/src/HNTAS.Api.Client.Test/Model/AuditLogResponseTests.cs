@@ -54,39 +54,75 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Event'
+        /// Test the property 'Items'
         /// </summary>
         [Fact]
-        public void EventTest()
+        public void ItemsTest()
         {
-            // TODO unit test for the property 'Event'
+            // TODO unit test for the property 'Items'
         }
 
         /// <summary>
-        /// Test the property 'UserName'
+        /// Test the property 'PageNumber'
         /// </summary>
         [Fact]
-        public void UserNameTest()
+        public void PageNumberTest()
         {
-            // TODO unit test for the property 'UserName'
+            // TODO unit test for the property 'PageNumber'
         }
 
         /// <summary>
-        /// Test the property 'Role'
+        /// Test the property 'PageSize'
         /// </summary>
         [Fact]
-        public void RoleTest()
+        public void PageSizeTest()
         {
-            // TODO unit test for the property 'Role'
+            // TODO unit test for the property 'PageSize'
         }
 
         /// <summary>
-        /// Test the property 'Timestamp'
+        /// Test the property 'TotalCount'
         /// </summary>
         [Fact]
-        public void TimestampTest()
+        public void TotalCountTest()
         {
-            // TODO unit test for the property 'Timestamp'
+            // TODO unit test for the property 'TotalCount'
+        }
+
+        /// <summary>
+        /// Test the property 'TotalPages'
+        /// </summary>
+        [Fact]
+        public void TotalPagesTest()
+        {
+            // TODO unit test for the property 'TotalPages'
+        }
+
+        /// <summary>
+        /// Test the property 'HasPreviousPage'
+        /// </summary>
+        [Fact]
+        public void HasPreviousPageTest()
+        {
+            // TODO unit test for the property 'HasPreviousPage'
+        }
+
+        /// <summary>
+        /// Test the property 'HasNextPage'
+        /// </summary>
+        [Fact]
+        public void HasNextPageTest()
+        {
+            // TODO unit test for the property 'HasNextPage'
+        }
+
+        /// <summary>
+        /// Test the property 'HnId'
+        /// </summary>
+        [Fact]
+        public void HnIdTest()
+        {
+            // TODO unit test for the property 'HnId'
         }
     }
 }

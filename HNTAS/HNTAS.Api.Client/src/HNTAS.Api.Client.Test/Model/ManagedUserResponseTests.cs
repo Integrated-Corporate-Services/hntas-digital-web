@@ -54,30 +54,66 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'ResponsibleUser'
+        /// Test the property 'Id'
         /// </summary>
         [Fact]
-        public void ResponsibleUserTest()
+        public void IdTest()
         {
-            // TODO unit test for the property 'ResponsibleUser'
+            // TODO unit test for the property 'Id'
         }
 
         /// <summary>
-        /// Test the property 'RegisteredUsers'
+        /// Test the property 'Name'
         /// </summary>
         [Fact]
-        public void RegisteredUsersTest()
+        public void NameTest()
         {
-            // TODO unit test for the property 'RegisteredUsers'
+            // TODO unit test for the property 'Name'
         }
 
         /// <summary>
-        /// Test the property 'InvitedUsers'
+        /// Test the property 'EmailId'
         /// </summary>
         [Fact]
-        public void InvitedUsersTest()
+        public void EmailIdTest()
         {
-            // TODO unit test for the property 'InvitedUsers'
+            // TODO unit test for the property 'EmailId'
+        }
+
+        /// <summary>
+        /// Test the property 'Status'
+        /// </summary>
+        [Fact]
+        public void StatusTest()
+        {
+            // TODO unit test for the property 'Status'
+        }
+
+        /// <summary>
+        /// Test the property 'HeatNetworks'
+        /// </summary>
+        [Fact]
+        public void HeatNetworksTest()
+        {
+            // TODO unit test for the property 'HeatNetworks'
+        }
+
+        /// <summary>
+        /// Test the property 'Roles'
+        /// </summary>
+        [Fact]
+        public void RolesTest()
+        {
+            // TODO unit test for the property 'Roles'
+        }
+
+        /// <summary>
+        /// Test the property 'InvitedAt'
+        /// </summary>
+        [Fact]
+        public void InvitedAtTest()
+        {
+            // TODO unit test for the property 'InvitedAt'
         }
     }
 }

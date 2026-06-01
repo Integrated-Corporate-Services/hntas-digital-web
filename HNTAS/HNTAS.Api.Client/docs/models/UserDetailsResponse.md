@@ -19,6 +19,7 @@ Name | Type | Description | Notes
 **Roles** | [**List&lt;UserRole&gt;**](UserRole.md) |  | [optional] 
 **Organisation** | [**OrganisationResponse**](OrganisationResponse.md) |  | [optional] 
 **HeatNetworks** | [**List&lt;HeatNetworkUserResponse&gt;**](HeatNetworkUserResponse.md) |  | [optional] 
+**ContributingOrganisations** | **List&lt;string&gt;** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

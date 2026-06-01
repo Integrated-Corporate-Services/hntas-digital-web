@@ -99,6 +99,15 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'AggregatedKpis'
+        /// </summary>
+        [Fact]
+        public void AggregatedKpisTest()
+        {
+            // TODO unit test for the property 'AggregatedKpis'
+        }
+
+        /// <summary>
         /// Test the property 'CurrentPage'
         /// </summary>
         [Fact]
