@@ -7,7 +7,7 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            @if(ViewBag.DistWithoutOwnEC)
+            @if(!!ViewBag.DistWithoutOwnEC)
             {
                 <h1 class="govuk-heading-l">@ViewBag.QuestionForDistWithoutEC</h1>
             }

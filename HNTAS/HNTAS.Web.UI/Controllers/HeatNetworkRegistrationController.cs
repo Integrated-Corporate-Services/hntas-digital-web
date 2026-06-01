@@ -506,6 +506,8 @@ namespace HNTAS.Web.UI.Controllers
                 : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);
             this.ShowBackButton(!isCommunalHn && !hasOwnEc ? "HeatNetworkName" : "DoesHNHaveAPostcode");
             ViewBag.addressFor = _sessionHelper.GetFromSession<string>(HttpContext, "addressFor");
+            ViewBag.QuestionForDistWithoutEC = "What are the grid coordinates for the connection point with the supplying network?";
+            ViewBag.DistWithoutOwnEC = !isCommunalHn && !hasOwnEc;
             var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
             return View(model);
         }
@@ -517,7 +519,7 @@ namespace HNTAS.Web.UI.Controllers
             var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel).IsHnTypeCommunal ?? false;
             bool hasOwnEc = isCommunalHn
                 ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
-                : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);            
+                : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);         
             this.ShowBackButton(!isCommunalHn && !hasOwnEc ? "HeatNetworkName" : "DoesHNHaveAPostcode");
             ViewBag.addressFor = _sessionHelper.GetFromSession<string>(HttpContext, "addressFor");
             ViewBag.QuestionForDistWithoutEC = "What are the grid coordinates for the connection point with the supplying network?";
