@@ -443,7 +443,7 @@ namespace HNTAS.Web.UI.Controllers
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
         public async Task<IActionResult> AssessmentSelectionEcAsync()
-        {
+        {            
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.EC);
 
@@ -464,7 +464,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AssessmentSelectionEc(AssessorAssessmentSelectionViewModel model)
+        public async Task<IActionResult> AssessmentSelectionEcAsync(AssessorAssessmentSelectionViewModel model)
         {
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
@@ -474,7 +474,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            ViewBag.HnName = hnName;
+            ViewBag.HnName = hnName;            
 
             if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
             {
@@ -510,7 +510,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AssessmentSelectionSs(AssessorAssessmentSelectionViewModel model)
+        public async Task<IActionResult> AssessmentSelectionSsAsync(AssessorAssessmentSelectionViewModel model)
         {
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
@@ -520,6 +520,62 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+
+            var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
+            var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var elementGroup = heatNetworkData?.NetworkElements?.ElementsGroup.Where(a => a.ElementType == model.ElementType).FirstOrDefault();
+            if (elementGroup != null)
+            {
+                var stageForElement = elementGroup.SoaStages?.Where(s => s.StageId.HasValue && (SoaStage)s.StageId.Value == stage).FirstOrDefault();
+                if (stageForElement != null)
+                {
+                    var assessorsForStageAndElement = stageForElement.Assessors;
+                    
+                    
+                    if (assessorsForStageAndElement != null && assessorsForStageAndElement.Count > 0)
+                    {
+                        var assessorForStageAndElement = assessorsForStageAndElement.Where(a => a.Email == assessorDetails?.Email).FirstOrDefault();
+                        // If same assessor already has an assessment
+                        if (assessorForStageAndElement != null)
+                        {
+                            TempData["ErrorMessage"] = $"This assessor has already been assigned to {assessorForStageAndElement.Assessment}. Choose a different assessor.";
+                            model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+                            return View("AssessmentSelection", model);
+                        }
+                        
+                        var assessmentForExistingAssessors = assessorsForStageAndElement.Select(a => a.Assessment).ToList();
+                        // if the assessment option is already assigned to another assessor for the same stage and element
+                        if (assessmentForExistingAssessors.Contains(model.SelectedAssessmentOption))
+                        {
+                            TempData["ErrorMessage"] = $"This assessment option has already been assigned to another assessor for this stage. Choose a different assessment option.";
+                            model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+                            return View("AssessmentSelection", model);
+                        }
+
+                        // if the selected assessment option is 'Review' or 'Decision', and there is already an assessor assigned to  'Review and Decision' for the same stage and element
+                        if ((model.SelectedAssessmentOption == AssessmentConstants.Review 
+                            || model.SelectedAssessmentOption == AssessmentConstants.Decision)
+                            && assessmentForExistingAssessors.Contains(AssessmentConstants.ReviewAndDecision))
+                        {
+                            TempData["ErrorMessage"] = $"This assessment option has already been assigned to another assessor for this stage. Choose a different assessment option.";
+                            model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+                            return View("AssessmentSelection", model);
+                        }
+
+                        // if the selected assessment option is 'Review and Decision', and there is already an assessor assigned to  'Review' or 'Decision' for the same stage and element
+                        if (model.SelectedAssessmentOption == AssessmentConstants.ReviewAndDecision                            
+                            && (assessmentForExistingAssessors.Contains(AssessmentConstants.Review)
+                            || assessmentForExistingAssessors.Contains(AssessmentConstants.Decision)))
+                        {
+                            TempData["ErrorMessage"] = $"This assessment option has already been assigned to another assessor for this stage. Choose a different assessment option.";
+                            model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+                            return View("AssessmentSelection", model);
+                        }
+                    }
+                    
+                }
+            }
 
             if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
             {
