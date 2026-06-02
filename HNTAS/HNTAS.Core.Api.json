@@ -4716,6 +4716,37 @@
         },
         "nullable": true
       },
+      "AssessorAssessment": {
+        "type": "object",
+        "properties": {
+          "assessorEmail": {
+            "type": "string"
+          },
+          "assessorFirstName": {
+            "type": "string"
+          },
+          "assessorLastName": {
+            "type": "string"
+          },
+          "assessment": {
+            "type": "string"
+          }
+        }
+      },
+      "AssessorAssessmentForElement": {
+        "type": "object",
+        "properties": {
+          "elementType": {
+            "$ref": "#/components/schemas/ElementTypeInShort"
+          },
+          "assessorAssessments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssessorAssessment"
+            }
+          }
+        }
+      },
       "AssessorSearchResult": {
         "type": "object",
         "properties": {
@@ -5308,8 +5339,7 @@
             "nullable": true
           },
           "elementType": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/ElementTypeInShort"
           }
         }
       },
@@ -5332,8 +5362,7 @@
             "nullable": true
           },
           "elementType": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/ElementTypeInShort"
           }
         }
       },
@@ -5357,23 +5386,14 @@
       "ElementSoaAssignAssessorRequest": {
         "type": "object",
         "properties": {
-          "elementIds": {
+          "assessorAssessmentForElements": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/AssessorAssessmentForElement"
             }
           },
-          "assessorEmail": {
-            "type": "string"
-          },
-          "assessorFirstName": {
-            "type": "string"
-          },
-          "assessorLastName": {
-            "type": "string"
-          },
-          "assessment": {
-            "type": "string"
+          "soaStage": {
+            "$ref": "#/components/schemas/SoaStage"
           },
           "hnId": {
             "type": "string"
@@ -5397,8 +5417,7 @@
             "nullable": true
           },
           "elementType": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/ElementTypeInShort"
           },
           "soaStatuses": {
             "type": "array",
@@ -5426,6 +5445,15 @@
             "nullable": true
           }
         }
+      },
+      "ElementTypeInShort": {
+        "enum": [
+          "EC",
+          "SS",
+          "DDN",
+          "CDN",
+          "CC"
+        ]
       },
       "Energy": {
         "type": "object",
@@ -7257,8 +7285,7 @@
           "status": {
             "$ref": "#/components/schemas/UserStatus"
           }
-        },
-        "nullable": true
+        }
       },
       "SoaJourneyData": {
         "type": "object",
@@ -7383,8 +7410,12 @@
             "type": "string",
             "nullable": true
           },
-          "assessor": {
-            "$ref": "#/components/schemas/SoaAssessor"
+          "assessors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SoaAssessor"
+            },
+            "nullable": true
           }
         }
       },

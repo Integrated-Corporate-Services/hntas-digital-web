@@ -297,8 +297,8 @@ namespace HNTAS.Web.UI.Services.Core
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Exception during saving Assessor Assigned for HN ID: {HnId}, Elements: {ElementIds}, UpdatedBy: {UpdatedBy}",
-                SanitizeForLogging(request.HnId), SanitizeForLogging(string.Join(", ", request.ElementIds!)), SanitizeForLogging(request.UpdatedBy!));
+                _logger.LogError(ex, "Exception during saving Assessor Assigned for HN ID: {HnId}, UpdatedBy: {UpdatedBy}",
+                SanitizeForLogging(request.HnId), SanitizeForLogging(request.UpdatedBy!));
                 throw;
             }
         }

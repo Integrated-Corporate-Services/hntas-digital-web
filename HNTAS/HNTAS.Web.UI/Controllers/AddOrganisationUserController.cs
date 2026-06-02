@@ -137,7 +137,7 @@ namespace HNTAS.Web.UI.Controllers
                 new SelectItemOption
                 {
                     Value = ContributorRole.NetworkManager.ToString(),
-                    Text = "Assign as a HNTAS Coordinator"
+                    Text = "Assign as a Network manager"
                 },
             ];
 
@@ -165,7 +165,7 @@ namespace HNTAS.Web.UI.Controllers
                        new SelectItemOption
                         {
                              Value = ContributorRole.NetworkManager.ToString(),
-                             Text = "Assign as a NetworkManager"
+                             Text = "Assign as a Network manager"
                         },
                     ];
                 model.InvitedUserName = $"{state.Data.ContributorContactDetailsModel.FirstName} {state.Data.ContributorContactDetailsModel.LastName}";
@@ -183,7 +183,7 @@ namespace HNTAS.Web.UI.Controllers
 
             TempData["UserName"] = $"{state.Data.ContributorContactDetailsModel?.FirstName} {state.Data.ContributorContactDetailsModel?.LastName}";
             TempData["OrganisationName"] = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
-            TempData["AssignedRole"] = model?.SelectedRoleName == ContributorRole.NetworkManager.ToString() ? "HNTAS Coordinator" : "Responsible Party";
+            TempData["AssignedRole"] = model?.SelectedRoleName == ContributorRole.NetworkManager.ToString() ? "NetworkManager" : "ResponsiblePerson";
 
             var selectedContributorRole = model.SelectedRoleName == ContributorRole.NetworkManager.ToString()
                 ? ContributorRole.NetworkManager

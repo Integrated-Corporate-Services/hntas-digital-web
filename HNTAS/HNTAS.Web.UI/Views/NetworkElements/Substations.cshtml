@@ -11,26 +11,19 @@
         <h1 class="govuk-heading-l">Distribution networks and substations</h1>
         <p class="govuk-body"><strong>Substations</strong></p>
         <p class="govuk-body">
-            A substation is a connection between distribution networks which contains
-            an exchange of thermal energy (for example, via plate heat exchangers)
-            together with other necessary equipment.
+            A substation is a connection between distribution networks which contains an exchange of thermal energy (for example, via plate heat exchangers) together with other necessary equipment.
         </p>
         <p class="govuk-body">
-            Each substation you add to a district distribution network (the supplying
-            pipework) splits it into separate sections. Each section is treated as a
-            separate district distribution network.
+            Each substation you add to a district distribution network (the supplying pipework) splits it into separate sections. Each section is treated as a separate district distribution network.
         </p>
-        <p class="govuk-body">
-            For example, if you have one substation, you will have two district distribution
-            network sections. If you have two substations, you will have three district
-            distribution network sections.
-        </p>
+        
         <form asp-action="Substations" asp-controller="NetworkElements" method="post">
             <div class="govuk-form-group @(hasDistrictSubstationErrors ? " govuk-form-group--error" : "" )">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                        Do you have any district substations in your network?
+                        Do you have any substations on your district network?
                     </legend>
+                    <div class="govuk-hint">Do not include any substations within communal buildings</div>
                     <div class="govuk-radios" data-module="govuk-radios">
 
                         <div class="govuk-radios__item">

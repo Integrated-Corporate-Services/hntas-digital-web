@@ -1,7 +1,9 @@
-﻿using HNTAS.Api.Client.Api;
+﻿using DocumentFormat.OpenXml.EMMA;
+using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.ElementSoa;
 using HNTAS.Web.UI.Models.NetworkElements;
 using HNTAS.Web.UI.Services.Core;
@@ -79,21 +81,34 @@ namespace HNTAS.Web.UI.Controllers
                             {
                                 if (elementStage?.SoaStatuses == null)
                                 {
-                                    modelElement.SoaStatuses = new List<SoaStatusWithCount>() { 
+                                    modelElement.SoaStatuses = new List<SoaStatusWithCount>() {
                                         new SoaStatusWithCount { SoaStatus = SoaStatus.NotStarted, Count = elementSoaElement.Count },
                                     };
                                 }
                                 else
                                 {
                                     modelElement.SoaStatuses = elementStage?.SoaStatuses;
-                                }                                    
+                                }
                                 modelElement.SoaStatusUpdatedAt = elementStage?.SoaStatusUpdatedAt.HasValue == true
                                     ? elementStage.SoaStatusUpdatedAt.Value.DateTime
                                     : (DateTime?)null;
-                                modelElement.AssessorEmailId = elementStage?.Assessor?.Email;
-                                modelElement.AssessorFirstName = elementStage?.Assessor?.FirstName;
-                                modelElement.AssessorLastName = elementStage?.Assessor?.LastName;
-                                modelElement.Assessment = elementStage?.Assessor?.Assessment;
+
+                                modelElement.AssessorDetails = new List<AssessorDetails>();
+                                if (elementStage?.Assessors != null)
+                                {
+                                    foreach (var assessor in elementStage?.Assessors!)
+                                    {
+                                        var assessorDetails = new AssessorDetails
+                                        {
+                                            FirstName = assessor.FirstName!,
+                                            LastName = assessor.LastName!,
+                                            Email = assessor.Email!,
+                                            Assessment = assessor.Assessment,
+                                        };
+                                        modelElement.AssessorDetails.Add(assessorDetails);
+                                    }
+                                }
+
                             }
                         }
                     }
@@ -103,7 +118,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SoaUpdateStatus([FromQuery] SoaStage stage, [FromQuery] string elementType, [FromQuery] HeatNetworkElementType elementDisplayType)
+        public async Task<IActionResult> SoaUpdateStatus([FromQuery] SoaStage stage, [FromQuery] ElementTypeInShort elementType, [FromQuery] HeatNetworkElementType elementDisplayType)
         {
             var tempDataKey = $"Soa_{elementType}_{stage}";
             string soaPhase = TempData[$"{tempDataKey}_Phase"] as string;
@@ -121,17 +136,17 @@ namespace HNTAS.Web.UI.Controllers
 
             // Set element-specific ViewBag properties
             var content = ElementSoaHelper.GetSoaElementContent(elementDisplayType);
-            ViewBag.Heading = content;            
+            ViewBag.Heading = content;
             var selectedNetworkElement = heatNetworkData?.NetworkElements?.ElementsGroup?.Where(e => e.ElementType == elementType).FirstOrDefault();
-            
-            var model = new ElementSoaUpdateStatusViewModel();            
+
+            var model = new ElementSoaUpdateStatusViewModel();
             model.SoaStage = stage;
             model.ElementType = elementType;
             model.ElementName = elementName;
             model.SoaPhase = soaPhase;
             model.ElementDisplayType = elementDisplayType;
             model.ElementCount = selectedNetworkElement?.Count;
-            model.SoaStatusOptions = ElementSoaHelper.GetSoaStatuses();            
+            model.SoaStatusOptions = ElementSoaHelper.GetSoaStatuses();
 
             var soaStatusesForStage = selectedNetworkElement?.SoaStages?
                 .Where(s => s.StageId.HasValue && (SoaStage)s.StageId.Value == stage)
@@ -157,7 +172,7 @@ namespace HNTAS.Web.UI.Controllers
                     .Where(s => s.SoaStatus == option.Id)
                     .Sum(s => s.Count);
                 model.SoaStatusCounts[option.Id] = count == 0 ? null : count;
-            });            
+            });
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ElementSoaStatusUpdateModelSessionKey, model);
 
@@ -170,7 +185,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
             var targetFragment = string.Concat("stage-", currentStageIndex);
-            this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);            
+            this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -197,18 +212,18 @@ namespace HNTAS.Web.UI.Controllers
             var allSoaAllStatusesCount = soaStatusWithCountList.Where(s => s.Count != null).Sum(s => s.Count ?? 0);
 
             if (allSoaAllStatusesCount > totalCountFromElement)
-            {                
+            {
                 ModelState.AddModelError($"soastatuscounts[{model.SelectedSoaStatusOptions.FirstOrDefault().ToString()}]", $"The total count of all SoA statuses cannot exceed {totalCountFromElement}");
             }
 
             foreach (var selectedId in model.SelectedSoaStatusOptions)
-            {                
+            {
                 if ((!model.SoaStatusCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
-                {                    
+                {
                     ModelState.Remove($"SoaStatusCounts.{selectedId}");
                     ModelState.AddModelError($"SoaStatusCounts[{selectedId}]", $"Enter number of connections.");
                 }
-            }            
+            }
 
             if (!ModelState.IsValid)
             {
@@ -216,8 +231,6 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
 
-            
-            
             var request = new ElementSoaStatusUpdateRequest(hnId: hnId!, stage: model.SoaStage, elementType: model?.ElementType, soaStatuses: soaStatusWithCountList, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: model.SoaPhase, elementDisplayName: model.ElementName);
             await _soaProjectService.UpdateElementSoaStatus(request);
             ClearSoaStatusUpdateSpecificSession();
@@ -226,18 +239,12 @@ namespace HNTAS.Web.UI.Controllers
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
-        public IActionResult PrepareAssessorOnboarding([FromQuery] SoaStage stage, [FromQuery] string selectedAssessor, [FromQuery] string selectedAssessorFirstName, [FromQuery] string selectedAssessorLastName, [FromQuery] string selectedAssessorEmail)
+        public IActionResult PrepareAssessorOnboarding([FromQuery] SoaStage stage, [FromQuery] string stageTitle, [FromQuery] ElementTypeInShort elementType)
         {
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding, stage);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.SoaStageTitleOfAssessorOnboarding, stageTitle);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.SoaElementTypeOfAssessorOnboarding, elementType);
 
-            var selectedAssessorDetails = new AssessorDetails
-            {
-                FirstName = selectedAssessorFirstName,
-                LastName = selectedAssessorLastName,
-                Email = selectedAssessorEmail,
-                FullNameWithEmail = selectedAssessor
-            };
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.DefaultSelectedAssessor, selectedAssessorDetails);
             return RedirectToAction("AssessorOnboarding", "ElementSoa");
         }
 
@@ -246,6 +253,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult AssessorOnboarding()
         {
             var stage = _sessionHelper.GetFromSession<SoaStage>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
+            ViewBag.StageTitle = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.SoaStageTitleOfAssessorOnboarding);
             var selectedAssessor = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.DefaultSelectedAssessor);
             int currentStageIndex;
             if (stage == 0)
@@ -306,7 +314,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SelectedAssessorOnboarding(string firstName, string lastName, string emailId, string fullNameFromInput)
         {
-
+            ViewBag.StageTitle = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.SoaStageTitleOfAssessorOnboarding);
             var selectedAssessor = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.DefaultSelectedAssessor);
 
             if (fullNameFromInput == null)
@@ -333,9 +341,9 @@ namespace HNTAS.Web.UI.Controllers
 
             var model = new AssessorDetails
             {
-                FirstName = assessorFromList?.FirstName! ?? selectedAssessor?.FirstName!,
-                LastName = assessorFromList?.LastName! ?? selectedAssessor?.LastName!,
-                Email = assessorFromList?.Email! ?? selectedAssessor?.Email!
+                FirstName = assessorFromList?.FirstName!,
+                LastName = assessorFromList?.LastName!,
+                Email = assessorFromList?.Email!
             };
 
             // Store in session
@@ -347,12 +355,12 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> AssessorSelectElementsAsync()
         {
+            ClearSoaAssessorAssessmentSession();
+            ViewBag.StageTitle = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.SoaStageTitleOfAssessorOnboarding);
             var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
             var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
-            var selectedAssessor = $"{assessorDetails?.FirstName} {assessorDetails?.LastName} ({assessorDetails?.Email})";
-            
+            var initiatedElementType = _sessionHelper.GetFromSession<ElementTypeInShort?>(HttpContext, SessionKeys.SoaElementTypeOfAssessorOnboarding);
             this.ShowBackButton("AssessorOnboarding", "ElementSoa");
-            ViewBag.SelectedAssessor = selectedAssessor;
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -372,16 +380,12 @@ namespace HNTAS.Web.UI.Controllers
             if (selectedNetworkElements != null)
             {
                 foreach (var item in selectedNetworkElements.ElementsGroup!)
-                {
-                    var assignedAssessor = item.SoaStages?
-                        .Select(s => s.Assessor)
-                        .FirstOrDefault(a => a != null);
-
+                {                    
                     model.ElementOptions?.Add(new AssessorSelectElementsOption
                     {
-                        //Label = item.NetworkElementInstanceName!,
-                        //ElementId = item.ElementId!,
-                        AssignedAssessorName = assignedAssessor != null ? $"(Assessor Assigned: {assignedAssessor.FirstName} {assignedAssessor.LastName})" : ""
+                        Label = NetworkElementHelper.GetNetworkTypeLabelForNetworkType(item.ElementDisplayType),
+                        ElementType = item.ElementType!,
+                        IsHidden = initiatedElementType.HasValue && item.ElementType == initiatedElementType.Value
                     });
                 }
             }
@@ -393,78 +397,332 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AssessorSelectElements(AssessorSelectElementsViewModel model)
         {
+            ViewBag.StageTitle = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.SoaStageTitleOfAssessorOnboarding);
+            var initiatedElementType = _sessionHelper.GetFromSession<ElementTypeInShort?>(HttpContext, SessionKeys.SoaElementTypeOfAssessorOnboarding);
+            if (initiatedElementType.HasValue && !model.SelectedElementIds!.Contains(initiatedElementType.Value))
+            {
+                model.SelectedElementIds.Insert(0, initiatedElementType.Value);
+            }
             var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
             var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
             var selectedAssessor = $"{assessorDetails?.FirstName} {assessorDetails?.LastName} ({assessorDetails?.Email})";
-            
+
             this.ShowBackButton("AssessorOnboarding", "ElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
             var modelFromSession = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
-            if (!ModelState.IsValid)
-            {
-
-                return View("AssessorSelectElements", modelFromSession);
-            }
 
             foreach (var item in model.SelectedElementIds!)
             {
                 foreach (var option in modelFromSession?.ElementOptions!)
                 {
-                    if (option.ElementId == item)
+                    if (option.ElementType == item)
                     {
                         model.SelectedElementLabel?.Add(option.Label);
                     }
                 }
             }
             model.ElementOptions = modelFromSession?.ElementOptions;
-            // Store selected element IDs in session
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorSelectedElementSessionKey, model);
-            return RedirectToAction("AssessmentSelection", "ElementSoa");
+
+            var assessmentRoute = GetRouteActionForElement(model.SelectedElementIds!.FirstOrDefault());
+
+            return RedirectToAction(assessmentRoute, "ElementSoa");
+
+
         }
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
-        public IActionResult AssessmentSelection()
-        {
-            this.ShowBackButton("AssessorSelectElements", "ElementSoa");
+        public async Task<IActionResult> AssessmentSelectionEcAsync()
+        {            
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.EC);
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
-            var model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey) ?? new AssessorAssessmentSelectionViewModel();
-            model.AssessmentOptions = ElementSoaHelper.GetAssessmentOptions();
 
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey, model);
-            return View(model);
+            var model = await GetAssessmentModel(hnId, ElementTypeInShort.EC, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
+
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey, model);
+            return View("AssessmentSelection", model);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssessmentSelectionEcAsync(AssessorAssessmentSelectionViewModel model)
+        {
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId;
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnName = hnName;            
+
+            if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
+            {
+                ModelState.AddModelError(nameof(model.SelectedAssessmentOption), "Select which step of the assessment will they carry out for the energy centre");
+                model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
+                return View("AssessmentSelection", model);
+            }
+
+            var validationResult = await ValidateAssessment(hnId!, model.ElementType, model.SelectedAssessmentOption);
+            if (!validationResult.IsValid)
+            {
+                TempData["ErrorMessage"] = validationResult.ErrorMessage;
+                var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
+                modelFromSession?.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                return View("AssessmentSelection", modelFromSession);
+            }
+
+            // Store selected assessment type in session
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey, model);
+
+            var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
+
+            return RedirectToAction(nextRouteAction, "ElementSoa");
+        }
+
+        [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
+        [HttpGet]
+        public async Task<IActionResult> AssessmentSelectionSs()
+        {
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.SS);
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId;
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnName = hnName;
+            var model = await GetAssessmentModel(hnId, ElementTypeInShort.SS, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey, model);
+            return View("AssessmentSelection", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AssessmentSelection(AssessorAssessmentSelectionViewModel model)
+        public async Task<IActionResult> AssessmentSelectionSsAsync(AssessorAssessmentSelectionViewModel model)
         {
-            this.ShowBackButton("AssessorSelectElements", "ElementSoa");
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId;
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnName = hnName;            
+
+            if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
+            {
+                ModelState.AddModelError(nameof(model.SelectedAssessmentOption), "Select which step of the assessment will they carry out for the substations");
+                model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+                return View("AssessmentSelection", model);
+            }
+
+            var validationResult = await ValidateAssessment(hnId!, model.ElementType, model.SelectedAssessmentOption);
+            if (!validationResult.IsValid)
+            {
+                TempData["ErrorMessage"] = validationResult.ErrorMessage;
+                var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+                modelFromSession?.SelectedAssessmentOption = modelFromSession.SelectedAssessmentOption;
+                return View("AssessmentSelection", modelFromSession);
+            }
+            // Store selected assessment type in session
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey, model);
+
+            var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
+            return RedirectToAction(nextRouteAction, "ElementSoa");
+        }        
+
+        [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
+        [HttpGet]
+        public async Task<IActionResult> AssessmentSelectionCc()
+        {
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.CC);
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
-            if (!ModelState.IsValid)
+            var model = await GetAssessmentModel(hnId, ElementTypeInShort.CC, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
+
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey, model);
+            return View("AssessmentSelection", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssessmentSelectionCcAsync(AssessorAssessmentSelectionViewModel model)
+        {
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId;
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnName = hnName;
+
+            if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
             {
-                model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey);
+                ModelState.AddModelError(nameof(model.SelectedAssessmentOption), "Select which step of the assessment will they carry out for the consumer connection");
+                model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
                 return View("AssessmentSelection", model);
             }
+
+            var validationResult = await ValidateAssessment(hnId!, model.ElementType, model.SelectedAssessmentOption);
+            if (!validationResult.IsValid)
+            {
+                TempData["ErrorMessage"] = validationResult.ErrorMessage;
+                var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
+                modelFromSession?.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                return View("AssessmentSelection", modelFromSession);
+            }
             // Store selected assessment type in session
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey, model);
-            return RedirectToAction("AssessorElementSelectionOverview", "ElementSoa");
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey, model);
+
+            var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
+
+            return RedirectToAction(nextRouteAction, "ElementSoa");
+        }
+
+        [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
+        [HttpGet]
+        public async Task<IActionResult> AssessmentSelectionCdn()
+        {
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.CDN);
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId;
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnName = hnName;
+            var model = await GetAssessmentModel(hnId, ElementTypeInShort.CDN, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
+
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey, model);
+            return View("AssessmentSelection", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssessmentSelectionCdnAsync(AssessorAssessmentSelectionViewModel model)
+        {
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId;
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnName = hnName;
+
+            if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
+            {
+                ModelState.AddModelError(nameof(model.SelectedAssessmentOption), "Select which step of the assessment will they carry out for the communal distribution network");
+                model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
+                return View("AssessmentSelection", model);
+            }
+
+            var validationResult = await ValidateAssessment(hnId!, model.ElementType, model.SelectedAssessmentOption);
+            if (!validationResult.IsValid)
+            {
+                TempData["ErrorMessage"] = validationResult.ErrorMessage;
+                var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
+                modelFromSession?.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                return View("AssessmentSelection", modelFromSession);
+            }
+
+            // Store selected assessment type in session
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey, model);
+
+            var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
+
+            return RedirectToAction(nextRouteAction, "ElementSoa");
+        }
+
+        [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
+        [HttpGet]
+        public async Task<IActionResult> AssessmentSelectionDdn()
+        {
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.DDN);
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId;
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnName = hnName;
+            var model = await GetAssessmentModel(hnId, ElementTypeInShort.DDN, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
+
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey, model);
+            return View("AssessmentSelection", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssessmentSelectionDdnAsync(AssessorAssessmentSelectionViewModel model)
+        {
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            ViewBag.HnId = hnId;
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnName = hnName;
+
+            if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
+            {
+                ModelState.AddModelError(nameof(model.SelectedAssessmentOption), "Select which step of the assessment will they carry out for the district distribution network");
+                model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
+                return View("AssessmentSelection", model);
+            }
+
+            var validationResult = await ValidateAssessment(hnId!, model.ElementType, model.SelectedAssessmentOption);
+            if (!validationResult.IsValid)
+            {
+                TempData["ErrorMessage"] = validationResult.ErrorMessage;
+                var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
+                modelFromSession?.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                return View("AssessmentSelection", modelFromSession);
+            }
+
+            // Store selected assessment type in session
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey, model);
+
+            var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
+
+            return RedirectToAction(nextRouteAction, "ElementSoa");
         }
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
         public async Task<IActionResult> AssessorElementSelectionOverviewAsync()
         {
-            this.ShowBackButton("AssessmentSelection", "ElementSoa");
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetRouteActionForElement(selectedElements.SelectedElementIds.LastOrDefault());
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -472,11 +730,55 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var phase = heatNetworkData?.Phase;
             var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
-            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
-            var assessmentSelectionModel = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey);
+
+            var ecData = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
+            var ssData = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+            var ccData = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
+            var cdnData = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
+            var ddnData = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
+
+            var assessorAssessments = new List<AssessorAssessmentSelectionViewModel>();
+            foreach (var selectedElement in selectedElements.SelectedElementIds!)
+            {
+                switch (selectedElement)
+                {
+                    case ElementTypeInShort.EC:
+                        if (ecData != null)
+                        {
+                            assessorAssessments.Add(ecData);
+                        }
+                        break;
+                    case ElementTypeInShort.SS:
+                        if (ssData != null)
+                        {
+                            assessorAssessments.Add(ssData);
+                        }
+                        break;
+                    case ElementTypeInShort.CC:
+                        if (ccData != null)
+                        {
+                            assessorAssessments.Add(ccData);
+                        }
+                        break;
+                    case ElementTypeInShort.CDN:
+                        if (cdnData != null)
+                        {
+                            assessorAssessments.Add(cdnData);
+                        }
+                        break;
+                    case ElementTypeInShort.DDN:
+                        if (ddnData != null)
+                        {
+                            assessorAssessments.Add(ddnData);
+                        }
+                        break;
+                }
+            }
+
+
             var model = new AssessorElementSelectionOverviewModel
             {
-                AssessorAssessment = assessmentSelectionModel!,
+                AssessorAssessments = assessorAssessments!,
                 AssessorSelectedElements = selectedElements!,
                 AssessorDetails = assessorDetails!,
                 HeatNetworkPhase = phase ?? string.Empty,
@@ -491,23 +793,38 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssessorElementSelectionOverviewConfirm(AssessorElementSelectionOverviewModel model)
         {
-            this.ShowBackButton("AssessmentSelection", "ElementSoa");
+            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
+            var backRoutingAction = GetRouteActionForElement(selectedElements.SelectedElementIds.LastOrDefault());
+
+            this.ShowBackButton(backRoutingAction, "ElementSoa");
+
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
             var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
-            var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
-            var assessmentSelectionModel = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey);
+
+            var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
+
+            var ecData = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
+            var ssData = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+            var ccData = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
+            var cdnData = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
+            var ddnData = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
+
+            var assessorAssessmentForElements = new List<AssessorAssessmentForElement>();
+            GetAssessorAssessmentForElements(ecData, assessorDetails, assessorAssessmentForElements);
+            GetAssessorAssessmentForElements(ssData, assessorDetails, assessorAssessmentForElements);
+            GetAssessorAssessmentForElements(ccData, assessorDetails, assessorAssessmentForElements);
+            GetAssessorAssessmentForElements(cdnData, assessorDetails, assessorAssessmentForElements);
+            GetAssessorAssessmentForElements(ddnData, assessorDetails, assessorAssessmentForElements);
+
 
             var requestModel = new ElementSoaAssignAssessorRequest
             {
                 HnId = hnId!,
-                AssessorEmail = assessorDetails?.Email,
-                AssessorFirstName = assessorDetails?.FirstName,
-                AssessorLastName = assessorDetails?.LastName,
-                ElementIds = selectedElements?.SelectedElementIds,
-                Assessment = assessmentSelectionModel?.SelectedAssessmentOption,
+                AssessorAssessmentForElements = assessorAssessmentForElements,
+                SoaStage = stage,
                 UpdatedBy = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey)
 
             };
@@ -533,6 +850,194 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("SoaStages", "ElementSoa", targetFragment);
         }
 
+        private string GetRouteActionForElement(ElementTypeInShort elementType)
+        {
+            if (elementType == ElementTypeInShort.EC)
+            {
+                return "AssessmentSelectionEc";
+            }
+            else if (elementType == ElementTypeInShort.SS)
+            {
+                return "AssessmentSelectionSs";
+            }
+            else if (elementType == ElementTypeInShort.DDN)
+            {
+                return "AssessmentSelectionDdn";
+            }
+            else if (elementType == ElementTypeInShort.CDN)
+            {
+                return "AssessmentSelectionCdn";
+            }
+            else if (elementType == ElementTypeInShort.CC)
+            {
+                return "AssessmentSelectionCc";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        private string GetBackRouteAction(List<ElementTypeInShort> selectedElementIds, ElementTypeInShort currentElement)
+        {
+            ElementTypeInShort previousElement = 0;
+            for (var i = 0; i < selectedElementIds.Count; i++)
+            {
+                if (selectedElementIds[i] == currentElement && i - 1 >= 0)
+                {
+                    previousElement = selectedElementIds[i - 1];
+                    break;
+                }
+            }
+            if (previousElement == ElementTypeInShort.EC)
+            {
+                return "AssessmentSelectionEc";
+            }
+            else if (previousElement == ElementTypeInShort.SS)
+            {
+                return "AssessmentSelectionSs";
+            }
+            else if (previousElement == ElementTypeInShort.DDN)
+            {
+                return "AssessmentSelectionDdn";
+            }
+            else if (previousElement == ElementTypeInShort.CDN)
+            {
+                return "AssessmentSelectionCdn";
+            }
+            else if (previousElement == ElementTypeInShort.CC)
+            {
+                return "AssessmentSelectionCc";
+            }
+            else
+            {
+                return "AssessorSelectElements";
+            }
+        }
+
+        private string GetNextRouteAction(List<ElementTypeInShort> selectedElementIds, ElementTypeInShort currentElement)
+        {
+            ElementTypeInShort nextElement = 0;
+            for (var i = 0; i < selectedElementIds.Count; i++)
+            {
+                if (selectedElementIds[i] == currentElement && i + 1 < selectedElementIds.Count)
+                {
+                    nextElement = selectedElementIds[i + 1];
+                    break;
+                }
+            }
+            if (nextElement == ElementTypeInShort.EC)
+            {
+                return "AssessmentSelectionEc";
+            }
+            else if (nextElement == ElementTypeInShort.SS)
+            {
+                return "AssessmentSelectionSs";
+            }
+            else if (nextElement == ElementTypeInShort.DDN)
+            {
+                return "AssessmentSelectionDdn";
+            }
+            else if (nextElement == ElementTypeInShort.CDN)
+            {
+                return "AssessmentSelectionCdn";
+            }
+            else if (nextElement == ElementTypeInShort.CC)
+            {
+                return "AssessmentSelectionCc";
+            }
+            else
+            {
+                return "AssessorElementSelectionOverview";
+            }
+        }
+
+        private async Task<AssessorAssessmentSelectionViewModel> GetAssessmentModel(string hnId, ElementTypeInShort elementType, string sessionKey)
+        {
+            var model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, sessionKey) ?? new AssessorAssessmentSelectionViewModel();
+            model.ElementType = elementType;
+            model.AssessmentOptions = ElementSoaHelper.GetAssessmentOptions();
+
+            var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
+            var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);           
+
+            return model;
+        }
+
+        private void GetAssessorAssessmentForElements(AssessorAssessmentSelectionViewModel assessorAssessmentdata, AssessorDetails assessorDetails, List<AssessorAssessmentForElement> assessorAssessmentForElements)
+        {
+            var assessorAssessmentForElement = new AssessorAssessmentForElement();
+
+            if (assessorAssessmentdata != null)
+            {
+                assessorAssessmentForElement.ElementType = assessorAssessmentdata.ElementType;
+                assessorAssessmentForElement.AssessorAssessments = new List<AssessorAssessment>()
+                {
+                    new AssessorAssessment
+                    {
+                        AssessorEmail = assessorDetails?.Email,
+                        AssessorFirstName = assessorDetails?.FirstName,
+                        AssessorLastName = assessorDetails?.LastName,
+                        Assessment = assessorAssessmentdata.SelectedAssessmentOption
+                    }
+                };
+                assessorAssessmentForElements.Add(assessorAssessmentForElement);
+            }
+        }
+
+        private async Task<(bool IsValid, string ErrorMessage)> ValidateAssessment(string hnId, ElementTypeInShort selectedElementType, string selectedAssessmentOption)
+        {
+            var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
+            var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var elementGroup = heatNetworkData?.NetworkElements?.ElementsGroup.Where(a => a.ElementType == selectedElementType).FirstOrDefault();
+            if (elementGroup != null)
+            {
+                var stageForElement = elementGroup.SoaStages?.Where(s => s.StageId.HasValue && (SoaStage)s.StageId.Value == stage).FirstOrDefault();
+                if (stageForElement != null)
+                {
+                    var assessorsForStageAndElement = stageForElement.Assessors;
+
+
+                    if (assessorsForStageAndElement != null && assessorsForStageAndElement.Count > 0)
+                    {
+                        var assessorForStageAndElement = assessorsForStageAndElement.Where(a => a.Email == assessorDetails?.Email).FirstOrDefault();
+                        // If same assessor already has an assessment
+                        if (assessorForStageAndElement != null)
+                        {
+                            return (false, $"This assessor has already been assigned to {assessorForStageAndElement.Assessment}. Choose a different assessor.");
+                        }
+
+                        var assessmentForExistingAssessors = assessorsForStageAndElement.Select(a => a.Assessment).ToList();
+                        // if the assessment option is already assigned to another assessor for the same stage and element
+                        if (assessmentForExistingAssessors.Contains(selectedAssessmentOption))
+                        {
+                            return (false, "This assessment option has already been assigned to another assessor for this stage. Choose a different assessment option.");
+                        }
+
+                        // if the selected assessment option is 'Review' or 'Decision', and there is already an assessor assigned to  'Review and Decision' for the same stage and element
+                        if ((selectedAssessmentOption == AssessmentConstants.Review
+                            || selectedAssessmentOption == AssessmentConstants.Decision)
+                            && assessmentForExistingAssessors.Contains(AssessmentConstants.ReviewAndDecision))
+                        {
+                            return (false, "This assessment option has already been assigned to another assessor for this stage. Choose a different assessment option.");
+                        }
+
+                        // if the selected assessment option is 'Review and Decision', and there is already an assessor assigned to  'Review' or 'Decision' for the same stage and element
+                        if (selectedAssessmentOption == AssessmentConstants.ReviewAndDecision
+                            && (assessmentForExistingAssessors.Contains(AssessmentConstants.Review)
+                            || assessmentForExistingAssessors.Contains(AssessmentConstants.Decision)))
+                        {
+                            return (false, "This assessment option has already been assigned to another assessor for this stage. Choose a different assessment option.");
+                        }
+                    }
+
+                }
+            }
+            return (true, string.Empty);
+        }
+
         private void ClearSoaStatusUpdateSpecificSession()
         {
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey);
@@ -543,11 +1048,21 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorDetailsSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorElementSelectionOverviewModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DefaultSelectedAssessor);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorSearchResultsSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SoaElementTypeOfAssessorOnboarding);
+            ClearSoaAssessorAssessmentSession();
+        }
+
+        private void ClearSoaAssessorAssessmentSession()
+        {
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
         }
     }
 }

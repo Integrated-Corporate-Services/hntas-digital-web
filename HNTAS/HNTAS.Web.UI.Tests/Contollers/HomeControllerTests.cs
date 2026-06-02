@@ -113,7 +113,7 @@ public class HomeControllerTests
         var result = await controller.Index();
 
         // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
+        var viewResult = Assert.IsType<RedirectToActionResult>(result);
         // Optionally verify session helper was called
         _sessionHelperMock.Verify(x =>
             x.SaveToSession<string>(
@@ -316,7 +316,7 @@ public class HomeControllerTests
         // Assert
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("AreYouTheRP", redirectResult.ActionName);
-        Assert.Equal("HeatNetworkEligibility", redirectResult.ControllerName);
+        Assert.Equal("RegistrationEligibility", redirectResult.ControllerName);
         _sessionHelperMock.Verify(s => s.SaveToSession(It.IsAny<HttpContext>(), SessionKeys.WhatDoYouWantToDoViewModelKey, model), Times.Once);
     }
 

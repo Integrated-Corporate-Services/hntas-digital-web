@@ -32,6 +32,7 @@ namespace HNTAS.Web.UI.Controllers
             int page = DefaultPageNumber,
             int pageSize = DefaultPageSize)
         {
+            this.ShowBackButton("HeatNetworks", "UserManagement");
             try
             {
                 // Validate and sanitize inputs
