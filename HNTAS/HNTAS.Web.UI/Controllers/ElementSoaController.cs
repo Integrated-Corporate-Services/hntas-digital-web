@@ -482,7 +482,10 @@ namespace HNTAS.Web.UI.Controllers
             {
                 TempData["ErrorMessage"] = validationResult.ErrorMessage;
                 var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
-                modelFromSession?.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                if (modelFromSession != null)
+                {
+                    modelFromSession.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                }                
                 return View("AssessmentSelection", modelFromSession);
             }
 
@@ -537,7 +540,10 @@ namespace HNTAS.Web.UI.Controllers
             {
                 TempData["ErrorMessage"] = validationResult.ErrorMessage;
                 var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
-                modelFromSession?.SelectedAssessmentOption = modelFromSession.SelectedAssessmentOption;
+                if (modelFromSession != null)
+                {
+                    modelFromSession.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                }
                 return View("AssessmentSelection", modelFromSession);
             }
             // Store selected assessment type in session
@@ -591,7 +597,10 @@ namespace HNTAS.Web.UI.Controllers
             {
                 TempData["ErrorMessage"] = validationResult.ErrorMessage;
                 var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
-                modelFromSession?.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                if (modelFromSession != null)
+                {
+                    modelFromSession.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                }
                 return View("AssessmentSelection", modelFromSession);
             }
             // Store selected assessment type in session
@@ -646,7 +655,10 @@ namespace HNTAS.Web.UI.Controllers
             {
                 TempData["ErrorMessage"] = validationResult.ErrorMessage;
                 var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
-                modelFromSession?.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                if (modelFromSession != null)
+                {
+                    modelFromSession.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                }
                 return View("AssessmentSelection", modelFromSession);
             }
 
@@ -702,7 +714,10 @@ namespace HNTAS.Web.UI.Controllers
             {
                 TempData["ErrorMessage"] = validationResult.ErrorMessage;
                 var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
-                modelFromSession?.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                if (modelFromSession != null)
+                {
+                    modelFromSession.SelectedAssessmentOption = model.SelectedAssessmentOption;
+                }
                 return View("AssessmentSelection", modelFromSession);
             }
 
