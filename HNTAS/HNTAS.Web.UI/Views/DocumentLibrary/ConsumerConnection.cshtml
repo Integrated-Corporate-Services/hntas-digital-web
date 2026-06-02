@@ -1,0 +1,142 @@
+﻿@using HNTAS.Web.UI.Models
+@model HntasElementDocumentsLinksViewModel
+
+@{
+    ViewData["Title"] = "Consumer Connection (CC)";
+    var overviewPdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Overview for Technical Specification",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693c0f346a12691d48491ee2/draft-hntas-technical-specification-consumer-connection-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 473,
+            NumberOfPages = 29
+        },
+        new PdfRow
+        {
+            PdfTitle = "Overview for Assessment Procedures",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693ad26433c7ace9c4a4203a/draft-hntas-assessment-procedure-consumer-connection-overview.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 494,
+            NumberOfPages = 30
+        }
+    };
+    var phase1Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 1: Feasibility",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693c0f505cc812f50aa420ea/draft-hntas-new-build-technical-specification-consumer-connection-phase-1.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 483,
+            NumberOfPages = 20
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 1: Feasibility",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693ad3aa5cc812f50aa4202a/draft-hntas-new-build-assessment-procedure-consumer-connection-phase-1.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 424,
+            NumberOfPages = 14
+        }
+    };
+    var phase2Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 2: Design",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693c0f655cc812f50aa420eb/draft-hntas-new-build-technical-specification-consumer-connection-phase-2.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 602,
+            NumberOfPages = 32
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 2: Design",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693ad3e66a12691d48491e22/draft-hntas-new-build-assessment-procedure-consumer-connection-phase-2.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 561,
+            NumberOfPages = 18
+        }
+    };
+    var phase3Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 3: Construction",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693c0f9b33c7ace9c4a420ec/draft-hntas-new-build-technical-specification-consumer-connection-phase-3.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 1014,
+            NumberOfPages = 46
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 3: Construction",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693ad4046a12691d48491e23/draft-hntas-new-build-assessment-procedure-consumer-connection-phase-3.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 510,
+            NumberOfPages = 25
+        }
+    };
+    var phase4Pdfs = new List<PdfRow>
+    {
+        new PdfRow
+        {
+            PdfTitle = "Technical Specification for Phase 4: Operation",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693c1025c72b0f8ccf33d6bf/draft-hntas-new-build-technical-specification-consumer-connection-phase-4.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 568,
+            NumberOfPages = 28
+        },
+        new PdfRow
+        {
+            PdfTitle = "Assessment Procedures for Phase 4: Operation",
+            LinkToPdf = "https://assets.publishing.service.gov.uk/media/693ad41d5cc812f50aa4202c/draft-hntas-new-build-assessment-procedure-consumer-connection-phase-4.pdf",
+            UpdatedBy = "October 2025",
+            SizeInKb = 452,
+            NumberOfPages = 15
+        }
+    };
+
+    var pageData = new HntasElementDocumentsLinksViewModel
+    {
+        ElementName = "Consumer Connection (CC)",
+        Description = "The Consumer Connection includes the interface elements between the communal distribution network and an individual dwelling or premises. This covers isolation valves, heat interface units and associated controls. ",
+        DocumentListSections = new List<DocumentListSection>
+        {
+            new DocumentListSection
+            {
+                SectionName = "Overview",
+                SectionId = "overview",
+                PdfRows = overviewPdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 1: Feasibility",
+                SectionId = "phase-1",
+                PdfRows = phase1Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 2: Design",
+                SectionId = "phase-2",
+                PdfRows = phase2Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 3: Construction",
+                SectionId = "phase-3",
+                PdfRows = phase3Pdfs
+            },
+            new DocumentListSection
+            {
+                SectionName = "Phase 4: Operation",
+                SectionId = "phase-4",
+                PdfRows = phase4Pdfs
+            }
+        }
+    };
+}
+
+@await Html.PartialAsync("_DocumentLibraryDocLinks", pageData)
