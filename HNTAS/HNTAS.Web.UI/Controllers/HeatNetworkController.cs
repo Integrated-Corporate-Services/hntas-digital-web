@@ -165,7 +165,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorDetailsSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorAssessmentSelectionViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.AssessorElementSelectionOverviewModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DefaultSelectedAssessor);

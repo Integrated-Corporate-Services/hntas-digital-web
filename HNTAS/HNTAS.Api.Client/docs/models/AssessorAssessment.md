@@ -1,12 +1,13 @@
-# HNTAS.Api.Client.Model.Element
+# HNTAS.Api.Client.Model.AssessorAssessment
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ElementId** | **string** |  | [optional] 
-**NetworkElementInstanceName** | **string** |  | [optional] 
-**ElementType** | **ElementTypeInShort** |  | [optional] 
+**AssessorEmail** | **string** |  | [optional] 
+**AssessorFirstName** | **string** |  | [optional] 
+**AssessorLastName** | **string** |  | [optional] 
+**Assessment** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

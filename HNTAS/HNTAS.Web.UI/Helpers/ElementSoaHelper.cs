@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.ElementSoa;
 
 namespace HNTAS.Web.UI.Helpers
@@ -157,22 +158,22 @@ namespace HNTAS.Web.UI.Helpers
             {
                 new AssessmentOption
                 {
-                    Label = "Execute",
+                    Label = AssessmentConstants.Execute,
                     Hint = "Carry out the initial assessment and review the evidence provided"
                 },
                 new AssessmentOption
                 {
-                    Label = "Review",
+                    Label = AssessmentConstants.Review,
                     Hint = "Check that the initial assessment was completed correctly"
                 },
                 new AssessmentOption
                 {
-                    Label = "Decision",
+                    Label = AssessmentConstants.Decision,
                     Hint = "Make the final decision on the outcome of the assessment"
                 },
                 new AssessmentOption
                 {
-                    Label = "Review and Decision",
+                    Label = AssessmentConstants.ReviewAndDecision,
                     Hint = ""
                 },
             };
