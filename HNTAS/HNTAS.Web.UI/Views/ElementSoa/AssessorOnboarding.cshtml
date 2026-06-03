@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = $"Who is the assessor for the energy centre in {ViewBag.StageTitle}?";
     var defaultVal = @ViewBag.SelectedAssessor;
-      
+    var hasCheckError = ViewData.ModelState["assessor-autocomplete"]?.Errors?.Count > 0 || ViewData.ModelState["assessor-autocomplete"]?.Errors?.Count > 0;
 }
 
 <div class="govuk-width-container">
@@ -14,7 +14,7 @@
                 You should contact the assessor before naming them. They need to be registered with us before they can assess any of your network.
             </p>
 
-            <div class="govuk-form-group">
+            <div class="govuk-form-group @(hasCheckError ? "govuk-form-group--error" : "")">
                 <label class="govuk-label" for="assessor-autocomplete">
                     Search for assessor name or email
                 </label>
