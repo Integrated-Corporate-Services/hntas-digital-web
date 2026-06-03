@@ -35,13 +35,15 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="hnId">hnId</param>
         /// <param name="name">name</param>
+        /// <param name="additionalDescription">additionalDescription</param>
         /// <param name="ecDetails">ecDetails</param>
         /// <param name="address">address</param>
         [JsonConstructor]
-        public HeatNetworkUserResponse(Option<string?> hnId = default, Option<string?> name = default, Option<ECDetails2?> ecDetails = default, Option<RegisteredAddress?> address = default)
+        public HeatNetworkUserResponse(Option<string?> hnId = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<ECDetails2?> ecDetails = default, Option<RegisteredAddress?> address = default)
         {
             HnIdOption = hnId;
             NameOption = name;
+            AdditionalDescriptionOption = additionalDescription;
             EcDetailsOption = ecDetails;
             AddressOption = address;
             OnCreated();
@@ -74,6 +76,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("name")]
         public string? Name { get { return this.NameOption; } set { this.NameOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of AdditionalDescription
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> AdditionalDescriptionOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets AdditionalDescription
+        /// </summary>
+        [JsonPropertyName("additionalDescription")]
+        public string? AdditionalDescription { get { return this.AdditionalDescriptionOption; } set { this.AdditionalDescriptionOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of EcDetails
@@ -111,6 +126,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class HeatNetworkUserResponse {\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  AdditionalDescription: ").Append(AdditionalDescription).Append("\n");
             sb.Append("  EcDetails: ").Append(EcDetails).Append("\n");
             sb.Append("  Address: ").Append(Address).Append("\n");
             sb.Append("}\n");
@@ -152,6 +168,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> hnId = default;
             Option<string?> name = default;
+            Option<string?> additionalDescription = default;
             Option<ECDetails2?> ecDetails = default;
             Option<RegisteredAddress?> address = default;
 
@@ -176,6 +193,9 @@ namespace HNTAS.Api.Client.Model
                         case "name":
                             name = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "additionalDescription":
+                            additionalDescription = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         case "ecDetails":
                             ecDetails = new Option<ECDetails2?>(JsonSerializer.Deserialize<ECDetails2>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -194,7 +214,7 @@ namespace HNTAS.Api.Client.Model
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetworkUserResponse.");
 
-            return new HeatNetworkUserResponse(hnId, name, ecDetails, address);
+            return new HeatNetworkUserResponse(hnId, name, additionalDescription, ecDetails, address);
         }
 
         /// <summary>
@@ -232,6 +252,12 @@ namespace HNTAS.Api.Client.Model
 
             if (heatNetworkUserResponse.NameOption.IsSet)
                 writer.WriteString("name", heatNetworkUserResponse.Name);
+
+            if (heatNetworkUserResponse.AdditionalDescriptionOption.IsSet)
+                if (heatNetworkUserResponse.AdditionalDescriptionOption.Value != null)
+                    writer.WriteString("additionalDescription", heatNetworkUserResponse.AdditionalDescription);
+                else
+                    writer.WriteNull("additionalDescription");
 
             if (heatNetworkUserResponse.EcDetailsOption.IsSet)
                 if (heatNetworkUserResponse.EcDetailsOption.Value != null)

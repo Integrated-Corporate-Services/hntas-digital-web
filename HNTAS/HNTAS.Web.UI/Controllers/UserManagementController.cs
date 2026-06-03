@@ -184,7 +184,7 @@ namespace HNTAS.Web.UI.Controllers
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var user = await _userService.GetUserDetails(userId);
             var userWithHnRoles = await _userService.GetUserById(userId);
-            var hnRoleMappings = userWithHnRoles.HnRoleMappings;            
+            var hnRoleMappings = userWithHnRoles.HnRoleMappings;
 
             ViewBag.UserRole = user?.Roles[0].ToString();
             ViewBag.HasDeclaredImpartiality = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(HttpContext, SessionKeys.DeclarationOfImpartialityModelKey)?.HasDeclaredImpartiality;
@@ -197,6 +197,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             var heatNetworks = new List<HeatNetworkModel>();
+            //heatNetworks = _heatNetworkService.
 
             if (user?.HeatNetworks != null && user.HeatNetworks?.Count > 0)
             {
@@ -217,6 +218,7 @@ namespace HNTAS.Web.UI.Controllers
                         HnId = network.HnId,
                         Name = network.Name,
                         OrganisationName = user.Organisation?.Name,
+                        HnDescription = network.AdditionalDescription,
                         Role = role
                     });
                 }
