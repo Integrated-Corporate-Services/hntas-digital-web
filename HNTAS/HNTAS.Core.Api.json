@@ -1065,17 +1065,26 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HeatNetworkResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HeatNetworkResponse"
+                  }
                 }
               }
             }
@@ -6042,10 +6051,6 @@
           },
           "name": {
             "type": "string"
-          },
-          "additionalDescription": {
-            "type": "string",
-            "nullable": true
           },
           "ecDetails": {
             "$ref": "#/components/schemas/ECDetails2"

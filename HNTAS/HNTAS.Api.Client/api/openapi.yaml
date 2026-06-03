@@ -676,13 +676,19 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: "#/components/schemas/HeatNetworkResponse"
+                items:
+                  $ref: "#/components/schemas/HeatNetworkResponse"
+                type: array
             application/json:
               schema:
-                $ref: "#/components/schemas/HeatNetworkResponse"
+                items:
+                  $ref: "#/components/schemas/HeatNetworkResponse"
+                type: array
             text/json:
               schema:
-                $ref: "#/components/schemas/HeatNetworkResponse"
+                items:
+                  $ref: "#/components/schemas/HeatNetworkResponse"
+                type: array
           description: OK
         "400":
           content:
@@ -5287,15 +5293,11 @@ components:
           postcode: postcode
           addressLine1: addressLine1
           addressLine2: addressLine2
-        additionalDescription: additionalDescription
         name: name
       properties:
         hnId:
           type: string
         name:
-          type: string
-        additionalDescription:
-          nullable: true
           type: string
         ecDetails:
           $ref: "#/components/schemas/ECDetails2"
@@ -7895,7 +7897,6 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
-          additionalDescription: additionalDescription
           name: name
         - hnId: hnId
           ecDetails:
@@ -7908,7 +7909,6 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
-          additionalDescription: additionalDescription
           name: name
         id: id
         status: Active

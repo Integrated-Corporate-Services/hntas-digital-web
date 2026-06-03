@@ -84,7 +84,7 @@ No authorization required
 
 <a id="apiheatnetworksheatnetworkbyuseridget"></a>
 # **ApiHeatNetworksHeatNetworkByUserIdGet**
-> HeatNetworkResponse ApiHeatNetworksHeatNetworkByUserIdGet (string userId = null)
+> List&lt;HeatNetworkResponse&gt; ApiHeatNetworksHeatNetworkByUserIdGet (string userId = null)
 
 
 
@@ -97,7 +97,7 @@ No authorization required
 
 ### Return type
 
-[**HeatNetworkResponse**](HeatNetworkResponse.md)
+[**List&lt;HeatNetworkResponse&gt;**](HeatNetworkResponse.md)
 
 ### Authorization
 

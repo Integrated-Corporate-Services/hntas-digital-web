@@ -197,32 +197,14 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             var heatNetworks = new List<HeatNetworkModel>();
-            //heatNetworks = _heatNetworkService.
-
-            if (user?.HeatNetworks != null && user.HeatNetworks?.Count > 0)
+            heatNetworks = _heatNetworkService.GetHeatNetworkByUserId(userId).Result.Select(network => new HeatNetworkModel
             {
-                foreach (var network in user?.HeatNetworks)
-                {
-                    var role = hnRoleMappings.FirstOrDefault(x => x.HnId == network.HnId)?.Role switch
-                    {
-                        ContributorRole.ResponsiblePerson => "Responsible Person",
-                        ContributorRole.NetworkManager => "Network Manager",
-                        ContributorRole.DesignatedDutyHolder => "Designated Duty Holder",
-                        ContributorRole.Contributor => "Contributor",
-                        ContributorRole.Assessor => "Assessor",
-                        ContributorRole.Certifier => "Certifier",
-                        _ => "Not specified"
-                    };
-                    heatNetworks.Add(new HeatNetworkModel
-                    {
-                        HnId = network.HnId,
-                        Name = network.Name,
-                        OrganisationName = user.Organisation?.Name,
-                        HnDescription = network.AdditionalDescription,
-                        Role = role
-                    });
-                }
-            }
+                HnId = network.HnId,
+                Name = network.Name,
+                OrganisationName = user.Organisation?.Name,
+                HnDescription = network.AdditionalDescription,
+                Role = hnRoleMappings.FirstOrDefault(x => x.HnId == network.HnId)?.Role.ToString() ?? "Not specified"
+            }).ToList();            
 
             var model = new HeatNetworksViewModel
             {

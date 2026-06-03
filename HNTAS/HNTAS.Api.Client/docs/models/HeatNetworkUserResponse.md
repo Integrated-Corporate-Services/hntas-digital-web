@@ -6,7 +6,6 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **HnId** | **string** |  | [optional] 
 **Name** | **string** |  | [optional] 
-**AdditionalDescription** | **string** |  | [optional] 
 **EcDetails** | [**ECDetails2**](ECDetails2.md) |  | [optional] 
 **Address** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 
 
