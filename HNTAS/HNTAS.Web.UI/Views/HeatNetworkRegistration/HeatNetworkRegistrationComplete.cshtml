@@ -6,19 +6,21 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-visually-hidden">Heat network successfully registered</h1>
+            <h1 class="govuk-visually-hidden">
+                Your heat network has been registered
+            </h1>
             <div class="govuk-panel govuk-panel--confirmation">
-                <span class="govuk-!-font-weight-bold">Heat network successfully registered</span><br/>
-                <span class="govuk-!-font-weight-regular">@ViewBag.HNNameWithDescription</span><br />
+                <span class="govuk-!-font-weight-bold">
+                    Unique heat network ID
+                </span><br />
                 <span class="govuk-!-font-weight-regular">UHNID </span><span class="govuk-!-font-weight-bold">@ViewBag.HNId</span>
             </div><br/>
             <p class="govuk-body">We've:</p>
             <ul class="govuk-list govuk-list--bullet">
-                <li>registered your heat network service under @ViewBag.CompanyName's organisation</li>
-                <li>sent an email confirmation, with the unique heat network id (UHNID): @ViewBag.HNId</li>
+                <li>registered ds</li>
+                <li>sent a confirmation email with the unique heat network ID (UHNID)</li>
             </ul>
-
-            <p class="govuk-body">As the responsible person, you can now provide technical information on your heat network and add team members to help you.</p>
+            <p class="govuk-body">You can now provide technical information on your heat network and add team members to help you.</p>
                 
             <a class="govuk-button" role="button" draggable="false" asp-controller="HeatNetworkRegistration" asp-action="HeatNetworkSuccessRedirection">
                 Continue

@@ -107,7 +107,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             else if (actionDetails["action"] == NotificationHistoryActions.DDHAndContributors)
             {
-                return RedirectToAction("AddContributor", "UserManagement");
+                return RedirectToAction("ManageContributors", "Contributors");
             }
             else if (actionDetails["action"] == NotificationHistoryActions.NetworkManagers)
             {

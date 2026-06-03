@@ -37,7 +37,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="networkElementInstanceName">networkElementInstanceName</param>
         /// <param name="elementType">elementType</param>
         [JsonConstructor]
-        public Element(Option<string?> elementId = default, Option<string?> networkElementInstanceName = default, Option<string?> elementType = default)
+        public Element(Option<string?> elementId = default, Option<string?> networkElementInstanceName = default, Option<ElementTypeInShort?> elementType = default)
         {
             ElementIdOption = elementId;
             NetworkElementInstanceNameOption = networkElementInstanceName;
@@ -46,6 +46,19 @@ namespace HNTAS.Api.Client.Model
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Used to track the state of ElementType
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<ElementTypeInShort?> ElementTypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ElementType
+        /// </summary>
+        [JsonPropertyName("elementType")]
+        public ElementTypeInShort? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ElementId
@@ -72,19 +85,6 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("networkElementInstanceName")]
         public string? NetworkElementInstanceName { get { return this.NetworkElementInstanceNameOption; } set { this.NetworkElementInstanceNameOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of ElementType
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ElementTypeOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets ElementType
-        /// </summary>
-        [JsonPropertyName("elementType")]
-        public string? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -136,7 +136,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> elementId = default;
             Option<string?> networkElementInstanceName = default;
-            Option<string?> elementType = default;
+            Option<ElementTypeInShort?> elementType = default;
 
             while (utf8JsonReader.Read())
             {
@@ -160,13 +160,18 @@ namespace HNTAS.Api.Client.Model
                             networkElementInstanceName = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "elementType":
-                            elementType = new Option<string?>(utf8JsonReader.GetString());
+                            string? elementTypeRawValue = utf8JsonReader.GetString();
+                            if (elementTypeRawValue != null)
+                                elementType = new Option<ElementTypeInShort?>(ElementTypeInShortValueConverter.FromStringOrDefault(elementTypeRawValue));
                             break;
                         default:
                             break;
                     }
                 }
             }
+
+            if (elementType.IsSet && elementType.Value == null)
+                throw new ArgumentNullException(nameof(elementType), "Property is not nullable for class Element.");
 
             return new Element(elementId, networkElementInstanceName, elementType);
         }
@@ -208,10 +213,10 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("networkElementInstanceName");
 
             if (element.ElementTypeOption.IsSet)
-                if (element.ElementTypeOption.Value != null)
-                    writer.WriteString("elementType", element.ElementType);
-                else
-                    writer.WriteNull("elementType");
+            {
+                var elementTypeRawValue = ElementTypeInShortValueConverter.ToJsonValue(element.ElementType!.Value);
+                writer.WriteString("elementType", elementTypeRawValue);
+            }
         }
     }
 }
