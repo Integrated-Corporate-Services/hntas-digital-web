@@ -15,6 +15,7 @@ namespace HNTAS.Web.UI.Models
     {
         public string HnId { get; set; }
         public string Name { get; set; }
+        public string? HnDescription { get; set; }
         public string OrganisationName { get; set; }
         public string Role { get; set; }
     }
