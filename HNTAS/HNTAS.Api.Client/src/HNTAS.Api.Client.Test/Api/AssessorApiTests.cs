@@ -39,7 +39,29 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/AssessorApiTests.cs
+<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/AuditApiTests.cs
+    ///  Class for testing AuditApi
+    /// </summary>
+    public sealed class AuditApiTests : ApiTestsBase
+    {
+        private readonly IAuditApi _instance;
+
+        public AuditApiTests(): base(Array.Empty<string>())
+        {
+            _instance = _host.Services.GetRequiredService<IAuditApi>();
+        }
+
+        /// <summary>
+        /// Test ApiAuditHeatNetworkAuditLogsGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiAuditHeatNetworkAuditLogsGetAsyncTest()
+        {
+            AuditLogRequest auditLogRequest = default!;
+            var response = await _instance.ApiAuditHeatNetworkAuditLogsGetAsync(auditLogRequest);
+            var model = response.Ok();
+            Assert.IsType<AuditLogResponse>(model);
+========
     ///  Class for testing AssessorApi
     /// </summary>
     public sealed class AssessorApiTests : ApiTestsBase
@@ -61,26 +83,7 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiAssessorSearchGetAsync(q);
             var model = response.Ok();
             Assert.IsType<List<AssessorSearchResult>>(model);
-========
-    ///  Class for testing TestApi
-    /// </summary>
-    public sealed class TestApiTests : ApiTestsBase
-    {
-        private readonly ITestApi _instance;
-
-        public TestApiTests(): base(Array.Empty<string>())
-        {
-            _instance = _host.Services.GetRequiredService<ITestApi>();
-        }
-
-        /// <summary>
-        /// Test ApiTestTestDocumentdbConnectionGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiTestTestDocumentdbConnectionGetAsyncTest()
-        {
-            await _instance.ApiTestTestDocumentdbConnectionGetAsync();
->>>>>>>> f05028e74d3945e17c6e4dc0a284b52f6b8ade65:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/TestApiTests.cs
+>>>>>>>> test:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/AssessorApiTests.cs
         }
     }
 }
