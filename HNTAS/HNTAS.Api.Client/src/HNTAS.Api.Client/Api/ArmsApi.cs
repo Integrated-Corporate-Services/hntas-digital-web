@@ -103,6 +103,29 @@ namespace HNTAS.Api.Client.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IArmsV1HnNetworkIdKpiConfigGetApiResponse"/>?&gt;</returns>
         Task<IArmsV1HnNetworkIdKpiConfigGetApiResponse?> ArmsV1HnNetworkIdKpiConfigGetOrDefaultAsync(string networkId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="kpiSubmissionRequestV2"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IArmsV2HnKpisPostApiResponse"/>&gt;</returns>
+        Task<IArmsV2HnKpisPostApiResponse> ArmsV2HnKpisPostAsync(KpiSubmissionRequestV2 kpiSubmissionRequestV2, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="kpiSubmissionRequestV2"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IArmsV2HnKpisPostApiResponse"/>?&gt;</returns>
+        Task<IArmsV2HnKpisPostApiResponse?> ArmsV2HnKpisPostOrDefaultAsync(KpiSubmissionRequestV2 kpiSubmissionRequestV2, System.Threading.CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -184,6 +207,36 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IArmsV2HnKpisPostApiResponse"/>
+    /// </summary>
+    public interface IArmsV2HnKpisPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse?>, IInternalServerError<HNTAS.Api.Client.Model.ProblemDetails?>, IServiceUnavailable<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+
+        /// <summary>
+        /// Returns true if the response is 503 ServiceUnavailable
+        /// </summary>
+        /// <returns></returns>
+        bool IsServiceUnavailable { get; }
+    }
+
+    /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
     public class ArmsApiEvents
@@ -246,6 +299,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorArmsV1HnNetworkIdKpiConfigGet(Exception exception)
         {
             OnErrorArmsV1HnNetworkIdKpiConfigGet?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnArmsV2HnKpisPost;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorArmsV2HnKpisPost;
+
+        internal void ExecuteOnArmsV2HnKpisPost(ArmsApi.ArmsV2HnKpisPostApiResponse apiResponse)
+        {
+            OnArmsV2HnKpisPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorArmsV2HnKpisPost(Exception exception)
+        {
+            OnErrorArmsV2HnKpisPost?.Invoke(this, new ExceptionEventArgs(exception));
         }
     }
 
@@ -1169,6 +1242,324 @@ namespace HNTAS.Api.Client.Api
                 } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)500);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatArmsV2HnKpisPost(KpiSubmissionRequestV2 kpiSubmissionRequestV2);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="kpiSubmissionRequestV2"></param>
+        /// <returns></returns>
+        private void ValidateArmsV2HnKpisPost(KpiSubmissionRequestV2 kpiSubmissionRequestV2)
+        {
+            if (kpiSubmissionRequestV2 == null)
+                throw new ArgumentNullException(nameof(kpiSubmissionRequestV2));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="kpiSubmissionRequestV2"></param>
+        private void AfterArmsV2HnKpisPostDefaultImplementation(IArmsV2HnKpisPostApiResponse apiResponseLocalVar, KpiSubmissionRequestV2 kpiSubmissionRequestV2)
+        {
+            bool suppressDefaultLog = false;
+            AfterArmsV2HnKpisPost(ref suppressDefaultLog, apiResponseLocalVar, kpiSubmissionRequestV2);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="kpiSubmissionRequestV2"></param>
+        partial void AfterArmsV2HnKpisPost(ref bool suppressDefaultLog, IArmsV2HnKpisPostApiResponse apiResponseLocalVar, KpiSubmissionRequestV2 kpiSubmissionRequestV2);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="kpiSubmissionRequestV2"></param>
+        private void OnErrorArmsV2HnKpisPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, KpiSubmissionRequestV2 kpiSubmissionRequestV2)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorArmsV2HnKpisPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, kpiSubmissionRequestV2);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="kpiSubmissionRequestV2"></param>
+        partial void OnErrorArmsV2HnKpisPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, KpiSubmissionRequestV2 kpiSubmissionRequestV2);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="kpiSubmissionRequestV2"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IArmsV2HnKpisPostApiResponse"/>&gt;</returns>
+        public async Task<IArmsV2HnKpisPostApiResponse?> ArmsV2HnKpisPostOrDefaultAsync(KpiSubmissionRequestV2 kpiSubmissionRequestV2, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ArmsV2HnKpisPostAsync(kpiSubmissionRequestV2, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="kpiSubmissionRequestV2"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IArmsV2HnKpisPostApiResponse"/>&gt;</returns>
+        public async Task<IArmsV2HnKpisPostApiResponse> ArmsV2HnKpisPostAsync(KpiSubmissionRequestV2 kpiSubmissionRequestV2, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateArmsV2HnKpisPost(kpiSubmissionRequestV2);
+
+                FormatArmsV2HnKpisPost(kpiSubmissionRequestV2);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/arms/v2/hn/kpis"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/arms/v2/hn/kpis");
+
+                    httpRequestMessageLocalVar.Content = (kpiSubmissionRequestV2 as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(kpiSubmissionRequestV2, _jsonSerializerOptions));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "text/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ArmsV2HnKpisPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ArmsV2HnKpisPostApiResponse>();
+
+                        ArmsV2HnKpisPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/arms/v2/hn/kpis", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterArmsV2HnKpisPostDefaultImplementation(apiResponseLocalVar, kpiSubmissionRequestV2);
+
+                        Events.ExecuteOnArmsV2HnKpisPost(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorArmsV2HnKpisPostDefaultImplementation(e, "/arms/v2/hn/kpis", uriBuilderLocalVar.Path, kpiSubmissionRequestV2);
+                Events.ExecuteOnErrorArmsV2HnKpisPost(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ArmsV2HnKpisPostApiResponse"/>
+        /// </summary>
+        public partial class ArmsV2HnKpisPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IArmsV2HnKpisPostApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ArmsV2HnKpisPostApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ArmsV2HnKpisPostApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ArmsV2HnKpisPostApiResponse(ILogger<ArmsV2HnKpisPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.KpiSubmissionApiErrorResponse? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? InternalServerError()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsInternalServerError
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryInternalServerError([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = InternalServerError();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)500);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 503 ServiceUnavailable
+            /// </summary>
+            /// <returns></returns>
+            public bool IsServiceUnavailable => 503 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 503 ServiceUnavailable
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? ServiceUnavailable()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsServiceUnavailable
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 503 ServiceUnavailable and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryServiceUnavailable([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = ServiceUnavailable();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)503);
                 }
 
                 return result != null;

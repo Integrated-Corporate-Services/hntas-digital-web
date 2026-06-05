@@ -77,6 +77,61 @@ paths:
           description: Service Unavailable
       tags:
       - Arms
+  /arms/v2/hn/kpis:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KpiSubmissionRequestV2"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/KpiSubmissionRequestV2"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/KpiSubmissionRequestV2"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/KpiSubmissionApiErrorResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KpiSubmissionApiErrorResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/KpiSubmissionApiErrorResponse"
+          description: Bad Request
+        "500":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Internal Server Error
+        "503":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Service Unavailable
+      tags:
+      - Arms
   /arms/v1/hn/{networkId}/kpi-config:
     get:
       parameters:
@@ -2968,7 +3023,7 @@ components:
     AggregatedKpi:
       example:
         kpiName: kpiName
-        value: 5.962133916683182
+        value: 5.637376656633329
         status: status
       properties:
         kpiName:
@@ -3608,6 +3663,22 @@ components:
           format: double
           type: number
       type: object
+    CCKpiValueRequest:
+      additionalProperties: false
+      example:
+        is_kpi_imputed: true
+        value: ""
+        kpi_imputation_details: kpi_imputation_details
+      properties:
+        value: {}
+        is_kpi_imputed:
+          type: boolean
+        kpi_imputation_details:
+          nullable: true
+          type: string
+      required:
+      - value
+      type: object
     ChpInput:
       example:
         chpElectricityGeneratedValue:
@@ -3902,6 +3973,7 @@ components:
     ElementGroupDto:
       example:
         elementId: elementId
+        totalCarbonEmission: 5.962133916683182
         elementType: elementType
         kpis:
         - isImputed: true
@@ -3923,6 +3995,10 @@ components:
           items:
             $ref: "#/components/schemas/KpiDetailDto"
           type: array
+        totalCarbonEmission:
+          format: double
+          nullable: true
+          type: number
       type: object
     ElementSoaAssignAssessorRequest:
       example:
@@ -4627,18 +4703,19 @@ components:
         hnId: hnId
         aggregatedKpis:
         - kpiName: kpiName
-          value: 5.962133916683182
+          value: 5.637376656633329
           status: status
         - kpiName: kpiName
-          value: 5.962133916683182
+          value: 5.637376656633329
           status: status
         selectedMonth: 0
         selectedYear: 6
         networkName: networkName
-        totalPages: 2
-        currentPage: 5
+        totalPages: 7
+        currentPage: 2
         groupedElements:
         - elementId: elementId
+          totalCarbonEmission: 5.962133916683182
           elementType: elementType
           kpis:
           - isImputed: true
@@ -4652,6 +4729,7 @@ components:
             value: 1.4658129805029452
             status: status
         - elementId: elementId
+          totalCarbonEmission: 5.962133916683182
           elementType: elementType
           kpis:
           - isImputed: true
@@ -4664,7 +4742,7 @@ components:
             imputationDetails: imputationDetails
             value: 1.4658129805029452
             status: status
-        totalElements: 7
+        totalElements: 9
       properties:
         hnId:
           type: string
@@ -5679,6 +5757,59 @@ components:
       required:
       - meta_data
       type: object
+    KpiSubmissionRequestV2:
+      additionalProperties: false
+      example:
+        elements:
+        - elementId: elementId
+          carbon_calculator_inputs:
+            key:
+              key:
+                is_kpi_imputed: true
+                value: ""
+                kpi_imputation_details: kpi_imputation_details
+          type: type
+          kpis:
+            key:
+              is_kpi_imputed: true
+              value: 6.027456183070403
+              kpi_imputation_details: kpi_imputation_details
+        - elementId: elementId
+          carbon_calculator_inputs:
+            key:
+              key:
+                is_kpi_imputed: true
+                value: ""
+                kpi_imputation_details: kpi_imputation_details
+          type: type
+          kpis:
+            key:
+              is_kpi_imputed: true
+              value: 6.027456183070403
+              kpi_imputation_details: kpi_imputation_details
+        meta_data:
+          network_id: network_id
+          additional_details: additional_details
+          period_start: period_start
+          source_system: source_system
+        consumer_connection_aggregated_kpis:
+          key:
+            value: 0.8008281904610115
+      properties:
+        meta_data:
+          $ref: "#/components/schemas/KpiMetadata"
+        consumer_connection_aggregated_kpis:
+          additionalProperties:
+            $ref: "#/components/schemas/KpiValueAggregatedRequest"
+          nullable: true
+          type: object
+        elements:
+          items:
+            $ref: "#/components/schemas/NetworkElementRequestV2"
+          type: array
+      required:
+      - meta_data
+      type: object
     KpiThresholdRule:
       example:
         delta: 5.637376656633329
@@ -5912,6 +6043,41 @@ components:
         kpis:
           additionalProperties:
             $ref: "#/components/schemas/KpiValueRequest"
+          type: object
+      required:
+      - elementId
+      - type
+      type: object
+    NetworkElementRequestV2:
+      example:
+        elementId: elementId
+        carbon_calculator_inputs:
+          key:
+            key:
+              is_kpi_imputed: true
+              value: ""
+              kpi_imputation_details: kpi_imputation_details
+        type: type
+        kpis:
+          key:
+            is_kpi_imputed: true
+            value: 6.027456183070403
+            kpi_imputation_details: kpi_imputation_details
+      properties:
+        elementId:
+          type: string
+        type:
+          type: string
+        kpis:
+          additionalProperties:
+            $ref: "#/components/schemas/KpiValueRequest"
+          type: object
+        carbon_calculator_inputs:
+          additionalProperties:
+            additionalProperties:
+              $ref: "#/components/schemas/CCKpiValueRequest"
+            type: object
+          nullable: true
           type: object
       required:
       - elementId

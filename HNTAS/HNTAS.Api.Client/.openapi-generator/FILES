@@ -33,6 +33,7 @@ docs/models/AuditLogRequest.md
 docs/models/AuditLogResponse.md
 docs/models/Background.md
 docs/models/BoilerInput.md
+docs/models/CCKpiValueRequest.md
 docs/models/CarbonCalculatorRequest.md
 docs/models/CarbonCalculatorResponse.md
 docs/models/ChpInput.md
@@ -81,6 +82,7 @@ docs/models/KpiRule.md
 docs/models/KpiSubmissionApiError.md
 docs/models/KpiSubmissionApiErrorResponse.md
 docs/models/KpiSubmissionRequest.md
+docs/models/KpiSubmissionRequestV2.md
 docs/models/KpiThresholdRule.md
 docs/models/KpiValueAggregatedRequest.md
 docs/models/KpiValueRequest.md
@@ -91,6 +93,7 @@ docs/models/NetworkDetailsStatus.md
 docs/models/NetworkDetailsUploadDocumentRequest.md
 docs/models/NetworkDetailsUploadedDocument.md
 docs/models/NetworkElementRequest.md
+docs/models/NetworkElementRequestV2.md
 docs/models/NetworkElements.md
 docs/models/NetworkElements2.md
 docs/models/NetworkElementsResponse.md
@@ -149,6 +152,9 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/CCKpiValueRequestTests.cs
+src/HNTAS.Api.Client.Test/Model/KpiSubmissionRequestV2Tests.cs
+src/HNTAS.Api.Client.Test/Model/NetworkElementRequestV2Tests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -203,6 +209,7 @@ src/HNTAS.Api.Client/Model/AuditLogRequest.cs
 src/HNTAS.Api.Client/Model/AuditLogResponse.cs
 src/HNTAS.Api.Client/Model/Background.cs
 src/HNTAS.Api.Client/Model/BoilerInput.cs
+src/HNTAS.Api.Client/Model/CCKpiValueRequest.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorRequest.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorResponse.cs
 src/HNTAS.Api.Client/Model/ChpInput.cs
@@ -251,6 +258,7 @@ src/HNTAS.Api.Client/Model/KpiRule.cs
 src/HNTAS.Api.Client/Model/KpiSubmissionApiError.cs
 src/HNTAS.Api.Client/Model/KpiSubmissionApiErrorResponse.cs
 src/HNTAS.Api.Client/Model/KpiSubmissionRequest.cs
+src/HNTAS.Api.Client/Model/KpiSubmissionRequestV2.cs
 src/HNTAS.Api.Client/Model/KpiThresholdRule.cs
 src/HNTAS.Api.Client/Model/KpiValueAggregatedRequest.cs
 src/HNTAS.Api.Client/Model/KpiValueRequest.cs
@@ -261,6 +269,7 @@ src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadDocumentRequest.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadedDocument.cs
 src/HNTAS.Api.Client/Model/NetworkElementRequest.cs
+src/HNTAS.Api.Client/Model/NetworkElementRequestV2.cs
 src/HNTAS.Api.Client/Model/NetworkElements.cs
 src/HNTAS.Api.Client/Model/NetworkElements2.cs
 src/HNTAS.Api.Client/Model/NetworkElementsResponse.cs

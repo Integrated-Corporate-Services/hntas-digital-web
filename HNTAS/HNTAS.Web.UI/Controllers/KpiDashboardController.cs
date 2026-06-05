@@ -126,14 +126,19 @@ namespace HNTAS.Web.UI.Controllers
 
 
             viewModel.GroupedElements = response.GroupedElements.ToDictionary(
-                group => $"{group.ElementType}|{group.ElementId}", // Create a composite key
-                group => group.Kpis.Select(k => new KpiRowViewModel
+                group => $"{group.ElementType}|{group.ElementId}",
+                group => new ElementGroupViewModel
                 {
-                    KpiId = k.KpiName,
-                    Value = k.Value.Value,
-                    Status = k.Status
-                }).ToList()
+                    TotalCarbonEmission = (decimal?)group.TotalCarbonEmission,
+                    KpiRows = group.Kpis.Select(k => new KpiRowViewModel
+                    {
+                        KpiId = k.KpiName,
+                        Value = k.Value.Value,
+                        Status = k.Status
+                    }).ToList()
+                }
             );
+
 
             if (response.AggregatedKpis != null)
             {
@@ -188,7 +193,7 @@ namespace HNTAS.Web.UI.Controllers
             public List<string> TypeFilter { get; set; } = new();
 
             // The Data: Grouped by Element ID
-            public Dictionary<string, List<KpiRowViewModel>> GroupedElements { get; set; } = new();
+            public Dictionary<string, ElementGroupViewModel> GroupedElements { get; set; } = new();
 
             public List<KpiRowViewModel> AggregatedKpis { get; set; } = new();
 
@@ -273,6 +278,12 @@ namespace HNTAS.Web.UI.Controllers
 
             public bool HasPreviousPage => CurrentPage > 1;
             public bool HasNextPage => CurrentPage < TotalPages;
+        }
+
+        public class ElementGroupViewModel
+        {
+            public decimal? TotalCarbonEmission { get; set; }
+            public List<KpiRowViewModel> KpiRows { get; set; } = new();
         }
 
         public class KpiRowViewModel
