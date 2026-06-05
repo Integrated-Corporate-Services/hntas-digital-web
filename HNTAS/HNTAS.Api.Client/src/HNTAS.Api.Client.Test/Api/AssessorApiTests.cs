@@ -39,51 +39,27 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/AuditApiTests.cs
     ///  Class for testing AuditApi
-    /// </summary>
-    public sealed class AuditApiTests : ApiTestsBase
-    {
-        private readonly IAuditApi _instance;
-
-        public AuditApiTests(): base(Array.Empty<string>())
-        {
-            _instance = _host.Services.GetRequiredService<IAuditApi>();
-        }
-
-        /// <summary>
-        /// Test ApiAuditHeatNetworkAuditLogsGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiAuditHeatNetworkAuditLogsGetAsyncTest()
-        {
-            AuditLogRequest auditLogRequest = default!;
-            var response = await _instance.ApiAuditHeatNetworkAuditLogsGetAsync(auditLogRequest);
-            var model = response.Ok();
-            Assert.IsType<AuditLogResponse>(model);
-========
-    ///  Class for testing AssessorApi
-    /// </summary>
+    /// </summary>    
     public sealed class AssessorApiTests : ApiTestsBase
     {
-        private readonly IAssessorApi _instance;
+        private readonly IAssessorApi _assessorApi;
 
         public AssessorApiTests(): base(Array.Empty<string>())
         {
-            _instance = _host.Services.GetRequiredService<IAssessorApi>();
+            _assessorApi = _host.Services.GetRequiredService<IAssessorApi>();
         }
 
         /// <summary>
         /// Test ApiAssessorSearchGet
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiAssessorSearchGetAsyncTest()
+        public async Task ApiAssessorSearchGetAsyncTest_Default()
         {
             Client.Option<string> q = default!;
-            var response = await _instance.ApiAssessorSearchGetAsync(q);
+            var response = await _assessorApi.ApiAssessorSearchGetAsync(q);
             var model = response.Ok();
             Assert.IsType<List<AssessorSearchResult>>(model);
->>>>>>>> test:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/AssessorApiTests.cs
         }
     }
 }
