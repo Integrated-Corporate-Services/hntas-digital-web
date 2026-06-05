@@ -316,12 +316,19 @@ namespace HNTAS.Web.UI.Controllers
         {
             ViewBag.StageTitle = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.SoaStageTitleOfAssessorOnboarding);
             var selectedAssessor = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.DefaultSelectedAssessor);
-
+            var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
+            var targetFragment = string.Concat("stage-", currentStageIndex);
+            this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);
             if (fullNameFromInput == null)
             {
                 var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
-                TempData["ErrorMessage"] = "Please select an assessor before continuing.";
-                return RedirectToAction("AssessorOnboarding", "ElementSoa");
+                ModelState.Remove("emailId");
+                ModelState.Remove("firstName");
+                ModelState.Remove("lastName");
+                ModelState.Remove("fullNameFromInput");
+                ModelState.Remove("assessor-autocomplete");
+                ModelState.AddModelError("assessor-autocomplete", "Please select an assessor before continuing.");
+                return View("AssessorOnboarding", "ElementSoa");
             }
             var assessorSearchResults = _sessionHelper.GetFromSession<List<AssessorSearchResult>>(HttpContext, SessionKeys.AssessorSearchResultsSessionKey);
             if (selectedAssessor?.FullNameWithEmail?.ToLower() != fullNameFromInput?.ToLower())
@@ -332,8 +339,13 @@ namespace HNTAS.Web.UI.Controllers
                 if (!isCorrectAssessor ?? false)
                 {
                     var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
-                    TempData["ErrorMessage"] = "Please select an assessor before continuing.";
-                    return RedirectToAction("AssessorOnboarding", "ElementSoa");
+                    ModelState.Remove("emailId");
+                    ModelState.Remove("firstName");
+                    ModelState.Remove("lastName");
+                    ModelState.Remove("fullNameFromInput");
+                    ModelState.Remove("assessor-autocomplete");
+                    ModelState.AddModelError("assessor-autocomplete", "Please select an assessor before continuing.");
+                    return View("AssessorOnboarding", "ElementSoa");
                 }
             }
 
@@ -480,7 +492,7 @@ namespace HNTAS.Web.UI.Controllers
             var validationResult = await ValidateAssessment(hnId!, model.ElementType, model.SelectedAssessmentOption);
             if (!validationResult.IsValid)
             {
-                TempData["ErrorMessage"] = validationResult.ErrorMessage;
+                ModelState.AddModelError(nameof(model.SelectedAssessmentOption), validationResult.ErrorMessage);
                 var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
                 if (modelFromSession != null)
                 {
@@ -538,7 +550,7 @@ namespace HNTAS.Web.UI.Controllers
             var validationResult = await ValidateAssessment(hnId!, model.ElementType, model.SelectedAssessmentOption);
             if (!validationResult.IsValid)
             {
-                TempData["ErrorMessage"] = validationResult.ErrorMessage;
+                ModelState.AddModelError(nameof(model.SelectedAssessmentOption), validationResult.ErrorMessage);
                 var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
                 if (modelFromSession != null)
                 {
@@ -595,7 +607,7 @@ namespace HNTAS.Web.UI.Controllers
             var validationResult = await ValidateAssessment(hnId!, model.ElementType, model.SelectedAssessmentOption);
             if (!validationResult.IsValid)
             {
-                TempData["ErrorMessage"] = validationResult.ErrorMessage;
+                ModelState.AddModelError(nameof(model.SelectedAssessmentOption), validationResult.ErrorMessage);
                 var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
                 if (modelFromSession != null)
                 {
@@ -653,7 +665,7 @@ namespace HNTAS.Web.UI.Controllers
             var validationResult = await ValidateAssessment(hnId!, model.ElementType, model.SelectedAssessmentOption);
             if (!validationResult.IsValid)
             {
-                TempData["ErrorMessage"] = validationResult.ErrorMessage;
+                ModelState.AddModelError(nameof(model.SelectedAssessmentOption), validationResult.ErrorMessage);
                 var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
                 if (modelFromSession != null)
                 {
@@ -712,7 +724,7 @@ namespace HNTAS.Web.UI.Controllers
             var validationResult = await ValidateAssessment(hnId!, model.ElementType, model.SelectedAssessmentOption);
             if (!validationResult.IsValid)
             {
-                TempData["ErrorMessage"] = validationResult.ErrorMessage;
+                ModelState.AddModelError(nameof(model.SelectedAssessmentOption), validationResult.ErrorMessage);
                 var modelFromSession = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
                 if (modelFromSession != null)
                 {
