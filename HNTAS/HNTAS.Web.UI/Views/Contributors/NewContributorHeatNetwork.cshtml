@@ -16,7 +16,8 @@
             <form method="post">
                 @Html.AntiForgeryToken()
                 <div class="govuk-form-group">
-                    <span class="govuk-error-message" asp-validation-for="SelectedHeatNetwork"></span>
+                    <span tabindex="-1" class="govuk-error-message" asp-validation-for="SelectedHeatNetwork"></span>
+                    <label class="govuk-visually-hidden" asp-for="SelectedHeatNetwork">Select a heat network</label>
                     <select class="govuk-select" asp-for="SelectedHeatNetwork" asp-items="Model.HeatNetworks.Select(x => new SelectListItem { Value = x.Value, Text = x.Text })">
                         <option value="">-- Select --</option>
                     </select>
