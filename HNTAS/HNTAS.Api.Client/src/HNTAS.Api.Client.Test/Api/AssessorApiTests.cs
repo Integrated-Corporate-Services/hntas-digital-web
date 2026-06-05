@@ -45,7 +45,7 @@ namespace HNTAS.Api.Client.Test.Api
     {
         private readonly IAssessorApi _assessorApi;
 
-        public AssessorApiTests(): base(Array.Empty<string>())
+        public AssessorApiTests() : base(Array.Empty<string>())
         {
             _assessorApi = _host.Services.GetRequiredService<IAssessorApi>();
         }
@@ -53,7 +53,7 @@ namespace HNTAS.Api.Client.Test.Api
         /// <summary>
         /// Test ApiAssessorSearchGet
         /// </summary>
-        [Fact (Skip = "not implemented")]
+        [Fact(Skip = "not implemented")]
         public async Task ApiAssessorSearchGetAsyncTest_Default()
         {
             Client.Option<string> q = default!;
