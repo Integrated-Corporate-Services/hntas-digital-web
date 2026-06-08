@@ -54,7 +54,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="assessmentPlan">assessmentPlan</param>
         /// <param name="designConstructionLog">designConstructionLog</param>
         [JsonConstructor]
-        public HeatNetworkResponse(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<string?> pathway = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<HeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCentre = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default)
+        public HeatNetworkResponse(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<string?> pathway = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<NullableOfHeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCentre = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default)
         {
             IdOption = id;
             UHnIdOption = uHnId;
@@ -86,13 +86,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<HeatNetworkType?> HeatNetworkTypeOption { get; private set; }
+        public Option<NullableOfHeatNetworkType?> HeatNetworkTypeOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets HeatNetworkType
         /// </summary>
         [JsonPropertyName("heatNetworkType")]
-        public HeatNetworkType? HeatNetworkType { get { return this.HeatNetworkTypeOption; } set { this.HeatNetworkTypeOption = new(value); } }
+        public NullableOfHeatNetworkType? HeatNetworkType { get { return this.HeatNetworkTypeOption; } set { this.HeatNetworkTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Id
@@ -424,7 +424,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> phase = default;
-            Option<HeatNetworkType?> heatNetworkType = default;
+            Option<NullableOfHeatNetworkType?> heatNetworkType = default;
             Option<bool?> hasOwnEnergyCentre = default;
             Option<HeatNetworkConnections?> heatNetworkConnections = default;
             Option<NetworkElementsResponse?> networkElements = default;
@@ -472,7 +472,7 @@ namespace HNTAS.Api.Client.Model
                             additionalDescription = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "pathway":
-                            pathway = new Option<string?>(utf8JsonReader.GetString()!);
+                            pathway = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "soa":
                             soa = new Option<SoaResponse?>(JsonSerializer.Deserialize<SoaResponse>(ref utf8JsonReader, jsonSerializerOptions));
@@ -489,7 +489,7 @@ namespace HNTAS.Api.Client.Model
                         case "heatNetworkType":
                             string? heatNetworkTypeRawValue = utf8JsonReader.GetString();
                             if (heatNetworkTypeRawValue != null)
-                                heatNetworkType = new Option<HeatNetworkType?>(HeatNetworkTypeValueConverter.FromStringOrDefault(heatNetworkTypeRawValue));
+                                heatNetworkType = new Option<NullableOfHeatNetworkType?>(NullableOfHeatNetworkTypeValueConverter.FromStringOrDefault(heatNetworkTypeRawValue));
                             break;
                         case "hasOwnEnergyCentre":
                             hasOwnEnergyCentre = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
@@ -533,17 +533,11 @@ namespace HNTAS.Api.Client.Model
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetworkResponse.");
 
-            if (pathway.IsSet && pathway.Value == null)
-                throw new ArgumentNullException(nameof(pathway), "Property is not nullable for class HeatNetworkResponse.");
-
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class HeatNetworkResponse.");
 
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class HeatNetworkResponse.");
-
-            if (heatNetworkType.IsSet && heatNetworkType.Value == null)
-                throw new ArgumentNullException(nameof(heatNetworkType), "Property is not nullable for class HeatNetworkResponse.");
 
             if (hasOwnEnergyCentre.IsSet && hasOwnEnergyCentre.Value == null)
                 throw new ArgumentNullException(nameof(hasOwnEnergyCentre), "Property is not nullable for class HeatNetworkResponse.");
@@ -593,9 +587,6 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkResponse.NameOption.IsSet && heatNetworkResponse.Name == null)
                 throw new ArgumentNullException(nameof(heatNetworkResponse.Name), "Property is required for class HeatNetworkResponse.");
 
-            if (heatNetworkResponse.PathwayOption.IsSet && heatNetworkResponse.Pathway == null)
-                throw new ArgumentNullException(nameof(heatNetworkResponse.Pathway), "Property is required for class HeatNetworkResponse.");
-
             if (heatNetworkResponse.CreatedByOption.IsSet && heatNetworkResponse.CreatedBy == null)
                 throw new ArgumentNullException(nameof(heatNetworkResponse.CreatedBy), "Property is required for class HeatNetworkResponse.");
 
@@ -634,7 +625,10 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("additionalDescription");
 
             if (heatNetworkResponse.PathwayOption.IsSet)
-                writer.WriteString("pathway", heatNetworkResponse.Pathway);
+                if (heatNetworkResponse.PathwayOption.Value != null)
+                    writer.WriteString("pathway", heatNetworkResponse.Pathway);
+                else
+                    writer.WriteNull("pathway");
 
             if (heatNetworkResponse.SoaOption.IsSet)
                 if (heatNetworkResponse.SoaOption.Value != null)
@@ -657,10 +651,13 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("phase");
 
             if (heatNetworkResponse.HeatNetworkTypeOption.IsSet)
-            {
-                var heatNetworkTypeRawValue = HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkResponse.HeatNetworkType!.Value);
-                writer.WriteString("heatNetworkType", heatNetworkTypeRawValue);
-            }
+                if (heatNetworkResponse.HeatNetworkTypeOption!.Value != null)
+                {
+                    var heatNetworkTypeRawValue = NullableOfHeatNetworkTypeValueConverter.ToJsonValue(heatNetworkResponse.HeatNetworkTypeOption.Value!.Value);
+                    writer.WriteString("heatNetworkType", heatNetworkTypeRawValue);
+                }
+                else
+                    writer.WriteNull("heatNetworkType");
             if (heatNetworkResponse.HasOwnEnergyCentreOption.IsSet)
                 writer.WriteBoolean("hasOwnEnergyCentre", heatNetworkResponse.HasOwnEnergyCentreOption.Value!.Value);
 

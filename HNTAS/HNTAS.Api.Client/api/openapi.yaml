@@ -4589,6 +4589,7 @@ components:
         orgId: orgId
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
+        ofgemUserEmailId: ofgemUserEmailId
         createdBy: createdBy
         additionalDescription: additionalDescription
         hasOwnEnergyCenter: true
@@ -4614,7 +4615,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: Communal
+        heatNetworkType: Unset
       properties:
         id:
           nullable: true
@@ -4637,6 +4638,7 @@ components:
         ecDetails:
           $ref: "#/components/schemas/ECDetails2"
         pathway:
+          nullable: true
           type: string
         registrationSource:
           $ref: "#/components/schemas/RegistrationSource"
@@ -4656,12 +4658,16 @@ components:
           $ref: "#/components/schemas/AssessmentPlan"
         designConstructionLog:
           $ref: "#/components/schemas/DesignConstructionLog"
+        ofgemUserEmailId:
+          nullable: true
+          type: string
         createdBy:
           type: string
         createdAt:
           format: date-time
           type: string
         phase:
+          nullable: true
           type: string
       type: object
     HeatNetworkConnections:
@@ -5229,7 +5235,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: Communal
+        heatNetworkType: Unset
       properties:
         id:
           type: string
@@ -5249,6 +5255,7 @@ components:
           nullable: true
           type: string
         pathway:
+          nullable: true
           type: string
         soa:
           $ref: "#/components/schemas/SoaResponse"
@@ -5261,7 +5268,7 @@ components:
           nullable: true
           type: string
         heatNetworkType:
-          $ref: "#/components/schemas/HeatNetworkType"
+          $ref: "#/components/schemas/NullableOfHeatNetworkType"
         hasOwnEnergyCentre:
           type: boolean
         heatNetworkConnections:
@@ -5277,6 +5284,7 @@ components:
       type: object
     HeatNetworkType:
       enum:
+      - Unset
       - Communal
       - District
       type: string
@@ -6497,7 +6505,7 @@ components:
     NetworkTypeSelection2:
       example:
         otherNetworkDescription: otherNetworkDescription
-        type: Communal
+        type: Unset
       properties:
         type:
           $ref: "#/components/schemas/HeatNetworkType"
@@ -6642,6 +6650,14 @@ components:
       type: object
     NotificationHistoryType:
       type: integer
+    NullableOfHeatNetworkType:
+      enum:
+      - Unset
+      - Communal
+      - District
+      - null
+      nullable: true
+      type: string
     NullableOfPreferredContactType:
       enum:
       - Landline

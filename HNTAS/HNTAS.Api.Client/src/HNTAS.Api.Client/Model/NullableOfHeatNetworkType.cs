@@ -26,9 +26,9 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// Defines HeatNetworkType
+    /// Defines NullableOfHeatNetworkType
     /// </summary>
-    public enum HeatNetworkType
+    public enum NullableOfHeatNetworkType
     {
         /// <summary>
         /// Enum Unset for value: Unset
@@ -47,63 +47,63 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// Converts <see cref="HeatNetworkType"/> to and from the JSON value
+    /// Converts <see cref="NullableOfHeatNetworkType"/> to and from the JSON value
     /// </summary>
-    public static class HeatNetworkTypeValueConverter
+    public static class NullableOfHeatNetworkTypeValueConverter
     {
         /// <summary>
-        /// Parses a given value to <see cref="HeatNetworkType"/>
+        /// Parses a given value to <see cref="NullableOfHeatNetworkType"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static HeatNetworkType FromString(string value)
+        public static NullableOfHeatNetworkType FromString(string value)
         {
             if (value.Equals("Unset"))
-                return HeatNetworkType.Unset;
+                return NullableOfHeatNetworkType.Unset;
 
             if (value.Equals("Communal"))
-                return HeatNetworkType.Communal;
+                return NullableOfHeatNetworkType.Communal;
 
             if (value.Equals("District"))
-                return HeatNetworkType.District;
+                return NullableOfHeatNetworkType.District;
 
-            throw new NotImplementedException($"Could not convert value to type HeatNetworkType: '{value}'");
+            throw new NotImplementedException($"Could not convert value to type NullableOfHeatNetworkType: '{value}'");
         }
 
         /// <summary>
-        /// Parses a given value to <see cref="HeatNetworkType"/>
+        /// Parses a given value to <see cref="NullableOfHeatNetworkType"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static HeatNetworkType? FromStringOrDefault(string value)
+        public static NullableOfHeatNetworkType? FromStringOrDefault(string value)
         {
             if (value.Equals("Unset"))
-                return HeatNetworkType.Unset;
+                return NullableOfHeatNetworkType.Unset;
 
             if (value.Equals("Communal"))
-                return HeatNetworkType.Communal;
+                return NullableOfHeatNetworkType.Communal;
 
             if (value.Equals("District"))
-                return HeatNetworkType.District;
+                return NullableOfHeatNetworkType.District;
 
             return null;
         }
 
         /// <summary>
-        /// Converts the <see cref="HeatNetworkType"/> to the json value
+        /// Converts the <see cref="NullableOfHeatNetworkType"/> to the json value
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static string ToJsonValue(HeatNetworkType value)
+        public static string ToJsonValue(NullableOfHeatNetworkType value)
         {
-            if (value == HeatNetworkType.Unset)
+            if (value == NullableOfHeatNetworkType.Unset)
                 return "Unset";
 
-            if (value == HeatNetworkType.Communal)
+            if (value == NullableOfHeatNetworkType.Communal)
                 return "Communal";
 
-            if (value == HeatNetworkType.District)
+            if (value == NullableOfHeatNetworkType.District)
                 return "District";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
@@ -111,10 +111,10 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="HeatNetworkType"/>
+    /// A Json converter for type <see cref="NullableOfHeatNetworkType"/>
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
-    public class HeatNetworkTypeJsonConverter : JsonConverter<HeatNetworkType>
+    public class NullableOfHeatNetworkTypeJsonConverter : JsonConverter<NullableOfHeatNetworkType>
     {
         /// <summary>
         /// Returns a  from the Json object
@@ -123,13 +123,13 @@ namespace HNTAS.Api.Client.Model
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override HeatNetworkType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override NullableOfHeatNetworkType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            HeatNetworkType? result = rawValue == null
+            NullableOfHeatNetworkType? result = rawValue == null
                 ? null
-                : HeatNetworkTypeValueConverter.FromStringOrDefault(rawValue);
+                : NullableOfHeatNetworkTypeValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -138,36 +138,36 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the HeatNetworkType to the json writer
+        /// Writes the NullableOfHeatNetworkType to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="heatNetworkType"></param>
+        /// <param name="nullableOfHeatNetworkType"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, HeatNetworkType heatNetworkType, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, NullableOfHeatNetworkType nullableOfHeatNetworkType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType).ToString());
+            writer.WriteStringValue(NullableOfHeatNetworkTypeValueConverter.ToJsonValue(nullableOfHeatNetworkType).ToString());
         }
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="HeatNetworkType"/>
+    /// A Json converter for type <see cref="NullableOfHeatNetworkType"/>
     /// </summary>
-    public class HeatNetworkTypeNullableJsonConverter : JsonConverter<HeatNetworkType?>
+    public class NullableOfHeatNetworkTypeNullableJsonConverter : JsonConverter<NullableOfHeatNetworkType?>
     {
         /// <summary>
-        /// Returns a HeatNetworkType from the Json object
+        /// Returns a NullableOfHeatNetworkType from the Json object
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override HeatNetworkType? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override NullableOfHeatNetworkType? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            HeatNetworkType? result = rawValue == null
+            NullableOfHeatNetworkType? result = rawValue == null
                 ? null
-                : HeatNetworkTypeValueConverter.FromStringOrDefault(rawValue);
+                : NullableOfHeatNetworkTypeValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -176,14 +176,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the HeatNetworkType to the json writer
+        /// Writes the NullableOfHeatNetworkType to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="heatNetworkType"></param>
+        /// <param name="nullableOfHeatNetworkType"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, HeatNetworkType? heatNetworkType, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, NullableOfHeatNetworkType? nullableOfHeatNetworkType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkType.HasValue ? HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType.Value).ToString() : "null");
+            writer.WriteStringValue(nullableOfHeatNetworkType.HasValue ? NullableOfHeatNetworkTypeValueConverter.ToJsonValue(nullableOfHeatNetworkType.Value).ToString() : "null");
         }
     }
 }
