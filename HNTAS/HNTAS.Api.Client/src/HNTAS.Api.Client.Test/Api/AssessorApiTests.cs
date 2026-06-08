@@ -39,8 +39,6 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-<<<<<<< HEAD
-<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/AssessorApiTests.cs
     ///  Class for testing AssessorApi
     /// </summary>
     public sealed class AssessorApiTests : ApiTestsBase
@@ -50,23 +48,11 @@ namespace HNTAS.Api.Client.Test.Api
         public AssessorApiTests(): base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<IAssessorApi>();
-=======
-    ///  Class for testing AuditApi
-    /// </summary>    
-    public sealed class AssessorApiTests : ApiTestsBase
-    {
-        private readonly IAssessorApi _assessorApi;
-
-        public AssessorApiTests() : base(Array.Empty<string>())
-        {
-            _assessorApi = _host.Services.GetRequiredService<IAssessorApi>();
->>>>>>> e9e24e7e7b62712840437dfa1fc0c5df02501c5a
         }
 
         /// <summary>
         /// Test ApiAssessorSearchGet
         /// </summary>
-<<<<<<< HEAD
         [Fact (Skip = "not implemented")]
         public async Task ApiAssessorSearchGetAsyncTest()
         {
@@ -74,37 +60,6 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiAssessorSearchGetAsync(q);
             var model = response.Ok();
             Assert.IsType<List<AssessorSearchResult>>(model);
-========
-    ///  Class for testing CountriesAndTerritoriesApi
-    /// </summary>
-    public sealed class CountriesAndTerritoriesApiTests : ApiTestsBase
-    {
-        private readonly ICountriesAndTerritoriesApi _instance;
-
-        public CountriesAndTerritoriesApiTests(): base(Array.Empty<string>())
-        {
-            _instance = _host.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
-        }
-
-        /// <summary>
-        /// Test ApiCountriesAndTerritoriesGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiCountriesAndTerritoriesGetAsyncTest()
-        {
-            var response = await _instance.ApiCountriesAndTerritoriesGetAsync();
-            var model = response.Ok();
-            Assert.IsType<List<CountryAndTerritory>>(model);
->>>>>>>> e9e24e7e7b62712840437dfa1fc0c5df02501c5a:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/CountriesAndTerritoriesApiTests.cs
-=======
-        [Fact(Skip = "not implemented")]
-        public async Task ApiAssessorSearchGetAsyncTest_Default()
-        {
-            Client.Option<string> q = default!;
-            var response = await _assessorApi.ApiAssessorSearchGetAsync(q);
-            var model = response.Ok();
-            Assert.IsType<List<AssessorSearchResult>>(model);
->>>>>>> e9e24e7e7b62712840437dfa1fc0c5df02501c5a
         }
     }
 }
