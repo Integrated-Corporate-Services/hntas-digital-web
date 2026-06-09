@@ -10,7 +10,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             Response.Cookies.Append("cookie_consent", "accepted", new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddMilliseconds(500),
+                Expires = DateTimeOffset.UtcNow.AddYears(1),
                 IsEssential = true
             });
 
@@ -24,7 +24,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             Response.Cookies.Append("cookie_consent", "rejected", new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddMilliseconds(500),
+                Expires = DateTimeOffset.UtcNow.AddYears(1),
                 IsEssential = true
             });
 
