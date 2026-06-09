@@ -1,0 +1,79 @@
+﻿@{
+    var consent = Context.Request.Cookies["cookie_consent"];
+    var action = TempData["cookie_banner_action"]?.ToString();
+}
+
+@if (consent == null)
+{
+    <!-- SHOW INITIAL BANNER -->
+    <div class="govuk-cookie-banner" id="cookie-banner" data-nosnippet role="region" aria-label="Cookies on Heat Network Technical Assurance Scheme">
+        <div class="govuk-cookie-banner__message govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h2 class="govuk-cookie-banner__heading govuk-heading-m">
+                        Cookies on Heat Network Technical Assurance Scheme
+                    </h2>
+                    <div class="govuk-cookie-banner__content">
+                        <p class="govuk-body">We use some essential cookies to make this service work.</p>
+                        <p class="govuk-body">We’d also like to use analytics cookies so we can understand how you use the service and make improvements.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-button-group">
+                <form method="post" action="/cookies/accept">
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Accept analytics cookies
+                    </button>
+                </form>
+                <form method="post" action="/cookies/reject">
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Reject analytics cookies
+                    </button>
+                </form>
+                <a class="govuk-link govuk-button-group__link" style="align-self: center;" href="/cookies">View cookies</a>
+            </div>
+        </div>
+    </div>
+}
+else if (action == "accepted")
+{
+    <!-- SHOW SUCCESS MESSAGE (accepted) -->
+    <div class="govuk-cookie-banner" id="cookie-banner" data-nosnippet role="region" aria-label="Cookies on Heat Network Technical Assurance Scheme">
+        <div class="govuk-cookie-banner__message govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-cookie-banner__content">
+                        <p class="govuk-body">You’ve accepted additional cookies. You can <a class="govuk-link" href="#">change your cookie settings</a> at any time.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="button"
+                        onclick="document.getElementById('cookie-banner').remove()">
+                    Hide cookie message
+                </button>
+            </div>
+        </div>
+    </div>
+}
+else if (action == "rejected")
+{
+    <!-- SHOW SUCCESS MESSAGE (rejected) -->
+    <div class="govuk-cookie-banner" id="cookie-banner" data-nosnippet role="region" aria-label="Cookies on Heat Network Technical Assurance Scheme">
+        <div class="govuk-cookie-banner__message govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-cookie-banner__content">
+                        <p class="govuk-body">You’ve rejected additional cookies. You can <a class="govuk-link" href="#">change your cookie settings</a> at any time.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="button"
+                        onclick="document.getElementById('cookie-banner').remove()">
+                    Hide cookie message
+                </button>
+            </div>
+        </div>
+    </div>
+}
