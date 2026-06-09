@@ -45,7 +45,7 @@ namespace HNTAS.Api.Client.Test.Api
     {
         private readonly IAuditApi _instance;
 
-        public AuditApiTests() : base(Array.Empty<string>())
+        public AuditApiTests(): base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<IAuditApi>();
         }
@@ -53,7 +53,7 @@ namespace HNTAS.Api.Client.Test.Api
         /// <summary>
         /// Test ApiAuditHeatNetworkAuditLogsGet
         /// </summary>
-        [Fact(Skip = "not implemented")]
+        [Fact (Skip = "not implemented")]
         public async Task ApiAuditHeatNetworkAuditLogsGetAsyncTest()
         {
             AuditLogRequest auditLogRequest = default!;

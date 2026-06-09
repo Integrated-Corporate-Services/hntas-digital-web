@@ -39,25 +39,25 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-    ///  Class for testing AuditApi
-    /// </summary>    
+    ///  Class for testing AssessorApi
+    /// </summary>
     public sealed class AssessorApiTests : ApiTestsBase
     {
-        private readonly IAssessorApi _assessorApi;
+        private readonly IAssessorApi _instance;
 
-        public AssessorApiTests() : base(Array.Empty<string>())
+        public AssessorApiTests(): base(Array.Empty<string>())
         {
-            _assessorApi = _host.Services.GetRequiredService<IAssessorApi>();
+            _instance = _host.Services.GetRequiredService<IAssessorApi>();
         }
 
         /// <summary>
         /// Test ApiAssessorSearchGet
         /// </summary>
-        [Fact(Skip = "not implemented")]
-        public async Task ApiAssessorSearchGetAsyncTest_Default()
+        [Fact (Skip = "not implemented")]
+        public async Task ApiAssessorSearchGetAsyncTest()
         {
             Client.Option<string> q = default!;
-            var response = await _assessorApi.ApiAssessorSearchGetAsync(q);
+            var response = await _instance.ApiAssessorSearchGetAsync(q);
             var model = response.Ok();
             Assert.IsType<List<AssessorSearchResult>>(model);
         }
