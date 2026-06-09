@@ -6,6 +6,7 @@ namespace HNTAS.Web.UI.Controllers
     public class CookiesController : Controller
     {
         [HttpPost("/cookies/accept")]
+        [ValidateAntiForgeryToken]
         public IActionResult Accept()
         {
             Response.Cookies.Append("cookie_consent", "accepted", new CookieOptions
@@ -20,6 +21,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost("/cookies/reject")]
+        [ValidateAntiForgeryToken]
         public IActionResult Reject()
         {
             Response.Cookies.Append("cookie_consent", "rejected", new CookieOptions

@@ -21,11 +21,13 @@
             </div>
             <div class="govuk-button-group">
                 <form method="post" action="/cookies/accept">
+                    @Html.AntiForgeryToken()
                     <button type="submit" class="govuk-button" data-module="govuk-button">
                         Accept analytics cookies
                     </button>
                 </form>
                 <form method="post" action="/cookies/reject">
+                    @Html.AntiForgeryToken()
                     <button type="submit" class="govuk-button" data-module="govuk-button">
                         Reject analytics cookies
                     </button>
