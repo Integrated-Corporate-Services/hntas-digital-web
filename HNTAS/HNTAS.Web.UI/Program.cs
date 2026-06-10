@@ -17,6 +17,7 @@ using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
@@ -28,15 +29,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDataProtection()
     .SetApplicationName("HNTAS.Web.UI")
-    //.PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
+    .PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
     .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
+
 
 // Configure RouteOptions
 builder.Services.Configure<RouteOptions>(options =>
-{
-    options.LowercaseUrls = false;
-    options.LowercaseQueryStrings = false; // Optional: for query string parameters too
-});
+    {
+        options.LowercaseUrls = false;
+        options.LowercaseQueryStrings = false; // Optional: for query string parameters too
+    });
 
 // Register the parameter transformer globally for controllers/actions
 builder.Services.AddControllersWithViews(options =>
