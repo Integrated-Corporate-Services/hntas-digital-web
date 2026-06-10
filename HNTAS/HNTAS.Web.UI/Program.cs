@@ -27,7 +27,9 @@ using System.Text.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDataProtection()
-    .SetApplicationName("HNTAS.Web.UI");
+    .SetApplicationName("HNTAS.Web.UI")
+    //.PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
+    .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
 
 // Configure RouteOptions
 builder.Services.Configure<RouteOptions>(options =>
