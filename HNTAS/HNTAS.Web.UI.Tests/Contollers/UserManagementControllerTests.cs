@@ -59,6 +59,16 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 Organisation = new OrganisationResponse { Name = "Org Ltd" }
             };
 
+            mockHeatNetworkService.Setup(h => h.GetHeatNetworkByUserId(It.IsAny<string>())).Returns(Task.FromResult(new List<HeatNetworkResponse>()
+            {
+                new HeatNetworkResponse
+                {
+                    HnId = "hn-1",
+                    Name = "Network 1",
+                    AdditionalDescription = "Description of Network 1"
+                }
+            }));            
+
             mockUserService
                 .Setup(u => u.GetUserDetails(userId))
                 .ReturnsAsync(userDetails);

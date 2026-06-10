@@ -2,22 +2,16 @@
 
 @{
     ViewData["Title"] = "Primary Energy Centre Coordinates";
+    var question = !!ViewBag.WithEc ? ViewBag.QuestionForWithEC : ViewBag.QuestionForWithoutEC;
 }
 
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            @if(!!ViewBag.DistWithoutOwnEC)
-            {
-                <h1 class="govuk-heading-l">@ViewBag.QuestionForDistWithoutEC</h1>
-            }
-            else
-            {
-                <h1 class="govuk-heading-l">What are the grid coordinates for your @ViewBag.addressFor?</h1>
-            }
+            <h1 class="govuk-heading-l">@question</h1>
 
             <p class="govuk-body">
-                To find the coordinates of this @(ViewBag.DistWithoutOwnEC ? "energy centre" : "connection point"), go to
+                To find the coordinates of this @(ViewBag.WithEc ? "energy centre" : "connection point"), go to
                 <a class="govuk-link" href="https://www.google.com/maps" target="_blank" rel="noopener">Google maps</a>
                 (opens in a new tab) and right click the location of your energy centre. The coordinates will be the first option in the list. Click the coordinates to copy.
             </p>
@@ -29,8 +23,7 @@
                     <label class="govuk-label govuk-!-margin-bottom-2" asp-for="LatitudeLongitude">Latitude and longitude</label>
                     <span class="govuk-hint">For example, 52.93430970409369, -1.2522174890632065</span>
 
-                    <input asp-for="LatitudeLongitude"
-                           class="govuk-input govuk-!-width-two-thirds govuk-!-margin-top-3" />
+                    <input asp-for="LatitudeLongitude" class="govuk-input govuk-!-width-two-thirds govuk-!-margin-top-3" />
 
                     @if (ViewData.ModelState[nameof(Model.LatitudeLongitude)]?.Errors?.Count > 0)
                     {
