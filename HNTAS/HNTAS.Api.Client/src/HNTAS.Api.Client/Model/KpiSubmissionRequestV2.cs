@@ -35,12 +35,14 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="metaData">metaData</param>
         /// <param name="consumerConnectionAggregatedKpis">consumerConnectionAggregatedKpis</param>
+        /// <param name="carbonCalculatorInputs">carbonCalculatorInputs</param>
         /// <param name="elements">elements</param>
         [JsonConstructor]
-        public KpiSubmissionRequestV2(KpiMetadata metaData, Option<Dictionary<string, KpiValueAggregatedRequest>?> consumerConnectionAggregatedKpis = default, Option<List<NetworkElementRequestV2>?> elements = default)
+        public KpiSubmissionRequestV2(KpiMetadata metaData, Option<Dictionary<string, KpiValueAggregatedRequest>?> consumerConnectionAggregatedKpis = default, Option<Dictionary<string, Dictionary<string, CCKpiValueRequest>>?> carbonCalculatorInputs = default, Option<List<NetworkElementRequest>?> elements = default)
         {
             MetaData = metaData;
             ConsumerConnectionAggregatedKpisOption = consumerConnectionAggregatedKpis;
+            CarbonCalculatorInputsOption = carbonCalculatorInputs;
             ElementsOption = elements;
             OnCreated();
         }
@@ -67,17 +69,30 @@ namespace HNTAS.Api.Client.Model
         public Dictionary<string, KpiValueAggregatedRequest>? ConsumerConnectionAggregatedKpis { get { return this.ConsumerConnectionAggregatedKpisOption; } set { this.ConsumerConnectionAggregatedKpisOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of CarbonCalculatorInputs
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<Dictionary<string, Dictionary<string, CCKpiValueRequest>>?> CarbonCalculatorInputsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets CarbonCalculatorInputs
+        /// </summary>
+        [JsonPropertyName("carbon_calculator_inputs")]
+        public Dictionary<string, Dictionary<string, CCKpiValueRequest>>? CarbonCalculatorInputs { get { return this.CarbonCalculatorInputsOption; } set { this.CarbonCalculatorInputsOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of Elements
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<NetworkElementRequestV2>?> ElementsOption { get; private set; }
+        public Option<List<NetworkElementRequest>?> ElementsOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Elements
         /// </summary>
         [JsonPropertyName("elements")]
-        public List<NetworkElementRequestV2>? Elements { get { return this.ElementsOption; } set { this.ElementsOption = new(value); } }
+        public List<NetworkElementRequest>? Elements { get { return this.ElementsOption; } set { this.ElementsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -89,6 +104,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class KpiSubmissionRequestV2 {\n");
             sb.Append("  MetaData: ").Append(MetaData).Append("\n");
             sb.Append("  ConsumerConnectionAggregatedKpis: ").Append(ConsumerConnectionAggregatedKpis).Append("\n");
+            sb.Append("  CarbonCalculatorInputs: ").Append(CarbonCalculatorInputs).Append("\n");
             sb.Append("  Elements: ").Append(Elements).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -129,7 +145,8 @@ namespace HNTAS.Api.Client.Model
 
             Option<KpiMetadata?> metaData = default;
             Option<Dictionary<string, KpiValueAggregatedRequest>?> consumerConnectionAggregatedKpis = default;
-            Option<List<NetworkElementRequestV2>?> elements = default;
+            Option<Dictionary<string, Dictionary<string, CCKpiValueRequest>>?> carbonCalculatorInputs = default;
+            Option<List<NetworkElementRequest>?> elements = default;
 
             while (utf8JsonReader.Read())
             {
@@ -152,8 +169,11 @@ namespace HNTAS.Api.Client.Model
                         case "consumer_connection_aggregated_kpis":
                             consumerConnectionAggregatedKpis = new Option<Dictionary<string, KpiValueAggregatedRequest>?>(JsonSerializer.Deserialize<Dictionary<string, KpiValueAggregatedRequest>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "carbon_calculator_inputs":
+                            carbonCalculatorInputs = new Option<Dictionary<string, Dictionary<string, CCKpiValueRequest>>?>(JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, CCKpiValueRequest>>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         case "elements":
-                            elements = new Option<List<NetworkElementRequestV2>?>(JsonSerializer.Deserialize<List<NetworkElementRequestV2>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            elements = new Option<List<NetworkElementRequest>?>(JsonSerializer.Deserialize<List<NetworkElementRequest>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -170,7 +190,7 @@ namespace HNTAS.Api.Client.Model
             if (elements.IsSet && elements.Value == null)
                 throw new ArgumentNullException(nameof(elements), "Property is not nullable for class KpiSubmissionRequestV2.");
 
-            return new KpiSubmissionRequestV2(metaData.Value!, consumerConnectionAggregatedKpis, elements);
+            return new KpiSubmissionRequestV2(metaData.Value!, consumerConnectionAggregatedKpis, carbonCalculatorInputs, elements);
         }
 
         /// <summary>
@@ -213,6 +233,14 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("consumer_connection_aggregated_kpis");
+            if (kpiSubmissionRequestV2.CarbonCalculatorInputsOption.IsSet)
+                if (kpiSubmissionRequestV2.CarbonCalculatorInputsOption.Value != null)
+                {
+                    writer.WritePropertyName("carbon_calculator_inputs");
+                    JsonSerializer.Serialize(writer, kpiSubmissionRequestV2.CarbonCalculatorInputs, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("carbon_calculator_inputs");
             if (kpiSubmissionRequestV2.ElementsOption.IsSet)
             {
                 writer.WritePropertyName("elements");

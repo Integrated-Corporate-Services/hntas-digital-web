@@ -26,22 +26,20 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// Element
+    /// AssessorAssessmentForElement
     /// </summary>
-    public partial class Element : IValidatableObject
+    public partial class AssessorAssessmentForElement : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Element" /> class.
+        /// Initializes a new instance of the <see cref="AssessorAssessmentForElement" /> class.
         /// </summary>
-        /// <param name="elementId">elementId</param>
-        /// <param name="networkElementInstanceName">networkElementInstanceName</param>
         /// <param name="elementType">elementType</param>
+        /// <param name="assessorAssessments">assessorAssessments</param>
         [JsonConstructor]
-        public Element(Option<string?> elementId = default, Option<string?> networkElementInstanceName = default, Option<ElementTypeInShort?> elementType = default)
+        public AssessorAssessmentForElement(Option<ElementTypeInShort?> elementType = default, Option<List<AssessorAssessment>?> assessorAssessments = default)
         {
-            ElementIdOption = elementId;
-            NetworkElementInstanceNameOption = networkElementInstanceName;
             ElementTypeOption = elementType;
+            AssessorAssessmentsOption = assessorAssessments;
             OnCreated();
         }
 
@@ -61,30 +59,17 @@ namespace HNTAS.Api.Client.Model
         public ElementTypeInShort? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of ElementId
+        /// Used to track the state of AssessorAssessments
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ElementIdOption { get; private set; }
+        public Option<List<AssessorAssessment>?> AssessorAssessmentsOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets ElementId
+        /// Gets or Sets AssessorAssessments
         /// </summary>
-        [JsonPropertyName("elementId")]
-        public string? ElementId { get { return this.ElementIdOption; } set { this.ElementIdOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of NetworkElementInstanceName
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> NetworkElementInstanceNameOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets NetworkElementInstanceName
-        /// </summary>
-        [JsonPropertyName("networkElementInstanceName")]
-        public string? NetworkElementInstanceName { get { return this.NetworkElementInstanceNameOption; } set { this.NetworkElementInstanceNameOption = new(value); } }
+        [JsonPropertyName("assessorAssessments")]
+        public List<AssessorAssessment>? AssessorAssessments { get { return this.AssessorAssessmentsOption; } set { this.AssessorAssessmentsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -93,10 +78,9 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class Element {\n");
-            sb.Append("  ElementId: ").Append(ElementId).Append("\n");
-            sb.Append("  NetworkElementInstanceName: ").Append(NetworkElementInstanceName).Append("\n");
+            sb.Append("class AssessorAssessmentForElement {\n");
             sb.Append("  ElementType: ").Append(ElementType).Append("\n");
+            sb.Append("  AssessorAssessments: ").Append(AssessorAssessments).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -113,19 +97,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="Element" />
+    /// A Json converter for type <see cref="AssessorAssessmentForElement" />
     /// </summary>
-    public class ElementJsonConverter : JsonConverter<Element>
+    public class AssessorAssessmentForElementJsonConverter : JsonConverter<AssessorAssessmentForElement>
     {
         /// <summary>
-        /// Deserializes json to <see cref="Element" />
+        /// Deserializes json to <see cref="AssessorAssessmentForElement" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override Element Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override AssessorAssessmentForElement Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -134,9 +118,8 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> elementId = default;
-            Option<string?> networkElementInstanceName = default;
             Option<ElementTypeInShort?> elementType = default;
+            Option<List<AssessorAssessment>?> assessorAssessments = default;
 
             while (utf8JsonReader.Read())
             {
@@ -153,16 +136,13 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "elementId":
-                            elementId = new Option<string?>(utf8JsonReader.GetString());
-                            break;
-                        case "networkElementInstanceName":
-                            networkElementInstanceName = new Option<string?>(utf8JsonReader.GetString());
-                            break;
                         case "elementType":
                             string? elementTypeRawValue = utf8JsonReader.GetString();
                             if (elementTypeRawValue != null)
                                 elementType = new Option<ElementTypeInShort?>(ElementTypeInShortValueConverter.FromStringOrDefault(elementTypeRawValue));
+                            break;
+                        case "assessorAssessments":
+                            assessorAssessments = new Option<List<AssessorAssessment>?>(JsonSerializer.Deserialize<List<AssessorAssessment>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -171,51 +151,50 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (elementType.IsSet && elementType.Value == null)
-                throw new ArgumentNullException(nameof(elementType), "Property is not nullable for class Element.");
+                throw new ArgumentNullException(nameof(elementType), "Property is not nullable for class AssessorAssessmentForElement.");
 
-            return new Element(elementId, networkElementInstanceName, elementType);
+            if (assessorAssessments.IsSet && assessorAssessments.Value == null)
+                throw new ArgumentNullException(nameof(assessorAssessments), "Property is not nullable for class AssessorAssessmentForElement.");
+
+            return new AssessorAssessmentForElement(elementType, assessorAssessments);
         }
 
         /// <summary>
-        /// Serializes a <see cref="Element" />
+        /// Serializes a <see cref="AssessorAssessmentForElement" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="element"></param>
+        /// <param name="assessorAssessmentForElement"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, Element element, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, AssessorAssessmentForElement assessorAssessmentForElement, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, element, jsonSerializerOptions);
+            WriteProperties(writer, assessorAssessmentForElement, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="Element" />
+        /// Serializes the properties of <see cref="AssessorAssessmentForElement" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="element"></param>
+        /// <param name="assessorAssessmentForElement"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, Element element, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, AssessorAssessmentForElement assessorAssessmentForElement, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (element.ElementIdOption.IsSet)
-                if (element.ElementIdOption.Value != null)
-                    writer.WriteString("elementId", element.ElementId);
-                else
-                    writer.WriteNull("elementId");
+            if (assessorAssessmentForElement.AssessorAssessmentsOption.IsSet && assessorAssessmentForElement.AssessorAssessments == null)
+                throw new ArgumentNullException(nameof(assessorAssessmentForElement.AssessorAssessments), "Property is required for class AssessorAssessmentForElement.");
 
-            if (element.NetworkElementInstanceNameOption.IsSet)
-                if (element.NetworkElementInstanceNameOption.Value != null)
-                    writer.WriteString("networkElementInstanceName", element.NetworkElementInstanceName);
-                else
-                    writer.WriteNull("networkElementInstanceName");
-
-            if (element.ElementTypeOption.IsSet)
+            if (assessorAssessmentForElement.ElementTypeOption.IsSet)
             {
-                var elementTypeRawValue = ElementTypeInShortValueConverter.ToJsonValue(element.ElementType!.Value);
+                var elementTypeRawValue = ElementTypeInShortValueConverter.ToJsonValue(assessorAssessmentForElement.ElementType!.Value);
                 writer.WriteString("elementType", elementTypeRawValue);
+            }
+            if (assessorAssessmentForElement.AssessorAssessmentsOption.IsSet)
+            {
+                writer.WritePropertyName("assessorAssessments");
+                JsonSerializer.Serialize(writer, assessorAssessmentForElement.AssessorAssessments, jsonSerializerOptions);
             }
         }
     }

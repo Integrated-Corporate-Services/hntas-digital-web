@@ -36,14 +36,12 @@ namespace HNTAS.Api.Client.Model
         /// <param name="elementId">elementId</param>
         /// <param name="elementType">elementType</param>
         /// <param name="kpis">kpis</param>
-        /// <param name="totalCarbonEmission">totalCarbonEmission</param>
         [JsonConstructor]
-        public ElementGroupDto(Option<string?> elementId = default, Option<string?> elementType = default, Option<List<KpiDetailDto>?> kpis = default, Option<double?> totalCarbonEmission = default)
+        public ElementGroupDto(Option<string?> elementId = default, Option<string?> elementType = default, Option<List<KpiDetailDto>?> kpis = default)
         {
             ElementIdOption = elementId;
             ElementTypeOption = elementType;
             KpisOption = kpis;
-            TotalCarbonEmissionOption = totalCarbonEmission;
             OnCreated();
         }
 
@@ -89,19 +87,6 @@ namespace HNTAS.Api.Client.Model
         public List<KpiDetailDto>? Kpis { get { return this.KpisOption; } set { this.KpisOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of TotalCarbonEmission
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<double?> TotalCarbonEmissionOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets TotalCarbonEmission
-        /// </summary>
-        [JsonPropertyName("totalCarbonEmission")]
-        public double? TotalCarbonEmission { get { return this.TotalCarbonEmissionOption; } set { this.TotalCarbonEmissionOption = new(value); } }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -112,7 +97,6 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  ElementId: ").Append(ElementId).Append("\n");
             sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("  Kpis: ").Append(Kpis).Append("\n");
-            sb.Append("  TotalCarbonEmission: ").Append(TotalCarbonEmission).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -153,7 +137,6 @@ namespace HNTAS.Api.Client.Model
             Option<string?> elementId = default;
             Option<string?> elementType = default;
             Option<List<KpiDetailDto>?> kpis = default;
-            Option<double?> totalCarbonEmission = default;
 
             while (utf8JsonReader.Read())
             {
@@ -179,9 +162,6 @@ namespace HNTAS.Api.Client.Model
                         case "kpis":
                             kpis = new Option<List<KpiDetailDto>?>(JsonSerializer.Deserialize<List<KpiDetailDto>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
-                        case "totalCarbonEmission":
-                            totalCarbonEmission = new Option<double?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (double?)null : utf8JsonReader.GetDouble());
-                            break;
                         default:
                             break;
                     }
@@ -197,7 +177,7 @@ namespace HNTAS.Api.Client.Model
             if (kpis.IsSet && kpis.Value == null)
                 throw new ArgumentNullException(nameof(kpis), "Property is not nullable for class ElementGroupDto.");
 
-            return new ElementGroupDto(elementId, elementType, kpis, totalCarbonEmission);
+            return new ElementGroupDto(elementId, elementType, kpis);
         }
 
         /// <summary>
@@ -244,11 +224,6 @@ namespace HNTAS.Api.Client.Model
                 writer.WritePropertyName("kpis");
                 JsonSerializer.Serialize(writer, elementGroupDto.Kpis, jsonSerializerOptions);
             }
-            if (elementGroupDto.TotalCarbonEmissionOption.IsSet)
-                if (elementGroupDto.TotalCarbonEmissionOption.Value != null)
-                    writer.WriteNumber("totalCarbonEmission", elementGroupDto.TotalCarbonEmissionOption.Value!.Value);
-                else
-                    writer.WriteNull("totalCarbonEmission");
         }
     }
 }

@@ -39,9 +39,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="soaStatusUpdatedBy">soaStatusUpdatedBy</param>
         /// <param name="assessorUpdatedAt">assessorUpdatedAt</param>
         /// <param name="assessorUpdatedBy">assessorUpdatedBy</param>
-        /// <param name="assessor">assessor</param>
+        /// <param name="assessors">assessors</param>
         [JsonConstructor]
-        public SoaStages(Option<NullableOfSoaStage?> stageId = default, Option<List<SoaStatusWithCount>?> soaStatuses = default, Option<DateTimeOffset?> soaStatusUpdatedAt = default, Option<string?> soaStatusUpdatedBy = default, Option<DateTimeOffset?> assessorUpdatedAt = default, Option<string?> assessorUpdatedBy = default, Option<SoaAssessor?> assessor = default)
+        public SoaStages(Option<NullableOfSoaStage?> stageId = default, Option<List<SoaStatusWithCount>?> soaStatuses = default, Option<DateTimeOffset?> soaStatusUpdatedAt = default, Option<string?> soaStatusUpdatedBy = default, Option<DateTimeOffset?> assessorUpdatedAt = default, Option<string?> assessorUpdatedBy = default, Option<List<SoaAssessor>?> assessors = default)
         {
             StageIdOption = stageId;
             SoaStatusesOption = soaStatuses;
@@ -49,7 +49,7 @@ namespace HNTAS.Api.Client.Model
             SoaStatusUpdatedByOption = soaStatusUpdatedBy;
             AssessorUpdatedAtOption = assessorUpdatedAt;
             AssessorUpdatedByOption = assessorUpdatedBy;
-            AssessorOption = assessor;
+            AssessorsOption = assessors;
             OnCreated();
         }
 
@@ -134,17 +134,17 @@ namespace HNTAS.Api.Client.Model
         public string? AssessorUpdatedBy { get { return this.AssessorUpdatedByOption; } set { this.AssessorUpdatedByOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Assessor
+        /// Used to track the state of Assessors
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<SoaAssessor?> AssessorOption { get; private set; }
+        public Option<List<SoaAssessor>?> AssessorsOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Assessor
+        /// Gets or Sets Assessors
         /// </summary>
-        [JsonPropertyName("assessor")]
-        public SoaAssessor? Assessor { get { return this.AssessorOption; } set { this.AssessorOption = new(value); } }
+        [JsonPropertyName("assessors")]
+        public List<SoaAssessor>? Assessors { get { return this.AssessorsOption; } set { this.AssessorsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -160,7 +160,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  SoaStatusUpdatedBy: ").Append(SoaStatusUpdatedBy).Append("\n");
             sb.Append("  AssessorUpdatedAt: ").Append(AssessorUpdatedAt).Append("\n");
             sb.Append("  AssessorUpdatedBy: ").Append(AssessorUpdatedBy).Append("\n");
-            sb.Append("  Assessor: ").Append(Assessor).Append("\n");
+            sb.Append("  Assessors: ").Append(Assessors).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -214,7 +214,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> soaStatusUpdatedBy = default;
             Option<DateTimeOffset?> assessorUpdatedAt = default;
             Option<string?> assessorUpdatedBy = default;
-            Option<SoaAssessor?> assessor = default;
+            Option<List<SoaAssessor>?> assessors = default;
 
             while (utf8JsonReader.Read())
             {
@@ -251,8 +251,8 @@ namespace HNTAS.Api.Client.Model
                         case "assessorUpdatedBy":
                             assessorUpdatedBy = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "assessor":
-                            assessor = new Option<SoaAssessor?>(JsonSerializer.Deserialize<SoaAssessor>(ref utf8JsonReader, jsonSerializerOptions));
+                        case "assessors":
+                            assessors = new Option<List<SoaAssessor>?>(JsonSerializer.Deserialize<List<SoaAssessor>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -260,7 +260,7 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            return new SoaStages(stageId, soaStatuses, soaStatusUpdatedAt, soaStatusUpdatedBy, assessorUpdatedAt, assessorUpdatedBy, assessor);
+            return new SoaStages(stageId, soaStatuses, soaStatusUpdatedAt, soaStatusUpdatedBy, assessorUpdatedAt, assessorUpdatedBy, assessors);
         }
 
         /// <summary>
@@ -327,14 +327,14 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("assessorUpdatedBy");
 
-            if (soaStages.AssessorOption.IsSet)
-                if (soaStages.AssessorOption.Value != null)
+            if (soaStages.AssessorsOption.IsSet)
+                if (soaStages.AssessorsOption.Value != null)
                 {
-                    writer.WritePropertyName("assessor");
-                    JsonSerializer.Serialize(writer, soaStages.Assessor, jsonSerializerOptions);
+                    writer.WritePropertyName("assessors");
+                    JsonSerializer.Serialize(writer, soaStages.Assessors, jsonSerializerOptions);
                 }
                 else
-                    writer.WriteNull("assessor");
+                    writer.WriteNull("assessors");
         }
     }
 }

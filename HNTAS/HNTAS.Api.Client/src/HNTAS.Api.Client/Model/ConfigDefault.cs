@@ -26,22 +26,18 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// CCKpiValueRequest
+    /// ConfigDefault
     /// </summary>
-    public partial class CCKpiValueRequest : IValidatableObject
+    public partial class ConfigDefault : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CCKpiValueRequest" /> class.
+        /// Initializes a new instance of the <see cref="ConfigDefault" /> class.
         /// </summary>
         /// <param name="value">value</param>
-        /// <param name="isImputed">isImputed</param>
-        /// <param name="imputationDetails">imputationDetails</param>
         [JsonConstructor]
-        public CCKpiValueRequest(Object? value = default, Option<bool?> isImputed = default, Option<string?> imputationDetails = default)
+        public ConfigDefault(Object? value = default)
         {
             Value = value;
-            IsImputedOption = isImputed;
-            ImputationDetailsOption = imputationDetails;
             OnCreated();
         }
 
@@ -54,42 +50,14 @@ namespace HNTAS.Api.Client.Model
         public Object? Value { get; set; }
 
         /// <summary>
-        /// Used to track the state of IsImputed
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<bool?> IsImputedOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets IsImputed
-        /// </summary>
-        [JsonPropertyName("is_imputed")]
-        public bool? IsImputed { get { return this.IsImputedOption; } set { this.IsImputedOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of ImputationDetails
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ImputationDetailsOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets ImputationDetails
-        /// </summary>
-        [JsonPropertyName("imputation_details")]
-        public string? ImputationDetails { get { return this.ImputationDetailsOption; } set { this.ImputationDetailsOption = new(value); } }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class CCKpiValueRequest {\n");
+            sb.Append("class ConfigDefault {\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
-            sb.Append("  IsImputed: ").Append(IsImputed).Append("\n");
-            sb.Append("  ImputationDetails: ").Append(ImputationDetails).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -106,19 +74,19 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="CCKpiValueRequest" />
+    /// A Json converter for type <see cref="ConfigDefault" />
     /// </summary>
-    public class CCKpiValueRequestJsonConverter : JsonConverter<CCKpiValueRequest>
+    public class ConfigDefaultJsonConverter : JsonConverter<ConfigDefault>
     {
         /// <summary>
-        /// Deserializes json to <see cref="CCKpiValueRequest" />
+        /// Deserializes json to <see cref="ConfigDefault" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override CCKpiValueRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override ConfigDefault Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -128,8 +96,6 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<Object?> value = default;
-            Option<bool?> isImputed = default;
-            Option<string?> imputationDetails = default;
 
             while (utf8JsonReader.Read())
             {
@@ -149,12 +115,6 @@ namespace HNTAS.Api.Client.Model
                         case "value":
                             value = new Option<Object?>(JsonSerializer.Deserialize<Object>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
-                        case "is_imputed":
-                            isImputed = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
-                            break;
-                        case "imputation_details":
-                            imputationDetails = new Option<string?>(utf8JsonReader.GetString());
-                            break;
                         default:
                             break;
                     }
@@ -162,53 +122,42 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (!value.IsSet)
-                throw new ArgumentException("Property is required for class CCKpiValueRequest.", nameof(value));
+                throw new ArgumentException("Property is required for class ConfigDefault.", nameof(value));
 
-            if (isImputed.IsSet && isImputed.Value == null)
-                throw new ArgumentNullException(nameof(isImputed), "Property is not nullable for class CCKpiValueRequest.");
-
-            return new CCKpiValueRequest(value.Value!, isImputed, imputationDetails);
+            return new ConfigDefault(value.Value!);
         }
 
         /// <summary>
-        /// Serializes a <see cref="CCKpiValueRequest" />
+        /// Serializes a <see cref="ConfigDefault" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="cCKpiValueRequest"></param>
+        /// <param name="configDefault"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, CCKpiValueRequest cCKpiValueRequest, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, ConfigDefault configDefault, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, cCKpiValueRequest, jsonSerializerOptions);
+            WriteProperties(writer, configDefault, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="CCKpiValueRequest" />
+        /// Serializes the properties of <see cref="ConfigDefault" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="cCKpiValueRequest"></param>
+        /// <param name="configDefault"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, CCKpiValueRequest cCKpiValueRequest, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, ConfigDefault configDefault, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (cCKpiValueRequest.Value != null)
+            if (configDefault.Value != null)
             {
                 writer.WritePropertyName("value");
-                JsonSerializer.Serialize(writer, cCKpiValueRequest.Value, jsonSerializerOptions);
+                JsonSerializer.Serialize(writer, configDefault.Value, jsonSerializerOptions);
             }
             else
                 writer.WriteNull("value");
-            if (cCKpiValueRequest.IsImputedOption.IsSet)
-                writer.WriteBoolean("is_imputed", cCKpiValueRequest.IsImputedOption.Value!.Value);
-
-            if (cCKpiValueRequest.ImputationDetailsOption.IsSet)
-                if (cCKpiValueRequest.ImputationDetailsOption.Value != null)
-                    writer.WriteString("imputation_details", cCKpiValueRequest.ImputationDetails);
-                else
-                    writer.WriteNull("imputation_details");
         }
     }
 }

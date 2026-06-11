@@ -121,7 +121,17 @@ namespace HNTAS.Web.UI.Controllers
                 PageSize = pageSize,
 
                 // Maintain the filter state for the back button
-                BackToListUrl = Url.Action("Index", new { month, year })
+                BackToListUrl = Url.Action("Index", new { month, year }),
+
+                // NEW: Root level assignment for Carbon Emission metrics
+                TotalCarbonEmission = (decimal?)response.TotalCarbonEmission,
+                CarbonCalculationInputs = response.CarbonCalculationInputs?.ToDictionary(
+                                        kvp => kvp.Key,
+                                        kvp => new CarbonInputUiDisplayViewModel
+                                        {
+                                            Label = kvp.Value.Label,
+                                            Value = (double)kvp.Value.Value
+                                        })
             };
 
 
@@ -129,7 +139,6 @@ namespace HNTAS.Web.UI.Controllers
                 group => $"{group.ElementType}|{group.ElementId}",
                 group => new ElementGroupViewModel
                 {
-                    TotalCarbonEmission = (decimal?)group.TotalCarbonEmission,
                     KpiRows = group.Kpis.Select(k => new KpiRowViewModel
                     {
                         KpiId = k.KpiName,
@@ -214,6 +223,17 @@ namespace HNTAS.Web.UI.Controllers
             public bool HasNextPage => CurrentPage < TotalPages;
 
             public List<KpiHistoryResponse?> AuditHistory { get; set; } = new(); // Placeholder for any audit history data you might want to display
+
+
+            public decimal? TotalCarbonEmission { get; set; }
+
+            public Dictionary<string, CarbonInputUiDisplayViewModel>? CarbonCalculationInputs { get; set; }
+        }
+
+        public class CarbonInputUiDisplayViewModel
+        {
+            public string Label { get; set; } = null!;
+            public double Value { get; set; }
         }
 
         public class HeatNetworkRowViewModel
@@ -282,7 +302,6 @@ namespace HNTAS.Web.UI.Controllers
 
         public class ElementGroupViewModel
         {
-            public decimal? TotalCarbonEmission { get; set; }
             public List<KpiRowViewModel> KpiRows { get; set; } = new();
         }
 

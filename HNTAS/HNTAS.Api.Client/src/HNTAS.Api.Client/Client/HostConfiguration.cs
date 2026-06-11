@@ -48,6 +48,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new AggregatedKpiJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanResponseJsonConverter());
+            _jsonOptions.Converters.Add(new AssessorAssessmentJsonConverter());
+            _jsonOptions.Converters.Add(new AssessorAssessmentForElementJsonConverter());
             _jsonOptions.Converters.Add(new AssessorSearchResultJsonConverter());
             _jsonOptions.Converters.Add(new AssignedAssessorJsonConverter());
             _jsonOptions.Converters.Add(new AssignedAssessorRequestJsonConverter());
@@ -58,9 +60,13 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new BackgroundJsonConverter());
             _jsonOptions.Converters.Add(new BoilerInputJsonConverter());
             _jsonOptions.Converters.Add(new CCKpiValueRequestJsonConverter());
+            _jsonOptions.Converters.Add(new CarbonCalculatorConfigRequestJsonConverter());
+            _jsonOptions.Converters.Add(new CarbonCalculatorConfigResponseJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorRequestJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorResponseJsonConverter());
+            _jsonOptions.Converters.Add(new CarbonInputUiDisplayJsonConverter());
             _jsonOptions.Converters.Add(new ChpInputJsonConverter());
+            _jsonOptions.Converters.Add(new ConfigDefaultJsonConverter());
             _jsonOptions.Converters.Add(new ConnectionTypeJsonConverter());
             _jsonOptions.Converters.Add(new ConnectionTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ContributorRoleJsonConverter());
@@ -77,6 +83,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ElementGroupDtoJsonConverter());
             _jsonOptions.Converters.Add(new ElementSoaAssignAssessorRequestJsonConverter());
             _jsonOptions.Converters.Add(new ElementSoaStatusUpdateRequestJsonConverter());
+            _jsonOptions.Converters.Add(new ElementTypeInShortJsonConverter());
+            _jsonOptions.Converters.Add(new ElementTypeInShortNullableJsonConverter());
             _jsonOptions.Converters.Add(new EnergyJsonConverter());
             _jsonOptions.Converters.Add(new EnergyCentreDetailsJsonConverter());
             _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
@@ -104,7 +112,9 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new InvitedUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new JourneyDataResponseJsonConverter());
             _jsonOptions.Converters.Add(new KpiConfigRequestJsonConverter());
+            _jsonOptions.Converters.Add(new KpiConfigRequestV2JsonConverter());
             _jsonOptions.Converters.Add(new KpiConfigResponseJsonConverter());
+            _jsonOptions.Converters.Add(new KpiConfigResponseV2JsonConverter());
             _jsonOptions.Converters.Add(new KpiDetailDtoJsonConverter());
             _jsonOptions.Converters.Add(new KpiHistoryResponseJsonConverter());
             _jsonOptions.Converters.Add(new KpiMetadataJsonConverter());
@@ -124,7 +134,6 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NetworkDetailsUploadDocumentRequestJsonConverter());
             _jsonOptions.Converters.Add(new NetworkDetailsUploadedDocumentJsonConverter());
             _jsonOptions.Converters.Add(new NetworkElementRequestJsonConverter());
-            _jsonOptions.Converters.Add(new NetworkElementRequestV2JsonConverter());
             _jsonOptions.Converters.Add(new NetworkElementsJsonConverter());
             _jsonOptions.Converters.Add(new NetworkElements2JsonConverter());
             _jsonOptions.Converters.Add(new NetworkElementsResponseJsonConverter());

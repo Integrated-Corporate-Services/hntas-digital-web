@@ -24,6 +24,8 @@ docs/models/Address.md
 docs/models/AggregatedKpi.md
 docs/models/AssessmentPlan.md
 docs/models/AssessmentPlanResponse.md
+docs/models/AssessorAssessment.md
+docs/models/AssessorAssessmentForElement.md
 docs/models/AssessorSearchResult.md
 docs/models/AssignedAssessor.md
 docs/models/AssignedAssessorRequest.md
@@ -34,9 +36,13 @@ docs/models/AuditLogResponse.md
 docs/models/Background.md
 docs/models/BoilerInput.md
 docs/models/CCKpiValueRequest.md
+docs/models/CarbonCalculatorConfigRequest.md
+docs/models/CarbonCalculatorConfigResponse.md
 docs/models/CarbonCalculatorRequest.md
 docs/models/CarbonCalculatorResponse.md
+docs/models/CarbonInputUiDisplay.md
 docs/models/ChpInput.md
+docs/models/ConfigDefault.md
 docs/models/ConnectionType.md
 docs/models/ContributorRole.md
 docs/models/CountryAndTerritory.md
@@ -50,6 +56,7 @@ docs/models/ElementGroup.md
 docs/models/ElementGroupDto.md
 docs/models/ElementSoaAssignAssessorRequest.md
 docs/models/ElementSoaStatusUpdateRequest.md
+docs/models/ElementTypeInShort.md
 docs/models/Energy.md
 docs/models/EnergyCentreDetails.md
 docs/models/EnumItemResponse.md
@@ -74,7 +81,9 @@ docs/models/InvitedUserRequest.md
 docs/models/InvitedUserResponse.md
 docs/models/JourneyDataResponse.md
 docs/models/KpiConfigRequest.md
+docs/models/KpiConfigRequestV2.md
 docs/models/KpiConfigResponse.md
+docs/models/KpiConfigResponseV2.md
 docs/models/KpiDetailDto.md
 docs/models/KpiHistoryResponse.md
 docs/models/KpiMetadata.md
@@ -93,7 +102,6 @@ docs/models/NetworkDetailsStatus.md
 docs/models/NetworkDetailsUploadDocumentRequest.md
 docs/models/NetworkDetailsUploadedDocument.md
 docs/models/NetworkElementRequest.md
-docs/models/NetworkElementRequestV2.md
 docs/models/NetworkElements.md
 docs/models/NetworkElements2.md
 docs/models/NetworkElementsResponse.md
@@ -152,9 +160,15 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/CCKpiValueRequestTests.cs
-src/HNTAS.Api.Client.Test/Model/KpiSubmissionRequestV2Tests.cs
-src/HNTAS.Api.Client.Test/Model/NetworkElementRequestV2Tests.cs
+src/HNTAS.Api.Client.Test/Model/AssessorAssessmentForElementTests.cs
+src/HNTAS.Api.Client.Test/Model/AssessorAssessmentTests.cs
+src/HNTAS.Api.Client.Test/Model/CarbonCalculatorConfigRequestTests.cs
+src/HNTAS.Api.Client.Test/Model/CarbonCalculatorConfigResponseTests.cs
+src/HNTAS.Api.Client.Test/Model/CarbonInputUiDisplayTests.cs
+src/HNTAS.Api.Client.Test/Model/ConfigDefaultTests.cs
+src/HNTAS.Api.Client.Test/Model/ElementTypeInShortTests.cs
+src/HNTAS.Api.Client.Test/Model/KpiConfigRequestV2Tests.cs
+src/HNTAS.Api.Client.Test/Model/KpiConfigResponseV2Tests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -200,6 +214,8 @@ src/HNTAS.Api.Client/Model/Address.cs
 src/HNTAS.Api.Client/Model/AggregatedKpi.cs
 src/HNTAS.Api.Client/Model/AssessmentPlan.cs
 src/HNTAS.Api.Client/Model/AssessmentPlanResponse.cs
+src/HNTAS.Api.Client/Model/AssessorAssessment.cs
+src/HNTAS.Api.Client/Model/AssessorAssessmentForElement.cs
 src/HNTAS.Api.Client/Model/AssessorSearchResult.cs
 src/HNTAS.Api.Client/Model/AssignedAssessor.cs
 src/HNTAS.Api.Client/Model/AssignedAssessorRequest.cs
@@ -210,9 +226,13 @@ src/HNTAS.Api.Client/Model/AuditLogResponse.cs
 src/HNTAS.Api.Client/Model/Background.cs
 src/HNTAS.Api.Client/Model/BoilerInput.cs
 src/HNTAS.Api.Client/Model/CCKpiValueRequest.cs
+src/HNTAS.Api.Client/Model/CarbonCalculatorConfigRequest.cs
+src/HNTAS.Api.Client/Model/CarbonCalculatorConfigResponse.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorRequest.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorResponse.cs
+src/HNTAS.Api.Client/Model/CarbonInputUiDisplay.cs
 src/HNTAS.Api.Client/Model/ChpInput.cs
+src/HNTAS.Api.Client/Model/ConfigDefault.cs
 src/HNTAS.Api.Client/Model/ConnectionType.cs
 src/HNTAS.Api.Client/Model/ContributorRole.cs
 src/HNTAS.Api.Client/Model/CountryAndTerritory.cs
@@ -226,6 +246,7 @@ src/HNTAS.Api.Client/Model/ElementGroup.cs
 src/HNTAS.Api.Client/Model/ElementGroupDto.cs
 src/HNTAS.Api.Client/Model/ElementSoaAssignAssessorRequest.cs
 src/HNTAS.Api.Client/Model/ElementSoaStatusUpdateRequest.cs
+src/HNTAS.Api.Client/Model/ElementTypeInShort.cs
 src/HNTAS.Api.Client/Model/Energy.cs
 src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
@@ -250,7 +271,9 @@ src/HNTAS.Api.Client/Model/InvitedUserRequest.cs
 src/HNTAS.Api.Client/Model/InvitedUserResponse.cs
 src/HNTAS.Api.Client/Model/JourneyDataResponse.cs
 src/HNTAS.Api.Client/Model/KpiConfigRequest.cs
+src/HNTAS.Api.Client/Model/KpiConfigRequestV2.cs
 src/HNTAS.Api.Client/Model/KpiConfigResponse.cs
+src/HNTAS.Api.Client/Model/KpiConfigResponseV2.cs
 src/HNTAS.Api.Client/Model/KpiDetailDto.cs
 src/HNTAS.Api.Client/Model/KpiHistoryResponse.cs
 src/HNTAS.Api.Client/Model/KpiMetadata.cs
@@ -269,7 +292,6 @@ src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadDocumentRequest.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadedDocument.cs
 src/HNTAS.Api.Client/Model/NetworkElementRequest.cs
-src/HNTAS.Api.Client/Model/NetworkElementRequestV2.cs
 src/HNTAS.Api.Client/Model/NetworkElements.cs
 src/HNTAS.Api.Client/Model/NetworkElements2.cs
 src/HNTAS.Api.Client/Model/NetworkElementsResponse.cs

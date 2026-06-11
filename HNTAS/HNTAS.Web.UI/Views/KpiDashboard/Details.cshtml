@@ -110,7 +110,58 @@
 
 
                 @{
+
+                    bool hasEnergyCentre = Model.GroupedElements.Keys.Any(key => key.StartsWith("energy centre|", StringComparison.OrdinalIgnoreCase));
+
                     bool hasRenderedSharedConsumerKpis = false;
+                }
+
+
+                @* ==========================================================
+                NEW: Carbon Summary Display Section
+                ========================================================== *@
+                @if (hasEnergyCentre && (Model.TotalCarbonEmission.HasValue || Model.CarbonCalculationInputs != null))
+                {
+                    <details class="govuk-details" data-module="govuk-details" open>
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                <strong>Carbon Calculator Summary</strong>
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            @if (Model.TotalCarbonEmission.HasValue)
+                            {
+                                <h3 class="govuk-heading-m govuk-!-margin-bottom-4">
+                                    Total Emissions: <span class="govuk-body fw-bold">@Model.TotalCarbonEmission.Value.ToString("N2") kgCO2e</span>
+                                </h3>
+                            }
+
+                            @if (Model.CarbonCalculationInputs != null && Model.CarbonCalculationInputs.Any())
+                            {
+                                <table class="govuk-table govuk-!-margin-bottom-0">
+                                    <thead class="govuk-table__head">
+                                        <tr class="govuk-table__row">
+                                            <th class="govuk-table__header">Metric Code</th>
+                                            <th class="govuk-table__header">Description Reference</th>
+                                            <th class="govuk-table__header govuk-table__header--numeric">Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="govuk-table__body">
+                                        @foreach (var input in Model.CarbonCalculationInputs)
+                                        {
+                                            <tr class="govuk-table__row">
+                                                <td class="govuk-table__cell"><code>@input.Key</code></td>
+                                                <td class="govuk-table__cell">@input.Value.Label</td>
+                                                <td class="govuk-table__cell govuk-table__cell--numeric">@input.Value.Value.ToString("N0")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
+                    </details>
+
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
                 }
 
                 @foreach (var group in Model.GroupedElements)
@@ -181,34 +232,6 @@
                         </summary>
 
                         <div class="govuk-details__text">
-                            @* 1. Carbon Calculator Summary Section (Only renders for Energy Centre) *@
-                            @if (string.Equals(displayType?.ToString(), "energy centre", StringComparison.OrdinalIgnoreCase))
-                            {
-                                var totalEmission = group.Value.TotalCarbonEmission.HasValue
-                                ? $"{group.Value.TotalCarbonEmission.Value:N2} g/kWh"
-                                : "Not calculated";
-
-                                <div class="govuk-summary-card govuk-!-margin-bottom-6">
-                                    <div class="govuk-summary-card__title-wrapper">
-                                        <h3 class="govuk-summary-card__title govuk-heading-s govuk-!-margin-bottom-0">
-                                            Carbon Calculator Summary
-                                        </h3>
-                                    </div>
-                                    <div class="govuk-summary-card__content">
-                                        <dl class="govuk-summary-list govuk-!-margin-bottom-0">
-                                            <div class="govuk-summary-list__row" style="border-bottom: none;">
-                                                <dt class="govuk-summary-list__key govuk-!-width-one-half">
-                                                    Total Carbon Emission
-                                                </dt>
-                                                <dd class="govuk-summary-list__value">
-                                                    <strong>@totalEmission</strong>
-                                                </dd>
-                                            </div>
-                                        </dl>
-                                    </div>
-                                </div>
-                            }
-
                             @* 2. Detailed KPIs Table Section *@
                             <table class="govuk-table govuk-!-margin-bottom-0">
                                 <thead class="govuk-table__head">
