@@ -27,11 +27,21 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDataProtection()
-    .SetApplicationName("HNTAS.Web.UI")
-    .PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
-    .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
 
+if (builder.Environment.EnvironmentName == "Local")
+{
+    builder.Services.AddDataProtection()
+        .PersistKeysToFileSystem(new DirectoryInfo(@"./DataProtection"))
+        .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
+    Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
+}
+else
+{
+    builder.Services.AddDataProtection()
+        .PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
+        .SetDefaultKeyLifetime(TimeSpan.FromDays(1));
+    Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
+}
 
 // Configure RouteOptions
 builder.Services.Configure<RouteOptions>(options =>
