@@ -319,6 +319,40 @@ namespace HNTAS.Web.UI.Controllers
                     return element;
                 }).ToList();
             }
+
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var networkType = heatNetworkData?.HeatNetworkType;
+            bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
+
+            if (networkType == Api.Client.Model.HeatNetworkType.Communal && hasOwnEc)
+            {
+                request.ElementsGroup!.Add(new ElementGroup
+                {
+                    ElementDisplayType = HeatNetworkElementType.EnergyCentre,
+                    ElementType = NetworkElementHelper.GetNetworkElementIdByType(HeatNetworkElementType.EnergyCentre.ToString()!),
+                    Count = 1
+                });
+                request.ElementsGroup = request.ElementsGroup.OrderByDescending(e => e.ElementDisplayType == HeatNetworkElementType.EnergyCentre).ToList();
+            }
+            else if (networkType == Api.Client.Model.HeatNetworkType.District && hasOwnEc)
+            {
+                var isEnergyCentreAdded = request.ElementsGroup!.Any(e => e.ElementDisplayType == HeatNetworkElementType.EnergyCentre);
+                if (isEnergyCentreAdded)
+                {                    
+                    var energyCentreElement = request.ElementsGroup!.First(e => e.ElementDisplayType == HeatNetworkElementType.EnergyCentre);
+                    energyCentreElement.Count = (energyCentreElement.Count ?? 0) + 1;
+                }
+                else
+                {
+                    request.ElementsGroup!.Add(new ElementGroup
+                    {
+                        ElementDisplayType = HeatNetworkElementType.EnergyCentre,
+                        ElementType = NetworkElementHelper.GetNetworkElementIdByType(HeatNetworkElementType.EnergyCentre.ToString()!),
+                        Count = 1
+                    });
+                    request.ElementsGroup = request.ElementsGroup.OrderByDescending(e => e.ElementDisplayType == HeatNetworkElementType.EnergyCentre).ToList();
+                }
+            }
             await _heatNetworkService.UpdateNetworkElements(hnId!, request);
         }
 
