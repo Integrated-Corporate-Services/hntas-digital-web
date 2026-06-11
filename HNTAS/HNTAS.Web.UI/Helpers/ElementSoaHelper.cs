@@ -202,11 +202,7 @@ namespace HNTAS.Web.UI.Helpers
 
                 var elementDisplayName = string.Empty;
                 var el = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(n => n.Id == elementType);
-                if (networkType == HeatNetworkType.District && hasOwnEc)
-                {
-                    elementDisplayName = $"{el?.Label}{el?.SubLabel}{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}";
-                }
-                else if (networkType == HeatNetworkType.District && !hasOwnEc)
+                if (networkType == HeatNetworkType.District && !hasOwnEc)
                 {
                     elementDisplayName = $"{el?.Label}{el?.Hint}{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}";
                 }

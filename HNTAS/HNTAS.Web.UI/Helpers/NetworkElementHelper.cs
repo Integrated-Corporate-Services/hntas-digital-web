@@ -104,7 +104,7 @@ namespace HNTAS.Web.UI.Helpers
                 {
                     new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal Distribution Network"},
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection" },
-                    new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre", SubLabel = " (excluding the main energy centre)", Hint = " (not including the supplying energy centre)" },
+                    new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre", Hint = " (not including the supplying energy centre)" },
                     new() { Id = HeatNetworkElementType.DistrictDistribution, Label = "District Distribution Network"},
                     new() { Id = HeatNetworkElementType.Substation, Label = "Substation"},
                 };
