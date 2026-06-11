@@ -30,9 +30,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.EnvironmentName == "Local")
 {
-    builder.Services.AddDataProtection()
-        .PersistKeysToFileSystem(new DirectoryInfo(@"./DataProtection"))
-        .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
+    builder.Services.AddDataProtection();        
     Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
 }
 else
