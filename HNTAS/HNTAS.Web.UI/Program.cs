@@ -37,7 +37,7 @@ else
 {
     builder.Services.AddDataProtection()
         .PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
-        .SetDefaultKeyLifetime(TimeSpan.FromDays(1));
+        .SetDefaultKeyLifetime(TimeSpan.FromDays(8));
     Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
 }
 
