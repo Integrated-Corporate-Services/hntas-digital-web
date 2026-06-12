@@ -59,11 +59,12 @@ namespace HNTAS.Web.UI.Controllers
 
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var phase = heatNetworkData?.Phase;
-
+            var networkType = heatNetworkData?.HeatNetworkType;
+            bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
             var networkElements = heatNetworkData?.NetworkElements?.ElementsGroup;
             var eligibleIndex = phase == "Design" ? 1 : phase == "Construction" ? 2 : 0;
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
-            var model = ElementSoaHelper.GetElementSoaViewModel(eligibleIndex, currentStageIndex, networkElements);
+            var model = ElementSoaHelper.GetElementSoaViewModel(eligibleIndex, currentStageIndex, networkElements, networkType, hasOwnEc);
 
             foreach (var stageInModel in model.Stages)
             {
