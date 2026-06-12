@@ -20,6 +20,7 @@
                     For example, 08811254
                 </div>
 
+
                 @if (ViewData.ModelState.ContainsKey(nameof(Model.CompanyNumber)) && ViewData.ModelState[nameof(Model.CompanyNumber)].Errors.Any())
                 {
                     <p id="company-number-error" class="govuk-error-message">
