@@ -230,7 +230,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> NewContributorHeatNetwork()
         {
-            this.ShowBackButton("NewContributorDetails");
+            this.ShowBackButton("ExistingContributorsList");
             var model = _sessionHelper.GetFromSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey) ?? new NewContributorHeatNetworkViewModel();
             model.HeatNetworks = await GetListOfHeatNetworks();
             if (model.HeatNetworks == null)
