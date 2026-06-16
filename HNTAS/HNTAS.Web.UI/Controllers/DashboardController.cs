@@ -1,9 +1,15 @@
-﻿using HNTAS.Api.Client.Api;
+﻿using DocumentFormat.OpenXml.EMMA;
+using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
-using HNTAS.Web.UI.Services;
+using HNTAS.Web.UI.Models.CompaniesHouse;
+using HNTAS.Web.UI.Models.Enums;
+using HNTAS.Web.UI.Models.User;
+using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -13,60 +19,200 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ILogger<DashboardController> _logger;
         private readonly IUserService _userService;
         private readonly IHeatNetworksApi _heatNetworksApi;
+        private readonly IOrganisationService _organisationService;
+        private readonly ISessionHelper _sessionHelper;
 
-        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworksApi heatNetworksApi)
+        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworksApi heatNetworksApi, IOrganisationService organisationService, ISessionHelper sessionHelper)
         {
             _logger = logger;
             _userService = userService;
             _heatNetworksApi = heatNetworksApi;
+            _organisationService = organisationService;
+            _sessionHelper = sessionHelper;
+        }
+
+        public async Task<UserDetailsResponse> RetrieveUserDetails(string userId)
+        {
+            try
+            {
+                var user = await _userService.GetUserDetails(userId);
+
+                if (user == null)
+                {
+                    throw new Exception("Unable to retrieve user information. Please try again later.");
+                }
+
+                if (user.Roles != null && user.Roles.Contains(UserRole.ResponsiblePerson) && user.Organisation == null)
+                {
+                    throw new Exception("Your account is not associated with any organisation. Please contact support.");
+                }
+
+                return user; // Assuming you want to return user details here
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving user details.");
+                throw; // Rethrow the exception to be handled in the calling method            
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> UserAccount()
         {
-            // access API to retrieve org name, all the heat networks registered
-            //var organisationName = SessionHelper.GetFromSession<>
-
-            var user = await _userService.GetUserById(SessionHelper.GetFromSession<string>(HttpContext, SessionHelper.SessionKeys.UserModel_Id_SessionKey));
-            var heatNetworksResponse = await _heatNetworksApi.ApiHeatNetworksHnIdsGetAsync(string.Join(",", user?.HnIds));
-
-            if (user == null)
+            UserDetailsResponse user;
+            try
             {
-                _logger.LogError("User not found in session or API.");
-                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later.";
-                return View();
+                user = await RetrieveUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
             }
-
-            var heatNetworks = new List<HeatNetworkModel>();
-
-            if (heatNetworksResponse.IsOk)
+            catch (Exception ex)
             {
-              
-                var heatNetworksData = heatNetworksResponse.Ok();
+                TempData["ErrorMessage"] = ex.Message;
+                return View(new DashboardModel());
+            }            
+            var isAssessorOrCertifier = "false";
+            if (user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Assessor.ToString() || user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Certifier.ToString())
+            {
+                isAssessorOrCertifier = "true";
+            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsAssessorOrCertifier, isAssessorOrCertifier);
+            if(user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString())
+            {
+                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey, "Contributors");
+            }
+            else
+            {
+                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey, null);
+            }
+            if (user.Organisation?.Name != null)
+            {
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, user.Organisation.OrgId);
+            }
+            
 
+            var dashboardModel = new DashboardModel
+            {
+                OrganisationName = user?.Organisation?.Name,
+                UserRole = user.Roles[0].ToString(),
+                IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
+                HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any()
+            };
+            var managedUsers = await _userService.GetManagedUsers(user.Id);
+            if(dashboardModel.IsResponsiblePerson && managedUsers.Count <= 1 && !dashboardModel.HasHeatNetworks)
+            {
+                ViewBag.RPLoggedInForFirstTime = true;
+            }
+            else
+            {
+                ViewBag.RPLoggedInForFirstTime = false;
+            }
+            ViewBag.UserId = user.Id;
+            return View(dashboardModel);
+        }
 
-                foreach (var network in heatNetworksData)
+        [HttpGet]
+        public async Task<IActionResult> OrganisationDetails()
+        {
+            this.ShowBackButton("UserAccount");
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            UserDetailsResponse user;
+            bool isUserAnRP;
+            try
+            {
+                user = await RetrieveUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+                isUserAnRP = await _userService.IsRpUserAsync(user.EmailId) ?? false;
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return View(new OrganisationDetailsModel());
+            }
+            _sessionHelper.SaveToSession<string>(HttpContext, "IsUserAnRP", isUserAnRP.ToString());
+
+            var model = new OrganisationDetailsModel
+            {
+                OrganisationId = user.Organisation?.OrgId,
+                OrganisationName = user.Organisation?.Name,
+                OrganisationType = OrganisationHelper.GetOrganisationTypeOptions().FirstOrDefault(x => x.Value == user.Organisation?.Type.ToString())?.Text,
+                RPEmail = user.EmailId,
+                AddressLine1 = user.Organisation?.RegisteredAddress?.AddressLine1,
+                AddressLine2 = user.Organisation?.RegisteredAddress?.AddressLine2,
+                Town = user.Organisation?.RegisteredAddress?.Town,
+                County = user.Organisation?.RegisteredAddress?.County,
+                Postcode = user.Organisation?.RegisteredAddress?.Postcode,
+                Country = user.Organisation?.RegisteredAddress?.Country
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult EditOrganisationDetails()
+        {
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, true);
+            return RedirectToAction("OrganisationType", "Organisation");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> YourDetails()
+        {
+            this.ShowBackButton("UserAccount", "Dashboard");
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var user = await _userService.GetUserDetails(userId);
+
+            Organisation org;
+            OrganisationModel orgModel;
+            if (user.Organisation != null)
+            {
+                org = await _organisationService.GetOrganisationById(user.Organisation.OrgId);
+                orgModel = new OrganisationModel
                 {
-                    heatNetworks.Add(new HeatNetworkModel
+                    OrganisationTypes = new List<SelectListItem>(),
+                    SelectedOrganisationType = org.Type.ToString(),
+                    CompanyNumber = org.CompaniesHouseNumber,
+                    CompanyDetails = new Models.CompaniesHouse.CompanyDetailsModel
                     {
-                        Name = network.Name,
-                        OrganisationName = user.Organisation?.Name,
-                        Status = "Active"
-                    });
-                }
+                        Title = org.Name,
+                        RegisteredOfficeAddress = new RegisteredOfficeAddressModel
+                        {
+                            AddressLine1 = org.RegisteredAddress.AddressLine1,
+                            AddressLine2 = org.RegisteredAddress.AddressLine2,
+                            Locality = org.RegisteredAddress.Town,
+                            PostalCode = org.RegisteredAddress.Postcode,
+                            Country = org.RegisteredAddress.Country
+                        }
+                    }
 
-                var dashboardModel = new DashboardModel
-                {
-                    OrganisationName = user.Organisation?.Name,
-                    HeatNetworks = heatNetworks // This should be populated with actual data from the API
                 };
-
-                return View(dashboardModel);
+            }
+            else
+            {
+                org = new Organisation();
+                orgModel = new OrganisationModel();
             }
 
-           _logger.LogError("Failed to retrieve heat networks from API. Status code: {StatusCode}", heatNetworksResponse.StatusCode);
-            TempData["ErrorMessage"] = "Unable to retrieve heat networks. Please try again later.";
-            return View();
+            var model = new OrganisationContactDetailsModel
+            {
+                EmailAddress = user.EmailId,
+                JobTitle = user.JobTitle,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PreferredContactType = user.PreferredContactType == NullableOfPreferredContactType.PreferNotToSay ? PreferredContactType.PreferNotToSay : (user.PreferredContactType == NullableOfPreferredContactType.Mobile ? PreferredContactType.Mobile : PreferredContactType.Landline),
+                ContactNumberExtension = user.ContactNumberExtension,
+                LandlineNumber = user.LandlineNumber,
+                MobileNumber = user.MobileNumber
+            };
+            var userModel = new UserModel
+            {
+                IsRegulatoryContact = user.Roles.Contains(UserRole.ResponsiblePerson),
+                OrganisationName = user.Organisation?.Name,
+                ContactDetails = model
+            };
+            
+            _sessionHelper.SaveToSession<OrganisationContactDetailsModel>(HttpContext, SessionKeys.OrganisationContactDetailsModelSessionKey, model);
+            _sessionHelper.SaveToSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey, userModel);
+            _sessionHelper.SaveToSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey, orgModel);
+            return View(model);
         }
     }
 }

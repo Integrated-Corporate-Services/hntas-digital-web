@@ -1,0 +1,15 @@
+﻿@using HNTAS.Web.UI.Models.Components
+@model GovUkInputModel
+
+<div class="govuk-form-group @(Model.HasError ? "govuk-form-group--error" : "")">
+    <label class="govuk-label" for="@Model.Name">
+        @Model.Label
+    </label>
+    @if (Model.HasError)
+    {
+        <p id="FirstName-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span>@Model.ErrorMessage
+        </p>
+    }
+    <input class="govuk-input @Model.AdditionalClasses" id="@Model.Id" name="@Model.Name" value="@Model.Value" type="text">
+</div>

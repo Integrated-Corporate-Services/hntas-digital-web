@@ -1,49 +1,33 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HNTAS.Web.UI.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
-namespace HNTAS.Web.UI.Models
+namespace HNTAS.Web.UI.Models.User
 {
-    public enum PreferredContactType
+    public class ContactDetailsModel
     {
-        [Display(Name = "Landline")]
-        Landline = 0,
-        [Display(Name = "Mobile")]
-        Mobile = 1
-    }
-
-    public class ContactDetailsModel 
-    {
-        [Required(ErrorMessage = "Email address is missing.")]
-        [EmailAddress(ErrorMessage = "Email address is not in the correct format.")]
-        public string? EmailAddress { get; set; }
-
         [Required(ErrorMessage = "Enter your first name.")]
-        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "First name can only contain letters and spaces.")]
+        [RegularExpression(@"^[a-zA-Z0-9\s\.\,\:\'\&]+$", ErrorMessage = "Enter a valid first name using letters, numbers or common punctuation only.")]
         [MaxLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
         public string? FirstName { get; set; }
 
+
         [Required(ErrorMessage = "Enter your last name.")]
-        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Last name can only contain letters and spaces.")]
+        [RegularExpression(@"^[a-zA-Z0-9\s\.\,\:\'\&]+$", ErrorMessage = "Enter a valid last name using letters, numbers or common punctuation only.")]
         [MaxLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
         public string? LastName { get; set; }
 
-        [Required(ErrorMessage = "Select a preferred contact number type.")]
-        public PreferredContactType PreferredContactType { get; set; }
+        public PreferredContactType? PreferredContactType { get; set; }
 
-        [RegularExpression(@"^\+?\d{1,3}[\s-]?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$", ErrorMessage = "Landline number is not in a valid format.")]
+        [RegularExpression(@"^[\d\s\+\-]+$", ErrorMessage = "Enter a valid landline number — use only numbers, spaces, plus or hyphens.")]
         [MaxLength(20, ErrorMessage = "Landline number cannot exceed 20 characters.")]
         public string? LandlineNumber { get; set; }
 
-        [RegularExpression(@"^\d*$", ErrorMessage = "Extension must be numeric.")]
+        [RegularExpression(@"^[\d\s\+\-]+$", ErrorMessage = "Enter a valid extension — use only numbers, spaces, plus or hyphens.")]
         [MaxLength(10, ErrorMessage = "Extension cannot exceed 10 characters.")]
         public string? ContactNumberExtension { get; set; }
 
-        [RegularExpression(@"^\+?\d{1,3}[\s-]?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$", ErrorMessage = "Mobile number is not in a valid format.")]
+        [RegularExpression(@"^[\d\s\+\-]+$", ErrorMessage = "Enter a valid mobile number — use only numbers, spaces, plus or hyphens.")]
         [MaxLength(13, ErrorMessage = "Mobile number cannot exceed 13 characters.")]
         public string? MobileNumber { get; set; }
-
-        [Required(ErrorMessage = "Enter your job title.")]
-        [MaxLength(100, ErrorMessage = "Job title cannot exceed 100 characters.")]
-        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Job title can only contain letters and spaces.")]
-        public string? JobTitle { get; set; }
     }
 }

@@ -59,7 +59,101 @@ namespace HNTAS.Api.Client.Test.Api
             HeatNetwork heatNetwork = default!;
             var response = await _instance.ApiHeatNetworksAddHeatNetworkPostAsync(heatNetwork);
             var model = response.Created();
-            Assert.IsType<HeatNetwork>(model);
+            Assert.IsType<HeatNetworkResponse>(model);
+        }
+
+        /// <summary>
+        /// Test ApiHeatNetworksGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiHeatNetworksGetAsyncTest()
+        {
+            var response = await _instance.ApiHeatNetworksGetAsync();
+            var model = response.Ok();
+            Assert.IsType<List<HeatNetworkResponse>>(model);
+        }
+
+        /// <summary>
+        /// Test ApiHeatNetworksHnIdGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiHeatNetworksHnIdGetAsyncTest()
+        {
+            string hnId = default!;
+            var response = await _instance.ApiHeatNetworksHnIdGetAsync(hnId);
+            var model = response.Ok();
+            Assert.IsType<HeatNetworkResponse>(model);
+        }
+
+        /// <summary>
+        /// Test ApiHeatNetworksHnIdsGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiHeatNetworksHnIdsGetAsyncTest()
+        {
+            Client.Option<string> hnIdsString = default!;
+            var response = await _instance.ApiHeatNetworksHnIdsGetAsync(hnIdsString);
+            var model = response.Ok();
+            Assert.IsType<List<HeatNetworkResponse>>(model);
+        }
+
+        /// <summary>
+        /// Test ApiHeatNetworksNetworkDetailsDocumentUpdatePatch
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiHeatNetworksNetworkDetailsDocumentUpdatePatchAsyncTest()
+        {
+            NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest = default!;
+            await _instance.ApiHeatNetworksNetworkDetailsDocumentUpdatePatchAsync(networkDetailsUploadDocumentRequest);
+        }
+
+        /// <summary>
+        /// Test ApiHeatNetworksNetworkElementsPut
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiHeatNetworksNetworkElementsPutAsyncTest()
+        {
+            NetworkElements2 networkElements2 = default!;
+            Client.Option<string> hnId = default!;
+            var response = await _instance.ApiHeatNetworksNetworkElementsPutAsync(networkElements2, hnId);
+            var model = response.Ok();
+            Assert.IsType<HeatNetworkResponse>(model);
+        }
+
+        /// <summary>
+        /// Test ExternalHeatNetworkHnIdGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ExternalHeatNetworkHnIdGetAsyncTest()
+        {
+            string hnId = default!;
+            var response = await _instance.ExternalHeatNetworkHnIdGetAsync(hnId);
+            var model = response.Ok();
+            Assert.IsType<HeatNetworkExternalResponse>(model);
+        }
+
+        /// <summary>
+        /// Test ExternalHeatNetworksGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ExternalHeatNetworksGetAsyncTest()
+        {
+            var response = await _instance.ExternalHeatNetworksGetAsync();
+            var model = response.Ok();
+            Assert.IsType<List<HeatNetworkExternalResponse>>(model);
+        }
+
+        /// <summary>
+        /// Test ExternalHeatNetworksSearchGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ExternalHeatNetworksSearchGetAsyncTest()
+        {
+            Client.Option<DateTimeOffset> fromDate = default!;
+            Client.Option<DateTimeOffset> toDate = default!;
+            var response = await _instance.ExternalHeatNetworksSearchGetAsync(fromDate, toDate);
+            var model = response.Ok();
+            Assert.IsType<List<HeatNetworkExternalResponse>>(model);
         }
     }
 }

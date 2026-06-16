@@ -1,0 +1,27 @@
+﻿@using HNTAS.Web.UI.Models.Review
+@model ReviewSummaryModel
+
+@foreach (var section in Model.Sections)
+{
+    <h2 class="govuk-heading-m">@(section.Heading)</h2>
+    <dl class="govuk-summary-list">
+        @foreach (var item in section.Items)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    @item.Key
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @item.Value
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    @if (item.ChangeLink != null) {
+                        <a class="govuk-link" href="@item.ChangeLink">
+                            @item.ChangeLinkText<span class="govuk-visually-hidden"> @item.Key</span>
+                        </a>
+                    }
+                </dd>
+            </div>
+        }
+    </dl>
+}

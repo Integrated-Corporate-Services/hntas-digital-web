@@ -1,0 +1,40 @@
+﻿
+@{
+    // The panel success message title will be used as the page title
+    ViewData["Title"] = "Assignment Confirmed";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one">
+
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                Assignment Confirmed
+            </h1>
+            <div class="govuk-panel__body">
+                <p>
+                    <strong>@TempData["UserName"]</strong> assigned as the new
+                    <strong>@TempData["AssignedRole"]</strong> for the
+                    <strong>@TempData["OrganisationName"]</strong>.
+                </p>
+            </div>
+        </div>
+
+        <h2 class="govuk-heading-m"> A heat network organisation cannot have more than one RP</h2>
+
+        <p class="govuk-body">
+            You cannot assign more than one Responsible Party (RP) to a heat network organisation.
+        </p>
+
+        <p class="govuk-body">
+            If you are trying to replace the RP on a later date, assign the new RP as an Network Manager now, and then use the system later to replace the RP on the date it needs to be effective.
+        </p>
+
+        <div class="app-button-wrapper">
+            <a asp-controller="UserManagement" asp-action="ManageUsers" role="button" data-module="govuk-button" draggable="false" class="govuk-button">
+                Continue
+            </a>
+        </div>
+
+    </div>
+</div>

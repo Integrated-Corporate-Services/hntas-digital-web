@@ -1,0 +1,64 @@
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.NetworkElements
+@model AssessorSelectElementsViewModel
+
+@{
+    ViewData["Title"] = $"Will they be assessing other elements in {ViewBag.StageTitle}?";
+    // Fix: Pre-filter non-hidden elements into a list to avoid nullable method group and nullability issues
+    var visibleElementOptions = Model.ElementOptions?.Where(a => !a.IsHidden).ToList() ?? new List<AssessorSelectElementsOption>();
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">@ViewBag.HnId</span>
+            <h1 class="govuk-heading-l">Will they be assessing other elements in @ViewBag.StageTitle?</h1>
+                                  
+
+            <form asp-action="SelectNetworkElements" method="post" novalidate>
+                @Html.AntiForgeryToken()
+
+                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
+                    <fieldset class="govuk-fieldset">                        
+                        <legend class="govuk-visually-hidden">Other elements for this network</legend>
+                        
+                        <div id="assessor-element-hint" class="govuk-hint">
+                            Select all that apply
+                        </div>
+                        @if (ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)))
+                        {
+                            <p class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span>
+                                @Html.ValidationMessageFor(m => m.SelectedElementIds)
+                            </p>
+                        }
+                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            @for (int i = 0; i < visibleElementOptions.Count; i++)
+                            {
+                                var item = visibleElementOptions[i];
+                                var checkboxId = i == 0 ? "selectedelementids" : $"selectedelementids_{i}";
+                                var isChecked = Model.SelectedElementIds?.Contains((ElementTypeInShort)item.ElementType!) ?? false;
+                                var hintId = $"{checkboxId}-item-hint";
+
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" 
+                                    id="@checkboxId"
+                                    name="SelectedElementIds" 
+                                    type="checkbox" 
+                                    value="@item.ElementType"
+                                    @(isChecked ? "checked" : "")
+                                    >
+                                    <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
+                                        @item.Label @* @item.AssignedAssessorName *@
+                                    </label>
+                                </div>
+                            }                            
+                        </div>
+                    </fieldset>
+                </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+            </form>
+        </div>
+    </div>
+</div>

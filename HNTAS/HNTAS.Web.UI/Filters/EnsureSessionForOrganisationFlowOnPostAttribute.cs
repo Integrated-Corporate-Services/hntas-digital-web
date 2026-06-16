@@ -8,12 +8,18 @@ namespace HNTAS.Web.UI.Filters
 {
     public class EnsureSessionForOrganisationFlowOnPostAttribute : ActionFilterAttribute
     {
+        private readonly ISessionHelper _sessionHelper;
+
+        public EnsureSessionForOrganisationFlowOnPostAttribute(ISessionHelper sessionHelper)
+        {
+            _sessionHelper = sessionHelper;
+        }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var controllerName = context.RouteData.Values["controller"]?.ToString();
 
-            var organisationModel = SessionHelper.GetFromSession<OrganisationModel>(context.HttpContext, SessionHelper.SessionKeys.OrganisationCreation_SessionKey);
+            var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(context.HttpContext, SessionKeys.OrganisationCreation_SessionKey);
 
             bool shouldRedirect = false;
 
@@ -26,13 +32,13 @@ namespace HNTAS.Web.UI.Filters
             }
             else if (controllerName == "User")
             {
-                var userModel = SessionHelper.GetFromSession<UserModel>(context.HttpContext, SessionHelper.SessionKeys.UserCreation_SessionKey);
+                var userModel = _sessionHelper.GetFromSession<UserModel>(context.HttpContext, SessionKeys.UserCreation_SessionKey);
                 if (organisationModel == null || userModel == null)
                 {
                     shouldRedirect = true;
                 }
             }
-           
+
 
             if (shouldRedirect)
             {

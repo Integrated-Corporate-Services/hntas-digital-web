@@ -1,0 +1,130 @@
+@using HNTAS.Web.UI.Helpers;
+
+@{
+    ViewData["Title"] = "Heat network details";
+    string RenderLine(string value, string suffix = "<br>") =>
+            !string.IsNullOrEmpty(value) ? $"{value}{suffix}" : "";
+    string pathwayString = "";
+    // int pathwayNumber = 1;
+    if (Model.Pathway == "1")
+    {
+        pathwayString = "1 - 7 (New built Pathway)";
+    }
+    else if (Model.Pathway == "3")
+    {
+        pathwayString = "3 - 7 (Existing Pathway)";
+        // pathwayNumber = 3;
+    }
+}
+
+<div class="govuk-width-container">
+    <span class="govuk-hint govuk-!-font-size-27">Heat network</span>
+    <h1 class="govuk-heading-xl" style="margin-bottom: 1.5rem;">@Model.HnName</h1>
+    <div class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Name</dt>
+            <dd class="govuk-summary-list__value">@Model.HnName</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Address</dt>
+            <dd class="govuk-summary-list__value">
+                @Model.OrganisationName <br />
+                @Html.Raw(RenderLine(Model.OrganisationAddress.AddressLine1 as string, ",<br>"))
+                @Html.Raw(RenderLine(Model.OrganisationAddress.AddressLine2 as string, ",<br>"))
+                @Html.Raw(RenderLine(Model.OrganisationAddress.Town as string, ",<br>"))
+                @Html.Raw(RenderLine(Model.OrganisationAddress.County as string, ",<br>"))
+                @Html.Raw(RenderLine(Model.OrganisationAddress.Postcode as string))
+                @Html.Raw(RenderLine(Model.OrganisationAddress.Country as string))
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">UHNID</dt>
+            <dd class="govuk-summary-list__value">@Model.HnId</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Organisation name</dt>
+            <dd class="govuk-summary-list__value">@Model.OrganisationName</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Location</dt>
+            <dd class="govuk-summary-list__value">
+                @if (!string.IsNullOrEmpty(Model.HnLocation))
+                {
+                    <a class="govuk-link govuk-link--no-visited-state"  href="@Model.HnLocation" target="_blank">@Model.HnLocation</a>
+                }
+                else
+                {
+                    <span>W3W url will come here...</span>
+                }
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Pathway</dt>
+            <dd class="govuk-summary-list__value">@pathwayString</dd>
+        </div>
+    </div>
+
+    <h2 class="govuk-heading-m" style="margin-top:2rem;">Progress so far</h2>
+    <p class="govuk-body">You can see the updated progress of your heat network at element level.</p>
+
+    <div class="govuk-tabs" data-module="govuk-tabs">
+        <ul class="govuk-tabs__list">
+            @for (int i = 0; i < Model.Phases.Count; i++)
+            {
+                var phase = Model.Phases[i];
+                <li class="govuk-tabs__list-item @(i == Model.CurrentPhaseIndex ? "govuk-tabs__list-item--selected" : "")">
+                    
+                    <a class="govuk-tabs__tab" href="#phase-@i">
+                        @phase.Name
+                    </a>
+                </li>
+            }
+        </ul>
+
+        @for (int i = 0; i < Model.Phases.Count; i++)
+        {
+            var phase = Model.Phases[i];
+            <div id="phase-@i" class="govuk-tabs__panel @(i != Model.CurrentPhaseIndex ? "govuk-tabs__panel--hidden" : "")">
+                <h2 class="govuk-heading-l">@phase.Title</h2>
+
+                @for (int j = 0; j < phase.Stages.Count; j++)
+                {
+                    var stage = phase.Stages[j];
+                    <h3 class="govuk-heading-m">@stage.Name</h3>
+                    <table class="govuk-table">
+                        <tbody class="govuk-table__body">
+                            <tr class="govuk-table__row">
+                                <th class="govuk-table__cell">
+                                    Element List
+                                </th>
+                                <th class="govuk-table__cell">
+                                    Status
+                                </th>
+                                <th class="govuk-table__cell">
+                                    Action
+                                </th>
+                            </tr>
+                            @foreach (var element in stage.Elements)
+                            {
+
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">
+                                        <a class="govuk-link app-element-list__link" href="@element.Url">@element.Name</a>
+                                    </td>
+                                    <td class="govuk-table__cell">
+                                        Assigned to Assessor
+                                    </td>
+                                    <td class="govuk-table__cell">
+                                        <a class="govuk-link app-element-list__link" href="@Url.Action("DownloadTheDocuments", "Assessor", new { Phase = i+1 })">Continue</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    
+
+                }
+            </div>
+        }
+    </div>
+</div>

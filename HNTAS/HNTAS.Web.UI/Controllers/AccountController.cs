@@ -27,7 +27,18 @@ namespace HNTAS.Web.UI.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Sign out from GOV.UK One Login
-            return SignOut(new AuthenticationProperties(), OneLoginDefaults.AuthenticationScheme);
+            var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
+
+            if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                return SignOut(new AuthenticationProperties(), "GovUkSimulator");
+            }
+            else
+            {
+                return SignOut(new AuthenticationProperties(), OneLoginDefaults.AuthenticationScheme);
+            }
+
+
         }
 
         // This action will be called after successful authentication by One Login
@@ -36,6 +47,7 @@ namespace HNTAS.Web.UI.Controllers
         [Route("/onelogin-callback")]
         public IActionResult OneLoginCallback()
         {
+            var state = Request.Query["state"].ToString();
             // The middleware handles the token exchange and setting the cookie.
             // You can redirect the user to their intended destination or a dashboard.
             return RedirectToAction("Index", "Home");
@@ -50,6 +62,14 @@ namespace HNTAS.Web.UI.Controllers
             // The middleware has already cleared the One Login session.
             // Redirect to a public page after logout.
             return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            // This forces your Home/Error logic to run with code 403
+            return RedirectToAction("Error", "Home", new { code = 403 });
         }
     }
 }

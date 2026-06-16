@@ -1,0 +1,80 @@
+﻿@using HNTAS.Web.UI.Models.HeatNetwork
+@model HNDetailsViewModel
+
+@{
+    ViewData["Title"] = "Heat Network Details";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <form asp-action="SubmitDetails" method="post">
+                @Html.AntiForgeryToken()
+                <span class="govuk-caption-xl">Heat network overview</span>
+                <h1 class="govuk-heading-xl">
+                    @Model.Name
+                </h1>
+
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Name
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.Name
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            UHNID
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.UHNID
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Organisation name
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.OrganisationName
+                        </dd>
+                    </div>
+                    @* Modify to add address lines *@
+                    @* <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Location
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @if (!string.IsNullOrEmpty(Model.LocationUrl))
+                            {
+                                <a href="@Model.LocationUrl" class="govuk-link">@Model.LocationUrl</a>
+                            }
+                            else
+                            {
+                                <span>Not provided</span>
+                            }
+                        </dd>
+                    </div> *@
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Pathway
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            New build (@Model.PathWay - 7)
+                        </dd>
+                    </div>
+                </dl>
+
+            
+                @Html.HiddenFor(m => m.UHNID)
+                @Html.HiddenFor(m => m.Name)
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+﻿@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Models.User
+
+@model ChooseContributorModel
+
+@{
+    ViewData["Title"] = "Select the user from below list";
+    var selectedContributorId = Html.LowercaseIdFor(m => m.SelectedContributorId);
+    var hasErrors = ViewData.ModelState.TryGetValue(nameof(Model.SelectedContributorId), out var entry) && entry.Errors.Any();
+    var errorId = $"{selectedContributorId}-error";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        @if (!ViewBag.NoUsers)
+        {
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">Manage users for @ViewBag.OrganisationName</span>
+                @ViewData["Title"]
+            </h1>
+
+            <form asp-action="SaveChooseUser" asp-controller="ExistingContributor" method="post" novalidate>
+                @Html.AntiForgeryToken()
+
+                <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")" style="overflow-x : auto">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                            Choose the user
+                        </legend>
+
+                        @if (hasErrors)
+                        {
+                            <p id="@errorId" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span>
+                                @Html.ValidationMessageFor(m => m.SelectedContributorId)
+                            </p>
+                        }
+
+                        @await Html.PartialAsync("Components/_GovUkRadioList", new GovUkRadioListModel
+                        {
+                            FieldId = Html.LowercaseIdFor(m => m.SelectedContributorId),
+                                        FieldName = nameof(Model.SelectedContributorId),
+                                        SelectedValue = Model.SelectedContributorId,
+                                        Items = Model.Contributors
+                                        })
+                </fieldset>
+            </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+
+        }
+        else
+        {
+            <p class="govuk-body">
+                No existing contributors found for the current user.
+            </p>
+        }
+    </div>
+</div>

@@ -1,0 +1,63 @@
+﻿@functions {
+    public class hnElement
+    {
+        public string Title;
+        public string Desc;
+        public string TSLink;
+        public string APLink;
+    }
+}
+@{
+    hnElement EC = new hnElement
+    {
+        Title = "Energy Centre (EC)",
+        Desc = "The Energy Centre includes the heat-generating and primary system elements that supply the heat network. This includes boilers, heat pumps, thermal stores, primary controls and monitoring elements.",
+        TSLink = "https://assets.publishing.service.gov.uk/media/69540ac197f1c5e3c92a834f/draft-hntas-existing-network-technical-specification-energy-centre-milestone-4.pdf",
+        APLink = "https://assets.publishing.service.gov.uk/media/6953efe353866d6cdff21a2a/draft-hntas-existing-network-assessment-procedures-energy-centre-milestone-4.pdf"
+    };
+    hnElement DD = new hnElement
+    {
+        Title = "District Distribution Network (DD)",
+        Desc = "The District Distribution Network includes the distribution elements that transfer heat between buildings. This covers external pipework, valves, insulation, joints and associated control or monitoring elements.",
+        TSLink = "https://assets.publishing.service.gov.uk/media/69540b3997f1c5e3c92a8350/draft-hntas-existing-network-technical-specification-district-distribution-milestone-4.pdf",
+        APLink = "https://assets.publishing.service.gov.uk/media/6953f01853866d6cdff21a2b/draft-hntas-existing-network-assessment-procedures-district-distribution-milestone-4.pdf"
+    };
+    hnElement SS = new hnElement
+    {
+        Title = "Substation (SS)",
+        Desc = "The Substation includes the interface elements that transfer heat from the district distribution network into a building. This covers heat exchangers, controls, metering and associated elements at the building boundary.",
+        TSLink = "https://assets.publishing.service.gov.uk/media/69540b67295a95414df21a41/draft-hntas-existing-network-technical-specification-substation-milestone-4.pdf",
+        APLink = "https://assets.publishing.service.gov.uk/media/6953f046a2fb6c15f98d18ad/draft-hntas-existing-network-assessment-procedures-substation-milestone-4.pdf"
+    };    
+    hnElement CD = new hnElement
+    {
+        Title = "Communal Distribution Network (CD)",
+        Desc = "The Communal Distribution Network includes the internal distribution elements that transfer heat within a building. This covers risers, lateral pipework, valves and controls serving individual dwellings or premises.",
+        TSLink = "https://assets.publishing.service.gov.uk/media/69540b9f53866d6cdff21a38/draft-hntas-existing-network-technical-specification-communal-distribution-network-milestone-4.pdf",
+        APLink = "https://assets.publishing.service.gov.uk/media/6953f075a2fb6c15f98d18ae/draft-hntas-existing-network-assessment-procedures-communal-distribution-milestone-4.pdf"
+    };
+    hnElement CC = new hnElement
+    {
+        Title = "Consumer Connection (CC)",
+        Desc = "The Consumer Connection includes the interface elements between the communal distribution network and an individual dwelling or premises. This covers isolation valves, heat interface units and associated controls.",
+        TSLink = "https://assets.publishing.service.gov.uk/media/69540c3497f1c5e3c92a8351/draft-hntas-existing-network-technical-specification-consumer-connection-milestone-4.pdf",
+        APLink = "https://assets.publishing.service.gov.uk/media/6953f09d295a95414df21a30/draft-hntas-existing-network-assessment-procedures-consumer-connection-milestone-4.pdf"
+    };
+    var hnElements = new List<hnElement> { EC, DD, SS, CD, CC };
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading govuk-heading-l">Milestone 4</h1>
+
+        @foreach (hnElement ele in hnElements)
+        {
+            <h2 class="govuk-label govuk-label--m">@ele.Title</h2>
+            <p class="govuk-body">@ele.Desc</p>
+            <ol class="govuk-list govuk-list--bullet">
+                <li><a href="@ele.TSLink" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener" target="_blank">Technical Specification</a></li>
+                <li><a href="@ele.APLink" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener" target="_blank">Assessment Procedures</a></li>
+            </ol>
+        }
+    </div>
+</div>
