@@ -4,7 +4,6 @@ All URIs are relative to *https://localhost:7117*
 
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
-| [**ApiUsersAcceptInvitationPatch**](UsersApi.md#apiusersacceptinvitationpatch) | **PATCH** /api/Users/accept-invitation |  |
 | [**ApiUsersContributorRolesGet**](UsersApi.md#apiuserscontributorrolesget) | **GET** /api/Users/contributor-roles |  |
 | [**ApiUsersGet**](UsersApi.md#apiusersget) | **GET** /api/Users |  |
 | [**ApiUsersHeatNetworkHnIdRolesGet**](UsersApi.md#apiusersheatnetworkhnidrolesget) | **GET** /api/Users/heat-network/{hnId}/roles |  |
@@ -15,6 +14,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersIsActiveUserEmailIdGet**](UsersApi.md#apiusersisactiveuseremailidget) | **GET** /api/Users/is-active-user/{emailId} |  |
 | [**ApiUsersIsRpUserEmailIdGet**](UsersApi.md#apiusersisrpuseremailidget) | **GET** /api/Users/is-rp-user/{emailId} |  |
 | [**ApiUsersManagedUsersGet**](UsersApi.md#apiusersmanagedusersget) | **GET** /api/Users/managed-users |  |
+| [**ApiUsersNetworkManagersGet**](UsersApi.md#apiusersnetworkmanagersget) | **GET** /api/Users/network-managers |  |
 | [**ApiUsersOrganisationExistsGet**](UsersApi.md#apiusersorganisationexistsget) | **GET** /api/Users/organisation/exists |  |
 | [**ApiUsersOrganisationOrganisationIdGet**](UsersApi.md#apiusersorganisationorganisationidget) | **GET** /api/Users/organisation/{organisationId} |  |
 | [**ApiUsersRegisterOrgAndLinkUserIdPost**](UsersApi.md#apiusersregisterorgandlinkuseridpost) | **POST** /api/Users/register-org-and-link/{userId} |  |
@@ -24,44 +24,6 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiUsersUserRolesGet**](UsersApi.md#apiusersuserrolesget) | **GET** /api/Users/user-roles |  |
 | [**GetUserById**](UsersApi.md#getuserbyid) | **GET** /api/Users/{id} |  |
 | [**GetUserByOneLoginId**](UsersApi.md#getuserbyoneloginid) | **GET** /api/Users/onelogin/{oneLoginId} |  |
-
-<a id="apiusersacceptinvitationpatch"></a>
-# **ApiUsersAcceptInvitationPatch**
-> string ApiUsersAcceptInvitationPatch (InvitedUserRequest invitedUserRequest)
-
-
-
-
-### Parameters
-
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| **invitedUserRequest** | [**InvitedUserRequest**](InvitedUserRequest.md) |  |  |
-
-### Return type
-
-**string**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json, application/*+json
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
-| **201** | Created |  -  |
-| **409** | Conflict |  -  |
-| **404** | Not Found |  -  |
-| **500** | Internal Server Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 <a id="apiuserscontributorrolesget"></a>
 # **ApiUsersContributorRolesGet**
@@ -397,6 +359,41 @@ No authorization required
 ### Return type
 
 [**List&lt;ManagedUserResponse&gt;**](ManagedUserResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersnetworkmanagersget"></a>
+# **ApiUsersNetworkManagersGet**
+> List&lt;InvitedUserResponse&gt; ApiUsersNetworkManagersGet (string userId = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **userId** | **string** |  | [optional]  |
+
+### Return type
+
+[**List&lt;InvitedUserResponse&gt;**](InvitedUserResponse.md)
 
 ### Authorization
 

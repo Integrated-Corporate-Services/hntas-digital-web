@@ -79,7 +79,7 @@ public class HomeController : Controller
 
                 if (invitation.Status == InvitationStatus.Invited)
                 {
-                    var userId = await _iUserService.AcceptUserInvitation(new InvitedUserRequest(
+                    var userId = await _invitationService.AcceptInvitationAsync(new InvitedUserRequest(
                         invitedEmail: invitedEmail,
                         invitationId: invitationId,
                         oneLoginId: oneLoginId));
