@@ -506,8 +506,9 @@ namespace HNTAS.Web.UI.Controllers
                 : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);
             this.ShowBackButton(!isCommunalHn && !hasOwnEc ? "HeatNetworkName" : "DoesHNHaveAPostcode");
             ViewBag.addressFor = _sessionHelper.GetFromSession<string>(HttpContext, "addressFor");
-            ViewBag.QuestionForDistWithoutEC = "What are the grid coordinates for the connection point with the supplying network?";
-            ViewBag.DistWithoutOwnEC = !isCommunalHn && !hasOwnEc;
+            ViewBag.QuestionForWithEC = "What are the energy centre's grid coordinates?";
+            ViewBag.QuestionForWithoutEC = "What are the grid coordinates for your communal network?";
+            ViewBag.WithEc = hasOwnEc;
             var model = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey) ?? new ECDetailsModel { ECAddressByLatLong = new AddressByLatLongModel() };
             return View(model);
         }
@@ -522,8 +523,9 @@ namespace HNTAS.Web.UI.Controllers
                 : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);         
             this.ShowBackButton(!isCommunalHn && !hasOwnEc ? "HeatNetworkName" : "DoesHNHaveAPostcode");
             ViewBag.addressFor = _sessionHelper.GetFromSession<string>(HttpContext, "addressFor");
-            ViewBag.QuestionForDistWithoutEC = "What are the grid coordinates for the connection point with the supplying network?";
-            ViewBag.DistWithoutOwnEC = !isCommunalHn && !hasOwnEc;
+            ViewBag.QuestionForWithEC = "What are the energy centre's grid coordinates?";
+            ViewBag.QuestionForWithoutEC = "What are the grid coordinates for your communal network?";
+            ViewBag.WithEc = hasOwnEc;
             if (!ModelState.IsValid)
             {
                 return View(model);

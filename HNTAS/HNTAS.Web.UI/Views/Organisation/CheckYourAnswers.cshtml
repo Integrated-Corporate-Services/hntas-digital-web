@@ -113,28 +113,28 @@
                             @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
                             </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("ConfirmResponsibility")">Change<span class="govuk-visually-hidden"> regulatory contact</span></a>
+                            <a class="govuk-link" href="@Url.Action("ConfirmResponsibility")">Change<span class="govuk-visually-hidden"> Confirmed responsibility for heat networks</span></a>
                         </dd>
                     </div>                    
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">First name</dt>
                         <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.FirstName</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> first name</span></a>
+                            @* <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> first name</span></a> *@
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Last name</dt>
                         <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.LastName</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> last name</span></a>
+                            @* <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> last name</span></a> *@
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Preferred contact number for work</dt>
                         <dd class="govuk-summary-list__value">@displayContactNumber</dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> preferred contact number for work</span></a>
+                            @* <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> preferred contact number for work</span></a> *@
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
@@ -188,7 +188,7 @@
                                 I confirm that I am authorised to act on behalf of @organisationModel.CompanyDetails.Title and the Responsible Party for heat networks, and that the information submitted through this service is accurate and complete.
                             </label>
                         </div>
-                    </fieldset>                
+                    </fieldset>
                 </div>
 
                 <button type="submit" class="govuk-button" data-module="govuk-button">

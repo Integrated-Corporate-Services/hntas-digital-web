@@ -55,17 +55,21 @@
                 }
         }
     }
-}
 
 <body class="govuk-template__body app-body-class">
     <environment names="qa,staging">
-        <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5SWB2T5S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
+        @if (Context.Request.Cookies["cookie_consent"] == "accepted")
+        {
+            <!-- Google Tag Manager (noscript) -->
+            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5SWB2T5S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <!-- End Google Tag Manager (noscript) -->
+        }
+        
     </environment>
     <script>
         document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
     </script>
+    @await Html.PartialAsync("CookieBanner/_CookieBanner")
     <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
     <header class="govuk-header" data-module="govuk-header">
         <div class="govuk-header__container govuk-width-container">
@@ -160,7 +164,7 @@
                                             <span aria-hidden="true">@unreadNotifications</span>
                                             <span class="govuk-visually-hidden">(@unreadNotifications unread)</span>
                                     </span>
-                                    }                                    
+                                    }
                                 </a>
                             </li>
                         }

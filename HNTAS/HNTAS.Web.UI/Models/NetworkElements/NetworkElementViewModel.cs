@@ -23,15 +23,28 @@ namespace HNTAS.Web.UI.Models.NetworkElements
     public class AssessorSelectElementsViewModel
     {
         public List<AssessorSelectElementsOption>? ElementOptions { get; set; } = new();
-        [MustHaveOneItem(ErrorMessage = "Select at least one element before continuing.")]
-        public List<string>? SelectedElementIds { get; set; } = new();
+        //[MustHaveOneItem(ErrorMessage = "Select at least one element before continuing.")]
+        public List<ElementTypeInShort>? SelectedElementIds { get; set; } = new();
         public List<string>? SelectedElementLabel { get; set; } = new();
     }
 
     public class AssessorSelectElementsOption
     {
         public string Label { get; set; } = null!;
-        public string ElementId { get; set; } = null!;
-        public string AssignedAssessorName { get; set; } = null!;
+        public ElementTypeInShort? ElementType { get; set; }
+        public bool IsHidden { get; set; }
+        //public string AssignedAssessorName { get; set; } = null!;
     }
+
+    //public class TraceAssessmentRouting
+    //{
+    //    public ElementTypeInShort LastVisitedElement { get; set; }
+    //    public List<TraceAssessment> TraceAssessments { get; set; }
+    //}
+
+    //public class TraceAssessment
+    //{
+    //    public ElementTypeInShort ElementId { get; set; }
+    //    public bool IsRouted { get; set; }
+    //}
 }

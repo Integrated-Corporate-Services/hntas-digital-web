@@ -96,7 +96,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult AddContributor()
         {
-            this.ShowBackButton("NewContributorRole");
+            this.ShowBackButton("ManageContributors");
             ViewBag.whoDoYouWantToAdd = GetRole();
             var model = _sessionHelper.GetFromSession<AddContributorViewModel>(HttpContext, SessionKeys.AddContributorViewModelSessionKey) ?? new AddContributorViewModel();
             return View(model);
@@ -237,6 +237,10 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
+            else
+            {
+                _sessionHelper.SaveToSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey, model);
+            }
             return View(model);
         }
 
@@ -247,11 +251,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("NewContributorDetails");
             if (!ModelState.IsValid)
             {
-                model.HeatNetworks = await GetListOfHeatNetworks();
-                if (model.HeatNetworks == null)
-                {
-                    return RedirectToAction("Error", "Home");
-                }
+                model = _sessionHelper.GetFromSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey);
                 return View(model);
             }
             _sessionHelper.SaveToSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey, model);

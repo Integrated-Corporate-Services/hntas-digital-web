@@ -6718,10 +6718,12 @@
             "type": "string"
           },
           "kpiId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "elementId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "isAggregated": {
             "type": "boolean"

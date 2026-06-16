@@ -160,15 +160,6 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/AssessorAssessmentForElementTests.cs
-src/HNTAS.Api.Client.Test/Model/AssessorAssessmentTests.cs
-src/HNTAS.Api.Client.Test/Model/CarbonCalculatorConfigRequestTests.cs
-src/HNTAS.Api.Client.Test/Model/CarbonCalculatorConfigResponseTests.cs
-src/HNTAS.Api.Client.Test/Model/CarbonInputUiDisplayTests.cs
-src/HNTAS.Api.Client.Test/Model/ConfigDefaultTests.cs
-src/HNTAS.Api.Client.Test/Model/ElementTypeInShortTests.cs
-src/HNTAS.Api.Client.Test/Model/KpiConfigRequestV2Tests.cs
-src/HNTAS.Api.Client.Test/Model/KpiConfigResponseV2Tests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs

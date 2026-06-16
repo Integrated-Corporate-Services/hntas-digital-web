@@ -1,11 +1,12 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.ElementSoa;
 
 namespace HNTAS.Web.UI.Helpers
 {
     public class ElementSoaHelper
     {
-        public static ElementSoaViewModel GetElementSoaViewModel(int eligibleIndex, int currentStageIndex, List<ElementGroup> networkElements)
+        public static ElementSoaViewModel GetElementSoaViewModel(int eligibleIndex, int currentStageIndex, List<ElementGroup> networkElements, HeatNetworkType? networkType, bool hasOwnEc)
         {
             return new ElementSoaViewModel
             {
@@ -18,7 +19,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Stage 1",
                         StageId = SoaStage.Stage1,
-                        Elements = GetElementsForStage(networkElements),
+                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
                         IsActive = eligibleIndex == 0,
                         Title = "Feasibility (Concept Design)"
                     },
@@ -26,7 +27,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Stage 2 (optional)",
                         StageId = SoaStage.Stage2,
-                        Elements = GetElementsForStage(networkElements),
+                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
                         IsActive = eligibleIndex == 0 || eligibleIndex == 1,
                         Title = "Design (Developed Design)",
                         Description = "You may want to undertake a Stage 2 assessment to gain further assurance during your design development process, or if you want to provide an assessed design when handing over to your Design & Build Contractor."
@@ -35,7 +36,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Stage 3",
                         StageId = SoaStage.Stage3,
-                        Elements = GetElementsForStage(networkElements),
+                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
                         IsActive = true,
                         Title = "Design (Technical Design)"
                     },
@@ -43,7 +44,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Stage 4",
                         StageId = SoaStage.Stage4,
-                        Elements = GetElementsForStage(networkElements),
+                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
                         IsActive = true,
                         Title = "Construction (Construction Design)"
                     },
@@ -51,7 +52,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Stage 5",
                         StageId = SoaStage.Stage5,
-                        Elements = GetElementsForStage(networkElements),
+                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
                         IsActive = true,
                         Title = "Construction (Installation)"
                     },
@@ -59,7 +60,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Stage 6",
                         StageId = SoaStage.Stage6,
-                        Elements = GetElementsForStage(networkElements),
+                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
                         IsActive = true,
                         Title = "Construction (Commissioning)"
                     },
@@ -67,7 +68,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Stage 7",
                         StageId = SoaStage.Stage7,
-                        Elements = GetElementsForStage(networkElements),
+                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
                         IsActive = true,
                         Title = "Operation (Operation and Maintenance)"
                     },
@@ -157,22 +158,22 @@ namespace HNTAS.Web.UI.Helpers
             {
                 new AssessmentOption
                 {
-                    Label = "Execute",
+                    Label = AssessmentConstants.Execute,
                     Hint = "Carry out the initial assessment and review the evidence provided"
                 },
                 new AssessmentOption
                 {
-                    Label = "Review",
+                    Label = AssessmentConstants.Review,
                     Hint = "Check that the initial assessment was completed correctly"
                 },
                 new AssessmentOption
                 {
-                    Label = "Decision",
+                    Label = AssessmentConstants.Decision,
                     Hint = "Make the final decision on the outcome of the assessment"
                 },
                 new AssessmentOption
                 {
-                    Label = "Review and Decision",
+                    Label = AssessmentConstants.ReviewAndDecision,
                     Hint = ""
                 },
             };
@@ -189,7 +190,7 @@ namespace HNTAS.Web.UI.Helpers
                 _ => "NA"
             };
         }
-        private static List<SoaElementsView> GetElementsForStage(List<ElementGroup>? elements)
+        private static List<SoaElementsView> GetElementsForStage(List<ElementGroup>? elements, HeatNetworkType? networkType = null, bool hasOwnEc = false)
         {
             var soaElements = new List<SoaElementsView>();
             foreach (var element in elements ?? new List<ElementGroup>())
@@ -199,11 +200,21 @@ namespace HNTAS.Web.UI.Helpers
                     ? (HeatNetworkElementType)(int)element.ElementDisplayType.Value
                     : (HeatNetworkElementType?)null;
 
+                var elementDisplayName = string.Empty;
+                var el = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(n => n.Id == elementType);
+                if (networkType == HeatNetworkType.District && !hasOwnEc)
+                {
+                    elementDisplayName = $"{el?.Label}{el?.Hint}{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}";
+                }
+                else
+                {
+                    elementDisplayName = $"{el?.Label}{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}";
+                }
                 soaElements.Add(new SoaElementsView
-                {                    
+                {
                     ElementType = element.ElementType,
-                    ElementDisplayType = elementType,                    
-                    Name = $"{ NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(n => n.Id == elementType)?.Label }{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}"
+                    ElementDisplayType = elementType,
+                    Name = elementDisplayName
                 });
             }
             return soaElements;

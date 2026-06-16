@@ -5974,8 +5974,10 @@ components:
         sourceSystem:
           type: string
         kpiId:
+          nullable: true
           type: string
         elementId:
+          nullable: true
           type: string
         isAggregated:
           type: boolean

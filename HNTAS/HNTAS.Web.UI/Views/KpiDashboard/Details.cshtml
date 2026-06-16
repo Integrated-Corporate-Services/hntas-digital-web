@@ -111,7 +111,7 @@
 
                 @{
 
-                    bool hasEnergyCentre = Model.GroupedElements.Keys.Any(key => key.StartsWith("energy centre|", StringComparison.OrdinalIgnoreCase));
+                    bool hasEnergyCentre = Model.GroupedElements.Keys.Any(key => key.StartsWith("energycentre|", StringComparison.OrdinalIgnoreCase));
 
                     bool hasRenderedSharedConsumerKpis = false;
                 }
@@ -122,17 +122,17 @@
                 ========================================================== *@
                 @if (hasEnergyCentre && (Model.TotalCarbonEmission.HasValue || Model.CarbonCalculationInputs != null))
                 {
-                    <details class="govuk-details" data-module="govuk-details" open>
+                    <details class="govuk-details" data-module="govuk-details">
                         <summary class="govuk-details__summary">
                             <span class="govuk-details__summary-text">
-                                <strong>Carbon Calculator Summary</strong>
+                                <strong>Carbon Calculation Summary</strong>
                             </span>
                         </summary>
                         <div class="govuk-details__text">
                             @if (Model.TotalCarbonEmission.HasValue)
                             {
                                 <h3 class="govuk-heading-m govuk-!-margin-bottom-4">
-                                    Total Emissions: <span class="govuk-body fw-bold">@Model.TotalCarbonEmission.Value.ToString("N2") kgCO2e</span>
+                                    Total Emissions: <span class="govuk-body fw-bold"> @Model.TotalCarbonEmission.Value.ToString("N2") g/kWh</span>
                                 </h3>
                             }
 
@@ -141,8 +141,8 @@
                                 <table class="govuk-table govuk-!-margin-bottom-0">
                                     <thead class="govuk-table__head">
                                         <tr class="govuk-table__row">
-                                            <th class="govuk-table__header">Metric Code</th>
-                                            <th class="govuk-table__header">Description Reference</th>
+                                            <th class="govuk-table__header">Code</th>
+                                            <th class="govuk-table__header">Reference</th>
                                             <th class="govuk-table__header govuk-table__header--numeric">Value</th>
                                         </tr>
                                     </thead>
@@ -150,7 +150,7 @@
                                         @foreach (var input in Model.CarbonCalculationInputs)
                                         {
                                             <tr class="govuk-table__row">
-                                                <td class="govuk-table__cell"><code>@input.Key</code></td>
+                                                <td class="govuk-table__cell">@input.Key</td>
                                                 <td class="govuk-table__cell">@input.Value.Label</td>
                                                 <td class="govuk-table__cell govuk-table__cell--numeric">@input.Value.Value.ToString("N0")</td>
                                             </tr>

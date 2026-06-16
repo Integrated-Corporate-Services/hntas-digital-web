@@ -26,15 +26,26 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDataProtection()
-    .SetApplicationName("HNTAS.Web.UI");
+
+if (builder.Environment.EnvironmentName == "Local")
+{
+    builder.Services.AddDataProtection();
+    Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
+}
+else
+{
+    builder.Services.AddDataProtection()
+        .PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
+        .SetDefaultKeyLifetime(TimeSpan.FromDays(1));
+    Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
+}
 
 // Configure RouteOptions
 builder.Services.Configure<RouteOptions>(options =>
-{
-    options.LowercaseUrls = false;
-    options.LowercaseQueryStrings = false; // Optional: for query string parameters too
-});
+    {
+        options.LowercaseUrls = false;
+        options.LowercaseQueryStrings = false; // Optional: for query string parameters too
+    });
 
 // Register the parameter transformer globally for controllers/actions
 builder.Services.AddControllersWithViews(options =>
@@ -132,7 +143,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new KpiHistoryResponseJsonConverter(),
         new AggregatedKpiJsonConverter(),
         new SoaStatusWithCountJsonConverter(),
-        new ElementGroupJsonConverter(),        
+        new ElementGroupJsonConverter(),
+        new CarbonInputUiDisplayJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

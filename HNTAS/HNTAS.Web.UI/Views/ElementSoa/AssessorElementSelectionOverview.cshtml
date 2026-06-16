@@ -1,4 +1,5 @@
-﻿@using HNTAS.Web.UI.Models.ElementSoa
+﻿@using HNTAS.Web.UI.Helpers
+@using HNTAS.Web.UI.Models.ElementSoa
 ﻿@using HNTAS.Web.UI.Models.NetworkElements
 @model AssessorElementSelectionOverviewModel
 
@@ -67,26 +68,18 @@
 
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">
-                                Elements assigned
+                                Assigned Elements with assessment step
                             </dt>
                             <dd class="govuk-summary-list__value">
-                                <ul class="govuk-list">
-                                    @foreach (var element in Model.AssessorSelectedElements.SelectedElementLabel!)
+                                <ul class="govuk-list">                                    
+
+                                    @foreach( var el in Model.AssessorAssessments)
                                     {
-                                        <li>@element</li>
+                                        <li>@NetworkElementHelper.GetNetworkElementLabelByElementId(el.ElementType) - @el.SelectedAssessmentOption</li>
                                     }
                                 </ul>
                             </dd>
-                        </div>
-
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                Assessment step
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                @Model.AssessorAssessment.SelectedAssessmentOption
-                            </dd>
-                        </div>
+                        </div>                        
                     </dl>
                 </div>
                 
