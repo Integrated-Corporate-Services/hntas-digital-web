@@ -1,0 +1,93 @@
+﻿@using HNTAS.Web.UI.Helpers
+@using HNTAS.Web.UI.Models.ElementSoa
+﻿@using HNTAS.Web.UI.Models.NetworkElements
+@model AssessorElementSelectionOverviewModel
+
+@{
+    ViewData["Title"] = "Check your answers";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <form asp-action="AssessorElementSelectionOverviewConfirm" asp-controller="ElementSoa" method="post">
+                @Html.AntiForgeryToken()
+                <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+                <h1 class="govuk-heading-l">
+                    Check your answers
+                </h1>
+
+                <div>
+                    <h2 class="govuk-heading-m">Personal details</h2>
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                First name
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.AssessorDetails.FirstName
+                            </dd>
+                        </div>
+
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Last name
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.AssessorDetails.LastName
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <div>
+                    <h2 class="govuk-heading-m">Contact details</h2>
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Email address
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.AssessorDetails.Email
+                            </dd>
+                        </div>                        
+                    </dl>
+                </div>
+
+                <div>
+                    <h2 class="govuk-heading-m">Heat network details</h2>
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Phase (Stage)
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.HeatNetworkPhase (@Model.HeatNetworkStage)
+                            </dd>
+                        </div>
+
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Assigned Elements with assessment step
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                <ul class="govuk-list">                                    
+
+                                    @foreach( var el in Model.AssessorAssessments)
+                                    {
+                                        <li>@NetworkElementHelper.GetNetworkElementLabelByElementId(el.ElementType) - @el.SelectedAssessmentOption</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>                        
+                    </dl>
+                </div>
+                
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+        </div>
+        
+    </div>
+</div>

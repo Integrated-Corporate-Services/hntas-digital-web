@@ -33,79 +33,21 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="OrgDetails" /> class.
         /// </summary>
-        /// <param name="orgType">orgType</param>
-        /// <param name="companiesHouseNumber">companiesHouseNumber</param>
-        /// <param name="orgName">orgName</param>
-        /// <param name="firstName">firstName</param>
-        /// <param name="lastName">lastName</param>
-        /// <param name="preferredContactType">preferredContactType</param>
-        /// <param name="orgRegisteredAddress">orgRegisteredAddress</param>
         /// <param name="orgId">orgId</param>
-        /// <param name="landlineNumber">landlineNumber</param>
-        /// <param name="contactNumberExtension">contactNumberExtension</param>
-        /// <param name="mobileNumber">mobileNumber</param>
-        /// <param name="jobTitle">jobTitle</param>
+        /// <param name="orgName">orgName</param>
+        /// <param name="emailId">emailId</param>
+        /// <param name="orgAddress">orgAddress</param>
         [JsonConstructor]
-        public OrgDetails(string orgType, string companiesHouseNumber, string orgName, string firstName, string lastName, PreferredContactType preferredContactType, OrgRegisteredAddress orgRegisteredAddress, Option<string?> orgId = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, string? jobTitle = default)
+        public OrgDetails(Option<string?> orgId = default, Option<string?> orgName = default, Option<string?> emailId = default, Option<Address?> orgAddress = default)
         {
-            OrgType = orgType;
-            CompaniesHouseNumber = companiesHouseNumber;
-            OrgName = orgName;
-            FirstName = firstName;
-            LastName = lastName;
-            PreferredContactType = preferredContactType;
-            OrgRegisteredAddress = orgRegisteredAddress;
             OrgIdOption = orgId;
-            LandlineNumberOption = landlineNumber;
-            ContactNumberExtensionOption = contactNumberExtension;
-            MobileNumberOption = mobileNumber;
-            JobTitle = jobTitle;
+            OrgNameOption = orgName;
+            EmailIdOption = emailId;
+            OrgAddressOption = orgAddress;
             OnCreated();
         }
 
         partial void OnCreated();
-
-        /// <summary>
-        /// Gets or Sets PreferredContactType
-        /// </summary>
-        [JsonPropertyName("preferredContactType")]
-        public PreferredContactType PreferredContactType { get; set; }
-
-        /// <summary>
-        /// Gets or Sets OrgType
-        /// </summary>
-        [JsonPropertyName("orgType")]
-        public string OrgType { get; set; }
-
-        /// <summary>
-        /// Gets or Sets CompaniesHouseNumber
-        /// </summary>
-        [JsonPropertyName("companiesHouseNumber")]
-        public string CompaniesHouseNumber { get; set; }
-
-        /// <summary>
-        /// Gets or Sets OrgName
-        /// </summary>
-        [JsonPropertyName("orgName")]
-        public string OrgName { get; set; }
-
-        /// <summary>
-        /// Gets or Sets FirstName
-        /// </summary>
-        [JsonPropertyName("firstName")]
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Gets or Sets LastName
-        /// </summary>
-        [JsonPropertyName("lastName")]
-        public string LastName { get; set; }
-
-        /// <summary>
-        /// Gets or Sets OrgRegisteredAddress
-        /// </summary>
-        [JsonPropertyName("orgRegisteredAddress")]
-        public OrgRegisteredAddress OrgRegisteredAddress { get; set; }
 
         /// <summary>
         /// Used to track the state of OrgId
@@ -121,49 +63,43 @@ namespace HNTAS.Api.Client.Model
         public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of LandlineNumber
+        /// Used to track the state of OrgName
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> LandlineNumberOption { get; private set; }
+        public Option<string?> OrgNameOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets LandlineNumber
+        /// Gets or Sets OrgName
         /// </summary>
-        [JsonPropertyName("landlineNumber")]
-        public string? LandlineNumber { get { return this.LandlineNumberOption; } set { this.LandlineNumberOption = new(value); } }
+        [JsonPropertyName("orgName")]
+        public string? OrgName { get { return this.OrgNameOption; } set { this.OrgNameOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of ContactNumberExtension
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> ContactNumberExtensionOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets ContactNumberExtension
-        /// </summary>
-        [JsonPropertyName("contactNumberExtension")]
-        public string? ContactNumberExtension { get { return this.ContactNumberExtensionOption; } set { this.ContactNumberExtensionOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of MobileNumber
+        /// Used to track the state of EmailId
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> MobileNumberOption { get; private set; }
+        public Option<string?> EmailIdOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets MobileNumber
+        /// Gets or Sets EmailId
         /// </summary>
-        [JsonPropertyName("mobileNumber")]
-        public string? MobileNumber { get { return this.MobileNumberOption; } set { this.MobileNumberOption = new(value); } }
+        [JsonPropertyName("emailId")]
+        public string? EmailId { get { return this.EmailIdOption; } set { this.EmailIdOption = new(value); } }
 
         /// <summary>
-        /// Gets or Sets JobTitle
+        /// Used to track the state of OrgAddress
         /// </summary>
-        [JsonPropertyName("jobTitle")]
-        public string? JobTitle { get; set; }
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<Address?> OrgAddressOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets OrgAddress
+        /// </summary>
+        [JsonPropertyName("orgAddress")]
+        public Address? OrgAddress { get { return this.OrgAddressOption; } set { this.OrgAddressOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -173,18 +109,10 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class OrgDetails {\n");
-            sb.Append("  OrgType: ").Append(OrgType).Append("\n");
-            sb.Append("  CompaniesHouseNumber: ").Append(CompaniesHouseNumber).Append("\n");
-            sb.Append("  OrgName: ").Append(OrgName).Append("\n");
-            sb.Append("  FirstName: ").Append(FirstName).Append("\n");
-            sb.Append("  LastName: ").Append(LastName).Append("\n");
-            sb.Append("  PreferredContactType: ").Append(PreferredContactType).Append("\n");
-            sb.Append("  OrgRegisteredAddress: ").Append(OrgRegisteredAddress).Append("\n");
             sb.Append("  OrgId: ").Append(OrgId).Append("\n");
-            sb.Append("  LandlineNumber: ").Append(LandlineNumber).Append("\n");
-            sb.Append("  ContactNumberExtension: ").Append(ContactNumberExtension).Append("\n");
-            sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
-            sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
+            sb.Append("  OrgName: ").Append(OrgName).Append("\n");
+            sb.Append("  EmailId: ").Append(EmailId).Append("\n");
+            sb.Append("  OrgAddress: ").Append(OrgAddress).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -196,70 +124,6 @@ namespace HNTAS.Api.Client.Model
         /// <returns>Validation Result</returns>
         IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
-            // LandlineNumber (string) maxLength
-            if (this.LandlineNumber != null && this.LandlineNumber.Length > 20)
-            {
-                yield return new ValidationResult("Invalid value for LandlineNumber, length must be less than 20.", new [] { "LandlineNumber" });
-            }
-
-            if (this.LandlineNumberOption.Value != null) {
-                // LandlineNumber (string) pattern
-                Regex regexLandlineNumber = new Regex(@"^\+?\d{1,3}[\s-]?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$", RegexOptions.CultureInvariant);
-
-                if (this.LandlineNumberOption.Value != null &&!regexLandlineNumber.Match(this.LandlineNumberOption.Value).Success)
-                {
-                    yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for LandlineNumber, must match a pattern of " + regexLandlineNumber, new [] { "LandlineNumber" });
-                }
-            }
-
-            // ContactNumberExtension (string) maxLength
-            if (this.ContactNumberExtension != null && this.ContactNumberExtension.Length > 10)
-            {
-                yield return new ValidationResult("Invalid value for ContactNumberExtension, length must be less than 10.", new [] { "ContactNumberExtension" });
-            }
-
-            if (this.ContactNumberExtensionOption.Value != null) {
-                // ContactNumberExtension (string) pattern
-                Regex regexContactNumberExtension = new Regex(@"^\d*$", RegexOptions.CultureInvariant);
-
-                if (this.ContactNumberExtensionOption.Value != null &&!regexContactNumberExtension.Match(this.ContactNumberExtensionOption.Value).Success)
-                {
-                    yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for ContactNumberExtension, must match a pattern of " + regexContactNumberExtension, new [] { "ContactNumberExtension" });
-                }
-            }
-
-            // MobileNumber (string) maxLength
-            if (this.MobileNumber != null && this.MobileNumber.Length > 13)
-            {
-                yield return new ValidationResult("Invalid value for MobileNumber, length must be less than 13.", new [] { "MobileNumber" });
-            }
-
-            if (this.MobileNumberOption.Value != null) {
-                // MobileNumber (string) pattern
-                Regex regexMobileNumber = new Regex(@"^\+?\d{1,3}[\s-]?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$", RegexOptions.CultureInvariant);
-
-                if (this.MobileNumberOption.Value != null &&!regexMobileNumber.Match(this.MobileNumberOption.Value).Success)
-                {
-                    yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for MobileNumber, must match a pattern of " + regexMobileNumber, new [] { "MobileNumber" });
-                }
-            }
-
-            // JobTitle (string) maxLength
-            if (this.JobTitle != null && this.JobTitle.Length > 100)
-            {
-                yield return new ValidationResult("Invalid value for JobTitle, length must be less than 100.", new [] { "JobTitle" });
-            }
-
-            if (this.JobTitle != null) {
-                // JobTitle (string) pattern
-                Regex regexJobTitle = new Regex(@"^[a-zA-Z ]+$", RegexOptions.CultureInvariant);
-
-                if (this.JobTitle != null && !regexJobTitle.Match(this.JobTitle).Success)
-                {
-                    yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for JobTitle, must match a pattern of " + regexJobTitle, new [] { "JobTitle" });
-                }
-            }
-
             yield break;
         }
     }
@@ -286,18 +150,10 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> orgType = default;
-            Option<string?> companiesHouseNumber = default;
-            Option<string?> orgName = default;
-            Option<string?> firstName = default;
-            Option<string?> lastName = default;
-            Option<PreferredContactType?> preferredContactType = default;
-            Option<OrgRegisteredAddress?> orgRegisteredAddress = default;
             Option<string?> orgId = default;
-            Option<string?> landlineNumber = default;
-            Option<string?> contactNumberExtension = default;
-            Option<string?> mobileNumber = default;
-            Option<string?> jobTitle = default;
+            Option<string?> orgName = default;
+            Option<string?> emailId = default;
+            Option<Address?> orgAddress = default;
 
             while (utf8JsonReader.Read())
             {
@@ -314,43 +170,17 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "orgType":
-                            orgType = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "companiesHouseNumber":
-                            companiesHouseNumber = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "orgId":
+                            orgId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "orgName":
                             orgName = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "firstName":
-                            firstName = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "emailId":
+                            emailId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "lastName":
-                            lastName = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "preferredContactType":
-                            string? preferredContactTypeRawValue = utf8JsonReader.GetString();
-                            if (preferredContactTypeRawValue != null)
-                                preferredContactType = new Option<PreferredContactType?>(PreferredContactTypeValueConverter.FromStringOrDefault(preferredContactTypeRawValue));
-                            break;
-                        case "orgRegisteredAddress":
-                            orgRegisteredAddress = new Option<OrgRegisteredAddress?>(JsonSerializer.Deserialize<OrgRegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions)!);
-                            break;
-                        case "orgId":
-                            orgId = new Option<string?>(utf8JsonReader.GetString());
-                            break;
-                        case "landlineNumber":
-                            landlineNumber = new Option<string?>(utf8JsonReader.GetString());
-                            break;
-                        case "contactNumberExtension":
-                            contactNumberExtension = new Option<string?>(utf8JsonReader.GetString());
-                            break;
-                        case "mobileNumber":
-                            mobileNumber = new Option<string?>(utf8JsonReader.GetString());
-                            break;
-                        case "jobTitle":
-                            jobTitle = new Option<string?>(utf8JsonReader.GetString());
+                        case "orgAddress":
+                            orgAddress = new Option<Address?>(JsonSerializer.Deserialize<Address>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -358,52 +188,19 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (!orgType.IsSet)
-                throw new ArgumentException("Property is required for class OrgDetails.", nameof(orgType));
-
-            if (!companiesHouseNumber.IsSet)
-                throw new ArgumentException("Property is required for class OrgDetails.", nameof(companiesHouseNumber));
-
-            if (!orgName.IsSet)
-                throw new ArgumentException("Property is required for class OrgDetails.", nameof(orgName));
-
-            if (!firstName.IsSet)
-                throw new ArgumentException("Property is required for class OrgDetails.", nameof(firstName));
-
-            if (!lastName.IsSet)
-                throw new ArgumentException("Property is required for class OrgDetails.", nameof(lastName));
-
-            if (!preferredContactType.IsSet)
-                throw new ArgumentException("Property is required for class OrgDetails.", nameof(preferredContactType));
-
-            if (!orgRegisteredAddress.IsSet)
-                throw new ArgumentException("Property is required for class OrgDetails.", nameof(orgRegisteredAddress));
-
-            if (!jobTitle.IsSet)
-                throw new ArgumentException("Property is required for class OrgDetails.", nameof(jobTitle));
-
-            if (orgType.IsSet && orgType.Value == null)
-                throw new ArgumentNullException(nameof(orgType), "Property is not nullable for class OrgDetails.");
-
-            if (companiesHouseNumber.IsSet && companiesHouseNumber.Value == null)
-                throw new ArgumentNullException(nameof(companiesHouseNumber), "Property is not nullable for class OrgDetails.");
+            if (orgId.IsSet && orgId.Value == null)
+                throw new ArgumentNullException(nameof(orgId), "Property is not nullable for class OrgDetails.");
 
             if (orgName.IsSet && orgName.Value == null)
                 throw new ArgumentNullException(nameof(orgName), "Property is not nullable for class OrgDetails.");
 
-            if (firstName.IsSet && firstName.Value == null)
-                throw new ArgumentNullException(nameof(firstName), "Property is not nullable for class OrgDetails.");
+            if (emailId.IsSet && emailId.Value == null)
+                throw new ArgumentNullException(nameof(emailId), "Property is not nullable for class OrgDetails.");
 
-            if (lastName.IsSet && lastName.Value == null)
-                throw new ArgumentNullException(nameof(lastName), "Property is not nullable for class OrgDetails.");
+            if (orgAddress.IsSet && orgAddress.Value == null)
+                throw new ArgumentNullException(nameof(orgAddress), "Property is not nullable for class OrgDetails.");
 
-            if (preferredContactType.IsSet && preferredContactType.Value == null)
-                throw new ArgumentNullException(nameof(preferredContactType), "Property is not nullable for class OrgDetails.");
-
-            if (orgRegisteredAddress.IsSet && orgRegisteredAddress.Value == null)
-                throw new ArgumentNullException(nameof(orgRegisteredAddress), "Property is not nullable for class OrgDetails.");
-
-            return new OrgDetails(orgType.Value!, companiesHouseNumber.Value!, orgName.Value!, firstName.Value!, lastName.Value!, preferredContactType.Value!.Value!, orgRegisteredAddress.Value!, orgId, landlineNumber, contactNumberExtension, mobileNumber, jobTitle.Value!);
+            return new OrgDetails(orgId, orgName, emailId, orgAddress);
         }
 
         /// <summary>
@@ -430,67 +227,32 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, OrgDetails orgDetails, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (orgDetails.OrgType == null)
-                throw new ArgumentNullException(nameof(orgDetails.OrgType), "Property is required for class OrgDetails.");
+            if (orgDetails.OrgIdOption.IsSet && orgDetails.OrgId == null)
+                throw new ArgumentNullException(nameof(orgDetails.OrgId), "Property is required for class OrgDetails.");
 
-            if (orgDetails.CompaniesHouseNumber == null)
-                throw new ArgumentNullException(nameof(orgDetails.CompaniesHouseNumber), "Property is required for class OrgDetails.");
-
-            if (orgDetails.OrgName == null)
+            if (orgDetails.OrgNameOption.IsSet && orgDetails.OrgName == null)
                 throw new ArgumentNullException(nameof(orgDetails.OrgName), "Property is required for class OrgDetails.");
 
-            if (orgDetails.FirstName == null)
-                throw new ArgumentNullException(nameof(orgDetails.FirstName), "Property is required for class OrgDetails.");
+            if (orgDetails.EmailIdOption.IsSet && orgDetails.EmailId == null)
+                throw new ArgumentNullException(nameof(orgDetails.EmailId), "Property is required for class OrgDetails.");
 
-            if (orgDetails.LastName == null)
-                throw new ArgumentNullException(nameof(orgDetails.LastName), "Property is required for class OrgDetails.");
+            if (orgDetails.OrgAddressOption.IsSet && orgDetails.OrgAddress == null)
+                throw new ArgumentNullException(nameof(orgDetails.OrgAddress), "Property is required for class OrgDetails.");
 
-            if (orgDetails.OrgRegisteredAddress == null)
-                throw new ArgumentNullException(nameof(orgDetails.OrgRegisteredAddress), "Property is required for class OrgDetails.");
-
-            writer.WriteString("orgType", orgDetails.OrgType);
-
-            writer.WriteString("companiesHouseNumber", orgDetails.CompaniesHouseNumber);
-
-            writer.WriteString("orgName", orgDetails.OrgName);
-
-            writer.WriteString("firstName", orgDetails.FirstName);
-
-            writer.WriteString("lastName", orgDetails.LastName);
-
-            var preferredContactTypeRawValue = PreferredContactTypeValueConverter.ToJsonValue(orgDetails.PreferredContactType);
-            writer.WriteString("preferredContactType", preferredContactTypeRawValue);
-
-            writer.WritePropertyName("orgRegisteredAddress");
-            JsonSerializer.Serialize(writer, orgDetails.OrgRegisteredAddress, jsonSerializerOptions);
             if (orgDetails.OrgIdOption.IsSet)
-                if (orgDetails.OrgIdOption.Value != null)
-                    writer.WriteString("orgId", orgDetails.OrgId);
-                else
-                    writer.WriteNull("orgId");
+                writer.WriteString("orgId", orgDetails.OrgId);
 
-            if (orgDetails.LandlineNumberOption.IsSet)
-                if (orgDetails.LandlineNumberOption.Value != null)
-                    writer.WriteString("landlineNumber", orgDetails.LandlineNumber);
-                else
-                    writer.WriteNull("landlineNumber");
+            if (orgDetails.OrgNameOption.IsSet)
+                writer.WriteString("orgName", orgDetails.OrgName);
 
-            if (orgDetails.ContactNumberExtensionOption.IsSet)
-                if (orgDetails.ContactNumberExtensionOption.Value != null)
-                    writer.WriteString("contactNumberExtension", orgDetails.ContactNumberExtension);
-                else
-                    writer.WriteNull("contactNumberExtension");
+            if (orgDetails.EmailIdOption.IsSet)
+                writer.WriteString("emailId", orgDetails.EmailId);
 
-            if (orgDetails.MobileNumberOption.IsSet)
-                if (orgDetails.MobileNumberOption.Value != null)
-                    writer.WriteString("mobileNumber", orgDetails.MobileNumber);
-                else
-                    writer.WriteNull("mobileNumber");
-
-            if (orgDetails.JobTitle != null)
-                writer.WriteString("jobTitle", orgDetails.JobTitle);
-            else
-                writer.WriteNull("jobTitle");
+            if (orgDetails.OrgAddressOption.IsSet)
+            {
+                writer.WritePropertyName("orgAddress");
+                JsonSerializer.Serialize(writer, orgDetails.OrgAddress, jsonSerializerOptions);
+            }
         }
     }
 }

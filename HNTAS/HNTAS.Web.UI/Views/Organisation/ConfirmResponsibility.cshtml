@@ -1,0 +1,91 @@
+﻿@using HNTAS.Web.UI.Models.User;
+@model UserModel
+@{
+    ViewData["Title"] = $"Confirm responsibility for heat networks at {Model.OrganisationName}";
+}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            Confirm responsibility for heat networks at @Model.OrganisationName
+        </h1>
+
+        <p class="govuk-body">
+            Responsibility usually lies with a director, trustee, or a senior leadership
+            group responsible for ensuring the organisation complies with the Heat
+            Network Technical Assurance Scheme (HNTAS). In HNTAS, this is known as
+            the Responsible Party.
+        </p>
+
+        <p class="govuk-body">
+            You should only continue if you are authorised to act on behalf of the person
+            or group with overall accountability for heat networks at @Model.OrganisationName.
+        </p>
+
+        <p class="govuk-body">As part of this role, you will be able to:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>act as the main point of contact for regulatory and compliance matters</li>
+            <li>add and update heat network information in this service</li>
+            <li>invite and manage other users who can help provide information</li>
+        </ul>
+
+        <h2 class="govuk-heading-m">Confirm your responsibility</h2>
+
+        @* Show a summary of validation errors at the top if any *@
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li><a href="#IsRegulatoryContact">@modelError.ErrorMessage</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+
+        <form asp-action="ConfirmResponsibility" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.IsRegulatoryContact)) && ViewData.ModelState[nameof(Model.IsRegulatoryContact)].Errors.Any() ? "govuk-form-group--error" : "")">
+                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input"
+                               id="IsRegulatoryContact"
+                               name="IsRegulatoryContact"
+                                type="checkbox"
+                                value="true"
+                               @(Model.IsRegulatoryContact == true ? "checked" : "") />
+                        <label class="govuk-label govuk-checkboxes__label" for="IsRegulatoryContact">
+                            I confirm that I am authorised to act on behalf of the responsible party for @Model.OrganisationName
+                        </label>
+                        <input type="hidden" name="IsRegulatoryContact" value="false" />
+                    </div>
+                </div>
+
+                @if (ViewData.ModelState.ContainsKey(nameof(Model.IsRegulatoryContact)) && ViewData.ModelState[nameof(Model.IsRegulatoryContact)].Errors.Any())
+                {
+                    <p id="IsRegulatoryContact-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span>
+                        @ViewData.ModelState[nameof(Model.IsRegulatoryContact)].Errors.First().ErrorMessage
+                    </p>
+                }
+            </div>
+
+            <p class="govuk-body">
+                If you are not authorised, leave this service and ask someone from the
+                responsible party to register.
+            </p>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>

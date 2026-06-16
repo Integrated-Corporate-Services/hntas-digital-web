@@ -1,0 +1,50 @@
+﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.Contributors
+@model NewContributorRoleViewModel
+
+@{
+    ViewData["Title"] = "New Contributor role";
+    var fieldOrder = new[] { nameof(Model.IsDDH) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.IsDDH)).ToLowerInvariant();
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "Contributors",
+        Action = "NewContributorRole",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = "Designated duty holders and contributors",
+                QDescText =
+                    @"
+                    <p class='govuk-body'>A <strong>designated duty holder</strong> leads a particular phase of the development and is given responsibility for the information entered. You may have separate leads for design, construction and operation.</p>
+
+                    <p class='govuk-body'><strong>Contributors</strong> with specific expertise can be added to provide network detail where required.</p>
+                    
+                    <legend class='govuk-fieldset__legend govuk-fieldset__legend--m'>
+                        <h1 class='govuk-fieldset__heading'>
+                            Who do you want to add?
+                        </h1>
+                    </legend>",
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = $"{elementId}", OptValue = "true", OptText = "Designated duty holder", OptHintText = "Leads a phase of development and can add network information" },
+                    new Option { OptId = $"{elementId}-2", OptValue = "false", OptText = "Contributor", OptHintText = "Can add network information only" }
+                },
+                SeletedOption = Model.IsDDH.ToString().ToLowerInvariant()
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-xl">Your network team</span>
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div>

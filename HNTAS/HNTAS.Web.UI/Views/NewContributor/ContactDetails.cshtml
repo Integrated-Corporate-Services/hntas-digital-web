@@ -1,0 +1,90 @@
+﻿@using HNTAS.Web.UI.Models.User
+@using HNTAS.Web.UI.Models.Enums
+@model ContributorContactDetailsModel
+
+@{
+    ViewData["Title"] = "Contact Information";
+
+    // Pre-calculate common ModelState checks for cleaner markup
+    bool hasFirstNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.FirstName)) && ViewData.ModelState[nameof(Model.FirstName)].Errors.Any();
+    bool hasLastNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.LastName)) && ViewData.ModelState[nameof(Model.LastName)].Errors.Any();
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        @* Error Summary - only displayed if ModelState is invalid *@
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        @foreach (var keyValuePair in ViewData.ModelState)
+                        {
+                            var fieldName = keyValuePair.Key;
+                            var modelStateEntry = keyValuePair.Value;
+
+                            foreach (var error in modelStateEntry.Errors)
+                            {
+                                string targetId = fieldName; // Default: link to the input's ID (which is usually the fieldName)
+
+                                <li>
+                                    <a href="#@targetId">@error.ErrorMessage</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+        <h1 class="govuk-heading-l">
+            <span class="govuk-caption-l">Manage users for @ViewBag.OrganisationName</span>
+            @ViewData["Title"]
+        </h1>
+
+        <form asp-controller="NewContributor" asp-action="SaveContactDetails" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            @* First name input *@
+            <div class="govuk-form-group @(hasFirstNameErrors ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="FirstName">
+                    First name
+                </label>
+                @if (hasFirstNameErrors)
+                {
+                    <p id="FirstName-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.FirstName)
+                    </p>
+                }
+                <input class="govuk-input govuk-!-width-two-thirds" id="FirstName" name="FirstName" type="text" autocomplete="given-name" spellcheck="false"
+                       asp-for="FirstName"
+                       aria-describedby="@(hasFirstNameErrors ? "FirstName-error" : "")">
+            </div>
+
+            @* Last name input *@
+            <div class="govuk-form-group @(hasLastNameErrors ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="LastName">
+                    Last name
+                </label>
+                @if (hasLastNameErrors)
+                {
+                    <p id="LastName-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.LastName)
+                    </p>
+                }
+                <input class="govuk-input govuk-!-width-two-thirds" id="LastName" name="LastName" type="text" autocomplete="family-name" spellcheck="false"
+                       asp-for="LastName"
+                       aria-describedby="@(hasLastNameErrors ? "LastName-error" : "")">
+            </div>
+
+            @* Continue button *@
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+
+    </div>
+</div>

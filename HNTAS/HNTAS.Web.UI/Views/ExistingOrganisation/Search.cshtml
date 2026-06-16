@@ -1,0 +1,54 @@
+﻿@using HNTAS.Web.UI.Models
+
+@model OrganisationSearchViewModel
+@{
+    ViewData["Title"] = "Add your organisation";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">Add your organisation</h1>
+
+        <p class="govuk-body">
+            Enter your Organisation's ORG ID issued by HNTAS OR provide the Organisation name with which it was registered.
+        </p>
+
+        <form method="post">
+            @* Form will POST to the current page's OnPost method *@
+
+            @* Display summary of all validation errors *@
+            <div asp-validation-summary="ModelOnly" class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        @* asp-validation-for="SearchTerm" below handles individual field errors *@
+                    </ul>
+                </div>
+            </div>
+
+            <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SearchTerm)) && ViewData.ModelState[nameof(Model.SearchTerm)]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="@nameof(Model.SearchTerm)">
+                    @Html.DisplayNameFor(model => model.SearchTerm)
+                </label>
+                @* Display error message for SearchTerm *@
+                <span asp-validation-for="SearchTerm" class="govuk-error-message"></span>
+                <input class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.SearchTerm)) && ViewData.ModelState[nameof(Model.SearchTerm)]?.Errors.Count > 0 ? "govuk-input--error" : "")"
+                       id="@Html.LowercaseIdFor(m => m.SearchTerm)"
+                       name="@nameof(Model.SearchTerm)"
+                       type="text"
+                       spellcheck="false"
+                       asp-for="SearchTerm"
+                       value="@Model.SearchTerm">
+            </div>
+
+            <button type="submit" data-module="govuk-button" class="govuk-button">
+                Search
+            </button>
+
+        </form>
+
+    </div>
+</div>

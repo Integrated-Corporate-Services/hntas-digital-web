@@ -6,12 +6,20 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** |  | [optional] 
 **OneLoginId** | **string** |  | [optional] 
-**OrgDetails** | [**OrgDetails**](OrgDetails.md) |  | [optional] 
+**OrgId** | **string** |  | [optional] 
+**FirstName** | **string** |  | [optional] 
+**LastName** | **string** |  | [optional] 
+**JobTitle** | **string** |  | [optional] 
 **EmailId** | **string** |  | [optional] 
-**HnIds** | **List&lt;string&gt;** |  | [optional] 
+**PreferredContactType** | **NullableOfPreferredContactType** |  | [optional] 
+**LandlineNumber** | **string** |  | [optional] 
+**MobileNumber** | **string** |  | [optional] 
+**ContactNumberExtension** | **string** |  | [optional] 
 **Roles** | [**List&lt;UserRole&gt;**](UserRole.md) |  | [optional] 
-**Status** | **NullableOfUserStatus** |  | [optional] 
-**Invitations** | [**List&lt;Invitation&gt;**](Invitation.md) |  | [optional] 
+**HnRoleMappings** | [**List&lt;HnRoleMapping&gt;**](HnRoleMapping.md) |  | [optional] 
+**Status** | **UserStatus** |  | [optional] 
+**CreatedAt** | **DateTimeOffset** |  | [optional] 
+**ContributingOrganisations** | **List&lt;string&gt;** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

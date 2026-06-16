@@ -1,0 +1,810 @@
+﻿@model HNTAS.Web.UI.Models.CarbonCalculatorViewModel
+
+@{
+    ViewData["Title"] = "Carbon Calculator";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Carbon Calculator</h1>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+                    <h2 class="govuk-error-summary__title" id="error-summary-title">
+                        There is a problem
+                    </h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                            @foreach (var modelStateKey in ViewData.ModelState.Keys)
+                            {
+                                var key = modelStateKey ?? string.Empty;
+                                var entry = ViewData.ModelState[key];
+                                if (entry == null) continue;
+                                foreach (var error in entry.Errors)
+                                {
+                                    var msg = error?.ErrorMessage ?? error?.Exception?.Message ?? string.Empty;
+                                    <li>
+                                        <a href="#@(key.ToLowerInvariant())">@key : @msg</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+
+            @Html.AntiForgeryToken()
+            <form asp-controller="CarbonCalculator" asp-method="post" asp-action="Result" asp-method="post">
+
+                <!-- Background/meta -->
+                <div id="background-section" class="repeater-section govuk-!-margin-top-4">
+                    <label class="govuk-label" for="DateWorkbookCompleted">Workbook completion date (YYYY-MM-DD) *</label>
+                    <input class="govuk-input" id="DateWorkbookCompleted" name="Request.Background.DateWorkbookCompleted" type="date" value="@Model?.Request.Background.DateWorkbookCompleted" required />
+                    <span asp-validation-for="Request.Background.DateWorkbookCompleted" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="NetworkStatus">Network status *</label>
+                    <select class="govuk-select" id="NetworkStatus" name="Request.Background.NetworkStatus" required>
+                        <option value="">-- select --</option>
+                        <option value="new" selected="@(Model?.Request.Background.NetworkStatus == "new" ? "selected" : null)">new</option>
+                        <option value="existing" selected="@(Model?.Request.Background.NetworkStatus == "existing" ? "selected" : null)">existing</option>
+                        <option value="extended" selected="@(Model?.Request.Background.NetworkStatus == "extended" ? "selected" : null)">extended</option>
+                        <option value="other" selected="@(Model?.Request.Background.NetworkStatus == "other" ? "selected" : null)">other</option>
+                    </select>
+                    <span asp-validation-for="Request.Background.NetworkStatus" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="NetworkServiceProvision">Service provision *</label>
+                    <select class="govuk-select" id="NetworkServiceProvision" name="Request.Background.NetworkServiceProvision" required>
+                        <option value="">-- select --</option>
+                        <option value="water" selected="@(Model?.Request.Background.NetworkServiceProvision == "water" ? "selected" : null)">water</option>
+                        <option value="space" selected="@(Model?.Request.Background.NetworkServiceProvision == "space" ? "selected" : null)">space</option>
+                        <option value="both" selected="@(Model?.Request.Background.NetworkServiceProvision == "both" ? "selected" : null)">both</option>
+                    </select>
+                    <span asp-validation-for="Request.Background.NetworkServiceProvision" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="Name">Calculation name *</label>
+                    <input class="govuk-input" id="Name" name="Request.Background.Name" type="text" value="@Model?.Request.Background.Name" required />
+                    <span asp-validation-for="Request.Background.Name" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="NetworkID">Unique network ID *</label>
+                    <input class="govuk-input" id="NetworkID" name="Request.Background.NetworkID" type="text" value="@Model?.Request.Background.NetworkID" required />
+                    <span asp-validation-for="Request.Background.NetworkID" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="NetworkName">Current network name *</label>
+                    <input class="govuk-input" id="NetworkName" name="Request.Background.NetworkName" type="text" value="@Model?.Request.Background.NetworkName" required />
+                    <span asp-validation-for="Request.Background.NetworkName" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="NetworkNamePrevious">Previous network name</label>
+                    <input class="govuk-input" id="NetworkNamePrevious" name="Request.Background.NetworkNamePrevious" type="text" value="@Model?.Request.Background.NetworkNamePrevious" />
+
+                    <label class="govuk-label" for="HeatNetworkZone">Network zone</label>
+                    <input class="govuk-input" id="HeatNetworkZone" name="Request.Background.HeatNetworkZone" type="text" value="@Model?.Request.Background.HeatNetworkZone" />
+
+                    <label class="govuk-label" for="AddressOfThePrimaryEnergyCentre">Primary energy centre address</label>
+                    <input class="govuk-input" id="AddressOfThePrimaryEnergyCentre" name="Request.Background.AddressOfThePrimaryEnergyCentre" type="text" value="@Model?.Request.Background.AddressOfThePrimaryEnergyCentre" />
+
+                    <label class="govuk-label" for="PostcodeOfThePrimaryEnergyCentre">Postcode *</label>
+                    <input class="govuk-input" id="PostcodeOfThePrimaryEnergyCentre" name="Request.Background.PostcodeOfThePrimaryEnergyCentre" type="text" value="@Model?.Request.Background.PostcodeOfThePrimaryEnergyCentre" required />
+                    <span asp-validation-for="Request.Background.PostcodeOfThePrimaryEnergyCentre" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="NetworkOperator">Network operator</label>
+                    <input class="govuk-input" id="NetworkOperator" name="Request.Background.NetworkOperator" type="text" value="@Model?.Request.Background.NetworkOperator" />
+
+                    <label class="govuk-label" for="NetworkOperatorContact">Operator/Contact name</label>
+                    <input class="govuk-input" id="NetworkOperatorContact" name="Request.Background.NetworkOperatorContact" type="text" value="@Model?.Request.Background.NetworkOperatorContact" />
+
+                    <label class="govuk-label" for="ContactTelephone">Contact telephone</label>
+                    <input class="govuk-input" id="ContactTelephone" name="Request.Background.ContactTelephone" type="tel" value="@Model?.Request.Background.ContactTelephone" />
+
+                    <label class="govuk-label" for="ContactEmail">Contact email *</label>
+                    <input class="govuk-input" id="ContactEmail" name="Request.Background.ContactEmail" type="email" value="@Model?.Request.Background.ContactEmail" required />
+                    <span asp-validation-for="Request.Background.ContactEmail" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="DescriptionOfNetwork">Network description</label>
+                    <textarea class="govuk-textarea" id="DescriptionOfNetwork" name="Request.Background.DescriptionOfNetwork">@Model?.Request.Background.DescriptionOfNetwork</textarea>
+
+                    <label class="govuk-label" for="DateOfInitialOperation">Date of initial operation (YYYY-MM-DD)</label>
+                    <input class="govuk-input" id="DateOfInitialOperation" name="Request.Background.DateOfInitialOperation" type="date" value="@Model?.Request.Background.DateOfInitialOperation" />
+
+                    <label class="govuk-label" for="CommissioningDate">Commissioning date (YYYY-MM-DD) *</label>
+                    <input class="govuk-input" id="CommissioningDate" name="Request.Background.CommissioningDate" type="date" value="@Model?.Request.Background.CommissioningDate" required />
+                    <span asp-validation-for="Request.Background.CommissioningDate" class="govuk-error-message"></span>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+
+                <!-- Energy years -->
+                <div id="energy-section" class="repeater-section govuk-!-margin-top-4">
+                    <label class="govuk-label" for="YearCount">Year count *</label>
+                    <input class="govuk-input" id="YearCount" name="Request.Energy.YearCount" type="number" value="@Model?.Request.Energy.YearCount" required />
+                    <span asp-validation-for="Request.Energy.YearCount" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="StartYear">Start year *</label>
+                    <input class="govuk-input" id="StartYear" name="Request.Energy.StartYear" type="number" value="@Model?.Request.Energy.StartYear" required />
+                    <span asp-validation-for="Request.Energy.StartYear" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="EnergyHeatNetworkPrimaryLossesCsv">Energy Heat Network Primary losses per year (comma-separated) *</label>
+                    <input class="govuk-input" id="EnergyHeatNetworkPrimaryLossesCsv" name="Request.Energy.EnergyHeatNetworkPrimaryLossesCsv" type="text" value="@Model?.Request.Energy.EnergyHeatNetworkPrimaryLossesCsv" />
+
+                    <!-- Counts -->
+                    <label class="govuk-label" for="ChpCount">CHP count</label>
+                    <input class="govuk-input" id="ChpCount" name="Request.Energy.ChpCount" type="number" value="@Model?.Request.Energy.ChpCount" required />
+                    <span asp-validation-for="Request.Energy.ChpCount" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="HeatPumpCount">Heat Pump count</label>
+                    <input class="govuk-input" id="HeatPumpCount" name="Request.Energy.HeatPumpCount" type="number" value="@Model?.Request.Energy.HeatPumpCount" required />
+                    <span asp-validation-for="Request.Energy.HeatPumpCount" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="RecoveredCount">Recovered (no HP) count</label>
+                    <input class="govuk-input" id="RecoveredCount" name="Request.Energy.RecoveredCount" type="number" value="@Model?.Request.Energy.RecoveredCount" required />
+                    <span asp-validation-for="Request.Energy.RecoveredCount" class="govuk-error-message"></span>
+
+                    <label class="govuk-label" for="BoilerCount">Boiler count</label>
+                    <input class="govuk-input" id="BoilerCount" name="Request.Energy.BoilerCount" type="number" value="@Model?.Request.Energy.BoilerCount" required />
+                    <span asp-validation-for="Request.Energy.BoilerCount" class="govuk-error-message"></span>
+
+                    <!-- EPP -->
+                    <label class="govuk-label" for="EppElectricityUsedForPumpingValueCsv">Electricity used for pumping per year (comma-separated)</label>
+                    <input class="govuk-input" id="EppElectricityUsedForPumpingValueCsv" name="Request.Energy.EppElectricityUsedForPumpingValueCsv" type="text" value="@Model?.Request.Energy.EppElectricityUsedForPumpingValueCsv" />
+                    <label class="govuk-label" for="EppElectricityUsedForPumpingNotes">EPP notes</label>
+                    <input class="govuk-input" id="EppElectricityUsedForPumpingNotes" name="Request.Energy.EppElectricityUsedForPumpingNotes" type="text" value="@Model?.Request.Energy.EppElectricityUsedForPumpingNotes" />
+                    <label class="govuk-label" for="EppSleevingPCentNotes">Sleeving % notes</label>
+                    <input class="govuk-input" id="EppSleevingPCentNotes" name="Request.Energy.EppSleevingPCentNotes" type="text" value="@Model?.Request.Energy.EppSleevingPCentNotes" />
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+
+                <!-- CHP -->
+                <!-- CHP (repeater-enabled) -->
+                <div id="chp-section" class="repeater-section govuk-!-margin-top-4">
+                    <!-- Visible first item (index 0) - keep server-binding to Request.Energy.ChpInputs[0] -->
+                    <div class="repeater-item" data-index="0">
+                        <h2 class="govuk-heading-m">CHP</h2>
+
+                        <label class="govuk-label" for="ChpFuelTypeInput-0" data-base="ChpFuelTypeInput">Fuel Type ID</label>
+                        <input class="govuk-input" id="ChpFuelTypeInput-0" name="Request.Energy.ChpInputs[0].ChpFuelTypeInput" data-base="ChpFuelTypeInput" type="number" value="@Model?.Request.Energy.ChpInputs[0].ChpFuelTypeInput" required />
+
+                        <label class="govuk-label" for="ChpInstallationDateInput-0" data-base="ChpInstallationDateInput">Installation Date</label>
+                        <input class="govuk-input" id="ChpInstallationDateInput-0" name="Request.Energy.ChpInputs[0].ChpInstallationDateInput" data-base="ChpInstallationDateInput" type="date" value="@Model?.Request.Energy.ChpInputs[0].ChpInstallationDateInput" required />
+
+                        <label class="govuk-label" for="ChpUsefulHeatValueCsv-0" data-base="ChpUsefulHeatValueCsv">Useful heat per year (MWh, comma-separated) *</label>
+                        <input class="govuk-input" id="ChpUsefulHeatValueCsv-0" name="Request.Energy.ChpInputs[0].ChpUsefulHeatValueCsv" data-base="ChpUsefulHeatValueCsv" type="text" value="@Model?.Request.Energy.ChpInputs[0].ChpUsefulHeatValueCsv" required />
+                        <label class="govuk-label" for="ChpUsefulHeatNotes-0" data-base="ChpUsefulHeatNotes">Notes</label>
+                        <input class="govuk-input" id="ChpUsefulHeatNotes-0" name="Request.Energy.ChpInputs[0].ChpUsefulHeatNotes" data-base="ChpUsefulHeatNotes" type="text" value="@Model?.Request.Energy.ChpInputs[0].ChpUsefulHeatNotes" />
+
+                        <label class="govuk-label" for="ChpElectricityGeneratedValueCsv-0" data-base="ChpElectricityGeneratedValueCsv">Electricity generated per year (MWh, comma-separated) *</label>
+                        <input class="govuk-input" id="ChpElectricityGeneratedValueCsv-0" name="Request.Energy.ChpInputs[0].ChpElectricityGeneratedValueCsv" data-base="ChpElectricityGeneratedValueCsv" type="text" value="@Model?.Request.Energy.ChpInputs[0].ChpElectricityGeneratedValueCsv" required />
+                        <label class="govuk-label" for="ChpElectricityGeneratedNotes-0" data-base="ChpElectricityGeneratedNotes">Notes</label>
+                        <input class="govuk-input" id="ChpElectricityGeneratedNotes-0" name="Request.Energy.ChpInputs[0].ChpElectricityGeneratedNotes" data-base="ChpElectricityGeneratedNotes" type="text" value="@Model?.Request.Energy.ChpInputs[0].ChpElectricityGeneratedNotes" />
+
+                        <label class="govuk-label" for="ChpFuelUsedValueCsv-0" data-base="ChpFuelUsedValueCsv">Fuel used per year (MWh, comma-separated)*</label>
+                        <input class="govuk-input" id="ChpFuelUsedValueCsv-0" name="Request.Energy.ChpInputs[0].ChpFuelUsedValueCsv" data-base="ChpFuelUsedValueCsv" type="text" value="@Model?.Request.Energy.ChpInputs[0].ChpFuelUsedValueCsv" required />
+                        <label class="govuk-label" for="ChpFuelUsedNotes-0" data-base="ChpFuelUsedNotes">Notes</label>
+                        <input class="govuk-input" id="ChpFuelUsedNotes-0" name="Request.Energy.ChpInputs[0].ChpFuelUsedNotes" data-base="ChpFuelUsedNotes" type="text" value="@Model?.Request.Energy.ChpInputs[0].ChpFuelUsedNotes" />
+
+                        <label class="govuk-label" for="ChpHeatCoolingValueCsv-0" data-base="ChpHeatCoolingValueCsv">Heat used for cooling per year (MWh, comma-separated) *</label>
+                        <input class="govuk-input" id="ChpHeatCoolingValueCsv-0" name="Request.Energy.ChpInputs[0].ChpHeatCoolingValueCsv" data-base="ChpHeatCoolingValueCsv" type="text" value="@Model?.Request.Energy.ChpInputs[0].ChpHeatCoolingValueCsv" required />
+                        <label class="govuk-label" for="ChpHeatCoolingNotes-0" data-base="ChpHeatCoolingNotes">Notes</label>
+                        <input class="govuk-input" id="ChpHeatCoolingNotes-0" name="Request.Energy.ChpInputs[0].ChpHeatCoolingNotes" data-base="ChpHeatCoolingNotes" type="text" value="@Model?.Request.Energy.ChpInputs[0].ChpHeatCoolingNotes" />
+
+                        <label class="govuk-label" for="ChpSleevingPCentValueCsv-0" data-base="ChpSleevingPCentValueCsv">Sleeving % per year (comma-separated) *</label>
+                        <input class="govuk-input" id="ChpSleevingPCentValueCsv-0" name="Request.Energy.ChpInputs[0].ChpSleevingPCentValueCsv" data-base="ChpSleevingPCentValueCsv" type="text" value="@Model?.Request.Energy.ChpInputs[0].ChpSleevingPCentValueCsv" required />
+                        <label class="govuk-label" for="ChpSleevingPCentNotes-0" data-base="ChpSleevingPCentNotes">Notes</label>
+                        <input class="govuk-input" id="ChpSleevingPCentNotes-0" name="Request.Energy.ChpInputs[0].ChpSleevingPCentNotes" data-base="ChpSleevingPCentNotes" type="text" value="@Model?.Request.Energy.ChpInputs[0].ChpSleevingPCentNotes" />
+
+                        <label class="govuk-label" for="ChpMaxHeatOutput-0" data-base="ChpMaxHeatOutput">Max Heat Output (kWth) *</label>
+                        <input class="govuk-input" id="ChpMaxHeatOutput-0" name="Request.Energy.ChpInputs[0].ChpMaxHeatOutput" data-base="ChpMaxHeatOutput" type="number" value="@Model?.Request.Energy.ChpInputs[0].ChpMaxHeatOutput" required />
+                        <label class="govuk-label" for="ChpMaxElectricityOutput-0" data-base="ChpMaxElectricityOutput">Max Electricity Output (kWe) *</label>
+                        <input class="govuk-input" id="ChpMaxElectricityOutput-0" name="Request.Energy.ChpInputs[0].ChpMaxElectricityOutput" data-base="ChpMaxElectricityOutput" type="number" value="@Model?.Request.Energy.ChpInputs[0].ChpMaxElectricityOutput" required />
+                    </div>
+
+                    <!-- Hidden template for additional items. JS assigns zero-based indexes in names (1,2,...). -->
+                    <div class="repeater-item template govuk-!-margin-top-4" style="display:none;" aria-hidden="true">
+                        <h2 class="govuk-heading-m">CHP</h2>
+
+                        <label class="govuk-label" data-base="ChpFuelTypeInput">Fuel Type ID</label>
+                        <input class="govuk-input" data-base="ChpFuelTypeInput" type="number" />
+
+                        <label class="govuk-label" data-base="ChpInstallationDateInput">Installation Date</label>
+                        <input class="govuk-input" data-base="ChpInstallationDateInput" type="date" />
+
+                        <label class="govuk-label" data-base="ChpUsefulHeatValueCsv">Useful heat per year (MWh, comma-separated) *</label>
+                        <input class="govuk-input" data-base="ChpUsefulHeatValueCsv" type="text" />
+                        <label class="govuk-label" data-base="ChpUsefulHeatNotes">Notes</label>
+                        <input class="govuk-input" data-base="ChpUsefulHeatNotes" type="text" />
+
+                        <label class="govuk-label" data-base="ChpElectricityGeneratedValueCsv">Electricity generated per year (MWh, comma-separated) *</label>
+                        <input class="govuk-input" data-base="ChpElectricityGeneratedValueCsv" type="text" />
+                        <label class="govuk-label" data-base="ChpElectricityGeneratedNotes">Notes</label>
+                        <input class="govuk-input" data-base="ChpElectricityGeneratedNotes" type="text" />
+
+                        <label class="govuk-label" data-base="ChpFuelUsedValueCsv">Fuel used per year (MWh, comma-separated)*</label>
+                        <input class="govuk-input" data-base="ChpFuelUsedValueCsv" type="text" />
+                        <label class="govuk-label" data-base="ChpFuelUsedNotes">Notes</label>
+                        <input class="govuk-input" data-base="ChpFuelUsedNotes" type="text" />
+
+                        <label class="govuk-label" data-base="ChpHeatCoolingValueCsv">Heat used for cooling per year (MWh, comma-separated) *</label>
+                        <input class="govuk-input" data-base="ChpHeatCoolingValueCsv" type="text" />
+                        <label class="govuk-label" data-base="ChpHeatCoolingNotes">Notes</label>
+                        <input class="govuk-input" data-base="ChpHeatCoolingNotes" type="text" />
+
+                        <label class="govuk-label" data-base="ChpSleevingPCentValueCsv">Sleeving % per year (comma-separated) *</label>
+                        <input class="govuk-input" data-base="ChpSleevingPCentValueCsv" type="text" />
+                        <label class="govuk-label" data-base="ChpSleevingPCentNotes">Notes</label>
+                        <input class="govuk-input" data-base="ChpSleevingPCentNotes" type="text" />
+
+                        <label class="govuk-label" data-base="ChpMaxHeatOutput">Max Heat Output (kWth) *</label>
+                        <input class="govuk-input" data-base="ChpMaxHeatOutput" type="number" />
+                        <label class="govuk-label" data-base="ChpMaxElectricityOutput">Max Electricity Output (kWe) *</label>
+                        <input class="govuk-input" data-base="ChpMaxElectricityOutput" type="number" />
+
+                        <div class="govuk-!-margin-top-2">
+                            <button type="button" class="govuk-button govuk-button--secondary remove-repeater-btn">Remove this CHP</button>
+                        </div>
+                    </div>
+
+                    <!-- Add button -->
+                    <div class="govuk-!-margin-top-3">
+                        <button type="button" class="govuk-button add-repeater-btn" data-section="chp-section">Add another CHP Input</button>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+
+                <!-- Heat Pumps -->
+                <!-- Heat Pumps (repeater-enabled) -->
+                <div id="hp-section" class="repeater-section govuk-!-margin-top-4">
+                    <h2 class="govuk-heading-m">Heat Pumps</h2>
+                    <!-- Visible first item (index 0) => server binding to Request.Energy.HeatPumpInputs[0] -->
+                    <div class="repeater-item" data-index="0">
+                        <label class="govuk-label" for="HpmTypeFuelUsedInput-0" data-base="HpmTypeFuelUsedInput">Fuel Type ID</label>
+                        <input class="govuk-input"
+                               id="HpmTypeFuelUsedInput-0"
+                               name="Request.Energy.HeatPumpInputs[0].HpmTypeFuelUsedInput"
+                               data-base="HpmTypeFuelUsedInput"
+                               type="number"
+                               value="@Model?.Request?.Energy?.HeatPumpInputs?[0]?.HpmTypeFuelUsedInput"
+                               required />
+
+                        <label class="govuk-label" for="HpmUsefulHeatGeneratedValueCsv-0" data-base="HpmUsefulHeatGeneratedValueCsv">Useful heat per year (MWh, CSV) *</label>
+                        <input class="govuk-input"
+                               id="HpmUsefulHeatGeneratedValueCsv-0"
+                               name="Request.Energy.HeatPumpInputs[0].HpmUsefulHeatGeneratedValueCsv"
+                               data-base="HpmUsefulHeatGeneratedValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.HeatPumpInputs?[0]?.HpmUsefulHeatGeneratedValueCsv"
+                               required />
+                        <label class="govuk-label" for="HpmUsefulHeatGeneratedNotes-0" data-base="HpmUsefulHeatGeneratedNotes">Notes</label>
+                        <input class="govuk-input"
+                               id="HpmUsefulHeatGeneratedNotes-0"
+                               name="Request.Energy.HeatPumpInputs[0].HpmUsefulHeatGeneratedNotes"
+                               data-base="HpmUsefulHeatGeneratedNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.HeatPumpInputs?[0]?.HpmUsefulHeatGeneratedNotes" />
+
+                        <label class="govuk-label" for="HpmEnergyUsedValueCsv-0" data-base="HpmEnergyUsedValueCsv">Energy used per year (MWh, CSV) *</label>
+                        <input class="govuk-input"
+                               id="HpmEnergyUsedValueCsv-0"
+                               name="Request.Energy.HeatPumpInputs[0].HpmEnergyUsedValueCsv"
+                               data-base="HpmEnergyUsedValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.HeatPumpInputs?[0]?.HpmEnergyUsedValueCsv"
+                               required />
+                        <label class="govuk-label" for="HpmEnergyUsedNotes-0" data-base="HpmEnergyUsedNotes">Notes</label>
+                        <input class="govuk-input"
+                               id="HpmEnergyUsedNotes-0"
+                               name="Request.Energy.HeatPumpInputs[0].HpmEnergyUsedNotes"
+                               data-base="HpmEnergyUsedNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.HeatPumpInputs?[0]?.HpmEnergyUsedNotes" />
+
+                        <label class="govuk-label" for="HpmUsefulCoolingGeneratedValueCsv-0" data-base="HpmUsefulCoolingGeneratedValueCsv">Useful cooling per year (MWh, CSV) *</label>
+                        <input class="govuk-input"
+                               id="HpmUsefulCoolingGeneratedValueCsv-0"
+                               name="Request.Energy.HeatPumpInputs[0].HpmUsefulCoolingGeneratedValueCsv"
+                               data-base="HpmUsefulCoolingGeneratedValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.HeatPumpInputs?[0]?.HpmUsefulCoolingGeneratedValueCsv"
+                               required />
+                        <label class="govuk-label" for="HpmUsefulCoolingGeneratedNotes-0" data-base="HpmUsefulCoolingGeneratedNotes">Notes</label>
+                        <input class="govuk-input"
+                               id="HpmUsefulCoolingGeneratedNotes-0"
+                               name="Request.Energy.HeatPumpInputs[0].HpmUsefulCoolingGeneratedNotes"
+                               data-base="HpmUsefulCoolingGeneratedNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.HeatPumpInputs?[0]?.HpmUsefulCoolingGeneratedNotes" />
+
+                        <label class="govuk-label" for="HpmSleevingPCentValueCsv-0" data-base="HpmSleevingPCentValueCsv">Sleeving % per year (CSV) *</label>
+                        <input class="govuk-input"
+                               id="HpmSleevingPCentValueCsv-0"
+                               name="Request.Energy.HeatPumpInputs[0].HpmSleevingPCentValueCsv"
+                               data-base="HpmSleevingPCentValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.HeatPumpInputs?[0]?.HpmSleevingPCentValueCsv"
+                               required />
+                        <label class="govuk-label" for="HpmSleevingPCentNotes-0" data-base="HpmSleevingPCentNotes">Notes</label>
+                        <input class="govuk-input"
+                               id="HpmSleevingPCentNotes-0"
+                               name="Request.Energy.HeatPumpInputs[0].HpmSleevingPCentNotes"
+                               data-base="HpmSleevingPCentNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.HeatPumpInputs?[0]?.HpmSleevingPCentNotes" />
+
+                        <label class="govuk-label" for="HpmMaxHeatOutput-0" data-base="HpmMaxHeatOutput">Max Heat Output (kWth)</label>
+                        <input class="govuk-input"
+                               id="HpmMaxHeatOutput-0"
+                               name="Request.Energy.HeatPumpInputs[0].HpmMaxHeatOutput"
+                               data-base="HpmMaxHeatOutput"
+                               type="number"
+                               value="@Model?.Request?.Energy?.HeatPumpInputs?[0]?.HpmMaxHeatOutput"
+                               required />
+                    </div>
+
+                    <!-- Hidden template for additional items. JS assigns zero-based indexes in names (1,2,...) -->
+                    <div class="repeater-item template govuk-!-margin-top-4" style="display:none;" aria-hidden="true">
+                        <h2 class="govuk-heading-m">Heat Pump</h2>
+
+                        <label class="govuk-label" data-base="HpmTypeFuelUsedInput">Fuel Type ID</label>
+                        <input class="govuk-input" data-base="HpmTypeFuelUsedInput" type="number" />
+
+                        <label class="govuk-label" data-base="HpmUsefulHeatGeneratedValueCsv">Useful heat per year (MWh, CSV) *</label>
+                        <input class="govuk-input" data-base="HpmUsefulHeatGeneratedValueCsv" type="text" />
+                        <label class="govuk-label" data-base="HpmUsefulHeatGeneratedNotes">Notes</label>
+                        <input class="govuk-input" data-base="HpmUsefulHeatGeneratedNotes" type="text" />
+
+                        <label class="govuk-label" data-base="HpmEnergyUsedValueCsv">Energy used per year (MWh, CSV) *</label>
+                        <input class="govuk-input" data-base="HpmEnergyUsedValueCsv" type="text" />
+                        <label class="govuk-label" data-base="HpmEnergyUsedNotes">Notes</label>
+                        <input class="govuk-input" data-base="HpmEnergyUsedNotes" type="text" />
+
+                        <label class="govuk-label" data-base="HpmUsefulCoolingGeneratedValueCsv">Useful cooling per year (MWh, CSV) *</label>
+                        <input class="govuk-input" data-base="HpmUsefulCoolingGeneratedValueCsv" type="text" />
+                        <label class="govuk-label" data-base="HpmUsefulCoolingGeneratedNotes">Notes</label>
+                        <input class="govuk-input" data-base="HpmUsefulCoolingGeneratedNotes" type="text" />
+
+                        <label class="govuk-label" data-base="HpmSleevingPCentValueCsv">Sleeving % per year (CSV) *</label>
+                        <input class="govuk-input" data-base="HpmSleevingPCentValueCsv" type="text" />
+                        <label class="govuk-label" data-base="HpmSleevingPCentNotes">Notes</label>
+                        <input class="govuk-input" data-base="HpmSleevingPCentNotes" type="text" />
+
+                        <label class="govuk-label" data-base="HpmMaxHeatOutput">Max Heat Output (kWth)</label>
+                        <input class="govuk-input" data-base="HpmMaxHeatOutput" type="number" />
+
+                        <div class="govuk-!-margin-top-2">
+                            <button type="button" class="govuk-button govuk-button--secondary remove-repeater-btn">Remove this Heat Pump</button>
+                        </div>
+                    </div>
+
+                    <!-- Add button -->
+                    <div class="govuk-!-margin-top-3">
+                        <button type="button" class="govuk-button add-repeater-btn" data-section="hp-section">Add another Heat Pump</button>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+
+                <!-- Heat Recovery (without HP) -->
+                <!-- Heat Recovery (repeater-enabled) -->
+                <div id="hrw-section" class="repeater-section govuk-!-margin-top-4">
+                    <h2 class="govuk-heading-m">Heat Recovery</h2>
+
+                    <!-- Visible first item (index 0) => server binding to Request.Energy.RecoveredInputs[0] -->
+                    <div class="repeater-item" data-index="0">
+
+                        <label class="govuk-label" for="HrwHeatRecoverySourceInput-0" data-base="HrwHeatRecoverySourceInput">Heat recovery source ID</label>
+                        <input class="govuk-input"
+                               id="HrwHeatRecoverySourceInput-0"
+                               name="Request.Energy.RecoveredInputs[0].HrwHeatRecoverySourceInput"
+                               data-base="HrwHeatRecoverySourceInput"
+                               type="number"
+                               value="@Model?.Request?.Energy?.RecoveredInputs?[0]?.HrwHeatRecoverySourceInput"
+                               required />
+
+                        <label class="govuk-label" for="HrwUsefulHeatGeneratedValueCsv-0" data-base="HrwUsefulHeatGeneratedValueCsv">Useful heat per year (MWh, CSV) *</label>
+                        <input class="govuk-input"
+                               id="HrwUsefulHeatGeneratedValueCsv-0"
+                               name="Request.Energy.RecoveredInputs[0].HrwUsefulHeatGeneratedValueCsv"
+                               data-base="HrwUsefulHeatGeneratedValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.RecoveredInputs?[0]?.HrwUsefulHeatGeneratedValueCsv"
+                               required />
+                        <label class="govuk-label" for="HrwUsefulHeatGeneratedNotes-0" data-base="HrwUsefulHeatGeneratedNotes">Notes</label>
+                        <input class="govuk-input"
+                               id="HrwUsefulHeatGeneratedNotes-0"
+                               name="Request.Energy.RecoveredInputs[0].HrwUsefulHeatGeneratedNotes"
+                               data-base="HrwUsefulHeatGeneratedNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.RecoveredInputs?[0]?.HrwUsefulHeatGeneratedNotes" />
+
+                        <label class="govuk-label" for="HrwHeatUsedByCoolingProductionValueCsv-0" data-base="HrwHeatUsedByCoolingProductionValueCsv">Cooling production per year (MWh, CSV) *</label>
+                        <input class="govuk-input"
+                               id="HrwHeatUsedByCoolingProductionValueCsv-0"
+                               name="Request.Energy.RecoveredInputs[0].HrwHeatUsedByCoolingProductionValueCsv"
+                               data-base="HrwHeatUsedByCoolingProductionValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.RecoveredInputs?[0]?.HrwHeatUsedByCoolingProductionValueCsv"
+                               required />
+                        <label class="govuk-label" for="HrwHeatUsedByCoolingProductionNotes-0" data-base="HrwHeatUsedByCoolingProductionNotes">Notes</label>
+                        <input class="govuk-input"
+                               id="HrwHeatUsedByCoolingProductionNotes-0"
+                               name="Request.Energy.RecoveredInputs[0].HrwHeatUsedByCoolingProductionNotes"
+                               data-base="HrwHeatUsedByCoolingProductionNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.RecoveredInputs?[0]?.HrwHeatUsedByCoolingProductionNotes" />
+
+                        <label class="govuk-label" for="HrwSleevingPCentValueCsv-0" data-base="HrwSleevingPCentValueCsv">Sleeving % per year (CSV) *</label>
+                        <input class="govuk-input"
+                               id="HrwSleevingPCentValueCsv-0"
+                               name="Request.Energy.RecoveredInputs[0].HrwSleevingPCentValueCsv"
+                               data-base="HrwSleevingPCentValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.RecoveredInputs?[0]?.HrwSleevingPCentValueCsv"
+                               required />
+                        <label class="govuk-label" for="HrwSleevingPCentNotes-0" data-base="HrwSleevingPCentNotes">Notes</label>
+                        <input class="govuk-input"
+                               id="HrwSleevingPCentNotes-0"
+                               name="Request.Energy.RecoveredInputs[0].HrwSleevingPCentNotes"
+                               data-base="HrwSleevingPCentNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.RecoveredInputs?[0]?.HrwSleevingPCentNotes" />
+
+                        <label class="govuk-label" for="HrwMaxHeatOutput-0" data-base="HrwMaxHeatOutput">Max Heat Output (kWth) *</label>
+                        <input class="govuk-input"
+                               id="HrwMaxHeatOutput-0"
+                               name="Request.Energy.RecoveredInputs[0].HrwMaxHeatOutput"
+                               data-base="HrwMaxHeatOutput"
+                               type="number"
+                               value="@Model?.Request?.Energy?.RecoveredInputs?[0]?.HrwMaxHeatOutput"
+                               required />
+                    </div>
+
+                    <!-- Hidden template for additional Heat Recovery items -->
+                    <div class="repeater-item template govuk-!-margin-top-4" style="display:none" aria-hidden="true">
+                        <h2 class="govuk-heading-m">Heat Recovery</h2>
+
+                        <label class="govuk-label" data-base="HrwHeatRecoverySourceInput">Heat recovery source ID</label>
+                        <input class="govuk-input" data-base="HrwHeatRecoverySourceInput" type="number" />
+
+                        <label class="govuk-label" data-base="HrwUsefulHeatGeneratedValueCsv">Useful heat per year (MWh, CSV) *</label>
+                        <input class="govuk-input" data-base="HrwUsefulHeatGeneratedValueCsv" type="text" />
+                        <label class="govuk-label" data-base="HrwUsefulHeatGeneratedNotes">Notes</label>
+                        <input class="govuk-input" data-base="HrwUsefulHeatGeneratedNotes" type="text" />
+
+                        <label class="govuk-label" data-base="HrwHeatUsedByCoolingProductionValueCsv">Cooling production per year (MWh, CSV) *</label>
+                        <input class="govuk-input" data-base="HrwHeatUsedByCoolingProductionValueCsv" type="text" />
+                        <label class="govuk-label" data-base="HrwHeatUsedByCoolingProductionNotes">Notes</label>
+                        <input class="govuk-input" data-base="HrwHeatUsedByCoolingProductionNotes" type="text" />
+
+                        <label class="govuk-label" data-base="HrwSleevingPCentValueCsv">Sleeving % per year (CSV) *</label>
+                        <input class="govuk-input" data-base="HrwSleevingPCentValueCsv" type="text" />
+                        <label class="govuk-label" data-base="HrwSleevingPCentNotes">Notes</label>
+                        <input class="govuk-input" data-base="HrwSleevingPCentNotes" type="text" />
+
+                        <label class="govuk-label" data-base="HrwMaxHeatOutput">Max Heat Output (kWth) *</label>
+                        <input class="govuk-input" data-base="HrwMaxHeatOutput" type="number" />
+
+                        <div class="govuk-!-margin-top-2">
+                            <button type="button" class="govuk-button govuk-button--secondary remove-repeater-btn">Remove this Heat Recovery</button>
+                        </div>
+                    </div>
+
+                    <!-- Add button -->
+                    <div class="govuk-!-margin-top-3">
+                        <button type="button" class="govuk-button add-repeater-btn" data-section="hrw-section">Add another Heat Recovery</button>
+                    </div>
+
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+
+                <!-- Boilers -->
+                <!-- Boilers (repeater-enabled) -->
+                <div id="blr-section" class="repeater-section govuk-!-margin-top-4">
+                    <h2 class="govuk-heading-m">Boilers</h2>
+                    <!-- Visible first item (index 0) => server binding to Request.Energy.BoilerInputs[0] -->
+                    <div class="repeater-item" data-index="0">
+                        <label class="govuk-label" for="BlrTypeFuelUsedInput-0" data-base="BlrTypeFuelUsedInput">Fuel Type ID *</label>
+                        <input class="govuk-input"
+                               id="BlrTypeFuelUsedInput-0"
+                               name="Request.Energy.BoilerInputs[0].BlrTypeFuelUsedInput"
+                               data-base="BlrTypeFuelUsedInput"
+                               type="number"
+                               value="@Model?.Request?.Energy?.BoilerInputs?[0]?.BlrTypeFuelUsedInput"
+                               required />
+
+                        <label class="govuk-label" for="BlrUsefulHeatGeneratedValueCsv-0" data-base="BlrUsefulHeatGeneratedValueCsv">Useful heat per year (MWh, CSV) *</label>
+                        <input class="govuk-input"
+                               id="BlrUsefulHeatGeneratedValueCsv-0"
+                               name="Request.Energy.BoilerInputs[0].BlrUsefulHeatGeneratedValueCsv"
+                               data-base="BlrUsefulHeatGeneratedValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.BoilerInputs?[0]?.BlrUsefulHeatGeneratedValueCsv"
+                               required />
+                        <label class="govuk-label" for="BlrUsefulHeatGeneratedNotes-0" data-base="BlrUsefulHeatGeneratedNotes">Useful heat Notes</label>
+                        <input class="govuk-input"
+                               id="BlrUsefulHeatGeneratedNotes-0"
+                               name="Request.Energy.BoilerInputs[0].BlrUsefulHeatGeneratedNotes"
+                               data-base="BlrUsefulHeatGeneratedNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.BoilerInputs?[0]?.BlrUsefulHeatGeneratedNotes" />
+
+                        <label class="govuk-label" for="BlrFuelUsedByValueCsv-0" data-base="BlrFuelUsedByValueCsv">Fuel used per year (MWh, CSV) *</label>
+                        <input class="govuk-input"
+                               id="BlrFuelUsedByValueCsv-0"
+                               name="Request.Energy.BoilerInputs[0].BlrFuelUsedByValueCsv"
+                               data-base="BlrFuelUsedByValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.BoilerInputs?[0]?.BlrFuelUsedByValueCsv"
+                               required />
+                        <label class="govuk-label" for="BlrFuelUsedByNotes-0" data-base="BlrFuelUsedByNotes">Notes</label>
+                        <input class="govuk-input"
+                               id="BlrFuelUsedByNotes-0"
+                               name="Request.Energy.BoilerInputs[0].BlrFuelUsedByNotes"
+                               data-base="BlrFuelUsedByNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.BoilerInputs?[0]?.BlrFuelUsedByNotes" />
+
+                        <label class="govuk-label" for="BlrHeatUsedForCoolingProductionValueCsv-0" data-base="BlrHeatUsedForCoolingProductionValueCsv">Cooling production per year (MWh, CSV) *</label>
+                        <input class="govuk-input"
+                               id="BlrHeatUsedForCoolingProductionValueCsv-0"
+                               name="Request.Energy.BoilerInputs[0].BlrHeatUsedForCoolingProductionValueCsv"
+                               data-base="BlrHeatUsedForCoolingProductionValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.BoilerInputs?[0]?.BlrHeatUsedForCoolingProductionValueCsv"
+                               required />
+                        <label class="govuk-label" for="BlrHeatUsedForCoolingProductionNotes-0" data-base="BlrHeatUsedForCoolingProductionNotes">Notes</label>
+                        <input class="govuk-input"
+                               id="BlrHeatUsedForCoolingProductionNotes-0"
+                               name="Request.Energy.BoilerInputs[0].BlrHeatUsedForCoolingProductionNotes"
+                               data-base="BlrHeatUsedForCoolingProductionNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.BoilerInputs?[0]?.BlrHeatUsedForCoolingProductionNotes" />
+
+                        <label class="govuk-label" for="BlrSleevingPCentValueCsv-0" data-base="BlrSleevingPCentValueCsv">Sleeving % per year (CSV) *</label>
+                        <input class="govuk-input"
+                               id="BlrSleevingPCentValueCsv-0"
+                               name="Request.Energy.BoilerInputs[0].BlrSleevingPCentValueCsv"
+                               data-base="BlrSleevingPCentValueCsv"
+                               type="text"
+                               value="@Model?.Request?.Energy?.BoilerInputs?[0]?.BlrSleevingPCentValueCsv"
+                               required />
+                        <label class="govuk-label" for="BlrSleevingPCentNotes-0" data-base="BlrSleevingPCentNotes">Notes</label>
+                        <input class="govuk-input"
+                               id="BlrSleevingPCentNotes-0"
+                               name="Request.Energy.BoilerInputs[0].BlrSleevingPCentNotes"
+                               data-base="BlrSleevingPCentNotes"
+                               type="text"
+                               value="@Model?.Request?.Energy?.BoilerInputs?[0]?.BlrSleevingPCentNotes" />
+
+                        <label class="govuk-label" for="BlrMaxHeatOutput-0" data-base="BlrMaxHeatOutput">Max Heat Output (kWth)</label>
+                        <input class="govuk-input"
+                               id="BlrMaxHeatOutput-0"
+                               name="Request.Energy.BoilerInputs[0].BlrMaxHeatOutput"
+                               data-base="BlrMaxHeatOutput"
+                               type="number"
+                               value="@Model?.Request?.Energy?.BoilerInputs?[0]?.BlrMaxHeatOutput"
+                               required />
+                    </div>
+
+                    <!-- Hidden template for additional Boiler items -->
+                    <div class="repeater-item template govuk-!-margin-top-4" style="display:none" aria-hidden="true">
+                        <h2 class="govuk-heading-m">Boiler</h2>
+
+                        <label class="govuk-label" data-base="BlrTypeFuelUsedInput">Fuel Type ID *</label>
+                        <input class="govuk-input" data-base="BlrTypeFuelUsedInput" type="number" />
+
+                        <label class="govuk-label" data-base="BlrUsefulHeatGeneratedValueCsv">Useful heat per year (MWh, CSV) *</label>
+                        <input class="govuk-input" data-base="BlrUsefulHeatGeneratedValueCsv" type="text" />
+                        <label class="govuk-label" data-base="BlrUsefulHeatGeneratedNotes">Useful heat Notes</label>
+                        <input class="govuk-input" data-base="BlrUsefulHeatGeneratedNotes" type="text" />
+
+                        <label class="govuk-label" data-base="BlrFuelUsedByValueCsv">Fuel used per year (MWh, CSV) *</label>
+                        <input class="govuk-input" data-base="BlrFuelUsedByValueCsv" type="text" />
+                        <label class="govuk-label" data-base="BlrFuelUsedByNotes">Notes</label>
+                        <input class="govuk-input" data-base="BlrFuelUsedByNotes" type="text" />
+
+                        <label class="govuk-label" data-base="BlrHeatUsedForCoolingProductionValueCsv">Cooling production per year (MWh, CSV) *</label>
+                        <input class="govuk-input" data-base="BlrHeatUsedForCoolingProductionValueCsv" type="text" />
+                        <label class="govuk-label" data-base="BlrHeatUsedForCoolingProductionNotes">Notes</label>
+                        <input class="govuk-input" data-base="BlrHeatUsedForCoolingProductionNotes" type="text" />
+
+                        <label class="govuk-label" data-base="BlrSleevingPCentValueCsv">Sleeving % per year (CSV) *</label>
+                        <input class="govuk-input" data-base="BlrSleevingPCentValueCsv" type="text" />
+                        <label class="govuk-label" data-base="BlrSleevingPCentNotes">Notes</label>
+                        <input class="govuk-input" data-base="BlrSleevingPCentNotes" type="text" />
+
+                        <label class="govuk-label" data-base="BlrMaxHeatOutput">Max Heat Output (kWth)</label>
+                        <input class="govuk-input" data-base="BlrMaxHeatOutput" type="number" />
+
+                        <div class="govuk-!-margin-top-2">
+                            <button type="button" class="govuk-button govuk-button--secondary remove-repeater-btn">Remove this Boiler</button>
+                        </div>
+                    </div>
+
+                    <!-- Add button -->
+                    <div class="govuk-!-margin-top-3">
+                        <button type="button" class="govuk-button add-repeater-btn" data-section="blr-section">Add another Boiler</button>
+                    </div>
+                </div>
+
+                <!-- Submit & Calculate -->
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Calculate Total Carbon Emission
+                </button>
+            </form>            
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        // Mapping helpers
+        function arrayPathForContainer(containerId) {
+            switch (containerId) {
+                case 'chp-section': return 'Request.Energy.ChpInputs';
+                case 'hp-section': return 'Request.Energy.HeatPumpInputs';
+                case 'hrw-section': return 'Request.Energy.RecoveredInputs';
+                case 'blr-section': return 'Request.Energy.BoilerInputs';
+                default: return null;
+            }
+        }
+        function countInputNameForContainer(containerId) {
+            switch (containerId) {
+                case 'chp-section': return 'Request.Energy.ChpCount';
+                case 'hp-section': return 'Request.Energy.HeatPumpCount';
+                case 'hrw-section': return 'Request.Energy.RecoveredCount';
+                case 'blr-section': return 'Request.Energy.BoilerCount';
+                default: return null;
+            }
+        }
+
+        // Initialize a single repeater area
+        function initRepeater(sectionId) {
+            var container = document.getElementById(sectionId);
+            if (!container) return;
+
+            var addBtn = container.querySelector('.add-repeater-btn');
+            var template = container.querySelector('.repeater-item.template');
+            if (!template) return;
+
+            // Add button handler: clone template and insert
+            if (addBtn) {
+                addBtn.addEventListener('click', function () {
+                    addRepeaterItem(container, template);
+                });
+            }
+
+            // Delegated handler for remove buttons inside this container
+            container.addEventListener('click', function (ev) {
+                var target = ev.target;
+                if (target && target.classList && target.classList.contains('remove-repeater-btn')) {
+                    var item = target.closest('.repeater-item');
+                    if (!item) return;
+
+                    // Only allow removing clones (items that weren't the original template-bound first item)
+                    var items = container.querySelectorAll('.repeater-item:not(.template)');
+                    if (items.length <= 1) return;
+
+                    item.parentNode.removeChild(item);
+                    renumberItems(container);
+                    updateCountForContainer(container);
+                }
+            });
+
+            // Ensure names/ids/count reflect current DOM (useful when server rendered model already contains items)
+            renumberItems(container);
+            updateCountForContainer(container);
+        }
+
+        // Add a new repeater item by cloning the template and assigning correct names for model binding.
+        function addRepeaterItem(container, template) {
+            var arrayPath = arrayPathForContainer(container.id);
+            if (!arrayPath) return;
+
+            var itemsBefore = container.querySelectorAll('.repeater-item:not(.template)');
+            var newIndex = itemsBefore.length; // first visible is index 0, clones start at 1
+
+            var clone = template.cloneNode(true);
+            clone.classList.remove('template');
+            clone.style.display = '';
+            clone.removeAttribute('aria-hidden');
+
+            // Update controls inside clone to have the expected id/name for model binding
+            var elems = clone.querySelectorAll('[data-base]');
+            elems.forEach(function (el) {
+                var base = el.getAttribute('data-base');
+                if (!base) return;
+
+                var newId = base + '-' + newIndex;
+                if (el.tagName.toLowerCase() === 'label') {
+                    el.setAttribute('for', newId);
+                    return;
+                }
+
+                el.id = newId;
+                el.name = arrayPath + '[' + newIndex + '].' + base;
+
+                // clear values on newly added clone so user starts with empty fields
+                if ('value' in el) {
+                    try { el.value = ''; } catch (e) { }
+                }
+
+                // keep data-base attribute for future renumbering
+                el.setAttribute('data-base', base);
+            });
+
+            // Fix labels without data-base (set for attributes for consistency)
+            var labels = clone.querySelectorAll('label');
+            labels.forEach(function (lbl) {
+                var base = lbl.getAttribute('data-base');
+                if (base) {
+                    lbl.setAttribute('for', base + '-' + newIndex);
+                }
+            });
+
+            // Insert clone before template so template stays last
+            template.parentNode.insertBefore(clone, template);
+
+            // Ensure contiguous indexes/names if necessary (especially after removals)
+            renumberItems(container);
+            updateCountForContainer(container);
+
+            // Focus first input of the new clone for UX
+            var firstInput = clone.querySelector('input, select, textarea');
+            if (firstInput) firstInput.focus();
+        }
+
+        // Renumber all visible items so their names/ids match server model-binding (contiguous 0..N-1)
+        function renumberItems(container) {
+            var arrayPath = arrayPathForContainer(container.id);
+            if (!arrayPath) return;
+
+            var items = Array.prototype.slice.call(container.querySelectorAll('.repeater-item:not(.template)'));
+            items.forEach(function (item, i) {
+                item.setAttribute('data-index', i);
+
+                var elems = item.querySelectorAll('[data-base]');
+                elems.forEach(function (el) {
+                    var base = el.getAttribute('data-base');
+                    if (!base) return;
+
+                    var newId = base + '-' + i;
+                    if (el.tagName.toLowerCase() === 'label') {
+                        el.setAttribute('for', newId);
+                        return;
+                    }
+
+                    el.id = newId;
+                    el.name = arrayPath + '[' + i + '].' + base;
+                    // keep existing value so user inputs aren't lost when renumbering
+                    el.setAttribute('data-base', base);
+                });
+
+                // fix plain labels referencing data-base
+                var labels = item.querySelectorAll('label');
+                labels.forEach(function (lbl) {
+                    var base = lbl.getAttribute('data-base');
+                    if (base) lbl.setAttribute('for', base + '-' + i);
+                });
+            });
+        }
+
+        // Update the corresponding Count input to reflect the number of visible items
+        function updateCountForContainer(container) {
+            var countName = countInputNameForContainer(container.id);
+            if (!countName) return;
+            var countInput = document.querySelector('[name="' + countName + '"]');
+            if (!countInput) return;
+            var items = container.querySelectorAll('.repeater-item:not(.template)');
+            countInput.value = items.length;
+        }
+
+        // Init repeaters on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function () {
+            ['chp-section', 'hp-section', 'hrw-section', 'blr-section'].forEach(function (id) {
+                initRepeater(id);
+            });
+        });
+    })();
+</script>

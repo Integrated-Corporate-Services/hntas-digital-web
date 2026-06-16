@@ -2,27 +2,24 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models
 {
-    public class RunningAHNViewModel
+    public class  AreYouTheRPModel
     {
-        [Required(ErrorMessage = "Please select yes or no.")]
-        public bool? IsRunningHeatNetwork { get; set; }
+        [Required(ErrorMessage = "Please select an option.")]
+        public string? AreYouTheRP { get; set; }
     }
-
-    public class ServesGt10DwellingsViewModel
+    public class  IsYourOrgWorkingOnANewHNModel
     {
-        [Required(ErrorMessage = "Please select yes or no.")]
-        public bool? ServesMoreThan10Dwellings { get; set; }
+        [Required(ErrorMessage = "Please select an option.")]
+        public string? IsYourOrgWorkingOnANewHN { get; set; }
     }
-
-    public class LocatedInUkViewModel
+    public class  IsHNLocatedInEnglandScotlandWalesModel
     {
-        [Required(ErrorMessage = "Please select yes or no.")]
-        public bool? IsInUK { get; set; }
-    }
-
-    public class OperatingAHNViewModel
+        [Required(ErrorMessage = "Please select an option.")]
+        public string? IsHNLocatedInEnglandScotlandWales { get; set; }
+    }  
+    public class  HowManyDwellingsIncludedModel
     {
-        [Required(ErrorMessage = "Please select yes or no.")]
-        public bool? IsExistingOrPlanned { get; set; }
+        [Required(ErrorMessage = "Please select an option.")]
+        public string HowManyDwellingsIncluded { get; set; }
     }
 }

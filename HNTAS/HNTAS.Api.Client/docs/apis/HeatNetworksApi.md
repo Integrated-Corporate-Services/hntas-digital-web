@@ -6,11 +6,18 @@ All URIs are relative to *https://localhost:7117*
 |--------|--------------|-------------|
 | [**ApiHeatNetworksAddHeatNetworkPost**](HeatNetworksApi.md#apiheatnetworksaddheatnetworkpost) | **POST** /api/HeatNetworks/add-heat-network |  |
 | [**ApiHeatNetworksGet**](HeatNetworksApi.md#apiheatnetworksget) | **GET** /api/HeatNetworks |  |
+| [**ApiHeatNetworksHeatNetworkByUserIdGet**](HeatNetworksApi.md#apiheatnetworksheatnetworkbyuseridget) | **GET** /api/HeatNetworks/heat-network-by-userId |  |
+| [**ApiHeatNetworksHnIdGet**](HeatNetworksApi.md#apiheatnetworkshnidget) | **GET** /api/HeatNetworks/{hnId} |  |
 | [**ApiHeatNetworksHnIdsGet**](HeatNetworksApi.md#apiheatnetworkshnidsget) | **GET** /api/HeatNetworks/hnIds |  |
+| [**ApiHeatNetworksNetworkDetailsDocumentUpdatePatch**](HeatNetworksApi.md#apiheatnetworksnetworkdetailsdocumentupdatepatch) | **PATCH** /api/HeatNetworks/network-details-document-update |  |
+| [**ApiHeatNetworksNetworkElementsPut**](HeatNetworksApi.md#apiheatnetworksnetworkelementsput) | **PUT** /api/HeatNetworks/network-elements |  |
+| [**ExternalHeatNetworkHnIdGet**](HeatNetworksApi.md#externalheatnetworkhnidget) | **GET** /external/heat-network/{hnId} |  |
+| [**ExternalHeatNetworksGet**](HeatNetworksApi.md#externalheatnetworksget) | **GET** /external/heat-networks |  |
+| [**ExternalHeatNetworksSearchGet**](HeatNetworksApi.md#externalheatnetworkssearchget) | **GET** /external/heat-networks/search |  |
 
 <a id="apiheatnetworksaddheatnetworkpost"></a>
 # **ApiHeatNetworksAddHeatNetworkPost**
-> HeatNetwork ApiHeatNetworksAddHeatNetworkPost (HeatNetwork heatNetwork)
+> HeatNetworkResponse ApiHeatNetworksAddHeatNetworkPost (HeatNetwork heatNetwork)
 
 
 
@@ -23,7 +30,7 @@ All URIs are relative to *https://localhost:7117*
 
 ### Return type
 
-[**HeatNetwork**](HeatNetwork.md)
+[**HeatNetworkResponse**](HeatNetworkResponse.md)
 
 ### Authorization
 
@@ -39,16 +46,14 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Created |  -  |
-| **200** | OK |  -  |
 | **400** | Bad Request |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 <a id="apiheatnetworksget"></a>
 # **ApiHeatNetworksGet**
-> List&lt;HeatNetwork&gt; ApiHeatNetworksGet ()
+> List&lt;HeatNetworkResponse&gt; ApiHeatNetworksGet ()
 
 
 
@@ -57,7 +62,7 @@ No authorization required
 This endpoint does not need any parameter.
 ### Return type
 
-[**List&lt;HeatNetwork&gt;**](HeatNetwork.md)
+[**List&lt;HeatNetworkResponse&gt;**](HeatNetworkResponse.md)
 
 ### Authorization
 
@@ -77,9 +82,9 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-<a id="apiheatnetworkshnidsget"></a>
-# **ApiHeatNetworksHnIdsGet**
-> List&lt;HeatNetwork&gt; ApiHeatNetworksHnIdsGet (string hnIdsString = null)
+<a id="apiheatnetworksheatnetworkbyuseridget"></a>
+# **ApiHeatNetworksHeatNetworkByUserIdGet**
+> List&lt;HeatNetworkResponse&gt; ApiHeatNetworksHeatNetworkByUserIdGet (string userId = null)
 
 
 
@@ -88,11 +93,11 @@ No authorization required
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **hnIdsString** | **string** |  | [optional]  |
+| **userId** | **string** |  | [optional]  |
 
 ### Return type
 
-[**List&lt;HeatNetwork&gt;**](HeatNetwork.md)
+[**List&lt;HeatNetworkResponse&gt;**](HeatNetworkResponse.md)
 
 ### Authorization
 
@@ -111,6 +116,255 @@ No authorization required
 | **400** | Bad Request |  -  |
 | **404** | Not Found |  -  |
 | **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiheatnetworkshnidget"></a>
+# **ApiHeatNetworksHnIdGet**
+> HeatNetworkResponse ApiHeatNetworksHnIdGet (string hnId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **hnId** | **string** |  |  |
+
+### Return type
+
+[**HeatNetworkResponse**](HeatNetworkResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiheatnetworkshnidsget"></a>
+# **ApiHeatNetworksHnIdsGet**
+> List&lt;HeatNetworkResponse&gt; ApiHeatNetworksHnIdsGet (string hnIdsString = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **hnIdsString** | **string** |  | [optional]  |
+
+### Return type
+
+[**List&lt;HeatNetworkResponse&gt;**](HeatNetworkResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiheatnetworksnetworkdetailsdocumentupdatepatch"></a>
+# **ApiHeatNetworksNetworkDetailsDocumentUpdatePatch**
+> void ApiHeatNetworksNetworkDetailsDocumentUpdatePatch (NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **networkDetailsUploadDocumentRequest** | [**NetworkDetailsUploadDocumentRequest**](NetworkDetailsUploadDocumentRequest.md) |  |  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiheatnetworksnetworkelementsput"></a>
+# **ApiHeatNetworksNetworkElementsPut**
+> HeatNetworkResponse ApiHeatNetworksNetworkElementsPut (NetworkElements2 networkElements2, string hnId = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **networkElements2** | [**NetworkElements2**](NetworkElements2.md) |  |  |
+| **hnId** | **string** |  | [optional]  |
+
+### Return type
+
+[**HeatNetworkResponse**](HeatNetworkResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="externalheatnetworkhnidget"></a>
+# **ExternalHeatNetworkHnIdGet**
+> HeatNetworkExternalResponse ExternalHeatNetworkHnIdGet (string hnId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **hnId** | **string** |  |  |
+
+### Return type
+
+[**HeatNetworkExternalResponse**](HeatNetworkExternalResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="externalheatnetworksget"></a>
+# **ExternalHeatNetworksGet**
+> List&lt;HeatNetworkExternalResponse&gt; ExternalHeatNetworksGet ()
+
+
+
+
+### Parameters
+This endpoint does not need any parameter.
+### Return type
+
+[**List&lt;HeatNetworkExternalResponse&gt;**](HeatNetworkExternalResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="externalheatnetworkssearchget"></a>
+# **ExternalHeatNetworksSearchGet**
+> List&lt;HeatNetworkExternalResponse&gt; ExternalHeatNetworksSearchGet (DateTimeOffset fromDate = null, DateTimeOffset toDate = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **fromDate** | **DateTimeOffset** |  | [optional]  |
+| **toDate** | **DateTimeOffset** |  | [optional]  |
+
+### Return type
+
+[**List&lt;HeatNetworkExternalResponse&gt;**](HeatNetworkExternalResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

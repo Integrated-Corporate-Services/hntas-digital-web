@@ -1,0 +1,46 @@
+﻿<div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+        <label class="govuk-label govuk-label--l" for="assessor-autocomplete">
+            Assessor Typeahead POC
+        </label>
+    </h1>
+    <div id="assessor-autocomplete-container"></div>
+</div>
+
+@section Scripts {
+    <script>
+        // Wait for the window to fully load the module
+        window.addEventListener('load', function () {
+            if (window.accessibleAutocomplete) {
+                window.accessibleAutocomplete({
+                    element: document.querySelector('#assessor-autocomplete-container'),
+                    id: 'assessor-autocomplete',
+                    source: function (query, populateResults) {
+                        fetch('@Url.Action("Search", "AssessorPOC")?q=' + encodeURIComponent(query))
+                            .then(res => res.json())
+                            .then(data => {
+                                // Pass the full objects to populateResults
+                                populateResults(data);
+                            });
+                    },
+                    // Tell the component how to display your object
+                    templates: {
+                        inputValue: function (result) {
+                            return result && result.fullName; // Value shown in the input box after selection
+                        },
+                        suggestion: function (result) {
+                            return result && result.fullName; // Value shown in the dropdown list
+                        }
+                    },
+                    onConfirm: function (selected) {
+                        if (selected) {
+                            console.log("Selected Assessor ID:", selected.id);
+                            // Optionally set a hidden field with the ID
+                            // document.querySelector('#selected-assessor-id').value = selected.id;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

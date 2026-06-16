@@ -1,0 +1,200 @@
+﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.Enums
+@using HNTAS.Web.UI.Models.User
+@model CheckYourAnswersOrganisationModel
+
+@{
+    ViewData["Title"] = "Check your answers";
+    var organisationModel = Model.Organisation;
+    var userModel = Model.User;
+    var deedPollViewModel = Model.DeedPollViewModel;
+
+    string displayContactNumber = "Not provided";
+    if (userModel?.ContactDetails != null)
+    {
+        if (userModel.ContactDetails.PreferredContactType == PreferredContactType.Landline)
+        {
+            displayContactNumber = userModel.ContactDetails.LandlineNumber;
+            if (!string.IsNullOrEmpty(userModel.ContactDetails.ContactNumberExtension))
+            {
+                displayContactNumber += $" ext {userModel.ContactDetails.ContactNumberExtension}";
+            }
+        }
+        else if (userModel.ContactDetails.PreferredContactType == PreferredContactType.Mobile)
+        {
+            displayContactNumber = userModel.ContactDetails.MobileNumber;
+        }
+        if (string.IsNullOrEmpty(displayContactNumber))
+        {
+            displayContactNumber = "Not provided";
+        }
+    }
+
+    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) &&
+                                ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
+
+    var fieldName = nameof(Model.ConfirmedDeclaration).ToLowerInvariant();
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">        
+            <h1 class="govuk-heading-l">Check your answers before submitting</h1>
+
+            <form asp-controller="Organisation" asp-action="SubmitAnswers" method="post" novalidate>
+                @Html.AntiForgeryToken()
+
+                <h2 class="govuk-heading-m">Organisation details</h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Organisation type</dt>
+                        <dd class="govuk-summary-list__value">@organisationModel?.SelectedOrganisationTypeText</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("OrganisationType")">Change<span class="govuk-visually-hidden"> organisation type</span></a>
+                        </dd>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(@organisationModel?.CompanyNumber))
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Company number</dt>
+                            <dd class="govuk-summary-list__value">@organisationModel?.CompanyNumber</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("CompanyNumber")">Change<span class="govuk-visually-hidden"> company number</span></a>
+                            </dd>
+                        </div>
+                    }
+               
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Organisation name and address</dt>
+                        <dd class="govuk-summary-list__value">
+                            @if (organisationModel?.CompanyDetails != null)
+                            {
+                                @organisationModel.CompanyDetails.Title<br />
+                                @organisationModel.CompanyDetails.RegisteredOfficeAddress.AddressLine1 <br />
+                                @if (!string.IsNullOrEmpty(organisationModel.CompanyDetails.RegisteredOfficeAddress.AddressLine2))
+                                {
+                                    @organisationModel.CompanyDetails.RegisteredOfficeAddress.AddressLine2 <br />
+                                }
+                                @if (!string.IsNullOrEmpty(organisationModel.CompanyDetails.RegisteredOfficeAddress.Locality))
+                                {
+                                    @organisationModel.CompanyDetails.RegisteredOfficeAddress.Locality <br />
+                                }
+                          
+                                @if (!string.IsNullOrEmpty(organisationModel.CompanyDetails.RegisteredOfficeAddress.Country))
+                                {
+                                    @organisationModel.CompanyDetails.RegisteredOfficeAddress.Country <br />
+                                }
+                                @organisationModel.CompanyDetails.RegisteredOfficeAddress.PostalCode
+                            }
+                            else
+                            {
+                                <span>Not provided</span>
+                            }
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            @if (!string.IsNullOrEmpty(organisationModel.CompanyNumber))
+                            {
+                                    <a class="govuk-link" href="@Url.Action("CompanyNumber")">Change<span class="govuk-visually-hidden"> company number</span></a>
+                            }
+                            else
+                            {
+                                    <a class="govuk-link" href="@Url.Action("OrganisationAddress")">Change<span class="govuk-visually-hidden"> organisation address</span></a>
+                            }
+                            </dd>
+                    </div>
+                </dl>
+
+                <h2 class="govuk-heading-m">Your details</h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Confirmed responsibility for heat networks</dt>
+                        <dd class="govuk-summary-list__value">
+                            @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
+                            </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("ConfirmResponsibility")">Change<span class="govuk-visually-hidden"> Confirmed responsibility for heat networks</span></a>
+                        </dd>
+                    </div>                    
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">First name</dt>
+                        <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.FirstName</dd>
+                        <dd class="govuk-summary-list__actions">
+                            @* <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> first name</span></a> *@
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Last name</dt>
+                        <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.LastName</dd>
+                        <dd class="govuk-summary-list__actions">
+                            @* <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> last name</span></a> *@
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Preferred contact number for work</dt>
+                        <dd class="govuk-summary-list__value">@displayContactNumber</dd>
+                        <dd class="govuk-summary-list__actions">
+                            @* <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> preferred contact number for work</span></a> *@
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Job title</dt>
+                        <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.JobTitle</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> job title</span></a>
+                        </dd>
+                    </div>
+                </dl>
+
+                <h2 class="govuk-heading-m">Agreements</h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Your responsibility</dt>
+                        <dd class="govuk-summary-list__value">
+                            @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
+                            </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("ConfirmResponsibility")">Change<span class="govuk-visually-hidden">Confirm Responsibility</span></a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Organisation Agreement</dt>
+                        <dd class="govuk-summary-list__value">
+                            @(deedPollViewModel.IsDeedPollAccepted ? "Yes" : "No")
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="@Url.Action("DeedPoll")">Change<span class="govuk-visually-hidden">deed poll</span></a>
+                        </dd>
+                    </div>                
+                </dl>
+
+                <h2 class="govuk-heading-m">Declaration</h2>
+                <div class="govuk-form-group @(hasDeclarationErrors ? "govuk-form-group--error" : "")">
+                    <fieldset class="govuk-fieldset" aria-describedby="@(hasDeclarationErrors ? "confirmDeclaration-error" : "")">
+                    
+                        @if (hasDeclarationErrors)
+                        {
+                            <p id="confirmDeclaration-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ConfirmedDeclaration)
+                            </p>
+                        }
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input"
+                                        id="@fieldName"
+                                        asp-for="ConfirmedDeclaration"
+                                        type="checkbox"
+                                        value="true">                      
+                            <label class="govuk-label govuk-checkboxes__label" for="@fieldName">
+                                I confirm that I am authorised to act on behalf of @organisationModel.CompanyDetails.Title and the Responsible Party for heat networks, and that the information submitted through this service is accurate and complete.
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Confirm
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

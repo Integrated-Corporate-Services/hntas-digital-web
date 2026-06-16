@@ -8,7 +8,7 @@
         <div class="govuk-grid-column-two-thirds">
 
             <h1 class="govuk-heading-l">
-                Confirm this is the right organisation
+                Is this is the correct organisation?
             </h1>
 
             @if (Model != null && Model.RegisteredOfficeAddress != null)
@@ -23,8 +23,9 @@
                         {
                             @Model.RegisteredOfficeAddress.AddressLine2<br />
                         }
+                    @if (!string.IsNullOrEmpty(@Model.RegisteredOfficeAddress.Locality)){
                         @Model.RegisteredOfficeAddress.Locality<br />
-
+                    }
                         @if (!string.IsNullOrEmpty(Model.RegisteredOfficeAddress.Country) && Model.RegisteredOfficeAddress.Country != Model.RegisteredOfficeAddress.Locality)
                         {
                             @Model.RegisteredOfficeAddress.Country<br />
@@ -34,7 +35,7 @@
                 </div>
 
                 <p class="govuk-body">
-                    <a href="@Url.Action("CompanyNumber", "Organisation")" class="govuk-link govuk-link--no-visited-state">Change</a>
+                    <a href="@ViewBag.ChangeUrl" class="govuk-link govuk-link--no-visited-state">Change</a>
                 </p>
 
                 <br />

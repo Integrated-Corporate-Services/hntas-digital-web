@@ -1,0 +1,93 @@
+﻿﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.NetworkElements
+@using HNTAS.Web.UI.Models.Soa
+@model NetworkElementViewModel
+
+@{
+    ViewData["Title"] = "Select network elements";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>        
+        <form asp-action="SelectNetworkElements" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)) ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">                        
+                        @ViewBag.Heading
+                    </legend>
+                    
+                    <div id="soa-elements-hint" class="govuk-hint">
+                        select that apply
+                    </div>
+
+                    @if (ViewData.ModelState.ContainsKey(nameof(Model.SelectedElementIds)))
+                    {
+                        <p class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @Html.ValidationMessageFor(m => m.SelectedElementIds)
+                        </p>
+                    }
+
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                        @for (int i = 0; i < Model.ElementOptions.Count; i++)
+                        {
+                            var item = Model.ElementOptions[i];
+                            var checkboxId = i == 0 ? "selectedelementids" : $"selectedelementids-{i}";
+                            var conditionalId = $"conditional-{item.Id.ToString().ToLowerInvariant()}";
+                            var isChecked = Model.SelectedElementIds.Contains(item.Id);
+                            var hintId = $"{checkboxId}-item-hint";
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input"
+                                       id="@checkboxId"
+                                       name="SelectedElementIds"
+                                       type="checkbox"
+                                       value="@item.Id"
+                                       data-aria-controls="@conditionalId"
+                                       @(isChecked ? "checked" : "")
+                                       @(string.IsNullOrEmpty(item.Hint) ? "" : $"aria-describedby=\"{checkboxId}-hint\"") />
+
+                                <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
+                                    @item.Label
+                                </label>
+                                <div id="@hintId" class="govuk-hint govuk-checkboxes__hint">
+                                    @item.Hint
+                                </div>
+                            </div>
+                            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="@conditionalId">
+                                @{
+                                    var hasError = Html.HasError($"ElementCounts[{item.Id}]");
+                                    var errorMessage = hasError ? ViewData.ModelState[$"ElementCounts[{item.Id}]"].Errors.FirstOrDefault()?.ErrorMessage : null;
+                                }
+
+                                <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+
+                                    <label class="govuk-label" for="elementcounts[@item.Id.ToString().ToLowerInvariant()]">
+                                        Number of @item.SubLabel.ToLower()
+                                    </label>
+
+                                    @if (hasError)
+                                    {
+                                        <span class="govuk-error-message">
+                                            <span class="govuk-visually-hidden">Error:</span> @errorMessage
+                                        </span>
+                                    }
+
+                                    <input class="govuk-input govuk-input--width-3 @(hasError ? "govuk-input--error" : "")"
+                                           id="elementcounts[@item.Id.ToString().ToLowerInvariant()]"
+                                           name="ElementCounts[@item.Id]"
+                                           type="number"
+                                           value="@(Model.ElementCounts.ContainsKey(item.Id) ? Model.ElementCounts[item.Id] : null)" />                                    
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
+    </div>
+</div>

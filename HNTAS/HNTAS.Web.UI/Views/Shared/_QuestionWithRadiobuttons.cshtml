@@ -1,0 +1,68 @@
+﻿@using HNTAS.Web.UI.Models
+@model QuestionWithRadiobuttonsModel
+
+@{
+    bool hasError (string qid)
+    {
+        return ViewData.ModelState.ContainsKey(qid) && ViewData.ModelState[qid].Errors.Any(); 
+    }
+}
+
+<form asp-controller="@Model.Controller" asp-action="@Model.Action" method="post" novalidate>
+    @Html.AntiForgeryToken()
+    @if (Model.PageHeading != null)
+    {
+        <h1 class="govuk-heading-l">
+            <span class="govuk-caption-l">@Model.PageHeading</span>
+        </h1>
+    }
+    @foreach (Question q in Model.Questions)
+    {
+        <div class="govuk-form-group @(hasError(q.QId) ? "govuk-form-group--error" : "")">
+            <fieldset class="govuk-fieldset" aria-describedby="@(q.QHintText != null ? $"{q.QId}-hint " : "")@(hasError(q.QId) ? $"{q.QId}-error" : "")">
+               
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">@q.QText</h1>
+                </legend>
+                @if (!string.IsNullOrEmpty(q.QDescText))
+                {
+                    <p class="govuk-body">@Html.Raw(q.QDescText)</p>
+                }
+                @if (!string.IsNullOrEmpty(q.QHintText))
+                {
+                    <div id="@q.QId-hint" class="govuk-hint">
+                        @q.QHintText
+                    </div>
+                }
+
+
+                @if (ViewData.ModelState.ContainsKey(q.QId) && ViewData.ModelState[q.QId].Errors.Any())
+                {
+                    <p id="@q.QId-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[q.QId].Errors[0].ErrorMessage
+                    </p>
+                }
+
+                <div class="govuk-radios" data-module="govuk-radios">
+                    @foreach (Option option in q.Options)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="@option.OptId" name="@q.QId" type="radio" value="@option.OptValue"
+                                   aria-describedby="@(option.OptHintText != null ? $"{q.QId}-item-hint" : "")"
+                                   @(q.SeletedOption == option.OptValue ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="@option.OptId">@option.OptText</label>
+                            @if (!string.IsNullOrEmpty(option.OptHintText))
+                            {
+                                <div id="@(q.QId)-item-hint" class="govuk-hint govuk-radios__hint">
+                                    @Html.Raw(option.OptHintText)
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </fieldset>
+        </div>
+    }
+
+    <button class="govuk-button" data-module="govuk-button" type="submit">Continue</button>
+</form>
