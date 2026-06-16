@@ -1138,6 +1138,48 @@ paths:
           description: Internal Server Error
       tags:
       - Invitations
+  /api/Invitations/accept-invitation:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InvitedUserRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/InvitedUserRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: OK
+        "201":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Created
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Conflict
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          content:
+            application/json: {}
+          description: Internal Server Error
+      tags:
+      - Invitations
   /api/Invitations/{invitationId}/Reject:
     post:
       parameters:
@@ -2603,70 +2645,6 @@ paths:
           description: Internal Server Error
       tags:
       - Users
-  /api/Users/accept-invitation:
-    patch:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/InvitedUserRequest"
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/InvitedUserRequest"
-        required: true
-      responses:
-        "200":
-          content:
-            text/plain:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: string
-            text/json:
-              schema:
-                type: string
-          description: OK
-        "201":
-          content:
-            text/plain:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: string
-            text/json:
-              schema:
-                type: string
-          description: Created
-        "409":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Conflict
-        "404":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Not Found
-        "500":
-          description: Internal Server Error
-      tags:
-      - Users
   /api/Users/contributor-roles:
     get:
       responses:
@@ -2777,6 +2755,33 @@ paths:
               schema:
                 items:
                   $ref: "#/components/schemas/ManagedUserResponse"
+                type: array
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Users
+  /api/Users/network-managers:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/InvitedUserResponse"
                 type: array
           description: OK
         "404":
