@@ -211,6 +211,9 @@ public class HomeController : Controller
             case "updateExistingHN":
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey, model);
                 return RedirectToAction("Index", "Home");
+            case "registerOperationalHN":
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey, model);
+                return RedirectToAction("Index", "Home");
             default:
                 ModelState.AddModelError(nameof(model.UserPathToday), "Invalid selection. Please try again.");
                 return View();
