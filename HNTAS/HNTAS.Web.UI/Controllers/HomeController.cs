@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace HNTAS.Web.UI.Controllers;
+
 public class HomeController : Controller
 {
     private readonly IUserService _iUserService;
@@ -34,7 +35,7 @@ public class HomeController : Controller
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
         {
-            _logger.LogError("Missing claims. Email: '{Email}', ID: '{Id}'", email, oneLoginId);
+            _logger.LogError("Missing claims.");
             TempData["ErrorMessage"] = "Unable to retrieve essential user info. Please try again.";
             return BadRequest();
         }
@@ -45,7 +46,7 @@ public class HomeController : Controller
 
         if (!string.IsNullOrEmpty(invitedEmail) && !string.Equals(email, invitedEmail, StringComparison.OrdinalIgnoreCase))
         {
-            _logger.LogError("Authenticated email does not match invited email. Authenticated: '{AuthenticatedEmail}', Invited: '{InvitedEmail}'", email, invitedEmail);
+            _logger.LogError("Authenticated email does not match invited email.");
             return BadRequest();
         }
 
@@ -61,8 +62,7 @@ public class HomeController : Controller
 
                 if (string.IsNullOrEmpty(invitedEmail) || string.IsNullOrEmpty(inviterUserId) || string.IsNullOrEmpty(inviterOrgId))
                 {
-                    _logger.LogError("Invitation flow data incomplete. InvitedEmail: '{InvitedEmail}' , InviterUserId: '{inviterUserId}', InviterOrgId: '{inviterOrgId}'",
-                        invitedEmail, inviterUserId, inviterOrgId);
+                    _logger.LogError("Invitation flow data incomplete.");
 
                     TempData["ErrorMessage"] = "We couldn't process your invitation due to missing information. Please try the link again or contact support if the issue persists.";
                     return BadRequest();
@@ -79,7 +79,7 @@ public class HomeController : Controller
 
                 if (invitation.Status == InvitationStatus.Invited)
                 {
-                    var userId = await _iUserService.AcceptUserInvitation(new InvitedUserRequest(
+                    var userId = await _invitationService.AcceptInvitationAsync(new InvitedUserRequest(
                         invitedEmail: invitedEmail,
                         invitationId: invitationId,
                         oneLoginId: oneLoginId));
@@ -90,7 +90,7 @@ public class HomeController : Controller
                         return BadRequest();
                     }
 
-                    _logger.LogInformation($"Invitation updated successfully for the invitationId: {invitationId}, invitedEmail : {invitedEmail}");
+                    _logger.LogInformation($"Invitation updated successfully for the invitationId: {invitationId}");
 
                     _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, userId);
                 }
@@ -102,7 +102,7 @@ public class HomeController : Controller
             if (existingUser == null)
             {
                 var registration = new InitialUserRegistrationRequest(oneLoginId: oneLoginId, emailId: email, status: UserStatus.Active);
-                _logger.LogInformation("Submitting initial user entry. Email: {Email}, ID: {Id}", email, oneLoginId);
+                _logger.LogInformation("Submitting initial user entry.");
 
                 var newUserId = await _iUserService.CreateUser(registration);
 
@@ -140,7 +140,7 @@ public class HomeController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Exception during initial user registration for {Email}", email);
+            _logger.LogError(ex, "Exception during initial user registration");
             TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
             return BadRequest();
         }
