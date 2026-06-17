@@ -34,6 +34,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Result(CarbonCalculatorViewModel model)
         {
             this.ShowBackButton("Index");
@@ -73,7 +74,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to calculate carbon emission for hnId {HnId}", model.Request.Background.NetworkID);
+                _logger.LogError(ex, "Failed to calculate carbon emission.");
                 model.Error = "An unexpected error occurred while calculating carbon emission.";
             }
             return View("Result", model);
