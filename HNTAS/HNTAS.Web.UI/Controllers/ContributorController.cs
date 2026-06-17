@@ -88,8 +88,7 @@ namespace HNTAS.Web.UI.Controllers
             var invitationId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.InvitationId);
 
             if (!ModelState.IsValid)
-            {
-                var inviterUserId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.InvitedInviterUserId);
+            {                
                 var invitation = await _invitationService.GetInvitationByIdAsync(invitationId);
                 var inviterUser = await _iUserService.GetUserDetails(invitation.InviterUserId);
 

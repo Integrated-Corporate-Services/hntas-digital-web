@@ -32,10 +32,6 @@
         }
     }
 
-    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) &&
-                                ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
-
-    var fieldName = nameof(Model.ConfirmedDeclaration).ToLowerInvariant();
 }
 
 <div class="govuk-width-container">

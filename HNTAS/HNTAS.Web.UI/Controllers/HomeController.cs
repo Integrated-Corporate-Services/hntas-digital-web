@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace HNTAS.Web.UI.Controllers;
+
 public class HomeController : Controller
 {
     private readonly IUserService _iUserService;

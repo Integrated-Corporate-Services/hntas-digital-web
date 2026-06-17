@@ -112,7 +112,6 @@ namespace HNTAS.Web.UI.Controllers
 
             var elementItems = new List<ElementItem>();
             var elementDocuments = new List<DocumentItem>();
-            var assessmentPlanDocument = new DocumentItem();
             if (heatNetworkResponse == null || heatNetworkResponse?.Soa?.JourneyData?.HeatNetworkElements == null)
             {
                 _logger.LogWarning("Could not retrieve Heat Network details for ID: {HnId}", hnId);
