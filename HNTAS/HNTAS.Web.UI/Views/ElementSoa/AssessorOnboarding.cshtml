@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = $"Who is the assessor for the energy centre in {ViewBag.StageTitle}?";
+    var defaultVal = @ViewBag.SelectedAssessor;
+    var hasCheckError = ViewData.ModelState["assessor-autocomplete"]?.Errors?.Count > 0 || ViewData.ModelState["assessor-autocomplete"]?.Errors?.Count > 0;
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">@ViewBag.HnId</span>
+            <h1 class="govuk-heading-l">Who is the assessor for the energy centre in @ViewBag.StageTitle?</h1>
+
+            <p class="govuk-body">
+                You should contact the assessor before naming them. They need to be registered with us before they can assess any of your network.
+            </p>
+
+            <div class="govuk-form-group @(hasCheckError ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="assessor-autocomplete">
+                    Search for assessor name or email
+                </label>
+                <div id="assessor-autocomplete-container"></div>
+            </div>
+
+            <form asp-action="SelectedAssessorOnboarding" asp-controller="ElementSoa" method="post">
+                <input type="hidden" id="selected-assessor-firstName" name="FirstName" />
+                <input type="hidden" id="selected-assessor-lastName" name="LastName" />
+                <input type="hidden" id="selected-assessor-emailId" name="EmailId" />
+                <input type="hidden" id="asessor-from-input" name="FullNameFromInput" />
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Debounce function to delay API calls
+        function debounce(func, delay) {
+            let timeoutId;
+            return function (...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        // Wait for the window to fully load the module
+        window.addEventListener('load', function () {
+            if (window.accessibleAutocomplete) {
+                // Create debounced search function
+                const debouncedSearch = debounce(function (query, populateResults) {                    
+
+                    fetch('@Url.Action("SearchAssessor", "ElementSoa")?q=' + encodeURIComponent(query))
+                        .then(res => res.json())
+                        .then(data => {
+                            populateResults(data);
+                        })
+                        .catch(err => {
+                            console.error('Error searching assessors:', err);
+                            populateResults([]);
+                        });
+                }, 300); // 300ms delay after user stops typing
+
+                window.accessibleAutocomplete({
+                    element: document.querySelector('#assessor-autocomplete-container'),
+                    id: 'assessor-autocomplete',
+                    defaultValue: '@defaultVal',
+                     
+                    minLength: 2,
+                    source: debouncedSearch,
+                    templates: {
+                        inputValue: function (result) {
+                            // Handle string values (like defaultValue)
+                            if (typeof result === 'string') {
+                                return result;
+                            }
+                            // Handle object values from API
+                            return result && result.firstName
+                                ? result.firstName + ' ' + result.lastName + ' (' + result.email + ')'
+                                : '';
+                        },
+                        suggestion: function (result) {
+                            // Don't show string values in dropdown
+                            if (typeof result === 'string') {
+                                
+                                return '@defaultVal';
+                            }
+                            // Only show object results from API
+                            if (result && result.firstName) {
+                                console.log("suggestion:", result.firstName);
+                                return result.firstName + ' ' + result.lastName + ' (' + result.email + ')';
+                            }
+                            return '';
+                        }
+                    },
+                    onConfirm: function (selected) {
+                        if (selected && typeof selected === 'object') {
+                            console.log("Selected Assessor ID:", selected);
+                            document.querySelector('#selected-assessor-firstName').value = selected.firstName;
+                            document.querySelector('#selected-assessor-lastName').value = selected.lastName;
+                            document.querySelector('#selected-assessor-emailId').value = selected.email;
+                        }
+                    }
+                });
+
+                // Handle form submission to capture typed value
+                document.querySelector('form').addEventListener('submit', function (e) {
+                    
+                    const inputValue = document.querySelector('#assessor-autocomplete').value;
+                    document.querySelector('#asessor-from-input').value = inputValue;                    
+                });
+            }
+        });
+    </script>
+}

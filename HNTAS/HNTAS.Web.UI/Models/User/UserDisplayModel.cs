@@ -6,6 +6,8 @@
         public string Name { get; set; }
         public string EmailAddress { get; set; }
         public string Status { get; set; }
+        public bool IsCurrentUser { get; set; } = false;
+        public List<string>? HeatNetworks { get; set; }
         public List<string>? Roles { get; set; }
     }
 }

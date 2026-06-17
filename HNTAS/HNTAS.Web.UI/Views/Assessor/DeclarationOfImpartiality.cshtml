@@ -1,0 +1,55 @@
+﻿@using HNTAS.Web.UI.Models;
+@model DeclationOfImpartialityModel
+
+@{
+    ViewData["Title"] = "Declaration of Impartiality";
+    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.HasDeclaredImpartiality)) &&
+                                ViewData.ModelState[nameof(Model.HasDeclaredImpartiality)].Errors.Any();
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">       
+            <form asp-controller="Assessor" asp-action="SubmitDeclarationOfImpartiality" method="post" novalidate>
+            @Html.AntiForgeryToken()
+            <span class="govuk-hint govuk-!-font-size-27">Assessor</span>
+            <h1 class="govuk-heading-l">Declare your impartiality</h1>
+            <div class="govuk-form-group @(hasDeclarationErrors ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="@(hasDeclarationErrors ? "hasDeclaredImpartiality-error" : "")">
+                    <p class="govuk-body">As an assessor, you must confirm that you will carry out your work independently and without bias.</p>
+                    <p class="govuk-body">By confirming, you agree that you will:</p>
+                    <ul class="govuk-body govuk-list govuk-list--bullet">
+                        <li>assess the information and evidence provided fairly</li>
+                        <li>not have any conflict of interest with the heat network you are assessing</li>
+                    </ul>
+
+                    @if (hasDeclarationErrors)
+                    {
+                        <p id="confirmDeclaration-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.HasDeclaredImpartiality)
+                        </p>
+                    }
+                    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input"
+                                   id="@(Html.GenerateIdFromName("HasDeclaredImpartiality").ToLowerInvariant())"
+                                   asp-for="HasDeclaredImpartiality"
+                                   name="hasDeclaredImpartiality"
+                                   type="checkbox"
+                                   value="true">
+                            <label class="govuk-label govuk-checkboxes__label" for="hasDeclaredImpartiality">
+                                Yes, I confirm that I can carry out my assessment impartially
+                            </label>
+                            
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+           </form>
+        </div>
+    </div>
+</div>

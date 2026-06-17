@@ -1,99 +1,248 @@
-﻿@using HNTAS.Web.UI.Models
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models
 
 @model DashboardModel
 
 @{
     ViewData["Title"] = "User Account";
+    var disabled = Model.HasHeatNetworks ? "" : "dashboard-card--disabled";
+    var userIsRP = Model.UserRole == UserRole.ResponsiblePerson.ToString();
+    var userIsActingRP = Model.UserRole == UserRole.NetworkManager.ToString();
+    var userIsAssessor = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Assessor.ToString();
+    var userIsCertifier = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Certifier.ToString();
+    var userIsContributor = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Contributor.ToString();
+    var userIsDesignatedDutyHolder = Model.UserRole == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString();
 }
 
 <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" id="main-content" role="main">
+    @if (Model.UserRole == UserRole.ResponsiblePerson.ToString() || Model.UserRole == UserRole.NetworkManager.ToString())
+    {
+        <div><span class="govuk-hint">Your organisation</span></div>
+        <h1 class="govuk-heading-l">@Model.OrganisationName</h1>
+    }
+    else
+    {
+        <h1 class="govuk-heading-l">My Details</h1>
+    }
+    <h2 class="govuk-visually-hidden">Dashboard</h2>
 
-       
-        <div>
-            <div><span class="govuk-hint">Your organisation</span></div>
-            <div><span class="govuk-heading-l">@Model.OrganisationName</span></div>
-
-            <p>
-                <a class="govuk-link govuk-link--no-visited-state" href="#">Switch to a different organisation</a>
-            </p>
-           
-            <div style="display:flex; margin-top: 40px">
-                <div style="background: #f3f2f1; padding: 1rem; border-radius: 2px; width: 250px;">
-                    <div class="govuk-body" style="font-weight: 500; color: #1d70b8; margin-bottom: 0.5rem;">
-                       
-                        <a class="govuk-link govuk-link--no-visited-state" href="#">  Organisation details </a>
-                        </div>
-                    <div class="govuk-body">View or change your organisation's details</div>
-                </div>
-                <div style="background: #f3f2f1; padding: 1rem; border-radius: 2px; width: 250px;margin-left:2rem;">
-                    <div class="govuk-body" style="font-weight: 500; color: #1d70b8; margin-bottom: 0.5rem;">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="User"> Manage User </a>
-                        </div>
-                    <p class="govuk-body">Register a heat network to activate manage users.</p>
-                </div>
+    <div class="dashboard-grid">
+        <!-- Notifications -->
+        <div class="dashboard-grid__item">
+            <div class="dashboard-card">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "Notification", new { userId = ViewBag.UserId })">
+                        Notifications
+                    </a>
+                </h3>
+                <p class="govuk-body-s">Network, element and personnel updates</p>
             </div>
         </div>
 
+        <!-- Organisation Details -->
+        <div class="dashboard-grid__item">
+            <div class="dashboard-card">
+                @if (Model.OrganisationName == null)
+                {
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-controller="ExistingOrganisation" asp-action="AddOrRegister">
+                            Add Organisation Details
+                        </a>
+                    </h3>
+                    <p class="govuk-body-s">Add or register the organisation you work for.</p>
+                }
+                else
+                {
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a asp-controller="Dashboard" asp-action="OrganisationDetails" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
+                    </h3>
+                    <p class="govuk-body-s">View or change your organisation's details.</p>
+                }
+            </div>
+        </div>
 
-        @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
-        {
-            <h2 class="govuk-heading-m" style="margin-top: 2rem;">My heat network list</h2>
-            <table class="govuk-table">
-                <thead class="govuk-table__head">
-                    <tr class="govuk-table__row">
-                        <th class="govuk-table__header" scope="col">Heat network name</th>
-                        <th class="govuk-table__header" scope="col">Organisation</th>
-                        <th class="govuk-table__header" scope="col">Status</th>
-                        <th class="govuk-table__header" scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                    @foreach (var heatNetwork in Model.HeatNetworks)
-                    {
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">@heatNetwork.Name</td>
-                            <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
-                            <td class="govuk-table__cell">
-                                @{
-                                    // You can add logic here to dynamically apply classes based on status
-                                    var statusClass = "";
-                                    switch (heatNetwork.Status.ToLower())
-                                    {
-                                        case "active":
-                                            statusClass = "govuk-tag--green";
-                                            break;
-                                        case "pending":
-                                            statusClass = "govuk-tag--yellow";
-                                            break;
-                                        case "inactive":
-                                            statusClass = "govuk-tag--red";
-                                            break;
-                                        default:
-                                            statusClass = "govuk-tag--grey"; // Default for unknown status
-                                            break;
-                                    }
-                                }
-                                <span class="govuk-tag @statusClass">@heatNetwork.Status</span>
-                            </td>
-                            <td class="govuk-table__cell">
-                                <a class="govuk-link govuk-link--no-visited-state" href="#">View/Edit</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <h2 class="govuk-heading-m" style="margin-top: 2rem;">Heat Networks</h2>
-            <p class="govuk-body">To comply with all of heat network's regulations you must register all of @Model.OrganisationName's heat networks.</p>
-        }
+        <!-- Your Details -->
+        <div class="dashboard-grid__item">
+            <div class="dashboard-card">
+                <h3 class="dashboard-card__title govuk-heading-s">
+                    <a class="govuk-link govuk-link--no-visited-state" asp-action="YourDetails" asp-controller="Dashboard">Your Details</a>
+                </h3>
+                <p class="govuk-body-s">View your details.</p>
+            </div>
+        </div>  
 
-        <p class="govuk-!-margin-top-6">
-            <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-controller="HeatNetwork" asp-action="EnterHNLocation">
-                Add a new heat network
-            </a>
-        </p>
-    </main>
+        
+        @if (userIsRP || userIsActingRP)
+        {
+            @if (userIsRP)
+            {
+                <!-- Network Managers -->
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            @* <a class="govuk-link govuk-link--no-visited-state" asp-controller="NetworkLeads" asp-action="ManageLeads"> *@
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageLeads" asp-controller="NetworkLeads">
+                                Network Managers
+                            </a>
+                        </h3>
+                        <p class="govuk-body-s">Accountable personnel able to add heat networks and dutyholders</p>
+                    </div>
+                </div>
+            }
+
+
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="UserManagement">Manage user</a>
+                    </h3>
+                    <p class="govuk-body-s">Register a heat network to activate manage users.</p>
+                </div>
+            </div>
+
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks</a>
+                    </h3>
+                    <p class="govuk-body-s">View the heat network to be assessed.</p>
+                </div>
+            </div>
+
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageContributors" asp-controller="Contributors">Duty holders and contributors</a>
+                    </h3>
+                    <p class="govuk-body-s">Personnel providing expertise at a per network level only</p>
+                </div>
+            </div>           
+
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="AssignedAssessor">Assessors</a>
+                    </h3>
+                    <p class="govuk-body-s">View assessors assigned to your networks</p>
+                </div>
+            </div>
+            <environment names="Local,dev,qa">
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="ImportExcelPOC">Import Excel POC</a>
+                        </h3>
+                        <p class="govuk-body-s">Search for active assessors using the fast typeahead proof-of-concept.</p>
+                    </div>
+                </div>
+            </environment>
+
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="KpiDashboard">
+                            KPI Dashboard
+                        </a>
+                    </h3>
+                    <p class="govuk-body-s">
+                        View KPI assessments, performance thresholds, and data integrity checks for registered heat networks.
+                    </p>
+                </div>
+            </div>
+                      
+        }
+        else if (userIsAssessor)
+        {
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="UserDetails" asp-controller="Assessor">User Details</a>
+                    </h3>
+                    <p class="govuk-body-s">View your details</p>
+                </div>
+            </div>
+
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks</a>
+                    </h3>
+                    <p class="govuk-body-s">View the heat network to be assessed.</p>
+                </div>
+            </div>            
+        }
+        else if (userIsCertifier)
+        {
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="UserDetails" asp-controller="Assessor">User Details</a>
+                    </h3>
+                    <p class="govuk-body-s">View your details</p>
+                </div>
+            </div>
+
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Networks for certification</a>
+                    </h3>
+                    <p class="govuk-body-s">View networks assigned to you.</p>
+                </div>
+            </div>
+        }
+        else if(userIsContributor || userIsDesignatedDutyHolder)
+        {           
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="UserManagement">Manage user</a>
+                    </h3>
+                    <p class="govuk-body-s">View or add users to your heat network.</p>
+                </div>
+            </div>
+
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card @disabled">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks</a>
+                    </h3>
+                    <p class="govuk-body-s">View, add or edit heat network details.</p>
+                </div>
+            </div>
+            @if (userIsDesignatedDutyHolder)
+            {
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card @disabled">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageContributors" asp-controller="Contributors">Contributors</a>
+                        </h3>
+                        <p class="govuk-body-s">Personnel providing expertise at a per network level only</p>
+                    </div>
+                </div>
+            }
+        }
+        <environment names="dev">
+            <!-- Carbon Calculator-->
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="CarbonCalculator">Carbon Calculator</a>
+                    </h3>
+                    <p class="govuk-body-s">Calculate carbon emission for your heat network.</p>
+                </div>
+            </div>
+        </environment>
+
+    </div>
+    @if (userIsRP)
+    {
+        <div class="govuk-button-group govuk-!-margin-top-9">
+            <span class="govuk-body">
+                <a href="@Url.Action("HeatNetworkDwellingsCheck", "HeatNetworkRegistration")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                    Add a heat network
+                </a> or <a class="govuk-link" href="@Url.Action("ManageLeads", "NetworkLeads")">Authorise someone to manage heat networks</a>
+            </span>
+        </div>
+    }
 </div>

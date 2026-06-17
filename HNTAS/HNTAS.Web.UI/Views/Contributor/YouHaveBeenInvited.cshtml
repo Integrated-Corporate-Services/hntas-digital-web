@@ -1,0 +1,38 @@
+﻿@using HNTAS.Web.UI.Models
+@model YouHaveBeenInvitedModel
+
+@{
+    ViewData["Title"] = "You have been invited to register a heat network";
+    var fieldOrder = new[] { nameof(Model.AcceptInvitation) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.AcceptInvitation)).ToLowerInvariant();
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "Contributor",
+        Action = "YouHaveBeenInvited",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = $"You have been invited to join {TempData["HNName"]} heat network",
+                QDescText = null,
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = $"{elementId}", OptValue = "accept", OptText = "I accept the invitation", OptHintText = "Heat network owner will be notified" },
+                    new Option { OptId = $"{elementId}-2", OptValue = "decline", OptText = "I decline the invitation", OptHintText = "Heat network owner will be notified" }
+                },
+                SeletedOption = Model.AcceptInvitation
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div>

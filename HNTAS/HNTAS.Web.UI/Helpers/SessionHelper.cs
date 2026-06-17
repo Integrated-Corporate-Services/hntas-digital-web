@@ -3,27 +3,11 @@ using Newtonsoft.Json;
 
 namespace HNTAS.Web.UI.Helpers
 {
-    public static class SessionHelper
+    public class SessionHelper : ISessionHelper
     {
-        #region Constants
-
-        public static class SessionKeys
-        {
-            public const string UserCreation_SessionKey = "UserModelDataKey";
-            public const string UserModel_Id_SessionKey = "UserModelIdDataKey";
-            public const string OrganisationCreation_SessionKey = "OrganisationModelDataKey";
-
-            // Session key for the boolean flow state
-            public const string IsCheckAnswerFlowKey = "IsCheckAnswerFlow";
-            public const string HeatNetworkLocationModelKey = "HeatNetworkLocation";
-            public const string HeatNetworkNameModelKey = "HeatNetworkName";
-        }
-
-        #endregion
-
         #region Generic Session Methods
 
-        public static void SaveToSession<T>(HttpContext httpContext, string sessionKey, T model)
+        public void SaveToSession<T>(HttpContext httpContext, string sessionKey, T model)
         {
             if (model == null)
             {
@@ -34,7 +18,7 @@ namespace HNTAS.Web.UI.Helpers
             httpContext.Session.SetString(sessionKey, json);
         }
 
-        public static T? GetFromSession<T>(HttpContext httpContext, string sessionKey) where T : class
+        public T? GetFromSession<T>(HttpContext httpContext, string sessionKey)
         {
             string? json = httpContext.Session.GetString(sessionKey);
             if (!string.IsNullOrEmpty(json))
@@ -47,37 +31,66 @@ namespace HNTAS.Web.UI.Helpers
                 {
                     // Optionally log the error
                     httpContext.Session.Remove(sessionKey);
-                    return null;
+                    return default;
                 }
             }
-            return null;
+            return default;
         }
 
-        public static void ClearFromSession(HttpContext httpContext, string sessionKey)
+        public void ClearFromSession(HttpContext httpContext, string sessionKey)
         {
             httpContext.Session.Remove(sessionKey);
         }
 
         // You might still want a general ClearAllFlowRelatedSessionData if starting completely fresh
-        public static void ClearAllFlowRelatedSessionData(HttpContext context)
+        public void ClearAllFlowRelatedSessionData(HttpContext context)
         {
+            ClearFromSession(context, SessionKeys.WhatDoYouWantToDoViewModelKey);
             ClearFromSession(context, SessionKeys.UserCreation_SessionKey);
             ClearFromSession(context, SessionKeys.OrganisationCreation_SessionKey);
-            ClearFromSession(context, SessionKeys.HeatNetworkLocationModelKey);
-            ClearFromSession(context, SessionKeys.HeatNetworkNameModelKey);
+            ClearFromSession(context, SessionKeys.AddressByStreetOrTownModelSessionKey);
+            ClearAllHNRegistrationFlowRelatedSessionData(context);
             context.Session.Remove(SessionKeys.IsCheckAnswerFlowKey);
+        }
+
+        public void ClearAllHNRegistrationFlowRelatedSessionData(HttpContext context)
+        {
+            ClearFromSession(context, SessionKeys.HowManyDwellingsIncludedModelKey);
+            ClearFromSession(context, SessionKeys.HeatNetworkOrganisationModelKey);
+            ClearFromSession(context, SessionKeys.IsHnTypeCommunalViewModel);
+            ClearFromSession(context, SessionKeys.DoesCommunalHnHaveOwnEcViewModel);
+            ClearFromSession(context, SessionKeys.DoesDistrictHnHaveOwnEcViewModel);
+            ClearFromSession(context, SessionKeys.DoesCommunalEcSupplyOneBlockViewModel);
+            ClearFromSession(context, SessionKeys.HeatNetworkConnectionsViewModelKey);
+            ClearFromSession(context, SessionKeys.HeatNetworkNameModelKey);
+            ClearFromSession(context, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
+            ClearFromSession(context, SessionKeys.HeatNetworkLocationModelKey);
+            ClearFromSession(context, SessionKeys.ECDetailsModelSessionKey);
+            ClearFromSession(context, SessionKeys.HeatNetworkPhaseModelKey);
+            ClearFromSession(context, SessionKeys.PathwayModelKey);
+            ClearFromSession(context, SessionKeys.CheckYourAnswersHeatNetworkModelKey);
+        }
+
+        public void ClearAllContributoFlowRelatedSessionData(HttpContext context) 
+        {
+            ClearFromSession(context, SessionKeys.NewContributorRoleViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.AddContributorViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.NewContributorDetailsViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.ExistingContributorsListViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.NewContributorHeatNetworkViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.CheckYourAnswersContributorsModelSessionKey);
         }
 
         #endregion
 
         #region Flow State Methods
 
-        public static void SetIsCheckAnswerFlow(HttpContext httpContext, bool isCheckAnswerFlow)
+        public void SetIsCheckAnswerFlow(HttpContext httpContext, bool isCheckAnswerFlow)
         {
             httpContext.Session.SetBoolean(SessionKeys.IsCheckAnswerFlowKey, isCheckAnswerFlow);
         }
 
-        public static bool GetIsCheckAnswerFlow(HttpContext httpContext)
+        public bool GetIsCheckAnswerFlow(HttpContext httpContext)
         {
             return httpContext.Session.GetBoolean(SessionKeys.IsCheckAnswerFlowKey) ?? false;
         }

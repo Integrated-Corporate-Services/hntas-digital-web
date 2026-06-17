@@ -1,0 +1,54 @@
+﻿@model HNTAS.Web.UI.Models.HeatNetworksViewModel
+
+<h1 class="govuk-heading-l">Heat networks</h1>
+@if (Model.IsResponsiblePerson || Model.IsHntasCoordinator)
+{
+    <p class="govuk-!-margin-top-6">
+        <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-controller="HeatNetwork" asp-action="Index">
+            Add a new heat network
+        </a>
+    </p>
+}
+
+@if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
+{    
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">Organisation</th>
+                <th class="govuk-table__header" scope="col">Heat network</th>
+                <th class="govuk-table__header" scope="col">Your Role</th>                
+                <th class="govuk-table__header" scope="col">Action</th>
+                @if (ViewBag.IsRegistrationEnabled == true)
+                {
+                    <th class="govuk-table__header" scope="col">Certification history</th>
+                }
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            @foreach (var heatNetwork in Model.HeatNetworks)
+            {
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
+                    <td class="govuk-table__cell">
+                        @heatNetwork.HnId<br />
+                        @heatNetwork.Name<br/>
+                        @heatNetwork.HnDescription
+                    </td>
+                    <td class="govuk-table__cell">@heatNetwork.Role</td>                                    
+                    
+                    <td class="govuk-table__cell">
+                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("AddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId })">Add network details</a>
+                    </td>
+
+                    @if (ViewBag.IsRegistrationEnabled == true)
+                    {
+                        <td class="govuk-table__cell">
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistoryPOC", new { hnId = heatNetwork.HnId })">View history</a>
+                        </td>
+                    }                                          
+                </tr>
+            }
+        </tbody>
+    </table>
+}

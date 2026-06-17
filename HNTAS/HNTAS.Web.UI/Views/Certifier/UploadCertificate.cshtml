@@ -1,0 +1,33 @@
+﻿@using HNTAS.Web.UI.Models
+@model UploadSOCViewModel
+
+@{
+    ViewData["Title"] = "Upload Certificate 1";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Certifier</span>
+            <h1 class="govuk-heading-l">
+                Upload Certificate 1
+            </h1>
+            <p class="govuk-body">
+               Upload certificate for @ViewBag.HeatNetworkName
+            </p>
+
+            <form asp-action="SaveUploadCertificate" method="post" enctype="multipart/form-data" class="govuk-form-group">
+                @Html.AntiForgeryToken()
+                <div class="govuk-form-group">
+                    <input class="govuk-file-upload" id="certifierSoc" name="certifierSoc" type="file">
+                </div>
+                <br />
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+
+
+        </div>
+    </div>
+</div>

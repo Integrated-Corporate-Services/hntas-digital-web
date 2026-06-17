@@ -1,0 +1,88 @@
+﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.Enums
+@using HNTAS.Web.UI.Models.User
+@model CheckYourAnswersOrganisationModel
+
+@{
+    ViewData["Title"] = "Check your answers";
+    var userModel = Model.User;
+
+    string displayContactNumber = "Not provided";
+    if (userModel?.ContactDetails != null)
+    {
+        if (userModel.ContactDetails.PreferredContactType == PreferredContactType.Landline)
+        {
+            displayContactNumber = $"Landline {userModel.ContactDetails.LandlineNumber}";
+            if (!string.IsNullOrEmpty(userModel.ContactDetails.ContactNumberExtension))
+            {
+                displayContactNumber += $" ext {userModel.ContactDetails.ContactNumberExtension}";
+            }
+        }
+        else if (userModel.ContactDetails.PreferredContactType == PreferredContactType.Mobile)
+        {
+            displayContactNumber = userModel.ContactDetails.MobileNumber;
+        }
+        else if (userModel.ContactDetails.PreferredContactType == PreferredContactType.PreferNotToSay)
+        {
+            displayContactNumber = "Prefer not to say";
+        }
+        if (string.IsNullOrEmpty(displayContactNumber))
+        {
+            displayContactNumber = "Not provided";
+        }
+    }
+
+    bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) &&
+                                ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
+
+    var fieldName = nameof(Model.ConfirmedDeclaration).ToLowerInvariant();
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Check your answers</h1>
+
+            <form asp-controller="UserDetails" asp-action="SubmitAnswers" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+
+                    <h2 class="govuk-heading-m">Your details</h2>
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Are you the regulatory contact?</dt>
+                            <dd class="govuk-summary-list__value">
+                                @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
+                            </dd>
+                            
+                        </div>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">First name</dt>
+                            <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.FirstName</dd>
+                            
+                        </div>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Last name</dt>
+                            <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.LastName</dd>
+                            
+                        </div>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Preferred contact number for work</dt>
+                            <dd class="govuk-summary-list__value">@displayContactNumber</dd>
+                            
+                        </div>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Job title</dt>
+                            <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.JobTitle</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> first name</span></a>
+                            </dd>
+                        </div>
+                    </dl>                    
+
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Continue
+                    </button>
+                </form>
+        </div>
+    </div>
+</div>

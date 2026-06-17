@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "New build";
+}
+
+@section BeforeMain {
+
+    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="@Url.Action("DocumentLibrary", "Home")">Document library</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                New build
+            </li>
+        </ol>
+    </nav>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            New build heat network documents
+        </h1>
+
+        <p class="govuk-body">
+            Use this page to find technical specifications and assessment procedures for new build heat networks under the Heat Network Technical Assurance Scheme (HNTAS).
+        </p>
+
+        <p class="govuk-body">
+            All documents are published on GOV.UK.
+        </p>
+
+        <p class="govuk-body">
+            This page is for people working on new build heat networks, including developers, designers, operators and assessors.
+        </p>
+
+        <p class="govuk-body">
+            Documents are organised:
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>by heat network element</li>
+            <li>then by phase of development</li>
+        </ul>
+
+        <p class="govuk-body">
+            Each element includes an overview, followed by documents for each phase.
+        </p>
+
+        <h2 class="govuk-heading-m">
+            Contents
+        </h2>
+
+        <ul class="govuk-list govuk-!-margin-top-2">
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("EnergyCentre", "NewBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener"> Energy Centre (EC)</a>
+            </li>
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("DistrictDistributionNetwork", "NewBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">  District Distribution Network (DD)</a>
+            </li>
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("Substation", "NewBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">  Substation (SS)</a>
+            </li>
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("CommunalDistributionNetwork", "NewBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">  Communal Distribution Network (CD)</a>
+            </li>
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("ConsumerConnection", "NewBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">  Concumer Connection (CC)</a>
+            </li>
+            <li class="govuk-body">
+                —
+                <a href="@Url.Action("ConsumerHeatSystem", "NewBuild")" class="govuk-link govuk-link--no-visited-state" rel="noreferrer noopener">  Consumer Heat System (CH)</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <!--Right Related Links Column-->
+
+    <div class="govuk-grid-column-one-third">
+
+        <aside class="govuk-prototype-kit-common-templates-related-items" role="complementary">
+            <h2 class="govuk-heading-m" id="subsection-title">
+                Related content
+            </h2>
+            <nav role="navigation" aria-labelledby="subsection-title">
+                <ul class="govuk-list govuk-!-font-size-16">
+                    <li>
+                        <a class="govuk-link" href="#">
+                            Guidance
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+    </div>
+</div>

@@ -1,24 +1,56 @@
+using Amazon.S3;
 using GovUk.OneLogin.AspNetCore;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
+using HNTAS.Web.UI.Filters;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Routing;
 using HNTAS.Web.UI.Services;
+using HNTAS.Web.UI.Services.Core;
+using HNTAS.Web.UI.Workflows;
+using HNTAS.Web.UI.Workflows.Enums;
+using HNTAS.Web.UI.Workflows.Models.Data;
+using HNTAS.Web.UI.Workflows.Services;
+using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDataProtection()
+    .SetApplicationName("HNTAS.Web.UI")
+    //.PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
+    .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
 
-// Configure RouteOptions for lowercase URLs
-builder.Services.Configure<RouteOptions>(options =>
+if (builder.Environment.EnvironmentName == "Local")
 {
-    options.LowercaseUrls = true;
-    options.LowercaseQueryStrings = true; // Optional: for query string parameters too
-});
+    builder.Services.AddDataProtection();        
+    Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
+}
+else
+{
+    builder.Services.AddDataProtection()
+        .PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
+        .SetDefaultKeyLifetime(TimeSpan.FromDays(8));
+    Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
+}
+
+// Configure RouteOptions
+builder.Services.Configure<RouteOptions>(options =>
+    {
+        options.LowercaseUrls = false;
+        options.LowercaseQueryStrings = false; // Optional: for query string parameters too
+    });
 
 // Register the parameter transformer globally for controllers/actions
 builder.Services.AddControllersWithViews(options =>
@@ -27,6 +59,14 @@ builder.Services.AddControllersWithViews(options =>
     options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
 });
 
+builder.Services.AddHttpContextAccessor();
+
+Console.WriteLine("*********************in UI**************");
+Console.WriteLine("SIMULATOR_PROP1: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP1"));
+Console.WriteLine("SIMULATOR_PROP2: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP2"));
+Console.WriteLine("SIMULATOR_PROP3: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP3"));
+Console.WriteLine("SIMULATOR_PROP4: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP4"));
+Console.WriteLine("S3 Bucket variable: " + Environment.GetEnvironmentVariable("HNTAS_S3_BUCKET_NAME"));
 
 var coreApiBaseUrl = builder.Configuration.GetValue<string>("ApiClients:CoreApiBaseUrl");
 
@@ -42,16 +82,77 @@ builder.Services.AddSingleton(new JsonSerializerOptions
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Common setting for JSON serialization
     Converters = {
         new UserJsonConverter(),
-        new OrgDetailsJsonConverter(),
-        new OrgRegisteredAddressJsonConverter(),
         new InitialUserRegistrationRequestJsonConverter(),
         new UserRoleJsonConverter(),
         new UserResponseJsonConverter(),
+        new HeatNetworkUserResponseJsonConverter(),
+        new EnumItemResponseJsonConverter(),
+        new ContributorRoleJsonConverter(),
+        new UserDetailsResponseJsonConverter(),
+        new OrganisationResponseJsonConverter(),
+        new HeatNetworkResponseJsonConverter(),
+        new RegisteredAddressJsonConverter(),
+        new ManagedUserResponseJsonConverter(),
+        new InvitedUserResponseJsonConverter(),
+        new HnRoleMappingJsonConverter(),
+        new SoaJourneyDataJsonConverter(),
+        new NetworkTypeSelectionJsonConverter(),
+        new ConnectionTypeJsonConverter(),
+        new HeatNetworkElementJsonConverter(),
+        new UploadedDocumentJsonConverter(),
+        new HeatNetworkResponseJsonConverter(),
+        new SoaResponseJsonConverter(),
+        new SoaStatusJsonConverter(),
+        new SoaJsonConverter(),
+        new Soa2JsonConverter(),
+        new JourneyDataResponseJsonConverter(),
+        new NetworkTypeResponseJsonConverter(),
+        new ConnectionTypeJsonConverter(),
+        new HeatNetworkElementResponseJsonConverter(),
+        new UploadedDocumentResponseJsonConverter(),
+        new UploadedAssessmentDocumentResponseJsonConverter(),
+        new UploadedAssessorDocumentResponseJsonConverter(),
+        new UploadedCertifierDocumentResponseJsonConverter(),
+        new HeatNetworkInfoJsonConverter(),
+        new CountryAndTerritoryJsonConverter(),
+        new UserRoleDetailResponseJsonConverter(),
         new OrganisationJsonConverter(),
-        new HeatNetworkJsonConverter()
+        new AssessorSearchResultJsonConverter(),
+        new RegisteredAddress2JsonConverter(),
+        new ECDetailsJsonConverter(),
+        new NetworkElementsResponseJsonConverter(),
+        new MeteringAndMonitoringStrategyResponseJsonConverter(),
+        new AssessmentPlanResponseJsonConverter(),
+        new DesignConstructionLogResponseJsonConverter(),
+        new AuditLogResponseJsonConverter(),
+        new ElementJsonConverter(),
+        new ECDetails2JsonConverter(),
+        new NetworkDetailsUploadedDocumentJsonConverter(),
+        new SoaStagesJsonConverter(),
+        new HeatNetworkConnectionsJsonConverter(),
+        new HeatNetworkTypeJsonConverter(),
+        new AuditLogJsonConverter(),
+        new ElementSoaAssignAssessorRequestJsonConverter(),
+        new SoaAssessorJsonConverter(),
+        new NotificationHistoryRequestJsonConverter(),
+        new NotificationHistoryResponseJsonConverter(),
+        new NotificationHistoryDataJsonConverter(),
+        new AssignedAssessorRequestJsonConverter(),
+        new AssignedAssessorResponseJsonConverter(),
+        new AssignedAssessorJsonConverter(),
+        new HeatNetworkDashboardResponseJsonConverter(),
+        new HeatNetworkDashboardRowJsonConverter(),
+        new HeatNetworkDetailsResponseJsonConverter(),
+        new ElementGroupDtoJsonConverter(),
+        new KpiDetailDtoJsonConverter(),
+        new KpiHistoryResponseJsonConverter(),
+        new AggregatedKpiJsonConverter(),
+        new SoaStatusWithCountJsonConverter(),
+        new ElementGroupJsonConverter(),        
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
+
 builder.Services.AddSingleton<UsersApiEvents>();
 builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
 {
@@ -59,6 +160,12 @@ builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddSingleton<OrganisationsApiEvents>();
+builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
 
 builder.Services.AddSingleton<HeatNetworksApiEvents>();
 builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
@@ -67,36 +174,295 @@ builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddSingleton<InvitationsApiEvents>();
+builder.Services.AddHttpClient<IInvitationsApi, InvitationsApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
+builder.Services.AddSingleton<SOAApiEvents>();
+builder.Services.AddHttpClient<ISOAApi, SOAApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<CountriesAndTerritoriesApiEvents>();
+builder.Services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<OrganisationsApiEvents>();
+builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
+builder.Services.AddSingleton<OrganisationUserApiEvents>();
+builder.Services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<CarbonCalculatorApiEvents>();
+builder.Services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<AssessorApiEvents>();
+builder.Services.AddHttpClient<IAssessorApi, AssessorApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
+builder.Services.AddSingleton<AuditApiEvents>();
+builder.Services.AddHttpClient<IAuditApi, AuditApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<NotificationHistoryApiEvents>();
+builder.Services.AddHttpClient<INotificationHistoryApi, NotificationHistoryApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<AssignedAssessorApiEvents>();
+builder.Services.AddHttpClient<IAssignedAssessorApi, AssignedAssessorApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+
+builder.Services.AddSingleton<ArmsDashboardApiEvents>();
+builder.Services.AddHttpClient<IArmsDashboardApi, ArmsDashboardApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddScoped<ISessionHelper, SessionHelper>();
+
+builder.Services.AddScoped<IWorkflowManager, WorkflowManager>();
+// Since it's a generic filter, you can register a specific type for each workflow
+builder.Services.AddScoped<WorkflowValidationFilter<AddNewContributorWorkflowModel, ContributorWorkflowStep>>();
+builder.Services.AddScoped<WorkflowValidationFilter<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>>();
+builder.Services.AddScoped<WorkflowValidationFilter<AddOrganisationUserWorkflowModel, AddOrganisationUserWorkflowStep>>();
+builder.Services.AddScoped<IRedirectResolver<AddNewContributorWorkflowModel, ContributorWorkflowStep>, NewContributorRedirectResolver>();
+builder.Services.AddScoped<IRedirectResolver<AddExistingContributorWorkflowModel, ExistingContributorWorkflowStep>, ExistingContributorRedirectResolver>();
+builder.Services.AddScoped<IRedirectResolver<AddOrganisationUserWorkflowModel, AddOrganisationUserWorkflowStep>, AddOrganisationUserRedirectResolver>();
+builder.Services.AddScoped<IRedirectResolver<AddExistingOrganisationUserWorkflowModel, ExistingOrganisationUserWorkflowStep>, ExistingOrganisationUserRedirectResolver>();
+
+builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnGetAttribute>();
+builder.Services.AddScoped<EnsureSessionForOrganisationFlowOnPostAttribute>();
+
 builder.Services.AddScoped<IUserService, UserService>();
-
+builder.Services.AddScoped<IOrganisationService, OrganisationService>();
+builder.Services.AddScoped<IInvitationService, InvitationService>();
+builder.Services.AddScoped<ISoaService, SoaService>();
+builder.Services.AddScoped<IHeatNetworkService, HeatNetworkService>();
+builder.Services.AddScoped<ICountriesAndTerritoriesService, CountriesAndTerritoriesService>();
+builder.Services.AddScoped<IOrganisationService, OrganisationService>();
+builder.Services.AddScoped<IOrganisationUserService, OrganisationUserService>();
+builder.Services.AddScoped<ICarbonCalculatorService, CarbonCalculatorService>();
 builder.Services.AddHttpClient<ICompaniesHouseService, CompaniesHouseService>();
+builder.Services.AddScoped<IAddressLookupService, AddressLookupService>();
+builder.Services.AddScoped<IInvitationTokenService, InvitationTokenService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
+builder.Services.AddScoped<INotificationHistoryService, NotificationHistoryService>();
+builder.Services.AddScoped<IAssignedAssessorService, AssignedAssessorService>();
+builder.Services.AddScoped<IArmsDashboardService, ArmsDashboardService>();
+builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
-//Configure onelogin settings
-builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddOneLogin(options =>
-    {
-        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
-        options.Environment = OneLoginEnvironments.Integration;
-        options.ClientId = Environment.GetEnvironmentVariable("ONELOGIN_CLIENT_ID");
-        options.CallbackPath = "/onelogin-callback";
-        options.SignedOutCallbackPath = "/onelogin-logout-callback";
-        options.Scope.Add("openid");
-        options.Scope.Add("email");
-        options.Scope.Add("phone");
-        // options.Scope.Add("profile"); // If your service needs name, birthdate, etc.
+builder.Services.AddSingleton<IAmazonS3>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    return S3ClientHelper.Create(config);
+});
 
-        using (var rsa = RSA.Create())
+builder.Services.AddSingleton<IS3UploadService, S3UploadService>();
+
+
+builder.Services.AddSingleton(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+
+    var client = new HttpClient();
+    client.DefaultRequestHeaders.UserAgent.Clear();
+    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("HNTAS", "1.0"));
+
+    return client;
+});
+
+// Decide which authentication to use based on the environment variable
+var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
+
+if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true", StringComparison.OrdinalIgnoreCase))
+{
+    // GOV.UK Simulator authentication
+    builder.Services.AddAuthentication("GovUkSimulator")
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddOpenIdConnect("GovUkSimulator", options =>
         {
-            rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
-            options.ClientAuthenticationCredentials = new SigningCredentials(
-                new RsaSecurityKey(rsa.ExportParameters(true)), // Fix: Ensure RsaSecurityKey is resolved
-                SecurityAlgorithms.RsaSha256);
-        }
+            options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.Authority = Environment.GetEnvironmentVariable("SIMULATOR_PROP1");
+            options.ClientId = Environment.GetEnvironmentVariable("SIMULATOR_PROP2");
+            options.CallbackPath = "/onelogin-callback";
+            options.RequireHttpsMetadata = false;
+            options.SignedOutCallbackPath = "/account/signed-out";
+            options.ResponseType = "code";
+            options.SaveTokens = true;
+            options.Scope.Clear();
+            options.Scope.Add("openid");
+            options.Scope.Add("email");
+            options.ResponseMode = "query";
+            options.GetClaimsFromUserInfoEndpoint = true;
+            // Add more options as needed for your simulator
+            //options.TokenEndpointAuthenticationMethod = OpenIdConnectRedirectBehavior.Post;
 
-        options.VectorsOfTrust = ["Cl.Cm"];
-    });
+            options.Events = new Microsoft.AspNetCore.Authentication.OpenIdConnect.OpenIdConnectEvents
+            {
+                OnAuthorizationCodeReceived = async context =>
+                {
+                    // Load your RSA private key (PEM format from environment variable or file)
+                    var privateKeyPem = Environment.GetEnvironmentVariable("SIMULATOR_PROP3");
+                    using var rsa = RSA.Create();
+                    rsa.ImportFromPem(privateKeyPem.Replace("\\n", "\n"));
+
+                    var now = DateTime.UtcNow;
+                    var clientId = options.ClientId; // This must match your OIDC client_id
+
+                    var handler = new JwtSecurityTokenHandler();
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Issuer = clientId,
+                        Subject = new ClaimsIdentity(new[]
+                        {
+                            new Claim("sub", clientId ?? string.Empty), // Must match client_id
+                            new Claim("jti", Guid.NewGuid().ToString()) // Required unique JWT ID
+                        }),
+                        Audience = options.Authority.TrimEnd('/') + "/token",
+                        Expires = now.AddMinutes(5),
+                        SigningCredentials = new SigningCredentials(
+                            new RsaSecurityKey(rsa.ExportParameters(true)),
+                            SecurityAlgorithms.RsaSha256)
+                        // Do NOT set NotBefore
+                    };
+                    var jwt = handler.CreateEncodedJwt(tokenDescriptor);
+
+                    context.TokenEndpointRequest.ClientAssertionType = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer";
+                    context.TokenEndpointRequest.ClientAssertion = jwt;
+                },
+                OnTokenValidated = context =>
+                {
+                    var identity = (ClaimsIdentity)context.Principal.Identity!;
+                    foreach (var claim in context.Principal.Claims)
+                    {
+                        Console.WriteLine($"[OIDC] Claim: {claim.Type} = {claim.Value}");
+                    }
+                    // Existing mapping code
+                    var email = context.Principal.FindFirst("email")?.Value;
+                    if (!string.IsNullOrEmpty(email))
+                        identity.AddClaim(new Claim(ClaimTypes.Email, email));
+                    var sub = context.Principal.FindFirst("sub")?.Value;
+                    if (!string.IsNullOrEmpty(sub))
+                        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, sub));
+                    return Task.CompletedTask;
+                }
+            };
+        });
+
+}
+else
+{
+    // GOV.UK One Login authentication
+    builder.Services.AddAuthentication(defaultScheme: OneLoginDefaults.AuthenticationScheme)
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+        {
+            options.AccessDeniedPath = "/account/access-denied"; // The browser will go here for 403s
+        })
+        .AddOneLogin(options =>
+        {
+            options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.Environment = OneLoginEnvironments.Integration;
+            options.ClientId = Environment.GetEnvironmentVariable("ONELOGIN_CLIENT_ID");
+            options.CallbackPath = "/onelogin-callback";
+            options.SignedOutCallbackPath = "/onelogin-logout-callback";
+            options.Scope.Add("openid");
+            options.Scope.Add("email");
+            options.Scope.Add("phone");
+            // ... your existing OneLogin event handlers and configuration ...
+            options.Events.OnRedirectToIdentityProvider = context =>
+            {
+                var invitedEmail = context.HttpContext.Session.GetString(SessionKeys.InvitedTokenEmail)?.Trim('"');
+                var invitationId = context.HttpContext.Session.GetString(SessionKeys.InvitationId)?.Trim('"');
+                var inviterUserId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserId)?.Trim('"');
+                var inviterOrgId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserOrgId)?.Trim('"');
+
+                if (!string.IsNullOrWhiteSpace(invitedEmail) &&
+                    !string.IsNullOrWhiteSpace(invitationId) &&
+                    !string.IsNullOrWhiteSpace(inviterUserId) &&
+                    !string.IsNullOrWhiteSpace(inviterOrgId))
+                {
+                    var customState = $"{invitedEmail}|{invitationId}|{inviterUserId}|{inviterOrgId}";
+                    context.ProtocolMessage.State = customState;
+                }
+
+                return Task.CompletedTask;
+            };
+
+            options.Events.OnTokenValidated = context =>
+            {
+                var state = context.ProtocolMessage.State;
+                var parts = state?.Split('|');
+
+                if (parts?.Length == 4)
+                {
+                    var invitedEmail = parts[0];
+                    var invitationId = parts[1];
+                    var inviterUserId = parts[2];
+                    var inviterOrgId = parts[3];
+
+                    var identity = (ClaimsIdentity)context.Principal.Identity!;
+                    identity.AddClaim(new Claim("hntas.invitedEmail", invitedEmail));
+                    identity.AddClaim(new Claim("hntas.invitationId", invitationId));
+                    identity.AddClaim(new Claim("hntas.inviterUserId", inviterUserId));
+                    identity.AddClaim(new Claim("hntas.inviterOrgId", inviterOrgId));
+                }
+
+                return Task.CompletedTask;
+            };
+            using (var rsa = RSA.Create())
+            {
+                rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
+                options.ClientAuthenticationCredentials = new SigningCredentials(
+                    new RsaSecurityKey(rsa.ExportParameters(true)),
+                    SecurityAlgorithms.RsaSha256);
+            }
+
+            options.VectorsOfTrust = [builder.Configuration.GetValue<string>("OneLogin:VectorsOfTrust")];
+        });
+
+}
+
+
+// Custom authorization logic for role-based access control, policies, and handlers
+builder.Services.AddApplicationAuthorization();
 
 builder.Services.AddSession(options =>
 {
@@ -106,11 +472,9 @@ builder.Services.AddSession(options =>
 });
 
 
-builder.Services.AddHttpClient<AddressLookupService>();
-
 var app = builder.Build();
 
-
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -122,6 +486,29 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+
+//This is to check if the application is in maintenance mode
+
+var maintenanceMode = Environment.GetEnvironmentVariable("MAINTENANCE_MODE");
+if (!string.IsNullOrEmpty(maintenanceMode) && maintenanceMode.Equals("true", StringComparison.OrdinalIgnoreCase))
+{
+    app.Use(async (context, next) =>
+    {
+        // Allow access to the maintenance page and static assets
+        var path = context.Request.Path.Value;
+        if (path != null && (path.Equals("/maintenance.html", StringComparison.OrdinalIgnoreCase) ||
+                             path.StartsWith("/assets") ||
+                             path.StartsWith("/css") ||
+                             path.StartsWith("/js")))
+        {
+            await next();
+        }
+        else
+        {
+            context.Response.Redirect("/maintenance.html");
+        }
+    });
+}
 
 try
 {
@@ -141,13 +528,14 @@ app.UseRouting();
 
 app.UseSession();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/", () => Results.Redirect("/heat-network-eligibility/running-ahn"));
+app.MapGet("/", () => Results.Redirect("/home/start-page"));
 
 app.MapControllerRoute(
     name: "default",
     pattern: "[controller]/[action]/{id?}",
-    defaults: new { controller = "HeatNetworkEligibility", action = "RunningAHN" });
+    defaults: new { controller = "Home", action = "StartPage" });
 
 app.Run();

@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace HNTAS.Web.UI.Services
 {
-    public class AddressLookupService
+    public class AddressLookupService : IAddressLookupService
     {
         private readonly HttpClient _httpClient;
         private readonly string? _apiKey;
@@ -14,7 +14,7 @@ namespace HNTAS.Web.UI.Services
             _apiKey = Environment.GetEnvironmentVariable("OS_API_KEY");
         }
 
-        public async Task<AddressLookUpModel?> PostcodeLookupAsync(string postcode)
+        public async Task<SearchAddressByPostcodeModel?> PostcodeLookupAsync(string postcode)
         {
             var request = new HttpRequestMessage(
                 HttpMethod.Get,
@@ -50,7 +50,7 @@ namespace HNTAS.Web.UI.Services
 
             string[] addressesArray = addresses.ToArray() ?? [];
 
-            return new AddressLookUpModel { Postcode = postcode, Addresses = addressesArray };
+            return new SearchAddressByPostcodeModel { Postcode = postcode, Addresses = addressesArray };
         }
     }
 }

@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Check your answers";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <h1 class="govuk-heading-l">
+            Check your answers before submitting
+        </h1>
+        <p class="govuk-body govuk-!-margin-bottom-6">
+            Phase 1 overall Statement of applicability (SOA)
+        </p>
+
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+            Statement of conformity (SOC)
+        </h2>
+        <div class="govuk-summary-list govuk-!-margin-bottom-6">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Stage 1 - Energy centre
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    [@ViewBag.SOCDocFileName]
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="@Url.Action("UploadSOC", "Assessor")">Change<span class="govuk-visually-hidden"> SOC file</span></a>
+                </dd>
+            </div>
+        </div>
+
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+            Impartiality statement
+        </h2>
+        <div class="govuk-summary-list govuk-!-margin-bottom-6">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Impartiality statement
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    Accepted
+                </dd>
+            </div>
+        </div>
+        
+        <div class="app-button-wrapper">
+            <a role="button"  data-module="govuk-button" draggable="false" class="govuk-button">Continue</a>
+        </div>
+    </div>
+</div>

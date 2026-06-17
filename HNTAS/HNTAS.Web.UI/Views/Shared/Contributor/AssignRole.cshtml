@@ -1,0 +1,51 @@
+﻿@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Models.OrganisationRole
+@model RoleAssignmentModel
+@{
+    ViewData["Title"] = $"What role do you want to assign to {Model.InvitedUserName}?";
+    var hasErrors = ViewData.ModelState["SelectedRoleName"]?.Errors.Count > 0; // Use SelectedRoleName
+    var selectedRoleNameId = Html.LowercaseIdFor(m => m.SelectedRoleName);
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-l">Manage roles for @ViewBag.OrganisationName</span>
+
+        <form asp-action="SaveAssignRole" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")">
+
+                <fieldset class="govuk-fieldset" aria-describedby="@(hasErrors ? "RoleAssignmentError" : "")">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            @ViewData["Title"]
+                        </h1>
+                    </legend>
+
+                    @if (hasErrors)
+                    {
+                        <p id="RoleAssignmentError" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @Html.ValidationMessageFor(m => m.SelectedRoleName)
+                        </p>
+                    }
+
+
+                    @await Html.PartialAsync("Components/_GovUkRadioList", new GovUkRadioListModel
+                    {
+                        FieldId = selectedRoleNameId,
+                                        FieldName = nameof(Model.SelectedRoleName),
+                                        SelectedValue = Model.SelectedRoleName,
+                                        Items = Model.AvailableRoles // Use the dynamically loaded roles
+                                        })
+
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>
