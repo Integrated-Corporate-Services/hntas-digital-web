@@ -208,7 +208,6 @@ namespace HNTAS.Web.UI.Controllers
 
             var elementItems = new List<ElementItem>();
             var elementDocuments = new List<DocumentItem>();
-            var assessmentPlanDocument = new DocumentItem();
 
 
             foreach (var element in heatNetworkResponse?.Soa?.JourneyData?.HeatNetworkElements)
