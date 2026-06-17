@@ -46,8 +46,7 @@ namespace HNTAS.Web.UI.Controllers
         [AllowAnonymous]
         [Route("/onelogin-callback")]
         public IActionResult OneLoginCallback()
-        {
-            var state = Request.Query["state"].ToString();
+        {            
             // The middleware handles the token exchange and setting the cookie.
             // You can redirect the user to their intended destination or a dashboard.
             return RedirectToAction("Index", "Home");
