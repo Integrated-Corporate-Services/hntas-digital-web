@@ -5697,7 +5697,8 @@
             "$ref": "#/components/schemas/ECDetails2"
           },
           "pathway": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "registrationSource": {
             "$ref": "#/components/schemas/RegistrationSource"
@@ -5726,6 +5727,10 @@
           "designConstructionLog": {
             "$ref": "#/components/schemas/DesignConstructionLog"
           },
+          "ofgemUserEmailId": {
+            "type": "string",
+            "nullable": true
+          },
           "createdBy": {
             "type": "string"
           },
@@ -5734,7 +5739,8 @@
             "format": "date-time"
           },
           "phase": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -6002,7 +6008,11 @@
             "nullable": true
           },
           "pathway": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "registrationSource": {
+            "$ref": "#/components/schemas/RegistrationSource"
           },
           "soa": {
             "$ref": "#/components/schemas/SoaResponse"
@@ -6019,7 +6029,7 @@
             "nullable": true
           },
           "heatNetworkType": {
-            "$ref": "#/components/schemas/HeatNetworkType"
+            "$ref": "#/components/schemas/NullableOfHeatNetworkType"
           },
           "hasOwnEnergyCentre": {
             "type": "boolean"
@@ -6043,6 +6053,7 @@
       },
       "HeatNetworkType": {
         "enum": [
+          "Unset",
           "Communal",
           "District"
         ]
@@ -6982,6 +6993,15 @@
       },
       "NotificationHistoryType": {
         "type": "integer"
+      },
+      "NullableOfHeatNetworkType": {
+        "enum": [
+          "Unset",
+          "Communal",
+          "District",
+          null
+        ],
+        "nullable": true
       },
       "NullableOfPreferredContactType": {
         "enum": [

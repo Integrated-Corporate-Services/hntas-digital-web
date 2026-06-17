@@ -103,6 +103,7 @@ docs/models/NetworkTypeSelection2.md
 docs/models/NotificationHistoryData.md
 docs/models/NotificationHistoryRequest.md
 docs/models/NotificationHistoryResponse.md
+docs/models/NullableOfHeatNetworkType.md
 docs/models/NullableOfPreferredContactType.md
 docs/models/NullableOfSoaStage.md
 docs/models/NullableOfUserRole.md
@@ -276,6 +277,7 @@ src/HNTAS.Api.Client/Model/NetworkTypeSelection2.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryData.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryRequest.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryResponse.cs
+src/HNTAS.Api.Client/Model/NullableOfHeatNetworkType.cs
 src/HNTAS.Api.Client/Model/NullableOfPreferredContactType.cs
 src/HNTAS.Api.Client/Model/NullableOfSoaStage.cs
 src/HNTAS.Api.Client/Model/NullableOfUserRole.cs

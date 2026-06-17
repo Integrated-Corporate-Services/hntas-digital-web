@@ -22,6 +22,7 @@ Name | Type | Description | Notes
 **MeteringAndMonitoringStrategy** | [**MeteringAndMonitoringStrategy**](MeteringAndMonitoringStrategy.md) |  | [optional] 
 **AssessmentPlan** | [**AssessmentPlan**](AssessmentPlan.md) |  | [optional] 
 **DesignConstructionLog** | [**DesignConstructionLog**](DesignConstructionLog.md) |  | [optional] 
+**OfgemUserEmailId** | **string** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **Phase** | **string** |  | [optional] 
