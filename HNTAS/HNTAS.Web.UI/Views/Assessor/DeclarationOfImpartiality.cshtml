@@ -5,7 +5,6 @@
     ViewData["Title"] = "Declaration of Impartiality";
     bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.HasDeclaredImpartiality)) &&
                                 ViewData.ModelState[nameof(Model.HasDeclaredImpartiality)].Errors.Any();
-    var fieldOrder = new[] { nameof(Model.HasDeclaredImpartiality) };
 }
 
 <div class="govuk-width-container">
