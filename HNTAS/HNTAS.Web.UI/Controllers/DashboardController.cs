@@ -150,7 +150,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EditOrganisationDetails()
         {
             _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, true);
-            return RedirectToAction("OrganisationType", "Organisation");
+            return RedirectToAction("AddOrRegister", "ExistingOrganisation");
         }
 
         [HttpGet]

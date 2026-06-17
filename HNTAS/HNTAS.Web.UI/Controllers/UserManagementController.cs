@@ -20,22 +20,24 @@ namespace HNTAS.Web.UI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IHeatNetworkService _heatNetworkService;
+        private readonly IOrganisationService _organisationService;
         private readonly ILogger<UserManagementController> _logger;
         private readonly ISessionHelper _sessionHelper;
         private readonly IWorkflowManager _workflowManager;
-
+        
         public UserManagementController(IUserService userService,
             ILogger<UserManagementController> logger,
             ISessionHelper sessionHelper,
             IWorkflowManager workflowManager,
-            IHeatNetworkService heatNetworkService
-            )
-        {
+            IHeatNetworkService heatNetworkService,
+            IOrganisationService organisationService
+        ){
             _logger = logger;
             _userService = userService;
             _sessionHelper = sessionHelper;
             _workflowManager = workflowManager;
             _heatNetworkService = heatNetworkService;
+            _organisationService = organisationService;
         }
 
         [HttpGet]
@@ -197,14 +199,24 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             var heatNetworks = new List<HeatNetworkModel>();
-            heatNetworks = _heatNetworkService.GetHeatNetworkByUserId(userId).Result.Select(network => new HeatNetworkModel
+            var networks = await _heatNetworkService.GetHeatNetworkByUserId(userId);
+
+            heatNetworks = (await Task.WhenAll(networks.Select(async network =>
             {
-                HnId = network.HnId,
-                Name = network.Name,
-                OrganisationName = user.Organisation?.Name,
-                HnDescription = network.AdditionalDescription,
-                Role = hnRoleMappings.FirstOrDefault(x => x.HnId == network.HnId)?.Role.ToString() ?? "Not specified"
-            }).ToList();            
+                var org = await _organisationService.GetOrganisationById(network.OrgId);
+
+                return new HeatNetworkModel
+                {
+                    HnId = network.HnId,
+                    Name = network.Name,
+                    OrganisationName = org?.Name,
+                    HnDescription = network.AdditionalDescription,
+                    Role = hnRoleMappings
+                        .FirstOrDefault(x => x.HnId == network.HnId)?.Role.ToString() ?? "Not specified"
+                };
+            }))).ToList();
+
+
 
             var model = new HeatNetworksViewModel
             {

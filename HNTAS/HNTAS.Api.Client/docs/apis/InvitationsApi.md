@@ -4,10 +4,49 @@ All URIs are relative to *https://localhost:7117*
 
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
+| [**ApiInvitationsAcceptInvitationPatch**](InvitationsApi.md#apiinvitationsacceptinvitationpatch) | **PATCH** /api/Invitations/accept-invitation |  |
 | [**ApiInvitationsIdAddUserInvitationPost**](InvitationsApi.md#apiinvitationsidadduserinvitationpost) | **POST** /api/Invitations/{id}/add-user-invitation |  |
 | [**ApiInvitationsIdGet**](InvitationsApi.md#apiinvitationsidget) | **GET** /api/Invitations/{id} |  |
 | [**ApiInvitationsInvitationIdRejectPost**](InvitationsApi.md#apiinvitationsinvitationidrejectpost) | **POST** /api/Invitations/{invitationId}/Reject |  |
 | [**ApiInvitationsInvitationIdSendEmailPost**](InvitationsApi.md#apiinvitationsinvitationidsendemailpost) | **POST** /api/Invitations/{invitationId}/send-email |  |
+
+<a id="apiinvitationsacceptinvitationpatch"></a>
+# **ApiInvitationsAcceptInvitationPatch**
+> string ApiInvitationsAcceptInvitationPatch (InvitedUserRequest invitedUserRequest)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **invitedUserRequest** | [**InvitedUserRequest**](InvitedUserRequest.md) |  |  |
+
+### Return type
+
+**string**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, application/*+json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **201** | Created |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 <a id="apiinvitationsidadduserinvitationpost"></a>
 # **ApiInvitationsIdAddUserInvitationPost**
