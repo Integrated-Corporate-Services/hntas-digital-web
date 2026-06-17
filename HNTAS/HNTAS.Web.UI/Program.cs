@@ -27,6 +27,10 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDataProtection()
+    .SetApplicationName("HNTAS.Web.UI")
+    //.PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
+    .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
 
 if (builder.Environment.EnvironmentName == "Local")
 {

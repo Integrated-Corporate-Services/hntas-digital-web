@@ -1,0 +1,40 @@
+﻿@using HNTAS.Web.UI.Models.NetworkCharacteristics
+@model WhatIsTheHeatGenerationSourceForViewModel
+
+@{
+    ViewData["Title"] = "What is the heat generation source for";
+    var fieldOrder = new[] { nameof(Model.SelectedHeatGenerationSourceFor) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.SelectedHeatGenerationSourceFor)).ToLowerInvariant();
+    var pageData = new HNTAS.Web.UI.Models.QuestionWithRadiobuttonsModel
+    {
+        Controller = "NetworkCharacteristics",
+        Action = "WhatIsTheHeatGenerationSourceFor",
+        FieldOrder = fieldOrder,
+        Questions = new List<HNTAS.Web.UI.Models.Question>
+        {
+            new HNTAS.Web.UI.Models.Question
+            {
+                QId = elementId,
+                QText = "What is the heat generation source for?",
+                QDescText = null,
+                QHintText = null,
+                Options = new List<HNTAS.Web.UI.Models.Option>
+                {
+                    new HNTAS.Web.UI.Models.Option { OptId = $"{elementId}", OptValue = "connectedToNetworkLedDistrictHN", OptText = "Connection to a network-led District Heat Network", OptHintText = null },
+                    new HNTAS.Web.UI.Models.Option { OptId = $"{elementId}-2", OptValue = "connectedToDeveloperLedDistrictHN", OptText = "Connection to a developer-led District Heat Network", OptHintText = null },
+                    new HNTAS.Web.UI.Models.Option { OptId = $"{elementId}-3", OptValue = "heatGeneratedInBuilding", OptText = "Heat generated in building", OptHintText = null }
+                },
+                SeletedOption = Model.SelectedHeatGenerationSourceFor
+            },
+        }
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">@TempData.Peek("HnId")</span>
+            @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        </div>
+    </div>
+</div
