@@ -1,0 +1,112 @@
+﻿@using HNTAS.Web.UI.Models.Soa
+@model List<StepNavItem>
+
+@{
+    ViewData["Title"] = "Step by step guide";
+}
+
+<div class="app-related-items">
+    <div data-module="gemstepnav ga4-event-tracker" class="gem-c-step-nav gem-c-step-nav--large gem-c-step-nav--active">
+
+        <div class="gem-c-step-nav__controls govuk-!-display-none-print">
+            <button aria-expanded="false"
+                    class="gem-c-step-nav__button gem-c-step-nav__button--controls js-step-controls-button"
+                    aria-controls="step-panel-all"
+                    id="toggle-all-steps">
+                <span class="gem-c-step-nav__chevron js-step-controls-button-icon gem-c-step-nav__chevron--down"></span>
+                <span class="gem-c-step-nav__button-text gem-c-step-nav__button-text--all js-step-controls-button-text">
+                    Show all selections
+                </span>
+            </button>
+        </div>
+        <ol class="gem-c-step-nav__steps">
+            @foreach (var step in Model)
+            {
+                <li class="gem-c-step-nav__step js-step @(step.IsCurrent ? "gem-c-step-nav__step--active" : "")">
+                    <div class="gem-c-step-nav__header js-toggle-panel" data-position="@step.StepNumber">
+                        <h2 class="gem-c-step-nav__title">
+                            <span class="gem-c-step-nav__circle gem-c-step-nav__circle--number">
+                                <span class="gem-c-step-nav__circle-inner">
+                                    <span class="gem-c-step-nav__circle-background">
+                                        @step.StepNumber
+                                    </span>
+                                </span>
+                            </span>
+                            <span class="js-step-title">
+                                <button class="gem-c-step-nav__button gem-c-step-nav__button--title js-step-title-button" aria-expanded="@(step.IsExpanded ? "true" : "false")" aria-controls="step-panel-@step.StepNumber">
+                                    <span class="gem-c-step-nav____title-text-focus">
+                                        <span class="gem-c-step-nav__title-text js-step-title-text">
+                                            @step.Title
+                                        </span>
+                                        <span class="govuk-visually-hidden gem-c-step-nav__section-heading-divider">, </span>
+                                    </span>
+                                    <span class="gem-c-step-nav__toggle-link js-toggle-link govuk-!-display-none-print">
+                                        <span class="gem-c-step-nav__toggle-link-focus">
+                                            <span class="gem-c-step-nav__chevron js-toggle-link-icon gem-c-step-nav__chevron--@(step.IsExpanded ? "up" : "down")"></span>
+                                            <span class="gem-c-step-nav__button-text js-toggle-link-text">
+                                                @(step.IsExpanded ? "Hide" : "Show")
+                                            </span>
+                                        </span>
+                                        <span class="govuk-visually-hidden"> this section</span>
+                                    </span>
+                                </button>
+                            </span>
+                        </h2>
+                    </div>
+                    <div class="gem-c-step-nav__panel js-panel @(step.IsExpanded ? "" : "js-hidden")" id="step-panel-@step.StepNumber" aria-hidden="@(step.IsExpanded ? "false" : "true")">
+                        <div class="govuk-body">
+                            <p>@step.BodyContent</p>
+                        </div>
+                        <ul class="gem-c-step-nav__list">
+                            <li><a class="gem-c-step-nav__link" href="@step.Url">@step.Title</a></li>
+                        </ul>
+                    </div>
+                </li>
+            }
+        </ol>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.js-step-title-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const panelId = this.getAttribute('aria-controls');
+            const panel = document.getElementById(panelId);
+            const expanded = this.getAttribute('aria-expanded') === 'true';
+
+            this.setAttribute('aria-expanded', !expanded);
+            panel.setAttribute('aria-hidden', expanded);
+            panel.classList.toggle('js-hidden');
+            this.querySelector('.js-toggle-link-text').textContent = expanded ? 'Show' : 'Hide';
+            this.querySelector('.gem-c-step-nav__chevron').classList.toggle('gem-c-step-nav__chevron--up');
+            this.querySelector('.gem-c-step-nav__chevron').classList.toggle('gem-c-step-nav__chevron--down');
+        });
+    });
+
+     document.getElementById('toggle-all-steps')?.addEventListener('click', function () {
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        const panels = document.querySelectorAll('.gem-c-step-nav__panel');
+        const chevrons = document.querySelectorAll('.js-toggle-link-icon');
+        const toggleTexts = document.querySelectorAll('.js-toggle-link-text');
+
+        panels.forEach(panel => {
+            panel.classList.toggle('js-hidden', isExpanded);
+            panel.setAttribute('aria-hidden', isExpanded ? 'true' : 'false');
+        });
+
+        chevrons.forEach(icon => {
+            icon.classList.toggle('gem-c-step-nav__chevron--up', !isExpanded);
+            icon.classList.toggle('gem-c-step-nav__chevron--down', isExpanded);
+        });
+
+        toggleTexts.forEach(text => {
+            text.textContent = isExpanded ? 'Show' : 'Hide';
+        });
+
+        this.setAttribute('aria-expanded', (!isExpanded).toString());
+        this.querySelector('.js-step-controls-button-text').textContent = isExpanded ? 'Show all selections' : 'Hide all selections';
+        this.querySelector('.js-step-controls-button-icon').classList.toggle('gem-c-step-nav__chevron--up', !isExpanded);
+        this.querySelector('.js-step-controls-button-icon').classList.toggle('gem-c-step-nav__chevron--down', isExpanded);
+    });
+</script>
+

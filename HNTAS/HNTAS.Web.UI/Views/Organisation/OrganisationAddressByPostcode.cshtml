@@ -1,0 +1,28 @@
+﻿@using HNTAS.Web.UI.Models.Address
+@model SearchAddressByPostcodeModel
+
+@{
+    ViewData["Title"] = "Find an address";
+    
+}
+
+<div class="govuk-width-container">
+    <form asp-controller="Organisation" asp-action="OrganisationAddressByPostcode" method="post" class="govuk-form-group">
+        <h1 class="govuk-heading-l">Search by postcode</h1>        
+
+        @* Postcode Field *@
+        <div class="govuk-form-group govuk-!-padding-bottom-5 @(ViewData.ModelState.ContainsKey(nameof(Model.Postcode)) && ViewData.ModelState[nameof(Model.Postcode)]?.Errors.Any() == true ? "govuk-form-group--error" : "")">
+
+            @* Display specific error message for Street Address if it exists *@
+            <span asp-validation-for="Postcode" class="govuk-error-message" id="@(Html.IdFor(m => m.Postcode))-error"></span>
+            <label class="govuk-visually-hidden" for="Postcode" id="@(Html.IdFor(m => m.Postcode))-label">
+                Postcode
+            </label>
+            <input class="govuk-input govuk-input--width-10" asp-for="Postcode" id="@(Html.IdFor(m => m.Postcode))" name="@(Html.IdFor(m => m.Postcode))" type="text" value="@Model?.Postcode" spellcheck="false" autocomplete="off"
+                   aria-describedby="@(Html.IdFor(m => m.Postcode))">
+        </div>
+        <button type="submit" class="govuk-button" data-module="govuk-button">Search</button>
+        <h2 class="govuk-heading-m">Other ways to search</h2>
+        <a href="@Url.Action("OrganisationAddress", "Organisation")" class="govuk-link govuk-body">Search by street and town</a>
+    </form>
+</div>

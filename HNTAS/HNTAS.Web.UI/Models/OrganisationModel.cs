@@ -6,8 +6,6 @@ namespace HNTAS.Web.UI.Models
 {
     public class OrganisationModel
     {
-       
-
         // This list will hold the display text and value for each radio button
         public List<SelectListItem> OrganisationTypes { get; set; } = new List<SelectListItem>();
 
@@ -16,7 +14,8 @@ namespace HNTAS.Web.UI.Models
         public string? SelectedOrganisationTypeText { get; set; }
 
 
-        [Required(ErrorMessage = "Enter your company number")]
+        [Required(ErrorMessage = "Enter the company house number")]
+        [RegularExpression(@"^([0-9]{8}|[A-Za-z]{2}[0-9]{6})$", ErrorMessage = "Enter an 8-digit company number or 2 letters followed by 6 digits.")]
         public string? CompanyNumber { get; set; }
 
         // Property to hold the company details, including the registered office address, from the confirmation screen

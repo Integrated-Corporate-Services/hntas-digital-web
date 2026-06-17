@@ -63,6 +63,33 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'OrgId'
+        /// </summary>
+        [Fact]
+        public void OrgIdTest()
+        {
+            // TODO unit test for the property 'OrgId'
+        }
+
+        /// <summary>
+        /// Test the property 'Type'
+        /// </summary>
+        [Fact]
+        public void TypeTest()
+        {
+            // TODO unit test for the property 'Type'
+        }
+
+        /// <summary>
+        /// Test the property 'CompaniesHouseNumber'
+        /// </summary>
+        [Fact]
+        public void CompaniesHouseNumberTest()
+        {
+            // TODO unit test for the property 'CompaniesHouseNumber'
+        }
+
+        /// <summary>
         /// Test the property 'Name'
         /// </summary>
         [Fact]
@@ -72,12 +99,66 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'CompaninesHouseNumber'
+        /// Test the property 'RegisteredAddress'
         /// </summary>
         [Fact]
-        public void CompaninesHouseNumberTest()
+        public void RegisteredAddressTest()
         {
-            // TODO unit test for the property 'CompaninesHouseNumber'
+            // TODO unit test for the property 'RegisteredAddress'
+        }
+
+        /// <summary>
+        /// Test the property 'HnIds'
+        /// </summary>
+        [Fact]
+        public void HnIdsTest()
+        {
+            // TODO unit test for the property 'HnIds'
+        }
+
+        /// <summary>
+        /// Test the property 'CreatedBy'
+        /// </summary>
+        [Fact]
+        public void CreatedByTest()
+        {
+            // TODO unit test for the property 'CreatedBy'
+        }
+
+        /// <summary>
+        /// Test the property 'CreatedAt'
+        /// </summary>
+        [Fact]
+        public void CreatedAtTest()
+        {
+            // TODO unit test for the property 'CreatedAt'
+        }
+
+        /// <summary>
+        /// Test the property 'LastModifiedBy'
+        /// </summary>
+        [Fact]
+        public void LastModifiedByTest()
+        {
+            // TODO unit test for the property 'LastModifiedBy'
+        }
+
+        /// <summary>
+        /// Test the property 'LastModifiedAt'
+        /// </summary>
+        [Fact]
+        public void LastModifiedAtTest()
+        {
+            // TODO unit test for the property 'LastModifiedAt'
+        }
+
+        /// <summary>
+        /// Test the property 'RpUserId'
+        /// </summary>
+        [Fact]
+        public void RpUserIdTest()
+        {
+            // TODO unit test for the property 'RpUserId'
         }
     }
 }

@@ -1,0 +1,115 @@
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.ElementSoa
+@model ElementSoaUpdateStatusViewModel
+
+@{
+    ViewData["Title"] = ViewBag.Heading;
+
+    var hasCheckError = ViewData.ModelState["TotalCountCheck"]?.Errors?.Count > 0 || ViewData.ModelState["SelectedSoaStatusOptions"]?.Errors?.Count > 0;
+
+    string StatusDisplayName(SoaStatus status)
+    {
+        switch (status)
+        {
+            case SoaStatus.NotStarted:
+                return "Not started";
+            case SoaStatus.InProgress:
+                return "In progress";
+            case SoaStatus.BeingAssessed:
+                return "Being assessed";
+            case SoaStatus.SoAAgreed:
+                return "SoA agreed";
+            case SoaStatus.SoACompleted:
+                return "SoA completed";
+            default:
+                return status.ToString();
+        }   
+        
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" asp-action="SoaUpdateStatus" asp-controller="ElementSoa">            
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+                        <h1 class="govuk-heading-l">
+                             @ViewBag.Heading
+                        </h1>                    
+                    <p class="govuk-body">
+                        If your connections are in different states of completion, you'll be able to number them for each status option
+                    </p>
+
+            <div class="govuk-form-group @(hasCheckError ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-visually-hidden">
+                        @ViewBag.Heading
+                    </legend>
+                    <div id="soaStatus-hint" class="govuk-hint">
+                        Select the current status
+                    </div>
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                        @for (int i = 0; i < Model.SoaStatusOptions.Count; i++)
+                        {
+                            var item = Model.SoaStatusOptions[i];
+                            var checkboxId = $"SelectedSoaStatusOptions_{item.Id.ToString()}";
+                            var conditionalId = $"conditional-{item.Id.ToString().ToLowerInvariant()}";
+                            var isChecked = Model.SelectedSoaStatusOptions.Contains(item.Id);
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input"
+                                       id="@checkboxId"
+                                       name="SelectedSoaStatusOptions"
+                                       type="checkbox"
+                                       value="@item.Id"
+                                       data-aria-controls="@conditionalId"
+                                       @(isChecked ? "checked" : "") />
+
+                                <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">
+                                    @StatusDisplayName(item.Id)
+                                </label>
+                            </div>
+                            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="@conditionalId">
+                                @{
+                                    var hasError = Html.HasError($"SoaStatusCounts[{item.Id}]");
+                                    var errorMessage = hasError ? ViewData.ModelState[$"SoaStatusCounts[{item.Id}]"].Errors.FirstOrDefault()?.ErrorMessage : null;
+                                }
+
+                                <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+
+                                    <label class="govuk-label" for="soastatuscounts[@item.Id.ToString().ToLowerInvariant()]">
+                                        Number of connections
+                                    </label>
+
+                                    @if (hasError)
+                                    {
+                                        <span class="govuk-error-message">
+                                            <span class="govuk-visually-hidden">Error:</span> @errorMessage
+                                        </span>
+                                    }
+
+                                    <input class="govuk-input govuk-input--width-3 @(hasError ? "govuk-input--error" : "")"
+                                           id="soastatuscounts[@item.Id.ToString().ToLowerInvariant()]"
+                                           name="SoaStatusCounts[@item.Id]"
+                                           type="number"
+                                           value="@(Model.SoaStatusCounts.ContainsKey(item.Id) ? Model.SoaStatusCounts[item.Id] : null)" />
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </fieldset>
+            </div>
+                                      
+                    
+                                     
+                  
+            @Html.HiddenFor(m => m.ElementDisplayType)
+            @Html.HiddenFor(m => m.SoaStage)
+            @Html.HiddenFor(m => m.SoaStatusOptions)
+            @Html.HiddenFor(m => m.ElementName)
+            @Html.HiddenFor(m => m.SoaPhase)
+            @Html.HiddenFor(m => m.ElementCount)
+            @Html.HiddenFor(m => m.ElementType)
+            <button type="submit" class="govuk-button">Continue</button>
+        </form>
+    </div>
+</div>

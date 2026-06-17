@@ -1,0 +1,97 @@
+﻿@using HNTAS.Web.UI.Models.Review
+@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Models.Contributors
+@model CheckYourAnswersViewModel
+
+@{
+    ViewData["Title"] = "Check your answers";
+    var viewModel = new ReviewSummaryModel
+    {
+        Sections = new List<ReviewSection>
+        {
+            new ReviewSection
+            {
+                Heading = "Contact Details",
+                Items = new List<ReviewItem>
+                {
+                    new ReviewItem
+                    {
+                        Key = "First name",
+                        Value = Model.FirstName,
+                        ChangeLink = null,
+                        ChangeLinkText = "Change"
+                    },
+                    new ReviewItem
+                    {
+                        Key = "Last name",
+                        Value = Model.LastName,
+                        ChangeLink = null,
+                        ChangeLinkText = "Change"
+                    },
+                    new ReviewItem
+                    {
+                        Key = "Email",
+                        Value = Model.EmailAddress,
+                        ChangeLink = Url.Action("NewContributorDetails", "Contributors"),
+                        ChangeLinkText = "Change"
+                    }                    
+                }.Where(i => i != null).ToList()
+            },
+            new ReviewSection
+            {
+                Heading = "Heat network information",
+                Items = new List<ReviewItem>
+                {
+                    new ReviewItem
+                    {
+                        Key = "Heat network",
+                        Value = Model.HeatNetwork,
+                        ChangeLink = Url.Action("NewContributorHeatNetwork", "Contributors"),
+                        ChangeLinkText = "Change"
+                    },
+                    new ReviewItem
+                    {
+                        Key = "Role assigned",
+                        Value = Model.RoleAssigned,
+                        ChangeLink = Url.Action("NewContributorRole", "Contributors"),
+                        ChangeLinkText = "Change"
+                    },
+                    new ReviewItem
+                    {
+                        Key = "Phases(s)",
+                        Value = string.Join(", ", Model.SelectedPhases),
+                        ChangeLink = Url.Action("HeatNetworkPhase", "Contributors"),
+                        ChangeLinkText = "Change"
+                    }
+                }.Where(i => i != null).ToList()
+            }
+        }                
+    };
+    var hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
+    var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
+    {
+        Id = nameof(Model.ConfirmedDeclaration),
+        Name = nameof(Model.ConfirmedDeclaration),
+        Label = "I confirm that I am authorised to give this person access to this heat network with this role on behalf of my organisation.",
+        HasError = hasDeclarationErrors,
+        ErrorMessage = hasDeclarationErrors ? ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors[0].ErrorMessage : null,
+        Value = Model.ConfirmedDeclaration
+    };
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Check your answers</h1>
+            <form asp-controller="Contributors" asp-action="CheckYourAnswers" method="post" novalidate>
+                @Html.AntiForgeryToken()
+                @await Html.PartialAsync("Components/_CheckYourAnswersPartial", viewModel)
+                <!-- Declaration -->
+                @await Html.PartialAsync("Components/_ConfirmDeclaration", confirmDeclarationComponentData)
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Send Invitation
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+﻿@{
+    // Set the page title which will be used in the _Layout.cshtml
+    ViewData["Title"] = "You cannot continue";
+    // You might pass the organisation name via ViewBag or a Model
+    string organisationName = ViewBag.OrganisationName;
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">
+                You cannot continue
+            </h1>
+
+            <p class="govuk-body">
+                You must be @organisationName's regulatory contact to create the
+                organisation's account for heat networks.
+            </p>
+
+            <p class="govuk-body">
+                You'll need to ask them to follow this same process to create the
+                account. They'll then be able to invite you to join it.
+            </p>
+        </div>
+    </div>
+</div>

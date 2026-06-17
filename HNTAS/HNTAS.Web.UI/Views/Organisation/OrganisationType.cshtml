@@ -1,0 +1,98 @@
+﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.Enums
+@model HNTAS.Web.UI.Models.OrganisationModel
+@{
+    ViewData["Title"] = "Which type of organisation do you work for?";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form asp-controller="Organisation" asp-action="SaveOrganisationType" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.SelectedOrganisationType)) && ViewData.ModelState[nameof(Model.SelectedOrganisationType)].Errors.Any() ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset"
+                          aria-describedby="@(ViewData.ModelState.ContainsKey(nameof(Model.SelectedOrganisationType)) && ViewData.ModelState[nameof(Model.SelectedOrganisationType)].Errors.Any() ? "organisation-type-error" : "")">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            Which type of organisation do you work for?
+                        </h1>
+                    </legend>
+
+                    @if (ViewData.ModelState.ContainsKey(nameof(Model.SelectedOrganisationType)) && ViewData.ModelState[nameof(Model.SelectedOrganisationType)].Errors.Any())
+                    {
+                        <p id="organisation-type-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.SelectedOrganisationType)
+                        </p>
+                    }
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        @{
+                            int itemsRendered = 0;
+                        }
+                        @foreach (var item in Model.OrganisationTypes)
+                        {
+                            var itemId = $"SelectedOrganisationType_{itemsRendered}".ToLowerInvariant();
+                            string hintId = "";
+
+                            switch (item.Value)
+                            {
+                                case "UkCompaniesHouse":
+                                    hintId = $"org-type-companies-house-hint";
+                                    break;
+                                case "OtherUkOrganisation":
+                                    hintId = $"org-type-other-uk-hint";
+                                    break;
+                                case "OverseasOrganisation":
+                                    hintId = $"org-type-overseas-hint";
+                                    break;
+                            }
+
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input"
+                                       id="@itemId"
+                                       name="SelectedOrganisationType"
+                                       type="radio"
+                                       value="@item.Value"
+                                       aria-describedby="@(string.IsNullOrWhiteSpace(hintId) ? (ViewData.ModelState.ContainsKey(nameof(Model.SelectedOrganisationType)) && ViewData.ModelState[nameof(Model.SelectedOrganisationType)].Errors.Any() ? "organisation-type-error" : null) : $"{hintId} {(ViewData.ModelState.ContainsKey(nameof(Model.SelectedOrganisationType)) && ViewData.ModelState[nameof(Model.SelectedOrganisationType)].Errors.Any() ? "organisation-type-error" : null)}".Trim())"
+                                       @(Model.SelectedOrganisationType?.ToString() == item.Value ? "checked" : "") />
+                                <label class="govuk-label govuk-radios__label" for="@itemId">
+                                    @item.Text
+                                </label>
+                                @if (item.Value == OrganisationType.UkCompaniesHouse.ToString())
+                                {
+                                    <div id="org-type-companies-house-hint" class="govuk-hint govuk-radios__hint">
+                                        Most limited companies, LLPs and PLCs
+                                    </div>
+                                }
+                                @if (item.Value == OrganisationType.OtherUkOrganisation.ToString())
+                                {
+                                    <div id="org-type-other-uk-hint" class="govuk-hint govuk-radios__hint">
+                                        Local authorities, housing associations or charities, for example
+                                    </div>
+                                }
+                                @if (item.Value == OrganisationType.OverseasOrganisation.ToString())
+                                {
+                                    <div id="org-type-overseas-hint" class="govuk-hint govuk-radios__hint">
+                                        Based outside the UK
+                                    </div>
+                                }
+                            </div>
+
+                            itemsRendered++;
+
+                            @* @if (itemsRendered == 2)
+                            {
+                                <div class="govuk-radios__divider">or</div>
+                            } *@
+                        }
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>

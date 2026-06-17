@@ -31,19 +31,34 @@ namespace HNTAS.Api.Client.Model
     public enum UserRole
     {
         /// <summary>
-        /// Enum RegulatoryContact for value: RegulatoryContact
+        /// Enum ResponsiblePerson for value: ResponsiblePerson
         /// </summary>
-        RegulatoryContact = 1,
+        ResponsiblePerson = 1,
 
         /// <summary>
-        /// Enum ThirdParty for value: ThirdParty
+        /// Enum NetworkManager for value: NetworkManager
         /// </summary>
-        ThirdParty = 2,
+        NetworkManager = 2,
+
+        /// <summary>
+        /// Enum DesignatedDutyHolder for value: DesignatedDutyHolder
+        /// </summary>
+        DesignatedDutyHolder = 3,
 
         /// <summary>
         /// Enum Contributor for value: Contributor
         /// </summary>
-        Contributor = 3
+        Contributor = 4,
+
+        /// <summary>
+        /// Enum Assessor for value: Assessor
+        /// </summary>
+        Assessor = 5,
+
+        /// <summary>
+        /// Enum Certifier for value: Certifier
+        /// </summary>
+        Certifier = 6
     }
 
     /// <summary>
@@ -58,14 +73,23 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static UserRole FromString(string value)
         {
-            if (value.Equals("RegulatoryContact"))
-                return UserRole.RegulatoryContact;
+            if (value.Equals("ResponsiblePerson"))
+                return UserRole.ResponsiblePerson;
 
-            if (value.Equals("ThirdParty"))
-                return UserRole.ThirdParty;
+            if (value.Equals("NetworkManager"))
+                return UserRole.NetworkManager;
+
+            if (value.Equals("DesignatedDutyHolder"))
+                return UserRole.DesignatedDutyHolder;
 
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
+
+            if (value.Equals("Assessor"))
+                return UserRole.Assessor;
+
+            if (value.Equals("Certifier"))
+                return UserRole.Certifier;
 
             throw new NotImplementedException($"Could not convert value to type UserRole: '{value}'");
         }
@@ -77,14 +101,23 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static UserRole? FromStringOrDefault(string value)
         {
-            if (value.Equals("RegulatoryContact"))
-                return UserRole.RegulatoryContact;
+            if (value.Equals("ResponsiblePerson"))
+                return UserRole.ResponsiblePerson;
 
-            if (value.Equals("ThirdParty"))
-                return UserRole.ThirdParty;
+            if (value.Equals("NetworkManager"))
+                return UserRole.NetworkManager;
+
+            if (value.Equals("DesignatedDutyHolder"))
+                return UserRole.DesignatedDutyHolder;
 
             if (value.Equals("Contributor"))
                 return UserRole.Contributor;
+
+            if (value.Equals("Assessor"))
+                return UserRole.Assessor;
+
+            if (value.Equals("Certifier"))
+                return UserRole.Certifier;
 
             return null;
         }
@@ -97,14 +130,23 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(UserRole value)
         {
-            if (value == UserRole.RegulatoryContact)
-                return "RegulatoryContact";
+            if (value == UserRole.ResponsiblePerson)
+                return "ResponsiblePerson";
 
-            if (value == UserRole.ThirdParty)
-                return "ThirdParty";
+            if (value == UserRole.NetworkManager)
+                return "NetworkManager";
+
+            if (value == UserRole.DesignatedDutyHolder)
+                return "DesignatedDutyHolder";
 
             if (value == UserRole.Contributor)
                 return "Contributor";
+
+            if (value == UserRole.Assessor)
+                return "Assessor";
+
+            if (value == UserRole.Certifier)
+                return "Certifier";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
@@ -145,7 +187,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, UserRole userRole, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(userRole.ToString());
+            writer.WriteStringValue(UserRoleValueConverter.ToJsonValue(userRole).ToString());
         }
     }
 
@@ -176,14 +218,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the UserRole to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="userRole"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, UserRole? userRole, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(userRole?.ToString() ?? "null");
+            writer.WriteStringValue(userRole.HasValue ? UserRoleValueConverter.ToJsonValue(userRole.Value).ToString() : "null");
         }
     }
 }

@@ -2,16 +2,10 @@
 {
     public class DashboardModel
     {
-        public string OrganisationName { get; set; }
-        public List<HeatNetworkModel> HeatNetworks { get; set; } = new List<HeatNetworkModel>();
-    }
+        public string OrganisationName { get; set; } = null!;
+        public bool IsResponsiblePerson { get; set; }
+        public string UserRole { get; set; } = null!;
 
-
-    public class HeatNetworkModel
-    {
-        public string Name { get; set; }
-        public string OrganisationName { get; set; }
-        public string Status { get; set; } // Default
-
+        public bool HasHeatNetworks { get; set; }
     }
 }
