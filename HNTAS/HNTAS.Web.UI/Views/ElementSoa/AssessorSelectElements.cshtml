@@ -38,7 +38,6 @@
                                 var item = visibleElementOptions[i];
                                 var checkboxId = i == 0 ? "selectedelementids" : $"selectedelementids_{i}";
                                 var isChecked = Model.SelectedElementIds?.Contains((ElementTypeInShort)item.ElementType!) ?? false;
-                                var hintId = $"{checkboxId}-item-hint";
 
                                 <div class="govuk-checkboxes__item">
                                     <input class="govuk-checkboxes__input" 
