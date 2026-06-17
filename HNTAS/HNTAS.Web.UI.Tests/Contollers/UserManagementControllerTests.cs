@@ -36,6 +36,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var mockLogger = new Mock<ILogger<UserManagementController>>();
             var mockWorkflowManager = new Mock<IWorkflowManager>();
             var mockHeatNetworkService = new Mock<IHeatNetworkService>();
+            var mockOrganisationService = new Mock<IOrganisationService>();
 
             // session returns the user id
             mockSessionHelper
@@ -86,7 +87,8 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 mockLogger.Object,
                 mockSessionHelper.Object,
                 mockWorkflowManager.Object,
-                mockHeatNetworkService.Object);
+                mockHeatNetworkService.Object,
+                mockOrganisationService.Object);
 
             controller.ControllerContext = new ControllerContext
             {

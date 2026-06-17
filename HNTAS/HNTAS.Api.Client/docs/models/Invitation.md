@@ -4,21 +4,21 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
+**InviterUserId** | **string** |  | 
 **FirstName** | **string** |  | 
 **LastName** | **string** |  | 
-**PreferredContactType** | **PreferredContactType** |  | 
-**InvitedRoles** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | 
-**InvitedHnId** | **string** |  | 
 **InvitedEmail** | **string** |  | 
+**InvitedRoles** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | 
 **InvitedAt** | **DateTimeOffset** |  | 
 **Status** | **InvitationStatus** |  | 
-**LandlineNumber** | **string** |  | [optional] 
-**ContactNumberExtension** | **string** |  | [optional] 
-**MobileNumber** | **string** |  | [optional] 
+**Id** | **string** |  | [optional] 
 **Permissions** | **List&lt;string&gt;** |  | [optional] 
+**InvitedHnId** | **string** |  | [optional] 
+**InvitedOrgId** | **string** |  | [optional] 
 **AcceptedAt** | **DateTimeOffset** |  | [optional] 
 **RejectedAt** | **DateTimeOffset** |  | [optional] 
+**ReplacedUserId** | **string** |  | [optional] 
+**RolesToReplace** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 
