@@ -27,7 +27,7 @@
     "cssnano": "^7.0.1",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^2.9.0",
-    "postcss": "^8.4.38",
+    "postcss": "^8.5.10",
     "postcss-cli": "^11.0.0",
     "sass": "^1.77.2",
     "sass-loader": "^14.2.1",
@@ -49,7 +49,7 @@
     "brace-expansion": "^1.1.13",
     "ajv": "^8.18.0",
     "micromatch": "^4.0.8",
-    "yaml": "^2.8.3"
+    "yaml": "^2.8.3"    
   }
 
 }
