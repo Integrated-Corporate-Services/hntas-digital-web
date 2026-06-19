@@ -35,11 +35,11 @@ namespace HNTAS.Web.UI.Services.Core
             throw new Exception($"Failed to fetch heat network '{hnId}' — status code: {response.StatusCode}");
         }
 
-        public async Task<List<HeatNetworkResponse>> GetHeatNetworkByUserId(string userId)
+        public async Task<List<HeatNetworkResponse>> GetHeatNetworkByUserId(string userId, RegistrationSource2 registrationSource = RegistrationSource2.HNTAS)
         {
             try
             {
-                var response = await _heatNetworksApi.ApiHeatNetworksHeatNetworkByUserIdGetAsync(userId);
+                var response = await _heatNetworksApi.ApiHeatNetworksHeatNetworkByUserIdGetAsync(userId, registrationSource);
 
                 if (response.IsOk)
                 {

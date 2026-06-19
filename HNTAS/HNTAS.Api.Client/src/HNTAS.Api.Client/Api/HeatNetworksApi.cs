@@ -87,9 +87,10 @@ namespace HNTAS.Api.Client.Api
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="userId"> (optional)</param>
+        /// <param name="registrationSource"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksHeatNetworkByUserIdGetApiResponse"/>&gt;</returns>
-        Task<IApiHeatNetworksHeatNetworkByUserIdGetApiResponse> ApiHeatNetworksHeatNetworkByUserIdGetAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default);
+        Task<IApiHeatNetworksHeatNetworkByUserIdGetApiResponse> ApiHeatNetworksHeatNetworkByUserIdGetAsync(Option<string> userId = default, Option<RegistrationSource2> registrationSource = default, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -98,9 +99,10 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <param name="userId"> (optional)</param>
+        /// <param name="registrationSource"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksHeatNetworkByUserIdGetApiResponse"/>?&gt;</returns>
-        Task<IApiHeatNetworksHeatNetworkByUserIdGetApiResponse?> ApiHeatNetworksHeatNetworkByUserIdGetOrDefaultAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default);
+        Task<IApiHeatNetworksHeatNetworkByUserIdGetApiResponse?> ApiHeatNetworksHeatNetworkByUserIdGetOrDefaultAsync(Option<string> userId = default, Option<RegistrationSource2> registrationSource = default, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -1273,7 +1275,7 @@ namespace HNTAS.Api.Client.Api
             partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
-        partial void FormatApiHeatNetworksHeatNetworkByUserIdGet(ref Option<string> userId);
+        partial void FormatApiHeatNetworksHeatNetworkByUserIdGet(ref Option<string> userId, ref Option<RegistrationSource2> registrationSource);
 
         /// <summary>
         /// Validates the request parameters
@@ -1291,10 +1293,11 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="userId"></param>
-        private void AfterApiHeatNetworksHeatNetworkByUserIdGetDefaultImplementation(IApiHeatNetworksHeatNetworkByUserIdGetApiResponse apiResponseLocalVar, Option<string> userId)
+        /// <param name="registrationSource"></param>
+        private void AfterApiHeatNetworksHeatNetworkByUserIdGetDefaultImplementation(IApiHeatNetworksHeatNetworkByUserIdGetApiResponse apiResponseLocalVar, Option<string> userId, Option<RegistrationSource2> registrationSource)
         {
             bool suppressDefaultLog = false;
-            AfterApiHeatNetworksHeatNetworkByUserIdGet(ref suppressDefaultLog, apiResponseLocalVar, userId);
+            AfterApiHeatNetworksHeatNetworkByUserIdGet(ref suppressDefaultLog, apiResponseLocalVar, userId, registrationSource);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -1305,7 +1308,8 @@ namespace HNTAS.Api.Client.Api
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="userId"></param>
-        partial void AfterApiHeatNetworksHeatNetworkByUserIdGet(ref bool suppressDefaultLog, IApiHeatNetworksHeatNetworkByUserIdGetApiResponse apiResponseLocalVar, Option<string> userId);
+        /// <param name="registrationSource"></param>
+        partial void AfterApiHeatNetworksHeatNetworkByUserIdGet(ref bool suppressDefaultLog, IApiHeatNetworksHeatNetworkByUserIdGetApiResponse apiResponseLocalVar, Option<string> userId, Option<RegistrationSource2> registrationSource);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -1314,10 +1318,11 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="userId"></param>
-        private void OnErrorApiHeatNetworksHeatNetworkByUserIdGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId)
+        /// <param name="registrationSource"></param>
+        private void OnErrorApiHeatNetworksHeatNetworkByUserIdGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId, Option<RegistrationSource2> registrationSource)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiHeatNetworksHeatNetworkByUserIdGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, userId);
+            OnErrorApiHeatNetworksHeatNetworkByUserIdGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, userId, registrationSource);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -1330,19 +1335,21 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="userId"></param>
-        partial void OnErrorApiHeatNetworksHeatNetworkByUserIdGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId);
+        /// <param name="registrationSource"></param>
+        partial void OnErrorApiHeatNetworksHeatNetworkByUserIdGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId, Option<RegistrationSource2> registrationSource);
 
         /// <summary>
         ///  
         /// </summary>
         /// <param name="userId"> (optional)</param>
+        /// <param name="registrationSource"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksHeatNetworkByUserIdGetApiResponse"/>&gt;</returns>
-        public async Task<IApiHeatNetworksHeatNetworkByUserIdGetApiResponse?> ApiHeatNetworksHeatNetworkByUserIdGetOrDefaultAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default)
+        public async Task<IApiHeatNetworksHeatNetworkByUserIdGetApiResponse?> ApiHeatNetworksHeatNetworkByUserIdGetOrDefaultAsync(Option<string> userId = default, Option<RegistrationSource2> registrationSource = default, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiHeatNetworksHeatNetworkByUserIdGetAsync(userId, cancellationToken).ConfigureAwait(false);
+                return await ApiHeatNetworksHeatNetworkByUserIdGetAsync(userId, registrationSource, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -1355,9 +1362,10 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="userId"> (optional)</param>
+        /// <param name="registrationSource"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksHeatNetworkByUserIdGetApiResponse"/>&gt;</returns>
-        public async Task<IApiHeatNetworksHeatNetworkByUserIdGetApiResponse> ApiHeatNetworksHeatNetworkByUserIdGetAsync(Option<string> userId = default, System.Threading.CancellationToken cancellationToken = default)
+        public async Task<IApiHeatNetworksHeatNetworkByUserIdGetApiResponse> ApiHeatNetworksHeatNetworkByUserIdGetAsync(Option<string> userId = default, Option<RegistrationSource2> registrationSource = default, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
@@ -1365,7 +1373,7 @@ namespace HNTAS.Api.Client.Api
             {
                 ValidateApiHeatNetworksHeatNetworkByUserIdGet(userId);
 
-                FormatApiHeatNetworksHeatNetworkByUserIdGet(ref userId);
+                FormatApiHeatNetworksHeatNetworkByUserIdGet(ref userId, ref registrationSource);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -1380,6 +1388,9 @@ namespace HNTAS.Api.Client.Api
 
                     if (userId.IsSet)
                         parseQueryStringLocalVar["userId"] = ClientUtils.ParameterToString(userId.Value);
+
+                    if (registrationSource.IsSet)
+                        parseQueryStringLocalVar["registrationSource"] = ClientUtils.ParameterToString(registrationSource.Value);
 
                     uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
 
@@ -1414,7 +1425,7 @@ namespace HNTAS.Api.Client.Api
                             }
                         }
 
-                        AfterApiHeatNetworksHeatNetworkByUserIdGetDefaultImplementation(apiResponseLocalVar, userId);
+                        AfterApiHeatNetworksHeatNetworkByUserIdGetDefaultImplementation(apiResponseLocalVar, userId, registrationSource);
 
                         Events.ExecuteOnApiHeatNetworksHeatNetworkByUserIdGet(apiResponseLocalVar);
 
@@ -1424,7 +1435,7 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiHeatNetworksHeatNetworkByUserIdGetDefaultImplementation(e, "/api/HeatNetworks/heat-network-by-userId", uriBuilderLocalVar.Path, userId);
+                OnErrorApiHeatNetworksHeatNetworkByUserIdGetDefaultImplementation(e, "/api/HeatNetworks/heat-network-by-userId", uriBuilderLocalVar.Path, userId, registrationSource);
                 Events.ExecuteOnErrorApiHeatNetworksHeatNetworkByUserIdGet(e);
                 throw;
             }

@@ -84,7 +84,7 @@ No authorization required
 
 <a id="apiheatnetworksheatnetworkbyuseridget"></a>
 # **ApiHeatNetworksHeatNetworkByUserIdGet**
-> List&lt;HeatNetworkResponse&gt; ApiHeatNetworksHeatNetworkByUserIdGet (string userId = null)
+> List&lt;HeatNetworkResponse&gt; ApiHeatNetworksHeatNetworkByUserIdGet (string userId = null, RegistrationSource2 registrationSource = null)
 
 
 
@@ -94,6 +94,7 @@ No authorization required
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | **userId** | **string** |  | [optional]  |
+| **registrationSource** | **RegistrationSource2** |  | [optional]  |
 
 ### Return type
 

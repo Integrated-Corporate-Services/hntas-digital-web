@@ -118,6 +118,7 @@ docs/models/RecoveredInput.md
 docs/models/RegisteredAddress.md
 docs/models/RegisteredAddress2.md
 docs/models/RegistrationSource.md
+docs/models/RegistrationSource2.md
 docs/models/SendInvitationEmailRequest.md
 docs/models/Soa.md
 docs/models/Soa2.md
@@ -292,6 +293,7 @@ src/HNTAS.Api.Client/Model/RecoveredInput.cs
 src/HNTAS.Api.Client/Model/RegisteredAddress.cs
 src/HNTAS.Api.Client/Model/RegisteredAddress2.cs
 src/HNTAS.Api.Client/Model/RegistrationSource.cs
+src/HNTAS.Api.Client/Model/RegistrationSource2.cs
 src/HNTAS.Api.Client/Model/SendInvitationEmailRequest.cs
 src/HNTAS.Api.Client/Model/Soa.cs
 src/HNTAS.Api.Client/Model/Soa2.cs

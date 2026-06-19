@@ -157,6 +157,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new RegisteredAddress2JsonConverter());
             _jsonOptions.Converters.Add(new RegistrationSourceJsonConverter());
             _jsonOptions.Converters.Add(new RegistrationSourceNullableJsonConverter());
+            _jsonOptions.Converters.Add(new RegistrationSource2JsonConverter());
+            _jsonOptions.Converters.Add(new RegistrationSource2NullableJsonConverter());
             _jsonOptions.Converters.Add(new SendInvitationEmailRequestJsonConverter());
             _jsonOptions.Converters.Add(new SoaJsonConverter());
             _jsonOptions.Converters.Add(new Soa2JsonConverter());

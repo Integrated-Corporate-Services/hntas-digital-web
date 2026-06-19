@@ -90,9 +90,7 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, user.Organisation.OrgId);
             }
 
-            var networks = await _heatNetworkService.GetHeatNetworkByUserId(user.Id!);
-
-            var isAnyOfgemNetwork = networks.Any(n => n.RegistrationSource == RegistrationSource.OFGEM);
+            var networks = await _heatNetworkService.GetHeatNetworkByUserId(user.Id!, RegistrationSource2.OFGEM);
 
             var dashboardModel = new DashboardModel
             {
@@ -100,7 +98,7 @@ namespace HNTAS.Web.UI.Controllers
                 UserRole = user.Roles[0].ToString(),
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
                 HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any(),
-                HasOfgemNetworks = isAnyOfgemNetwork
+                HasOfgemNetworks = networks.Count != 0
             };
             var managedUsers = await _userService.GetManagedUsers(user.Id);
             if(dashboardModel.IsResponsiblePerson && managedUsers.Count <= 1 && !dashboardModel.HasHeatNetworks)

@@ -199,7 +199,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             var heatNetworks = new List<HeatNetworkModel>();
-            var networks = await _heatNetworkService.GetHeatNetworkByUserId(userId);
+            var networks = await _heatNetworkService.GetHeatNetworkByUserId(userId, RegistrationSource2.HNTAS);
 
             heatNetworks = (await Task.WhenAll(networks.Select(async network =>
             {
@@ -219,6 +219,62 @@ namespace HNTAS.Web.UI.Controllers
 
 
             var model = new HeatNetworksViewModel
+            {
+                HeatNetworks = heatNetworks,
+                IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
+                IsHntasCoordinator = user.Roles?.Contains(UserRole.NetworkManager) ?? false,
+            };
+
+            var isRegistrationEnabledString = Environment.GetEnvironmentVariable("IS_REGISTRATION_ENABLED");
+            ViewBag.IsRegistrationEnabled = !string.IsNullOrEmpty(isRegistrationEnabledString) &&
+                                             isRegistrationEnabledString.ToLower() == "true";
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExistingNetworksAsync()
+        {
+            ClearNetworkDetailsSession();
+
+            this.ShowBackButton("UserAccount", "Dashboard");
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var user = await _userService.GetUserDetails(userId);
+            var userWithHnRoles = await _userService.GetUserById(userId);
+            var hnRoleMappings = userWithHnRoles.HnRoleMappings;
+
+            ViewBag.UserRole = user?.Roles[0].ToString();
+            ViewBag.HasDeclaredImpartiality = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(HttpContext, SessionKeys.DeclarationOfImpartialityModelKey)?.HasDeclaredImpartiality;
+
+            if (user == null)
+            {
+                _logger.LogError("User not found in session or API.");
+                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later.";
+                return View(new ExistingNetworksViewModel());
+            }
+
+            var heatNetworks = new List<ExistingNetworkModel>();
+            var networks = await _heatNetworkService.GetHeatNetworkByUserId(userId, RegistrationSource2.OFGEM);
+
+            heatNetworks = (await Task.WhenAll(networks.Select(async network =>
+            {
+                var org = await _organisationService.GetOrganisationById(network.OrgId);
+
+                return new ExistingNetworkModel
+                {
+                    HnId = network.HnId,
+                    Name = network.Name,
+                    OrganisationName = org?.Name,
+                    HnDescription = network.AdditionalDescription,                    
+                    OfgemImportedDate = network.OfgemImportedDate?.DateTime,
+                    Role = hnRoleMappings
+                        .FirstOrDefault(x => x.HnId == network.HnId)?.Role.ToString() ?? "Not specified"
+                };
+            }))).ToList();
+
+
+
+            var model = new ExistingNetworksViewModel
             {
                 HeatNetworks = heatNetworks,
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,

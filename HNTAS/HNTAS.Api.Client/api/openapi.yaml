@@ -671,6 +671,13 @@ paths:
         schema:
           type: string
         style: form
+      - explode: true
+        in: query
+        name: registrationSource
+        required: false
+        schema:
+          $ref: "#/components/schemas/RegistrationSource2"
+        style: form
       responses:
         "200":
           content:
@@ -4567,6 +4574,7 @@ components:
             count: 9
             elementType: EC
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -4664,6 +4672,10 @@ components:
         designConstructionLog:
           $ref: "#/components/schemas/DesignConstructionLog"
         ofgemUserEmailId:
+          nullable: true
+          type: string
+        ofgemImportedDate:
+          format: date-time
           nullable: true
           type: string
         createdBy:
@@ -5189,6 +5201,7 @@ components:
             count: 9
             elementType: EC
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -5289,6 +5302,10 @@ components:
           $ref: "#/components/schemas/AssessmentPlanResponse"
         designConstructionLog:
           $ref: "#/components/schemas/DesignConstructionLogResponse"
+        ofgemImportedDate:
+          format: date-time
+          nullable: true
+          type: string
       type: object
     HeatNetworkType:
       enum:
@@ -6985,6 +7002,12 @@ components:
       - postcode
       type: object
     RegistrationSource:
+      enum:
+      - HNTAS
+      - OFGEM
+      type: string
+    RegistrationSource2:
+      default: HNTAS
       enum:
       - HNTAS
       - OFGEM

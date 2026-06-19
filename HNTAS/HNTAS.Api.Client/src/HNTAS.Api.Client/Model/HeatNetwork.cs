@@ -52,11 +52,12 @@ namespace HNTAS.Api.Client.Model
         /// <param name="assessmentPlan">assessmentPlan</param>
         /// <param name="designConstructionLog">designConstructionLog</param>
         /// <param name="ofgemUserEmailId">ofgemUserEmailId</param>
+        /// <param name="ofgemImportedDate">ofgemImportedDate</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="phase">phase</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<HeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCenter = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> ofgemUserEmailId = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
+        public HeatNetwork(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<RegisteredAddress?> address = default, Option<ECDetails2?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<HeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCenter = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> ofgemUserEmailId = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
         {
             IdOption = id;
             UHnIdOption = uHnId;
@@ -77,6 +78,7 @@ namespace HNTAS.Api.Client.Model
             AssessmentPlanOption = assessmentPlan;
             DesignConstructionLogOption = designConstructionLog;
             OfgemUserEmailIdOption = ofgemUserEmailId;
+            OfgemImportedDateOption = ofgemImportedDate;
             CreatedByOption = createdBy;
             CreatedAtOption = createdAt;
             PhaseOption = phase;
@@ -333,6 +335,19 @@ namespace HNTAS.Api.Client.Model
         public string? OfgemUserEmailId { get { return this.OfgemUserEmailIdOption; } set { this.OfgemUserEmailIdOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of OfgemImportedDate
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<DateTimeOffset?> OfgemImportedDateOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets OfgemImportedDate
+        /// </summary>
+        [JsonPropertyName("ofgemImportedDate")]
+        public DateTimeOffset? OfgemImportedDate { get { return this.OfgemImportedDateOption; } set { this.OfgemImportedDateOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of CreatedBy
         /// </summary>
         [JsonIgnore]
@@ -398,6 +413,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  AssessmentPlan: ").Append(AssessmentPlan).Append("\n");
             sb.Append("  DesignConstructionLog: ").Append(DesignConstructionLog).Append("\n");
             sb.Append("  OfgemUserEmailId: ").Append(OfgemUserEmailId).Append("\n");
+            sb.Append("  OfgemImportedDate: ").Append(OfgemImportedDate).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  Phase: ").Append(Phase).Append("\n");
@@ -421,6 +437,11 @@ namespace HNTAS.Api.Client.Model
     /// </summary>
     public class HeatNetworkJsonConverter : JsonConverter<HeatNetwork>
     {
+        /// <summary>
+        /// The format to use to serialize OfgemImportedDate
+        /// </summary>
+        public static string OfgemImportedDateFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+
         /// <summary>
         /// The format to use to serialize CreatedAt
         /// </summary>
@@ -462,6 +483,7 @@ namespace HNTAS.Api.Client.Model
             Option<AssessmentPlan?> assessmentPlan = default;
             Option<DesignConstructionLog?> designConstructionLog = default;
             Option<string?> ofgemUserEmailId = default;
+            Option<DateTimeOffset?> ofgemImportedDate = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> phase = default;
@@ -542,6 +564,9 @@ namespace HNTAS.Api.Client.Model
                         case "ofgemUserEmailId":
                             ofgemUserEmailId = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "ofgemImportedDate":
+                            ofgemImportedDate = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         case "createdBy":
                             createdBy = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
@@ -578,7 +603,7 @@ namespace HNTAS.Api.Client.Model
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class HeatNetwork.");
 
-            return new HeatNetwork(id, uHnId, hnId, orgId, name, additionalDescription, address, ecDetails, pathway, registrationSource, heatNetworkType, hasOwnEnergyCenter, heatNetworkConnections, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemUserEmailId, createdBy, createdAt, phase);
+            return new HeatNetwork(id, uHnId, hnId, orgId, name, additionalDescription, address, ecDetails, pathway, registrationSource, heatNetworkType, hasOwnEnergyCenter, heatNetworkConnections, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemUserEmailId, ofgemImportedDate, createdBy, createdAt, phase);
         }
 
         /// <summary>
@@ -732,6 +757,12 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("ofgemUserEmailId", heatNetwork.OfgemUserEmailId);
                 else
                     writer.WriteNull("ofgemUserEmailId");
+
+            if (heatNetwork.OfgemImportedDateOption.IsSet)
+                if (heatNetwork.OfgemImportedDateOption.Value != null)
+                    writer.WriteString("ofgemImportedDate", heatNetwork.OfgemImportedDateOption.Value!.Value.ToString(OfgemImportedDateFormat));
+                else
+                    writer.WriteNull("ofgemImportedDate");
 
             if (heatNetwork.CreatedByOption.IsSet)
                 writer.WriteString("createdBy", heatNetwork.CreatedBy);

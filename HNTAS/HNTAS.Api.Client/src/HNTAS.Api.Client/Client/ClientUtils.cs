@@ -141,6 +141,8 @@ namespace HNTAS.Api.Client.Client
                 return OrganisationTypeValueConverter.ToJsonValue(organisationType);
             if (obj is RegistrationSource registrationSource)
                 return RegistrationSourceValueConverter.ToJsonValue(registrationSource);
+            if (obj is RegistrationSource2 registrationSource2)
+                return RegistrationSource2ValueConverter.ToJsonValue(registrationSource2);
             if (obj is SoaPhase soaPhase)
                 return SoaPhaseValueConverter.ToJsonValue(soaPhase);
             if (obj is SoaStage soaStage)

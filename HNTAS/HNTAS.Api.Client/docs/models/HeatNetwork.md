@@ -23,6 +23,7 @@ Name | Type | Description | Notes
 **AssessmentPlan** | [**AssessmentPlan**](AssessmentPlan.md) |  | [optional] 
 **DesignConstructionLog** | [**DesignConstructionLog**](DesignConstructionLog.md) |  | [optional] 
 **OfgemUserEmailId** | **string** |  | [optional] 
+**OfgemImportedDate** | **DateTimeOffset** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **Phase** | **string** |  | [optional] 
