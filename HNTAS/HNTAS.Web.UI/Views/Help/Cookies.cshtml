@@ -1,0 +1,111 @@
+﻿<div class="app-width-container">
+    <div class="govuk-grid-row">
+        <h1 class="govuk-heading-xl">
+            Cookies
+        </h1>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="summary">
+            <p class="govuk-body">Cookies are small files saved on your phone, tablet or computer when you visit a website.</p>
+            <p class="govuk-body">We use cookies to make <a class="govuk-link" rel="external" href="https://www.gov.uk " target="_blank">GOV.UK</a> work and collect information about how you use our service.</p>
+        </div>
+        <h2 class="govuk-heading-l">Essential cookies</h2>
+        <p class="govuk-body">Essential cookies keep your information secure while you use <a class="govuk-link" rel="external" href="https://www.gov.uk " target="_blank">GOV.UK</a>. We do not need to ask permission to use them.</p>
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__header">Name</th>
+                    <th class="govuk-table__header govuk-!-width-two-thirds">Purpose</th>
+                    <th class="govuk-table__header">Expires</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">.AspNetCore.Antiforgery.*</td>
+                    <td class="govuk-table__cell">Protects against cross-site request forgery attacks (CSRF).</td>
+                    <td class="govuk-table__cell">session</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">.AspNetCore.Cookies</td>
+                    <td class="govuk-table__cell">Stores authentication information for signed-in users.</td>
+                    <td class="govuk-table__cell">session</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">.AspNetCore.Session</td>
+                    <td class="govuk-table__cell">Stores temporary session data for the user’s current visit.</td>
+                    <td class="govuk-table__cell">session</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">cookie_consent</td>
+                    <td class="govuk-table__cell">Stores the user’s cookie consent preferences.</td>
+                    <td class="govuk-table__cell">1 year</td>
+                </tr>                    
+            </tbody>
+        </table><br><h2 class="govuk-heading-l">
+            Analytics cookies (optional)
+        </h2>
+        <p class="govuk-body">With your permission, we use Google Analytics to collect data about how you use our service. This information helps us to improve our service.</p>
+        <p class="govuk-body">We use Google Analytics cookies to collect information about: </p>
+            
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__header">Name</th>
+                    <th class="govuk-table__header govuk-!-width-two-thirds">Purpose</th>
+                    <th class="govuk-table__header">Expires</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">_ga</td>
+                <td class="govuk-table__cell">Distinguishes unique users for analytics purposes.</td>
+                    <td class="govuk-table__cell">1 year</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">_ga.*</td>
+                <td class="govuk-table__cell">Tracks user sessions and interactions for analytics.</td>
+                    <td class="govuk-table__cell">1 year</td>
+                </tr>                    
+            </tbody>
+        </table>            
+    </div>
+    <div class="govuk-grid-row">
+        <form asp-action="Cookies" asp-controller="Help" method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        Do you want to accept analytics cookies?
+                    </legend>
+
+                    <div class="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input"
+                                   id="cookieConsent-yes"
+                                   name="cookieConsent"
+                                   type="radio"
+                                   value="Yes" />
+                            <label class="govuk-label govuk-radios__label" for="cookieConsent-yes">
+                                Yes
+                            </label>
+                        </div>
+
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input"
+                                   id="cookieConsent-no"
+                                   name="cookieConsent"
+                                   type="radio"
+                                   value="No" />
+                            <label class="govuk-label govuk-radios__label" for="cookieConsent-no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Save cookie settings
+            </button>
+        </form>
+    </div>    
+</div>
