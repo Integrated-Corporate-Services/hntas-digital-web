@@ -3,6 +3,7 @@ using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.HeatNetworkRegistration;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
@@ -75,16 +76,24 @@ namespace HNTAS.Web.UI.Controllers
             var userDetails = await _userService.GetUserById(userId);
             var contributingOrganisations = userDetails.ContributingOrganisations;
             var newModel = new HeatNetworkOrganisationModel();
-            if (contributingOrganisations.Count > 1) { 
+            var organisationList = new List<SelectItemOption>();
+            foreach(string orgId in contributingOrganisations)
+            {
+                var orgDetails = await _organisationService.GetOrganisationById(orgId);
+                var orgEntry = orgId + " - " + orgDetails.Name;
+                organisationList.Add(new SelectItemOption { Text = orgEntry, Value = orgId});
+            }
+            if (organisationList.Count > 1) { 
                 newModel = new HeatNetworkOrganisationModel
                 {
-                    OrganisationList = contributingOrganisations
+                    OrganisationList = organisationList
                 };
                 _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "HeatNetworkOrganisation");
             }
             else
             {
                 _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "HeatNetworkDwellingsCheck");
+                var orgDetails = await _organisationService.GetOrganisationById(userDetails.OrgId);
                 _sessionHelper.SaveToSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey, new HeatNetworkOrganisationModel { SelectedOrganisation = userDetails.OrgId });
                 return RedirectToAction("HeatNetworkIntroduction");
             }
