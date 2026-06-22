@@ -59,9 +59,14 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new AuditLogResponseJsonConverter());
             _jsonOptions.Converters.Add(new BackgroundJsonConverter());
             _jsonOptions.Converters.Add(new BoilerInputJsonConverter());
+            _jsonOptions.Converters.Add(new CCKpiValueRequestJsonConverter());
+            _jsonOptions.Converters.Add(new CarbonCalculatorConfigRequestJsonConverter());
+            _jsonOptions.Converters.Add(new CarbonCalculatorConfigResponseJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorRequestJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorResponseJsonConverter());
+            _jsonOptions.Converters.Add(new CarbonInputUiDisplayJsonConverter());
             _jsonOptions.Converters.Add(new ChpInputJsonConverter());
+            _jsonOptions.Converters.Add(new ConfigDefaultJsonConverter());
             _jsonOptions.Converters.Add(new ConnectionTypeJsonConverter());
             _jsonOptions.Converters.Add(new ConnectionTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ContributorRoleJsonConverter());
@@ -108,7 +113,9 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new InvitedUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new JourneyDataResponseJsonConverter());
             _jsonOptions.Converters.Add(new KpiConfigRequestJsonConverter());
+            _jsonOptions.Converters.Add(new KpiConfigRequestV2JsonConverter());
             _jsonOptions.Converters.Add(new KpiConfigResponseJsonConverter());
+            _jsonOptions.Converters.Add(new KpiConfigResponseV2JsonConverter());
             _jsonOptions.Converters.Add(new KpiDetailDtoJsonConverter());
             _jsonOptions.Converters.Add(new KpiHistoryResponseJsonConverter());
             _jsonOptions.Converters.Add(new KpiMetadataJsonConverter());
@@ -116,6 +123,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new KpiSubmissionApiErrorJsonConverter());
             _jsonOptions.Converters.Add(new KpiSubmissionApiErrorResponseJsonConverter());
             _jsonOptions.Converters.Add(new KpiSubmissionRequestJsonConverter());
+            _jsonOptions.Converters.Add(new KpiSubmissionRequestV2JsonConverter());
             _jsonOptions.Converters.Add(new KpiThresholdRuleJsonConverter());
             _jsonOptions.Converters.Add(new KpiValueAggregatedRequestJsonConverter());
             _jsonOptions.Converters.Add(new KpiValueRequestJsonConverter());

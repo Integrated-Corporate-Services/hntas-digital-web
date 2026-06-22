@@ -39,11 +39,13 @@ namespace HNTAS.Api.Client.Model
         /// <param name="selectedYear">selectedYear</param>
         /// <param name="groupedElements">groupedElements</param>
         /// <param name="aggregatedKpis">aggregatedKpis</param>
+        /// <param name="carbonCalculationInputs">carbonCalculationInputs</param>
+        /// <param name="totalCarbonEmission">totalCarbonEmission</param>
         /// <param name="currentPage">currentPage</param>
         /// <param name="totalPages">totalPages</param>
         /// <param name="totalElements">totalElements</param>
         [JsonConstructor]
-        public HeatNetworkDetailsResponse(Option<string?> hnId = default, Option<string?> networkName = default, Option<int?> selectedMonth = default, Option<int?> selectedYear = default, Option<List<ElementGroupDto>?> groupedElements = default, Option<List<AggregatedKpi>?> aggregatedKpis = default, Option<int?> currentPage = default, Option<int?> totalPages = default, Option<int?> totalElements = default)
+        public HeatNetworkDetailsResponse(Option<string?> hnId = default, Option<string?> networkName = default, Option<int?> selectedMonth = default, Option<int?> selectedYear = default, Option<List<ElementGroupDto>?> groupedElements = default, Option<List<AggregatedKpi>?> aggregatedKpis = default, Option<Dictionary<string, CarbonInputUiDisplay>?> carbonCalculationInputs = default, Option<double?> totalCarbonEmission = default, Option<int?> currentPage = default, Option<int?> totalPages = default, Option<int?> totalElements = default)
         {
             HnIdOption = hnId;
             NetworkNameOption = networkName;
@@ -51,6 +53,8 @@ namespace HNTAS.Api.Client.Model
             SelectedYearOption = selectedYear;
             GroupedElementsOption = groupedElements;
             AggregatedKpisOption = aggregatedKpis;
+            CarbonCalculationInputsOption = carbonCalculationInputs;
+            TotalCarbonEmissionOption = totalCarbonEmission;
             CurrentPageOption = currentPage;
             TotalPagesOption = totalPages;
             TotalElementsOption = totalElements;
@@ -138,6 +142,32 @@ namespace HNTAS.Api.Client.Model
         public List<AggregatedKpi>? AggregatedKpis { get { return this.AggregatedKpisOption; } set { this.AggregatedKpisOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of CarbonCalculationInputs
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<Dictionary<string, CarbonInputUiDisplay>?> CarbonCalculationInputsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets CarbonCalculationInputs
+        /// </summary>
+        [JsonPropertyName("carbonCalculationInputs")]
+        public Dictionary<string, CarbonInputUiDisplay>? CarbonCalculationInputs { get { return this.CarbonCalculationInputsOption; } set { this.CarbonCalculationInputsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of TotalCarbonEmission
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<double?> TotalCarbonEmissionOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets TotalCarbonEmission
+        /// </summary>
+        [JsonPropertyName("totalCarbonEmission")]
+        public double? TotalCarbonEmission { get { return this.TotalCarbonEmissionOption; } set { this.TotalCarbonEmissionOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of CurrentPage
         /// </summary>
         [JsonIgnore]
@@ -190,6 +220,8 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  SelectedYear: ").Append(SelectedYear).Append("\n");
             sb.Append("  GroupedElements: ").Append(GroupedElements).Append("\n");
             sb.Append("  AggregatedKpis: ").Append(AggregatedKpis).Append("\n");
+            sb.Append("  CarbonCalculationInputs: ").Append(CarbonCalculationInputs).Append("\n");
+            sb.Append("  TotalCarbonEmission: ").Append(TotalCarbonEmission).Append("\n");
             sb.Append("  CurrentPage: ").Append(CurrentPage).Append("\n");
             sb.Append("  TotalPages: ").Append(TotalPages).Append("\n");
             sb.Append("  TotalElements: ").Append(TotalElements).Append("\n");
@@ -236,6 +268,8 @@ namespace HNTAS.Api.Client.Model
             Option<int?> selectedYear = default;
             Option<List<ElementGroupDto>?> groupedElements = default;
             Option<List<AggregatedKpi>?> aggregatedKpis = default;
+            Option<Dictionary<string, CarbonInputUiDisplay>?> carbonCalculationInputs = default;
+            Option<double?> totalCarbonEmission = default;
             Option<int?> currentPage = default;
             Option<int?> totalPages = default;
             Option<int?> totalElements = default;
@@ -272,6 +306,12 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "aggregatedKpis":
                             aggregatedKpis = new Option<List<AggregatedKpi>?>(JsonSerializer.Deserialize<List<AggregatedKpi>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "carbonCalculationInputs":
+                            carbonCalculationInputs = new Option<Dictionary<string, CarbonInputUiDisplay>?>(JsonSerializer.Deserialize<Dictionary<string, CarbonInputUiDisplay>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "totalCarbonEmission":
+                            totalCarbonEmission = new Option<double?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (double?)null : utf8JsonReader.GetDouble());
                             break;
                         case "currentPage":
                             currentPage = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
@@ -312,7 +352,7 @@ namespace HNTAS.Api.Client.Model
             if (totalElements.IsSet && totalElements.Value == null)
                 throw new ArgumentNullException(nameof(totalElements), "Property is not nullable for class HeatNetworkDetailsResponse.");
 
-            return new HeatNetworkDetailsResponse(hnId, networkName, selectedMonth, selectedYear, groupedElements, aggregatedKpis, currentPage, totalPages, totalElements);
+            return new HeatNetworkDetailsResponse(hnId, networkName, selectedMonth, selectedYear, groupedElements, aggregatedKpis, carbonCalculationInputs, totalCarbonEmission, currentPage, totalPages, totalElements);
         }
 
         /// <summary>
@@ -373,6 +413,20 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("aggregatedKpis");
+            if (heatNetworkDetailsResponse.CarbonCalculationInputsOption.IsSet)
+                if (heatNetworkDetailsResponse.CarbonCalculationInputsOption.Value != null)
+                {
+                    writer.WritePropertyName("carbonCalculationInputs");
+                    JsonSerializer.Serialize(writer, heatNetworkDetailsResponse.CarbonCalculationInputs, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("carbonCalculationInputs");
+            if (heatNetworkDetailsResponse.TotalCarbonEmissionOption.IsSet)
+                if (heatNetworkDetailsResponse.TotalCarbonEmissionOption.Value != null)
+                    writer.WriteNumber("totalCarbonEmission", heatNetworkDetailsResponse.TotalCarbonEmissionOption.Value!.Value);
+                else
+                    writer.WriteNull("totalCarbonEmission");
+
             if (heatNetworkDetailsResponse.CurrentPageOption.IsSet)
                 writer.WriteNumber("currentPage", heatNetworkDetailsResponse.CurrentPageOption.Value!.Value);
 
