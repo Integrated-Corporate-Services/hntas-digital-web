@@ -17,7 +17,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
     {
         private readonly Mock<ILogger<DashboardController>> _loggerMock;
         private readonly Mock<IUserService> _userServiceMock;
-        private readonly Mock<IHeatNetworksApi> _heatNetworksApiMock;
+        private readonly Mock<IHeatNetworkService> _heatNetworksApiMock;
         private readonly Mock<IOrganisationService> _organisationServiceMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
 
@@ -27,7 +27,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             _loggerMock = new Mock<ILogger<DashboardController>>();
             _userServiceMock = new Mock<IUserService>();
-            _heatNetworksApiMock = new Mock<IHeatNetworksApi>();
+            _heatNetworksApiMock = new Mock<IHeatNetworkService>();
             _organisationServiceMock = new Mock<IOrganisationService>();
             _sessionHelperMock = new Mock<ISessionHelper>();
             _controller = CreateController();

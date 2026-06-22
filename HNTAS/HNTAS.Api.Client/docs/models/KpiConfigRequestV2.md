@@ -1,0 +1,12 @@
+# HNTAS.Api.Client.Model.KpiConfigRequestV2
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**NetworkId** | **string** |  | 
+**Elements** | **Dictionary&lt;string, Dictionary&lt;string, KpiRule&gt;&gt;** |  | [optional] 
+**CarbonCalculator** | [**CarbonCalculatorConfigRequest**](CarbonCalculatorConfigRequest.md) |  | [optional] 
+
+[[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
+
