@@ -36,6 +36,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
             var mockLogger = new Mock<ILogger<UserManagementController>>();
             var mockWorkflowManager = new Mock<IWorkflowManager>();
             var mockHeatNetworkService = new Mock<IHeatNetworkService>();
+            var mockOrganisationService = new Mock<IOrganisationService>();
 
             // session returns the user id
             mockSessionHelper
@@ -59,7 +60,7 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 Organisation = new OrganisationResponse { Name = "Org Ltd" }
             };
 
-            mockHeatNetworkService.Setup(h => h.GetHeatNetworkByUserId(It.IsAny<string>())).Returns(Task.FromResult(new List<HeatNetworkResponse>()
+            mockHeatNetworkService.Setup(h => h.GetHeatNetworkByUserId(It.IsAny<string>(), It.IsAny<RegistrationSource2>())).Returns(Task.FromResult(new List<HeatNetworkResponse>()
             {
                 new HeatNetworkResponse
                 {
@@ -67,12 +68,13 @@ namespace HNTAS.Web.UI.Tests.Contollers
                     Name = "Network 1",
                     AdditionalDescription = "Description of Network 1"
                 }
-            }));            
+            }));
 
             mockUserService
                 .Setup(u => u.GetUserDetails(userId))
                 .ReturnsAsync(userDetails);
-            mockUserService.Setup(u => u.GetUserById(userId)).ReturnsAsync(new UserResponse {
+            mockUserService.Setup(u => u.GetUserById(userId)).ReturnsAsync(new UserResponse
+            {
                 Id = userId,
                 Roles = new List<UserRole> { UserRole.ResponsiblePerson },
                 HnRoleMappings = new List<HnRoleMapping>
@@ -86,7 +88,8 @@ namespace HNTAS.Web.UI.Tests.Contollers
                 mockLogger.Object,
                 mockSessionHelper.Object,
                 mockWorkflowManager.Object,
-                mockHeatNetworkService.Object);
+                mockHeatNetworkService.Object,
+                mockOrganisationService.Object);
 
             controller.ControllerContext = new ControllerContext
             {

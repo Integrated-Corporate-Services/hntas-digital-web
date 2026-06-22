@@ -41,8 +41,6 @@ namespace HNTAS.Web.UI.Controllers
                 // Validate sort order
                 sortOrder = sortOrder?.ToLower() == "desc" ? "desc" : "asc";
 
-                var validSortFields = new[] { "EntryType", "Element" };
-
                 var auditLogRequest = new AuditLogRequest
                 {
                     HnId = hnId.ToUpper(),

@@ -284,10 +284,10 @@ namespace HNTAS.Api.Client.Model
                             sourceSystem = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "kpiId":
-                            kpiId = new Option<string?>(utf8JsonReader.GetString()!);
+                            kpiId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "elementId":
-                            elementId = new Option<string?>(utf8JsonReader.GetString()!);
+                            elementId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "isAggregated":
                             isAggregated = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
@@ -318,12 +318,6 @@ namespace HNTAS.Api.Client.Model
 
             if (sourceSystem.IsSet && sourceSystem.Value == null)
                 throw new ArgumentNullException(nameof(sourceSystem), "Property is not nullable for class KpiHistoryResponse.");
-
-            if (kpiId.IsSet && kpiId.Value == null)
-                throw new ArgumentNullException(nameof(kpiId), "Property is not nullable for class KpiHistoryResponse.");
-
-            if (elementId.IsSet && elementId.Value == null)
-                throw new ArgumentNullException(nameof(elementId), "Property is not nullable for class KpiHistoryResponse.");
 
             if (isAggregated.IsSet && isAggregated.Value == null)
                 throw new ArgumentNullException(nameof(isAggregated), "Property is not nullable for class KpiHistoryResponse.");
@@ -367,12 +361,6 @@ namespace HNTAS.Api.Client.Model
             if (kpiHistoryResponse.SourceSystemOption.IsSet && kpiHistoryResponse.SourceSystem == null)
                 throw new ArgumentNullException(nameof(kpiHistoryResponse.SourceSystem), "Property is required for class KpiHistoryResponse.");
 
-            if (kpiHistoryResponse.KpiIdOption.IsSet && kpiHistoryResponse.KpiId == null)
-                throw new ArgumentNullException(nameof(kpiHistoryResponse.KpiId), "Property is required for class KpiHistoryResponse.");
-
-            if (kpiHistoryResponse.ElementIdOption.IsSet && kpiHistoryResponse.ElementId == null)
-                throw new ArgumentNullException(nameof(kpiHistoryResponse.ElementId), "Property is required for class KpiHistoryResponse.");
-
             if (kpiHistoryResponse.OldStatusOption.IsSet && kpiHistoryResponse.OldStatus == null)
                 throw new ArgumentNullException(nameof(kpiHistoryResponse.OldStatus), "Property is required for class KpiHistoryResponse.");
 
@@ -386,10 +374,16 @@ namespace HNTAS.Api.Client.Model
                 writer.WriteString("sourceSystem", kpiHistoryResponse.SourceSystem);
 
             if (kpiHistoryResponse.KpiIdOption.IsSet)
-                writer.WriteString("kpiId", kpiHistoryResponse.KpiId);
+                if (kpiHistoryResponse.KpiIdOption.Value != null)
+                    writer.WriteString("kpiId", kpiHistoryResponse.KpiId);
+                else
+                    writer.WriteNull("kpiId");
 
             if (kpiHistoryResponse.ElementIdOption.IsSet)
-                writer.WriteString("elementId", kpiHistoryResponse.ElementId);
+                if (kpiHistoryResponse.ElementIdOption.Value != null)
+                    writer.WriteString("elementId", kpiHistoryResponse.ElementId);
+                else
+                    writer.WriteNull("elementId");
 
             if (kpiHistoryResponse.IsAggregatedOption.IsSet)
                 writer.WriteBoolean("isAggregated", kpiHistoryResponse.IsAggregatedOption.Value!.Value);
