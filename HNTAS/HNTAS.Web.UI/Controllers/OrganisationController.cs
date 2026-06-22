@@ -104,6 +104,8 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult StartRegistration()
         {
+            var option = _sessionHelper.GetFromSession<WhatDoYouWantToDoViewModel>(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey);
+            ViewBag.UserPathToday = option?.UserPathToday;
             return View();
         }
 

@@ -738,8 +738,8 @@ namespace HNTAS.Web.UI.Controllers
                 longitude = (double?)viewModel.ECDetailsModel.ECAddressByLatLong.Longitude;
             }
 
-            ECDetails2? ecDetails = (latitude.HasValue || longitude.HasValue)
-                ? new ECDetails2(latitude: latitude, longitude: longitude)
+            ECDetails? ecDetails = (latitude.HasValue || longitude.HasValue)
+                ? new ECDetails(latitude: latitude, longitude: longitude)
                 : null;
 
             var address = viewModel.HeatNetworkAddressModel != null ? new RegisteredAddress(

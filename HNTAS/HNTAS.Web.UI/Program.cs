@@ -144,7 +144,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new KpiHistoryResponseJsonConverter(),
         new AggregatedKpiJsonConverter(),
         new SoaStatusWithCountJsonConverter(),
-        new ElementGroupJsonConverter(),        
+        new ElementGroupJsonConverter(),
+        new ExistingNetworkResponseJsonConverter(),
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

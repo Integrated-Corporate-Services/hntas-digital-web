@@ -64,7 +64,9 @@ namespace HNTAS.Web.UI.Controllers
             var networkElements = heatNetworkData?.NetworkElements?.ElementsGroup;
             var eligibleIndex = phase == "Design" ? 1 : phase == "Construction" ? 2 : 0;
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
-            var model = ElementSoaHelper.GetElementSoaViewModel(eligibleIndex, currentStageIndex, networkElements, networkType, hasOwnEc);
+            
+            HeatNetworkType? heatNetworkType = networkType.HasValue ? (HeatNetworkType?)networkType.Value : null;
+            var model = ElementSoaHelper.GetElementSoaViewModel(eligibleIndex, currentStageIndex, networkElements, heatNetworkType, hasOwnEc);
 
             foreach (var stageInModel in model.Stages)
             {
