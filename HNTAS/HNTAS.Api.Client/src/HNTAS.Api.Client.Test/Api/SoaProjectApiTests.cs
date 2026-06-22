@@ -53,13 +53,13 @@ namespace HNTAS.Api.Client.Test.Api
         /// <summary>
         /// Test ApiSoaProjectConnectionsPost
         /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiSoaProjectConnectionsPostAsyncTest()
-        {
-            Client.Option<string> projectId = default!;
-            Client.Option<string> connectionTypes = default!;
-            await _instance.ApiSoaProjectConnectionsPostAsync(projectId, connectionTypes);
-        }
+        //[Fact (Skip = "not implemented")]
+        //public async Task ApiSoaProjectConnectionsPostAsyncTest()
+        //{
+        //    Client.Option<string> projectId = default!;
+        //    Client.Option<string> connectionTypes = default!;
+        //    await _instance.ApiSoaProjectConnectionsPostAsync(projectId, connectionTypes);
+        //}
 
         /// <summary>
         /// Test ApiSoaProjectCreatePost
@@ -75,15 +75,15 @@ namespace HNTAS.Api.Client.Test.Api
 
         /// <summary>
         /// Test ApiSoaProjectNetworkTypePatch
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiSoaProjectNetworkTypePatchAsyncTest()
-        {
-            Client.Option<string> projectId = default!;
-            Client.Option<string> hnId = default!;
-            Client.Option<HeatNetworkType> heatNetworkType = default!;
-            await _instance.ApiSoaProjectNetworkTypePatchAsync(projectId, hnId, heatNetworkType);
-        }
+        ///// </summary>
+        //[Fact (Skip = "not implemented")]
+        //public async Task ApiSoaProjectNetworkTypePatchAsyncTest()
+        //{
+        //    Client.Option<string> projectId = default!;
+        //    Client.Option<string> hnId = default!;
+        //    Client.Option<HeatNetworkType> heatNetworkType = default!;
+        //    await _instance.ApiSoaProjectNetworkTypePatchAsync(projectId, hnId, heatNetworkType);
+        //}
 
         /// <summary>
         /// Test ApiSoaProjectProjectIdGet
