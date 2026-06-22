@@ -31,14 +31,19 @@ namespace HNTAS.Api.Client.Model
     public enum HeatNetworkType
     {
         /// <summary>
+        /// Enum Unset for value: Unset
+        /// </summary>
+        Unset = 1,
+
+        /// <summary>
         /// Enum Communal for value: Communal
         /// </summary>
-        Communal = 1,
+        Communal = 2,
 
         /// <summary>
         /// Enum District for value: District
         /// </summary>
-        District = 2
+        District = 3
     }
 
     /// <summary>
@@ -53,6 +58,9 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static HeatNetworkType FromString(string value)
         {
+            if (value.Equals("Unset"))
+                return HeatNetworkType.Unset;
+
             if (value.Equals("Communal"))
                 return HeatNetworkType.Communal;
 
@@ -69,6 +77,9 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static HeatNetworkType? FromStringOrDefault(string value)
         {
+            if (value.Equals("Unset"))
+                return HeatNetworkType.Unset;
+
             if (value.Equals("Communal"))
                 return HeatNetworkType.Communal;
 
@@ -86,6 +97,9 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(HeatNetworkType value)
         {
+            if (value == HeatNetworkType.Unset)
+                return "Unset";
+
             if (value == HeatNetworkType.Communal)
                 return "Communal";
 
@@ -131,7 +145,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkType heatNetworkType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkType.ToString());
+            writer.WriteStringValue(HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType).ToString());
         }
     }
 
@@ -162,14 +176,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the HeatNetworkType to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="heatNetworkType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkType? heatNetworkType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkType?.ToString() ?? "null");
+            writer.WriteStringValue(heatNetworkType.HasValue ? HeatNetworkTypeValueConverter.ToJsonValue(heatNetworkType.Value).ToString() : "null");
         }
     }
 }

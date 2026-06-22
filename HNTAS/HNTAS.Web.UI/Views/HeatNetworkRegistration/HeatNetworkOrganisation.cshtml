@@ -14,7 +14,7 @@
                 @Html.AntiForgeryToken()
                 <div class="govuk-form-group">
                     <span class="govuk-error-message" asp-validation-for="SelectedOrganisation"></span>
-                    <select class="govuk-select" asp-for="SelectedOrganisation" asp-items="Model.OrganisationList.Select(x => new SelectListItem { Value = x, Text = x })">
+                    <select class="govuk-select" asp-for="SelectedOrganisation" asp-items="Model.OrganisationList.Select(x => new SelectListItem { Value = x.Value, Text = x.Text })">
                         <option value="">-- Select --</option>
                     </select>
                 </div>

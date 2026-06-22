@@ -127,6 +127,8 @@ namespace HNTAS.Api.Client.Client
                 return InvitationStatusValueConverter.ToJsonValue(invitationStatus);
             if (obj is NetworkDetailsStatus networkDetailsStatus)
                 return NetworkDetailsStatusValueConverter.ToJsonValue(networkDetailsStatus);
+            if (obj is NullableOfHeatNetworkType nullableOfHeatNetworkType)
+                return NullableOfHeatNetworkTypeValueConverter.ToJsonValue(nullableOfHeatNetworkType);
             if (obj is NullableOfPreferredContactType nullableOfPreferredContactType)
                 return NullableOfPreferredContactTypeValueConverter.ToJsonValue(nullableOfPreferredContactType);
             if (obj is NullableOfSoaStage nullableOfSoaStage)
@@ -139,6 +141,8 @@ namespace HNTAS.Api.Client.Client
                 return OrganisationTypeValueConverter.ToJsonValue(organisationType);
             if (obj is RegistrationSource registrationSource)
                 return RegistrationSourceValueConverter.ToJsonValue(registrationSource);
+            if (obj is RegistrationSource2 registrationSource2)
+                return RegistrationSource2ValueConverter.ToJsonValue(registrationSource2);
             if (obj is SoaPhase soaPhase)
                 return SoaPhaseValueConverter.ToJsonValue(soaPhase);
             if (obj is SoaStage soaStage)

@@ -230,7 +230,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> NewContributorHeatNetwork()
         {
-            this.ShowBackButton("NewContributorDetails");
+            this.ShowBackButton("ExistingContributorsList");
             var model = _sessionHelper.GetFromSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey) ?? new NewContributorHeatNetworkViewModel();
             model.HeatNetworks = await GetListOfHeatNetworks();
             if (model.HeatNetworks == null)
@@ -314,7 +314,7 @@ namespace HNTAS.Web.UI.Controllers
         private CheckYourAnswersViewModel CreateCYAModel()
         {
             var newContributorRoleModel = _sessionHelper.GetFromSession<NewContributorRoleViewModel>(HttpContext, SessionKeys.NewContributorRoleViewModelSessionKey);
-            var addContributorModel = _sessionHelper.GetFromSession<AddContributorViewModel>(HttpContext, SessionKeys.AddContributorViewModelSessionKey);
+            
             var newContributorDetailsModel = _sessionHelper.GetFromSession<NewContributorDetailsViewModel>(HttpContext, SessionKeys.NewContributorDetailsViewModelSessionKey);
             var newContributorHeatNetworkModel = _sessionHelper.GetFromSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey);
             var heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseViewModel>(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey);

@@ -12,8 +12,6 @@
     var userIsCertifier = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Certifier.ToString();
     var userIsContributor = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Contributor.ToString();
     var userIsDesignatedDutyHolder = Model.UserRole == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString();
-    var RPLoggedInForFirstTime = ViewBag.RPLoggedInForFirstTime;
-    // var showCarbonCalculator = userIsRP || userIsActingRP || userIsAssessor || userIsCertifier && !RPLoggedInForFirstTime;
 }
 
 <div class="govuk-width-container">
@@ -105,11 +103,23 @@
             <div class="dashboard-grid__item">
                 <div class="dashboard-card">
                     <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks</a>
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks (New build)</a>
                     </h3>
-                    <p class="govuk-body-s">View the heat network to be assessed.</p>
+                    <p class="govuk-body-s">View and add details to your heat network(s)</p>
                 </div>
             </div>
+
+            @if (Model.HasOfgemNetworks)
+            {
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="ExistingNetworks" asp-controller="UserManagement">Your heat networks (Existing build)</a>
+                        </h3>
+                        <p class="govuk-body-s">View and add details to your heat network(s)</p>
+                    </div>
+                </div>
+            }            
 
             <div class="dashboard-grid__item">
                 <div class="dashboard-card @disabled">

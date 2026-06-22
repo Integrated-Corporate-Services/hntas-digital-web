@@ -13,17 +13,19 @@ Name | Type | Description | Notes
 **Name** | **string** |  | [optional] 
 **AdditionalDescription** | **string** |  | [optional] 
 **Pathway** | **string** |  | [optional] 
+**RegistrationSource** | **RegistrationSource** |  | [optional] 
 **Soa** | [**SoaResponse**](SoaResponse.md) |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **Phase** | **string** |  | [optional] 
-**HeatNetworkType** | **HeatNetworkType** |  | [optional] 
+**HeatNetworkType** | **NullableOfHeatNetworkType** |  | [optional] 
 **HasOwnEnergyCentre** | **bool** |  | [optional] 
 **HeatNetworkConnections** | [**HeatNetworkConnections**](HeatNetworkConnections.md) |  | [optional] 
 **NetworkElements** | [**NetworkElementsResponse**](NetworkElementsResponse.md) |  | [optional] 
 **MeteringAndMonitoringStrategy** | [**MeteringAndMonitoringStrategyResponse**](MeteringAndMonitoringStrategyResponse.md) |  | [optional] 
 **AssessmentPlan** | [**AssessmentPlanResponse**](AssessmentPlanResponse.md) |  | [optional] 
 **DesignConstructionLog** | [**DesignConstructionLogResponse**](DesignConstructionLogResponse.md) |  | [optional] 
+**OfgemImportedDate** | **DateTimeOffset** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

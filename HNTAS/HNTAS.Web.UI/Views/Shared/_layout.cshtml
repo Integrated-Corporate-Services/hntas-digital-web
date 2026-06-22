@@ -23,14 +23,19 @@
     <meta property="og:image" content="YOUR-DOMAIN/images/govuk-opengraph-image.png">    
 </head>
 <environment names="qa,staging">
-    <!-- Google Tag Manager -->
-    <script>
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-5SWB2T5S');</script>
-    <!-- End Google Tag Manager -->
+    
+    @if (Context.Request.Cookies["cookie_consent"] == "Yes")
+    {
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-5SWB2T5S');</script>
+        <!-- End Google Tag Manager -->
+    }
+
 </environment>
 @{
         bool hasOrg = false;
@@ -58,7 +63,7 @@
 
 <body class="govuk-template__body app-body-class">
     <environment names="qa,staging">
-        @if (Context.Request.Cookies["cookie_consent"] == "accepted")
+        @if (Context.Request.Cookies["cookie_consent"] == "Yes")
         {
             <!-- Google Tag Manager (noscript) -->
             <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5SWB2T5S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -245,13 +250,13 @@
                         </li>
 
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="https://www.gov.uk/help/privacy-notice">
+                            <a class="govuk-footer__link" href="@Url.Action("PrivacyNotice", "Help")">
                                 Privacy
                             </a>
                         </li>
 
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="https://www.gov.uk/help/cookies">
+                            <a class="govuk-footer__link" href="@Url.Action("Cookies", "Help")">
                                 Cookies
                             </a>
                         </li>

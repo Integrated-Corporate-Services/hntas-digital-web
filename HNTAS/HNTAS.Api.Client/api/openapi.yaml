@@ -818,6 +818,13 @@ paths:
         schema:
           type: string
         style: form
+      - explode: true
+        in: query
+        name: registrationSource
+        required: false
+        schema:
+          $ref: "#/components/schemas/RegistrationSource2"
+        style: form
       responses:
         "200":
           content:
@@ -836,6 +843,58 @@ paths:
                 items:
                   $ref: "#/components/schemas/HeatNetworkResponse"
                 type: array
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - HeatNetworks
+  /api/HeatNetworks/existing-network-by-userId:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExistingNetworkRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ExistingNetworkRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ExistingNetworkResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExistingNetworkResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ExistingNetworkResponse"
           description: OK
         "400":
           content:
@@ -1282,6 +1341,48 @@ paths:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
         "500":
+          description: Internal Server Error
+      tags:
+      - Invitations
+  /api/Invitations/accept-invitation:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InvitedUserRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/InvitedUserRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: OK
+        "201":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Created
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Conflict
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          content:
+            application/json: {}
           description: Internal Server Error
       tags:
       - Invitations
@@ -2750,70 +2851,6 @@ paths:
           description: Internal Server Error
       tags:
       - Users
-  /api/Users/accept-invitation:
-    patch:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/InvitedUserRequest"
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/InvitedUserRequest"
-        required: true
-      responses:
-        "200":
-          content:
-            text/plain:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: string
-            text/json:
-              schema:
-                type: string
-          description: OK
-        "201":
-          content:
-            text/plain:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: string
-            text/json:
-              schema:
-                type: string
-          description: Created
-        "409":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Conflict
-        "404":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Not Found
-        "500":
-          description: Internal Server Error
-      tags:
-      - Users
   /api/Users/contributor-roles:
     get:
       responses:
@@ -2924,6 +2961,33 @@ paths:
               schema:
                 items:
                   $ref: "#/components/schemas/ManagedUserResponse"
+                type: array
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Users
+  /api/Users/network-managers:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/InvitedUserResponse"
                 type: array
           description: OK
         "404":
@@ -4113,20 +4177,6 @@ components:
       example:
         latitude: 0.8008281904610115
         longitude: 6.027456183070403
-      properties:
-        latitude:
-          format: double
-          nullable: true
-          type: number
-        longitude:
-          format: double
-          nullable: true
-          type: number
-      type: object
-    ECDetails2:
-      example:
-        latitude: 0.8008281904610115
-        longitude: 6.027456183070403
       nullable: true
       properties:
         latitude:
@@ -4598,6 +4648,569 @@ components:
         description:
           type: string
       type: object
+    ExistingNetworkRequest:
+      example:
+        sortDirection: sortDirection
+        pageSize: 6
+        sortBy: sortBy
+        page: 0
+        userId: userId
+      properties:
+        userId:
+          nullable: true
+          type: string
+        sortBy:
+          nullable: true
+          type: string
+        sortDirection:
+          nullable: true
+          type: string
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+      type: object
+    ExistingNetworkResponse:
+      example:
+        pageNumber: 0
+        totalPages: 5
+        pageSize: 6
+        totalCount: 1
+        items:
+        - phase: phase
+          ecDetails:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          soa:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            updatedBy: updatedBy
+            createdBy: createdBy
+            journeyData:
+              certifierDocs:
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              heatNetworkElements:
+              - documents:
+                - phase: phase
+                  fileName: fileName
+                  s3Key: s3Key
+                  stage: stage
+                  uploadedAt: 2000-01-23T04:56:07.000+00:00
+                  uploadedBy: uploadedBy
+                - phase: phase
+                  fileName: fileName
+                  s3Key: s3Key
+                  stage: stage
+                  uploadedAt: 2000-01-23T04:56:07.000+00:00
+                  uploadedBy: uploadedBy
+                name: name
+                count: 1
+                locations:
+                - locations
+                - locations
+              - documents:
+                - phase: phase
+                  fileName: fileName
+                  s3Key: s3Key
+                  stage: stage
+                  uploadedAt: 2000-01-23T04:56:07.000+00:00
+                  uploadedBy: uploadedBy
+                - phase: phase
+                  fileName: fileName
+                  s3Key: s3Key
+                  stage: stage
+                  uploadedAt: 2000-01-23T04:56:07.000+00:00
+                  uploadedBy: uploadedBy
+                name: name
+                count: 1
+                locations:
+                - locations
+                - locations
+              assessmentDocs:
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              networkType:
+                otherNetworkDescription: otherNetworkDescription
+                type: type
+              assessorDocs:
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              connectionTypes:
+              - connectionTypes
+              - connectionTypes
+            status: NotStarted
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          uHnId: uHnId
+          networkElements:
+            elementSoaStatus: null
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            networkElementStatus: InProgress
+            updatedBy: updatedBy
+            createdBy: createdBy
+            elementsGroup:
+            - elementDisplayType: EnergyCentre
+              soaStages:
+              - soaStatuses:
+                - soaStatus: null
+                  count: 3
+                - soaStatus: null
+                  count: 3
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                stageId: Stage1
+              - soaStatuses:
+                - soaStatus: null
+                  count: 3
+                - soaStatus: null
+                  count: 3
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                stageId: Stage1
+              count: 9
+              elementType: EC
+            - elementDisplayType: EnergyCentre
+              soaStages:
+              - soaStatuses:
+                - soaStatus: null
+                  count: 3
+                - soaStatus: null
+                  count: 3
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                stageId: Stage1
+              - soaStatuses:
+                - soaStatus: null
+                  count: 3
+                - soaStatus: null
+                  count: 3
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                stageId: Stage1
+              count: 9
+              elementType: EC
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
+          meteringAndMonitoringStrategy:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            updatedBy: updatedBy
+            documents:
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            createdBy: createdBy
+            status: null
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          heatNetworkConnections:
+            isDomesticConsumer: true
+            noOfNonDomesticConsumer: 2
+            isNonDomesticConsumer: true
+            isCommunalBuilding: true
+            isOtherDistrictNetwork: true
+            noOfOtherDistrictNetwork: 7
+            noOfDomesticConsumer: 5
+            noOfCommunalBuilding: 5
+          orgId: orgId
+          hasOwnEnergyCentre: true
+          hnId: hnId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          createdBy: createdBy
+          additionalDescription: additionalDescription
+          assessmentPlan:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            updatedBy: updatedBy
+            documents:
+            - ""
+            - ""
+            createdBy: createdBy
+            status: null
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          registrationSource: HNTAS
+          pathway: pathway
+          designConstructionLog:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            updatedBy: updatedBy
+            documents:
+            - ""
+            - ""
+            createdBy: createdBy
+            status: null
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          id: id
+          heatNetworkType: Unset
+        - phase: phase
+          ecDetails:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          soa:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            updatedBy: updatedBy
+            createdBy: createdBy
+            journeyData:
+              certifierDocs:
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              heatNetworkElements:
+              - documents:
+                - phase: phase
+                  fileName: fileName
+                  s3Key: s3Key
+                  stage: stage
+                  uploadedAt: 2000-01-23T04:56:07.000+00:00
+                  uploadedBy: uploadedBy
+                - phase: phase
+                  fileName: fileName
+                  s3Key: s3Key
+                  stage: stage
+                  uploadedAt: 2000-01-23T04:56:07.000+00:00
+                  uploadedBy: uploadedBy
+                name: name
+                count: 1
+                locations:
+                - locations
+                - locations
+              - documents:
+                - phase: phase
+                  fileName: fileName
+                  s3Key: s3Key
+                  stage: stage
+                  uploadedAt: 2000-01-23T04:56:07.000+00:00
+                  uploadedBy: uploadedBy
+                - phase: phase
+                  fileName: fileName
+                  s3Key: s3Key
+                  stage: stage
+                  uploadedAt: 2000-01-23T04:56:07.000+00:00
+                  uploadedBy: uploadedBy
+                name: name
+                count: 1
+                locations:
+                - locations
+                - locations
+              assessmentDocs:
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              networkType:
+                otherNetworkDescription: otherNetworkDescription
+                type: type
+              assessorDocs:
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              - phase: phase
+                fileName: fileName
+                s3Key: s3Key
+                stage: stage
+                uploadedAt: 2000-01-23T04:56:07.000+00:00
+                uploadedBy: uploadedBy
+              connectionTypes:
+              - connectionTypes
+              - connectionTypes
+            status: NotStarted
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          uHnId: uHnId
+          networkElements:
+            elementSoaStatus: null
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            networkElementStatus: InProgress
+            updatedBy: updatedBy
+            createdBy: createdBy
+            elementsGroup:
+            - elementDisplayType: EnergyCentre
+              soaStages:
+              - soaStatuses:
+                - soaStatus: null
+                  count: 3
+                - soaStatus: null
+                  count: 3
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                stageId: Stage1
+              - soaStatuses:
+                - soaStatus: null
+                  count: 3
+                - soaStatus: null
+                  count: 3
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                stageId: Stage1
+              count: 9
+              elementType: EC
+            - elementDisplayType: EnergyCentre
+              soaStages:
+              - soaStatuses:
+                - soaStatus: null
+                  count: 3
+                - soaStatus: null
+                  count: 3
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                stageId: Stage1
+              - soaStatuses:
+                - soaStatus: null
+                  count: 3
+                - soaStatus: null
+                  count: 3
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: Active
+                stageId: Stage1
+              count: 9
+              elementType: EC
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
+          meteringAndMonitoringStrategy:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            updatedBy: updatedBy
+            documents:
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            - fileName: fileName
+              s3Key: s3Key
+              uploadedAt: 2000-01-23T04:56:07.000+00:00
+              uploadedBy: uploadedBy
+            createdBy: createdBy
+            status: null
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          heatNetworkConnections:
+            isDomesticConsumer: true
+            noOfNonDomesticConsumer: 2
+            isNonDomesticConsumer: true
+            isCommunalBuilding: true
+            isOtherDistrictNetwork: true
+            noOfOtherDistrictNetwork: 7
+            noOfDomesticConsumer: 5
+            noOfCommunalBuilding: 5
+          orgId: orgId
+          hasOwnEnergyCentre: true
+          hnId: hnId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          createdBy: createdBy
+          additionalDescription: additionalDescription
+          assessmentPlan:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            updatedBy: updatedBy
+            documents:
+            - ""
+            - ""
+            createdBy: createdBy
+            status: null
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          registrationSource: HNTAS
+          pathway: pathway
+          designConstructionLog:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            updatedBy: updatedBy
+            documents:
+            - ""
+            - ""
+            createdBy: createdBy
+            status: null
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          id: id
+          heatNetworkType: Unset
+        userId: userId
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/HeatNetworkResponse"
+          type: array
+        pageNumber:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        userId:
+          nullable: true
+          type: string
+      type: object
     HeatNetwork:
       example:
         phase: phase
@@ -4634,7 +5247,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 1
+              count: 0
               locations:
               - locations
               - locations
@@ -4652,7 +5265,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: EnergyCentre
-              count: 1
+              count: 0
               locations:
               - locations
               - locations
@@ -4778,6 +5391,7 @@ components:
             count: 9
             elementType: EC
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -4805,6 +5419,7 @@ components:
         orgId: orgId
         hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
+        ofgemUserEmailId: ofgemUserEmailId
         createdBy: createdBy
         additionalDescription: additionalDescription
         hasOwnEnergyCenter: true
@@ -4830,7 +5445,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: Communal
+        heatNetworkType: Unset
       properties:
         id:
           nullable: true
@@ -4851,8 +5466,9 @@ components:
         address:
           $ref: "#/components/schemas/RegisteredAddress"
         ecDetails:
-          $ref: "#/components/schemas/ECDetails2"
+          $ref: "#/components/schemas/ECDetails"
         pathway:
+          nullable: true
           type: string
         registrationSource:
           $ref: "#/components/schemas/RegistrationSource"
@@ -4872,12 +5488,20 @@ components:
           $ref: "#/components/schemas/AssessmentPlan"
         designConstructionLog:
           $ref: "#/components/schemas/DesignConstructionLog"
+        ofgemUserEmailId:
+          nullable: true
+          type: string
+        ofgemImportedDate:
+          format: date-time
+          nullable: true
+          type: string
         createdBy:
           type: string
         createdAt:
           format: date-time
           type: string
         phase:
+          nullable: true
           type: string
       type: object
     HeatNetworkConnections:
@@ -5078,7 +5702,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         name: EnergyCentre
-        count: 1
+        count: 0
         locations:
         - locations
         - locations
@@ -5408,6 +6032,7 @@ components:
             count: 9
             elementType: EC
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -5448,6 +6073,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         name: name
+        registrationSource: HNTAS
         pathway: pathway
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -5459,7 +6085,7 @@ components:
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
-        heatNetworkType: Communal
+        heatNetworkType: Unset
       properties:
         id:
           type: string
@@ -5479,7 +6105,10 @@ components:
           nullable: true
           type: string
         pathway:
+          nullable: true
           type: string
+        registrationSource:
+          $ref: "#/components/schemas/RegistrationSource"
         soa:
           $ref: "#/components/schemas/SoaResponse"
         createdBy:
@@ -5491,7 +6120,7 @@ components:
           nullable: true
           type: string
         heatNetworkType:
-          $ref: "#/components/schemas/HeatNetworkType"
+          $ref: "#/components/schemas/NullableOfHeatNetworkType"
         hasOwnEnergyCentre:
           type: boolean
         heatNetworkConnections:
@@ -5504,9 +6133,14 @@ components:
           $ref: "#/components/schemas/AssessmentPlanResponse"
         designConstructionLog:
           $ref: "#/components/schemas/DesignConstructionLogResponse"
+        ofgemImportedDate:
+          format: date-time
+          nullable: true
+          type: string
       type: object
     HeatNetworkType:
       enum:
+      - Unset
       - Communal
       - District
       type: string
@@ -5530,7 +6164,7 @@ components:
         name:
           type: string
         ecDetails:
-          $ref: "#/components/schemas/ECDetails2"
+          $ref: "#/components/schemas/ECDetails"
         address:
           $ref: "#/components/schemas/RegisteredAddress"
       type: object
@@ -6850,7 +7484,7 @@ components:
     NetworkTypeSelection2:
       example:
         otherNetworkDescription: otherNetworkDescription
-        type: Communal
+        type: Unset
       properties:
         type:
           $ref: "#/components/schemas/HeatNetworkType"
@@ -6995,6 +7629,14 @@ components:
       type: object
     NotificationHistoryType:
       type: integer
+    NullableOfHeatNetworkType:
+      enum:
+      - Unset
+      - Communal
+      - District
+      - null
+      nullable: true
+      type: string
     NullableOfPreferredContactType:
       enum:
       - Landline
@@ -7318,6 +7960,12 @@ components:
       - HNTAS
       - OFGEM
       type: string
+    RegistrationSource2:
+      default: HNTAS
+      enum:
+      - HNTAS
+      - OFGEM
+      type: string
     SendInvitationEmailRequest:
       example:
         token: token
@@ -7351,7 +7999,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 1
+            count: 0
             locations:
             - locations
             - locations
@@ -7369,7 +8017,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 1
+            count: 0
             locations:
             - locations
             - locations
@@ -7430,7 +8078,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 1
+            count: 0
             locations:
             - locations
             - locations
@@ -7448,7 +8096,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: EnergyCentre
-            count: 1
+            count: 0
             locations:
             - locations
             - locations
@@ -7523,7 +8171,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 1
+          count: 0
           locations:
           - locations
           - locations
@@ -7541,7 +8189,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: EnergyCentre
-          count: 1
+          count: 0
           locations:
           - locations
           - locations
