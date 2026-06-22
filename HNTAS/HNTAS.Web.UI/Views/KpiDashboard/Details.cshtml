@@ -75,7 +75,7 @@
                     <!-- NETWORK TYPE FILTERS -->
                     <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Network Type</legend>
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Network Elements</legend>
                             <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                                
                                 @foreach (var type in types)
@@ -132,7 +132,7 @@
                             @if (Model.TotalCarbonEmission.HasValue)
                             {
                                 <h3 class="govuk-heading-m govuk-!-margin-bottom-4">
-                                    Total Emissions: <span class="govuk-body fw-bold"> @Model.TotalCarbonEmission.Value.ToString("N2") g/kWh</span>
+                                    Average Annual Carbon Heat Intensity : <span class="govuk-body fw-bold"> @Model.TotalCarbonEmission.Value.ToString("N2") g/kWh</span>
                                 </h3>
                             }
 
@@ -191,7 +191,7 @@
                                     <table class="govuk-table">
                                         <thead class="govuk-table__head">
                                             <tr class="govuk-table__row">
-                                                <th class="govuk-table__header">KPI Name</th>
+                                                <th class="govuk-table__header">KPI Id</th>
                                                 <th class="govuk-table__header">Value</th>
                                                 <th class="govuk-table__header">Status</th>
                                             </tr>
@@ -236,7 +236,7 @@
                             <table class="govuk-table govuk-!-margin-bottom-0">
                                 <thead class="govuk-table__head">
                                     <tr class="govuk-table__row">
-                                        <th class="govuk-table__header">KPI Name</th>
+                                        <th class="govuk-table__header">KPI Id</th>
                                         <th class="govuk-table__header">Value</th>
                                         <th class="govuk-table__header">Status</th>
                                     </tr>
