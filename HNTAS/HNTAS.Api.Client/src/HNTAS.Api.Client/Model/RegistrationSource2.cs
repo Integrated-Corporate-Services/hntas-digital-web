@@ -26,9 +26,9 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// Defines RegistrationSource
+    /// Defines RegistrationSource2
     /// </summary>
-    public enum RegistrationSource
+    public enum RegistrationSource2
     {
         /// <summary>
         /// Enum HNTAS for value: HNTAS
@@ -42,54 +42,54 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// Converts <see cref="RegistrationSource"/> to and from the JSON value
+    /// Converts <see cref="RegistrationSource2"/> to and from the JSON value
     /// </summary>
-    public static class RegistrationSourceValueConverter
+    public static class RegistrationSource2ValueConverter
     {
         /// <summary>
-        /// Parses a given value to <see cref="RegistrationSource"/>
+        /// Parses a given value to <see cref="RegistrationSource2"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static RegistrationSource FromString(string value)
+        public static RegistrationSource2 FromString(string value)
         {
             if (value.Equals("HNTAS"))
-                return RegistrationSource.HNTAS;
+                return RegistrationSource2.HNTAS;
 
             if (value.Equals("OFGEM"))
-                return RegistrationSource.OFGEM;
+                return RegistrationSource2.OFGEM;
 
-            throw new NotImplementedException($"Could not convert value to type RegistrationSource: '{value}'");
+            throw new NotImplementedException($"Could not convert value to type RegistrationSource2: '{value}'");
         }
 
         /// <summary>
-        /// Parses a given value to <see cref="RegistrationSource"/>
+        /// Parses a given value to <see cref="RegistrationSource2"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static RegistrationSource? FromStringOrDefault(string value)
+        public static RegistrationSource2? FromStringOrDefault(string value)
         {
             if (value.Equals("HNTAS"))
-                return RegistrationSource.HNTAS;
+                return RegistrationSource2.HNTAS;
 
             if (value.Equals("OFGEM"))
-                return RegistrationSource.OFGEM;
+                return RegistrationSource2.OFGEM;
 
             return null;
         }
 
         /// <summary>
-        /// Converts the <see cref="RegistrationSource"/> to the json value
+        /// Converts the <see cref="RegistrationSource2"/> to the json value
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static string ToJsonValue(RegistrationSource value)
+        public static string ToJsonValue(RegistrationSource2 value)
         {
-            if (value == RegistrationSource.HNTAS)
+            if (value == RegistrationSource2.HNTAS)
                 return "HNTAS";
 
-            if (value == RegistrationSource.OFGEM)
+            if (value == RegistrationSource2.OFGEM)
                 return "OFGEM";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
@@ -97,10 +97,10 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="RegistrationSource"/>
+    /// A Json converter for type <see cref="RegistrationSource2"/>
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
-    public class RegistrationSourceJsonConverter : JsonConverter<RegistrationSource>
+    public class RegistrationSource2JsonConverter : JsonConverter<RegistrationSource2>
     {
         /// <summary>
         /// Returns a  from the Json object
@@ -109,13 +109,13 @@ namespace HNTAS.Api.Client.Model
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override RegistrationSource Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override RegistrationSource2 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            RegistrationSource? result = rawValue == null
+            RegistrationSource2? result = rawValue == null
                 ? null
-                : RegistrationSourceValueConverter.FromStringOrDefault(rawValue);
+                : RegistrationSource2ValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -124,36 +124,36 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the RegistrationSource to the json writer
+        /// Writes the RegistrationSource2 to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="registrationSource"></param>
+        /// <param name="registrationSource2"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, RegistrationSource registrationSource, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, RegistrationSource2 registrationSource2, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(RegistrationSourceValueConverter.ToJsonValue(registrationSource).ToString());
+            writer.WriteStringValue(RegistrationSource2ValueConverter.ToJsonValue(registrationSource2).ToString());
         }
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="RegistrationSource"/>
+    /// A Json converter for type <see cref="RegistrationSource2"/>
     /// </summary>
-    public class RegistrationSourceNullableJsonConverter : JsonConverter<RegistrationSource?>
+    public class RegistrationSource2NullableJsonConverter : JsonConverter<RegistrationSource2?>
     {
         /// <summary>
-        /// Returns a RegistrationSource from the Json object
+        /// Returns a RegistrationSource2 from the Json object
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public override RegistrationSource? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override RegistrationSource2? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string? rawValue = reader.GetString();
 
-            RegistrationSource? result = rawValue == null
+            RegistrationSource2? result = rawValue == null
                 ? null
-                : RegistrationSourceValueConverter.FromStringOrDefault(rawValue);
+                : RegistrationSource2ValueConverter.FromStringOrDefault(rawValue);
 
             if (result != null)
                 return result.Value;
@@ -162,14 +162,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the RegistrationSource to the json writer
+        /// Writes the RegistrationSource2 to the json writer
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="registrationSource"></param>
+        /// <param name="registrationSource2"></param>
         /// <param name="options"></param>
-        public override void Write(Utf8JsonWriter writer, RegistrationSource? registrationSource, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, RegistrationSource2? registrationSource2, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(registrationSource.HasValue ? RegistrationSourceValueConverter.ToJsonValue(registrationSource.Value).ToString() : "null");
+            writer.WriteStringValue(registrationSource2.HasValue ? RegistrationSource2ValueConverter.ToJsonValue(registrationSource2.Value).ToString() : "null");
         }
     }
 }

@@ -20,6 +20,17 @@
             <li>or a valid business address</li>
         </ul>
 
+        @if (ViewBag.UserPathToday == "registerOperationalHN")
+        {
+            <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                <strong class="govuk-warning-text__text">
+                    <span class="govuk-visually-hidden">Warning</span>
+                    If you have an Ofgem account, use the same email address when registering.
+                </strong>
+            </div>
+        }
+
         <div class="app-button-wrapper">
             <a asp-controller="Organisation" role="button" asp-action="Start" data-module="govuk-button" draggable="false" class="govuk-button">Continue</a>
         </div>

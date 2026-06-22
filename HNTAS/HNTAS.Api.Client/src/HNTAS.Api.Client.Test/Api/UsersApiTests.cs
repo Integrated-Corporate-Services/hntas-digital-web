@@ -62,6 +62,29 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
+        /// Test ApiUsersAcceptInvitationPatch
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersAcceptInvitationPatchAsyncTest()
+        {
+            InvitedUserRequest invitedUserRequest = default!;
+            var response = await _instance.ApiUsersAcceptInvitationPatchAsync(invitedUserRequest);
+            var model = response.Ok();
+            Assert.IsType<string>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersContributorRolesGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersContributorRolesGetAsyncTest()
+        {
+            var response = await _instance.ApiUsersContributorRolesGetAsync();
+            var model = response.Ok();
+            Assert.IsType<List<EnumItemResponse>>(model);
+        }
+
+        /// <summary>
         /// Test ApiUsersGet
         /// </summary>
         [Fact (Skip = "not implemented")]

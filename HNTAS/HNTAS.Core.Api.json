@@ -1057,6 +1057,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "registrationSource",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RegistrationSource2"
+            }
           }
         ],
         "responses": {
@@ -1085,6 +1092,93 @@
                   "items": {
                     "$ref": "#/components/schemas/HeatNetworkResponse"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/HeatNetworks/existing-network-by-userId": {
+      "get": {
+        "tags": [
+          "HeatNetworks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExistingNetworkRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExistingNetworkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExistingNetworkResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExistingNetworkResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExistingNetworkResponse"
                 }
               }
             }
@@ -5403,21 +5497,6 @@
             "format": "double",
             "nullable": true
           }
-        }
-      },
-      "ECDetails2": {
-        "type": "object",
-        "properties": {
-          "latitude": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "longitude": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          }
         },
         "nullable": true
       },
@@ -5665,6 +5744,62 @@
           }
         }
       },
+      "ExistingNetworkRequest": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortDirection": {
+            "type": "string",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ExistingNetworkResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HeatNetworkResponse"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "HeatNetwork": {
         "type": "object",
         "properties": {
@@ -5694,10 +5829,11 @@
             "$ref": "#/components/schemas/RegisteredAddress"
           },
           "ecDetails": {
-            "$ref": "#/components/schemas/ECDetails2"
+            "$ref": "#/components/schemas/ECDetails"
           },
           "pathway": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "registrationSource": {
             "$ref": "#/components/schemas/RegistrationSource"
@@ -5726,6 +5862,15 @@
           "designConstructionLog": {
             "$ref": "#/components/schemas/DesignConstructionLog"
           },
+          "ofgemUserEmailId": {
+            "type": "string",
+            "nullable": true
+          },
+          "ofgemImportedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "createdBy": {
             "type": "string"
           },
@@ -5734,7 +5879,8 @@
             "format": "date-time"
           },
           "phase": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -6002,7 +6148,11 @@
             "nullable": true
           },
           "pathway": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "registrationSource": {
+            "$ref": "#/components/schemas/RegistrationSource"
           },
           "soa": {
             "$ref": "#/components/schemas/SoaResponse"
@@ -6019,7 +6169,7 @@
             "nullable": true
           },
           "heatNetworkType": {
-            "$ref": "#/components/schemas/HeatNetworkType"
+            "$ref": "#/components/schemas/NullableOfHeatNetworkType"
           },
           "hasOwnEnergyCentre": {
             "type": "boolean"
@@ -6038,11 +6188,17 @@
           },
           "designConstructionLog": {
             "$ref": "#/components/schemas/DesignConstructionLogResponse"
+          },
+          "ofgemImportedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },
       "HeatNetworkType": {
         "enum": [
+          "Unset",
           "Communal",
           "District"
         ]
@@ -6057,7 +6213,7 @@
             "type": "string"
           },
           "ecDetails": {
-            "$ref": "#/components/schemas/ECDetails2"
+            "$ref": "#/components/schemas/ECDetails"
           },
           "address": {
             "$ref": "#/components/schemas/RegisteredAddress"
@@ -6983,6 +7139,15 @@
       "NotificationHistoryType": {
         "type": "integer"
       },
+      "NullableOfHeatNetworkType": {
+        "enum": [
+          "Unset",
+          "Communal",
+          "District",
+          null
+        ],
+        "nullable": true
+      },
       "NullableOfPreferredContactType": {
         "enum": [
           "Landline",
@@ -7294,6 +7459,13 @@
           "HNTAS",
           "OFGEM"
         ]
+      },
+      "RegistrationSource2": {
+        "enum": [
+          "HNTAS",
+          "OFGEM"
+        ],
+        "default": "HNTAS"
       },
       "SendInvitationEmailRequest": {
         "required": [

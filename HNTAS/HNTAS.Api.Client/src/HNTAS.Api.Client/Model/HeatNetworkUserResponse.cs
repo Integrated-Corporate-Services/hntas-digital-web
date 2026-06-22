@@ -38,7 +38,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="ecDetails">ecDetails</param>
         /// <param name="address">address</param>
         [JsonConstructor]
-        public HeatNetworkUserResponse(Option<string?> hnId = default, Option<string?> name = default, Option<ECDetails2?> ecDetails = default, Option<RegisteredAddress?> address = default)
+        public HeatNetworkUserResponse(Option<string?> hnId = default, Option<string?> name = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default)
         {
             HnIdOption = hnId;
             NameOption = name;
@@ -80,13 +80,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<ECDetails2?> EcDetailsOption { get; private set; }
+        public Option<ECDetails?> EcDetailsOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets EcDetails
         /// </summary>
         [JsonPropertyName("ecDetails")]
-        public ECDetails2? EcDetails { get { return this.EcDetailsOption; } set { this.EcDetailsOption = new(value); } }
+        public ECDetails? EcDetails { get { return this.EcDetailsOption; } set { this.EcDetailsOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Address
@@ -152,7 +152,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> hnId = default;
             Option<string?> name = default;
-            Option<ECDetails2?> ecDetails = default;
+            Option<ECDetails?> ecDetails = default;
             Option<RegisteredAddress?> address = default;
 
             while (utf8JsonReader.Read())
@@ -177,7 +177,7 @@ namespace HNTAS.Api.Client.Model
                             name = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "ecDetails":
-                            ecDetails = new Option<ECDetails2?>(JsonSerializer.Deserialize<ECDetails2>(ref utf8JsonReader, jsonSerializerOptions));
+                            ecDetails = new Option<ECDetails?>(JsonSerializer.Deserialize<ECDetails>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "address":
                             address = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions));
