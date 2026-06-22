@@ -22,7 +22,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             SetCookieConsent(cookieConsent);
             TempData["cookie_banner_action"] = cookieConsent;
-            return RedirectToAction("Cookies");
+            return LocalRedirect(GetSafeReturnUrl());
         }        
 
         private void SetCookieConsent(string cookieConsent)
@@ -39,6 +39,33 @@ namespace HNTAS.Web.UI.Controllers
                 Response.Cookies.Delete("_ga");
                 Response.Cookies.Delete("_ga_NGJT0GGBSZ");
             }
-        }        
+        }
+
+        private string GetSafeReturnUrl()
+        {
+            const string fallbackUrl = "/";
+            var referer = Request.Headers["Referer"].ToString();
+            if (string.IsNullOrWhiteSpace(referer))
+            {
+                return fallbackUrl;
+            }
+            if (!Uri.TryCreate(referer, UriKind.RelativeOrAbsolute, out var parsedUri))
+            {
+                return fallbackUrl;
+            }
+            if (parsedUri.IsAbsoluteUri)
+            {
+                var sameHost = string.Equals(parsedUri.Host, Request.Host.Host, StringComparison.OrdinalIgnoreCase);
+                var sameScheme = string.Equals(parsedUri.Scheme, Request.Scheme, StringComparison.OrdinalIgnoreCase);
+                if (!sameHost || !sameScheme)
+                {
+                    return fallbackUrl;
+                }
+                var localPath = parsedUri.PathAndQuery + parsedUri.Fragment;
+                return Url.IsLocalUrl(localPath) ? localPath : fallbackUrl;
+            }
+            var relativeUrl = parsedUri.ToString();
+            return Url.IsLocalUrl(relativeUrl) ? relativeUrl : fallbackUrl;
+        }
     }
 }
