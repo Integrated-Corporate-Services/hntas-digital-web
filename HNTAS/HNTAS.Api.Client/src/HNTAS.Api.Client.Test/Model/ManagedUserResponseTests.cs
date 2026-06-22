@@ -54,12 +54,12 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Id'
+        /// Test the property 'InviterUserId'
         /// </summary>
         [Fact]
-        public void IdTest()
+        public void InviterUserIdTest()
         {
-            // TODO unit test for the property 'Id'
+            // TODO unit test for the property 'InviterUserId'
         }
 
         /// <summary>
