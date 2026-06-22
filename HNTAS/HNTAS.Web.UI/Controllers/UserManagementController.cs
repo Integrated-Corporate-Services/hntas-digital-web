@@ -233,60 +233,73 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ExistingNetworksAsync()
+        public async Task<IActionResult> ExistingNetworksAsync(
+            string? sortBy = "ofgemImportedDate",
+            string? sortOrder = "desc",
+            int page = 1,
+            int pageSize = 6)
         {
-            ClearNetworkDetailsSession();
+             
+                var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+                this.ShowBackButton("UserAccount", "Dashboard");
 
-            this.ShowBackButton("UserAccount", "Dashboard");
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var user = await _userService.GetUserDetails(userId);
-            var userWithHnRoles = await _userService.GetUserById(userId);
-            var hnRoleMappings = userWithHnRoles.HnRoleMappings;
-
-            ViewBag.UserRole = user?.Roles[0].ToString();
-            ViewBag.HasDeclaredImpartiality = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(HttpContext, SessionKeys.DeclarationOfImpartialityModelKey)?.HasDeclaredImpartiality;
-
-            if (user == null)
-            {
-                _logger.LogError("User not found in session or API.");
-                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later.";
-                return View(new ExistingNetworksViewModel());
-            }
-
-            var heatNetworks = new List<ExistingNetworkModel>();
-            var networks = await _heatNetworkService.GetHeatNetworkByUserId(userId, RegistrationSource2.OFGEM);
-
-            heatNetworks = (await Task.WhenAll(networks.Select(async network =>
-            {
-                var org = await _organisationService.GetOrganisationById(network.OrgId);
-
-                return new ExistingNetworkModel
+                try
                 {
-                    HnId = network.HnId,
-                    Name = network.Name,
-                    OrganisationName = org?.Name,
-                    HnDescription = network.AdditionalDescription,                    
-                    OfgemImportedDate = network.OfgemImportedDate?.DateTime,
-                    Role = hnRoleMappings
-                        .FirstOrDefault(x => x.HnId == network.HnId)?.Role.ToString() ?? "Not specified"
-                };
-            }))).ToList();
+                    // Validate and sanitize inputs
+                    if (page < 1) page = 1;
 
+                    // Validate sort order
+                    sortOrder = sortOrder?.ToLower() == "desc" ? "desc" : "asc";
 
+                    var validSortFields = new[] { "EntryType", "Element" };
 
-            var model = new ExistingNetworksViewModel
-            {
-                HeatNetworks = heatNetworks,
-                IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
-                IsHntasCoordinator = user.Roles?.Contains(UserRole.NetworkManager) ?? false,
-            };
+                    var existingNetworkRequest = new ExistingNetworkRequest
+                    {
+                        UserId = userId,
+                        SortBy = sortBy,
+                        SortDirection = sortOrder,
+                        Page = page,
+                        PageSize = pageSize
+                    };
 
-            var isRegistrationEnabledString = Environment.GetEnvironmentVariable("IS_REGISTRATION_ENABLED");
-            ViewBag.IsRegistrationEnabled = !string.IsNullOrEmpty(isRegistrationEnabledString) &&
-                                             isRegistrationEnabledString.ToLower() == "true";
+                    // Get audit logs with sorting and pagination
+                    var result = await _heatNetworkService.GetExistingNetworkByUserId(existingNetworkRequest);
 
-            return View(model);
-        }
+                    // Pass sorting and pagination info to view
+                    ViewBag.CurrentSort = sortBy;
+                    ViewBag.CurrentOrder = sortOrder;
+                    ViewBag.CurrentPage = page;
+                    ViewBag.PageSize = pageSize;
+                    ViewBag.TotalPages = result.TotalPages ?? 1;
+                    ViewBag.TotalItems = result.TotalCount ?? 0;                    
+
+                    return View(result);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error retrieving existing networks");
+                    TempData["ErrorMessage"] = "An error occurred while retrieving the existing networks.";
+
+                    // Return empty result
+                    var emptyResult = new ExistingNetworkResponse
+                    {
+                        Items = new List<HeatNetworkResponse>(),
+                        TotalCount = 0,
+                        TotalPages = 0
+                    };
+
+                    ViewBag.CurrentSort = sortBy;
+                    ViewBag.CurrentOrder = sortOrder ?? "asc";
+                    ViewBag.CurrentPage = page;
+                    ViewBag.PageSize = pageSize;
+                    ViewBag.TotalPages = 0;
+                    ViewBag.TotalItems = 0;
+                    ViewBag.NextOrder = "desc";
+
+                    return View(emptyResult);
+                }
+
+            }
 
         [HttpGet]
         public async Task<IActionResult> HeatNetworkUserRolesAsync(string hnId)

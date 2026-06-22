@@ -61,6 +61,31 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+        public async Task<ExistingNetworkResponse> GetExistingNetworkByUserId(ExistingNetworkRequest request)
+        {
+
+            if (string.IsNullOrWhiteSpace(request.UserId))
+            {
+                throw new ArgumentException("User ID cannot be null or empty.", nameof(request.UserId));
+            }
+
+            var response = await _heatNetworksApi.ApiHeatNetworksExistingNetworkByUserIdGetAsync(request);
+
+            if (response.IsNotFound)
+            {
+                _logger.LogWarning("No existing network found");
+                return new ExistingNetworkResponse();
+            }
+
+            if (!response.IsOk)
+            {
+                _logger.LogError("Failed to fetch existing network. Status code: {StatusCode}", response.StatusCode);
+                throw new HttpRequestException($"Failed to fetch existing network. Service returned {response.StatusCode}");
+            }
+
+            return response.Ok() ?? new ExistingNetworkResponse();
+        }
+
 
         public async Task<HeatNetworkResponse> AddHeatNetwork(HeatNetwork heatNetwork)
         {

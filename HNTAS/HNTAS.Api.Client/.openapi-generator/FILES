@@ -45,7 +45,6 @@ docs/models/DesignConstructionLog.md
 docs/models/DesignConstructionLogResponse.md
 docs/models/DocumentType.md
 docs/models/ECDetails.md
-docs/models/ECDetails2.md
 docs/models/Element.md
 docs/models/ElementGroup.md
 docs/models/ElementGroupDto.md
@@ -55,6 +54,8 @@ docs/models/ElementTypeInShort.md
 docs/models/Energy.md
 docs/models/EnergyCentreDetails.md
 docs/models/EnumItemResponse.md
+docs/models/ExistingNetworkRequest.md
+docs/models/ExistingNetworkResponse.md
 docs/models/HeatNetwork.md
 docs/models/HeatNetworkConnections.md
 docs/models/HeatNetworkDashboardResponse.md
@@ -220,7 +221,6 @@ src/HNTAS.Api.Client/Model/DesignConstructionLog.cs
 src/HNTAS.Api.Client/Model/DesignConstructionLogResponse.cs
 src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
-src/HNTAS.Api.Client/Model/ECDetails2.cs
 src/HNTAS.Api.Client/Model/Element.cs
 src/HNTAS.Api.Client/Model/ElementGroup.cs
 src/HNTAS.Api.Client/Model/ElementGroupDto.cs
@@ -230,6 +230,8 @@ src/HNTAS.Api.Client/Model/ElementTypeInShort.cs
 src/HNTAS.Api.Client/Model/Energy.cs
 src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
+src/HNTAS.Api.Client/Model/ExistingNetworkRequest.cs
+src/HNTAS.Api.Client/Model/ExistingNetworkResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetwork.cs
 src/HNTAS.Api.Client/Model/HeatNetworkConnections.cs
 src/HNTAS.Api.Client/Model/HeatNetworkDashboardResponse.cs

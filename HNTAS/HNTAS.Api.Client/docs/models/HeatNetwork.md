@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **Name** | **string** |  | [optional] 
 **AdditionalDescription** | **string** |  | [optional] 
 **Address** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 
-**EcDetails** | [**ECDetails2**](ECDetails2.md) |  | [optional] 
+**EcDetails** | [**ECDetails**](ECDetails.md) |  | [optional] 
 **Pathway** | **string** |  | [optional] 
 **RegistrationSource** | **RegistrationSource** |  | [optional] 
 **HeatNetworkType** | **HeatNetworkType** |  | [optional] 

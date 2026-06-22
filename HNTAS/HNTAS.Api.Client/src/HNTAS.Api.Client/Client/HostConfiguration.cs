@@ -72,7 +72,6 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new DocumentTypeJsonConverter());
             _jsonOptions.Converters.Add(new DocumentTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());
-            _jsonOptions.Converters.Add(new ECDetails2JsonConverter());
             _jsonOptions.Converters.Add(new ElementJsonConverter());
             _jsonOptions.Converters.Add(new ElementGroupJsonConverter());
             _jsonOptions.Converters.Add(new ElementGroupDtoJsonConverter());
@@ -83,6 +82,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new EnergyJsonConverter());
             _jsonOptions.Converters.Add(new EnergyCentreDetailsJsonConverter());
             _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
+            _jsonOptions.Converters.Add(new ExistingNetworkRequestJsonConverter());
+            _jsonOptions.Converters.Add(new ExistingNetworkResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkConnectionsJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkDashboardResponseJsonConverter());

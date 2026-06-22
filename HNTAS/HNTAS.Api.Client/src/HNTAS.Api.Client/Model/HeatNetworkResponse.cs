@@ -499,7 +499,7 @@ namespace HNTAS.Api.Client.Model
                             orgId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "ecDetails":
-                            ecDetails = new Option<ECDetails?>(JsonSerializer.Deserialize<ECDetails>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            ecDetails = new Option<ECDetails?>(JsonSerializer.Deserialize<ECDetails>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "address":
                             address = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions));
@@ -574,9 +574,6 @@ namespace HNTAS.Api.Client.Model
             if (orgId.IsSet && orgId.Value == null)
                 throw new ArgumentNullException(nameof(orgId), "Property is not nullable for class HeatNetworkResponse.");
 
-            if (ecDetails.IsSet && ecDetails.Value == null)
-                throw new ArgumentNullException(nameof(ecDetails), "Property is not nullable for class HeatNetworkResponse.");
-
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetworkResponse.");
 
@@ -631,9 +628,6 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkResponse.OrgIdOption.IsSet && heatNetworkResponse.OrgId == null)
                 throw new ArgumentNullException(nameof(heatNetworkResponse.OrgId), "Property is required for class HeatNetworkResponse.");
 
-            if (heatNetworkResponse.EcDetailsOption.IsSet && heatNetworkResponse.EcDetails == null)
-                throw new ArgumentNullException(nameof(heatNetworkResponse.EcDetails), "Property is required for class HeatNetworkResponse.");
-
             if (heatNetworkResponse.NameOption.IsSet && heatNetworkResponse.Name == null)
                 throw new ArgumentNullException(nameof(heatNetworkResponse.Name), "Property is required for class HeatNetworkResponse.");
 
@@ -653,10 +647,13 @@ namespace HNTAS.Api.Client.Model
                 writer.WriteString("orgId", heatNetworkResponse.OrgId);
 
             if (heatNetworkResponse.EcDetailsOption.IsSet)
-            {
-                writer.WritePropertyName("ecDetails");
-                JsonSerializer.Serialize(writer, heatNetworkResponse.EcDetails, jsonSerializerOptions);
-            }
+                if (heatNetworkResponse.EcDetailsOption.Value != null)
+                {
+                    writer.WritePropertyName("ecDetails");
+                    JsonSerializer.Serialize(writer, heatNetworkResponse.EcDetails, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("ecDetails");
             if (heatNetworkResponse.AddressOption.IsSet)
                 if (heatNetworkResponse.AddressOption.Value != null)
                 {
