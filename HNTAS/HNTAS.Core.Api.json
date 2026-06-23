@@ -102,6 +102,98 @@
         }
       }
     },
+    "/arms/v2/hn/kpis": {
+      "post": {
+        "tags": [
+          "Arms"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiSubmissionRequestV2"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiSubmissionRequestV2"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiSubmissionRequestV2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiSubmissionApiErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiSubmissionApiErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiSubmissionApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/arms/v1/hn/{networkId}/kpi-config": {
       "get": {
         "tags": [
@@ -181,6 +273,85 @@
         }
       }
     },
+    "/arms/v2/hn/{networkId}/kpi-config": {
+      "get": {
+        "tags": [
+          "Arms"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiConfigResponseV2"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiConfigResponseV2"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiConfigResponseV2"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/arms/v1/hn/kpi-config": {
       "post": {
         "tags": [
@@ -201,6 +372,78 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/KpiConfigRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/arms/v2/hn/kpi-config": {
+      "post": {
+        "tags": [
+          "Arms"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiConfigRequestV2"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiConfigRequestV2"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KpiConfigRequestV2"
               }
             }
           },
@@ -5268,6 +5511,39 @@
           }
         }
       },
+      "CarbonCalculatorConfigRequest": {
+        "type": "object",
+        "properties": {
+          "rules": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          },
+          "defaults": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ConfigDefault"
+            },
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "CarbonCalculatorConfigResponse": {
+        "type": "object",
+        "properties": {
+          "rules": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          },
+          "defaults": {
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
       "CarbonCalculatorRequest": {
         "type": "object",
         "properties": {
@@ -5293,6 +5569,37 @@
             "format": "double"
           }
         }
+      },
+      "CarbonInputUiDisplay": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "CCKpiValueRequest": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "is_imputed": {
+            "type": "boolean"
+          },
+          "imputation_details": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "ChpInput": {
         "type": "object",
@@ -5379,6 +5686,17 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          }
+        }
+      },
+      "ConfigDefault": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/JsonElement"
           }
         }
       },
@@ -6001,6 +6319,18 @@
             },
             "nullable": true
           },
+          "carbonCalculationInputs": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CarbonInputUiDisplay"
+            },
+            "nullable": true
+          },
+          "totalCarbonEmission": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
           "currentPage": {
             "type": "integer",
             "format": "int32"
@@ -6434,6 +6764,7 @@
         },
         "nullable": true
       },
+      "JsonElement": { },
       "KpiConfigRequest": {
         "required": [
           "network_id"
@@ -6454,6 +6785,29 @@
           }
         }
       },
+      "KpiConfigRequestV2": {
+        "required": [
+          "network_id"
+        ],
+        "type": "object",
+        "properties": {
+          "network_id": {
+            "type": "string"
+          },
+          "elements": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/components/schemas/KpiRule"
+              }
+            }
+          },
+          "carbon_calculator": {
+            "$ref": "#/components/schemas/CarbonCalculatorConfigRequest"
+          }
+        }
+      },
       "KpiConfigResponse": {
         "type": "object",
         "properties": {
@@ -6468,6 +6822,26 @@
                 "$ref": "#/components/schemas/KpiRule"
               }
             }
+          }
+        }
+      },
+      "KpiConfigResponseV2": {
+        "type": "object",
+        "properties": {
+          "network_id": {
+            "type": "string"
+          },
+          "elements": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/components/schemas/KpiRule"
+              }
+            }
+          },
+          "carbon_calculator_defaults": {
+            "$ref": "#/components/schemas/CarbonCalculatorConfigResponse"
           }
         }
       },
@@ -6504,10 +6878,12 @@
             "type": "string"
           },
           "kpiId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "elementId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "isAggregated": {
             "type": "boolean"
@@ -6633,6 +7009,41 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/KpiValueAggregatedRequest"
+            },
+            "nullable": true
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkElementRequest"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "KpiSubmissionRequestV2": {
+        "required": [
+          "meta_data"
+        ],
+        "type": "object",
+        "properties": {
+          "meta_data": {
+            "$ref": "#/components/schemas/KpiMetadata"
+          },
+          "consumer_connection_aggregated_kpis": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/KpiValueAggregatedRequest"
+            },
+            "nullable": true
+          },
+          "carbon_calculator_inputs": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/components/schemas/CCKpiValueRequest"
+              }
             },
             "nullable": true
           },
