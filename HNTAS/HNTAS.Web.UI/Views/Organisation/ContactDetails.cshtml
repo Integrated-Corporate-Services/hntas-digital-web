@@ -203,19 +203,7 @@
                                 <input class="govuk-input govuk-input--width-20" id="MobileNumber" name="MobileNumber" type="tel" autocomplete="tel"
                                        asp-for="MobileNumber">
                             </div>
-                        </div>
-
-                        @if (ViewBag.IsRegulatoryContact != true)
-                        {
-                            <div class="govuk-radios__item" aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
-                                <input class="govuk-radios__input" id="PreferredContactType-PreferNotToSay" name="PreferredContactType" type="radio"
-                                       value="@PreferredContactType.PreferNotToSay"
-                                       @(isPreferNotToSaySelected ? "checked" : "")>
-                                <label class="govuk-label govuk-radios__label" for="PreferredContactType-PreferNotToSay">
-                                    Prefer not to say
-                                </label>
-                            </div>
-                        }
+                        </div>                        
                     </div>
                 </fieldset>
             </div>
