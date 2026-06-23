@@ -106,6 +106,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new HeatNetworkUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatPumpInputJsonConverter());
             _jsonOptions.Converters.Add(new HnRoleMappingJsonConverter());
+            _jsonOptions.Converters.Add(new ImportResultJsonConverter());
             _jsonOptions.Converters.Add(new InitialUserRegistrationRequestJsonConverter());
             _jsonOptions.Converters.Add(new InvitationStatusJsonConverter());
             _jsonOptions.Converters.Add(new InvitationStatusNullableJsonConverter());
@@ -154,6 +155,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NullableOfUserRoleNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfUserStatusJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfUserStatusNullableJsonConverter());
+            _jsonOptions.Converters.Add(new OfgemDataModelForNotificationJsonConverter());
             _jsonOptions.Converters.Add(new OrgDetailsJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationRequestJsonConverter());

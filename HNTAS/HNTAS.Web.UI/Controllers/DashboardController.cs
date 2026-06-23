@@ -60,6 +60,8 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> UserAccount()
         {
+            _ = bool.TryParse(HttpContext.RequestServices.GetService<IConfiguration>()?.GetSection("ExistingNetworks:EnableFeature")?.Value, out bool isExistingNetworksFeatureEnabled);
+            ViewBag.IsExistingNetworksFeatureEnabled = isExistingNetworksFeatureEnabled;
             UserDetailsResponse user;
             try
             {

@@ -187,6 +187,8 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult WhatDoYouWantToDo()
     {
+        _ = bool.TryParse(HttpContext.RequestServices.GetService<IConfiguration>()?.GetSection("ExistingNetworks:EnableFeature")?.Value, out bool isExistingNetworksFeatureEnabled);
+        ViewBag.IsExistingNetworksFeatureEnabled = isExistingNetworksFeatureEnabled;
         this.ShowBackButton("StartPage", "Home");
         var model = _sessionHelper.GetFromSession<WhatDoYouWantToDoViewModel>(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey) ?? new WhatDoYouWantToDoViewModel();
         return View(model);

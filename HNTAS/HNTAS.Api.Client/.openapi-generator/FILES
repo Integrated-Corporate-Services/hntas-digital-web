@@ -76,6 +76,7 @@ docs/models/HeatNetworkType.md
 docs/models/HeatNetworkUserResponse.md
 docs/models/HeatPumpInput.md
 docs/models/HnRoleMapping.md
+docs/models/ImportResult.md
 docs/models/InitialUserRegistrationRequest.md
 docs/models/InvitationStatus.md
 docs/models/InvitedUserRequest.md
@@ -117,6 +118,7 @@ docs/models/NullableOfPreferredContactType.md
 docs/models/NullableOfSoaStage.md
 docs/models/NullableOfUserRole.md
 docs/models/NullableOfUserStatus.md
+docs/models/OfgemDataModelForNotification.md
 docs/models/OrgDetails.md
 docs/models/Organisation.md
 docs/models/OrganisationRequest.md
@@ -163,6 +165,8 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/ImportResultTests.cs
+src/HNTAS.Api.Client.Test/Model/OfgemDataModelForNotificationTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -260,6 +264,7 @@ src/HNTAS.Api.Client/Model/HeatNetworkType.cs
 src/HNTAS.Api.Client/Model/HeatNetworkUserResponse.cs
 src/HNTAS.Api.Client/Model/HeatPumpInput.cs
 src/HNTAS.Api.Client/Model/HnRoleMapping.cs
+src/HNTAS.Api.Client/Model/ImportResult.cs
 src/HNTAS.Api.Client/Model/InitialUserRegistrationRequest.cs
 src/HNTAS.Api.Client/Model/InvitationStatus.cs
 src/HNTAS.Api.Client/Model/InvitedUserRequest.cs
@@ -301,6 +306,7 @@ src/HNTAS.Api.Client/Model/NullableOfPreferredContactType.cs
 src/HNTAS.Api.Client/Model/NullableOfSoaStage.cs
 src/HNTAS.Api.Client/Model/NullableOfUserRole.cs
 src/HNTAS.Api.Client/Model/NullableOfUserStatus.cs
+src/HNTAS.Api.Client/Model/OfgemDataModelForNotification.cs
 src/HNTAS.Api.Client/Model/OrgDetails.cs
 src/HNTAS.Api.Client/Model/Organisation.cs
 src/HNTAS.Api.Client/Model/OrganisationRequest.cs

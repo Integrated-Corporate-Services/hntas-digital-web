@@ -1031,46 +1031,58 @@
         "tags": [
           "Import"
         ],
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "ContentType": {
-                    "type": "string"
-                  },
-                  "ContentDisposition": {
-                    "type": "string"
-                  },
-                  "Headers": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "Length": {
-                    "type": "integer",
-                    "format": "int64"
-                  },
-                  "Name": {
-                    "type": "string"
-                  },
-                  "FileName": {
-                    "type": "string"
-                  }
+        "parameters": [
+          {
+            "name": "fileContent",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResult"
                 }
               }
             }
           },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "499": {
+            "description": "Client Closed Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -6624,6 +6636,55 @@
           }
         }
       },
+      "ImportResult": {
+        "type": "object",
+        "properties": {
+          "rowsProcessed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "organisationsInserted": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "organisationsUpdated": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "heatNetworksInserted": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "heatNetworksUpdated": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "usersInserted": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "usersUpdated": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataForExistingOrgOrUser": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfgemDataModelForNotification"
+            }
+          },
+          "dataForNewOrgOrUser": {
+            "type": "array",
+            "items": { }
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "InitialUserRegistrationRequest": {
         "required": [
           "oneLoginId",
@@ -6840,7 +6901,7 @@
               }
             }
           },
-          "carbon_calculator_defaults": {
+          "carbon_calculator": {
             "$ref": "#/components/schemas/CarbonCalculatorConfigResponse"
           }
         }
@@ -7604,6 +7665,26 @@
           null
         ],
         "nullable": true
+      },
+      "OfgemDataModelForNotification": {
+        "type": "object",
+        "properties": {
+          "heatNetworkIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "organisationId": {
+            "type": "string"
+          },
+          "organisationName": {
+            "type": "string"
+          },
+          "userEmailId": {
+            "type": "string"
+          }
+        }
       },
       "Organisation": {
         "type": "object",

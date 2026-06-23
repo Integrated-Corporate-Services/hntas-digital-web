@@ -664,15 +664,41 @@ paths:
       - CountriesAndTerritories
   /api/Import/upload-csv:
     post:
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/_api_Import_upload_csv_post_request"
-        required: true
+      parameters:
+      - explode: true
+        in: query
+        name: fileContent
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ImportResult"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImportResult"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ImportResult"
           description: OK
+        "500":
+          description: Internal Server Error
+        "499":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Client Closed Request
       tags:
       - Import
   /api/HeatNetworks:
@@ -6244,6 +6270,68 @@ components:
         role:
           $ref: "#/components/schemas/ContributorRole"
       type: object
+    ImportResult:
+      example:
+        usersInserted: 2
+        organisationsUpdated: 1
+        usersUpdated: 7
+        dataForNewOrgOrUser:
+        - ""
+        - ""
+        rowsProcessed: 0
+        heatNetworksInserted: 5
+        organisationsInserted: 6
+        heatNetworksUpdated: 5
+        dataForExistingOrgOrUser:
+        - organisationName: organisationName
+          organisationId: organisationId
+          userEmailId: userEmailId
+          heatNetworkIds:
+          - heatNetworkIds
+          - heatNetworkIds
+        - organisationName: organisationName
+          organisationId: organisationId
+          userEmailId: userEmailId
+          heatNetworkIds:
+          - heatNetworkIds
+          - heatNetworkIds
+        errors:
+        - errors
+        - errors
+      properties:
+        rowsProcessed:
+          format: int32
+          type: integer
+        organisationsInserted:
+          format: int32
+          type: integer
+        organisationsUpdated:
+          format: int32
+          type: integer
+        heatNetworksInserted:
+          format: int32
+          type: integer
+        heatNetworksUpdated:
+          format: int32
+          type: integer
+        usersInserted:
+          format: int32
+          type: integer
+        usersUpdated:
+          format: int32
+          type: integer
+        dataForExistingOrgOrUser:
+          items:
+            $ref: "#/components/schemas/OfgemDataModelForNotification"
+          type: array
+        dataForNewOrgOrUser:
+          items: {}
+          type: array
+        errors:
+          items:
+            type: string
+          type: array
+      type: object
     InitialUserRegistrationRequest:
       example:
         oneLoginId: oneLoginId
@@ -6540,10 +6628,6 @@ components:
     KpiConfigResponseV2:
       example:
         network_id: network_id
-        carbon_calculator_defaults:
-          defaults: "{}"
-          rules:
-            key: ""
         elements:
           key:
             key:
@@ -6556,6 +6640,10 @@ components:
                 target: 5.962133916683182
               upper_limit: 6.027456183070403
               is_mandatory: true
+        carbon_calculator:
+          defaults: "{}"
+          rules:
+            key: ""
       properties:
         network_id:
           type: string
@@ -6565,7 +6653,7 @@ components:
               $ref: "#/components/schemas/KpiRule"
             type: object
           type: object
-        carbon_calculator_defaults:
+        carbon_calculator:
           $ref: "#/components/schemas/CarbonCalculatorConfigResponse"
       type: object
     KpiDetailDto:
@@ -7679,6 +7767,26 @@ components:
       - null
       nullable: true
       type: string
+    OfgemDataModelForNotification:
+      example:
+        organisationName: organisationName
+        organisationId: organisationId
+        userEmailId: userEmailId
+        heatNetworkIds:
+        - heatNetworkIds
+        - heatNetworkIds
+      properties:
+        heatNetworkIds:
+          items:
+            type: string
+          type: array
+        organisationId:
+          type: string
+        organisationName:
+          type: string
+        userEmailId:
+          type: string
+      type: object
     Organisation:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -9073,24 +9181,4 @@ components:
       - InvitationAccepted
       - InvitationDeclined
       type: string
-    _api_Import_upload_csv_post_request:
-      properties:
-        ContentType:
-          type: string
-        ContentDisposition:
-          type: string
-        Headers:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          type: object
-        Length:
-          format: int64
-          type: integer
-        Name:
-          type: string
-        FileName:
-          type: string
-      type: object
 

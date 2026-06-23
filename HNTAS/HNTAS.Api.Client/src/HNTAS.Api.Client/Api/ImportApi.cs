@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using HNTAS.Api.Client.Client;
+using HNTAS.Api.Client.Model;
 using System.Diagnostics.CodeAnalysis;
 
 namespace HNTAS.Api.Client.Api
@@ -41,15 +42,10 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="headers"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="fileContent"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiImportUploadCsvPostApiResponse"/>&gt;</returns>
-        Task<IApiImportUploadCsvPostApiResponse> ApiImportUploadCsvPostAsync(Option<string> contentType = default, Option<string> contentDisposition = default, Option<Dictionary<string, List<string>>> headers = default, Option<long> length = default, Option<string> name = default, Option<string> fileName = default, System.Threading.CancellationToken cancellationToken = default);
+        Task<IApiImportUploadCsvPostApiResponse> ApiImportUploadCsvPostAsync(Option<string> fileContent = default, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -57,27 +53,34 @@ namespace HNTAS.Api.Client.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="headers"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="fileContent"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiImportUploadCsvPostApiResponse"/>?&gt;</returns>
-        Task<IApiImportUploadCsvPostApiResponse?> ApiImportUploadCsvPostOrDefaultAsync(Option<string> contentType = default, Option<string> contentDisposition = default, Option<Dictionary<string, List<string>>> headers = default, Option<long> length = default, Option<string> name = default, Option<string> fileName = default, System.Threading.CancellationToken cancellationToken = default);
+        Task<IApiImportUploadCsvPostApiResponse?> ApiImportUploadCsvPostOrDefaultAsync(Option<string> fileContent = default, System.Threading.CancellationToken cancellationToken = default);
     }
 
     /// <summary>
     /// The <see cref="IApiImportUploadCsvPostApiResponse"/>
     /// </summary>
-    public interface IApiImportUploadCsvPostApiResponse : HNTAS.Api.Client.Client.IApiResponse
+    public interface IApiImportUploadCsvPostApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.ImportResult?>, ICustomHttpStatusCode499<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
         /// </summary>
         /// <returns></returns>
         bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+
+        /// <summary>
+        /// Returns true if the response is 499 CustomHttpStatusCode499
+        /// </summary>
+        /// <returns></returns>
+        bool IsCustomHttpStatusCode499 { get; }
     }
 
     /// <summary>
@@ -146,49 +149,28 @@ namespace HNTAS.Api.Client.Api
             Events = importApiEvents;
         }
 
-        partial void FormatApiImportUploadCsvPost(ref Option<string> contentType, ref Option<string> contentDisposition, Option<Dictionary<string, List<string>>> headers, ref Option<long> length, ref Option<string> name, ref Option<string> fileName);
+        partial void FormatApiImportUploadCsvPost(ref Option<string> fileContent);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
-        /// <param name="contentType"></param>
-        /// <param name="contentDisposition"></param>
-        /// <param name="headers"></param>
-        /// <param name="name"></param>
-        /// <param name="fileName"></param>
+        /// <param name="fileContent"></param>
         /// <returns></returns>
-        private void ValidateApiImportUploadCsvPost(Option<string> contentType, Option<string> contentDisposition, Option<Dictionary<string, List<string>>> headers, Option<string> name, Option<string> fileName)
+        private void ValidateApiImportUploadCsvPost(Option<string> fileContent)
         {
-            if (contentType.IsSet && contentType.Value == null)
-                throw new ArgumentNullException(nameof(contentType));
-
-            if (contentDisposition.IsSet && contentDisposition.Value == null)
-                throw new ArgumentNullException(nameof(contentDisposition));
-
-            if (headers.IsSet && headers.Value == null)
-                throw new ArgumentNullException(nameof(headers));
-
-            if (name.IsSet && name.Value == null)
-                throw new ArgumentNullException(nameof(name));
-
-            if (fileName.IsSet && fileName.Value == null)
-                throw new ArgumentNullException(nameof(fileName));
+            if (fileContent.IsSet && fileContent.Value == null)
+                throw new ArgumentNullException(nameof(fileContent));
         }
 
         /// <summary>
         /// Processes the server response
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
-        /// <param name="contentType"></param>
-        /// <param name="contentDisposition"></param>
-        /// <param name="headers"></param>
-        /// <param name="length"></param>
-        /// <param name="name"></param>
-        /// <param name="fileName"></param>
-        private void AfterApiImportUploadCsvPostDefaultImplementation(IApiImportUploadCsvPostApiResponse apiResponseLocalVar, Option<string> contentType, Option<string> contentDisposition, Option<Dictionary<string, List<string>>> headers, Option<long> length, Option<string> name, Option<string> fileName)
+        /// <param name="fileContent"></param>
+        private void AfterApiImportUploadCsvPostDefaultImplementation(IApiImportUploadCsvPostApiResponse apiResponseLocalVar, Option<string> fileContent)
         {
             bool suppressDefaultLog = false;
-            AfterApiImportUploadCsvPost(ref suppressDefaultLog, apiResponseLocalVar, contentType, contentDisposition, headers, length, name, fileName);
+            AfterApiImportUploadCsvPost(ref suppressDefaultLog, apiResponseLocalVar, fileContent);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -198,13 +180,8 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
-        /// <param name="contentType"></param>
-        /// <param name="contentDisposition"></param>
-        /// <param name="headers"></param>
-        /// <param name="length"></param>
-        /// <param name="name"></param>
-        /// <param name="fileName"></param>
-        partial void AfterApiImportUploadCsvPost(ref bool suppressDefaultLog, IApiImportUploadCsvPostApiResponse apiResponseLocalVar, Option<string> contentType, Option<string> contentDisposition, Option<Dictionary<string, List<string>>> headers, Option<long> length, Option<string> name, Option<string> fileName);
+        /// <param name="fileContent"></param>
+        partial void AfterApiImportUploadCsvPost(ref bool suppressDefaultLog, IApiImportUploadCsvPostApiResponse apiResponseLocalVar, Option<string> fileContent);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -212,16 +189,11 @@ namespace HNTAS.Api.Client.Api
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
-        /// <param name="contentType"></param>
-        /// <param name="contentDisposition"></param>
-        /// <param name="headers"></param>
-        /// <param name="length"></param>
-        /// <param name="name"></param>
-        /// <param name="fileName"></param>
-        private void OnErrorApiImportUploadCsvPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> contentType, Option<string> contentDisposition, Option<Dictionary<string, List<string>>> headers, Option<long> length, Option<string> name, Option<string> fileName)
+        /// <param name="fileContent"></param>
+        private void OnErrorApiImportUploadCsvPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> fileContent)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiImportUploadCsvPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, contentType, contentDisposition, headers, length, name, fileName);
+            OnErrorApiImportUploadCsvPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, fileContent);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -233,30 +205,20 @@ namespace HNTAS.Api.Client.Api
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
-        /// <param name="contentType"></param>
-        /// <param name="contentDisposition"></param>
-        /// <param name="headers"></param>
-        /// <param name="length"></param>
-        /// <param name="name"></param>
-        /// <param name="fileName"></param>
-        partial void OnErrorApiImportUploadCsvPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> contentType, Option<string> contentDisposition, Option<Dictionary<string, List<string>>> headers, Option<long> length, Option<string> name, Option<string> fileName);
+        /// <param name="fileContent"></param>
+        partial void OnErrorApiImportUploadCsvPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> fileContent);
 
         /// <summary>
         ///  
         /// </summary>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="headers"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="fileContent"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiImportUploadCsvPostApiResponse"/>&gt;</returns>
-        public async Task<IApiImportUploadCsvPostApiResponse?> ApiImportUploadCsvPostOrDefaultAsync(Option<string> contentType = default, Option<string> contentDisposition = default, Option<Dictionary<string, List<string>>> headers = default, Option<long> length = default, Option<string> name = default, Option<string> fileName = default, System.Threading.CancellationToken cancellationToken = default)
+        public async Task<IApiImportUploadCsvPostApiResponse?> ApiImportUploadCsvPostOrDefaultAsync(Option<string> fileContent = default, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiImportUploadCsvPostAsync(contentType, contentDisposition, headers, length, name, fileName, cancellationToken).ConfigureAwait(false);
+                return await ApiImportUploadCsvPostAsync(fileContent, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -268,23 +230,18 @@ namespace HNTAS.Api.Client.Api
         ///  
         /// </summary>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="contentType"> (optional)</param>
-        /// <param name="contentDisposition"> (optional)</param>
-        /// <param name="headers"> (optional)</param>
-        /// <param name="length"> (optional)</param>
-        /// <param name="name"> (optional)</param>
-        /// <param name="fileName"> (optional)</param>
+        /// <param name="fileContent"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiImportUploadCsvPostApiResponse"/>&gt;</returns>
-        public async Task<IApiImportUploadCsvPostApiResponse> ApiImportUploadCsvPostAsync(Option<string> contentType = default, Option<string> contentDisposition = default, Option<Dictionary<string, List<string>>> headers = default, Option<long> length = default, Option<string> name = default, Option<string> fileName = default, System.Threading.CancellationToken cancellationToken = default)
+        public async Task<IApiImportUploadCsvPostApiResponse> ApiImportUploadCsvPostAsync(Option<string> fileContent = default, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiImportUploadCsvPost(contentType, contentDisposition, headers, name, fileName);
+                ValidateApiImportUploadCsvPost(fileContent);
 
-                FormatApiImportUploadCsvPost(ref contentType, ref contentDisposition, headers, ref length, ref name, ref fileName);
+                FormatApiImportUploadCsvPost(ref fileContent);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -295,40 +252,25 @@ namespace HNTAS.Api.Client.Api
                         ? "/api/Import/upload-csv"
                         : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Import/upload-csv");
 
-                    MultipartContent multipartContentLocalVar = new MultipartContent();
+                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
 
-                    httpRequestMessageLocalVar.Content = multipartContentLocalVar;
+                    if (fileContent.IsSet)
+                        parseQueryStringLocalVar["fileContent"] = ClientUtils.ParameterToString(fileContent.Value);
 
-                    List<KeyValuePair<string?, string?>> formParameterLocalVars = new List<KeyValuePair<string?, string?>>();
-
-                    multipartContentLocalVar.Add(new FormUrlEncodedContent(formParameterLocalVars));                    if (contentType.IsSet)
-                        formParameterLocalVars.Add(new KeyValuePair<string?, string?>("ContentType", ClientUtils.ParameterToString(contentType.Value)));
-
-                    if (contentDisposition.IsSet)
-                        formParameterLocalVars.Add(new KeyValuePair<string?, string?>("ContentDisposition", ClientUtils.ParameterToString(contentDisposition.Value)));
-
-                    if (headers.IsSet)
-                        formParameterLocalVars.Add(new KeyValuePair<string?, string?>("Headers", ClientUtils.ParameterToString(headers.Value)));
-
-                    if (length.IsSet)
-                        formParameterLocalVars.Add(new KeyValuePair<string?, string?>("Length", ClientUtils.ParameterToString(length.Value)));
-
-                    if (name.IsSet)
-                        formParameterLocalVars.Add(new KeyValuePair<string?, string?>("Name", ClientUtils.ParameterToString(name.Value)));
-
-                    if (fileName.IsSet)
-                        formParameterLocalVars.Add(new KeyValuePair<string?, string?>("FileName", ClientUtils.ParameterToString(fileName.Value)));
+                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
 
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    string[] contentTypes = new string[] {
-                        "application/x-www-form-urlencoded"
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
                     };
 
-                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
 
-                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
-                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
 
                     httpRequestMessageLocalVar.Method = HttpMethod.Post;
 
@@ -348,7 +290,7 @@ namespace HNTAS.Api.Client.Api
                             }
                         }
 
-                        AfterApiImportUploadCsvPostDefaultImplementation(apiResponseLocalVar, contentType, contentDisposition, headers, length, name, fileName);
+                        AfterApiImportUploadCsvPostDefaultImplementation(apiResponseLocalVar, fileContent);
 
                         Events.ExecuteOnApiImportUploadCsvPost(apiResponseLocalVar);
 
@@ -358,7 +300,7 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiImportUploadCsvPostDefaultImplementation(e, "/api/Import/upload-csv", uriBuilderLocalVar.Path, contentType, contentDisposition, headers, length, name, fileName);
+                OnErrorApiImportUploadCsvPostDefaultImplementation(e, "/api/Import/upload-csv", uriBuilderLocalVar.Path, fileContent);
                 Events.ExecuteOnErrorApiImportUploadCsvPost(e);
                 throw;
             }
@@ -413,6 +355,82 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <returns></returns>
             public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ImportResult? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ImportResult>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.ImportResult? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 499 CustomHttpStatusCode499
+            /// </summary>
+            /// <returns></returns>
+            public bool IsCustomHttpStatusCode499 => 499 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 499 CustomHttpStatusCode499
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? CustomHttpStatusCode499()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsCustomHttpStatusCode499
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 499 CustomHttpStatusCode499 and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryCustomHttpStatusCode499([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = CustomHttpStatusCode499();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)499);
+                }
+
+                return result != null;
+            }
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {
