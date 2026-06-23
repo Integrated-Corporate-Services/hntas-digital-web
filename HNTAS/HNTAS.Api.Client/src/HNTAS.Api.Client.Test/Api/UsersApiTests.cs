@@ -48,19 +48,7 @@ namespace HNTAS.Api.Client.Test.Api
         public UsersApiTests(): base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<IUsersApi>();
-        }
-
-        /// <summary>
-        /// Test ApiUsersAcceptInvitationPatch
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiUsersAcceptInvitationPatchAsyncTest()
-        {
-            InvitedUserRequest invitedUserRequest = default!;
-            var response = await _instance.ApiUsersAcceptInvitationPatchAsync(invitedUserRequest);
-            var model = response.Ok();
-            Assert.IsType<string>(model);
-        }
+        }        
 
         /// <summary>
         /// Test ApiUsersContributorRolesGet
