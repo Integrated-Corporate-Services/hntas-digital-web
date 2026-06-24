@@ -12,6 +12,7 @@
     var userIsCertifier = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Certifier.ToString();
     var userIsContributor = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Contributor.ToString();
     var userIsDesignatedDutyHolder = Model.UserRole == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString();
+    var newNetworksLabel = @ViewBag.IsExistingNetworksFeatureEnabled ? "Your heat networks (New build)" : "Your heat networks";
 }
 
 <div class="govuk-width-container">
@@ -93,7 +94,7 @@
             <div class="dashboard-grid__item">
                 <div class="dashboard-card">
                     <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks (New build)</a>
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">@newNetworksLabel</a>
                     </h3>
                     <p class="govuk-body-s">View and add details to your heat network(s)</p>
                 </div>
@@ -133,6 +134,17 @@
                     <div class="dashboard-card">
                         <h3 class="dashboard-card__title govuk-heading-s">
                             <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="ImportExcelPOC">Import Excel POC</a>
+                        </h3>
+                        <p class="govuk-body-s">Search for active assessors using the fast typeahead proof-of-concept.</p>
+                    </div>
+                </div>
+            </environment>
+
+            <environment names="Local,dev,qa">
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="ImportExistingNetworksPOC">Import Existing Networks POC</a>
                         </h3>
                         <p class="govuk-body-s">Search for active assessors using the fast typeahead proof-of-concept.</p>
                     </div>
