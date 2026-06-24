@@ -35,13 +35,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="networkId">networkId</param>
         /// <param name="elements">elements</param>
-        /// <param name="carbonCalculatorDefaults">carbonCalculatorDefaults</param>
+        /// <param name="carbonCalculator">carbonCalculator</param>
         [JsonConstructor]
-        public KpiConfigResponseV2(Option<string?> networkId = default, Option<Dictionary<string, Dictionary<string, KpiRule>>?> elements = default, Option<CarbonCalculatorConfigResponse?> carbonCalculatorDefaults = default)
+        public KpiConfigResponseV2(Option<string?> networkId = default, Option<Dictionary<string, Dictionary<string, KpiRule>>?> elements = default, Option<CarbonCalculatorConfigResponse?> carbonCalculator = default)
         {
             NetworkIdOption = networkId;
             ElementsOption = elements;
-            CarbonCalculatorDefaultsOption = carbonCalculatorDefaults;
+            CarbonCalculatorOption = carbonCalculator;
             OnCreated();
         }
 
@@ -74,17 +74,17 @@ namespace HNTAS.Api.Client.Model
         public Dictionary<string, Dictionary<string, KpiRule>>? Elements { get { return this.ElementsOption; } set { this.ElementsOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of CarbonCalculatorDefaults
+        /// Used to track the state of CarbonCalculator
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<CarbonCalculatorConfigResponse?> CarbonCalculatorDefaultsOption { get; private set; }
+        public Option<CarbonCalculatorConfigResponse?> CarbonCalculatorOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets CarbonCalculatorDefaults
+        /// Gets or Sets CarbonCalculator
         /// </summary>
-        [JsonPropertyName("carbon_calculator_defaults")]
-        public CarbonCalculatorConfigResponse? CarbonCalculatorDefaults { get { return this.CarbonCalculatorDefaultsOption; } set { this.CarbonCalculatorDefaultsOption = new(value); } }
+        [JsonPropertyName("carbon_calculator")]
+        public CarbonCalculatorConfigResponse? CarbonCalculator { get { return this.CarbonCalculatorOption; } set { this.CarbonCalculatorOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -96,7 +96,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class KpiConfigResponseV2 {\n");
             sb.Append("  NetworkId: ").Append(NetworkId).Append("\n");
             sb.Append("  Elements: ").Append(Elements).Append("\n");
-            sb.Append("  CarbonCalculatorDefaults: ").Append(CarbonCalculatorDefaults).Append("\n");
+            sb.Append("  CarbonCalculator: ").Append(CarbonCalculator).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -136,7 +136,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> networkId = default;
             Option<Dictionary<string, Dictionary<string, KpiRule>>?> elements = default;
-            Option<CarbonCalculatorConfigResponse?> carbonCalculatorDefaults = default;
+            Option<CarbonCalculatorConfigResponse?> carbonCalculator = default;
 
             while (utf8JsonReader.Read())
             {
@@ -159,8 +159,8 @@ namespace HNTAS.Api.Client.Model
                         case "elements":
                             elements = new Option<Dictionary<string, Dictionary<string, KpiRule>>?>(JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, KpiRule>>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
-                        case "carbon_calculator_defaults":
-                            carbonCalculatorDefaults = new Option<CarbonCalculatorConfigResponse?>(JsonSerializer.Deserialize<CarbonCalculatorConfigResponse>(ref utf8JsonReader, jsonSerializerOptions));
+                        case "carbon_calculator":
+                            carbonCalculator = new Option<CarbonCalculatorConfigResponse?>(JsonSerializer.Deserialize<CarbonCalculatorConfigResponse>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -174,7 +174,7 @@ namespace HNTAS.Api.Client.Model
             if (elements.IsSet && elements.Value == null)
                 throw new ArgumentNullException(nameof(elements), "Property is not nullable for class KpiConfigResponseV2.");
 
-            return new KpiConfigResponseV2(networkId, elements, carbonCalculatorDefaults);
+            return new KpiConfigResponseV2(networkId, elements, carbonCalculator);
         }
 
         /// <summary>
@@ -215,14 +215,14 @@ namespace HNTAS.Api.Client.Model
                 writer.WritePropertyName("elements");
                 JsonSerializer.Serialize(writer, kpiConfigResponseV2.Elements, jsonSerializerOptions);
             }
-            if (kpiConfigResponseV2.CarbonCalculatorDefaultsOption.IsSet)
-                if (kpiConfigResponseV2.CarbonCalculatorDefaultsOption.Value != null)
+            if (kpiConfigResponseV2.CarbonCalculatorOption.IsSet)
+                if (kpiConfigResponseV2.CarbonCalculatorOption.Value != null)
                 {
-                    writer.WritePropertyName("carbon_calculator_defaults");
-                    JsonSerializer.Serialize(writer, kpiConfigResponseV2.CarbonCalculatorDefaults, jsonSerializerOptions);
+                    writer.WritePropertyName("carbon_calculator");
+                    JsonSerializer.Serialize(writer, kpiConfigResponseV2.CarbonCalculator, jsonSerializerOptions);
                 }
                 else
-                    writer.WriteNull("carbon_calculator_defaults");
+                    writer.WriteNull("carbon_calculator");
         }
     }
 }
