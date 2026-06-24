@@ -2,7 +2,7 @@
 
 namespace HNTAS.Web.UI.Controllers
 {
-    public class HelpController : Controller
+    public class FooterLinksController : Controller
     {
         [HttpGet]
         public IActionResult PrivacyNotice()
@@ -23,7 +23,19 @@ namespace HNTAS.Web.UI.Controllers
             SetCookieConsent(cookieConsent);
             TempData["cookie_banner_action"] = cookieConsent;
             return LocalRedirect(GetSafeReturnUrl());
-        }        
+        }
+
+        [HttpGet]
+        public IActionResult Help()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
 
         private void SetCookieConsent(string cookieConsent)
         {
