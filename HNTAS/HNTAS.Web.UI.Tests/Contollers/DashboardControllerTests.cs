@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -20,6 +21,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<IHeatNetworkService> _heatNetworksApiMock;
         private readonly Mock<IOrganisationService> _organisationServiceMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
+        private readonly Mock<IConfiguration> _configurationMock;
 
         private readonly DashboardController _controller;
 
@@ -30,6 +32,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _heatNetworksApiMock = new Mock<IHeatNetworkService>();
             _organisationServiceMock = new Mock<IOrganisationService>();
             _sessionHelperMock = new Mock<ISessionHelper>();
+            _configurationMock = new Mock<IConfiguration>();
             _controller = CreateController();
         }
 
@@ -40,7 +43,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 _userServiceMock.Object,
                 _heatNetworksApiMock.Object,
                 _organisationServiceMock.Object,
-                _sessionHelperMock.Object
+                _sessionHelperMock.Object,
+                _configurationMock.Object
             );
             controller.ControllerContext = new ControllerContext
             {
@@ -66,6 +70,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task Get_UserAccount_UserNotFound_ReturnsViewWithErrorMessage()
         {
             // Arrange
+            _configurationMock.Setup(c => c.GetSection("ExistingNetworks:EnableFeature").Value).Returns("true");
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<string>(
                     It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
@@ -87,6 +92,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task Get_UserAccount_UserHasNoOrganisation_ReturnsViewWithErrorMessage()
         {
             // Arrange
+            _configurationMock.Setup(c => c.GetSection("ExistingNetworks:EnableFeature").Value).Returns("true");
             var userId = "user-without-org";
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<string>(

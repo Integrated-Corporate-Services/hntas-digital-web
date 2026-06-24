@@ -6,6 +6,7 @@ using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Security.Claims;
@@ -17,6 +18,7 @@ public class HomeControllerTests
     private readonly Mock<ILogger<HomeController>> _loggerMock;
     private readonly Mock<ISessionHelper> _sessionHelperMock;
     private readonly Mock<IInvitationService> _invitationServiceMock;
+    private readonly Mock<IConfiguration> _configurationMock;
 
     public HomeControllerTests()
     {
@@ -24,6 +26,7 @@ public class HomeControllerTests
         _loggerMock = new Mock<ILogger<HomeController>>();
         _sessionHelperMock = new Mock<ISessionHelper>();
         _invitationServiceMock = new Mock<IInvitationService>();
+        _configurationMock = new Mock<IConfiguration>();
     }
 
     private HomeController CreateController(ClaimsPrincipal user = null)
@@ -32,7 +35,8 @@ public class HomeControllerTests
             _userServiceMock.Object,
             _loggerMock.Object,
             _sessionHelperMock.Object,
-            _invitationServiceMock.Object
+            _invitationServiceMock.Object,
+            _configurationMock.Object
         );
 
         var httpContext = new DefaultHttpContext();
@@ -247,7 +251,8 @@ public class HomeControllerTests
     public void WhatDoYouWantToDo_WithModelInSession_ReturnsViewWithModel()
     {
         // Arrange
-        var expectedModel = new WhatDoYouWantToDoViewModel { UserPathToday = "TestOption" };        
+        var expectedModel = new WhatDoYouWantToDoViewModel { UserPathToday = "TestOption" };  
+        _configurationMock.Setup(c => c.GetSection("ExistingNetworks:EnableFeature").Value).Returns("true");
         _sessionHelperMock.Setup(s => s.GetFromSession<WhatDoYouWantToDoViewModel>(
             It.IsAny<HttpContext>(), SessionKeys.WhatDoYouWantToDoViewModelKey))
             .Returns(expectedModel);
@@ -267,6 +272,7 @@ public class HomeControllerTests
     public void WhatDoYouWantToDo_WithoutModelInSession_ReturnsViewWithNewModel()
     {
         // Arrange
+        _configurationMock.Setup(c => c.GetSection("ExistingNetworks:EnableFeature").Value).Returns("true");
         _sessionHelperMock.Setup(s => s.GetFromSession<WhatDoYouWantToDoViewModel>(
             It.IsAny<HttpContext>(), SessionKeys.WhatDoYouWantToDoViewModelKey))
             .Returns((WhatDoYouWantToDoViewModel)null);

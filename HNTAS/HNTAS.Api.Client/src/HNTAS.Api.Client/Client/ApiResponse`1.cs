@@ -208,6 +208,26 @@ namespace HNTAS.Api.Client.Client
     /// An interface for responses of type 
     /// </summary>
     /// <typeparam name="TType"></typeparam>
+    public interface ICustomHttpStatusCode499<TType> : IApiResponse
+    {
+        /// <summary>
+        /// Deserializes the response if the response is CustomHttpStatusCode499
+        /// </summary>
+        /// <returns></returns>
+        TType CustomHttpStatusCode499();
+
+        /// <summary>
+        /// Returns true if the response is CustomHttpStatusCode499 and the deserialized response is not null
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        bool TryCustomHttpStatusCode499([NotNullWhen(true)]out TType? result);
+    }
+
+    /// <summary>
+    /// An interface for responses of type 
+    /// </summary>
+    /// <typeparam name="TType"></typeparam>
     public interface IConflict<TType> : IApiResponse
     {
         /// <summary>
