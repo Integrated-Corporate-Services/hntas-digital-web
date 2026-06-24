@@ -10,6 +10,8 @@ Name | Type | Description | Notes
 **SelectedYear** | **int** |  | [optional] 
 **GroupedElements** | [**List&lt;ElementGroupDto&gt;**](ElementGroupDto.md) |  | [optional] 
 **AggregatedKpis** | [**List&lt;AggregatedKpi&gt;**](AggregatedKpi.md) |  | [optional] 
+**CarbonCalculationInputs** | [**Dictionary&lt;string, CarbonInputUiDisplay&gt;**](CarbonInputUiDisplay.md) |  | [optional] 
+**TotalCarbonEmission** | **double** |  | [optional] 
 **CurrentPage** | **int** |  | [optional] 
 **TotalPages** | **int** |  | [optional] 
 **TotalElements** | **int** |  | [optional] 

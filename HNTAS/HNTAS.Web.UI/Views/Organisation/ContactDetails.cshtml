@@ -69,21 +69,22 @@
 
         <h1 class="govuk-heading-l">Your details</h1>
 
+<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/Shared/UserDetails/ContactDetails.cshtml
+        <form asp-controller="@ViewBag.NextActionController" asp-action="SaveContactDetails" method="post" novalidate>
+========
         <form asp-controller="Organisation" asp-action="SaveContactDetails" method="post" novalidate>
+>>>>>>>> test:HNTAS/HNTAS.Web.UI/Views/Organisation/ContactDetails.cshtml
             @Html.AntiForgeryToken()
 
             @* Email address - DISPLAY ONLY FIELD (No changes needed) *@
             <div class="govuk-form-group @(hasEmailAddressErrors ? "govuk-form-group--error" : "")">
-                <label class="govuk-label" for="EmailAddressDisplay">
+                <span class="govuk-body">
                     Email address
-                </label>
-                @if (hasEmailAddressErrors)
-                {
-                    <p id="EmailAddress-error" class="govuk-error-message">
-                        <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.EmailAddress)
-                    </p>
-                }
-                <span class="govuk-body" id="EmailAddressDisplay">@Model.EmailAddress</span>
+                </span><br/>
+                <span class="govuk-body">
+                    @Model.EmailAddress
+                </span>
+
                 <input type="hidden" asp-for="EmailAddress" />
             </div>
 
@@ -143,13 +144,22 @@
                             <input class="govuk-radios__input" id="PreferredContactType-Landline" name="PreferredContactType" type="radio"
                                    value="@PreferredContactType.Landline"
                                    data-aria-controls="conditional-Landline"
+<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/Shared/UserDetails/ContactDetails.cshtml
+                                   @(isLandlineSelected ? "checked" : "")
+                                   aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+========
                                    @(isLandlineSelected ? "checked" : "")>
+>>>>>>>> test:HNTAS/HNTAS.Web.UI/Views/Organisation/ContactDetails.cshtml
                             <label class="govuk-label govuk-radios__label" for="PreferredContactType-Landline">
                                 Landline
                             </label>
                         </div>
                         <div class="govuk-radios__conditional @(!isLandlineSelected ? "govuk-radios__conditional--hidden" : "")" id="conditional-Landline"> @* Conditional visibility logic needs updating too *@
+<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/Shared/UserDetails/ContactDetails.cshtml
+                            <div class="govuk-form-group @(hasLandlineNumberErrors ? "govuk-form-group--error" : "")">
+========
                             <div class="govuk-form-group @(hasLandlineNumberErrors ? "govuk-form-group--error" : "")" aria-describedby="@(hasLandlineNumberErrors ? "LandlineNumber-error" : "")">
+>>>>>>>> test:HNTAS/HNTAS.Web.UI/Views/Organisation/ContactDetails.cshtml
                                 <label class="govuk-label" for="LandlineNumber">
                                     Landline number
                                 </label>
@@ -183,14 +193,23 @@
                             <input class="govuk-radios__input" id="PreferredContactType-Mobile" name="PreferredContactType" type="radio"
                                    value="@PreferredContactType.Mobile"
                                    data-aria-controls="conditional-Mobile"
+<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/Shared/UserDetails/ContactDetails.cshtml
+                                   @(Model.PreferredContactType == PreferredContactType.Mobile ? "checked" : "")
+                                   aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+========
                                    @(Model.PreferredContactType == PreferredContactType.Mobile ? "checked" : "")>
+>>>>>>>> test:HNTAS/HNTAS.Web.UI/Views/Organisation/ContactDetails.cshtml
                             <label class="govuk-label govuk-radios__label" for="PreferredContactType-Mobile">
                                 Mobile
                             </label>
                         </div>
                         <div class="govuk-radios__conditional @(Model.PreferredContactType != PreferredContactType.Mobile ? "govuk-radios__conditional--hidden" : "")" id="conditional-Mobile">
                             @* Conditional visibility logic needs updating too *@
+<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/Shared/UserDetails/ContactDetails.cshtml
+                            <div class="govuk-form-group @(hasMobileNumberErrors ? "govuk-form-group--error" : "")">
+========
                             <div class="govuk-form-group @(hasMobileNumberErrors ? "govuk-form-group--error" : "")" aria-describedby="@(hasMobileNumberErrors ? "MobileNumber-error" : "")">
+>>>>>>>> test:HNTAS/HNTAS.Web.UI/Views/Organisation/ContactDetails.cshtml
                                 <label class="govuk-label" for="MobileNumber">
                                     Mobile number
                                 </label>
@@ -203,19 +222,24 @@
                                 <input class="govuk-input govuk-input--width-20" id="MobileNumber" name="MobileNumber" type="tel" autocomplete="tel"
                                        asp-for="MobileNumber">
                             </div>
+<<<<<<<< HEAD:HNTAS/HNTAS.Web.UI/Views/Shared/UserDetails/ContactDetails.cshtml
                         </div>
 
                         @if (ViewBag.IsRegulatoryContact != true)
                         {
-                            <div class="govuk-radios__item" aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
+                            <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" id="PreferredContactType-PreferNotToSay" name="PreferredContactType" type="radio"
                                        value="@PreferredContactType.PreferNotToSay"
-                                       @(isPreferNotToSaySelected ? "checked" : "")>
+                                       @(isPreferNotToSaySelected ? "checked" : "")
+                                       aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
                                 <label class="govuk-label govuk-radios__label" for="PreferredContactType-PreferNotToSay">
                                     Prefer not to say
                                 </label>
                             </div>
                         }
+========
+                        </div>                        
+>>>>>>>> test:HNTAS/HNTAS.Web.UI/Views/Organisation/ContactDetails.cshtml
                     </div>
                 </fieldset>
             </div>

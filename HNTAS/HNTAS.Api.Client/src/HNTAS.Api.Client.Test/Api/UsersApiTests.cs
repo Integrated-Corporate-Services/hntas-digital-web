@@ -48,6 +48,17 @@ namespace HNTAS.Api.Client.Test.Api
         public UsersApiTests(): base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<IUsersApi>();
+        }        
+
+        /// <summary>
+        /// Test ApiUsersContributorRolesGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersContributorRolesGetAsyncTest()
+        {
+            var response = await _instance.ApiUsersContributorRolesGetAsync();
+            var model = response.Ok();
+            Assert.IsType<List<EnumItemResponse>>(model);
         }
 
         /// <summary>

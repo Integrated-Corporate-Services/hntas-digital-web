@@ -17,7 +17,6 @@ using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
@@ -34,7 +33,7 @@ builder.Services.AddDataProtection()
 
 if (builder.Environment.EnvironmentName == "Local")
 {
-    builder.Services.AddDataProtection();        
+    builder.Services.AddDataProtection();
     Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
 }
 else
@@ -148,7 +147,9 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new KpiHistoryResponseJsonConverter(),
         new AggregatedKpiJsonConverter(),
         new SoaStatusWithCountJsonConverter(),
-        new ElementGroupJsonConverter(),        
+        new ElementGroupJsonConverter(),
+        new ExistingNetworkResponseJsonConverter(),
+        new CarbonInputUiDisplayJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
