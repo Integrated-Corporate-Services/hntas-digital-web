@@ -20,11 +20,10 @@ The HNTAS Digital Service is a unified platform designed to manage, submit, and 
 ```mermaid
 graph LR
     WEB["HNTAS.DIGITAL.WEB<br/>MVC Frontend"]
-    GATEWAY["AWS API Gateway / WAF"]
     CORE["HNTAS.DIGITAL.CORE<br/>Web API"]
     DB["AWS DocumentDB<br/>MongoDB-compatible"]
 
-    WEB --> GATEWAY --> CORE --> DB
+    WEB --> CORE --> DB
 ```
 
 ## Purpose
