@@ -90,16 +90,6 @@
                 </div>
             }
 
-
-            <div class="dashboard-grid__item">
-                <div class="dashboard-card @disabled">
-                    <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="UserManagement">Manage user</a>
-                    </h3>
-                    <p class="govuk-body-s">Register a heat network to activate manage users.</p>
-                </div>
-            </div>
-
             <div class="dashboard-grid__item">
                 <div class="dashboard-card">
                     <h3 class="dashboard-card__title govuk-heading-s">
@@ -204,16 +194,7 @@
             </div>
         }
         else if(userIsContributor || userIsDesignatedDutyHolder)
-        {           
-            <div class="dashboard-grid__item">
-                <div class="dashboard-card">
-                    <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageUsers" asp-controller="UserManagement">Manage user</a>
-                    </h3>
-                    <p class="govuk-body-s">View or add users to your heat network.</p>
-                </div>
-            </div>
-
+        {
             <div class="dashboard-grid__item">
                 <div class="dashboard-card @disabled">
                     <h3 class="dashboard-card__title govuk-heading-s">
