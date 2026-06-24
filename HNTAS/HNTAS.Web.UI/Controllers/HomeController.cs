@@ -15,16 +15,19 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly ISessionHelper _sessionHelper;
     private readonly IInvitationService _invitationService;
+    private readonly IConfiguration _configuration;
 
     public HomeController(IUserService iUserService,
         ILogger<HomeController> logger,
         ISessionHelper sessionHelper,
-        IInvitationService invitationService)
+        IInvitationService invitationService,
+        IConfiguration configuration)
     {
         _iUserService = iUserService;
         _logger = logger;
         _sessionHelper = sessionHelper;
         _invitationService = invitationService;
+        _configuration = configuration;
     }
 
     [Authorize]
@@ -187,7 +190,7 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult WhatDoYouWantToDo()
     {
-        _ = bool.TryParse(HttpContext.RequestServices.GetService<IConfiguration>()?.GetSection("ExistingNetworks:EnableFeature")?.Value, out bool isExistingNetworksFeatureEnabled);
+        _ = bool.TryParse(_configuration?.GetSection("ExistingNetworks:EnableFeature")?.Value, out bool isExistingNetworksFeatureEnabled);
         ViewBag.IsExistingNetworksFeatureEnabled = isExistingNetworksFeatureEnabled;
         this.ShowBackButton("StartPage", "Home");
         var model = _sessionHelper.GetFromSession<WhatDoYouWantToDoViewModel>(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey) ?? new WhatDoYouWantToDoViewModel();
