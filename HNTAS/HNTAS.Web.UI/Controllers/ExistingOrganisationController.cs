@@ -1,5 +1,4 @@
-﻿using HNTAS.Web.UI.Authorization;
-using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.CompaniesHouse;
 using HNTAS.Web.UI.Services.Core;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize(Policy = SecurityConstants.Policies.CanAddContributingOrganisation)]
+    [Authorize]
     public class ExistingOrganisationController : Controller
     {
         private readonly IOrganisationService _organisationService;
@@ -23,9 +22,11 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddOrRegister()
+        public async Task<IActionResult> AddOrRegister()
         {
             var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+            ViewBag.isUserAnRP = await _userService.IsRpUserAsync(user.EmailId) ?? false;
             if (organisationName != null)
             {
                 this.ShowBackButton("UserAccount", "Dashboard");

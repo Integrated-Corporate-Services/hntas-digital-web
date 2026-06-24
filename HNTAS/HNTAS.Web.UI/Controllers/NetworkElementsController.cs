@@ -133,7 +133,7 @@ namespace HNTAS.Web.UI.Controllers
 
                     return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
                 }).ToList(),
-                HeatNetworkAddress = addressByStreetOrTownModel?.Fulladdress,
+                HeatNetworkAddress = addressByStreetOrTownModel?.Fulladdress ?? "Not provided",
                 Coordinates = latlong,
                 NetworkType = NetworkElementHelper.GetNetworkTypeLabelForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc),
                 Phase = phase ?? string.Empty
