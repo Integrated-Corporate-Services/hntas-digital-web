@@ -57,7 +57,7 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("HeatNetworkOrganisation");
                 case "no":
                 default:
-                    return RedirectToAction("SixOrMoreDwellingsAnswerNo");                
+                    return RedirectToAction("SixOrMoreDwellingsAnswerNo");
             }
         }
 
@@ -68,26 +68,33 @@ namespace HNTAS.Web.UI.Controllers
             return View();
         }
 
+        private async Task<List<SelectItemOption>> GetOrganisationListForUser(List<string> contributingOrganisations)
+        {            
+            var organisationList = new List<SelectItemOption>();
+            foreach (string orgId in contributingOrganisations)
+            {
+                var orgDetails = await _organisationService.GetOrganisationById(orgId);
+                var orgEntry = orgId + " - " + orgDetails.Name;
+                organisationList.Add(new SelectItemOption { Text = orgEntry, Value = orgId });
+            }
+            return organisationList;
+        }
+
         [HttpGet]
         public async Task<IActionResult> HeatNetworkOrganisation()
         {
             this.ShowBackButton("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
+
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var userDetails = await _userService.GetUserById(userId);
             var contributingOrganisations = userDetails.ContributingOrganisations;
-            var newModel = new HeatNetworkOrganisationModel();
-            var organisationList = new List<SelectItemOption>();
-            foreach(string orgId in contributingOrganisations)
+            var newModel = _sessionHelper.GetFromSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey) ?? new HeatNetworkOrganisationModel();
+
+            if (contributingOrganisations.Count > 1)
             {
-                var orgDetails = await _organisationService.GetOrganisationById(orgId);
-                var orgEntry = orgId + " - " + orgDetails.Name;
-                organisationList.Add(new SelectItemOption { Text = orgEntry, Value = orgId});
-            }
-            if (organisationList.Count > 1) { 
-                newModel = new HeatNetworkOrganisationModel
-                {
-                    OrganisationList = organisationList
-                };
+                var organisationList = await GetOrganisationListForUser(contributingOrganisations);
+                newModel.OrganisationList = organisationList;
+                _sessionHelper.SaveToSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey, newModel);
                 _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "HeatNetworkOrganisation");
             }
             else
@@ -103,11 +110,17 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult HeatNetworkOrganisation(HeatNetworkOrganisationModel model)
+        public async Task<IActionResult> HeatNetworkOrganisation(HeatNetworkOrganisationModel model)
         {
             this.ShowBackButton("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var userDetails = await _userService.GetUserById(userId);
+            var contributingOrganisations = userDetails.ContributingOrganisations;
+            var organisationList = await GetOrganisationListForUser(contributingOrganisations);
+            model.OrganisationList = organisationList;
+            _sessionHelper.SaveToSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey, model);
             if (!ModelState.IsValid)
-            {
+            {                
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey, model);
