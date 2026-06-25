@@ -72,39 +72,12 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'LastName'
+        /// Test the property 'EmailId'
         /// </summary>
         [Fact]
-        public void LastNameTest()
+        public void EmailIdTest()
         {
-            // TODO unit test for the property 'LastName'
-        }
-
-        /// <summary>
-        /// Test the property 'InvitedEmail'
-        /// </summary>
-        [Fact]
-        public void InvitedEmailTest()
-        {
-            // TODO unit test for the property 'InvitedEmail'
-        }
-
-        /// <summary>
-        /// Test the property 'InvitedRoles'
-        /// </summary>
-        [Fact]
-        public void InvitedRolesTest()
-        {
-            // TODO unit test for the property 'InvitedRoles'
-        }
-
-        /// <summary>
-        /// Test the property 'InvitedAt'
-        /// </summary>
-        [Fact]
-        public void InvitedAtTest()
-        {
-            // TODO unit test for the property 'InvitedAt'
+            // TODO unit test for the property 'EmailId'
         }
 
         /// <summary>
@@ -117,75 +90,30 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'Id'
+        /// Test the property 'HeatNetworks'
         /// </summary>
         [Fact]
-        public void IdTest2()
+        public void HeatNetworksTest()
         {
-            // TODO unit test for the property 'Id'
+            // TODO unit test for the property 'HeatNetworks'
         }
 
         /// <summary>
-        /// Test the property 'Permissions'
+        /// Test the property 'Roles'
         /// </summary>
         [Fact]
-        public void PermissionsTest()
+        public void RolesTest()
         {
-            // TODO unit test for the property 'Permissions'
+            // TODO unit test for the property 'Roles'
         }
 
         /// <summary>
-        /// Test the property 'InvitedHnId'
+        /// Test the property 'InvitedAt'
         /// </summary>
         [Fact]
-        public void InvitedHnIdTest()
+        public void InvitedAtTest()
         {
-            // TODO unit test for the property 'InvitedHnId'
-        }
-
-        /// <summary>
-        /// Test the property 'InvitedOrgId'
-        /// </summary>
-        [Fact]
-        public void InvitedOrgIdTest()
-        {
-            // TODO unit test for the property 'InvitedOrgId'
-        }
-
-        /// <summary>
-        /// Test the property 'AcceptedAt'
-        /// </summary>
-        [Fact]
-        public void AcceptedAtTest()
-        {
-            // TODO unit test for the property 'AcceptedAt'
-        }
-
-        /// <summary>
-        /// Test the property 'RejectedAt'
-        /// </summary>
-        [Fact]
-        public void RejectedAtTest()
-        {
-            // TODO unit test for the property 'RejectedAt'
-        }
-
-        /// <summary>
-        /// Test the property 'ReplacedUserId'
-        /// </summary>
-        [Fact]
-        public void ReplacedUserIdTest()
-        {
-            // TODO unit test for the property 'ReplacedUserId'
-        }
-
-        /// <summary>
-        /// Test the property 'RolesToReplace'
-        /// </summary>
-        [Fact]
-        public void RolesToReplaceTest()
-        {
-            // TODO unit test for the property 'RolesToReplace'
+            // TODO unit test for the property 'InvitedAt'
         }
     }
 }
