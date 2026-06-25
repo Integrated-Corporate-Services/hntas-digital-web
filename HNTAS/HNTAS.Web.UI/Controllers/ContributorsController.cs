@@ -96,7 +96,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult AddContributor()
         {
-            this.ShowBackButton("ManageContributors");
+            this.ShowBackButton("NewContributorRole");
             ViewBag.whoDoYouWantToAdd = GetRole();
             var model = _sessionHelper.GetFromSession<AddContributorViewModel>(HttpContext, SessionKeys.AddContributorViewModelSessionKey) ?? new AddContributorViewModel();
             return View(model);
@@ -154,6 +154,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<NewContributorDetailsViewModel>(HttpContext, SessionKeys.NewContributorDetailsViewModelSessionKey, model);
+            _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "NewContributorDetails");
             return RedirectToAction("NewContributorHeatNetwork");
         }
 
@@ -206,6 +207,7 @@ namespace HNTAS.Web.UI.Controllers
             model.SelectedUser = selectedUser;
             _sessionHelper.SaveToSession<ExistingContributorsListViewModel>(HttpContext, SessionKeys.ExistingContributorsListViewModelSessionKey, model);
             _sessionHelper.SaveToSession<NewContributorDetailsViewModel>(HttpContext, SessionKeys.NewContributorDetailsViewModelSessionKey, selectedUser);
+            _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "ExistingContributorsList");
             return RedirectToAction("NewContributorHeatNetwork");
         }
 
@@ -230,7 +232,8 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> NewContributorHeatNetwork()
         {
-            this.ShowBackButton("ExistingContributorsList");
+            var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backAction");
+            this.ShowBackButton(backAction);
             var model = _sessionHelper.GetFromSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey) ?? new NewContributorHeatNetworkViewModel();
             model.HeatNetworks = await GetListOfHeatNetworks();
             if (model.HeatNetworks == null)
