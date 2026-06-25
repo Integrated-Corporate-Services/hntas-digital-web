@@ -72,14 +72,11 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'EmailId'
+        /// Test the property 'LastName'
         /// </summary>
         [Fact]
-        public void EmailIdTest()
+        public void LastNameTest()
         {
-<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Model/ManagedUserResponseTests.cs
-            // TODO unit test for the property 'EmailId'
-========
             // TODO unit test for the property 'LastName'
         }
 
@@ -108,7 +105,6 @@ namespace HNTAS.Api.Client.Test.Model
         public void InvitedAtTest()
         {
             // TODO unit test for the property 'InvitedAt'
->>>>>>>> dev:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Model/InvitationTests.cs
         }
 
         /// <summary>
@@ -121,36 +117,10 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Model/ManagedUserResponseTests.cs
-        /// Test the property 'HeatNetworks'
-        /// </summary>
-        [Fact]
-        public void HeatNetworksTest()
-        {
-            // TODO unit test for the property 'HeatNetworks'
-        }
-
-        /// <summary>
-        /// Test the property 'Roles'
-        /// </summary>
-        [Fact]
-        public void RolesTest()
-        {
-            // TODO unit test for the property 'Roles'
-        }
-
-        /// <summary>
-        /// Test the property 'InvitedAt'
-        /// </summary>
-        [Fact]
-        public void InvitedAtTest()
-        {
-            // TODO unit test for the property 'InvitedAt'
-========
         /// Test the property 'Id'
         /// </summary>
         [Fact]
-        public void IdTest()
+        public void IdTest2()
         {
             // TODO unit test for the property 'Id'
         }
@@ -216,7 +186,6 @@ namespace HNTAS.Api.Client.Test.Model
         public void RolesToReplaceTest()
         {
             // TODO unit test for the property 'RolesToReplace'
->>>>>>>> dev:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Model/InvitationTests.cs
         }
     }
 }
