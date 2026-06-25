@@ -20,9 +20,12 @@
 
         <a asp-controller="ExistingOrganisation" asp-action="Search" role="button" data-module="govuk-button" draggable="false" class="govuk-button">
             Add your organisation
-        </a>     
-        <a asp-controller="Organisation" asp-action="OrganisationType" role="button" data-module="govuk-button" draggable="false" class="govuk-button govuk-button--secondary" style="margin-left:15px">
-            Register a new Organisation
         </a>
+        @if (!!ViewBag.isUserAnRP)
+        {
+            <a asp-controller="Organisation" asp-action="OrganisationType" role="button" data-module="govuk-button" draggable="false" class="govuk-button govuk-button--secondary" style="margin-left:15px">
+                Register a new Organisation
+            </a>
+        }
     </div>
 </div>
