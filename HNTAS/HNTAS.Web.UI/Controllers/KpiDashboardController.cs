@@ -83,8 +83,6 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> Details(int? month, int? year, string? submissionId, List<string>? statusFilter, List<string>? typeFilter, int page = 1)
         {
             int pageSize = 10;
-            //int filterYear = year ?? DateTime.Now.Year;
-            //int filterMonth = month ?? DateTime.Now.Month;
 
             // 1. Safety check for the submission ID
             if (string.IsNullOrEmpty(submissionId))
