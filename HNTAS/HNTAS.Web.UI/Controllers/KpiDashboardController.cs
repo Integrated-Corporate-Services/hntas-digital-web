@@ -83,8 +83,6 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> Details(int? month, int? year, string? submissionId, List<string>? statusFilter, List<string>? typeFilter, int page = 1)
         {
             int pageSize = 10;
-            int filterYear = year ?? DateTime.Now.Year;
-            int filterMonth = month ?? DateTime.Now.Month;
 
             // 1. Safety check for the submission ID
             if (string.IsNullOrEmpty(submissionId))
@@ -95,6 +93,9 @@ namespace HNTAS.Web.UI.Controllers
             // 2. Call the API Service using the specific submission ID
             // We pass the status filters and page number to the API for server-side processing
             var response = await _armsDashboardService.GetKpiNetworkDetails(submissionId, statusFilter, typeFilter, page);
+
+            int filterYear = (int)(year ?? response.SelectedYear);
+            int filterMonth = (int)(month ?? response.SelectedMonth);
 
             if (response == null)
             {
