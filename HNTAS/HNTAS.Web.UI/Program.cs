@@ -259,6 +259,13 @@ builder.Services.AddHttpClient<IImportApi, ImportApi>(client =>
     client.DefaultRequestHeaders.Add("Accept", "text/plain");
 });
 
+builder.Services.AddSingleton<SuperUserApiEvents>();
+builder.Services.AddHttpClient<ISuperUserApi, SuperUserApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
 builder.Services.AddScoped<IWorkflowManager, WorkflowManager>();
