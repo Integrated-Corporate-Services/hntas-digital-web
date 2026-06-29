@@ -415,7 +415,7 @@ namespace HNTAS.Web.UI.Services.Core
             {
                 return response.Ok() ?? false;
             }
-            _logger.LogError("An unexpected error occurred while checking super user status for email: {EmailId}", emailId);
+            _logger.LogError("An unexpected error occurred while checking super user status");
             throw new Exception($"Failed to retrieve super user with status code: {response.StatusCode}");
         }
     }
