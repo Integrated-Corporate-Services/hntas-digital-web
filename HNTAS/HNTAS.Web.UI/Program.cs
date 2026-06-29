@@ -17,7 +17,6 @@ using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
@@ -30,7 +29,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.EnvironmentName == "Local")
 {
-    builder.Services.AddDataProtection();        
+    builder.Services.AddDataProtection();
     Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
 }
 else
@@ -144,7 +143,7 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new KpiHistoryResponseJsonConverter(),
         new AggregatedKpiJsonConverter(),
         new SoaStatusWithCountJsonConverter(),
-        new ElementGroupJsonConverter(),        
+        new ElementGroupJsonConverter(),
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -246,6 +245,13 @@ builder.Services.AddHttpClient<IAssignedAssessorApi, AssignedAssessorApi>(client
 
 builder.Services.AddSingleton<ArmsDashboardApiEvents>();
 builder.Services.AddHttpClient<IArmsDashboardApi, ArmsDashboardApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<SuperUserApiEvents>();
+builder.Services.AddHttpClient<ISuperUserApi, SuperUserApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
