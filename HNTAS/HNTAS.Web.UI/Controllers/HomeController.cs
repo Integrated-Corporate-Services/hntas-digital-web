@@ -36,6 +36,39 @@ public class HomeController : Controller
         var email = User.FindFirstValue("email");
         var oneLoginId = User.GetOneLoginId(_logger);
 
+        var isSuperUser = _configuration.GetValue<bool>("SuperUserLogin:Enabled") && await _iUserService.IsSuperUser(email);
+
+        if (isSuperUser)
+        {
+            var existingUser = await _iUserService.GetUserByOneLoginId(oneLoginId);
+            if (existingUser == null)
+            {
+                var registration = new InitialUserRegistrationRequest(oneLoginId: oneLoginId, emailId: email, status: UserStatus.Active);
+                _logger.LogInformation("Submitting initial user entry for super user.");
+
+                var newUserId = await _iUserService.CreateUser(registration);
+
+                if (string.IsNullOrWhiteSpace(newUserId))
+                {
+                    _logger.LogError("API returned no valid user object.");
+                    TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
+                    return BadRequest();
+                }
+
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, newUserId);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsSuperUserKey, true);
+
+                return RedirectToAction("Index", "AdminDashboard");
+            }
+            else
+            {
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsSuperUserKey, true);
+                return RedirectToAction("Index", "AdminDashboard");
+            }
+
+        }
+
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
         {
             _logger.LogError("Missing claims.");
