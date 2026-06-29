@@ -8,12 +8,14 @@ namespace HNTAS.Web.UI.Services.Core
         private readonly IUsersApi _usersApi;
         private readonly IHeatNetworksApi _heatNetworksApi;
         private readonly ILogger<UserService> _logger;
+        private readonly ISuperUserApi _superUserApi;
 
-        public UserService(IUsersApi usersApi, ILogger<UserService> logger, IHeatNetworksApi heatNetworksApi)
+        public UserService(IUsersApi usersApi, ILogger<UserService> logger, IHeatNetworksApi heatNetworksApi, ISuperUserApi superUserApi)
         {
             _usersApi = usersApi;
             _logger = logger;
             _heatNetworksApi = heatNetworksApi;
+            _superUserApi = superUserApi;
         }
 
         public async Task<UserResponse?> GetUserById(string id)
@@ -405,6 +407,17 @@ namespace HNTAS.Web.UI.Services.Core
         private string SanitizeForLogging(string input)
         {
             return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;
+        }
+
+        public async Task<bool> IsSuperUser(string emailId)
+        {
+            var response = await _superUserApi.ApiSuperUserIsSuperUserEmailIdGetAsync(emailId);
+            if (response.IsOk)
+            {
+                return response.Ok() ?? false;
+            }
+            _logger.LogError("An unexpected error occurred while checking super user status");
+            throw new Exception($"Failed to retrieve super user with status code: {response.StatusCode}");
         }
 
     }

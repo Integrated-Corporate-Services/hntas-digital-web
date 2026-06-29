@@ -57,7 +57,7 @@
         public const string ExistingContributorsListViewModelSessionKey = "ExistingContributorsListViewModelSessionKey";
         public const string ContributorsHeatNetworkPhaseViewModelSessionKey = "ContributorsHeatNetworkPhaseViewModelSessionKey";
         public const string NewContributorHeatNetworkViewModelSessionKey = "NewContributorHeatNetworkViewModel";
-        public const string CheckYourAnswersContributorsModelSessionKey = "CheckYourAnswersContributorsModelSessionKey";        
+        public const string CheckYourAnswersContributorsModelSessionKey = "CheckYourAnswersContributorsModelSessionKey";
 
         // Session keys for invitations
         public const string YouHaveBeenInvitedModelKey = "YouHaveBeenInvited";
@@ -84,9 +84,9 @@
         public const string ElementSoaUploadViewModelSessionKey = "ElementSoaUploadViewModelSessionKey";
         public const string ElementSoaIncompleteSoaSessionKey = "ElementSoaIncompleteSoaSessionKey";
         public const string CurrentStageIndexSessionKey = "CurrentStageIndexSessionKey";
-        public const string ElementSoaStatusUpdateModelSessionKey = "ElementSoaStatusUpdateModelSessionKey";       
-        
-        public const string NetworkElementsOverViewModelSessionKey = "NetworkElementsOverViewModelSessionKey";        
+        public const string ElementSoaStatusUpdateModelSessionKey = "ElementSoaStatusUpdateModelSessionKey";
+
+        public const string NetworkElementsOverViewModelSessionKey = "NetworkElementsOverViewModelSessionKey";
         public const string IsAddOrganisationDetailsRPJourneySessionKey = "IsAddOrganisationDetailsRPJourneySessionKey";
         public const string AssessorSelectElementsViewModelSessionKey = "AssessorSelectElementsViewModelSessionKey";
         public const string AssessorSelectedElementSessionKey = "AssessorSelectedElementSessionKey";
@@ -106,6 +106,8 @@
         public const string AssessorSearchResultsSessionKey = "AssessorSearchResultsSessionKey";
         public const string SubstationViewModelKey = "SubstationViewModelKey";
         public const string DistributionNetworksViewModelKey = "DistributionNetworksViewModelKey";
+
+        public const string IsSuperUserKey = "IsSuperUserKey";
 
     }
 }

@@ -19,7 +19,16 @@ namespace HNTAS.Web.UI.Controllers
 
         public async Task<IActionResult> Index(string? searchTerm, int? month, int? year, int page = 1)
         {
-            this.ShowBackButton("UserAccount", "Dashboard");
+            var isSuperUser = _sessionHelper.GetFromSession<bool?>(HttpContext, SessionKeys.IsSuperUserKey);
+
+            if (isSuperUser.HasValue && isSuperUser.Value)
+            {
+                this.ShowBackButton("Index", "AdminDashboard");
+            }
+            else
+            {
+                this.ShowBackButton("UserAccount", "Dashboard");
+            }
 
             ModelState.Clear();
 

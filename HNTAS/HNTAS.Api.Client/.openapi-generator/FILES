@@ -18,6 +18,7 @@ docs/apis/NotificationHistoryApi.md
 docs/apis/OrganisationUserApi.md
 docs/apis/OrganisationsApi.md
 docs/apis/SOAApi.md
+docs/apis/SuperUserApi.md
 docs/apis/UsersApi.md
 docs/models/AddInvitationRequest.md
 docs/models/Address.md
@@ -151,6 +152,7 @@ docs/models/UserStatus.md
 docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
+src/HNTAS.Api.Client.Test/Api/SuperUserApiTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
@@ -169,6 +171,7 @@ src/HNTAS.Api.Client/Api/NotificationHistoryApi.cs
 src/HNTAS.Api.Client/Api/OrganisationUserApi.cs
 src/HNTAS.Api.Client/Api/OrganisationsApi.cs
 src/HNTAS.Api.Client/Api/SOAApi.cs
+src/HNTAS.Api.Client/Api/SuperUserApi.cs
 src/HNTAS.Api.Client/Api/UsersApi.cs
 src/HNTAS.Api.Client/Client/ApiException.cs
 src/HNTAS.Api.Client/Client/ApiFactory.cs
