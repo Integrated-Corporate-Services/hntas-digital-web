@@ -19,7 +19,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using HNTAS.Api.Client.Client;
-using HNTAS.Api.Client.Model;
 using System.Diagnostics.CodeAnalysis;
 
 namespace HNTAS.Api.Client.Api
@@ -28,12 +27,12 @@ namespace HNTAS.Api.Client.Api
     /// Represents a collection of functions to interact with the API endpoints
     /// This class is registered as transient.
     /// </summary>
-    public interface IAssessorApi : IApi
+    public interface ISuperUserApi : IApi
     {
         /// <summary>
         /// The class containing the events
         /// </summary>
-        AssessorApiEvents Events { get; }
+        SuperUserApiEvents Events { get; }
 
         /// <summary>
         /// 
@@ -42,10 +41,10 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="q"> (optional)</param>
+        /// <param name="emailId"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAssessorSearchGetApiResponse"/>&gt;</returns>
-        Task<IApiAssessorSearchGetApiResponse> ApiAssessorSearchGetAsync(Option<string> q = default, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSuperUserIsSuperUserEmailIdGetApiResponse"/>&gt;</returns>
+        Task<IApiSuperUserIsSuperUserEmailIdGetApiResponse> ApiSuperUserIsSuperUserEmailIdGetAsync(string emailId, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -53,16 +52,16 @@ namespace HNTAS.Api.Client.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <param name="q"> (optional)</param>
+        /// <param name="emailId"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAssessorSearchGetApiResponse"/>?&gt;</returns>
-        Task<IApiAssessorSearchGetApiResponse?> ApiAssessorSearchGetOrDefaultAsync(Option<string> q = default, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSuperUserIsSuperUserEmailIdGetApiResponse"/>?&gt;</returns>
+        Task<IApiSuperUserIsSuperUserEmailIdGetApiResponse?> ApiSuperUserIsSuperUserEmailIdGetOrDefaultAsync(string emailId, System.Threading.CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// The <see cref="IApiAssessorSearchGetApiResponse"/>
+    /// The <see cref="IApiSuperUserIsSuperUserEmailIdGetApiResponse"/>
     /// </summary>
-    public interface IApiAssessorSearchGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<AssessorSearchResult>?>
+    public interface IApiSuperUserIsSuperUserEmailIdGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<bool?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -74,33 +73,33 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public class AssessorApiEvents
+    public class SuperUserApiEvents
     {
         /// <summary>
         /// The event raised after the server response
         /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiAssessorSearchGet;
+        public event EventHandler<ApiResponseEventArgs>? OnApiSuperUserIsSuperUserEmailIdGet;
 
         /// <summary>
         /// The event raised after an error querying the server
         /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiAssessorSearchGet;
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiSuperUserIsSuperUserEmailIdGet;
 
-        internal void ExecuteOnApiAssessorSearchGet(AssessorApi.ApiAssessorSearchGetApiResponse apiResponse)
+        internal void ExecuteOnApiSuperUserIsSuperUserEmailIdGet(SuperUserApi.ApiSuperUserIsSuperUserEmailIdGetApiResponse apiResponse)
         {
-            OnApiAssessorSearchGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+            OnApiSuperUserIsSuperUserEmailIdGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
         }
 
-        internal void ExecuteOnErrorApiAssessorSearchGet(Exception exception)
+        internal void ExecuteOnErrorApiSuperUserIsSuperUserEmailIdGet(Exception exception)
         {
-            OnErrorApiAssessorSearchGet?.Invoke(this, new ExceptionEventArgs(exception));
+            OnErrorApiSuperUserIsSuperUserEmailIdGet?.Invoke(this, new ExceptionEventArgs(exception));
         }
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public sealed partial class AssessorApi : IAssessorApi
+    public sealed partial class SuperUserApi : ISuperUserApi
     {
         private JsonSerializerOptions _jsonSerializerOptions;
 
@@ -112,7 +111,7 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The logger
         /// </summary>
-        public ILogger<AssessorApi> Logger { get; }
+        public ILogger<SuperUserApi> Logger { get; }
 
         /// <summary>
         /// The HttpClient
@@ -122,43 +121,43 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The class containing the events
         /// </summary>
-        public AssessorApiEvents Events { get; }
+        public SuperUserApiEvents Events { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssessorApi"/> class.
+        /// Initializes a new instance of the <see cref="SuperUserApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public AssessorApi(ILogger<AssessorApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, AssessorApiEvents assessorApiEvents)
+        public SuperUserApi(ILogger<SuperUserApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, SuperUserApiEvents superUserApiEvents)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
-            Logger = LoggerFactory.CreateLogger<AssessorApi>();
+            Logger = LoggerFactory.CreateLogger<SuperUserApi>();
             HttpClient = httpClient;
-            Events = assessorApiEvents;
+            Events = superUserApiEvents;
         }
 
-        partial void FormatApiAssessorSearchGet(ref Option<string> q);
+        partial void FormatApiSuperUserIsSuperUserEmailIdGet(ref string emailId);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
-        /// <param name="q"></param>
+        /// <param name="emailId"></param>
         /// <returns></returns>
-        private void ValidateApiAssessorSearchGet(Option<string> q)
+        private void ValidateApiSuperUserIsSuperUserEmailIdGet(string emailId)
         {
-            if (q.IsSet && q.Value == null)
-                throw new ArgumentNullException(nameof(q));
+            if (emailId == null)
+                throw new ArgumentNullException(nameof(emailId));
         }
 
         /// <summary>
         /// Processes the server response
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
-        /// <param name="q"></param>
-        private void AfterApiAssessorSearchGetDefaultImplementation(IApiAssessorSearchGetApiResponse apiResponseLocalVar, Option<string> q)
+        /// <param name="emailId"></param>
+        private void AfterApiSuperUserIsSuperUserEmailIdGetDefaultImplementation(IApiSuperUserIsSuperUserEmailIdGetApiResponse apiResponseLocalVar, string emailId)
         {
             bool suppressDefaultLog = false;
-            AfterApiAssessorSearchGet(ref suppressDefaultLog, apiResponseLocalVar, q);
+            AfterApiSuperUserIsSuperUserEmailIdGet(ref suppressDefaultLog, apiResponseLocalVar, emailId);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -168,8 +167,8 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
-        /// <param name="q"></param>
-        partial void AfterApiAssessorSearchGet(ref bool suppressDefaultLog, IApiAssessorSearchGetApiResponse apiResponseLocalVar, Option<string> q);
+        /// <param name="emailId"></param>
+        partial void AfterApiSuperUserIsSuperUserEmailIdGet(ref bool suppressDefaultLog, IApiSuperUserIsSuperUserEmailIdGetApiResponse apiResponseLocalVar, string emailId);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -177,11 +176,11 @@ namespace HNTAS.Api.Client.Api
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
-        /// <param name="q"></param>
-        private void OnErrorApiAssessorSearchGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> q)
+        /// <param name="emailId"></param>
+        private void OnErrorApiSuperUserIsSuperUserEmailIdGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string emailId)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiAssessorSearchGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, q);
+            OnErrorApiSuperUserIsSuperUserEmailIdGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, emailId);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -193,20 +192,20 @@ namespace HNTAS.Api.Client.Api
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
-        /// <param name="q"></param>
-        partial void OnErrorApiAssessorSearchGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> q);
+        /// <param name="emailId"></param>
+        partial void OnErrorApiSuperUserIsSuperUserEmailIdGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string emailId);
 
         /// <summary>
         ///  
         /// </summary>
-        /// <param name="q"> (optional)</param>
+        /// <param name="emailId"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAssessorSearchGetApiResponse"/>&gt;</returns>
-        public async Task<IApiAssessorSearchGetApiResponse?> ApiAssessorSearchGetOrDefaultAsync(Option<string> q = default, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSuperUserIsSuperUserEmailIdGetApiResponse"/>&gt;</returns>
+        public async Task<IApiSuperUserIsSuperUserEmailIdGetApiResponse?> ApiSuperUserIsSuperUserEmailIdGetOrDefaultAsync(string emailId, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiAssessorSearchGetAsync(q, cancellationToken).ConfigureAwait(false);
+                return await ApiSuperUserIsSuperUserEmailIdGetAsync(emailId, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -218,18 +217,18 @@ namespace HNTAS.Api.Client.Api
         ///  
         /// </summary>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="q"> (optional)</param>
+        /// <param name="emailId"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAssessorSearchGetApiResponse"/>&gt;</returns>
-        public async Task<IApiAssessorSearchGetApiResponse> ApiAssessorSearchGetAsync(Option<string> q = default, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSuperUserIsSuperUserEmailIdGetApiResponse"/>&gt;</returns>
+        public async Task<IApiSuperUserIsSuperUserEmailIdGetApiResponse> ApiSuperUserIsSuperUserEmailIdGetAsync(string emailId, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiAssessorSearchGet(q);
+                ValidateApiSuperUserIsSuperUserEmailIdGet(emailId);
 
-                FormatApiAssessorSearchGet(ref q);
+                FormatApiSuperUserIsSuperUserEmailIdGet(ref emailId);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -237,15 +236,9 @@ namespace HNTAS.Api.Client.Api
                     uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
                     uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
                     uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
-                        ? "/api/Assessor/search"
-                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Assessor/search");
-
-                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
-
-                    if (q.IsSet)
-                        parseQueryStringLocalVar["q"] = ClientUtils.ParameterToString(q.Value);
-
-                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
+                        ? "/api/SuperUser/is-super-user/{emailId}"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/SuperUser/is-super-user/{emailId}");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BemailId%7D", Uri.EscapeDataString(emailId.ToString()));
 
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
@@ -268,13 +261,13 @@ namespace HNTAS.Api.Client.Api
                     {
                         string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-                        ILogger<ApiAssessorSearchGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiAssessorSearchGetApiResponse>();
+                        ILogger<ApiSuperUserIsSuperUserEmailIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSuperUserIsSuperUserEmailIdGetApiResponse>();
 
-                        ApiAssessorSearchGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Assessor/search", requestedAtLocalVar, _jsonSerializerOptions);
+                        ApiSuperUserIsSuperUserEmailIdGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SuperUser/is-super-user/{emailId}", requestedAtLocalVar, _jsonSerializerOptions);
 
-                        AfterApiAssessorSearchGetDefaultImplementation(apiResponseLocalVar, q);
+                        AfterApiSuperUserIsSuperUserEmailIdGetDefaultImplementation(apiResponseLocalVar, emailId);
 
-                        Events.ExecuteOnApiAssessorSearchGet(apiResponseLocalVar);
+                        Events.ExecuteOnApiSuperUserIsSuperUserEmailIdGet(apiResponseLocalVar);
 
                         return apiResponseLocalVar;
                     }
@@ -282,24 +275,24 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiAssessorSearchGetDefaultImplementation(e, "/api/Assessor/search", uriBuilderLocalVar.Path, q);
-                Events.ExecuteOnErrorApiAssessorSearchGet(e);
+                OnErrorApiSuperUserIsSuperUserEmailIdGetDefaultImplementation(e, "/api/SuperUser/is-super-user/{emailId}", uriBuilderLocalVar.Path, emailId);
+                Events.ExecuteOnErrorApiSuperUserIsSuperUserEmailIdGet(e);
                 throw;
             }
         }
 
         /// <summary>
-        /// The <see cref="ApiAssessorSearchGetApiResponse"/>
+        /// The <see cref="ApiSuperUserIsSuperUserEmailIdGetApiResponse"/>
         /// </summary>
-        public partial class ApiAssessorSearchGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiAssessorSearchGetApiResponse
+        public partial class ApiSuperUserIsSuperUserEmailIdGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSuperUserIsSuperUserEmailIdGetApiResponse
         {
             /// <summary>
             /// The logger
             /// </summary>
-            public ILogger<ApiAssessorSearchGetApiResponse> Logger { get; }
+            public ILogger<ApiSuperUserIsSuperUserEmailIdGetApiResponse> Logger { get; }
 
             /// <summary>
-            /// The <see cref="ApiAssessorSearchGetApiResponse"/>
+            /// The <see cref="ApiSuperUserIsSuperUserEmailIdGetApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -308,7 +301,7 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiAssessorSearchGetApiResponse(ILogger<ApiAssessorSearchGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public ApiSuperUserIsSuperUserEmailIdGetApiResponse(ILogger<ApiSuperUserIsSuperUserEmailIdGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -326,11 +319,11 @@ namespace HNTAS.Api.Client.Api
             /// Deserializes the response if the response is 200 Ok
             /// </summary>
             /// <returns></returns>
-            public List<AssessorSearchResult>? Ok()
+            public bool? Ok()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<List<AssessorSearchResult>>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<bool>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -339,7 +332,7 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out List<AssessorSearchResult>? result)
+            public bool TryOk([NotNullWhen(true)]out bool? result)
             {
                 result = null;
 

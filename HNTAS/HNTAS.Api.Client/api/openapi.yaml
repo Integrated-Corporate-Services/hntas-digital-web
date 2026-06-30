@@ -20,6 +20,7 @@ tags:
 - name: Organisations
 - name: OrganisationUser
 - name: SOA
+- name: SuperUser
 - name: Users
 paths:
   /arms/v1/hn/kpis:
@@ -2422,6 +2423,31 @@ paths:
           description: Internal Server Error
       tags:
       - SOA
+  /api/SuperUser/is-super-user/{emailId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: emailId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
+          description: OK
+      tags:
+      - SuperUser
   /api/Users:
     get:
       responses:
