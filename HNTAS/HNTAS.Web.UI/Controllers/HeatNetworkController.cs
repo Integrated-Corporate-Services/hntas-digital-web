@@ -39,15 +39,16 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);
             //start
             return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
-        }
-
-
-        
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SubmitDetails(HNDetailsViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, model.Name);
             return RedirectToAction("SOAIntro", "SOA");

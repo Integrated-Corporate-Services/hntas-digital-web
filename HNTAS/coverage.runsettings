@@ -13,7 +13,7 @@
 
 					<!-- ✅ Use file-level exclusion for models -->
 					<ExcludeByFile>
-						**/Models/*.cs
+						**/HNTAS.Web.UI.Models/*.cs
 						**/Model/*.cs
 						**/DTOs/*.cs
 						**/Dtos/*.cs
