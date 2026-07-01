@@ -1087,6 +1087,38 @@
         }
       }
     },
+    "/api/feedback": {
+      "post": {
+        "tags": [
+          "Feedback"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeedbackRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeedbackRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeedbackRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/HeatNetworks": {
       "get": {
         "tags": [
@@ -5783,6 +5815,19 @@
           }
         }
       },
+      "CreateFeedbackRequest": {
+        "type": "object",
+        "properties": {
+          "satisfactionLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "feedbackText": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "DesignConstructionLog": {
         "type": "object",
         "properties": {
@@ -8858,6 +8903,9 @@
     },
     {
       "name": "Import"
+    },
+    {
+      "name": "Feedback"
     },
     {
       "name": "HeatNetworks"

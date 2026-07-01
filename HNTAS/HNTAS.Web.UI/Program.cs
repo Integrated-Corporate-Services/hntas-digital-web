@@ -265,6 +265,11 @@ builder.Services.AddHttpClient<ISuperUserApi, SuperUserApi>(client =>
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
+builder.Services.AddTransient<FeedbackApiEvents>();
+builder.Services.AddHttpClient<IFeedbackApi, FeedbackApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+});
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
@@ -299,7 +304,6 @@ builder.Services.AddScoped<IAssignedAssessorService, AssignedAssessorService>();
 builder.Services.AddScoped<IArmsDashboardService, ArmsDashboardService>();
 builder.Services.AddScoped<IImportExistingNetworksPocService, ImportExistingNetworksPocService>();
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
-
 
 builder.Services.AddSingleton<IAmazonS3>(sp =>
 {
