@@ -13,6 +13,7 @@ tags:
 - name: CarbonCalculator
 - name: CountriesAndTerritories
 - name: Import
+- name: Feedback
 - name: HeatNetworks
 - name: HNDataImportExport
 - name: Invitations
@@ -702,6 +703,25 @@ paths:
           description: Client Closed Request
       tags:
       - Import
+  /api/feedback:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFeedbackRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/CreateFeedbackRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/CreateFeedbackRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - Feedback
   /api/HeatNetworks:
     get:
       responses:
@@ -4152,6 +4172,18 @@ components:
         name:
           type: string
         fullValue:
+          type: string
+      type: object
+    CreateFeedbackRequest:
+      example:
+        feedbackText: feedbackText
+        satisfactionLevel: satisfactionLevel
+      properties:
+        satisfactionLevel:
+          nullable: true
+          type: string
+        feedbackText:
+          nullable: true
           type: string
       type: object
     DesignConstructionLog:
