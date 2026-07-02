@@ -1,1 +1,81 @@
-﻿
+﻿@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Models.Common
+@using HNTAS.Web.UI.Models
+
+@model FeedbackFormModel
+
+@{
+    ViewData["Title"] = "Your feedback";
+    var hasErrors = !ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey(nameof(Model.SatisfactionLevel));
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Your feedback</h1>
+        <form method="post" asp-action="Index" asp-controller="Feedback">
+            @Html.AntiForgeryToken()
+
+            <p class="govuk-body">
+                Leave feedback to help us improve this service. Your feedback is anonymous and we cannot reply to you.
+            </p>
+
+            <!-- Satisfaction question -->
+            <div class="govuk-form-group @(hasErrors ? "govuk-form-group--error" : "")">
+
+                <fieldset class="govuk-fieldset" aria-describedby="satisfaction-error">
+
+                    <legend>
+                        <p class="govuk-body">How satisfied were you with the online service that you used? (Optional)</p>
+                    </legend>
+
+                    @if (hasErrors)
+                    {
+                        <p id="satisfaction-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @Html.ValidationMessageFor(m => m.SatisfactionLevel)
+                        </p>
+                    }
+
+                    @await Html.PartialAsync("Components/_GovUkRadioList", new GovUkRadioListModel
+                    {
+                        FieldId = Html.IdFor(m => m.SatisfactionLevel),
+                                        FieldName = nameof(Model.SatisfactionLevel),
+                                        SelectedValue = Model.SatisfactionLevel,
+                                        Items = new List<SelectItemOption>
+                                        {
+                                        new() { Value = "VerySatisfied", Text = "Very satisfied" },
+                                        new() { Value = "Satisfied", Text = "Satisfied" },
+                                        new() { Value = "Neutral", Text = "Neither satisfied or dissatisfied" },
+                                        new() { Value = "Dissatisfied", Text = "Dissatisfied" },
+                                        new() { Value = "VeryDissatisfied", Text = "Very dissatisfied" }
+                                        }
+                                        })
+
+                </fieldset>
+
+            </div>
+
+
+            <!-- Feedback textarea -->
+            <div class="govuk-form-group">
+                <label class="govuk-body" for="feedback">
+                    How could we improve this form? (Optional)
+                </label>
+
+                <div id="feedback-hint" class="govuk-hint">
+                    Do not include any personal information, for example your name or telephone number.
+                </div>
+                <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="10000">
+                    <textarea class="govuk-textarea govuk-js-character-count" asp-for="Feedback" rows="5" aria-describedby="feedback-hint"></textarea>
+                    <div class="govuk-hint govuk-character-count__message">
+                        You have 10000 characters remaining
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Send feedback
+            </button>
+        </form>
+    </div>
+</div>
