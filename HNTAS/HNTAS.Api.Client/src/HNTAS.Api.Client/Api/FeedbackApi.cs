@@ -28,12 +28,12 @@ namespace HNTAS.Api.Client.Api
     /// Represents a collection of functions to interact with the API endpoints
     /// This class is registered as transient.
     /// </summary>
-    public interface IAssessorApi : IApi
+    public interface IFeedbackApi : IApi
     {
         /// <summary>
         /// The class containing the events
         /// </summary>
-        AssessorApiEvents Events { get; }
+        FeedbackApiEvents Events { get; }
 
         /// <summary>
         /// 
@@ -42,10 +42,10 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="q"> (optional)</param>
+        /// <param name="createFeedbackRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAssessorSearchGetApiResponse"/>&gt;</returns>
-        Task<IApiAssessorSearchGetApiResponse> ApiAssessorSearchGetAsync(Option<string> q = default, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiFeedbackPostApiResponse"/>&gt;</returns>
+        Task<IApiFeedbackPostApiResponse> ApiFeedbackPostAsync(CreateFeedbackRequest createFeedbackRequest, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -53,16 +53,16 @@ namespace HNTAS.Api.Client.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <param name="q"> (optional)</param>
+        /// <param name="createFeedbackRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAssessorSearchGetApiResponse"/>?&gt;</returns>
-        Task<IApiAssessorSearchGetApiResponse?> ApiAssessorSearchGetOrDefaultAsync(Option<string> q = default, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiFeedbackPostApiResponse"/>?&gt;</returns>
+        Task<IApiFeedbackPostApiResponse?> ApiFeedbackPostOrDefaultAsync(CreateFeedbackRequest createFeedbackRequest, System.Threading.CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// The <see cref="IApiAssessorSearchGetApiResponse"/>
+    /// The <see cref="IApiFeedbackPostApiResponse"/>
     /// </summary>
-    public interface IApiAssessorSearchGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<AssessorSearchResult>?>
+    public interface IApiFeedbackPostApiResponse : HNTAS.Api.Client.Client.IApiResponse
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -74,33 +74,33 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public class AssessorApiEvents
+    public class FeedbackApiEvents
     {
         /// <summary>
         /// The event raised after the server response
         /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiAssessorSearchGet;
+        public event EventHandler<ApiResponseEventArgs>? OnApiFeedbackPost;
 
         /// <summary>
         /// The event raised after an error querying the server
         /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiAssessorSearchGet;
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiFeedbackPost;
 
-        internal void ExecuteOnApiAssessorSearchGet(AssessorApi.ApiAssessorSearchGetApiResponse apiResponse)
+        internal void ExecuteOnApiFeedbackPost(FeedbackApi.ApiFeedbackPostApiResponse apiResponse)
         {
-            OnApiAssessorSearchGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+            OnApiFeedbackPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
         }
 
-        internal void ExecuteOnErrorApiAssessorSearchGet(Exception exception)
+        internal void ExecuteOnErrorApiFeedbackPost(Exception exception)
         {
-            OnErrorApiAssessorSearchGet?.Invoke(this, new ExceptionEventArgs(exception));
+            OnErrorApiFeedbackPost?.Invoke(this, new ExceptionEventArgs(exception));
         }
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public sealed partial class AssessorApi : IAssessorApi
+    public sealed partial class FeedbackApi : IFeedbackApi
     {
         private JsonSerializerOptions _jsonSerializerOptions;
 
@@ -112,7 +112,7 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The logger
         /// </summary>
-        public ILogger<AssessorApi> Logger { get; }
+        public ILogger<FeedbackApi> Logger { get; }
 
         /// <summary>
         /// The HttpClient
@@ -122,43 +122,43 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The class containing the events
         /// </summary>
-        public AssessorApiEvents Events { get; }
+        public FeedbackApiEvents Events { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssessorApi"/> class.
+        /// Initializes a new instance of the <see cref="FeedbackApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public AssessorApi(ILogger<AssessorApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, AssessorApiEvents assessorApiEvents)
+        public FeedbackApi(ILogger<FeedbackApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, FeedbackApiEvents feedbackApiEvents)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
-            Logger = LoggerFactory.CreateLogger<AssessorApi>();
+            Logger = LoggerFactory.CreateLogger<FeedbackApi>();
             HttpClient = httpClient;
-            Events = assessorApiEvents;
+            Events = feedbackApiEvents;
         }
 
-        partial void FormatApiAssessorSearchGet(ref Option<string> q);
+        partial void FormatApiFeedbackPost(CreateFeedbackRequest createFeedbackRequest);
 
         /// <summary>
         /// Validates the request parameters
         /// </summary>
-        /// <param name="q"></param>
+        /// <param name="createFeedbackRequest"></param>
         /// <returns></returns>
-        private void ValidateApiAssessorSearchGet(Option<string> q)
+        private void ValidateApiFeedbackPost(CreateFeedbackRequest createFeedbackRequest)
         {
-            if (q.IsSet && q.Value == null)
-                throw new ArgumentNullException(nameof(q));
+            if (createFeedbackRequest == null)
+                throw new ArgumentNullException(nameof(createFeedbackRequest));
         }
 
         /// <summary>
         /// Processes the server response
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
-        /// <param name="q"></param>
-        private void AfterApiAssessorSearchGetDefaultImplementation(IApiAssessorSearchGetApiResponse apiResponseLocalVar, Option<string> q)
+        /// <param name="createFeedbackRequest"></param>
+        private void AfterApiFeedbackPostDefaultImplementation(IApiFeedbackPostApiResponse apiResponseLocalVar, CreateFeedbackRequest createFeedbackRequest)
         {
             bool suppressDefaultLog = false;
-            AfterApiAssessorSearchGet(ref suppressDefaultLog, apiResponseLocalVar, q);
+            AfterApiFeedbackPost(ref suppressDefaultLog, apiResponseLocalVar, createFeedbackRequest);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -168,8 +168,8 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
-        /// <param name="q"></param>
-        partial void AfterApiAssessorSearchGet(ref bool suppressDefaultLog, IApiAssessorSearchGetApiResponse apiResponseLocalVar, Option<string> q);
+        /// <param name="createFeedbackRequest"></param>
+        partial void AfterApiFeedbackPost(ref bool suppressDefaultLog, IApiFeedbackPostApiResponse apiResponseLocalVar, CreateFeedbackRequest createFeedbackRequest);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -177,11 +177,11 @@ namespace HNTAS.Api.Client.Api
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
-        /// <param name="q"></param>
-        private void OnErrorApiAssessorSearchGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> q)
+        /// <param name="createFeedbackRequest"></param>
+        private void OnErrorApiFeedbackPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, CreateFeedbackRequest createFeedbackRequest)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiAssessorSearchGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, q);
+            OnErrorApiFeedbackPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, createFeedbackRequest);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -193,20 +193,20 @@ namespace HNTAS.Api.Client.Api
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
-        /// <param name="q"></param>
-        partial void OnErrorApiAssessorSearchGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> q);
+        /// <param name="createFeedbackRequest"></param>
+        partial void OnErrorApiFeedbackPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, CreateFeedbackRequest createFeedbackRequest);
 
         /// <summary>
         ///  
         /// </summary>
-        /// <param name="q"> (optional)</param>
+        /// <param name="createFeedbackRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAssessorSearchGetApiResponse"/>&gt;</returns>
-        public async Task<IApiAssessorSearchGetApiResponse?> ApiAssessorSearchGetOrDefaultAsync(Option<string> q = default, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiFeedbackPostApiResponse"/>&gt;</returns>
+        public async Task<IApiFeedbackPostApiResponse?> ApiFeedbackPostOrDefaultAsync(CreateFeedbackRequest createFeedbackRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiAssessorSearchGetAsync(q, cancellationToken).ConfigureAwait(false);
+                return await ApiFeedbackPostAsync(createFeedbackRequest, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -218,18 +218,18 @@ namespace HNTAS.Api.Client.Api
         ///  
         /// </summary>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="q"> (optional)</param>
+        /// <param name="createFeedbackRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiAssessorSearchGetApiResponse"/>&gt;</returns>
-        public async Task<IApiAssessorSearchGetApiResponse> ApiAssessorSearchGetAsync(Option<string> q = default, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiFeedbackPostApiResponse"/>&gt;</returns>
+        public async Task<IApiFeedbackPostApiResponse> ApiFeedbackPostAsync(CreateFeedbackRequest createFeedbackRequest, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiAssessorSearchGet(q);
+                ValidateApiFeedbackPost(createFeedbackRequest);
 
-                FormatApiAssessorSearchGet(ref q);
+                FormatApiFeedbackPost(createFeedbackRequest);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -237,30 +237,27 @@ namespace HNTAS.Api.Client.Api
                     uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
                     uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
                     uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
-                        ? "/api/Assessor/search"
-                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Assessor/search");
+                        ? "/api/feedback"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/feedback");
 
-                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
-
-                    if (q.IsSet)
-                        parseQueryStringLocalVar["q"] = ClientUtils.ParameterToString(q.Value);
-
-                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
+                    httpRequestMessageLocalVar.Content = (createFeedbackRequest as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(createFeedbackRequest, _jsonSerializerOptions));
 
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    string[] acceptLocalVars = new string[] {
-                        "text/plain",
+                    string[] contentTypes = new string[] {
                         "application/json",
-                        "text/json"
+                        "text/json",
+                        "application/*+json"
                     };
 
-                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
 
-                    if (acceptLocalVar != null)
-                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
 
-                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
 
                     DateTime requestedAtLocalVar = DateTime.UtcNow;
 
@@ -268,13 +265,13 @@ namespace HNTAS.Api.Client.Api
                     {
                         string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-                        ILogger<ApiAssessorSearchGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiAssessorSearchGetApiResponse>();
+                        ILogger<ApiFeedbackPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiFeedbackPostApiResponse>();
 
-                        ApiAssessorSearchGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Assessor/search", requestedAtLocalVar, _jsonSerializerOptions);
+                        ApiFeedbackPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/feedback", requestedAtLocalVar, _jsonSerializerOptions);
 
-                        AfterApiAssessorSearchGetDefaultImplementation(apiResponseLocalVar, q);
+                        AfterApiFeedbackPostDefaultImplementation(apiResponseLocalVar, createFeedbackRequest);
 
-                        Events.ExecuteOnApiAssessorSearchGet(apiResponseLocalVar);
+                        Events.ExecuteOnApiFeedbackPost(apiResponseLocalVar);
 
                         return apiResponseLocalVar;
                     }
@@ -282,24 +279,24 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiAssessorSearchGetDefaultImplementation(e, "/api/Assessor/search", uriBuilderLocalVar.Path, q);
-                Events.ExecuteOnErrorApiAssessorSearchGet(e);
+                OnErrorApiFeedbackPostDefaultImplementation(e, "/api/feedback", uriBuilderLocalVar.Path, createFeedbackRequest);
+                Events.ExecuteOnErrorApiFeedbackPost(e);
                 throw;
             }
         }
 
         /// <summary>
-        /// The <see cref="ApiAssessorSearchGetApiResponse"/>
+        /// The <see cref="ApiFeedbackPostApiResponse"/>
         /// </summary>
-        public partial class ApiAssessorSearchGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiAssessorSearchGetApiResponse
+        public partial class ApiFeedbackPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiFeedbackPostApiResponse
         {
             /// <summary>
             /// The logger
             /// </summary>
-            public ILogger<ApiAssessorSearchGetApiResponse> Logger { get; }
+            public ILogger<ApiFeedbackPostApiResponse> Logger { get; }
 
             /// <summary>
-            /// The <see cref="ApiAssessorSearchGetApiResponse"/>
+            /// The <see cref="ApiFeedbackPostApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -308,7 +305,7 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiAssessorSearchGetApiResponse(ILogger<ApiAssessorSearchGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public ApiFeedbackPostApiResponse(ILogger<ApiFeedbackPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -321,38 +318,6 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <returns></returns>
             public bool IsOk => 200 == (int)StatusCode;
-
-            /// <summary>
-            /// Deserializes the response if the response is 200 Ok
-            /// </summary>
-            /// <returns></returns>
-            public List<AssessorSearchResult>? Ok()
-            {
-                // This logic may be modified with the AsModel.mustache template
-                return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<List<AssessorSearchResult>>(RawContent, _jsonSerializerOptions)
-                    : null;
-            }
-
-            /// <summary>
-            /// Returns true if the response is 200 Ok and the deserialized response is not null
-            /// </summary>
-            /// <param name="result"></param>
-            /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out List<AssessorSearchResult>? result)
-            {
-                result = null;
-
-                try
-                {
-                    result = Ok();
-                } catch (Exception e)
-                {
-                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
-                }
-
-                return result != null;
-            }
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {
