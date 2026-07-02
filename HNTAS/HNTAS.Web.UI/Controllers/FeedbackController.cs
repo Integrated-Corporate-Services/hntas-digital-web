@@ -34,7 +34,7 @@ namespace HNTAS.Web.UI.Controllers
             try
             {
                 var response = await _feedbackApi.ApiFeedbackPostAsync( new Api.Client.Model.CreateFeedbackRequest { SatisfactionLevel = model.SatisfactionLevel, FeedbackText = model.Feedback });
-                return RedirectToAction("StartPage", "Home");
+                return RedirectToAction("FeedbackReceived");
             }
             catch (Api.Client.Client.ApiException ex)
             {
@@ -46,6 +46,13 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again.");
                 return View(model);
             }
+        }
+
+        [HttpGet]
+        public IActionResult FeedbackReceived()
+        {
+            this.ShowBackButton("Index");
+            return View();
         }
     }
 }
