@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using HNTAS.Api.Client.Api;
-using HNTAS.Api.Client.Model;
 
 
 /* *********************************************************************************
@@ -39,36 +38,13 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/ImportApiTests.cs
-    ///  Class for testing ImportApi
-    /// </summary>
-    public sealed class ImportApiTests : ApiTestsBase
-    {
-        private readonly IImportApi _instance;
-
-        public ImportApiTests(): base(Array.Empty<string>())
-        {
-            _instance = _host.Services.GetRequiredService<IImportApi>();
-        }
-
-        /// <summary>
-        /// Test ApiImportUploadCsvPost
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiImportUploadCsvPostAsyncTest()
-        {
-            Client.Option<string> fileContent = default!;
-            var response = await _instance.ApiImportUploadCsvPostAsync(fileContent);
-            var model = response.Ok();
-            Assert.IsType<ImportResult>(model);
-========
     ///  Class for testing SuperUserApi
     /// </summary>
     public sealed class SuperUserApiTests : ApiTestsBase
     {
         private readonly ISuperUserApi _instance;
 
-        public SuperUserApiTests(): base(Array.Empty<string>())
+        public SuperUserApiTests() : base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<ISuperUserApi>();
         }
@@ -76,14 +52,13 @@ namespace HNTAS.Api.Client.Test.Api
         /// <summary>
         /// Test ApiSuperUserIsSuperUserEmailIdGet
         /// </summary>
-        [Fact (Skip = "not implemented")]
+        [Fact(Skip = "not implemented")]
         public async Task ApiSuperUserIsSuperUserEmailIdGetAsyncTest()
         {
             string emailId = default!;
             var response = await _instance.ApiSuperUserIsSuperUserEmailIdGetAsync(emailId);
             var model = response.Ok();
             Assert.IsType<bool>(model);
->>>>>>>> dev:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/SuperUserApiTests.cs
         }
     }
 }

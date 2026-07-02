@@ -39,36 +39,13 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/AssessorApiTests.cs
-    ///  Class for testing AssessorApi
-    /// </summary>
-    public sealed class AssessorApiTests : ApiTestsBase
-    {
-        private readonly IAssessorApi _instance;
-
-        public AssessorApiTests(): base(Array.Empty<string>())
-        {
-            _instance = _host.Services.GetRequiredService<IAssessorApi>();
-        }
-
-        /// <summary>
-        /// Test ApiAssessorSearchGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiAssessorSearchGetAsyncTest()
-        {
-            Client.Option<string> q = default!;
-            var response = await _instance.ApiAssessorSearchGetAsync(q);
-            var model = response.Ok();
-            Assert.IsType<List<AssessorSearchResult>>(model);
-========
     ///  Class for testing FeedbackApi
     /// </summary>
     public sealed class FeedbackApiTests : ApiTestsBase
     {
         private readonly IFeedbackApi _instance;
 
-        public FeedbackApiTests(): base(Array.Empty<string>())
+        public FeedbackApiTests() : base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<IFeedbackApi>();
         }
@@ -76,12 +53,11 @@ namespace HNTAS.Api.Client.Test.Api
         /// <summary>
         /// Test ApiFeedbackPost
         /// </summary>
-        [Fact (Skip = "not implemented")]
+        [Fact(Skip = "not implemented")]
         public async Task ApiFeedbackPostAsyncTest()
         {
             CreateFeedbackRequest createFeedbackRequest = default!;
             await _instance.ApiFeedbackPostAsync(createFeedbackRequest);
->>>>>>>> dev:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/FeedbackApiTests.cs
         }
     }
 }
