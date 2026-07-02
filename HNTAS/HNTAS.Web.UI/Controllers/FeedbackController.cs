@@ -28,13 +28,13 @@ namespace HNTAS.Web.UI.Controllers
         {
             this.ShowBackButton("StartPage", "Home");
             if (!ModelState.IsValid)
-            {                
+            {
                 return View(model);
-            }            
+            }
             try
             {
-                var response = await _feedbackApi.ApiFeedbackPostAsync( new Api.Client.Model.CreateFeedbackRequest { SatisfactionLevel = model.SatisfactionLevel, FeedbackText = model.Feedback });
-                return RedirectToAction("StartPage", "Home");
+                var response = await _feedbackApi.ApiFeedbackPostAsync(new Api.Client.Model.CreateFeedbackRequest { SatisfactionLevel = model.SatisfactionLevel, FeedbackText = model.Feedback });
+                return RedirectToAction("FeedbackReceived");
             }
             catch (Api.Client.Client.ApiException ex)
             {
@@ -47,5 +47,13 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
         }
+
+        [HttpGet]
+        public IActionResult FeedbackReceived()
+        {
+            this.ShowBackButton("Index");
+            return View();
+        }
+
     }
 }
