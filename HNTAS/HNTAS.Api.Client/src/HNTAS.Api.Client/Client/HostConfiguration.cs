@@ -72,6 +72,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ContributorRoleJsonConverter());
             _jsonOptions.Converters.Add(new ContributorRoleNullableJsonConverter());
             _jsonOptions.Converters.Add(new CountryAndTerritoryJsonConverter());
+            _jsonOptions.Converters.Add(new CreateFeedbackRequestJsonConverter());
             _jsonOptions.Converters.Add(new DesignConstructionLogJsonConverter());
             _jsonOptions.Converters.Add(new DesignConstructionLogResponseJsonConverter());
             _jsonOptions.Converters.Add(new DocumentTypeJsonConverter());
@@ -216,6 +217,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<AuditApiEvents>();
             _services.AddSingleton<CarbonCalculatorApiEvents>();
             _services.AddSingleton<CountriesAndTerritoriesApiEvents>();
+            _services.AddSingleton<FeedbackApiEvents>();
             _services.AddSingleton<HNDataImportExportApiEvents>();
             _services.AddSingleton<HeatNetworksApiEvents>();
             _services.AddSingleton<ImportApiEvents>();
@@ -224,6 +226,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<OrganisationUserApiEvents>();
             _services.AddSingleton<OrganisationsApiEvents>();
             _services.AddSingleton<SOAApiEvents>();
+            _services.AddSingleton<SuperUserApiEvents>();
             _services.AddSingleton<UsersApiEvents>();
         }
 
@@ -249,6 +252,7 @@ namespace HNTAS.Api.Client.Client
             builders.Add(_services.AddHttpClient<IAuditApi, AuditApi>(client));
             builders.Add(_services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client));
             builders.Add(_services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client));
+            builders.Add(_services.AddHttpClient<IFeedbackApi, FeedbackApi>(client));
             builders.Add(_services.AddHttpClient<IHNDataImportExportApi, HNDataImportExportApi>(client));
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
             builders.Add(_services.AddHttpClient<IImportApi, ImportApi>(client));
@@ -257,6 +261,7 @@ namespace HNTAS.Api.Client.Client
             builders.Add(_services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client));
             builders.Add(_services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client));
             builders.Add(_services.AddHttpClient<ISOAApi, SOAApi>(client));
+            builders.Add(_services.AddHttpClient<ISuperUserApi, SuperUserApi>(client));
             builders.Add(_services.AddHttpClient<IUsersApi, UsersApi>(client));
             
             if (builder != null)
