@@ -256,6 +256,11 @@ builder.Services.AddHttpClient<ISuperUserApi, SuperUserApi>(client =>
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
+builder.Services.AddTransient<FeedbackApiEvents>();
+builder.Services.AddHttpClient<IFeedbackApi, FeedbackApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+});
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
