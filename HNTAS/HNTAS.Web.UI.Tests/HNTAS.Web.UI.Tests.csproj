@@ -5,7 +5,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <RunSettingsFilePath>C:\Users\MohantySushree%28Energ\source\repos\hntas-digital-web\HNTAS\HNTAS.Web.UI.Tests\bin\Debug\net9.0\fine-code-coverage\coverage-tool-output\HNTAS.Web.UI.Tests-fcc-mscodecoverage-generated.runsettings</RunSettingsFilePath>
   </PropertyGroup>
 
   <ItemGroup>
