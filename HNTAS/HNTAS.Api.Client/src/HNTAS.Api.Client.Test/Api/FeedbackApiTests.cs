@@ -45,7 +45,7 @@ namespace HNTAS.Api.Client.Test.Api
     {
         private readonly IFeedbackApi _instance;
 
-        public FeedbackApiTests() : base(Array.Empty<string>())
+        public FeedbackApiTests(): base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<IFeedbackApi>();
         }
@@ -53,7 +53,7 @@ namespace HNTAS.Api.Client.Test.Api
         /// <summary>
         /// Test ApiFeedbackPost
         /// </summary>
-        [Fact(Skip = "not implemented")]
+        [Fact (Skip = "not implemented")]
         public async Task ApiFeedbackPostAsyncTest()
         {
             CreateFeedbackRequest createFeedbackRequest = default!;
