@@ -10,6 +10,7 @@ docs/apis/AssignedAssessorApi.md
 docs/apis/AuditApi.md
 docs/apis/CarbonCalculatorApi.md
 docs/apis/CountriesAndTerritoriesApi.md
+docs/apis/FeedbackApi.md
 docs/apis/HNDataImportExportApi.md
 docs/apis/HeatNetworksApi.md
 docs/apis/ImportApi.md
@@ -18,6 +19,7 @@ docs/apis/NotificationHistoryApi.md
 docs/apis/OrganisationUserApi.md
 docs/apis/OrganisationsApi.md
 docs/apis/SOAApi.md
+docs/apis/SuperUserApi.md
 docs/apis/UsersApi.md
 docs/models/AddInvitationRequest.md
 docs/models/Address.md
@@ -46,9 +48,9 @@ docs/models/ConfigDefault.md
 docs/models/ConnectionType.md
 docs/models/ContributorRole.md
 docs/models/CountryAndTerritory.md
+docs/models/CreateFeedbackRequest.md
 docs/models/DesignConstructionLog.md
 docs/models/DesignConstructionLogResponse.md
-docs/models/DocumentType.md
 docs/models/ECDetails.md
 docs/models/Element.md
 docs/models/ElementGroup.md
@@ -101,7 +103,6 @@ docs/models/ManagedUserResponse.md
 docs/models/MeteringAndMonitoringStrategy.md
 docs/models/MeteringAndMonitoringStrategyResponse.md
 docs/models/NetworkDetailsStatus.md
-docs/models/NetworkDetailsUploadDocumentRequest.md
 docs/models/NetworkDetailsUploadedDocument.md
 docs/models/NetworkElementRequest.md
 docs/models/NetworkElements.md
@@ -109,7 +110,6 @@ docs/models/NetworkElements2.md
 docs/models/NetworkElementsResponse.md
 docs/models/NetworkTypeResponse.md
 docs/models/NetworkTypeSelection.md
-docs/models/NetworkTypeSelection2.md
 docs/models/NotificationHistoryData.md
 docs/models/NotificationHistoryRequest.md
 docs/models/NotificationHistoryResponse.md
@@ -132,7 +132,6 @@ docs/models/RegistrationSource.md
 docs/models/RegistrationSource2.md
 docs/models/SendInvitationEmailRequest.md
 docs/models/Soa.md
-docs/models/Soa2.md
 docs/models/SoaAssessor.md
 docs/models/SoaJourneyData.md
 docs/models/SoaPhase.md
@@ -142,10 +141,6 @@ docs/models/SoaStage.md
 docs/models/SoaStages.md
 docs/models/SoaStatus.md
 docs/models/SoaStatusWithCount.md
-docs/models/UpdateConnectionsRequest.md
-docs/models/UpdateDocumentRequest.md
-docs/models/UpdateElementDocumentsRequest.md
-docs/models/UpdateElementLocationsRequest.md
 docs/models/UpdateSoaStatusRequest.md
 docs/models/UpdateUserDetailsRequest.md
 docs/models/UpdateUserOrgIdRequest.md
@@ -164,8 +159,10 @@ docs/models/UserStatus.md
 docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
-src/HNTAS.Api.Client.Test/Api/ImportApiTests.cs
+src/HNTAS.Api.Client.Test/Api/FeedbackApiTests.cs
+src/HNTAS.Api.Client.Test/Api/SuperUserApiTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/CreateFeedbackRequestTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -174,6 +171,7 @@ src/HNTAS.Api.Client/Api/AssignedAssessorApi.cs
 src/HNTAS.Api.Client/Api/AuditApi.cs
 src/HNTAS.Api.Client/Api/CarbonCalculatorApi.cs
 src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
+src/HNTAS.Api.Client/Api/FeedbackApi.cs
 src/HNTAS.Api.Client/Api/HNDataImportExportApi.cs
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
@@ -183,6 +181,7 @@ src/HNTAS.Api.Client/Api/NotificationHistoryApi.cs
 src/HNTAS.Api.Client/Api/OrganisationUserApi.cs
 src/HNTAS.Api.Client/Api/OrganisationsApi.cs
 src/HNTAS.Api.Client/Api/SOAApi.cs
+src/HNTAS.Api.Client/Api/SuperUserApi.cs
 src/HNTAS.Api.Client/Api/UsersApi.cs
 src/HNTAS.Api.Client/Client/ApiException.cs
 src/HNTAS.Api.Client/Client/ApiFactory.cs
@@ -233,9 +232,9 @@ src/HNTAS.Api.Client/Model/ConfigDefault.cs
 src/HNTAS.Api.Client/Model/ConnectionType.cs
 src/HNTAS.Api.Client/Model/ContributorRole.cs
 src/HNTAS.Api.Client/Model/CountryAndTerritory.cs
+src/HNTAS.Api.Client/Model/CreateFeedbackRequest.cs
 src/HNTAS.Api.Client/Model/DesignConstructionLog.cs
 src/HNTAS.Api.Client/Model/DesignConstructionLogResponse.cs
-src/HNTAS.Api.Client/Model/DocumentType.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
 src/HNTAS.Api.Client/Model/Element.cs
 src/HNTAS.Api.Client/Model/ElementGroup.cs
@@ -288,7 +287,6 @@ src/HNTAS.Api.Client/Model/ManagedUserResponse.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategy.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategyResponse.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
-src/HNTAS.Api.Client/Model/NetworkDetailsUploadDocumentRequest.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadedDocument.cs
 src/HNTAS.Api.Client/Model/NetworkElementRequest.cs
 src/HNTAS.Api.Client/Model/NetworkElements.cs
@@ -296,7 +294,6 @@ src/HNTAS.Api.Client/Model/NetworkElements2.cs
 src/HNTAS.Api.Client/Model/NetworkElementsResponse.cs
 src/HNTAS.Api.Client/Model/NetworkTypeResponse.cs
 src/HNTAS.Api.Client/Model/NetworkTypeSelection.cs
-src/HNTAS.Api.Client/Model/NetworkTypeSelection2.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryData.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryRequest.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryResponse.cs
@@ -319,7 +316,6 @@ src/HNTAS.Api.Client/Model/RegistrationSource.cs
 src/HNTAS.Api.Client/Model/RegistrationSource2.cs
 src/HNTAS.Api.Client/Model/SendInvitationEmailRequest.cs
 src/HNTAS.Api.Client/Model/Soa.cs
-src/HNTAS.Api.Client/Model/Soa2.cs
 src/HNTAS.Api.Client/Model/SoaAssessor.cs
 src/HNTAS.Api.Client/Model/SoaJourneyData.cs
 src/HNTAS.Api.Client/Model/SoaPhase.cs
@@ -329,10 +325,6 @@ src/HNTAS.Api.Client/Model/SoaStage.cs
 src/HNTAS.Api.Client/Model/SoaStages.cs
 src/HNTAS.Api.Client/Model/SoaStatus.cs
 src/HNTAS.Api.Client/Model/SoaStatusWithCount.cs
-src/HNTAS.Api.Client/Model/UpdateConnectionsRequest.cs
-src/HNTAS.Api.Client/Model/UpdateDocumentRequest.cs
-src/HNTAS.Api.Client/Model/UpdateElementDocumentsRequest.cs
-src/HNTAS.Api.Client/Model/UpdateElementLocationsRequest.cs
 src/HNTAS.Api.Client/Model/UpdateSoaStatusRequest.cs
 src/HNTAS.Api.Client/Model/UpdateUserDetailsRequest.cs
 src/HNTAS.Api.Client/Model/UpdateUserOrgIdRequest.cs

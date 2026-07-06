@@ -148,29 +148,6 @@ namespace HNTAS.Web.UI.Services.Core
                 _logger.LogError(ex, "Error retrieving heat networks.");
                 throw;
             }
-        }
-
-        public async Task UpdateDocument(NetworkDetailsUploadDocumentRequest request)
-        {
-            if (request == null)
-                throw new ArgumentNullException(nameof(request), "Request cannot be null.");
-
-            if (string.IsNullOrWhiteSpace(request.HnId))
-                throw new ArgumentException("Heat Network ID is required.", nameof(request.HnId));
-
-            try
-            {
-                var response = await _heatNetworksApi.ApiHeatNetworksNetworkDetailsDocumentUpdatePatchOrDefaultAsync(request);
-
-                if (!response!.IsOk)
-                    throw new InvalidOperationException($"Update failed with status code: {response.StatusCode}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Exception during update for HN ID: {HnId}, UploadedBy: {UploadedBy}",
-                    request.HnId, request.UploadedBy);
-                throw;
-            }
-        }
+        }        
     }
 }

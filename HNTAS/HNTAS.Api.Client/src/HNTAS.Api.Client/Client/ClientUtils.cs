@@ -115,8 +115,6 @@ namespace HNTAS.Api.Client.Client
                 return ConnectionTypeValueConverter.ToJsonValue(connectionType);
             if (obj is ContributorRole contributorRole)
                 return ContributorRoleValueConverter.ToJsonValue(contributorRole);
-            if (obj is DocumentType documentType)
-                return DocumentTypeValueConverter.ToJsonValue(documentType);
             if (obj is ElementTypeInShort elementTypeInShort)
                 return ElementTypeInShortValueConverter.ToJsonValue(elementTypeInShort);
             if (obj is HeatNetworkElementType heatNetworkElementType)
