@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
 
 
 /* *********************************************************************************
@@ -38,6 +39,7 @@ using HNTAS.Api.Client.Api;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
+<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/SuperUserApiTests.cs
     ///  Class for testing SuperUserApi
     /// </summary>
     public sealed class SuperUserApiTests : ApiTestsBase
@@ -59,6 +61,29 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiSuperUserIsSuperUserEmailIdGetAsync(emailId);
             var model = response.Ok();
             Assert.IsType<bool>(model);
+========
+    ///  Class for testing AssessorApi
+    /// </summary>
+    public sealed class AssessorApiTests : ApiTestsBase
+    {
+        private readonly IAssessorApi _instance;
+
+        public AssessorApiTests(): base(Array.Empty<string>())
+        {
+            _instance = _host.Services.GetRequiredService<IAssessorApi>();
+        }
+
+        /// <summary>
+        /// Test ApiAssessorSearchGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiAssessorSearchGetAsyncTest()
+        {
+            Client.Option<string> q = default!;
+            var response = await _instance.ApiAssessorSearchGetAsync(q);
+            var model = response.Ok();
+            Assert.IsType<List<AssessorSearchResult>>(model);
+>>>>>>>> origin/test:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/AssessorApiTests.cs
         }
     }
 }
