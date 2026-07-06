@@ -87,6 +87,9 @@ namespace HNTAS.Api.Client.Test.Api
             var countriesAndTerritoriesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
+            var feedbackApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IFeedbackApi>();
+            Assert.True(feedbackApi.HttpClient.BaseAddress != null);
+
             var hNDataImportExportApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHNDataImportExportApi>();
             Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
 
@@ -144,6 +147,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var countriesAndTerritoriesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
+
+            var feedbackApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IFeedbackApi>();
+            Assert.True(feedbackApi.HttpClient.BaseAddress != null);
 
             var hNDataImportExportApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHNDataImportExportApi>();
             Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
@@ -203,6 +209,9 @@ namespace HNTAS.Api.Client.Test.Api
             var countriesAndTerritoriesApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
             
+            var feedbackApi = _hostUsingAddWithAClient.Services.GetRequiredService<IFeedbackApi>();
+            Assert.True(feedbackApi.HttpClient.BaseAddress != null);
+            
             var hNDataImportExportApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHNDataImportExportApi>();
             Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
             
@@ -260,6 +269,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var countriesAndTerritoriesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
+
+            var feedbackApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IFeedbackApi>();
+            Assert.True(feedbackApi.HttpClient.BaseAddress != null);
 
             var hNDataImportExportApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHNDataImportExportApi>();
             Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);

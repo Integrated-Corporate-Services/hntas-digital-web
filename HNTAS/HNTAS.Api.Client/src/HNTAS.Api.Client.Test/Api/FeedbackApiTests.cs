@@ -39,45 +39,25 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-    ///  Class for testing SOAApi
+    ///  Class for testing FeedbackApi
     /// </summary>
-    public sealed class SOAApiTests : ApiTestsBase
+    public sealed class FeedbackApiTests : ApiTestsBase
     {
-        private readonly ISOAApi _instance;
+        private readonly IFeedbackApi _instance;
 
-        public SOAApiTests(): base(Array.Empty<string>())
+        public FeedbackApiTests(): base(Array.Empty<string>())
         {
-            _instance = _host.Services.GetRequiredService<ISOAApi>();
-        }        
-
-        /// <summary>
-        /// Test ApiSOASoaAssignAssessorPatch
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiSOASoaAssignAssessorPatchAsyncTest()
-        {
-            ElementSoaAssignAssessorRequest elementSoaAssignAssessorRequest = default!;
-            await _instance.ApiSOASoaAssignAssessorPatchAsync(elementSoaAssignAssessorRequest);
+            _instance = _host.Services.GetRequiredService<IFeedbackApi>();
         }
 
         /// <summary>
-        /// Test ApiSOAUpdateSoaStatusPatch
+        /// Test ApiFeedbackPost
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiSOAUpdateSoaStatusPatchAsyncTest()
+        public async Task ApiFeedbackPostAsyncTest()
         {
-            ElementSoaStatusUpdateRequest elementSoaStatusUpdateRequest = default!;
-            await _instance.ApiSOAUpdateSoaStatusPatchAsync(elementSoaStatusUpdateRequest);
-        }
-
-        /// <summary>
-        /// Test ApiSOAUpdateSoaStatusPut
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiSOAUpdateSoaStatusPutAsyncTest()
-        {
-            UpdateSoaStatusRequest updateSoaStatusRequest = default!;
-            await _instance.ApiSOAUpdateSoaStatusPutAsync(updateSoaStatusRequest);
+            CreateFeedbackRequest createFeedbackRequest = default!;
+            await _instance.ApiFeedbackPostAsync(createFeedbackRequest);
         }
     }
 }
