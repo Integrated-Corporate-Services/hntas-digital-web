@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace HNTAS.Web.UI.Tests.Contollers
+namespace HNTAS.Web.UI.Tests.Controllers
 {
     public class AddOrganisationUserControllerTests
     {
