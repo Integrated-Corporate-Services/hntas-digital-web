@@ -95,17 +95,7 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiHeatNetworksHnIdsGetAsync(hnIdsString);
             var model = response.Ok();
             Assert.IsType<List<HeatNetworkResponse>>(model);
-        }
-
-        /// <summary>
-        /// Test ApiHeatNetworksNetworkDetailsDocumentUpdatePatch
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiHeatNetworksNetworkDetailsDocumentUpdatePatchAsyncTest()
-        {
-            NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest = default!;
-            await _instance.ApiHeatNetworksNetworkDetailsDocumentUpdatePatchAsync(networkDetailsUploadDocumentRequest);
-        }
+        }        
 
         /// <summary>
         /// Test ApiHeatNetworksNetworkElementsPut
