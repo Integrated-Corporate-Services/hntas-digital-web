@@ -81,6 +81,8 @@ public class HomeControllerTests
     {
         // Arrange
         var controller = CreateController(new ClaimsPrincipal());
+        _userServiceMock.Setup(s => s.IsSuperUser(It.IsAny<string>())).ReturnsAsync(false);
+        _configurationMock.Setup(c => c.GetSection("SuperUserLogin:Enabled").Value).Returns("false");
 
         // Act
         var result = await controller.Index();
@@ -96,6 +98,8 @@ public class HomeControllerTests
         // Arrange
         var controller = CreateController(CreateUser());
         _userServiceMock.Setup(s => s.GetUserByOneLoginId(It.IsAny<string>())).ThrowsAsync(new System.Exception("fail"));
+        _userServiceMock.Setup(s => s.IsSuperUser(It.IsAny<string>())).ReturnsAsync(false);
+        _configurationMock.Setup(c => c.GetSection("SuperUserLogin:Enabled").Value).Returns("false");
 
         // Act
         var result = await controller.Index();
@@ -112,6 +116,8 @@ public class HomeControllerTests
         var controller = CreateController(CreateUser());
         _userServiceMock.Setup(s => s.GetUserByOneLoginId(It.IsAny<string>())).ReturnsAsync((UserResponse)null);
         _userServiceMock.Setup(s => s.CreateUser(It.IsAny<InitialUserRegistrationRequest>())).ReturnsAsync("new-user-id");
+        _userServiceMock.Setup(s => s.IsSuperUser(It.IsAny<string>())).ReturnsAsync(false);
+        _configurationMock.Setup(c => c.GetSection("SuperUserLogin:Enabled").Value).Returns("false");
 
         // Act
         var result = await controller.Index();
@@ -134,6 +140,8 @@ public class HomeControllerTests
         var controller = CreateController(CreateUser());
         var userResponse = new UserResponse(id: "user-123");
         _userServiceMock.Setup(s => s.GetUserByOneLoginId(It.IsAny<string>())).ReturnsAsync(userResponse);
+        _userServiceMock.Setup(s => s.IsSuperUser(It.IsAny<string>())).ReturnsAsync(false);
+        _configurationMock.Setup(c => c.GetSection("SuperUserLogin:Enabled").Value).Returns("false");
 
         // Act
         var result = await controller.Index();
@@ -155,8 +163,10 @@ public class HomeControllerTests
     {
         // Arrange
         var controller = CreateController(CreateUser());
-        var userResponse = new UserResponse() { Id= "user-123", OrgId = "org123" };
+        var userResponse = new UserResponse() { Id = "user-123", OrgId = "org123" };
         _userServiceMock.Setup(s => s.GetUserByOneLoginId(It.IsAny<string>())).ReturnsAsync(userResponse);
+        _userServiceMock.Setup(s => s.IsSuperUser(It.IsAny<string>())).ReturnsAsync(false);
+        _configurationMock.Setup(c => c.GetSection("SuperUserLogin:Enabled").Value).Returns("false");
 
         // Act
         var result = await controller.Index();
@@ -175,7 +185,7 @@ public class HomeControllerTests
             Times.Once);
 
         // Verify organisation details were saved
-        if(userResponse.OrgId != null)
+        if (userResponse.OrgId != null)
         {
             var Redirect = Assert.IsType<RedirectToActionResult>(result);
         }
@@ -215,7 +225,7 @@ public class HomeControllerTests
         // Arrange        
         var invitedEmail = "test@example.com";
         _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.InvitedTokenEmail)).Returns(invitedEmail);
-        var controller = CreateController(CreateUser());        
+        var controller = CreateController(CreateUser());
         controller.Url = (invitedEmail != null
             ? SetUpBackLink("Home", "Index")
             : SetUpBackLink("Home", "WhatDoYouWantToDo"));
@@ -251,13 +261,13 @@ public class HomeControllerTests
     public void WhatDoYouWantToDo_WithModelInSession_ReturnsViewWithModel()
     {
         // Arrange
-        var expectedModel = new WhatDoYouWantToDoViewModel { UserPathToday = "TestOption" };  
+        var expectedModel = new WhatDoYouWantToDoViewModel { UserPathToday = "TestOption" };
         _configurationMock.Setup(c => c.GetSection("ExistingNetworks:EnableFeature").Value).Returns("true");
         _sessionHelperMock.Setup(s => s.GetFromSession<WhatDoYouWantToDoViewModel>(
             It.IsAny<HttpContext>(), SessionKeys.WhatDoYouWantToDoViewModelKey))
             .Returns(expectedModel);
         var controller = CreateController(CreateUser());
-        controller.Url = SetUpBackLink("Home", "StartPage");        
+        controller.Url = SetUpBackLink("Home", "StartPage");
 
         // Act
         var result = controller.WhatDoYouWantToDo();
@@ -276,7 +286,7 @@ public class HomeControllerTests
         _sessionHelperMock.Setup(s => s.GetFromSession<WhatDoYouWantToDoViewModel>(
             It.IsAny<HttpContext>(), SessionKeys.WhatDoYouWantToDoViewModelKey))
             .Returns((WhatDoYouWantToDoViewModel)null);
-        var controller = CreateController(CreateUser());        
+        var controller = CreateController(CreateUser());
         controller.Url = SetUpBackLink("Home", "StartPage");
 
         // Act
@@ -297,7 +307,7 @@ public class HomeControllerTests
         controller.Url = SetUpBackLink("Home", "StartPage");
         var errorMessage = "Invalid selection. Please try again.";
         controller.ModelState.AddModelError("UserPathToday", errorMessage);
-        
+
 
         // Act
         var result = controller.WhatDoYouWantToDo(model);

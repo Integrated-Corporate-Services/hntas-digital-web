@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace HNTAS.Web.UI.Tests.Contollers
+namespace HNTAS.Web.UI.Tests.Controllers
 {
     public class OrganisationControllerTests
     {
