@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **RegistrationSource** | **RegistrationSource** |  | [optional] 
 **HeatNetworkType** | **HeatNetworkType** |  | [optional] 
 **HasOwnEnergyCenter** | **bool** |  | [optional] 
+**EcSuppliesOneCommunalBuilding** | **bool** |  | [optional] 
 **HeatNetworkConnections** | [**HeatNetworkConnections**](HeatNetworkConnections.md) |  | [optional] 
 **NetworkElements** | [**NetworkElements**](NetworkElements.md) |  | [optional] 
 **Soa** | [**Soa**](Soa.md) |  | [optional] 
