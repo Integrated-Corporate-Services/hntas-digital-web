@@ -3028,45 +3028,6 @@
         }
       }
     },
-    "/api/SuperUser/is-super-user/{emailId}": {
-      "get": {
-        "tags": [
-          "SuperUser"
-        ],
-        "parameters": [
-          {
-            "name": "emailId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "boolean"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Users": {
       "get": {
         "tags": [
@@ -5439,6 +5400,9 @@
             "$ref": "#/components/schemas/HeatNetworkType"
           },
           "hasOwnEnergyCenter": {
+            "type": "boolean"
+          },
+          "ecSuppliesOneCommunalBuilding": {
             "type": "boolean"
           },
           "heatNetworkConnections": {
