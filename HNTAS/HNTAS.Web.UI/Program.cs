@@ -56,18 +56,7 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-Console.WriteLine("*********************in UI**************");
-Console.WriteLine("SIMULATOR_PROP1: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP1"));
-Console.WriteLine("SIMULATOR_PROP2: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP2"));
-Console.WriteLine("SIMULATOR_PROP3: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP3"));
-Console.WriteLine("SIMULATOR_PROP4: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP4"));
-Console.WriteLine("S3 Bucket variable: " + Environment.GetEnvironmentVariable("HNTAS_S3_BUCKET_NAME"));
-
-var coreApiBaseUrl = builder.Configuration.GetValue<string>("ApiClients:CoreApiBaseUrl");
-
-// It's crucial to validate that the configuration value was actually found
-if (string.IsNullOrEmpty(coreApiBaseUrl))
-    throw new InvalidOperationException("The 'ApiClients:CoreApiBaseUrl' is not configured in appsettings.json. Please ensure it exists and has a value.");
+var coreApiBaseUrl = Environment.GetEnvironmentVariable("CORE_BASE_URL") ?? throw new InvalidOperationException("Core API URL is not configured. Set CORE_BASE_URL environment variable.");
 
 // Register CompaniesHouseService with HttpClientFactory
 builder.Services.AddSingleton(new JsonSerializerOptions
@@ -311,9 +300,6 @@ builder.Services.AddSingleton<IAmazonS3>(sp =>
     return S3ClientHelper.Create(config);
 });
 
-builder.Services.AddSingleton<IS3UploadService, S3UploadService>();
-
-
 builder.Services.AddSingleton(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
@@ -387,10 +373,6 @@ if (!string.IsNullOrEmpty(useGovUkSimulator) && useGovUkSimulator.Equals("true",
                 OnTokenValidated = context =>
                 {
                     var identity = (ClaimsIdentity)context.Principal.Identity!;
-                    foreach (var claim in context.Principal.Claims)
-                    {
-                        Console.WriteLine($"[OIDC] Claim: {claim.Type} = {claim.Value}");
-                    }
                     // Existing mapping code
                     var email = context.Principal.FindFirst("email")?.Value;
                     if (!string.IsNullOrEmpty(email))
@@ -425,17 +407,11 @@ else
             // ... your existing OneLogin event handlers and configuration ...
             options.Events.OnRedirectToIdentityProvider = context =>
             {
-                var invitedEmail = context.HttpContext.Session.GetString(SessionKeys.InvitedTokenEmail)?.Trim('"');
                 var invitationId = context.HttpContext.Session.GetString(SessionKeys.InvitationId)?.Trim('"');
-                var inviterUserId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserId)?.Trim('"');
-                var inviterOrgId = context.HttpContext.Session.GetString(SessionKeys.InvitedInviterUserOrgId)?.Trim('"');
 
-                if (!string.IsNullOrWhiteSpace(invitedEmail) &&
-                    !string.IsNullOrWhiteSpace(invitationId) &&
-                    !string.IsNullOrWhiteSpace(inviterUserId) &&
-                    !string.IsNullOrWhiteSpace(inviterOrgId))
+                if (!string.IsNullOrWhiteSpace(invitationId))
                 {
-                    var customState = $"{invitedEmail}|{invitationId}|{inviterUserId}|{inviterOrgId}";
+                    var customState = $"{invitationId}";
                     context.ProtocolMessage.State = customState;
                 }
 
@@ -445,20 +421,11 @@ else
             options.Events.OnTokenValidated = context =>
             {
                 var state = context.ProtocolMessage.State;
-                var parts = state?.Split('|');
 
-                if (parts?.Length == 4)
+                if (!string.IsNullOrWhiteSpace(state))
                 {
-                    var invitedEmail = parts[0];
-                    var invitationId = parts[1];
-                    var inviterUserId = parts[2];
-                    var inviterOrgId = parts[3];
-
                     var identity = (ClaimsIdentity)context.Principal.Identity!;
-                    identity.AddClaim(new Claim("hntas.invitedEmail", invitedEmail));
-                    identity.AddClaim(new Claim("hntas.invitationId", invitationId));
-                    identity.AddClaim(new Claim("hntas.inviterUserId", inviterUserId));
-                    identity.AddClaim(new Claim("hntas.inviterOrgId", inviterOrgId));
+                    identity.AddClaim(new Claim("hntas.invitationId", state));
                 }
 
                 return Task.CompletedTask;
