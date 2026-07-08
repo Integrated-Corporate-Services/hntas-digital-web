@@ -46,6 +46,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new AddInvitationRequestJsonConverter());
             _jsonOptions.Converters.Add(new AddressJsonConverter());
             _jsonOptions.Converters.Add(new AggregatedKpiJsonConverter());
+            _jsonOptions.Converters.Add(new ArmsPowerBiReportResponseJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanResponseJsonConverter());
             _jsonOptions.Converters.Add(new AssessorAssessmentJsonConverter());
@@ -203,6 +204,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<IApiFactory, ApiFactory>();
             _services.AddSingleton<ArmsApiEvents>();
             _services.AddSingleton<ArmsDashboardApiEvents>();
+            _services.AddSingleton<ArmsReportApiEvents>();
             _services.AddSingleton<AssessorApiEvents>();
             _services.AddSingleton<AssignedAssessorApiEvents>();
             _services.AddSingleton<AuditApiEvents>();
@@ -238,6 +240,7 @@ namespace HNTAS.Api.Client.Client
 
             builders.Add(_services.AddHttpClient<IArmsApi, ArmsApi>(client));
             builders.Add(_services.AddHttpClient<IArmsDashboardApi, ArmsDashboardApi>(client));
+            builders.Add(_services.AddHttpClient<IArmsReportApi, ArmsReportApi>(client));
             builders.Add(_services.AddHttpClient<IAssessorApi, AssessorApi>(client));
             builders.Add(_services.AddHttpClient<IAssignedAssessorApi, AssignedAssessorApi>(client));
             builders.Add(_services.AddHttpClient<IAuditApi, AuditApi>(client));

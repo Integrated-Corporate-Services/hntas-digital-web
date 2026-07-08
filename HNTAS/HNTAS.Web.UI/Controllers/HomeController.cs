@@ -78,14 +78,8 @@ public class HomeController : Controller
         }
 
         //check for invitation flow
-        var invitedEmail = User.FindFirst("hntas.invitedEmail")?.Value;
         var invitationId = User.FindFirst("hntas.invitationId")?.Value;
 
-        if (!string.IsNullOrEmpty(invitedEmail) && !string.Equals(email, invitedEmail, StringComparison.OrdinalIgnoreCase))
-        {
-            _logger.LogError("Authenticated email does not match invited email.");
-            return BadRequest();
-        }
 
         try
         {
@@ -93,18 +87,6 @@ public class HomeController : Controller
             // If invitationId is present, we are in an invitation flow
             if (!string.IsNullOrEmpty(invitationId))
             {
-
-                var inviterUserId = User.FindFirst("hntas.inviterUserId")?.Value;
-                var inviterOrgId = User.FindFirst("hntas.inviterOrgId")?.Value;
-
-                if (string.IsNullOrEmpty(invitedEmail) || string.IsNullOrEmpty(inviterUserId) || string.IsNullOrEmpty(inviterOrgId))
-                {
-                    _logger.LogError("Invitation flow data incomplete.");
-
-                    TempData["ErrorMessage"] = "We couldn't process your invitation due to missing information. Please try the link again or contact support if the issue persists.";
-                    return BadRequest();
-                }
-
                 //check invitation is already accepted
                 var invitation = await _invitationService.GetInvitationByIdAsync(invitationId);
 
@@ -117,7 +99,6 @@ public class HomeController : Controller
                 if (invitation.Status == InvitationStatus.Invited)
                 {
                     var userId = await _invitationService.AcceptInvitationAsync(new InvitedUserRequest(
-                        invitedEmail: invitedEmail,
                         invitationId: invitationId,
                         oneLoginId: oneLoginId));
 
