@@ -21,9 +21,26 @@ namespace HNTAS.Web.UI.Controllers
             return LocalRedirect(GetSafeReturnUrl());
         }
 
-        [HttpPost("/cookies/reject")]
-        [ValidateAntiForgeryToken]
-        public IActionResult Reject()
+        [HttpGet]
+        public IActionResult Help()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult AccessibilityStatement()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
+
+        #region helperMethods
+        private void SetCookieConsent(string cookieConsent)
         {
             Response.Cookies.Append("cookie_consent", "rejected", new CookieOptions
             {
@@ -63,5 +80,6 @@ namespace HNTAS.Web.UI.Controllers
             var relativeUrl = parsedUri.ToString();
             return Url.IsLocalUrl(relativeUrl) ? relativeUrl : fallbackUrl;
         }
+        #endregion
     }
 }
