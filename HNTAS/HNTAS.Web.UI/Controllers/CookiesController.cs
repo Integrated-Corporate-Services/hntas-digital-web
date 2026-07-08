@@ -40,7 +40,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         #region helperMethods
-        private void SetCookieConsent(string cookieConsent)
+        private IActionResult SetCookieConsent(string cookieConsent)
         {
             Response.Cookies.Append("cookie_consent", "rejected", new CookieOptions
             {
