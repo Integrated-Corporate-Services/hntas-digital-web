@@ -56,11 +56,7 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-var coreApiBaseUrl = builder.Configuration.GetValue<string>("ApiClients:CoreApiBaseUrl");
-
-// It's crucial to validate that the configuration value was actually found
-if (string.IsNullOrEmpty(coreApiBaseUrl))
-    throw new InvalidOperationException("The 'ApiClients:CoreApiBaseUrl' is not configured in appsettings.json. Please ensure it exists and has a value.");
+var coreApiBaseUrl = Environment.GetEnvironmentVariable("CORE_BASE_URL") ?? throw new InvalidOperationException("Core API URL is not configured. Set CORE_BASE_URL environment variable.");
 
 // Register CompaniesHouseService with HttpClientFactory
 builder.Services.AddSingleton(new JsonSerializerOptions
