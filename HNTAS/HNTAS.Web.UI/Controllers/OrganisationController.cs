@@ -331,7 +331,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var IsEditJourney = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey);
             var IsAddNonRPOrgJourney = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey);
-            if (IsEditJourney || IsAddNonRPOrgJourney)
+            if (IsEditJourney)
             {
                 return RedirectToAction("UpdateOrganisationDetailsConfirmation");
             }
@@ -505,7 +505,7 @@ namespace HNTAS.Web.UI.Controllers
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
             var deedPollViewModel = _sessionHelper.GetFromSession<DeedPollViewModel>(HttpContext, SessionKeys.DeedPollViewModelSessionKey);
 
-            var model = _sessionHelper.GetFromSession<CheckYourAnswersOrganisationModel>(HttpContext, SessionKeys.CheckYourAnswersOrganisationModelSessionKey) ?? new CheckYourAnswersOrganisationModel
+            var model = new CheckYourAnswersOrganisationModel
             {
                 Organisation = organisationModel,
                 User = userModel,
@@ -649,8 +649,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 model.OrganisationName = organisationModel.CompanyDetails?.Title;
             }
-            ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("OrganisationType");
+            this.ShowBackButton("OrganisationType");
 
             return View("OrganisationName", model);
         }
@@ -661,9 +660,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.ShowBackButton = true;
-                ViewBag.BackLinkUrl = Url.Action("OrganisationType");
-
+                this.ShowBackButton("OrganisationType");
                 return View("OrganisationName", model);
             }
 
@@ -679,9 +676,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 organisationModel.CompanyDetails.Title = model.OrganisationName;
             }
-
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, organisationModel);
-
             return RedirectToAction("OrganisationAddress");
         }
 
@@ -895,6 +890,7 @@ namespace HNTAS.Web.UI.Controllers
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var IsAddNonRPOrgJourney = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, false);
 
             if (organisationModel?.CompanyDetails == null)
             {
