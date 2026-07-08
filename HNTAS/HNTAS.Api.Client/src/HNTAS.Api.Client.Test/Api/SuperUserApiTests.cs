@@ -44,7 +44,7 @@ namespace HNTAS.Api.Client.Test.Api
     {
         private readonly ISuperUserApi _instance;
 
-        public SuperUserApiTests() : base(Array.Empty<string>())
+        public SuperUserApiTests(): base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<ISuperUserApi>();
         }
@@ -52,7 +52,7 @@ namespace HNTAS.Api.Client.Test.Api
         /// <summary>
         /// Test ApiSuperUserIsSuperUserEmailIdGet
         /// </summary>
-        [Fact(Skip = "not implemented")]
+        [Fact (Skip = "not implemented")]
         public async Task ApiSuperUserIsSuperUserEmailIdGetAsyncTest()
         {
             string emailId = default!;
