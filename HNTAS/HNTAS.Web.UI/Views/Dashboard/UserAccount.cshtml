@@ -100,7 +100,7 @@
                 </div>
             </div>
 
-            @if (Model.HasOfgemNetworks)
+            @if (Model.HasOfgemNetworks && @ViewBag.IsExistingNetworksFeatureEnabled)
             {
                 <div class="dashboard-grid__item">
                     <div class="dashboard-card">
@@ -179,7 +179,7 @@
             <div class="dashboard-grid__item">
                 <div class="dashboard-card @disabled">
                     <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks</a>
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">@newNetworksLabel</a>
                     </h3>
                     <p class="govuk-body-s">View the heat network to be assessed.</p>
                 </div>
@@ -210,7 +210,7 @@
             <div class="dashboard-grid__item">
                 <div class="dashboard-card @disabled">
                     <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Your heat networks</a>
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">@newNetworksLabel</a>
                     </h3>
                     <p class="govuk-body-s">View, add or edit heat network details.</p>
                 </div>
