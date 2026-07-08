@@ -32,11 +32,18 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
+        public IActionResult AccessibilityStatement()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult TermsAndConditions()
         {
             return View();
         }
 
+        #region helperMethods
         private void SetCookieConsent(string cookieConsent)
         {
             Response.Cookies.Append("cookie_consent", cookieConsent, new CookieOptions
@@ -79,5 +86,6 @@ namespace HNTAS.Web.UI.Controllers
             var relativeUrl = parsedUri.ToString();
             return Url.IsLocalUrl(relativeUrl) ? relativeUrl : fallbackUrl;
         }
+        #endregion
     }
 }
