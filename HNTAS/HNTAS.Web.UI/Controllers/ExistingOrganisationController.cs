@@ -26,12 +26,15 @@ namespace HNTAS.Web.UI.Controllers
         {
             var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
-            ViewBag.isUserAnRP = await _userService.IsRpUserAsync(user.EmailId) ?? false;
+            var isUserAnRP = await _userService.IsRpUserAsync(user.EmailId) ?? false;
+            ViewBag.isUserAnRP = isUserAnRP;
             if (organisationName != null)
             {
                 this.ShowBackButton("UserAccount", "Dashboard");
             }
-            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey, true);
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, false);
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey, !isUserAnRP);
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsRPJourneySessionKey, isUserAnRP);
             return View("AddOrRegister");
         }
 
@@ -39,7 +42,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult Search()
         {
             this.ShowBackButton("AddOrRegister");
-
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, true);            
             return View("Search", new OrganisationSearchViewModel());
         }
 

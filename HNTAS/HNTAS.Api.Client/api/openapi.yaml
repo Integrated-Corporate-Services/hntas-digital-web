@@ -4973,6 +4973,7 @@ components:
         name: name
         registrationSource: HNTAS
         pathway: pathway
+        ecSuppliesOneCommunalBuilding: true
         designConstructionLog:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -5013,6 +5014,8 @@ components:
         heatNetworkType:
           $ref: "#/components/schemas/HeatNetworkType"
         hasOwnEnergyCenter:
+          type: boolean
+        ecSuppliesOneCommunalBuilding:
           type: boolean
         heatNetworkConnections:
           $ref: "#/components/schemas/HeatNetworkConnections"
