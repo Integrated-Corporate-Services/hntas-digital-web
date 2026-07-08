@@ -56,13 +56,6 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-Console.WriteLine("*********************in UI**************");
-Console.WriteLine("SIMULATOR_PROP1: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP1"));
-Console.WriteLine("SIMULATOR_PROP2: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP2"));
-Console.WriteLine("SIMULATOR_PROP3: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP3"));
-Console.WriteLine("SIMULATOR_PROP4: " + Environment.GetEnvironmentVariable("SIMULATOR_PROP4"));
-Console.WriteLine("S3 Bucket variable: " + Environment.GetEnvironmentVariable("HNTAS_S3_BUCKET_NAME"));
-
 var coreApiBaseUrl = builder.Configuration.GetValue<string>("ApiClients:CoreApiBaseUrl");
 
 // It's crucial to validate that the configuration value was actually found
@@ -433,8 +426,11 @@ else
             {
                 var state = context.ProtocolMessage.State;
 
-                var identity = (ClaimsIdentity)context.Principal.Identity!;
-                identity.AddClaim(new Claim("hntas.invitationId", state));
+                if (!string.IsNullOrWhiteSpace(state))
+                {
+                    var identity = (ClaimsIdentity)context.Principal.Identity!;
+                    identity.AddClaim(new Claim("hntas.invitationId", state));
+                }
 
                 return Task.CompletedTask;
             };
