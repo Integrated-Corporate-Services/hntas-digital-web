@@ -1,0 +1,86 @@
+﻿@using HNTAS.Web.UI.Models.NetworkCharacteristics
+@model NetworkSupplyViewModel
+
+@{
+    ViewData["Title"] = "Network supply";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">@TempData.Peek("HnId")</span>
+            <form asp-action="NetworkSupply" asp-controller="NetworkCharacteristics" method="post">
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Network Supply</legend>
+                        <p class="govuk-body">Select all that apply.</p>
+                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            <!-- Supplying other heat networks -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input"
+                                       id="IsSupplyingOtherHeatNetworks"
+                                       name="IsSupplyingOtherHeatNetworks"
+                                       type="checkbox"
+                                       value="true"
+                                       @(Model.IsSupplyingOtherHeatNetworks ? "checked" : "") />
+
+                                <label class="govuk-label govuk-checkboxes__label" for="SupplyingOtherNetworks">
+                                    Are you supplying other heat networks?
+                                </label>
+
+                                <div class="govuk-hint govuk-checkboxes__hint">
+                                    This could include other district networks or other residential heat networks
+                                </div>
+
+                                <input type="hidden" name="IsSupplyingOtherHeatNetworks" value="false" />
+                            </div>
+
+                            <!-- Commercial connections -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input"
+                                       id="HasCommercialConnections"
+                                       name="HasCommercialConnections"
+                                       type="checkbox"
+                                       value="true"
+                                       @(Model.HasCommercialConnections ? "checked" : "") />
+
+                                <label class="govuk-label govuk-checkboxes__label" for="HasCommercialConnections">
+                                    Do you have commercial connections?
+                                </label>
+
+                                <div class="govuk-hint govuk-checkboxes__hint">
+                                    Are you supplying any other large public/commercial buildings (office, hotel, retail, schools)
+                                </div>
+
+                                <input type="hidden" name="HasCommercialConnections" value="false" />
+                            </div>
+
+                            <!-- Supplied by district heat network -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input"
+                                       id="IsSuppliedByADistrictHeatNetwork"
+                                       name="IsSuppliedByADistrictHeatNetwork"
+                                       type="checkbox"
+                                       value="true"
+                                       @(Model.IsSuppliedByADistrictHeatNetwork ? "checked" : "") />
+
+                                <label class="govuk-label govuk-checkboxes__label" for="SuppliedByDistrictNetwork">
+                                    Are you being supplied by a district heat network?
+                                </label>
+
+                                <div class="govuk-hint govuk-checkboxes__hint">
+                                    <!-- Screenshot shows no hint text here, so left blank -->
+                                </div>
+
+                                <input type="hidden" name="IsSuppliedByADistrictHeatNetwork" value="false" />
+                            </div>
+                        </div>                        
+                    </fieldset>                    
+                </div>
+                <button class="govuk-button" data-module="govuk-button" type="submit">
+                    Continue
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
