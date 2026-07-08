@@ -4,7 +4,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**InvitedEmail** | **string** |  | 
 **InvitationId** | **string** |  | 
 **OneLoginId** | **string** |  | 
 

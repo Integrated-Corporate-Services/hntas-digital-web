@@ -7,6 +7,7 @@ servers:
 tags:
 - name: Arms
 - name: ArmsDashboard
+- name: ArmsReport
 - name: Assessor
 - name: AssignedAssessor
 - name: Audit
@@ -497,6 +498,31 @@ paths:
           description: Internal Server Error
       tags:
       - ArmsDashboard
+  /api/ArmsReport/powerbi-data:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ArmsPowerBiReportResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ArmsPowerBiReportResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ArmsPowerBiReportResponse"
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - ArmsReport
   /api/Assessor/search:
     get:
       parameters:
@@ -2781,6 +2807,36 @@ components:
           format: double
           type: number
         status:
+          type: string
+      type: object
+    ArmsPowerBiReportResponse:
+      example:
+        elementId: elementId
+        hnId: hnId
+        kpiId: kpiId
+        assessmentStatus: assessmentStatus
+        periodStart: periodStart
+        elementType: elementType
+        value: 0.8008281904610115
+        orgId: orgId
+      properties:
+        hnId:
+          type: string
+        orgId:
+          type: string
+        periodStart:
+          type: string
+        elementId:
+          nullable: true
+          type: string
+        elementType:
+          type: string
+        kpiId:
+          type: string
+        value:
+          format: double
+          type: number
+        assessmentStatus:
           type: string
       type: object
     AssessmentPlan:
@@ -5874,17 +5930,13 @@ components:
       example:
         oneLoginId: oneLoginId
         invitationId: invitationId
-        invitedEmail: invitedEmail
       properties:
-        invitedEmail:
-          type: string
         invitationId:
           type: string
         oneLoginId:
           type: string
       required:
       - invitationId
-      - invitedEmail
       - oneLoginId
       type: object
     InvitedUserResponse:

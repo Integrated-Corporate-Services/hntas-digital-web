@@ -33,25 +33,17 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="InvitedUserRequest" /> class.
         /// </summary>
-        /// <param name="invitedEmail">invitedEmail</param>
         /// <param name="invitationId">invitationId</param>
         /// <param name="oneLoginId">oneLoginId</param>
         [JsonConstructor]
-        public InvitedUserRequest(string invitedEmail, string invitationId, string oneLoginId)
+        public InvitedUserRequest(string invitationId, string oneLoginId)
         {
-            InvitedEmail = invitedEmail;
             InvitationId = invitationId;
             OneLoginId = oneLoginId;
             OnCreated();
         }
 
         partial void OnCreated();
-
-        /// <summary>
-        /// Gets or Sets InvitedEmail
-        /// </summary>
-        [JsonPropertyName("invitedEmail")]
-        public string InvitedEmail { get; set; }
 
         /// <summary>
         /// Gets or Sets InvitationId
@@ -73,7 +65,6 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class InvitedUserRequest {\n");
-            sb.Append("  InvitedEmail: ").Append(InvitedEmail).Append("\n");
             sb.Append("  InvitationId: ").Append(InvitationId).Append("\n");
             sb.Append("  OneLoginId: ").Append(OneLoginId).Append("\n");
             sb.Append("}\n");
@@ -113,7 +104,6 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> invitedEmail = default;
             Option<string?> invitationId = default;
             Option<string?> oneLoginId = default;
 
@@ -132,9 +122,6 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "invitedEmail":
-                            invitedEmail = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
                         case "invitationId":
                             invitationId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
@@ -147,17 +134,11 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (!invitedEmail.IsSet)
-                throw new ArgumentException("Property is required for class InvitedUserRequest.", nameof(invitedEmail));
-
             if (!invitationId.IsSet)
                 throw new ArgumentException("Property is required for class InvitedUserRequest.", nameof(invitationId));
 
             if (!oneLoginId.IsSet)
                 throw new ArgumentException("Property is required for class InvitedUserRequest.", nameof(oneLoginId));
-
-            if (invitedEmail.IsSet && invitedEmail.Value == null)
-                throw new ArgumentNullException(nameof(invitedEmail), "Property is not nullable for class InvitedUserRequest.");
 
             if (invitationId.IsSet && invitationId.Value == null)
                 throw new ArgumentNullException(nameof(invitationId), "Property is not nullable for class InvitedUserRequest.");
@@ -165,7 +146,7 @@ namespace HNTAS.Api.Client.Model
             if (oneLoginId.IsSet && oneLoginId.Value == null)
                 throw new ArgumentNullException(nameof(oneLoginId), "Property is not nullable for class InvitedUserRequest.");
 
-            return new InvitedUserRequest(invitedEmail.Value!, invitationId.Value!, oneLoginId.Value!);
+            return new InvitedUserRequest(invitationId.Value!, oneLoginId.Value!);
         }
 
         /// <summary>
@@ -192,16 +173,11 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, InvitedUserRequest invitedUserRequest, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (invitedUserRequest.InvitedEmail == null)
-                throw new ArgumentNullException(nameof(invitedUserRequest.InvitedEmail), "Property is required for class InvitedUserRequest.");
-
             if (invitedUserRequest.InvitationId == null)
                 throw new ArgumentNullException(nameof(invitedUserRequest.InvitationId), "Property is required for class InvitedUserRequest.");
 
             if (invitedUserRequest.OneLoginId == null)
                 throw new ArgumentNullException(nameof(invitedUserRequest.OneLoginId), "Property is required for class InvitedUserRequest.");
-
-            writer.WriteString("invitedEmail", invitedUserRequest.InvitedEmail);
 
             writer.WriteString("invitationId", invitedUserRequest.InvitationId);
 
