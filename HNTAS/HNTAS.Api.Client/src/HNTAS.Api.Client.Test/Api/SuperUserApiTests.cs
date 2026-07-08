@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using HNTAS.Api.Client.Api;
-using HNTAS.Api.Client.Model;
 
 
 /* *********************************************************************************
@@ -39,14 +38,13 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/SuperUserApiTests.cs
     ///  Class for testing SuperUserApi
     /// </summary>
     public sealed class SuperUserApiTests : ApiTestsBase
     {
         private readonly ISuperUserApi _instance;
 
-        public SuperUserApiTests(): base(Array.Empty<string>())
+        public SuperUserApiTests() : base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<ISuperUserApi>();
         }
@@ -54,36 +52,13 @@ namespace HNTAS.Api.Client.Test.Api
         /// <summary>
         /// Test ApiSuperUserIsSuperUserEmailIdGet
         /// </summary>
-        [Fact (Skip = "not implemented")]
+        [Fact(Skip = "not implemented")]
         public async Task ApiSuperUserIsSuperUserEmailIdGetAsyncTest()
         {
             string emailId = default!;
             var response = await _instance.ApiSuperUserIsSuperUserEmailIdGetAsync(emailId);
             var model = response.Ok();
             Assert.IsType<bool>(model);
-========
-    ///  Class for testing AssessorApi
-    /// </summary>
-    public sealed class AssessorApiTests : ApiTestsBase
-    {
-        private readonly IAssessorApi _instance;
-
-        public AssessorApiTests(): base(Array.Empty<string>())
-        {
-            _instance = _host.Services.GetRequiredService<IAssessorApi>();
-        }
-
-        /// <summary>
-        /// Test ApiAssessorSearchGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiAssessorSearchGetAsyncTest()
-        {
-            Client.Option<string> q = default!;
-            var response = await _instance.ApiAssessorSearchGetAsync(q);
-            var model = response.Ok();
-            Assert.IsType<List<AssessorSearchResult>>(model);
->>>>>>>> test:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/AssessorApiTests.cs
         }
     }
 }
