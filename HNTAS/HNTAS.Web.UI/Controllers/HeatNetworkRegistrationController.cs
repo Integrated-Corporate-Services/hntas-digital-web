@@ -775,7 +775,7 @@ namespace HNTAS.Web.UI.Controllers
                 Address = address,
                 EcDetails = ecDetails,
                 HeatNetworkType = hnType,
-                EcSuppliesOneCommunalBuilding = isHnTypeCommunalViewModel.IsHnTypeCommunal == true ? (doesCommunalEcSupplyOneBlockViewModel?.SuppliesOneBlock == true ? true : false) : null,
+                EcSuppliesOneCommunalBuilding = isHnTypeCommunalViewModel.IsHnTypeCommunal == true ? (doesCommunalEcSupplyOneBlockViewModel?.SuppliesOneBlock == true ? true : false) : false,
                 HasOwnEnergyCenter = HasOwnEc,
                 HeatNetworkConnections = heatNetworkConnections,
                 Pathway = viewModel?.PathwayModel?.Pathway,
