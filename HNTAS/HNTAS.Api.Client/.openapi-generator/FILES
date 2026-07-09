@@ -5,6 +5,7 @@ api/openapi.yaml
 appveyor.yml
 docs/apis/ArmsApi.md
 docs/apis/ArmsDashboardApi.md
+docs/apis/ArmsReportApi.md
 docs/apis/AssessorApi.md
 docs/apis/AssignedAssessorApi.md
 docs/apis/AuditApi.md
@@ -24,6 +25,7 @@ docs/apis/UsersApi.md
 docs/models/AddInvitationRequest.md
 docs/models/Address.md
 docs/models/AggregatedKpi.md
+docs/models/ArmsPowerBiReportResponse.md
 docs/models/AssessmentPlan.md
 docs/models/AssessmentPlanResponse.md
 docs/models/AssessorAssessment.md
@@ -159,13 +161,11 @@ docs/models/UserStatus.md
 docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
-src/HNTAS.Api.Client.Test/Api/FeedbackApiTests.cs
-src/HNTAS.Api.Client.Test/Api/SuperUserApiTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/CreateFeedbackRequestTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
+src/HNTAS.Api.Client/Api/ArmsReportApi.cs
 src/HNTAS.Api.Client/Api/AssessorApi.cs
 src/HNTAS.Api.Client/Api/AssignedAssessorApi.cs
 src/HNTAS.Api.Client/Api/AuditApi.cs
@@ -208,6 +208,7 @@ src/HNTAS.Api.Client/HNTAS.Api.Client.csproj
 src/HNTAS.Api.Client/Model/AddInvitationRequest.cs
 src/HNTAS.Api.Client/Model/Address.cs
 src/HNTAS.Api.Client/Model/AggregatedKpi.cs
+src/HNTAS.Api.Client/Model/ArmsPowerBiReportResponse.cs
 src/HNTAS.Api.Client/Model/AssessmentPlan.cs
 src/HNTAS.Api.Client/Model/AssessmentPlanResponse.cs
 src/HNTAS.Api.Client/Model/AssessorAssessment.cs

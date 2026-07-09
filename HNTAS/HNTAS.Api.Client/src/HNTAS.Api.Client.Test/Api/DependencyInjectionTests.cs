@@ -72,6 +72,9 @@ namespace HNTAS.Api.Client.Test.Api
             var armsDashboardApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IArmsDashboardApi>();
             Assert.True(armsDashboardApi.HttpClient.BaseAddress != null);
 
+            var armsReportApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IArmsReportApi>();
+            Assert.True(armsReportApi.HttpClient.BaseAddress != null);
+
             var assessorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
@@ -132,6 +135,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var armsDashboardApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IArmsDashboardApi>();
             Assert.True(armsDashboardApi.HttpClient.BaseAddress != null);
+
+            var armsReportApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IArmsReportApi>();
+            Assert.True(armsReportApi.HttpClient.BaseAddress != null);
 
             var assessorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
@@ -194,6 +200,9 @@ namespace HNTAS.Api.Client.Test.Api
             var armsDashboardApi = _hostUsingAddWithAClient.Services.GetRequiredService<IArmsDashboardApi>();
             Assert.True(armsDashboardApi.HttpClient.BaseAddress != null);
             
+            var armsReportApi = _hostUsingAddWithAClient.Services.GetRequiredService<IArmsReportApi>();
+            Assert.True(armsReportApi.HttpClient.BaseAddress != null);
+            
             var assessorApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
             
@@ -254,6 +263,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var armsDashboardApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IArmsDashboardApi>();
             Assert.True(armsDashboardApi.HttpClient.BaseAddress != null);
+
+            var armsReportApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IArmsReportApi>();
+            Assert.True(armsReportApi.HttpClient.BaseAddress != null);
 
             var assessorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
