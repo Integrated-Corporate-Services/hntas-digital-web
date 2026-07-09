@@ -174,6 +174,114 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.NotNull(result);
         }
 
+        [Fact]
+        public void Substations_Post_RedirectToAction()
+        {
+            MockSessionObjects(NullableOfHeatNetworkType.District, true);
+            _controller.Url = SetUpBackLink("SelectNetworkElements", "NetworkElements").Object;
+            var model = new SubstationsViewModel
+            {
+                HasDistrictSubstation = false,
+                NumberOfSubstations = 2
+            };
+            var result = _controller.Substations(model) as RedirectToActionResult;
+            Assert.Equal("DistributionNetworks", result?.ActionName);
+        }
+
+        [Fact]
+        public void Substations_Post_ModelStateError_ReturnView()
+        {
+            MockSessionObjects(NullableOfHeatNetworkType.District, true);
+            _controller.Url = SetUpBackLink("SelectNetworkElements", "NetworkElements").Object;
+            var model = new SubstationsViewModel
+            {
+                HasDistrictSubstation = true,
+                NumberOfSubstations = null
+            };
+            var result = _controller.Substations(model) as ViewResult;
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void DistributionNetworks_ModelIsNotNull_ReturnView()
+        {
+            MockSessionObjects(NullableOfHeatNetworkType.District, true);
+            _controller.Url = SetUpBackLink("Substations", "NetworkElements").Object;
+
+            var result = _controller.DistributionNetworks() as ViewResult;
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void DistributionNetworks_ReturnView()
+        {
+            MockSessionObjects(NullableOfHeatNetworkType.District, true);
+            _controller.Url = SetUpBackLink("Substations", "NetworkElements").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<SubstationsViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.SubstationViewModelKey))
+                .Returns(new SubstationsViewModel { HasDistrictSubstation = true, NumberOfSubstations = 2 });
+            var result = _controller.DistributionNetworks() as ViewResult;
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void DistributionNetworks_Post_RedirectToAction()
+        {
+            MockSessionObjects(NullableOfHeatNetworkType.District, true);
+            _controller.Url = SetUpBackLink("Substations", "NetworkElements").Object;
+            var model = new DistributionNetworksViewModel
+            {
+                NumberOfDistributionNetworks = 3
+            };
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NetworkElementsOverViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NetworkElementsOverViewModelSessionKey))
+                .Returns(new NetworkElementsOverViewModel
+                {
+                    Elements = new List<string> (),
+                });
+
+            var result = _controller.DistributionNetworks(model) as RedirectToActionResult;
+            Assert.Equal("NetworkElementsOverView", result?.ActionName);
+        }
+
+        [Fact]
+        public void NetworkElementsOverView_Get_ReturnView()
+        {
+            MockSessionObjects(NullableOfHeatNetworkType.District, true);
+            _controller.Url = SetUpBackLink("DistributionNetworks", "NetworkElements").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NetworkElementsOverViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NetworkElementsOverViewModelSessionKey))
+                .Returns(new NetworkElementsOverViewModel
+                {
+                    Elements = new List<string>(),
+                });
+            var result = _controller.NetworkElementsOverView() as ViewResult;
+            Assert.NotNull(result);
+            Assert.Equal("NetworkElementsOverView", result.ViewName);
+        }
+
+        [Fact]
+        public async Task NetworkElementsOverViewAsync_District_OwnEnergyCentre_Post_RedirectToAction()
+        {
+            MockSessionObjects(NullableOfHeatNetworkType.District, true);
+            var result = await _controller.NetworkElementsOverViewAsync() as RedirectToActionResult;
+            _heatNetworksApiMock.Verify(s => s.UpdateNetworkElements(It.IsAny<string>(), It.IsAny<NetworkElements2>()), Times.Once);
+            Assert.Equal("NetworkDetails", result?.ActionName);
+        }
+
+        [Fact]
+        public async Task NetworkElementsOverViewAsync_Communal_OwnEnergyCentre_Post_RedirectToAction()
+        {
+            MockSessionObjects(NullableOfHeatNetworkType.Communal, true);
+            var result = await _controller.NetworkElementsOverViewAsync() as RedirectToActionResult;
+            _heatNetworksApiMock.Verify(s => s.UpdateNetworkElements(It.IsAny<string>(), It.IsAny<NetworkElements2>()), Times.Once);
+            Assert.Equal("NetworkDetails", result?.ActionName);
+        }
+
         private void MockSessionObjects(NullableOfHeatNetworkType networkType, bool hasOwnEnergyCentre)
         {
             _sessionHelperMock
@@ -253,6 +361,48 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Setup(x => x.GetFromSession<SubstationsViewModel>(
                     It.IsAny<HttpContext>(), SessionKeys.SubstationViewModelKey))
                 .Returns(new SubstationsViewModel { HasDistrictSubstation = true, NumberOfSubstations = 2});
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<DistributionNetworksViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.DistributionNetworksViewModelKey))
+                .Returns(new DistributionNetworksViewModel { NumberOfDistributionNetworks = 3 });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<List<NetworkElementGroup>>(
+                    It.IsAny<HttpContext>(), SessionKeys.SelectedElementsSessionKey))
+                .Returns(new List<NetworkElementGroup> { 
+                new NetworkElementGroup
+                {
+                    Count = 1,
+                                ElementDisplayType = HeatNetworkElementType.DistrictDistribution,
+                                ElementType = "DDN",
+                                SoaStages = new List<SoaStages> {
+                                    new SoaStages
+                                    {
+                                        Assessors = new List<SoaAssessor>
+                                        {
+                                            new SoaAssessor
+                                            {
+                                                Assessment = "Assessment 1",
+                                                Email = "test",
+                                                FirstName = "First",
+                                                LastName = "Last",
+                                                Status = UserStatus.Active,
+                                            }
+                                        },
+                                        StageId = NullableOfSoaStage.Stage1,
+                                        SoaStatuses = new List<SoaStatusWithCount>
+                                        {
+                                            new SoaStatusWithCount
+                                            {
+                                                Count = 1,
+                                                SoaStatus = SoaStatus.InProgress
+                                            }
+                                        },
+                                    }
+                                }
+                }
+                });
         }
     }
 }
