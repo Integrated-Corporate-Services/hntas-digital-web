@@ -254,7 +254,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiArmsReportPowerbiDataGetDefaultImplementation(e, "/api/ArmsReport/powerbi-data", uriBuilderLocalVar.Path);
                 Events.ExecuteOnErrorApiArmsReportPowerbiDataGet(e);
@@ -313,15 +313,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<ArmsPowerBiReportResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<ArmsPowerBiReportResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
