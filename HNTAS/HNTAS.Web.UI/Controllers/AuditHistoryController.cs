@@ -1,28 +1,25 @@
-﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Wordprocessing;
-using HNTAS.Api.Client.Model;
+﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 
 namespace HNTAS.Web.UI.Controllers
 {
     [Authorize]
-    public class AuditHistoryPOCController : Controller
+    public class AuditHistoryController : Controller
     {
         private readonly IAuditService _auditService;
-        private readonly ILogger<AuditHistoryPOCController> _logger;
+        private readonly ILogger<AuditHistoryController> _logger;
         private const int DefaultPageNumber = 1;
         private const int DefaultPageSize = 6;
         private const string DefaultSortBy = "timestamp";
 
-        public AuditHistoryPOCController(IAuditService auditService, ILogger<AuditHistoryPOCController> logger)
+        public AuditHistoryController(IAuditService auditService, ILogger<AuditHistoryController> logger)
         {
             _auditService = auditService;
             _logger = logger;
-        }        
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index(
@@ -36,7 +33,7 @@ namespace HNTAS.Web.UI.Controllers
             try
             {
                 // Validate and sanitize inputs
-                if (page < 1) page = DefaultPageNumber;                
+                if (page < 1) page = DefaultPageNumber;
 
                 // Validate sort order
                 sortOrder = sortOrder?.ToLower() == "desc" ? "desc" : "asc";

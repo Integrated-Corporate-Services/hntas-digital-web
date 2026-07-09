@@ -44,7 +44,7 @@
                     @if (ViewBag.IsRegistrationEnabled == true)
                     {
                         <td class="govuk-table__cell">
-                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistoryPOC", new { hnId = heatNetwork.HnId })">View history</a>
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistory", new { hnId = heatNetwork.HnId })">View history</a>
                         </td>
                     }                                          
                 </tr>

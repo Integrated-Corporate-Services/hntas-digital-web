@@ -16,6 +16,13 @@
 </PropertyGroup>
 
 <ItemGroup>
+  <Compile Remove="Views\Account\**" />
+  <Content Remove="Views\Account\**" />
+  <EmbeddedResource Remove="Views\Account\**" />
+  <None Remove="Views\Account\**" />
+</ItemGroup>
+
+<ItemGroup>
 	<PackageReference Include="Amazon.AspNetCore.DataProtection.SSM" Version="4.0.3" />
 	<PackageReference Include="ClosedXML" Version="0.105.0" />
 	<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" PrivateAssets="all" />
@@ -40,7 +47,6 @@
     <Folder Include="assets\js\shared\" />
     <Folder Include="assets\scss\shared\" />
     <Folder Include="assets\scss\views\" />
-    <Folder Include="Views\Account\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

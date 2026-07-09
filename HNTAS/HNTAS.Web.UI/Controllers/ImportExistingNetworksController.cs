@@ -6,10 +6,10 @@ using System.IO;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    public class ImportExistingNetworksPOCController : Controller
+    public class ImportExistingNetworksController : Controller
     {
         private readonly IImportExistingNetworksPocService _importExistingNetworksPocService;
-        public ImportExistingNetworksPOCController(IImportExistingNetworksPocService importExistingNetworksPocService)
+        public ImportExistingNetworksController(IImportExistingNetworksPocService importExistingNetworksPocService)
         {
             _importExistingNetworksPocService = importExistingNetworksPocService;
         }
