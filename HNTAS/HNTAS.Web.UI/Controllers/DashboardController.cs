@@ -156,7 +156,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult EditOrganisationDetails()
         {            
-            return RedirectToAction("AddOrRegister", "ExistingOrganisation");
+            return RedirectToAction("OrganisationType", "Organisation");
         }
 
         [HttpGet]
