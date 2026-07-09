@@ -422,7 +422,7 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult SelectAddress(string selectedAddress)
         {
             var addressmodel = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
@@ -440,7 +440,7 @@ namespace HNTAS.Web.UI.Controllers
                     .Replace("\r", " ")
                     .Replace("\n", " ");
                 _logger.LogError("Malformed address received: {Address}", sanitizedAddress);
-                return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");                
+                return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");
             }
 
             var model = new AddressByStreetOrTownModel
