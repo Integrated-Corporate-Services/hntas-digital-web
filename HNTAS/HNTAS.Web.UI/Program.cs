@@ -88,7 +88,6 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new SoaResponseJsonConverter(),
         new SoaStatusJsonConverter(),
         new SoaJsonConverter(),
-        new Soa2JsonConverter(),
         new JourneyDataResponseJsonConverter(),
         new NetworkTypeResponseJsonConverter(),
         new ConnectionTypeJsonConverter(),
