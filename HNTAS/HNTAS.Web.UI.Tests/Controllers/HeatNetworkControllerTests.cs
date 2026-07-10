@@ -142,7 +142,12 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 Address = new HNTAS.Api.Client.Model.RegisteredAddress("Line1", "PC1"),
                 Pathway = "Pathway1",
                 HnId = hnid,
-                Phase = "Phase1"
+                Phase = "Phase1",
+                EcDetails = new Api.Client.Model.ECDetails
+                {
+                    Latitude = 51.5074, Longitude = 51.5074,
+                },
+                HeatNetworkType = (Api.Client.Model.NullableOfHeatNetworkType?)Api.Client.Model.HeatNetworkType.District,
             };
             _heatNetworkServiceMock.Setup(s => s.GetAsync(hnid)).ReturnsAsync(response);
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), It.IsAny<string>())).Returns(hnid);
