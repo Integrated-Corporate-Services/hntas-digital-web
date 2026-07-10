@@ -77,6 +77,9 @@ namespace HNTAS.Web.UI.Controllers
                 return null;
             }
 
+            var coordinates = response?.EcDetails;
+            var latlong = coordinates != null ? $"{coordinates.Latitude},{coordinates.Longitude}" : null;
+            var networkType = NetworkElementHelper.GetNetworkTypeLabel((Api.Client.Model.HeatNetworkType?)response!.HeatNetworkType);
             var model = new HNDetailsViewModel
             {
                 Name = response?.Name,
@@ -91,7 +94,9 @@ namespace HNTAS.Web.UI.Controllers
                 OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName),
                 PathWay = response.Pathway,
                 UHNID = response?.HnId,
-                Phase = response?.Phase!
+                Phase = response?.Phase!,
+                Coordinates = latlong,
+                NetworkType = networkType
             };
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
