@@ -291,7 +291,7 @@ builder.Services.AddScoped<IAuditService, AuditService>();
 builder.Services.AddScoped<INotificationHistoryService, NotificationHistoryService>();
 builder.Services.AddScoped<IAssignedAssessorService, AssignedAssessorService>();
 builder.Services.AddScoped<IArmsDashboardService, ArmsDashboardService>();
-builder.Services.AddScoped<IImportExistingNetworksPocService, ImportExistingNetworksPocService>();
+builder.Services.AddScoped<IImportExistingNetworksService, ImportExistingNetworksService>();
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
 builder.Services.AddSingleton<IAmazonS3>(sp =>

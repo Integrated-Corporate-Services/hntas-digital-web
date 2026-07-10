@@ -8,8 +8,15 @@
  */
 
 
-using System;
 using Xunit;
+
+using System;
+using System.Linq;
+using System.IO;
+using System.Collections.Generic;
+using HNTAS.Api.Client.Model;
+using HNTAS.Api.Client.Client;
+using System.Reflection;
 
 namespace HNTAS.Api.Client.Test.Model
 {
