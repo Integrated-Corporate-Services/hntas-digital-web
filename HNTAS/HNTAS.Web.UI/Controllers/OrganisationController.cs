@@ -82,23 +82,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             base.OnActionExecuting(context);
-        }
-
-
-        public string CapitalizeCommaSeparated(string input)
-        {
-
-            if (string.IsNullOrWhiteSpace(input))
-                return input;
-
-            var words = input.Split(',')
-                             .Select(w => w.Trim())
-                             .Where(w => !string.IsNullOrEmpty(w))
-                             .Select(w => char.ToUpper(w[0]) + w.Substring(1).ToLower());
-
-            return string.Join(", ", words);
-
-        }
+        }        
 
         [Authorize(Policy = SecurityConstants.Policies.CanStartRegistration)]
         [HttpGet]
@@ -786,7 +770,7 @@ namespace HNTAS.Web.UI.Controllers
                     return View(model);
                 }
                 results.Addresses = results.Addresses
-                    .Select(address => CapitalizeCommaSeparated(address))
+                    .Select(address => Utility.CapitalizeCommaSeparated(address))
                     .ToArray();
 
                 _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);

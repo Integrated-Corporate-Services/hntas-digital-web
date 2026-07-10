@@ -1,17 +1,15 @@
-﻿using ClosedXML.Excel;
-using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
 
 namespace HNTAS.Web.UI.Controllers
 {
     public class ImportExistingNetworksController : Controller
     {
-        private readonly IImportExistingNetworksPocService _importExistingNetworksPocService;
-        public ImportExistingNetworksController(IImportExistingNetworksPocService importExistingNetworksPocService)
+        private readonly IImportExistingNetworksService _importExistingNetworksService;
+        public ImportExistingNetworksController(IImportExistingNetworksService importExistingNetworksService)
         {
-            _importExistingNetworksPocService = importExistingNetworksPocService;
+            _importExistingNetworksService = importExistingNetworksService;
         }
         public IActionResult Index()
         {
@@ -25,7 +23,7 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> Index(IFormFile csvFile)
         {
             ViewBag.DisplayResult = false;
-            this.ShowBackButton("UserAccount", "Dashboard");            
+            this.ShowBackButton("UserAccount", "Dashboard");
 
             // 1. Basic Validation
             if (csvFile == null || csvFile.Length == 0)
@@ -39,16 +37,16 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError("csvFile", "The selected file must be a CSV");
                 return View("Index");
-            }            
+            }
 
             try
-            {                
+            {
                 using var stream = csvFile.OpenReadStream();
                 using var reader = new StreamReader(stream);
 
                 var csv = await reader.ReadToEndAsync();
 
-                var result = await _importExistingNetworksPocService.ImportCsv(csv);
+                var result = await _importExistingNetworksService.ImportCsv(csv);
                 ViewBag.DisplayResult = true;
                 return View("Index", result);
             }
@@ -56,7 +54,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError("", "There was a problem reading the file. Ensure it is not password protected.");
                 return View("Index");
-            }           
+            }
         }
     }
 }

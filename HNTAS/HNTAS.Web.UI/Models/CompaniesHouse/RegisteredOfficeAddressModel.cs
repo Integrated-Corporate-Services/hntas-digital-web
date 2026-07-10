@@ -21,7 +21,7 @@ namespace HNTAS.Web.UI.Models.CompaniesHouse
             {
                 AddressLine1 = v.StreetAddress,
                 Locality = v.TownOrCity,
-                PostalCode = v.Postalcode,
+                PostalCode = v.Postalcode.ToUpper(),
                 Country = v.Country
             };
         }

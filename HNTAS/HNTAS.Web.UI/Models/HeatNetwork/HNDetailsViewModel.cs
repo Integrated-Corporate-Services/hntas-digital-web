@@ -10,5 +10,7 @@ namespace HNTAS.Web.UI.Models.HeatNetwork
         public AddressByStreetOrTownModel Address { get; set; }
         public string PathWay { get; set; }
         public string Phase { get; set; }
+        public string? Coordinates { get; set; }
+        public string? NetworkType { get; set; }
     }
 }
