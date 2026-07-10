@@ -41,8 +41,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult Search()
         {
-            this.ShowBackButton("AddOrRegister");
-            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, true);            
+            this.ShowBackButton("AddOrRegister");                  
             return View("Search", new OrganisationSearchViewModel());
         }
 

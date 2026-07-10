@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
 
 
 /* *********************************************************************************
@@ -38,6 +39,7 @@ using HNTAS.Api.Client.Api;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
+<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/SuperUserApiTests.cs
     ///  Class for testing SuperUserApi
     /// </summary>
     public sealed class SuperUserApiTests : ApiTestsBase
@@ -59,6 +61,28 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiSuperUserIsSuperUserEmailIdGetAsync(emailId);
             var model = response.Ok();
             Assert.IsType<bool>(model);
+========
+    ///  Class for testing ArmsReportApi
+    /// </summary>
+    public sealed class ArmsReportApiTests : ApiTestsBase
+    {
+        private readonly IArmsReportApi _instance;
+
+        public ArmsReportApiTests(): base(Array.Empty<string>())
+        {
+            _instance = _host.Services.GetRequiredService<IArmsReportApi>();
+        }
+
+        /// <summary>
+        /// Test ApiArmsReportPowerbiDataGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiArmsReportPowerbiDataGetAsyncTest()
+        {
+            var response = await _instance.ApiArmsReportPowerbiDataGetAsync();
+            var model = response.Ok();
+            Assert.IsType<List<ArmsPowerBiReportResponse>>(model);
+>>>>>>>> dev:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/ArmsReportApiTests.cs
         }
     }
 }

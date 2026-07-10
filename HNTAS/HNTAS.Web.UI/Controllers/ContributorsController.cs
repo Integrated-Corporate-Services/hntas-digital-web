@@ -95,9 +95,10 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpGet]
         public IActionResult AddContributor()
-        {
-            this.ShowBackButton("NewContributorRole");
+        {            
             ViewBag.whoDoYouWantToAdd = GetRole();
+            var backAction = GetRole() == "Designated duty holder" ? "NewContributorRole" : "ManageContributors";
+            this.ShowBackButton(backAction);
             var model = _sessionHelper.GetFromSession<AddContributorViewModel>(HttpContext, SessionKeys.AddContributorViewModelSessionKey) ?? new AddContributorViewModel();
             return View(model);
         }
