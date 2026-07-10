@@ -1,6 +1,7 @@
 ﻿@{
     var consent = Context.Request.Cookies["cookie_consent"];
     var action = TempData["cookie_banner_action"]?.ToString();
+    var url = Url.Action("Cookies", "Help");
 }
 
 @if (consent == null)
@@ -20,19 +21,11 @@
                 </div>
             </div>
             <div class="govuk-button-group">
-                <form method="post" action="/cookies/accept">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="govuk-button" data-module="govuk-button">
-                        Accept analytics cookies
-                    </button>
+                <form method="post" asp-action="Cookies" asp-controller="FooterLinks">
+                    <button type="submit" class="govuk-button" data-module="govuk-button" name="cookieConsent" value="Yes">Accept analytics cookies</button>
+                    <button type="submit" class="govuk-button" data-module="govuk-button" name="cookieConsent" value="No">Reject analytics cookies</button>
                 </form>
-                <form method="post" action="/cookies/reject">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="govuk-button" data-module="govuk-button">
-                        Reject analytics cookies
-                    </button>
-                </form>
-                <a class="govuk-link govuk-button-group__link" style="align-self: center;" href="/cookies">View cookies</a>
+                <a class="govuk-link govuk-button-group__link" style="align-self: center;" href="@url">View cookies</a>
             </div>
         </div>
     </div>
@@ -45,7 +38,7 @@ else if (action == "accepted")
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
                     <div class="govuk-cookie-banner__content">
-                        <p class="govuk-body">You’ve accepted additional cookies. You can <a class="govuk-link" href="#">change your cookie settings</a> at any time.</p>
+                        <p class="govuk-body">You’ve accepted additional cookies. You can <a class="govuk-link" href="@url">change your cookie settings</a> at any time.</p>
                     </div>
                 </div>
             </div>
@@ -66,13 +59,12 @@ else if (action == "rejected")
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
                     <div class="govuk-cookie-banner__content">
-                        <p class="govuk-body">You’ve rejected additional cookies. You can <a class="govuk-link" href="#">change your cookie settings</a> at any time.</p>
+                        <p class="govuk-body">You’ve rejected additional cookies. You can <a class="govuk-link" href="@url">change your cookie settings</a> at any time.</p>
                     </div>
                 </div>
             </div>
             <div class="govuk-button-group">
-                <button class="govuk-button" type="button"
-                        onclick="document.getElementById('cookie-banner').remove()">
+                <button class="govuk-button" type="button" onclick="document.getElementById('cookie-banner').remove()">
                     Hide cookie message
                 </button>
             </div>
