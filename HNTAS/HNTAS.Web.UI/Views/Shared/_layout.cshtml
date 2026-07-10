@@ -135,8 +135,8 @@
                             <a class="govuk-service-navigation__link" href="@Url.Action("StartPage", "Home")"
                                @(currentAction == "StartPage" && currentController == "Home" ? "aria-current=page" : "")>
                                 <strong>HNTAS</strong>
-                            </a>
-                        </li>
+                                </a>
+                            </li>
                         <li class="govuk-service-navigation__item @(currentAction == "DocumentLibrary" && currentController == "Home" ? "govuk-service-navigation__item--active" : "")">
                             <a class="govuk-service-navigation__link" href="@Url.Action("DocumentLibrary", "Home")"
                                @(currentAction == "DocumentLibrary" && currentController == "Home" ? "aria-current=page" : "")>
@@ -239,37 +239,31 @@
                     <ul class="govuk-footer__inline-list">
 
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="#">
+                            <a class="govuk-footer__link" href="@Url.Action("Help", "FooterLinks")">
                                 Help
                             </a>
                         </li>
 
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="https://www.gov.uk/help/privacy-notice">
+                            <a class="govuk-footer__link" href="@Url.Action("PrivacyNotice", "FooterLinks")">
                                 Privacy
                             </a>
                         </li>
 
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="https://www.gov.uk/help/cookies">
+                            <a class="govuk-footer__link" href="@Url.Action("Cookies", "FooterLinks")">
                                 Cookies
                             </a>
                         </li>
 
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="https://www.gov.uk/help/accessibility-statement">
+                            <a class="govuk-footer__link" href="@Url.Action("AccessibilityStatement", "FooterLinks")">
                                 Accessibility statement
                             </a>
                         </li>
 
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="#">
-                                Contact
-                            </a>
-                        </li>
-
-                        <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="https://www.gov.uk/help/terms-conditions">
+                            <a class="govuk-footer__link" href="@Url.Action("TermsAndConditions", "FooterLinks")">
                                 Terms and conditions
                             </a>
                         </li>

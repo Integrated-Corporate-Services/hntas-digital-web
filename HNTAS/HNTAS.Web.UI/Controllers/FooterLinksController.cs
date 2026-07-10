@@ -2,39 +2,62 @@
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Route("cookies")]
-    public class CookiesController : Controller
+    public class FooterLinksController : Controller
     {
-        [HttpPost("/cookies/accept")]
-        [ValidateAntiForgeryToken]
-        public IActionResult Accept()
+        [HttpGet]
+        public IActionResult PrivacyNotice()
         {
-            Response.Cookies.Append("cookie_consent", "accepted", new CookieOptions
-            {
-                Expires = DateTimeOffset.UtcNow.AddYears(1),
-                IsEssential = true,
-                Secure = true
-            });
+            return View();
+        }
 
-            TempData["cookie_banner_action"] = "accepted";
+        [HttpGet]
+        public IActionResult Cookies()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Cookies(string cookieConsent)
+        {
+            SetCookieConsent(cookieConsent);
+            TempData["cookie_banner_action"] = cookieConsent;
             return LocalRedirect(GetSafeReturnUrl());
         }
 
-        [HttpPost("/cookies/reject")]
-        [ValidateAntiForgeryToken]
-        public IActionResult Reject()
+        [HttpGet]
+        public IActionResult Help()
         {
-            Response.Cookies.Append("cookie_consent", "rejected", new CookieOptions
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult AccessibilityStatement()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
+
+        #region helperMethods
+        private void SetCookieConsent(string cookieConsent)
+        {
+            Response.Cookies.Append("cookie_consent", cookieConsent, new CookieOptions
             {
                 Expires = DateTimeOffset.UtcNow.AddYears(1),
                 IsEssential = true,
                 Secure = true
             });
 
-            TempData["cookie_banner_action"] = "rejected";
-
-            return LocalRedirect(GetSafeReturnUrl());
+            if (cookieConsent == "No")
+            {
+                Response.Cookies.Delete("_ga");
+                Response.Cookies.Delete("_ga_NGJT0GGBSZ");
+            }
         }
 
         private string GetSafeReturnUrl()
@@ -63,5 +86,6 @@ namespace HNTAS.Web.UI.Controllers
             var relativeUrl = parsedUri.ToString();
             return Url.IsLocalUrl(relativeUrl) ? relativeUrl : fallbackUrl;
         }
+        #endregion
     }
 }
