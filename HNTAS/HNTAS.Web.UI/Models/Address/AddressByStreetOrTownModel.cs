@@ -41,7 +41,7 @@ namespace HNTAS.Web.UI.Models.Address
                 TownOrCity = v.Town!,
                 Postalcode = v.Postcode!,
                 Country = v.Country!,
-                Fulladdress = $"{v.AddressLine1}, {v.Town}, {v.Postcode}, {v.Country}"
+                Fulladdress = $"{v.AddressLine1}, {v.Town}, {v.Postcode.ToUpper()}, {v.Country}"
             };
         }
     }
