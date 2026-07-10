@@ -3,12 +3,12 @@ using HNTAS.Api.Client.Model;
 
 namespace HNTAS.Web.UI.Services.Core
 {
-    public class ImportExistingNetworksPocService : IImportExistingNetworksPocService
+    public class ImportExistingNetworksService : IImportExistingNetworksService
     {
         private readonly IImportApi _importApi;
         private readonly ILogger<NotificationHistoryService> _logger;
 
-        public ImportExistingNetworksPocService(IImportApi importApi, ILogger<NotificationHistoryService> logger)
+        public ImportExistingNetworksService(IImportApi importApi, ILogger<NotificationHistoryService> logger)
         {
             _importApi = importApi;
             _logger = logger;
