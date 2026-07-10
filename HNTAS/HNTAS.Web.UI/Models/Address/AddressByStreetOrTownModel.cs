@@ -26,10 +26,10 @@ namespace HNTAS.Web.UI.Models.Address
             if (v == null) return null!;
             return new AddressByStreetOrTownModel
             {
-                 StreetAddress = v.AddressLine1,
-                 TownOrCity = v.Locality,
-                 Postalcode = v.PostalCode,
-                 Country = v.Country                
+                 StreetAddress = v.AddressLine1 ?? string.Empty,
+                 TownOrCity = v.Locality ?? string.Empty,
+                 Postalcode = (v.PostalCode ?? string.Empty).ToUpper(),
+                 Country = v.Country ?? string.Empty
             };
         }
         public static implicit operator AddressByStreetOrTownModel(RegisteredAddress v)

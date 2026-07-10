@@ -86,7 +86,7 @@ namespace HNTAS.Web.UI.Controllers
                     TownOrCity = response?.Address?.Town,
                     Postalcode = response?.Address?.Postcode,
                     Country = response?.Address?.Country,
-                    Fulladdress = string.Join(", ", new[] { response?.Address?.AddressLine1, response?.Address?.Town, response?.Address?.Postcode, response?.Address?.Country }.Where(part => !string.IsNullOrWhiteSpace(part)))
+                    Fulladdress = string.Join(", ", new[] { response?.Address?.AddressLine1, response?.Address?.Town, response?.Address?.Postcode.ToUpper(), response?.Address?.Country }.Where(part => !string.IsNullOrWhiteSpace(part)))
                 },
                 OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName),
                 PathWay = response.Pathway,
