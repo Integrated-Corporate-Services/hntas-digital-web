@@ -35,11 +35,11 @@ namespace HNTAS.Web.UI.Services.Core
             throw new Exception($"Failed to fetch heat network '{hnId}' — status code: {response.StatusCode}");
         }
 
-        public async Task<List<HeatNetworkResponse>> GetHeatNetworkByUserId(string userId)
+        public async Task<List<HeatNetworkResponse>> GetHeatNetworkByUserId(string userId, RegistrationSource2 registrationSource = RegistrationSource2.HNTAS)
         {
             try
             {
-                var response = await _heatNetworksApi.ApiHeatNetworksHeatNetworkByUserIdGetAsync(userId);
+                var response = await _heatNetworksApi.ApiHeatNetworksHeatNetworkByUserIdGetAsync(userId, registrationSource);
 
                 if (response.IsOk)
                 {
@@ -59,6 +59,31 @@ namespace HNTAS.Web.UI.Services.Core
                 _logger.LogError(ex, "Error retrieving heat networks for user ID: {UserId}.", userId);
                 throw;
             }
+        }
+
+        public async Task<ExistingNetworkResponse> GetExistingNetworkByUserId(ExistingNetworkRequest request)
+        {
+
+            if (string.IsNullOrWhiteSpace(request.UserId))
+            {
+                throw new ArgumentException("User ID cannot be null or empty.", nameof(request.UserId));
+            }
+
+            var response = await _heatNetworksApi.ApiHeatNetworksExistingNetworkByUserIdGetAsync(request);
+
+            if (response.IsNotFound)
+            {
+                _logger.LogWarning("No existing network found");
+                return new ExistingNetworkResponse();
+            }
+
+            if (!response.IsOk)
+            {
+                _logger.LogError("Failed to fetch existing network. Status code: {StatusCode}", response.StatusCode);
+                throw new HttpRequestException($"Failed to fetch existing network. Service returned {response.StatusCode}");
+            }
+
+            return response.Ok() ?? new ExistingNetworkResponse();
         }
 
 
@@ -123,29 +148,6 @@ namespace HNTAS.Web.UI.Services.Core
                 _logger.LogError(ex, "Error retrieving heat networks.");
                 throw;
             }
-        }
-
-        public async Task UpdateDocument(NetworkDetailsUploadDocumentRequest request)
-        {
-            if (request == null)
-                throw new ArgumentNullException(nameof(request), "Request cannot be null.");
-
-            if (string.IsNullOrWhiteSpace(request.HnId))
-                throw new ArgumentException("Heat Network ID is required.", nameof(request.HnId));
-
-            try
-            {
-                var response = await _heatNetworksApi.ApiHeatNetworksNetworkDetailsDocumentUpdatePatchOrDefaultAsync(request);
-
-                if (!response!.IsOk)
-                    throw new InvalidOperationException($"Update failed with status code: {response.StatusCode}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Exception during update for HN ID: {HnId}, UploadedBy: {UploadedBy}",
-                    request.HnId, request.UploadedBy);
-                throw;
-            }
-        }
+        }        
     }
 }

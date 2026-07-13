@@ -32,12 +32,11 @@ namespace HNTAS.Web.UI.Controllers
         {
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var networkLeads = await _userService.GetManagedUsers(userId, true);
+            var networkLeads = await _userService.GetNetworkLeads(userId);
             var networkLeadsToDisplay = networkLeads.Select(networkLead => new HNTAS.Web.UI.Models.User.UserDisplayModel
             {
-                Id = networkLead.Id,
-                Name = networkLead.Name,
-                EmailAddress = networkLead.EmailId,
+                Name = networkLead.FirstName + " " + networkLead.LastName,
+                EmailAddress = networkLead.Email,
                 Status = networkLead.Status.ToString(),
                 IsCurrentUser = false
             }).ToList();

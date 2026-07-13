@@ -54,7 +54,6 @@
                             var checkboxId = $"SelectedSoaStatusOptions_{item.Id.ToString()}";
                             var conditionalId = $"conditional-{item.Id.ToString().ToLowerInvariant()}";
                             var isChecked = Model.SelectedSoaStatusOptions.Contains(item.Id);
-                            var hintId = $"{checkboxId}-item-hint";
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input"
                                        id="@checkboxId"

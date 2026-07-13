@@ -7,5 +7,6 @@
         public string UserRole { get; set; } = null!;
 
         public bool HasHeatNetworks { get; set; }
+        public bool HasOfgemNetworks { get; set; }
     }
 }

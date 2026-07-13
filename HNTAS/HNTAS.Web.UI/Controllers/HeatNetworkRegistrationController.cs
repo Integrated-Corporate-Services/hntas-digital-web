@@ -3,6 +3,7 @@ using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.Address;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.HeatNetworkRegistration;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
@@ -56,7 +57,7 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction("HeatNetworkOrganisation");
                 case "no":
                 default:
-                    return RedirectToAction("SixOrMoreDwellingsAnswerNo");                
+                    return RedirectToAction("SixOrMoreDwellingsAnswerNo");
             }
         }
 
@@ -67,24 +68,39 @@ namespace HNTAS.Web.UI.Controllers
             return View();
         }
 
+        private async Task<List<SelectItemOption>> GetOrganisationListForUser(List<string> contributingOrganisations)
+        {            
+            var organisationList = new List<SelectItemOption>();
+            foreach (string orgId in contributingOrganisations)
+            {
+                var orgDetails = await _organisationService.GetOrganisationById(orgId);
+                var orgEntry = orgId + " - " + orgDetails.Name;
+                organisationList.Add(new SelectItemOption { Text = orgEntry, Value = orgId });
+            }
+            return organisationList;
+        }
+
         [HttpGet]
         public async Task<IActionResult> HeatNetworkOrganisation()
         {
             this.ShowBackButton("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
+
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var userDetails = await _userService.GetUserById(userId);
             var contributingOrganisations = userDetails.ContributingOrganisations;
-            var newModel = new HeatNetworkOrganisationModel();
-            if (contributingOrganisations.Count > 1) { 
-                newModel = new HeatNetworkOrganisationModel
-                {
-                    OrganisationList = contributingOrganisations
-                };
+            var newModel = _sessionHelper.GetFromSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey) ?? new HeatNetworkOrganisationModel();
+
+            if (contributingOrganisations.Count > 1)
+            {
+                var organisationList = await GetOrganisationListForUser(contributingOrganisations);
+                newModel.OrganisationList = organisationList;
+                _sessionHelper.SaveToSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey, newModel);
                 _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "HeatNetworkOrganisation");
             }
             else
             {
                 _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "HeatNetworkDwellingsCheck");
+                var orgDetails = await _organisationService.GetOrganisationById(userDetails.OrgId);
                 _sessionHelper.SaveToSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey, new HeatNetworkOrganisationModel { SelectedOrganisation = userDetails.OrgId });
                 return RedirectToAction("HeatNetworkIntroduction");
             }
@@ -94,11 +110,17 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult HeatNetworkOrganisation(HeatNetworkOrganisationModel model)
+        public async Task<IActionResult> HeatNetworkOrganisation(HeatNetworkOrganisationModel model)
         {
             this.ShowBackButton("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var userDetails = await _userService.GetUserById(userId);
+            var contributingOrganisations = userDetails.ContributingOrganisations;
+            var organisationList = await GetOrganisationListForUser(contributingOrganisations);
+            model.OrganisationList = organisationList;
+            _sessionHelper.SaveToSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey, model);
             if (!ModelState.IsValid)
-            {
+            {                
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey, model);
@@ -316,11 +338,11 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
-            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel).IsHnTypeCommunal ?? false;
+            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel)?.IsHnTypeCommunal ?? false;
             bool hasOwnEc = isCommunalHn
                 ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
                 : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);
-            if (!isCommunalHn && !hasOwnEc) 
+            if (!isCommunalHn && !hasOwnEc)     
             {
                 return RedirectToAction("ECCoordinates");
             }
@@ -332,7 +354,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult DoesHNHaveAPostcode()
         {            
             this.ShowBackButton("HeatNetworkName");
-            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel).IsHnTypeCommunal ?? false;
+            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel)?.IsHnTypeCommunal ?? false;
             bool hasOwnEc = isCommunalHn
                 ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
                 : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);
@@ -400,6 +422,7 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public IActionResult SelectAddress(string selectedAddress)
         {
             var addressmodel = _sessionHelper.GetFromSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
@@ -417,7 +440,7 @@ namespace HNTAS.Web.UI.Controllers
                     .Replace("\r", " ")
                     .Replace("\n", " ");
                 _logger.LogError("Malformed address received: {Address}", sanitizedAddress);
-                return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");                
+                return BadRequest("Selected address is not in the expected format. It must contain at least street, town/city, and postcode.");
             }
 
             var model = new AddressByStreetOrTownModel
@@ -452,7 +475,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
+            var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode.ToUpper(), model.Country }
                 .Where(part => !string.IsNullOrWhiteSpace(part));
             model.Fulladdress = string.Join(", ", addressParts);
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();
@@ -483,7 +506,7 @@ namespace HNTAS.Web.UI.Controllers
             var model = _sessionHelper.GetFromSession<AddressByStreetOrTownModel>(HttpContext, SessionKeys.AddressByStreetOrTownModelSessionKey) ?? new AddressByStreetOrTownModel();            
             var doesHnHaveAPostcodeModel = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
             HeatNetworkLocationModel heatNetworkLocationModel;
-            if ((bool)doesHnHaveAPostcodeModel?.HasPostcode!)
+            if (doesHnHaveAPostcodeModel?.HasPostcode == true)
             {
                 heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel { HNAddressByStreet = new AddressByStreetOrTownModel() };
                 heatNetworkLocationModel.HNAddressByStreet = model;
@@ -500,7 +523,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult ECCoordinates()
         {
-            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel).IsHnTypeCommunal ?? false;
+            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel)?.IsHnTypeCommunal ?? false;
             bool hasOwnEc = isCommunalHn
                 ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
                 : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);
@@ -517,7 +540,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ECCoordinates(ECDetailsModel model)
         {
-            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel).IsHnTypeCommunal ?? false;
+            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel)?.IsHnTypeCommunal ?? false;
             bool hasOwnEc = isCommunalHn
                 ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
                 : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);         
@@ -630,6 +653,7 @@ namespace HNTAS.Web.UI.Controllers
                 DoesHnHaveMoreThan6Dwellings = howManyDwellingsIncludedModel.HowManyDwellingsIncluded == "yes" ? "Yes" : "No",
                 OrgId = heatNetworkOrganisationModel.SelectedOrganisation,
                 HeatNetworkType = isHnTypeCommunalViewModel.IsHnTypeCommunal == true ? "Communal" : "District",
+                ECSuppliesOneCommunalBuilding = isHnTypeCommunalViewModel.IsHnTypeCommunal == true ? (doesCommunalEcSupplyOneBlockViewModel?.SuppliesOneBlock == true ? "Yes" : "No") : null,
                 HasOwnEnergyCenter = isHnTypeCommunalViewModel.IsHnTypeCommunal == true ? (doesCommunalHnHaveOwnEcViewModel?.HasOwnEc == true ? "Yes" : "No, it does not have its own energy centre") : (doesDistrictHnHaveOwnEcViewModel?.HasOwnEc == true ? "Yes" : "No, it does not have its own main energy centre"),
                 HeatNetworkConnectionsModel = heatNetworkConnectionsModel,
                 ECDetailsModel = ecDetailsModel,
@@ -729,8 +753,8 @@ namespace HNTAS.Web.UI.Controllers
                 longitude = (double?)viewModel.ECDetailsModel.ECAddressByLatLong.Longitude;
             }
 
-            ECDetails2? ecDetails = (latitude.HasValue || longitude.HasValue)
-                ? new ECDetails2(latitude: latitude, longitude: longitude)
+            ECDetails? ecDetails = (latitude.HasValue || longitude.HasValue)
+                ? new ECDetails(latitude: latitude, longitude: longitude)
                 : null;
 
             var address = viewModel.HeatNetworkAddressModel != null ? new RegisteredAddress(
@@ -751,6 +775,7 @@ namespace HNTAS.Web.UI.Controllers
                 Address = address,
                 EcDetails = ecDetails,
                 HeatNetworkType = hnType,
+                EcSuppliesOneCommunalBuilding = isHnTypeCommunalViewModel.IsHnTypeCommunal == true ? (doesCommunalEcSupplyOneBlockViewModel?.SuppliesOneBlock == true ? true : false) : false,
                 HasOwnEnergyCenter = HasOwnEc,
                 HeatNetworkConnections = heatNetworkConnections,
                 Pathway = viewModel?.PathwayModel?.Pathway,

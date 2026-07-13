@@ -39,15 +39,16 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);
             //start
             return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
-        }
-
-
-        
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SubmitDetails(HNDetailsViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, model.Name);
             return RedirectToAction("SOAIntro", "SOA");
@@ -76,6 +77,9 @@ namespace HNTAS.Web.UI.Controllers
                 return null;
             }
 
+            var coordinates = response?.EcDetails;
+            var latlong = coordinates != null ? $"{coordinates.Latitude},{coordinates.Longitude}" : null;
+            var networkType = NetworkElementHelper.GetNetworkTypeLabel((Api.Client.Model.HeatNetworkType?)response!.HeatNetworkType);
             var model = new HNDetailsViewModel
             {
                 Name = response?.Name,
@@ -85,12 +89,14 @@ namespace HNTAS.Web.UI.Controllers
                     TownOrCity = response?.Address?.Town,
                     Postalcode = response?.Address?.Postcode,
                     Country = response?.Address?.Country,
-                    Fulladdress = string.Join(", ", new[] { response?.Address?.AddressLine1, response?.Address?.Town, response?.Address?.Postcode, response?.Address?.Country }.Where(part => !string.IsNullOrWhiteSpace(part)))
+                    Fulladdress = string.Join(", ", new[] { response?.Address?.AddressLine1, response?.Address?.Town, response?.Address?.Postcode.ToUpper(), response?.Address?.Country }.Where(part => !string.IsNullOrWhiteSpace(part)))
                 },
                 OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName),
                 PathWay = response.Pathway,
                 UHNID = response?.HnId,
-                Phase = response?.Phase!
+                Phase = response?.Phase!,
+                Coordinates = latlong,
+                NetworkType = networkType
             };
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);

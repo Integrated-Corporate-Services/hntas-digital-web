@@ -1,5 +1,4 @@
-﻿using HNTAS.Web.UI.Authorization;
-using HNTAS.Web.UI.Helpers;
+﻿using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.CompaniesHouse;
 using HNTAS.Web.UI.Services.Core;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize(Policy = SecurityConstants.Policies.CanAddContributingOrganisation)]
+    [Authorize]
     public class ExistingOrganisationController : Controller
     {
         private readonly IOrganisationService _organisationService;
@@ -23,22 +22,26 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddOrRegister()
+        public async Task<IActionResult> AddOrRegister()
         {
             var organisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            var user = await _userService.GetUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+            var isUserAnRP = await _userService.IsRpUserAsync(user.EmailId) ?? false;
+            ViewBag.isUserAnRP = isUserAnRP;
             if (organisationName != null)
             {
                 this.ShowBackButton("UserAccount", "Dashboard");
             }
-            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey, true);
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, false);
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey, !isUserAnRP);
+            _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsRPJourneySessionKey, isUserAnRP);
             return View("AddOrRegister");
         }
 
         [HttpGet]
         public IActionResult Search()
         {
-            this.ShowBackButton("AddOrRegister");
-
+            this.ShowBackButton("AddOrRegister");                  
             return View("Search", new OrganisationSearchViewModel());
         }
 

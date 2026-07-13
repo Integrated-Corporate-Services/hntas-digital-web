@@ -51,18 +51,6 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-        /// Test ApiUsersAcceptInvitationPatch
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiUsersAcceptInvitationPatchAsyncTest()
-        {
-            InvitedUserRequest invitedUserRequest = default!;
-            var response = await _instance.ApiUsersAcceptInvitationPatchAsync(invitedUserRequest);
-            var model = response.Ok();
-            Assert.IsType<string>(model);
-        }
-
-        /// <summary>
         /// Test ApiUsersContributorRolesGet
         /// </summary>
         [Fact (Skip = "not implemented")]
@@ -177,6 +165,18 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiUsersManagedUsersGetAsync(userId, networkManagersOnly);
             var model = response.Ok();
             Assert.IsType<List<ManagedUserResponse>>(model);
+        }
+
+        /// <summary>
+        /// Test ApiUsersNetworkManagersGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task ApiUsersNetworkManagersGetAsyncTest()
+        {
+            Client.Option<string> userId = default!;
+            var response = await _instance.ApiUsersNetworkManagersGetAsync(userId);
+            var model = response.Ok();
+            Assert.IsType<List<InvitedUserResponse>>(model);
         }
 
         /// <summary>

@@ -54,15 +54,6 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'InvitedEmail'
-        /// </summary>
-        [Fact]
-        public void InvitedEmailTest()
-        {
-            // TODO unit test for the property 'InvitedEmail'
-        }
-
-        /// <summary>
         /// Test the property 'InvitationId'
         /// </summary>
         [Fact]

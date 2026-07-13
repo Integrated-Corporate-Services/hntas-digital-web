@@ -1,4 +1,5 @@
 ﻿using HNTAS.Web.UI.Models.Address;
+using HNTAS.Web.UI.Models.Common;
 using HNTAS.Web.UI.Models.HeatNetworkRegistration;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,7 +7,7 @@ namespace HNTAS.Web.UI.Models
 {
     public class HeatNetworkOrganisationModel
     {
-        public List<string> OrganisationList { get; set; } = new List<string>();
+        public List<SelectItemOption> OrganisationList { get; set; } = new List<SelectItemOption>();
         [Required(ErrorMessage = "Select an organisation to add the network")]
         public string SelectedOrganisation { get; set; }
     }
@@ -57,6 +58,7 @@ namespace HNTAS.Web.UI.Models
         public string OrgId { get; set; }
         public string HeatNetworkType { get; set; }
         public string HasOwnEnergyCenter { get; set; }
+        public string ECSuppliesOneCommunalBuilding { get; set; }
         public HeatNetworkConnectionsViewModel? HeatNetworkConnectionsModel { get; set; }
         public ECDetailsModel ECDetailsModel { get; set; }
         public HeatNetworkNameModel HeatNetworkNameModel { get; set; }
