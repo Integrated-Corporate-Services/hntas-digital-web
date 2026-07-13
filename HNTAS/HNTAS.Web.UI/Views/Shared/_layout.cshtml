@@ -203,12 +203,7 @@
         @if (IsSectionDefined("BeforeMain"))
         {
             @RenderSection("BeforeMain", required: false)
-        }
-
-        @if (IsSectionDefined("BeforeMain"))
-        {
-            @RenderSection("BeforeMain", required: false)
-        }
+        }        
 
         @{
             bool showBackButton = ViewBag.ShowBackButton ?? false; // Your condition
