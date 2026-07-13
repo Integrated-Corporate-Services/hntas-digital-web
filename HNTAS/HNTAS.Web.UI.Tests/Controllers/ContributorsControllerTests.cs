@@ -357,7 +357,270 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _controller.ModelState.AddModelError("SelectedEmailAddress", "The SelectedEmailAddress field is required.");
 
             var result = await _controller.ExistingContributorsList(model);
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public async Task NewContributorHeatNetwork_Get_ReturnsViewResult()
+        {
+            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns("UserModelId");
+            _userServiceMock.Setup(u => u.GetUserHeatNetworks(It.IsAny<string>()))
+                .ReturnsAsync(new List<HeatNetworkUserResponse> { new HeatNetworkUserResponse {
+                HnId = "HN1", Name = "Heat Network 1"
+                } });
+            var result = await _controller.NewContributorHeatNetwork();
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public async Task NewContributorHeatNetwork_Get_NoNetwork_RedirectToAction()
+        {
+            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns("UserModelId");
+            _userServiceMock.Setup(u => u.GetUserHeatNetworks(It.IsAny<string>()))
+                .Returns(Task.FromResult((List<HeatNetworkUserResponse>)null!));
+            var result = await _controller.NewContributorHeatNetwork();
+            var resultVal = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Error", resultVal.ActionName);
+        }
+
+        [Fact]
+        public void NewContributorHeatNetwork_Post_ReturnsRedirectToActionResult()
+        {
+            var model = new NewContributorHeatNetworkViewModel
+            {
+
+            };
+            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns("UserModelId");
+            var result = _controller.NewContributorHeatNetwork(model);
+            var resultVal = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("HeatNetworkPhase", resultVal.ActionName);
+        }
+
+        [Fact]
+        public void NewContributorHeatNetwork_Post_InvalidModelState_ReturnViewResult()
+        {
+            var model = new NewContributorHeatNetworkViewModel
+            {
+
+            };
+            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns("UserModelId");
+            _controller.ModelState.AddModelError("SelectedHeatNetworkId", "The SelectedHeatNetworkId field is required.");
+            var result = _controller.NewContributorHeatNetwork(model);
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public void HeatNetworkPhase_Get_ReturnsViewResult()
+        {
+            _controller.Url = SetUpBackLink("NewContributorHeatNetwork", "ContributorsController").Object;
+            var result = _controller.HeatNetworkPhase();
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public void HeatNetworkPhase_Post_RedirectToAction()
+        {
+            var model = new HeatNetworkPhaseViewModel();
+            _controller.Url = SetUpBackLink("NewContributorHeatNetwork", "ContributorsController").Object;
+            var result = _controller.HeatNetworkPhase(model);
+            var resultVal = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("CheckYourAnswers", resultVal.ActionName);
+        }
+
+        [Fact]
+        public void HeatNetworkPhase_Post_InvalidModelState_ReturnsView()
+        {
+            var model = new HeatNetworkPhaseViewModel();
+            _controller.Url = SetUpBackLink("NewContributorHeatNetwork", "ContributorsController").Object;
+            _controller.ModelState.AddModelError("SelectedPhase", "The SelectedPhase field is required.");
+            var result = _controller.HeatNetworkPhase(model);
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public void CheckYourAnswers_Get_ReturnsViewResult()
+        {
+            _controller.Url = SetUpBackLink("HeatNetworkPhase", "ContributorsController").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<CheckYourAnswersViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.CheckYourAnswersContributorsModelSessionKey))
+                .Returns(new CheckYourAnswersViewModel());
+            var result = _controller.CheckYourAnswers();
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public async Task CheckYourAnswers_Post_RedirectToAction()
+        {
+            var model = new CheckYourAnswersViewModel { ConfirmedDeclaration = true, EmailAddress = "test", FirstName = "first", LastName = "last", RoleAssigned = "contributor", HeatNetwork = "HN1"};
+            _controller.Url = SetUpBackLink("HeatNetworkPhase", "ContributorsController").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns("UserModelId");
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorRoleViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorRoleViewModelSessionKey))
+                .Returns(new NewContributorRoleViewModel { IsDDH = true });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorDetailsViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorDetailsViewModelSessionKey))
+                .Returns(new NewContributorDetailsViewModel { FirstName = "first", LastName = "last", EmailAddress = "test" });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorHeatNetworkViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorHeatNetworkViewModelSessionKey))
+                .Returns(new NewContributorHeatNetworkViewModel { SelectedHeatNetwork = "HN1" });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<HeatNetworkPhaseViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey))
+                .Returns(new HeatNetworkPhaseViewModel { SelectedPhases = new List<string>{ "Design"} });
+
+            _invitationServiceMock.Setup(i => i.AddInvitedUserAsync(It.IsAny<string>(), It.IsAny<AddInvitationRequest>()))
+                .ReturnsAsync("invitationId");
+
+            _invitationTokenService.Setup(i => i.GenerateToken(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns("token");
+            var result = await _controller.CheckYourAnswers(model);
+            var resultVal = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("UserConfirmation", resultVal.ActionName);
+        }
+
+        [Fact]
+        public async Task CheckYourAnswers_Post_InvalidModelState_ViewResult()
+        {
+            var model = new CheckYourAnswersViewModel { ConfirmedDeclaration = true, EmailAddress = "test", FirstName = "first", LastName = "last", RoleAssigned = "contributor", HeatNetwork = "HN1" };
+            _controller.Url = SetUpBackLink("HeatNetworkPhase", "ContributorsController").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns("UserModelId");
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorRoleViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorRoleViewModelSessionKey))
+                .Returns(new NewContributorRoleViewModel { IsDDH = true });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorDetailsViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorDetailsViewModelSessionKey))
+                .Returns(new NewContributorDetailsViewModel { FirstName = "first", LastName = "last", EmailAddress = "test" });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorHeatNetworkViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorHeatNetworkViewModelSessionKey))
+                .Returns(new NewContributorHeatNetworkViewModel { SelectedHeatNetwork = "HN1" });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<HeatNetworkPhaseViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey))
+                .Returns(new HeatNetworkPhaseViewModel { SelectedPhases = new List<string> { "Design" } });
+
+            _controller.ModelState.AddModelError("ConfirmedDeclaration", "The ConfirmedDeclaration field is required.");
+            var result = await _controller.CheckYourAnswers(model);
             Assert.IsType<ViewResult>(result);            
+        }
+
+        [Fact]
+        public async Task CheckYourAnswers_Post_NoInvitation_RedirectToAction()
+        {
+            var model = new CheckYourAnswersViewModel { ConfirmedDeclaration = true, EmailAddress = "test", FirstName = "first", LastName = "last", RoleAssigned = "contributor", HeatNetwork = "HN1" };
+            _controller.Url = SetUpBackLink("HeatNetworkPhase", "ContributorsController").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns("UserModelId");
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorRoleViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorRoleViewModelSessionKey))
+                .Returns(new NewContributorRoleViewModel { IsDDH = true });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorDetailsViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorDetailsViewModelSessionKey))
+                .Returns(new NewContributorDetailsViewModel { FirstName = "first", LastName = "last", EmailAddress = "test" });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorHeatNetworkViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorHeatNetworkViewModelSessionKey))
+                .Returns(new NewContributorHeatNetworkViewModel { SelectedHeatNetwork = "HN1" });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<HeatNetworkPhaseViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey))
+                .Returns(new HeatNetworkPhaseViewModel { SelectedPhases = new List<string> { "Design" } });
+
+            _invitationServiceMock.Setup(i => i.AddInvitedUserAsync(It.IsAny<string>(), It.IsAny<AddInvitationRequest>()))
+                .ReturnsAsync((string)null!);
+
+            var result = await _controller.CheckYourAnswers(model);
+            var resultVal = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("CheckYourAnswers", resultVal.ActionName);
+        }
+
+        [Fact]
+        public async Task CheckYourAnswers_Post_ThrowException()
+        {
+            var model = new CheckYourAnswersViewModel { ConfirmedDeclaration = true, EmailAddress = "test", FirstName = "first", LastName = "last", RoleAssigned = "contributor", HeatNetwork = "HN1" };
+            _controller.Url = SetUpBackLink("HeatNetworkPhase", "ContributorsController").Object;
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns("UserModelId");
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorRoleViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorRoleViewModelSessionKey))
+                .Returns(new NewContributorRoleViewModel { IsDDH = true });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorDetailsViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorDetailsViewModelSessionKey))
+                .Returns(new NewContributorDetailsViewModel { FirstName = "first", LastName = "last", EmailAddress = "test" });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorHeatNetworkViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.NewContributorHeatNetworkViewModelSessionKey))
+                .Returns(new NewContributorHeatNetworkViewModel { SelectedHeatNetwork = "HN1" });
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<HeatNetworkPhaseViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey))
+                .Returns(new HeatNetworkPhaseViewModel { SelectedPhases = new List<string> { "Design" } });
+
+            _invitationServiceMock.Setup(i => i.AddInvitedUserAsync(It.IsAny<string>(), It.IsAny<AddInvitationRequest>()))
+                .Throws(new Exception());
+
+            var result = await _controller.CheckYourAnswers(model);
+            
+            _loggerMock.Verify(
+                x => x.Log(
+                    LogLevel.Error,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Error submitting new contributor details for email:")),
+                    It.IsAny<Exception>(),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+                Times.Once);
         }
     }
 }

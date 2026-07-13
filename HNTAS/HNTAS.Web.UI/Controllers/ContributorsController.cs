@@ -250,7 +250,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewContributorHeatNetwork(NewContributorHeatNetworkViewModel model)
+        public IActionResult NewContributorHeatNetwork(NewContributorHeatNetworkViewModel model)
         {
             this.ShowBackButton("NewContributorDetails");
             if (!ModelState.IsValid)
