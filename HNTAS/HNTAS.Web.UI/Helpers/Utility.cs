@@ -39,9 +39,17 @@ namespace HNTAS.Web.UI.Helpers
             var words = input.Split(',')
                              .Select(w => w.Trim())
                              .Where(w => !string.IsNullOrEmpty(w))
-                             .Select(w => char.ToUpper(w[0]) + w.Substring(1).ToLower());
+                             .ToList();
 
-            return string.Join(", ", words);
+            if (words.Count == 0)
+                return string.Empty;
+
+            var processedWords = words.Select((w, index) =>
+                index == words.Count - 1
+                    ? w.ToUpper()
+                    : char.ToUpper(w[0]) + w.Substring(1).ToLower());
+
+            return string.Join(", ", processedWords);
 
         }
 

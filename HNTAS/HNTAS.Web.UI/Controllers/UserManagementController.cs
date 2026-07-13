@@ -20,22 +20,24 @@ namespace HNTAS.Web.UI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IHeatNetworkService _heatNetworkService;
+        private readonly IOrganisationService _organisationService;
         private readonly ILogger<UserManagementController> _logger;
         private readonly ISessionHelper _sessionHelper;
         private readonly IWorkflowManager _workflowManager;
-
+        
         public UserManagementController(IUserService userService,
             ILogger<UserManagementController> logger,
             ISessionHelper sessionHelper,
             IWorkflowManager workflowManager,
-            IHeatNetworkService heatNetworkService
-            )
-        {
+            IHeatNetworkService heatNetworkService,
+            IOrganisationService organisationService
+        ){
             _logger = logger;
             _userService = userService;
             _sessionHelper = sessionHelper;
             _workflowManager = workflowManager;
             _heatNetworkService = heatNetworkService;
+            _organisationService = organisationService;
         }
 
         [HttpGet]
@@ -197,14 +199,24 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             var heatNetworks = new List<HeatNetworkModel>();
-            heatNetworks = _heatNetworkService.GetHeatNetworkByUserId(userId).Result.Select(network => new HeatNetworkModel
+            var networks = await _heatNetworkService.GetHeatNetworkByUserId(userId, RegistrationSource2.HNTAS);
+
+            heatNetworks = (await Task.WhenAll(networks.Select(async network =>
             {
-                HnId = network.HnId,
-                Name = network.Name,
-                OrganisationName = user.Organisation?.Name,
-                HnDescription = network.AdditionalDescription,
-                Role = hnRoleMappings.FirstOrDefault(x => x.HnId == network.HnId)?.Role.ToString() ?? "Not specified"
-            }).ToList();            
+                var org = await _organisationService.GetOrganisationById(network.OrgId);
+
+                return new HeatNetworkModel
+                {
+                    HnId = network.HnId,
+                    Name = network.Name,
+                    OrganisationName = org?.Name,
+                    HnDescription = network.AdditionalDescription,
+                    Role = hnRoleMappings
+                        .FirstOrDefault(x => x.HnId == network.HnId)?.Role.ToString() ?? "Not specified"
+                };
+            }))).ToList();
+
+
 
             var model = new HeatNetworksViewModel
             {
@@ -219,6 +231,75 @@ namespace HNTAS.Web.UI.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ExistingNetworksAsync(
+            string? sortBy = "ofgemImportedDate",
+            string? sortOrder = "desc",
+            int page = 1,
+            int pageSize = 6)
+        {
+             
+                var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+                this.ShowBackButton("UserAccount", "Dashboard");
+
+                try
+                {
+                    // Validate and sanitize inputs
+                    if (page < 1) page = 1;
+
+                    // Validate sort order
+                    sortOrder = sortOrder?.ToLower() == "desc" ? "desc" : "asc";
+
+                    var validSortFields = new[] { "EntryType", "Element" };
+
+                    var existingNetworkRequest = new ExistingNetworkRequest
+                    {
+                        UserId = userId,
+                        SortBy = sortBy,
+                        SortDirection = sortOrder,
+                        Page = page,
+                        PageSize = pageSize
+                    };
+
+                    // Get audit logs with sorting and pagination
+                    var result = await _heatNetworkService.GetExistingNetworkByUserId(existingNetworkRequest);
+
+                    // Pass sorting and pagination info to view
+                    ViewBag.CurrentSort = sortBy;
+                    ViewBag.CurrentOrder = sortOrder;
+                    ViewBag.CurrentPage = page;
+                    ViewBag.PageSize = pageSize;
+                    ViewBag.TotalPages = result.TotalPages ?? 1;
+                    ViewBag.TotalItems = result.TotalCount ?? 0;                    
+
+                    return View(result);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error retrieving existing networks");
+                    TempData["ErrorMessage"] = "An error occurred while retrieving the existing networks.";
+
+                    // Return empty result
+                    var emptyResult = new ExistingNetworkResponse
+                    {
+                        Items = new List<HeatNetworkResponse>(),
+                        TotalCount = 0,
+                        TotalPages = 0
+                    };
+
+                    ViewBag.CurrentSort = sortBy;
+                    ViewBag.CurrentOrder = sortOrder ?? "asc";
+                    ViewBag.CurrentPage = page;
+                    ViewBag.PageSize = pageSize;
+                    ViewBag.TotalPages = 0;
+                    ViewBag.TotalItems = 0;
+                    ViewBag.NextOrder = "desc";
+
+                    return View(emptyResult);
+                }
+
+            }
 
         [HttpGet]
         public async Task<IActionResult> HeatNetworkUserRolesAsync(string hnId)

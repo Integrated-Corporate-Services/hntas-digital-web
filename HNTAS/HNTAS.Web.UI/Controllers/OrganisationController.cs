@@ -82,28 +82,14 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             base.OnActionExecuting(context);
-        }
-
-
-        public string CapitalizeCommaSeparated(string input)
-        {
-
-            if (string.IsNullOrWhiteSpace(input))
-                return input;
-
-            var words = input.Split(',')
-                             .Select(w => w.Trim())
-                             .Where(w => !string.IsNullOrEmpty(w))
-                             .Select(w => char.ToUpper(w[0]) + w.Substring(1).ToLower());
-
-            return string.Join(", ", words);
-
-        }
+        }        
 
         [Authorize(Policy = SecurityConstants.Policies.CanStartRegistration)]
         [HttpGet]
         public IActionResult StartRegistration()
         {
+            var option = _sessionHelper.GetFromSession<WhatDoYouWantToDoViewModel>(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey);
+            ViewBag.UserPathToday = option?.UserPathToday;
             return View();
         }
 
@@ -329,7 +315,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var IsEditJourney = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey);
             var IsAddNonRPOrgJourney = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey);
-            if (IsEditJourney || IsAddNonRPOrgJourney)
+            if (IsEditJourney)
             {
                 return RedirectToAction("UpdateOrganisationDetailsConfirmation");
             }
@@ -503,7 +489,7 @@ namespace HNTAS.Web.UI.Controllers
             var userModel = _sessionHelper.GetFromSession<UserModel>(HttpContext, SessionKeys.UserCreation_SessionKey);
             var deedPollViewModel = _sessionHelper.GetFromSession<DeedPollViewModel>(HttpContext, SessionKeys.DeedPollViewModelSessionKey);
 
-            var model = _sessionHelper.GetFromSession<CheckYourAnswersOrganisationModel>(HttpContext, SessionKeys.CheckYourAnswersOrganisationModelSessionKey) ?? new CheckYourAnswersOrganisationModel
+            var model = new CheckYourAnswersOrganisationModel
             {
                 Organisation = organisationModel,
                 User = userModel,
@@ -647,8 +633,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 model.OrganisationName = organisationModel.CompanyDetails?.Title;
             }
-            ViewBag.ShowBackButton = true;
-            ViewBag.BackLinkUrl = Url.Action("OrganisationType");
+            this.ShowBackButton("OrganisationType");
 
             return View("OrganisationName", model);
         }
@@ -659,9 +644,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.ShowBackButton = true;
-                ViewBag.BackLinkUrl = Url.Action("OrganisationType");
-
+                this.ShowBackButton("OrganisationType");
                 return View("OrganisationName", model);
             }
 
@@ -677,9 +660,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 organisationModel.CompanyDetails.Title = model.OrganisationName;
             }
-
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationCreation_SessionKey, organisationModel);
-
             return RedirectToAction("OrganisationAddress");
         }
 
@@ -789,7 +770,7 @@ namespace HNTAS.Web.UI.Controllers
                     return View(model);
                 }
                 results.Addresses = results.Addresses
-                    .Select(address => CapitalizeCommaSeparated(address))
+                    .Select(address => Utility.CapitalizeCommaSeparated(address))
                     .ToArray();
 
                 _sessionHelper.SaveToSession<SearchAddressByPostcodeModel>(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey, results);
@@ -893,6 +874,7 @@ namespace HNTAS.Web.UI.Controllers
             var organisationModel = _sessionHelper.GetFromSession<OrganisationModel>(HttpContext, SessionKeys.OrganisationCreation_SessionKey);
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var IsAddNonRPOrgJourney = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsAddOrganisationDetailsNonRPJourneySessionKey);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, false);
 
             if (organisationModel?.CompanyDetails == null)
             {

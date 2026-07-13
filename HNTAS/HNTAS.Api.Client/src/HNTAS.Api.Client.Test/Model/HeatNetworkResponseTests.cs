@@ -81,6 +81,15 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'OrgId'
+        /// </summary>
+        [Fact]
+        public void OrgIdTest()
+        {
+            // TODO unit test for the property 'OrgId'
+        }
+
+        /// <summary>
         /// Test the property 'EcDetails'
         /// </summary>
         [Fact]
@@ -123,6 +132,15 @@ namespace HNTAS.Api.Client.Test.Model
         public void PathwayTest()
         {
             // TODO unit test for the property 'Pathway'
+        }
+
+        /// <summary>
+        /// Test the property 'RegistrationSource'
+        /// </summary>
+        [Fact]
+        public void RegistrationSourceTest()
+        {
+            // TODO unit test for the property 'RegistrationSource'
         }
 
         /// <summary>
@@ -171,6 +189,15 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'HasOwnEnergyCentre'
+        /// </summary>
+        [Fact]
+        public void HasOwnEnergyCentreTest()
+        {
+            // TODO unit test for the property 'HasOwnEnergyCentre'
+        }
+
+        /// <summary>
         /// Test the property 'HeatNetworkConnections'
         /// </summary>
         [Fact]
@@ -213,6 +240,15 @@ namespace HNTAS.Api.Client.Test.Model
         public void DesignConstructionLogTest()
         {
             // TODO unit test for the property 'DesignConstructionLog'
+        }
+
+        /// <summary>
+        /// Test the property 'OfgemImportedDate'
+        /// </summary>
+        [Fact]
+        public void OfgemImportedDateTest()
+        {
+            // TODO unit test for the property 'OfgemImportedDate'
         }
     }
 }

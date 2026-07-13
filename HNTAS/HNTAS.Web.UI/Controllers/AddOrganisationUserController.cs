@@ -55,6 +55,7 @@ namespace HNTAS.Web.UI.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveEmailAddress(AddUserEmailAddressModel model)
         {
             if (!ModelState.IsValid)
@@ -103,6 +104,7 @@ namespace HNTAS.Web.UI.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SaveContactDetails(ContributorContactDetailsModel contactDetails)
         {
             if (!ModelState.IsValid)
@@ -153,6 +155,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveAssignRole(RoleAssignmentModel model)
         {
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);

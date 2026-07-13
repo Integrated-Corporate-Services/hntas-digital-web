@@ -30,6 +30,7 @@ namespace HNTAS.Web.UI.Controllers
                 this.ShowBackButton("UserAccount", "Dashboard");
             }
 
+
             ModelState.Clear();
 
             // 1. Handle Defaults
@@ -92,8 +93,6 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> Details(int? month, int? year, string? submissionId, List<string>? statusFilter, List<string>? typeFilter, int page = 1)
         {
             int pageSize = 10;
-            int filterYear = year ?? DateTime.Now.Year;
-            int filterMonth = month ?? DateTime.Now.Month;
 
             // 1. Safety check for the submission ID
             if (string.IsNullOrEmpty(submissionId))
@@ -104,6 +103,9 @@ namespace HNTAS.Web.UI.Controllers
             // 2. Call the API Service using the specific submission ID
             // We pass the status filters and page number to the API for server-side processing
             var response = await _armsDashboardService.GetKpiNetworkDetails(submissionId, statusFilter, typeFilter, page);
+
+            int filterYear = (int)(year ?? response.SelectedYear);
+            int filterMonth = (int)(month ?? response.SelectedMonth);
 
             if (response == null)
             {
@@ -130,19 +132,33 @@ namespace HNTAS.Web.UI.Controllers
                 PageSize = pageSize,
 
                 // Maintain the filter state for the back button
-                BackToListUrl = Url.Action("Index", new { month, year })
+                BackToListUrl = Url.Action("Index", new { month, year }),
+
+                // NEW: Root level assignment for Carbon Emission metrics
+                TotalCarbonEmission = (decimal?)response.TotalCarbonEmission,
+                CarbonCalculationInputs = response.CarbonCalculationInputs?.ToDictionary(
+                                        kvp => kvp.Key,
+                                        kvp => new CarbonInputUiDisplayViewModel
+                                        {
+                                            Label = kvp.Value.Label,
+                                            Value = (double)kvp.Value.Value
+                                        })
             };
 
 
             viewModel.GroupedElements = response.GroupedElements.ToDictionary(
-                group => $"{group.ElementType}|{group.ElementId}", // Create a composite key
-                group => group.Kpis.Select(k => new KpiRowViewModel
+                group => $"{group.ElementType}|{group.ElementId}",
+                group => new ElementGroupViewModel
                 {
-                    KpiId = k.KpiName,
-                    Value = k.Value.Value,
-                    Status = k.Status
-                }).ToList()
+                    KpiRows = group.Kpis.Select(k => new KpiRowViewModel
+                    {
+                        KpiId = k.KpiName,
+                        Value = k.Value.Value,
+                        Status = k.Status
+                    }).ToList()
+                }
             );
+
 
             if (response.AggregatedKpis != null)
             {
@@ -197,7 +213,7 @@ namespace HNTAS.Web.UI.Controllers
             public List<string> TypeFilter { get; set; } = new();
 
             // The Data: Grouped by Element ID
-            public Dictionary<string, List<KpiRowViewModel>> GroupedElements { get; set; } = new();
+            public Dictionary<string, ElementGroupViewModel> GroupedElements { get; set; } = new();
 
             public List<KpiRowViewModel> AggregatedKpis { get; set; } = new();
 
@@ -218,6 +234,17 @@ namespace HNTAS.Web.UI.Controllers
             public bool HasNextPage => CurrentPage < TotalPages;
 
             public List<KpiHistoryResponse?> AuditHistory { get; set; } = new(); // Placeholder for any audit history data you might want to display
+
+
+            public decimal? TotalCarbonEmission { get; set; }
+
+            public Dictionary<string, CarbonInputUiDisplayViewModel>? CarbonCalculationInputs { get; set; }
+        }
+
+        public class CarbonInputUiDisplayViewModel
+        {
+            public string Label { get; set; } = null!;
+            public double Value { get; set; }
         }
 
         public class HeatNetworkRowViewModel
@@ -282,6 +309,11 @@ namespace HNTAS.Web.UI.Controllers
 
             public bool HasPreviousPage => CurrentPage > 1;
             public bool HasNextPage => CurrentPage < TotalPages;
+        }
+
+        public class ElementGroupViewModel
+        {
+            public List<KpiRowViewModel> KpiRows { get; set; } = new();
         }
 
         public class KpiRowViewModel

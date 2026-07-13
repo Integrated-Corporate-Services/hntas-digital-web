@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Spreadsheet;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
@@ -18,17 +19,19 @@ namespace HNTAS.Web.UI.Controllers
     {
         private readonly ILogger<DashboardController> _logger;
         private readonly IUserService _userService;
-        private readonly IHeatNetworksApi _heatNetworksApi;
+        private readonly IHeatNetworkService _heatNetworkService;
         private readonly IOrganisationService _organisationService;
         private readonly ISessionHelper _sessionHelper;
+        private readonly IConfiguration _configuration;
 
-        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworksApi heatNetworksApi, IOrganisationService organisationService, ISessionHelper sessionHelper)
+        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworkService heatNetworkService, IOrganisationService organisationService, ISessionHelper sessionHelper, IConfiguration configuration)
         {
             _logger = logger;
             _userService = userService;
-            _heatNetworksApi = heatNetworksApi;
+            _heatNetworkService = heatNetworkService;
             _organisationService = organisationService;
             _sessionHelper = sessionHelper;
+            _configuration = configuration;
         }
 
         public async Task<UserDetailsResponse> RetrieveUserDetails(string userId)
@@ -59,6 +62,8 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> UserAccount()
         {
+            _ = bool.TryParse(_configuration?.GetSection("ExistingNetworks:EnableFeature")?.Value, out bool isExistingNetworksFeatureEnabled);
+            ViewBag.IsExistingNetworksFeatureEnabled = isExistingNetworksFeatureEnabled;
             UserDetailsResponse user;
             try
             {
@@ -88,14 +93,16 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, user.Organisation.OrgId);
             }
-            
+
+            var networks = await _heatNetworkService.GetHeatNetworkByUserId(user.Id!, RegistrationSource2.OFGEM);
 
             var dashboardModel = new DashboardModel
             {
                 OrganisationName = user?.Organisation?.Name,
                 UserRole = user.Roles[0].ToString(),
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
-                HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any()
+                HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any(),
+                HasOfgemNetworks = networks.Count != 0
             };
             var managedUsers = await _userService.GetManagedUsers(user.Id);
             if(dashboardModel.IsResponsiblePerson && managedUsers.Count <= 1 && !dashboardModel.HasHeatNetworks)

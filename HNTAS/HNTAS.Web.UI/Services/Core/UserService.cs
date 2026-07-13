@@ -281,32 +281,31 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<string?> AcceptUserInvitation(InvitedUserRequest userRequest)
+        public async Task<List<InvitedUserResponse>> GetNetworkLeads(string userId)
         {
-            _logger.LogInformation("Accepting user invitation for email: {Email}", userRequest.InvitedEmail);
-
+            _logger.LogInformation("Getting network leads for user ID: {UserId}", userId);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                _logger.LogError("User ID is null or empty");
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty");
+            }
             try
             {
-                var response = await _usersApi.ApiUsersAcceptInvitationPatchOrDefaultAsync(userRequest);
-                if (response.IsOk)
+                var users = await _usersApi.ApiUsersNetworkManagersGetAsync(userId);
+                if (users.IsOk)
                 {
-                    _logger.LogInformation("User invitation accepted for email: {Email}", userRequest.InvitedEmail);
-                    return response.Ok();
+                    return users.Ok();
                 }
-                if (response.IsCreated)
-                {
-                    _logger.LogInformation("User invitation accepted for email: {Email}", userRequest.InvitedEmail);
-                    return response.Created();
-                }
-                throw new Exception($"Failed to update user heat network ID with status code: {response.StatusCode}");
+                throw new Exception($"Failed to get network leads with status code: {users.StatusCode}");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error accepting user invitation for email: {Email}", userRequest.InvitedEmail);
+                _logger.LogError(ex, "Error getting network leads for user ID: {UserId}", userId);
                 throw;
             }
-
         }
+
+
 
         public async Task<List<UserResponse>> GetRegisteredUsersAsync(string rpUserId)
         {
@@ -419,7 +418,6 @@ namespace HNTAS.Web.UI.Services.Core
             _logger.LogError("An unexpected error occurred while checking super user status");
             throw new Exception($"Failed to retrieve super user with status code: {response.StatusCode}");
         }
-
     }
 }
 

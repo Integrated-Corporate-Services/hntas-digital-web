@@ -98,6 +98,39 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+        public async Task<string?> AcceptInvitationAsync(InvitedUserRequest invitationRequest)
+        {
+            _logger.LogInformation("Accepting invitation with ID: {InvitationId}", invitationRequest.InvitationId);
+            try
+            {
+                var response = await _invitationsApi.ApiInvitationsAcceptInvitationPatchAsync(invitationRequest);
+
+                if (response.IsCreated)
+                    return response.Created();
+
+                if (response.IsOk)
+                    return response.Ok();
+
+                if (response.IsNotFound)
+                {
+                    _logger.LogWarning("Invitation not found: {InvitationId}", invitationRequest.InvitationId);
+                    return null;
+                }
+
+                if (response.IsConflict)
+                {
+                    throw new Exception("Conflict occurred while accepting invitation");
+                }
+
+                throw new Exception($"Unexpected status: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An exception occurred while accepting invitation ID: {InvitationId}", invitationRequest.InvitationId);
+                throw;
+            }
+        }
+
         public async Task RejectInvitationAsync(string invitationId)
         {
             try
