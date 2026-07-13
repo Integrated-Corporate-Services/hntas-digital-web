@@ -26,10 +26,10 @@ namespace HNTAS.Web.UI.Models.Address
             if (v == null) return null!;
             return new AddressByStreetOrTownModel
             {
-                 StreetAddress = v.AddressLine1,
-                 TownOrCity = v.Locality,
-                 Postalcode = v.PostalCode,
-                 Country = v.Country                
+                 StreetAddress = v.AddressLine1 ?? string.Empty,
+                 TownOrCity = v.Locality ?? string.Empty,
+                 Postalcode = (v.PostalCode ?? string.Empty).ToUpper(),
+                 Country = v.Country ?? string.Empty
             };
         }
         public static implicit operator AddressByStreetOrTownModel(RegisteredAddress v)
@@ -41,7 +41,7 @@ namespace HNTAS.Web.UI.Models.Address
                 TownOrCity = v.Town!,
                 Postalcode = v.Postcode!,
                 Country = v.Country!,
-                Fulladdress = $"{v.AddressLine1}, {v.Town}, {v.Postcode}, {v.Country}"
+                Fulladdress = $"{v.AddressLine1}, {v.Town}, {v.Postcode.ToUpper()}, {v.Country}"
             };
         }
     }

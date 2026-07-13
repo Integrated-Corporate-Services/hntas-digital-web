@@ -2,7 +2,7 @@
 
 namespace HNTAS.Web.UI.Services.Core
 {
-    public interface IImportExistingNetworksPocService
+    public interface IImportExistingNetworksService
     {
         Task<ImportResult> ImportCsv(string stream);
     }

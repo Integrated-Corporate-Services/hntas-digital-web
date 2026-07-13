@@ -16,6 +16,7 @@
   "description": "",
   "dependencies": {
     "accessible-autocomplete": "^3.0.1",
+    "chokidar": "^3.6.0",
     "govuk-frontend": "^5.11.0"
   },
   "devDependencies": {
@@ -29,7 +30,7 @@
     "mini-css-extract-plugin": "^2.9.0",
     "postcss": "^8.5.10",
     "postcss-cli": "^11.0.0",
-    "sass": "^1.101.0",
+    "sass": "1.77.0",
     "sass-loader": "^14.2.1",
     "style-loader": "^4.0.0",
     "webpack": "^5.91.0",

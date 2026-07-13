@@ -15,12 +15,32 @@
                 </h1>
 
                 <dl class="govuk-summary-list">
+                    @if (!string.IsNullOrEmpty(Model.Address.Fulladdress))
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Address
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.Address.Fulladdress
+                            </dd>
+                        </div>
+                    }
+                    
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
-                            Address
+                            Coordinates
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            @Model.Address.Fulladdress
+                            @Model.Coordinates
+                        </dd>
+                    </div>                                       
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Network type
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.NetworkType
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
@@ -29,14 +49,6 @@
                         </dt>
                         <dd class="govuk-summary-list__value">
                             @Model.Phase
-                        </dd>
-                    </div>                                       
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Pathway
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            New build (@Model.PathWay - 7)
                         </dd>
                     </div>
                 </dl>

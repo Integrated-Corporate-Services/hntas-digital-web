@@ -475,7 +475,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode, model.Country }
+            var addressParts = new[] { model.StreetAddress, model.TownOrCity, model.Postalcode.ToUpper(), model.Country }
                 .Where(part => !string.IsNullOrWhiteSpace(part));
             model.Fulladdress = string.Join(", ", addressParts);
             var heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey) ?? new HeatNetworkLocationModel();

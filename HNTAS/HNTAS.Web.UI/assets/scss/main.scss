@@ -115,3 +115,19 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
         line-height: 1.25;
     }
 }
+.govuk-header__logotype {
+    fill: #fff !important;
+}
+
+
+@media (min-width: 48.0625em) {
+    .govuk-template--rebranded .govuk-header__navigation {
+        margin-bottom: 0;
+        padding: 22px 0 8px;
+    }
+}
+
+.govuk-header__navigation {
+    display: flex;
+    justify-content: flex-end;
+}
