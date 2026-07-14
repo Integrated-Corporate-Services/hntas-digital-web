@@ -139,6 +139,16 @@ namespace HNTAS.Web.UI.Helpers
             throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}");
         }
 
+        public static string GetNetworkTypeLabel(Api.Client.Model.HeatNetworkType? networkType)
+        {
+            if (networkType == Api.Client.Model.HeatNetworkType.Communal)
+                return HeatNetworkTypeConstants.Communal;
+            if (networkType == Api.Client.Model.HeatNetworkType.District)
+                return HeatNetworkTypeConstants.District;            
+
+            throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}");
+        }
+
         public static string GetNetworkTypeLabelForNetworkType(HeatNetworkElementType? networkType)
         {
             return networkType switch

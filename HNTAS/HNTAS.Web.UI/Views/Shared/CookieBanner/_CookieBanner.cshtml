@@ -1,7 +1,7 @@
 ﻿@{
     var consent = Context.Request.Cookies["cookie_consent"];
     var action = TempData["cookie_banner_action"]?.ToString();
-    var url = Url.Action("Cookies", "Help");
+    var url = Url.Action("Cookies", "FooterLinks");
 }
 
 @if (consent == null)
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="govuk-button-group">
-                <form method="post" asp-action="Cookies" asp-controller="Help">
+                <form method="post" asp-action="Cookies" asp-controller="FooterLinks">
                     <button type="submit" class="govuk-button" data-module="govuk-button" name="cookieConsent" value="Yes">Accept analytics cookies</button>
                     <button type="submit" class="govuk-button" data-module="govuk-button" name="cookieConsent" value="No">Reject analytics cookies</button>
                 </form>                

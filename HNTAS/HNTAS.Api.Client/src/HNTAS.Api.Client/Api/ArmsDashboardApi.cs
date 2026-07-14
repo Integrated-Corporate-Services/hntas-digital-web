@@ -323,7 +323,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiArmsDashboardGetKpiNetworkDetailsGet(ref suppressDefaultLog, apiResponseLocalVar, submissionId, statusFilter, typeFilter, page);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -453,17 +453,11 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
                         ILogger<ApiArmsDashboardGetKpiNetworkDetailsGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiArmsDashboardGetKpiNetworkDetailsGetApiResponse>();
-                        ApiArmsDashboardGetKpiNetworkDetailsGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
-                            default: {
-                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/ArmsDashboard/get-kpi-network-details", requestedAtLocalVar, _jsonSerializerOptions);
-
-                                break;
-                            }
-                        }
+                        ApiArmsDashboardGetKpiNetworkDetailsGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/ArmsDashboard/get-kpi-network-details", requestedAtLocalVar, _jsonSerializerOptions);
 
                         AfterApiArmsDashboardGetKpiNetworkDetailsGetDefaultImplementation(apiResponseLocalVar, submissionId, statusFilter, typeFilter, page);
 
@@ -502,22 +496,6 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiArmsDashboardGetKpiNetworkDetailsGetApiResponse(ILogger<ApiArmsDashboardGetKpiNetworkDetailsGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
-            {
-                Logger = logger;
-                OnCreated(httpRequestMessage, httpResponseMessage);
-            }
-
-            /// <summary>
-            /// The <see cref="ApiArmsDashboardGetKpiNetworkDetailsGetApiResponse"/>
-            /// </summary>
-            /// <param name="logger"></param>
-            /// <param name="httpRequestMessage"></param>
-            /// <param name="httpResponseMessage"></param>
-            /// <param name="contentStream"></param>
-            /// <param name="path"></param>
-            /// <param name="requestedAt"></param>
-            /// <param name="jsonSerializerOptions"></param>
-            public ApiArmsDashboardGetKpiNetworkDetailsGetApiResponse(ILogger<ApiArmsDashboardGetKpiNetworkDetailsGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -676,7 +654,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiArmsDashboardGetKpiNetworksByRpUserGet(ref suppressDefaultLog, apiResponseLocalVar, userId, month, year, pageNumber);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -806,17 +784,11 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
                         ILogger<ApiArmsDashboardGetKpiNetworksByRpUserGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiArmsDashboardGetKpiNetworksByRpUserGetApiResponse>();
-                        ApiArmsDashboardGetKpiNetworksByRpUserGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
-                            default: {
-                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/ArmsDashboard/get-kpi-networks-by-rp-user", requestedAtLocalVar, _jsonSerializerOptions);
-
-                                break;
-                            }
-                        }
+                        ApiArmsDashboardGetKpiNetworksByRpUserGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/ArmsDashboard/get-kpi-networks-by-rp-user", requestedAtLocalVar, _jsonSerializerOptions);
 
                         AfterApiArmsDashboardGetKpiNetworksByRpUserGetDefaultImplementation(apiResponseLocalVar, userId, month, year, pageNumber);
 
@@ -855,22 +827,6 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiArmsDashboardGetKpiNetworksByRpUserGetApiResponse(ILogger<ApiArmsDashboardGetKpiNetworksByRpUserGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
-            {
-                Logger = logger;
-                OnCreated(httpRequestMessage, httpResponseMessage);
-            }
-
-            /// <summary>
-            /// The <see cref="ApiArmsDashboardGetKpiNetworksByRpUserGetApiResponse"/>
-            /// </summary>
-            /// <param name="logger"></param>
-            /// <param name="httpRequestMessage"></param>
-            /// <param name="httpResponseMessage"></param>
-            /// <param name="contentStream"></param>
-            /// <param name="path"></param>
-            /// <param name="requestedAt"></param>
-            /// <param name="jsonSerializerOptions"></param>
-            public ApiArmsDashboardGetKpiNetworksByRpUserGetApiResponse(ILogger<ApiArmsDashboardGetKpiNetworksByRpUserGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
@@ -1026,7 +982,7 @@ namespace HNTAS.Api.Client.Api
             bool suppressDefaultLog = false;
             AfterApiArmsDashboardSubmissionIdHistoryGet(ref suppressDefaultLog, apiResponseLocalVar, submissionId);
             if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
 
         /// <summary>
@@ -1126,17 +1082,11 @@ namespace HNTAS.Api.Client.Api
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
                         ILogger<ApiArmsDashboardSubmissionIdHistoryGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiArmsDashboardSubmissionIdHistoryGetApiResponse>();
-                        ApiArmsDashboardSubmissionIdHistoryGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
-                            default: {
-                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/ArmsDashboard/{submissionId}/history", requestedAtLocalVar, _jsonSerializerOptions);
-
-                                break;
-                            }
-                        }
+                        ApiArmsDashboardSubmissionIdHistoryGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/ArmsDashboard/{submissionId}/history", requestedAtLocalVar, _jsonSerializerOptions);
 
                         AfterApiArmsDashboardSubmissionIdHistoryGetDefaultImplementation(apiResponseLocalVar, submissionId);
 
@@ -1175,22 +1125,6 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiArmsDashboardSubmissionIdHistoryGetApiResponse(ILogger<ApiArmsDashboardSubmissionIdHistoryGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
-            {
-                Logger = logger;
-                OnCreated(httpRequestMessage, httpResponseMessage);
-            }
-
-            /// <summary>
-            /// The <see cref="ApiArmsDashboardSubmissionIdHistoryGetApiResponse"/>
-            /// </summary>
-            /// <param name="logger"></param>
-            /// <param name="httpRequestMessage"></param>
-            /// <param name="httpResponseMessage"></param>
-            /// <param name="contentStream"></param>
-            /// <param name="path"></param>
-            /// <param name="requestedAt"></param>
-            /// <param name="jsonSerializerOptions"></param>
-            public ApiArmsDashboardSubmissionIdHistoryGetApiResponse(ILogger<ApiArmsDashboardSubmissionIdHistoryGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);

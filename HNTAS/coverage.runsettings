@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+	<DataCollectionRunSettings>
+		<DataCollectors>
+			<DataCollector friendlyName="XPlat code coverage">
+				<Configuration>
+
+					<!-- ✅ Only exclude full projects -->
+					<Exclude>
+						<ModulePath>.*HNTAS\.Api\.Client.*</ModulePath>
+						<ModulePath>.*Tests.*</ModulePath>
+					</Exclude>
+
+					<!-- ✅ Use file-level exclusion for models -->
+					<ExcludeByFile>
+						**/HNTAS.Web.UI.Models/*.cs
+						**/Model/*.cs
+						**/DTOs/*.cs
+						**/Dtos/*.cs
+					</ExcludeByFile>
+
+					<!-- ✅ Exclude generated code -->
+					<ExcludeByAttribute>
+						<ExcludeByAttribute>GeneratedCodeAttribute</ExcludeByAttribute>
+						<ExcludeByAttribute>CompilerGeneratedAttribute</ExcludeByAttribute>
+					</ExcludeByAttribute>
+
+				</Configuration>
+			</DataCollector>
+		</DataCollectors>
+	</DataCollectionRunSettings>
+</RunSettings>

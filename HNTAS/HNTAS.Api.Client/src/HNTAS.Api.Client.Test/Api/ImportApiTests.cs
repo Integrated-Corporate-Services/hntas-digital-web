@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
 
 
 /* *********************************************************************************
@@ -55,13 +56,10 @@ namespace HNTAS.Api.Client.Test.Api
         [Fact (Skip = "not implemented")]
         public async Task ApiImportUploadCsvPostAsyncTest()
         {
-            Client.Option<string> contentType = default!;
-            Client.Option<string> contentDisposition = default!;
-            Client.Option<Dictionary<string, List<string>>> headers = default!;
-            Client.Option<long> length = default!;
-            Client.Option<string> name = default!;
-            Client.Option<string> fileName = default!;
-            await _instance.ApiImportUploadCsvPostAsync(contentType, contentDisposition, headers, length, name, fileName);
+            Client.Option<string> fileContent = default!;
+            var response = await _instance.ApiImportUploadCsvPostAsync(fileContent);
+            var model = response.Ok();
+            Assert.IsType<ImportResult>(model);
         }
     }
 }

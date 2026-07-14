@@ -72,6 +72,9 @@ namespace HNTAS.Api.Client.Test.Api
             var armsDashboardApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IArmsDashboardApi>();
             Assert.True(armsDashboardApi.HttpClient.BaseAddress != null);
 
+            var armsReportApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IArmsReportApi>();
+            Assert.True(armsReportApi.HttpClient.BaseAddress != null);
+
             var assessorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
@@ -87,8 +90,8 @@ namespace HNTAS.Api.Client.Test.Api
             var countriesAndTerritoriesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
-            var hNDataImportExportApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHNDataImportExportApi>();
-            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
+            var feedbackApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IFeedbackApi>();
+            Assert.True(feedbackApi.HttpClient.BaseAddress != null);
 
             var heatNetworksApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
@@ -111,6 +114,9 @@ namespace HNTAS.Api.Client.Test.Api
             var sOAApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);
 
+            var superUserApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ISuperUserApi>();
+            Assert.True(superUserApi.HttpClient.BaseAddress != null);
+
             var usersApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
         }
@@ -127,6 +133,9 @@ namespace HNTAS.Api.Client.Test.Api
             var armsDashboardApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IArmsDashboardApi>();
             Assert.True(armsDashboardApi.HttpClient.BaseAddress != null);
 
+            var armsReportApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IArmsReportApi>();
+            Assert.True(armsReportApi.HttpClient.BaseAddress != null);
+
             var assessorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
@@ -142,8 +151,8 @@ namespace HNTAS.Api.Client.Test.Api
             var countriesAndTerritoriesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
-            var hNDataImportExportApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHNDataImportExportApi>();
-            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
+            var feedbackApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IFeedbackApi>();
+            Assert.True(feedbackApi.HttpClient.BaseAddress != null);
 
             var heatNetworksApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
@@ -166,6 +175,9 @@ namespace HNTAS.Api.Client.Test.Api
             var sOAApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);
 
+            var superUserApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ISuperUserApi>();
+            Assert.True(superUserApi.HttpClient.BaseAddress != null);
+
             var usersApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
         }
@@ -182,6 +194,9 @@ namespace HNTAS.Api.Client.Test.Api
             var armsDashboardApi = _hostUsingAddWithAClient.Services.GetRequiredService<IArmsDashboardApi>();
             Assert.True(armsDashboardApi.HttpClient.BaseAddress != null);
             
+            var armsReportApi = _hostUsingAddWithAClient.Services.GetRequiredService<IArmsReportApi>();
+            Assert.True(armsReportApi.HttpClient.BaseAddress != null);
+            
             var assessorApi = _hostUsingAddWithAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
             
@@ -197,8 +212,8 @@ namespace HNTAS.Api.Client.Test.Api
             var countriesAndTerritoriesApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
             
-            var hNDataImportExportApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHNDataImportExportApi>();
-            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
+            var feedbackApi = _hostUsingAddWithAClient.Services.GetRequiredService<IFeedbackApi>();
+            Assert.True(feedbackApi.HttpClient.BaseAddress != null);
             
             var heatNetworksApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
@@ -221,6 +236,9 @@ namespace HNTAS.Api.Client.Test.Api
             var sOAApi = _hostUsingAddWithAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);
             
+            var superUserApi = _hostUsingAddWithAClient.Services.GetRequiredService<ISuperUserApi>();
+            Assert.True(superUserApi.HttpClient.BaseAddress != null);
+            
             var usersApi = _hostUsingAddWithAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);
         }
@@ -237,6 +255,9 @@ namespace HNTAS.Api.Client.Test.Api
             var armsDashboardApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IArmsDashboardApi>();
             Assert.True(armsDashboardApi.HttpClient.BaseAddress != null);
 
+            var armsReportApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IArmsReportApi>();
+            Assert.True(armsReportApi.HttpClient.BaseAddress != null);
+
             var assessorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IAssessorApi>();
             Assert.True(assessorApi.HttpClient.BaseAddress != null);
 
@@ -252,8 +273,8 @@ namespace HNTAS.Api.Client.Test.Api
             var countriesAndTerritoriesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
-            var hNDataImportExportApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHNDataImportExportApi>();
-            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
+            var feedbackApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IFeedbackApi>();
+            Assert.True(feedbackApi.HttpClient.BaseAddress != null);
 
             var heatNetworksApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
@@ -275,6 +296,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var sOAApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ISOAApi>();
             Assert.True(sOAApi.HttpClient.BaseAddress != null);
+
+            var superUserApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ISuperUserApi>();
+            Assert.True(superUserApi.HttpClient.BaseAddress != null);
 
             var usersApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IUsersApi>();
             Assert.True(usersApi.HttpClient.BaseAddress != null);

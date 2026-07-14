@@ -58,6 +58,7 @@ namespace HNTAS.Web.UI.Models
         public string OrgId { get; set; }
         public string HeatNetworkType { get; set; }
         public string HasOwnEnergyCenter { get; set; }
+        public string ECSuppliesOneCommunalBuilding { get; set; }
         public HeatNetworkConnectionsViewModel? HeatNetworkConnectionsModel { get; set; }
         public ECDetailsModel ECDetailsModel { get; set; }
         public HeatNetworkNameModel HeatNetworkNameModel { get; set; }

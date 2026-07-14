@@ -15,16 +15,19 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly ISessionHelper _sessionHelper;
     private readonly IInvitationService _invitationService;
+    private readonly IConfiguration _configuration;
 
     public HomeController(IUserService iUserService,
         ILogger<HomeController> logger,
         ISessionHelper sessionHelper,
-        IInvitationService invitationService)
+        IInvitationService invitationService,
+        IConfiguration configuration)
     {
         _iUserService = iUserService;
         _logger = logger;
         _sessionHelper = sessionHelper;
         _invitationService = invitationService;
+        _configuration = configuration;
     }
 
     [Authorize]
@@ -32,6 +35,40 @@ public class HomeController : Controller
     {
         var email = User.FindFirstValue("email");
         var oneLoginId = User.GetOneLoginId(_logger);
+        var isSuoerUserEnabled = _configuration.GetValue<bool>("SuperUserLogin:Enabled");
+
+        var isSuperUser = isSuoerUserEnabled && await _iUserService.IsSuperUser(email);
+
+        if (isSuperUser)
+        {
+            var existingUser = await _iUserService.GetUserByOneLoginId(oneLoginId);
+            if (existingUser == null)
+            {
+                var registration = new InitialUserRegistrationRequest(oneLoginId: oneLoginId, emailId: email, status: UserStatus.Active);
+                _logger.LogInformation("Submitting initial user entry for super user.");
+
+                var newUserId = await _iUserService.CreateUser(registration);
+
+                if (string.IsNullOrWhiteSpace(newUserId))
+                {
+                    _logger.LogError("API returned no valid user object.");
+                    TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
+                    return BadRequest();
+                }
+
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, newUserId);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsSuperUserKey, true);
+
+                return RedirectToAction("Index", "AdminDashboard");
+            }
+            else
+            {
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsSuperUserKey, true);
+                return RedirectToAction("Index", "AdminDashboard");
+            }
+
+        }
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
         {
@@ -41,14 +78,8 @@ public class HomeController : Controller
         }
 
         //check for invitation flow
-        var invitedEmail = User.FindFirst("hntas.invitedEmail")?.Value;
         var invitationId = User.FindFirst("hntas.invitationId")?.Value;
 
-        if (!string.IsNullOrEmpty(invitedEmail) && !string.Equals(email, invitedEmail, StringComparison.OrdinalIgnoreCase))
-        {
-            _logger.LogError("Authenticated email does not match invited email.");
-            return BadRequest();
-        }
 
         try
         {
@@ -56,18 +87,6 @@ public class HomeController : Controller
             // If invitationId is present, we are in an invitation flow
             if (!string.IsNullOrEmpty(invitationId))
             {
-
-                var inviterUserId = User.FindFirst("hntas.inviterUserId")?.Value;
-                var inviterOrgId = User.FindFirst("hntas.inviterOrgId")?.Value;
-
-                if (string.IsNullOrEmpty(invitedEmail) || string.IsNullOrEmpty(inviterUserId) || string.IsNullOrEmpty(inviterOrgId))
-                {
-                    _logger.LogError("Invitation flow data incomplete.");
-
-                    TempData["ErrorMessage"] = "We couldn't process your invitation due to missing information. Please try the link again or contact support if the issue persists.";
-                    return BadRequest();
-                }
-
                 //check invitation is already accepted
                 var invitation = await _invitationService.GetInvitationByIdAsync(invitationId);
 
@@ -80,7 +99,6 @@ public class HomeController : Controller
                 if (invitation.Status == InvitationStatus.Invited)
                 {
                     var userId = await _invitationService.AcceptInvitationAsync(new InvitedUserRequest(
-                        invitedEmail: invitedEmail,
                         invitationId: invitationId,
                         oneLoginId: oneLoginId));
 
@@ -187,6 +205,8 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult WhatDoYouWantToDo()
     {
+        _ = bool.TryParse(_configuration?.GetSection("ExistingNetworks:EnableFeature")?.Value, out bool isExistingNetworksFeatureEnabled);
+        ViewBag.IsExistingNetworksFeatureEnabled = isExistingNetworksFeatureEnabled;
         this.ShowBackButton("StartPage", "Home");
         var model = _sessionHelper.GetFromSession<WhatDoYouWantToDoViewModel>(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey) ?? new WhatDoYouWantToDoViewModel();
         return View(model);

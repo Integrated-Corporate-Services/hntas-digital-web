@@ -5,6 +5,22 @@
     ViewData["Title"] = "What do you want to do?";
     var fieldOrder = new[] { nameof(Model.UserPathToday) };
     var elementId = Html.GenerateIdFromName(nameof(Model.UserPathToday)).ToLowerInvariant();
+    
+    var isExistingNetworksEnabled = ViewBag.IsExistingNetworksFeatureEnabled ?? false;
+
+    var options = isExistingNetworksEnabled
+        ? new List<Option>
+        {
+            new Option { OptId = $"{elementId}", OptValue = "updateExistingHN", OptText = "Sign in to your HNTAS account", OptHintText = "Access your pre-operational and operational networks" },
+            new Option { OptId = $"{elementId}-2", OptValue = "registerNewHN", OptText = "Register a new organisation with pre-operational networks", OptHintText = "You have networks in an initial design or build phase" },
+            new Option { OptId = $"{elementId}-3", OptValue = "registerOperationalHN", OptText = "Register a new organisation with operational networks", OptHintText = "You have been notified to certify your Ofgem registered networks" }
+        }
+        : new List<Option>
+        {
+            new Option { OptId = $"{elementId}", OptValue = "registerNewHN", OptText = "Register a new organisation" },
+            new Option { OptId = $"{elementId}-2", OptValue = "updateExistingHN", OptText = "Sign in to your account" }
+        };
+    
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "Home",
@@ -16,14 +32,8 @@
             {
                 QId = elementId,
                 QText = "What do you want to do?",                
-                QHintText = null,
-                Options = new List<Option>
-                {
-                    new Option { OptId = $"{elementId}", OptValue = "updateExistingHN", OptText = "Sign in to your HNTAS account", OptHintText = "Access your pre-operational and operational networks" },
-                    new Option { OptId = $"{elementId}-2", OptValue = "registerNewHN", OptText = "Register a new organisation with pre-operational networks", OptHintText = "You have networks in an initial design or build phase" },
-                    new Option { OptId = $"{elementId}-3", OptValue = "registerOperationalHN", OptText = "Register a new organisation with operational networks", OptHintText = "You have been notified to certify your Ofgem registered networks" },
-                    
-                },
+                QHintText = null,                
+                Options = options,
                 SeletedOption = Model.UserPathToday
             }
         }
