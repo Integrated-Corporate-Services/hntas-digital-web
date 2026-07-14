@@ -22,14 +22,16 @@ namespace HNTAS.Web.UI.Controllers
         private readonly IHeatNetworkService _heatNetworkService;
         private readonly IOrganisationService _organisationService;
         private readonly ISessionHelper _sessionHelper;
+        private readonly IConfiguration _configuration;
 
-        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworkService heatNetworkService, IOrganisationService organisationService, ISessionHelper sessionHelper)
+        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworkService heatNetworkService, IOrganisationService organisationService, ISessionHelper sessionHelper, IConfiguration configuration)
         {
             _logger = logger;
             _userService = userService;
             _heatNetworkService = heatNetworkService;
             _organisationService = organisationService;
             _sessionHelper = sessionHelper;
+            _configuration = configuration;
         }
 
         public async Task<UserDetailsResponse> RetrieveUserDetails(string userId)
@@ -60,6 +62,8 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> UserAccount()
         {
+            _ = bool.TryParse(_configuration?.GetSection("ExistingNetworks:EnableFeature")?.Value, out bool isExistingNetworksFeatureEnabled);
+            ViewBag.IsExistingNetworksFeatureEnabled = isExistingNetworksFeatureEnabled;
             UserDetailsResponse user;
             try
             {
@@ -153,7 +157,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EditOrganisationDetails()
         {
             _sessionHelper.SaveToSession<bool>(HttpContext, SessionKeys.IsEditOrganisationDetailsJourneySessionKey, true);
-            return RedirectToAction("AddOrRegister", "ExistingOrganisation");
+            return RedirectToAction("OrganisationType", "Organisation");
         }
 
         [HttpGet]

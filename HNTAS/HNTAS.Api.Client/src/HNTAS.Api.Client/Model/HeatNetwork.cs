@@ -45,6 +45,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="registrationSource">registrationSource</param>
         /// <param name="heatNetworkType">heatNetworkType</param>
         /// <param name="hasOwnEnergyCenter">hasOwnEnergyCenter</param>
+        /// <param name="ecSuppliesOneCommunalBuilding">ecSuppliesOneCommunalBuilding</param>
         /// <param name="heatNetworkConnections">heatNetworkConnections</param>
         /// <param name="networkElements">networkElements</param>
         /// <param name="soa">soa</param>
@@ -57,7 +58,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="createdAt">createdAt</param>
         /// <param name="phase">phase</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<RegisteredAddress?> address = default, Option<ECDetails?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<HeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCenter = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> ofgemUserEmailId = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
+        public HeatNetwork(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<RegisteredAddress?> address = default, Option<ECDetails?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<HeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCenter = default, Option<bool?> ecSuppliesOneCommunalBuilding = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> ofgemUserEmailId = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
         {
             IdOption = id;
             UHnIdOption = uHnId;
@@ -71,6 +72,7 @@ namespace HNTAS.Api.Client.Model
             RegistrationSourceOption = registrationSource;
             HeatNetworkTypeOption = heatNetworkType;
             HasOwnEnergyCenterOption = hasOwnEnergyCenter;
+            EcSuppliesOneCommunalBuildingOption = ecSuppliesOneCommunalBuilding;
             HeatNetworkConnectionsOption = heatNetworkConnections;
             NetworkElementsOption = networkElements;
             SoaOption = soa;
@@ -244,6 +246,19 @@ namespace HNTAS.Api.Client.Model
         public bool? HasOwnEnergyCenter { get { return this.HasOwnEnergyCenterOption; } set { this.HasOwnEnergyCenterOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of EcSuppliesOneCommunalBuilding
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> EcSuppliesOneCommunalBuildingOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets EcSuppliesOneCommunalBuilding
+        /// </summary>
+        [JsonPropertyName("ecSuppliesOneCommunalBuilding")]
+        public bool? EcSuppliesOneCommunalBuilding { get { return this.EcSuppliesOneCommunalBuildingOption; } set { this.EcSuppliesOneCommunalBuildingOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of HeatNetworkConnections
         /// </summary>
         [JsonIgnore]
@@ -406,6 +421,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  RegistrationSource: ").Append(RegistrationSource).Append("\n");
             sb.Append("  HeatNetworkType: ").Append(HeatNetworkType).Append("\n");
             sb.Append("  HasOwnEnergyCenter: ").Append(HasOwnEnergyCenter).Append("\n");
+            sb.Append("  EcSuppliesOneCommunalBuilding: ").Append(EcSuppliesOneCommunalBuilding).Append("\n");
             sb.Append("  HeatNetworkConnections: ").Append(HeatNetworkConnections).Append("\n");
             sb.Append("  NetworkElements: ").Append(NetworkElements).Append("\n");
             sb.Append("  Soa: ").Append(Soa).Append("\n");
@@ -476,6 +492,7 @@ namespace HNTAS.Api.Client.Model
             Option<RegistrationSource?> registrationSource = default;
             Option<HeatNetworkType?> heatNetworkType = default;
             Option<bool?> hasOwnEnergyCenter = default;
+            Option<bool?> ecSuppliesOneCommunalBuilding = default;
             Option<HeatNetworkConnections?> heatNetworkConnections = default;
             Option<NetworkElements?> networkElements = default;
             Option<Soa?> soa = default;
@@ -543,6 +560,9 @@ namespace HNTAS.Api.Client.Model
                         case "hasOwnEnergyCenter":
                             hasOwnEnergyCenter = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
                             break;
+                        case "ecSuppliesOneCommunalBuilding":
+                            ecSuppliesOneCommunalBuilding = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
                         case "heatNetworkConnections":
                             heatNetworkConnections = new Option<HeatNetworkConnections?>(JsonSerializer.Deserialize<HeatNetworkConnections>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -597,13 +617,16 @@ namespace HNTAS.Api.Client.Model
             if (hasOwnEnergyCenter.IsSet && hasOwnEnergyCenter.Value == null)
                 throw new ArgumentNullException(nameof(hasOwnEnergyCenter), "Property is not nullable for class HeatNetwork.");
 
+            if (ecSuppliesOneCommunalBuilding.IsSet && ecSuppliesOneCommunalBuilding.Value == null)
+                throw new ArgumentNullException(nameof(ecSuppliesOneCommunalBuilding), "Property is not nullable for class HeatNetwork.");
+
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class HeatNetwork.");
 
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class HeatNetwork.");
 
-            return new HeatNetwork(id, uHnId, hnId, orgId, name, additionalDescription, address, ecDetails, pathway, registrationSource, heatNetworkType, hasOwnEnergyCenter, heatNetworkConnections, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemUserEmailId, ofgemImportedDate, createdBy, createdAt, phase);
+            return new HeatNetwork(id, uHnId, hnId, orgId, name, additionalDescription, address, ecDetails, pathway, registrationSource, heatNetworkType, hasOwnEnergyCenter, ecSuppliesOneCommunalBuilding, heatNetworkConnections, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemUserEmailId, ofgemImportedDate, createdBy, createdAt, phase);
         }
 
         /// <summary>
@@ -703,6 +726,9 @@ namespace HNTAS.Api.Client.Model
             }
             if (heatNetwork.HasOwnEnergyCenterOption.IsSet)
                 writer.WriteBoolean("hasOwnEnergyCenter", heatNetwork.HasOwnEnergyCenterOption.Value!.Value);
+
+            if (heatNetwork.EcSuppliesOneCommunalBuildingOption.IsSet)
+                writer.WriteBoolean("ecSuppliesOneCommunalBuilding", heatNetwork.EcSuppliesOneCommunalBuildingOption.Value!.Value);
 
             if (heatNetwork.HeatNetworkConnectionsOption.IsSet)
                 if (heatNetwork.HeatNetworkConnectionsOption.Value != null)

@@ -10,7 +10,6 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiHeatNetworksHeatNetworkByUserIdGet**](HeatNetworksApi.md#apiheatnetworksheatnetworkbyuseridget) | **GET** /api/HeatNetworks/heat-network-by-userId |  |
 | [**ApiHeatNetworksHnIdGet**](HeatNetworksApi.md#apiheatnetworkshnidget) | **GET** /api/HeatNetworks/{hnId} |  |
 | [**ApiHeatNetworksHnIdsGet**](HeatNetworksApi.md#apiheatnetworkshnidsget) | **GET** /api/HeatNetworks/hnIds |  |
-| [**ApiHeatNetworksNetworkDetailsDocumentUpdatePatch**](HeatNetworksApi.md#apiheatnetworksnetworkdetailsdocumentupdatepatch) | **PATCH** /api/HeatNetworks/network-details-document-update |  |
 | [**ApiHeatNetworksNetworkElementsPut**](HeatNetworksApi.md#apiheatnetworksnetworkelementsput) | **PUT** /api/HeatNetworks/network-elements |  |
 | [**ExternalHeatNetworkHnIdGet**](HeatNetworksApi.md#externalheatnetworkhnidget) | **GET** /external/heat-network/{hnId} |  |
 | [**ExternalHeatNetworksGet**](HeatNetworksApi.md#externalheatnetworksget) | **GET** /external/heat-networks |  |
@@ -229,42 +228,6 @@ No authorization required
 | **400** | Bad Request |  -  |
 | **404** | Not Found |  -  |
 | **500** | Internal Server Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
-
-<a id="apiheatnetworksnetworkdetailsdocumentupdatepatch"></a>
-# **ApiHeatNetworksNetworkDetailsDocumentUpdatePatch**
-> void ApiHeatNetworksNetworkDetailsDocumentUpdatePatch (NetworkDetailsUploadDocumentRequest networkDetailsUploadDocumentRequest)
-
-
-
-
-### Parameters
-
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| **networkDetailsUploadDocumentRequest** | [**NetworkDetailsUploadDocumentRequest**](NetworkDetailsUploadDocumentRequest.md) |  |  |
-
-### Return type
-
-void (empty response body)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json, text/json, application/*+json
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
-| **400** | Bad Request |  -  |
-| **404** | Not Found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

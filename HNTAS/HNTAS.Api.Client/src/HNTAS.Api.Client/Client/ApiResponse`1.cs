@@ -36,11 +36,6 @@ namespace HNTAS.Api.Client.Client
         /// The raw content of this response.
         /// </summary>
         string RawContent { get; }
-        
-        /// <summary>
-        /// The raw binary stream (only set for binary responses)
-        /// </summary>
-        System.IO.Stream? ContentStream { get; }
 
         /// <summary>
         /// The DateTime when the request was retrieved.
@@ -88,11 +83,6 @@ namespace HNTAS.Api.Client.Client
         /// The raw data
         /// </summary>
         public string RawContent { get; protected set; }
-
-        /// <summary>
-        /// The raw binary stream (only set for binary responses)
-        /// </summary>
-        public System.IO.Stream? ContentStream { get; protected set; }
 
         /// <summary>
         /// The IsSuccessStatusCode from the api response
@@ -157,30 +147,6 @@ namespace HNTAS.Api.Client.Client
             OnCreated(httpRequestMessage, httpResponseMessage);
         }
 
-        /// <summary>
-        /// Construct the response using an HttpResponseMessage
-        /// </summary>
-        /// <param name="httpRequestMessage"></param>
-        /// <param name="httpResponseMessage"></param>
-        /// <param name="contentStream"></param>
-        /// <param name="path"></param>
-        /// <param name="requestedAt"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        public ApiResponse(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions)
-        {
-            StatusCode = httpResponseMessage.StatusCode;
-            Headers = httpResponseMessage.Headers;
-            IsSuccessStatusCode = httpResponseMessage.IsSuccessStatusCode;
-            ReasonPhrase = httpResponseMessage.ReasonPhrase;
-            ContentStream = contentStream;
-            RawContent = string.Empty;
-            Path = path;
-            RequestUri = httpRequestMessage.RequestUri;
-            RequestedAt = requestedAt;
-            _jsonSerializerOptions = jsonSerializerOptions;
-            OnCreated(httpRequestMessage, httpResponseMessage);
-        }
-
         partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
     }
 
@@ -202,6 +168,26 @@ namespace HNTAS.Api.Client.Client
         /// <param name="result"></param>
         /// <returns></returns>
         bool TryBadRequest([NotNullWhen(true)]out TType? result);
+    }
+
+    /// <summary>
+    /// An interface for responses of type 
+    /// </summary>
+    /// <typeparam name="TType"></typeparam>
+    public interface ICustomHttpStatusCode499<TType> : IApiResponse
+    {
+        /// <summary>
+        /// Deserializes the response if the response is CustomHttpStatusCode499
+        /// </summary>
+        /// <returns></returns>
+        TType CustomHttpStatusCode499();
+
+        /// <summary>
+        /// Returns true if the response is CustomHttpStatusCode499 and the deserialized response is not null
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        bool TryCustomHttpStatusCode499([NotNullWhen(true)]out TType? result);
     }
 
     /// <summary>
