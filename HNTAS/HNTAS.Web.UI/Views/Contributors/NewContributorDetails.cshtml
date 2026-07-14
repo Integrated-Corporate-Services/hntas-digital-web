@@ -46,7 +46,7 @@
                 Enter their contact details
             </h1>
             <p class="govuk-body">
-                You are adding a designated duty holder.
+                You are adding a @ViewBag.whoDoYouWantToAdd?.ToString().ToLower().
             </p>
             <form method="post">
                 @Html.AntiForgeryToken()
