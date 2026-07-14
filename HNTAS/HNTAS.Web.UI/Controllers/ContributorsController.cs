@@ -126,6 +126,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult NewContributorDetails()
         {
             this.ShowBackButton("AddContributor");
+            ViewBag.whoDoYouWantToAdd = GetRole();
             var model = _sessionHelper.GetFromSession<NewContributorDetailsViewModel>(HttpContext, SessionKeys.NewContributorDetailsViewModelSessionKey) ?? new NewContributorDetailsViewModel();
             return View(model);
         }
@@ -135,6 +136,7 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> NewContributorDetails(NewContributorDetailsViewModel model)
         {
             this.ShowBackButton("AddContributor");
+            ViewBag.whoDoYouWantToAdd = GetRole();
             if (!ModelState.IsValid)
             {
                 return View(model);
