@@ -1,4 +1,3 @@
-using Amazon.S3;
 using GovUk.OneLogin.AspNetCore;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
@@ -293,11 +292,6 @@ builder.Services.AddScoped<IArmsDashboardService, ArmsDashboardService>();
 builder.Services.AddScoped<IImportExistingNetworksService, ImportExistingNetworksService>();
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
-builder.Services.AddSingleton<IAmazonS3>(sp =>
-{
-    var config = sp.GetRequiredService<IConfiguration>();
-    return S3ClientHelper.Create(config);
-});
 
 builder.Services.AddSingleton(sp =>
 {

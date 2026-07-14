@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Model;
 
 
 /* *********************************************************************************
@@ -38,34 +39,25 @@ using HNTAS.Api.Client.Api;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-    ///  Class for testing HNDataImportExportApi
+    ///  Class for testing FeedbackApi
     /// </summary>
-    public sealed class HNDataImportExportApiTests : ApiTestsBase
+    public sealed class FeedbackApiTests : ApiTestsBase
     {
-        private readonly IHNDataImportExportApi _instance;
+        private readonly IFeedbackApi _instance;
 
-        public HNDataImportExportApiTests(): base(Array.Empty<string>())
+        public FeedbackApiTests(): base(Array.Empty<string>())
         {
-            _instance = _host.Services.GetRequiredService<IHNDataImportExportApi>();
+            _instance = _host.Services.GetRequiredService<IFeedbackApi>();
         }
 
         /// <summary>
-        /// Test ApiHNDataImportExportHnUsersOrgsCsvGet
+        /// Test ApiFeedbackPost
         /// </summary>
         [Fact (Skip = "not implemented")]
-        public async Task ApiHNDataImportExportHnUsersOrgsCsvGetAsyncTest()
+        public async Task ApiFeedbackPostAsyncTest()
         {
-            Client.Option<int> take = default!;
-            await _instance.ApiHNDataImportExportHnUsersOrgsCsvGetAsync(take);
-        }
-
-        /// <summary>
-        /// Test ApiHNDataImportExportHnUsersOrgsGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiHNDataImportExportHnUsersOrgsGetAsyncTest()
-        {
-            await _instance.ApiHNDataImportExportHnUsersOrgsGetAsync();
+            CreateFeedbackRequest createFeedbackRequest = default!;
+            await _instance.ApiFeedbackPostAsync(createFeedbackRequest);
         }
     }
 }
