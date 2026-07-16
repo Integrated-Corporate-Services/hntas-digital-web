@@ -39,17 +39,14 @@ namespace HNTAS.Web.UI.Controllers
             try
             {
                 var user = await _userService.GetUserDetails(userId);
-
                 if (user == null)
                 {
                     throw new Exception("Unable to retrieve user information. Please try again later.");
                 }
-
                 if (user.Roles != null && user.Roles.Contains(UserRole.ResponsiblePerson) && user.Organisation == null)
                 {
                     throw new Exception("Your account is not associated with any organisation. Please contact support.");
                 }
-
                 return user; // Assuming you want to return user details here
             }
             catch (Exception ex)

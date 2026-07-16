@@ -76,7 +76,7 @@ public class HomeControllerTests
         return urlHelperMock.Object;
     }
 
-    [Fact(Skip = "To be fixed")]
+    [Fact]
     public async Task Index_ReturnsView_WhenClaimsMissing()
     {
         // Arrange
@@ -92,7 +92,7 @@ public class HomeControllerTests
         Assert.Equal("Unable to retrieve essential user info. Please try again.", controller.TempData["ErrorMessage"]);
     }
 
-    [Fact(Skip = "To be fixed")]
+    [Fact]
     public async Task Index_ReturnsView_WhenUserServiceThrowsException()
     {
         // Arrange
@@ -109,7 +109,7 @@ public class HomeControllerTests
         Assert.Equal("Error during account setup. Please contact support.", controller.TempData["ErrorMessage"]);
     }
 
-    [Fact(Skip = "To be fixed")]
+    [Fact]
     public async Task Index_CreatesUser_WhenUserNotFound()
     {
         // Arrange
@@ -133,7 +133,7 @@ public class HomeControllerTests
             Times.Once);
     }
 
-    [Fact(Skip = "To be fixed")]
+    [Fact]
     public async Task Index_SavesUserId_WhenUserFoundWithoutOrganisation()
     {
         // Arrange
@@ -158,7 +158,7 @@ public class HomeControllerTests
             Times.Once);
     }
 
-    [Fact(Skip = "To be fixed")]
+    [Fact]
     public async Task Index_Redirects_WhenUserHasOrganisation()
     {
         // Arrange
@@ -256,6 +256,19 @@ public class HomeControllerTests
         var viewResult = Assert.IsType<ViewResult>(result);
         Assert.Equal("/WhatDoYouWantToDo", controller.ViewBag.NavigateUrl);
     }
+
+    [Fact]
+    public void DocumentLibrary_ReturnsViewResult()
+    {
+        // Arrange
+        var controller = CreateController(CreateUser());
+
+        // Act
+        var result = controller.DocumentLibrary();
+
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(result);
+    }    
 
     [Fact]
     public void WhatDoYouWantToDo_WithModelInSession_ReturnsViewWithModel()

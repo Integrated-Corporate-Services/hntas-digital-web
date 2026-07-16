@@ -20,7 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HNTAS.Web.UI.Tests.Contollers
+namespace HNTAS.Web.UI.Tests.Controllers
 {
     public class ElementSoaControllerTests
     {
