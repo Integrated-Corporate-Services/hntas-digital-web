@@ -16,20 +16,14 @@ namespace HNTAS.Web.UI.Controllers
     public class NetworkElementsController : Controller
     {
         private readonly ILogger<NetworkElementsController> _logger;
-        private readonly IHeatNetworkService _heatNetworkService;
-        private readonly IUserService _userService;
-        private readonly ISessionHelper _sessionHelper;
-        private readonly IOrganisationService _organisationService;
-        private readonly IAddressLookupService _addressLookUpService;
+        private readonly IHeatNetworkService _heatNetworkService;        
+        private readonly ISessionHelper _sessionHelper;              
 
-        public NetworkElementsController(ILogger<NetworkElementsController> logger, IHeatNetworkService heatNetworkService, IUserService userService, ISessionHelper sessionHelper, IOrganisationService organisationService, IAddressLookupService addressLookupService)
+        public NetworkElementsController(ILogger<NetworkElementsController> logger, IHeatNetworkService heatNetworkService,  ISessionHelper sessionHelper)
         {
             _logger = logger;
-            _heatNetworkService = heatNetworkService;
-            _userService = userService;
-            _sessionHelper = sessionHelper;
-            _organisationService = organisationService;
-            _addressLookUpService = addressLookupService;
+            _heatNetworkService = heatNetworkService;            
+            _sessionHelper = sessionHelper;                    
         }
 
         [HttpGet]

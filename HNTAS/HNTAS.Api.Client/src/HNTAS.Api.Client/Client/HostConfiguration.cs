@@ -47,6 +47,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new AddressJsonConverter());
             _jsonOptions.Converters.Add(new AggregatedKpiJsonConverter());
             _jsonOptions.Converters.Add(new ArmsPowerBiReportResponseJsonConverter());
+            _jsonOptions.Converters.Add(new ArmsPowerBiUserReportResponseJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanResponseJsonConverter());
             _jsonOptions.Converters.Add(new AssessorAssessmentJsonConverter());
@@ -211,7 +212,6 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<CarbonCalculatorApiEvents>();
             _services.AddSingleton<CountriesAndTerritoriesApiEvents>();
             _services.AddSingleton<FeedbackApiEvents>();
-            _services.AddSingleton<HNDataImportExportApiEvents>();
             _services.AddSingleton<HeatNetworksApiEvents>();
             _services.AddSingleton<ImportApiEvents>();
             _services.AddSingleton<InvitationsApiEvents>();
@@ -247,7 +247,6 @@ namespace HNTAS.Api.Client.Client
             builders.Add(_services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client));
             builders.Add(_services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client));
             builders.Add(_services.AddHttpClient<IFeedbackApi, FeedbackApi>(client));
-            builders.Add(_services.AddHttpClient<IHNDataImportExportApi, HNDataImportExportApi>(client));
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
             builders.Add(_services.AddHttpClient<IImportApi, ImportApi>(client));
             builders.Add(_services.AddHttpClient<IInvitationsApi, InvitationsApi>(client));
