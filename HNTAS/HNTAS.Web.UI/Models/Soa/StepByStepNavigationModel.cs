@@ -1,10 +1,5 @@
 ﻿namespace HNTAS.Web.UI.Models.Soa
-{
-    public class StepByStepGuideModel
-    {
-        //public string Title { get; set; } = "Define your SOA";
-        public List<StepNavItem> Steps { get; set; } = [];
-    }
+{   
 
     public class StepNavItem
     {
