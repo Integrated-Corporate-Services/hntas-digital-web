@@ -35,9 +35,9 @@ public class HomeController : Controller
     {
         var email = User.FindFirstValue("email");
         var oneLoginId = User.GetOneLoginId(_logger);
-        var isSuoerUserEnabled = _configuration.GetValue<bool>("SuperUserLogin:Enabled");
+        var isSuperUserEnabled = _configuration.GetValue<bool>("SuperUserLogin:Enabled");
 
-        var isSuperUser = isSuoerUserEnabled && await _iUserService.IsSuperUser(email);
+        var isSuperUser = isSuperUserEnabled && await _iUserService.IsSuperUser(email);
 
         if (isSuperUser)
         {

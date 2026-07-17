@@ -204,94 +204,232 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void NewContributorDetails_Get_ReturnsViewResult()
+        public void NewContributorDetails_Get_WhenWhoDoYouWantToAddExists_ReturnsViewWithSessionModel()
         {
+            // Arrange
+            var model = new NewContributorDetailsViewModel();
+
             _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.WhoDoYouWantToAddSessionKey))
+                .Returns("Contributor");
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<NewContributorDetailsViewModel>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.NewContributorDetailsViewModelSessionKey))
+                .Returns(model);
+
+            // Act
             var result = _controller.NewContributorDetails();
-            Assert.IsType<ViewResult>(result);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(model, viewResult.Model);
+            Assert.Equal("Contributor", _controller.ViewBag.WhoDoYouWantToAdd);
         }
 
         [Fact]
-        public async Task NewContributorDetails_NonRpUser_NewUser_Post_ReturnsRedirectToActionResult()
+        public void NewContributorDetails_Get_WhenIsDDHTrue_SetsDesignatedDutyHolder()
         {
-            var model = new NewContributorDetailsViewModel
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                EmailAddress = "test"
-            };
-
+            // Arrange
             _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
 
-            _userServiceMock.Setup(u => u.IsRpUserAsync(It.IsAny<string>()))
-                .ReturnsAsync(false);
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.WhoDoYouWantToAddSessionKey))
+                .Returns((string)null);
 
-            _userServiceMock.Setup(u => u.IsActiveUserAsync(It.IsAny<string>()))
-                .ReturnsAsync(false);
+            _sessionHelperMock.Setup(x => x.GetFromSession<NewContributorRoleViewModel>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.NewContributorRoleViewModelSessionKey))
+                .Returns(new NewContributorRoleViewModel
+                {
+                    IsDDH = true
+                });
 
-            var result = await _controller.NewContributorDetails(model);
-            var resultVal = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("NewContributorHeatNetwork", resultVal.ActionName);
+            _sessionHelperMock.Setup(x => x.GetFromSession<NewContributorDetailsViewModel>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.NewContributorDetailsViewModelSessionKey))
+                .Returns((NewContributorDetailsViewModel)null);
+
+            // Act
+            var result = _controller.NewContributorDetails();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            Assert.IsType<NewContributorDetailsViewModel>(viewResult.Model);
+            Assert.Equal("Designated duty holder", _controller.ViewBag.WhoDoYouWantToAdd);
         }
 
         [Fact]
-        public async Task NewContributorDetails_RpUser_Post_ReturnsView()
+        public void NewContributorDetails_Get_WhenIsDDHFalse_SetsContributor()
         {
-            var model = new NewContributorDetailsViewModel
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                EmailAddress = "test"
-            };
-
+            // Arrange
             _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
 
-            _userServiceMock.Setup(u => u.IsRpUserAsync(It.IsAny<string>()))
-                .ReturnsAsync(true);
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.WhoDoYouWantToAddSessionKey))
+                .Returns((string)null);
 
+            _sessionHelperMock.Setup(x => x.GetFromSession<NewContributorRoleViewModel>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.NewContributorRoleViewModelSessionKey))
+                .Returns(new NewContributorRoleViewModel
+                {
+                    IsDDH = false
+                });
 
-            var result = await _controller.NewContributorDetails(model);
+            _sessionHelperMock.Setup(x => x.GetFromSession<NewContributorDetailsViewModel>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.NewContributorDetailsViewModelSessionKey))
+                .Returns(new NewContributorDetailsViewModel());
+
+            // Act
+            var result = _controller.NewContributorDetails();
+
+            // Assert
             Assert.IsType<ViewResult>(result);
-        }
-
-        [Fact]
-        public async Task NewContributorDetails_NonRpUser_ExistingUserUser_Post_ReturnsView()
-        {
-            var model = new NewContributorDetailsViewModel
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                EmailAddress = "test"
-            };
-
-            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
-
-            _userServiceMock.Setup(u => u.IsRpUserAsync(It.IsAny<string>()))
-                .ReturnsAsync(false);
-
-            _userServiceMock.Setup(u => u.IsActiveUserAsync(It.IsAny<string>()))
-                .ReturnsAsync(true);
-
-            var result = await _controller.NewContributorDetails(model);
-            Assert.IsType<ViewResult>(result);
+            Assert.Equal("Contributor", _controller.ViewBag.WhoDoYouWantToAdd);
         }
 
         [Fact]
         public async Task NewContributorDetails_Post_InvalidModelState_ReturnsView()
         {
+            // Arrange
+            var model = new NewContributorDetailsViewModel();
+
+            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
+
+            _controller.ModelState.AddModelError("EmailAddress", "Required");
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.WhoDoYouWantToAddSessionKey))
+                .Returns("Contributor");
+
+            // Act
+            var result = await _controller.NewContributorDetails(model);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(model, viewResult.Model);
+
+            _userServiceMock.Verify(x => x.IsRpUserAsync(It.IsAny<string>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task NewContributorDetails_Post_RpUser_ReturnsViewWithError()
+        {
+            // Arrange
             var model = new NewContributorDetailsViewModel
             {
-                FirstName = "John",
-                LastName = "Doe",
-                EmailAddress = "test"
+                EmailAddress = "test@test.com"
             };
 
             _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
 
-            _controller.ModelState.AddModelError("FirstName", "The FirstName field is required.");
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.WhoDoYouWantToAddSessionKey))
+                .Returns("Contributor");
 
+            _userServiceMock.Setup(x => x.IsRpUserAsync(model.EmailAddress))
+                .ReturnsAsync(true);
+
+            // Act
             var result = await _controller.NewContributorDetails(model);
-            Assert.IsType<ViewResult>(result);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            Assert.Equal(model, viewResult.Model);
+            Assert.False(_controller.ModelState.IsValid);
+            Assert.Contains(nameof(model.EmailAddress), _controller.ModelState.Keys);
+
+            _userServiceMock.Verify(x => x.IsActiveUserAsync(It.IsAny<string>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task NewContributorDetails_Post_ExistingUser_ReturnsViewWithError()
+        {
+            // Arrange
+            var model = new NewContributorDetailsViewModel
+            {
+                EmailAddress = "test@test.com"
+            };
+
+            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.WhoDoYouWantToAddSessionKey))
+                .Returns("Contributor");
+
+            _userServiceMock.Setup(x => x.IsRpUserAsync(model.EmailAddress))
+                .ReturnsAsync(false);
+
+            _userServiceMock.Setup(x => x.IsActiveUserAsync(model.EmailAddress))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _controller.NewContributorDetails(model);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            Assert.Equal(model, viewResult.Model);
+            Assert.False(_controller.ModelState.IsValid);
+
+            _sessionHelperMock.Verify(x => x.SaveToSession(
+                It.IsAny<HttpContext>(),
+                It.IsAny<string>(),
+                It.IsAny<NewContributorDetailsViewModel>()),
+                Times.Never);
+        }
+
+        [Fact]
+        public async Task NewContributorDetails_Post_ValidModel_RedirectsToNewContributorHeatNetwork()
+        {
+            // Arrange
+            var model = new NewContributorDetailsViewModel
+            {
+                EmailAddress = "test@test.com"
+            };
+
+            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.WhoDoYouWantToAddSessionKey))
+                .Returns("Contributor");
+
+            _userServiceMock.Setup(x => x.IsRpUserAsync(model.EmailAddress))
+                .ReturnsAsync(false);
+
+            _userServiceMock.Setup(x => x.IsActiveUserAsync(model.EmailAddress))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.NewContributorDetails(model);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+
+            Assert.Equal("NewContributorHeatNetwork", redirectResult.ActionName);
+
+            _sessionHelperMock.Verify(x => x.SaveToSession(
+                It.IsAny<HttpContext>(),
+                SessionKeys.NewContributorDetailsViewModelSessionKey,
+                model), Times.Once);
+
+            _sessionHelperMock.Verify(x => x.SaveToSession(
+                It.IsAny<HttpContext>(),
+                "backAction",
+                "NewContributorDetails"), Times.Once);
         }
 
         [Fact]
