@@ -12,5 +12,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task<HeatNetworkResponse> UpdateNetworkElements(string hnId, NetworkElements2 request);
         Task<List<HeatNetworkResponse>> GetHeatNetworkByUserId(string userId, RegistrationSource2 registrationSource = RegistrationSource2.HNTAS);
         Task<ExistingNetworkResponse> GetExistingNetworkByUserId(ExistingNetworkRequest request);
+        Task<HeatNetworkResponse> RegisterOfgemNetwork(HeatNetwork heatNetwork);
     }
 }

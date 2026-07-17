@@ -108,6 +108,7 @@
         public const string DistributionNetworksViewModelKey = "DistributionNetworksViewModelKey";
 
         public const string IsSuperUserKey = "IsSuperUserKey";
+        public const string RegistrationSourceKey = "RegistrationSourceKey";
 
     }
 }

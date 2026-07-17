@@ -36,7 +36,16 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult HeatNetworkDwellingsCheck()
         {
-            this.ShowBackButton("HeatNetworks", "UserManagement");
+            var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+            if (registrationSource == RegistrationSource.OFGEM)
+            {
+                this.ShowBackButton("ExistingNetworks", "UserManagement");
+            }
+            else
+            {
+                this.ShowBackButton("HeatNetworks", "UserManagement");
+            }
+                
             var model = _sessionHelper.GetFromSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey) ?? new HowManyDwellingsIncludedModel();
             return View(model);
         }
@@ -324,6 +333,15 @@ namespace HNTAS.Web.UI.Controllers
             var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backActionFromHnName");
             this.ShowBackButton(backAction);
             var heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey) ?? new HeatNetworkNameModel();
+
+            var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+            ViewBag.RegistrationSource = registrationSource;
+            if (registrationSource == RegistrationSource.OFGEM)
+            {
+                var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+                heatNetworkNameModel.HeatNetworkName = hnName!;
+            }
+            
             return View(heatNetworkNameModel);
         }
 
@@ -338,6 +356,12 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
+
+            var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+            if (registrationSource == RegistrationSource.OFGEM)
+            {
+                return RedirectToAction("CheckYourAnswers");
+            }
             var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel)?.IsHnTypeCommunal ?? false;
             bool hasOwnEc = isCommunalHn
                 ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
@@ -628,8 +652,51 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult CheckYourAnswers()
+        public async Task<IActionResult> CheckYourAnswersAsync()
         {
+            var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+            ViewBag.RegistrationSource = registrationSource;
+            if (registrationSource == RegistrationSource.OFGEM)
+            {
+                var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+                if (heatNetworkData != null)
+                {
+                    var phase = heatNetworkData.Phase;
+                    _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkPhaseModelKey, new HeatNetworkPhaseModel { HeatNetworkPhase = phase! });
+
+                    var lat = heatNetworkData.EcDetails?.Latitude;
+                    var lon = heatNetworkData.EcDetails?.Longitude;
+                    var ecDetails = new ECDetailsModel
+                    {
+                        ECAddressByLatLong = new AddressByLatLongModel
+                        {
+                            Latitude = (decimal)lat!,
+                            Longitude = (decimal)lon!,                            
+                        },
+                        LatitudeLongitude = $"{lat}, {lon}"
+
+                    };
+                    _sessionHelper.SaveToSession(HttpContext, SessionKeys.ECDetailsModelSessionKey, ecDetails);
+
+                    var address = heatNetworkData.Address;
+                    if (address != null)
+                    {
+                        var heatNetworkLocation = new HeatNetworkLocationModel
+                        {
+                            HNAddressByStreet = new AddressByStreetOrTownModel
+                            {
+                                StreetAddress = address.AddressLine1,
+                                TownOrCity = address.Town!,
+                                Postalcode = address.Postcode,
+                                Country = address.Country!,
+                                Fulladdress = $"{address.AddressLine1}, {address.Town}, {address.Postcode.ToUpper()}, {address.Country}"
+                            }
+                        };
+                        _sessionHelper.SaveToSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey, heatNetworkLocation);
+                    }
+                }
+            }
             ViewBag.ShowBackButton = false;
             HowManyDwellingsIncludedModel howManyDwellingsIncludedModel = _sessionHelper.GetFromSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey);
             HeatNetworkOrganisationModel heatNetworkOrganisationModel = _sessionHelper.GetFromSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey);
@@ -642,7 +709,8 @@ namespace HNTAS.Web.UI.Controllers
             DoesDistrictHnHaveOwnEcViewModel doesDistrictHnHaveOwnEcViewModel = _sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel);
             DoesCommunalEcSupplyOneBlockViewModel doesCommunalEcSupplyOneBlockViewModel = _sessionHelper.GetFromSession<DoesCommunalEcSupplyOneBlockViewModel>(HttpContext, SessionKeys.DoesCommunalEcSupplyOneBlockViewModel);
             HeatNetworkConnectionsViewModel heatNetworkConnectionsModel = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey);
-            
+                        
+
             if (heatNetworkNameModel == null || heatNetworkPhaseModel == null || isHnTypeCommunalViewModel == null || (isHnTypeCommunalViewModel.IsHnTypeCommunal == false && heatNetworkConnectionsModel == null))
             {
                 return RedirectToAction("UserAccount", "Dashboard");
@@ -765,6 +833,9 @@ namespace HNTAS.Web.UI.Controllers
                     county: default,
                     country: hnAddress?.Country?.Trim()
                 ) : null;
+
+            var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+            ViewBag.RegistrationSource = registrationSource;
             
 
             var model = new HeatNetwork
@@ -785,7 +856,30 @@ namespace HNTAS.Web.UI.Controllers
                 Phase = viewModel?.HeatNetworkPhaseModel?.HeatNetworkPhase
             };
 
-            var heatNetworkResponse = await _heatNetworkService.AddHeatNetwork(model);
+            HeatNetworkResponse heatNetworkResponse;
+            if (registrationSource == RegistrationSource.OFGEM)
+            {
+                var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+                var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+                if (heatNetworkData != null)
+                {
+                    model.Id = heatNetworkData.Id;
+                    model.HnId = heatNetworkData.HnId;
+                    model.UHnId = heatNetworkData.UHnId;
+                    model.RegistrationSource = RegistrationSource.OFGEM;
+                    model.Address = heatNetworkData.Address;
+                    model.EcDetails = heatNetworkData.EcDetails;
+                    model.Phase = heatNetworkData.Phase;
+                    model.OfgemImportedDate = heatNetworkData.OfgemImportedDate;
+                    model.OfgemUserEmailId = heatNetworkData.OfgemUserEmailId;
+                }
+
+                heatNetworkResponse = await _heatNetworkService.RegisterOfgemNetwork(model);
+            }
+            else
+            {
+                heatNetworkResponse = await _heatNetworkService.AddHeatNetwork(model);
+            }
 
             if (heatNetworkResponse?.HnId != null)
             {
@@ -822,6 +916,8 @@ namespace HNTAS.Web.UI.Controllers
         {
             ViewBag.HNId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HNName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+            ViewBag.RegistrationSource = registrationSource;
             var model = _sessionHelper.GetFromSession<HeatNetworkSuccessRedirection>(HttpContext, SessionKeys.HeatNetworkSuccessRedirectionSessionKey) ?? new HeatNetworkSuccessRedirection();
             return View(model);
         }

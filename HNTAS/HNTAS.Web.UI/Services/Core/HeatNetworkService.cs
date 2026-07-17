@@ -107,7 +107,26 @@ namespace HNTAS.Web.UI.Services.Core
                 _logger.LogError(ex, "Error submitting heat network answers.");
                 throw;
             }
-        }        
+        }
+
+        public async Task<HeatNetworkResponse> RegisterOfgemNetwork(HeatNetwork heatNetwork)
+        {            
+            try
+            {
+                var response = await _heatNetworksApi.ApiHeatNetworksRegisterOfgemNetworkPutAsync(heatNetwork);
+
+                if (response.IsOk)
+                {                    
+                    return response.Ok()!;
+                }
+                throw new Exception($"Failed to register Ofgem network with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {   
+                _logger.LogError(ex, "Error submitting Ofgem network registration.");
+                throw;
+            }
+        }
 
         public async Task<HeatNetworkResponse> UpdateNetworkElements(string hnId, NetworkElements2 request)
         {

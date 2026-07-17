@@ -1,4 +1,5 @@
-﻿@using HNTAS.Web.UI.Models
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.Review
 @using HNTAS.Web.UI.Models.Components
 @model CheckYourAnswersHeatNetworkModel
@@ -40,21 +41,21 @@
                     {
                         Key = "Has own energy centre",
                         Value = Model.HasOwnEnergyCenter,
-                        ChangeLink = Url.Action(Model.HeatNetworkType == "Communal" ? "HeatNetworkEcCommunal" : "HeatNetworkEcDistrict", "HeatNetworkRegistration"),
+                        ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null :  Url.Action(Model.HeatNetworkType == "Communal" ? "HeatNetworkEcCommunal" : "HeatNetworkEcDistrict", "HeatNetworkRegistration"),
                         ChangeLinkText = "Change"
                     },
                     new ReviewItem
                     {
                         Key = "Coordinates",
                         Value = Model.ECDetailsModel.LatitudeLongitude,
-                        ChangeLink = Url.Action("ECCoordinates", "HeatNetworkRegistration"),
+                        ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("ECCoordinates", "HeatNetworkRegistration"),
                         ChangeLinkText = "Change"
                     },
                     new ReviewItem
                     {
                         Key = "Heat Network Name",
                         Value = Model.HeatNetworkNameModel.HeatNetworkName,
-                        ChangeLink = Url.Action("HeatNetworkName", "HeatNetworkRegistration"),
+                        ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("HeatNetworkName", "HeatNetworkRegistration"),
                         ChangeLinkText = "Change"
                     },
                     new ReviewItem
@@ -68,14 +69,14 @@
                     {
                         Key = "Main energy centre address and postcode",
                         Value = Model.HeatNetworkAddressModel?.Fulladdress ?? "Not provided",
-                        ChangeLink = Url.Action("DoesHNHaveAPostcode", "HeatNetworkRegistration"),
+                        ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("DoesHNHaveAPostcode", "HeatNetworkRegistration"),
                         ChangeLinkText = "Change"
                     },
                     new ReviewItem
                     {
                         Key = "Phase",
                         Value = Model.HeatNetworkPhaseModel.HeatNetworkPhase,
-                        ChangeLink = Url.Action("HeatNetworkPhase", "HeatNetworkRegistration"),
+                        ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("HeatNetworkPhase", "HeatNetworkRegistration"),
                         ChangeLinkText = "Change"
                     }
 
