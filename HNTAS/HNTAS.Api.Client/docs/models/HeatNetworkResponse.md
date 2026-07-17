@@ -26,6 +26,7 @@ Name | Type | Description | Notes
 **AssessmentPlan** | [**AssessmentPlanResponse**](AssessmentPlanResponse.md) |  | [optional] 
 **DesignConstructionLog** | [**DesignConstructionLogResponse**](DesignConstructionLogResponse.md) |  | [optional] 
 **OfgemImportedDate** | **DateTimeOffset** |  | [optional] 
+**OfgemUserEmailId** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

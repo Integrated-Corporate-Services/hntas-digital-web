@@ -11,6 +11,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiHeatNetworksHnIdGet**](HeatNetworksApi.md#apiheatnetworkshnidget) | **GET** /api/HeatNetworks/{hnId} |  |
 | [**ApiHeatNetworksHnIdsGet**](HeatNetworksApi.md#apiheatnetworkshnidsget) | **GET** /api/HeatNetworks/hnIds |  |
 | [**ApiHeatNetworksNetworkElementsPut**](HeatNetworksApi.md#apiheatnetworksnetworkelementsput) | **PUT** /api/HeatNetworks/network-elements |  |
+| [**ApiHeatNetworksRegisterOfgemNetworkPut**](HeatNetworksApi.md#apiheatnetworksregisterofgemnetworkput) | **PUT** /api/HeatNetworks/register-ofgem-network |  |
 | [**ExternalHeatNetworkHnIdGet**](HeatNetworksApi.md#externalheatnetworkhnidget) | **GET** /external/heat-network/{hnId} |  |
 | [**ExternalHeatNetworksGet**](HeatNetworksApi.md#externalheatnetworksget) | **GET** /external/heat-networks |  |
 | [**ExternalHeatNetworksSearchGet**](HeatNetworksApi.md#externalheatnetworkssearchget) | **GET** /external/heat-networks/search |  |
@@ -265,6 +266,42 @@ No authorization required
 | **200** | OK |  -  |
 | **400** | Bad Request |  -  |
 | **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiheatnetworksregisterofgemnetworkput"></a>
+# **ApiHeatNetworksRegisterOfgemNetworkPut**
+> HeatNetworkResponse ApiHeatNetworksRegisterOfgemNetworkPut (HeatNetwork heatNetwork)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **heatNetwork** | [**HeatNetwork**](HeatNetwork.md) |  |  |
+
+### Return type
+
+[**HeatNetworkResponse**](HeatNetworkResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
 | **500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
