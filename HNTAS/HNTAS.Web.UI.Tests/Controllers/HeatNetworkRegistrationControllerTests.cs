@@ -1295,6 +1295,39 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
+        public void HeatNetworkName_Get_Ofgem_WithSessionModel_ReturnsToAction()
+        {
+            // Arrange
+            var model = new HeatNetworkNameModel { HeatNetworkName = "Test" };
+
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                It.IsAny<HttpContext>(),
+                "backActionFromHnName"))
+                .Returns("SomeAction");
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<RegistrationSource>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.RegistrationSourceKey))
+                .Returns(RegistrationSource.OFGEM);
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkNameModel>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.HeatNetworkNameModelKey))
+                .Returns(model);
+
+            // Act
+            var result = _controller.HeatNetworkName();
+
+            // Assert
+            Assert.IsType<ViewResult>(result);            
+        }
+
+        [Fact]
         public void HeatNetworkName_Get_NoSession_ReturnsNewModel()
         {
             // Arrange
@@ -2898,7 +2931,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void CheckYourAnswers_Get_MissingCriticalData_RedirectsToDashboard()
+        public async Task CheckYourAnswers_Get_MissingCriticalData_RedirectsToDashboard()
         {
             // Arrange
             _controller.ControllerContext = new ControllerContext
@@ -2912,7 +2945,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Returns((HeatNetworkNameModel)null); // triggers guard
 
             // Act
-            var result = _controller.CheckYourAnswers();
+            var result = await _controller.CheckYourAnswersAsync();
 
             // Assert
             var redirect = Assert.IsType<RedirectToActionResult>(result);
@@ -2921,7 +2954,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void CheckYourAnswers_Get_CommunalWithEc_BuildsCorrectModel()
+        public async Task CheckYourAnswers_Get_CommunalWithEc_BuildsCorrectModel()
         {
             // Arrange
             _controller.ControllerContext = new ControllerContext
@@ -2932,7 +2965,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             SetupAllValidSessionData(isCommunal: true, hasOwnEc: true);
 
             // Act
-            var result = _controller.CheckYourAnswers();
+            var result = await _controller.CheckYourAnswersAsync();
 
             // Assert
             var view = Assert.IsType<ViewResult>(result);
@@ -2943,7 +2976,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void CheckYourAnswers_Get_CommunalNoEc_SetsCorrectText()
+        public async Task CheckYourAnswers_Get_CommunalNoEc_SetsCorrectText()
         {
             _controller.ControllerContext = new ControllerContext
             {
@@ -2952,7 +2985,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             SetupAllValidSessionData(isCommunal: true, hasOwnEc: false);
 
-            var result = _controller.CheckYourAnswers();
+            var result = await _controller.CheckYourAnswersAsync();
 
             var model = Assert.IsType<CheckYourAnswersHeatNetworkModel>(
                 ((ViewResult)result).Model);
@@ -2961,7 +2994,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void CheckYourAnswers_Get_SavesModelToSession()
+        public async Task CheckYourAnswers_Get_SavesModelToSession()
         {
             _controller.ControllerContext = new ControllerContext
             {
@@ -2970,7 +3003,38 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             SetupAllValidSessionData(isCommunal: true, hasOwnEc: true);
 
-            _controller.CheckYourAnswers();
+            await _controller.CheckYourAnswersAsync();
+
+            _sessionHelperMock.Verify(x => x.SaveToSession(
+                It.IsAny<HttpContext>(),
+                SessionKeys.CheckYourAnswersHeatNetworkModelKey,
+                It.IsAny<CheckYourAnswersHeatNetworkModel>()),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task CheckYourAnswers_Get_Ofgem_SavesModelToSession()
+        {
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+            _sessionHelperMock.Setup(x => x.GetFromSession<RegistrationSource>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.RegistrationSourceKey))
+                .Returns(RegistrationSource.OFGEM);
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.HnId))
+                .Returns("HN001");
+
+            _heatNetworkServiceMock.Setup(h => h.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(new HeatNetworkResponse { Phase = "Design", EcDetails = new ECDetails { Latitude = 51.5074, Longitude = -0.1278 }, Address = new RegisteredAddress("123 Street", "E1 6AN") { AddressLine1 = "123 Street", Postcode = "E1 6AN" } });
+
+            SetupAllValidSessionData(isCommunal: true, hasOwnEc: true);
+
+            await _controller.CheckYourAnswersAsync();
 
             _sessionHelperMock.Verify(x => x.SaveToSession(
                 It.IsAny<HttpContext>(),
@@ -3106,6 +3170,42 @@ namespace HNTAS.Web.UI.Tests.Controllers
             SetupValidSessionForSubmitAnswers();
             var hnResponse = new HeatNetworkResponse(hnId: "hn123", name: "HN Name", additionalDescription: "desc");
             _heatNetworkServiceMock.Setup(x => x.AddHeatNetwork(It.IsAny<HeatNetwork>())).ReturnsAsync(hnResponse);
+
+            // Act
+            var result = await _controller.SubmitAnswers(true);
+
+            // Assert
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("HeatNetworkRegistrationComplete", redirect.ActionName);
+            _organisationServiceMock.Verify(x => x.UpdateOrgHeatNetworkId(It.IsAny<string>(), It.IsAny<string>(), "hn123"), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<string>(It.IsAny<HttpContext>(), SessionKeys.HnId, "hn123"), Times.Once);
+            _sessionHelperMock.Verify(x => x.SaveToSession<string>(It.IsAny<HttpContext>(), SessionKeys.HnName, "HN Name"), Times.Once);
+            Assert.Equal("hn123", _controller.TempData["Confirmation_HN_Id"]);
+            Assert.Equal("HN Name", _controller.TempData["HNName"]);
+            Assert.Equal("desc", _controller.TempData["AdditionalDescription"]);
+        }
+
+        [Fact]
+        public async Task SubmitAnswers_SavesHnIdAndRedirects_Ofgem_WhenAddHeatNetworkSucceeds()
+        {
+            // Arrange
+            SetupValidSessionForSubmitAnswers();
+            var hnResponse = new HeatNetworkResponse(hnId: "hn123", name: "HN Name", additionalDescription: "desc");
+            _heatNetworkServiceMock.Setup(x => x.RegisterOfgemNetwork(It.IsAny<HeatNetwork>())).ReturnsAsync(hnResponse);
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<RegistrationSource>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.RegistrationSourceKey))
+                .Returns(RegistrationSource.OFGEM);
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.HnId))
+                .Returns("HN001");
+
+            _heatNetworkServiceMock.Setup(h => h.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(new HeatNetworkResponse { Phase = "Design", EcDetails = new ECDetails { Latitude = 51.5074, Longitude = -0.1278 }, Address = new RegisteredAddress("123 Street", "E1 6AN") { AddressLine1 = "123 Street", Postcode = "E1 6AN" } });
+
 
             // Act
             var result = await _controller.SubmitAnswers(true);

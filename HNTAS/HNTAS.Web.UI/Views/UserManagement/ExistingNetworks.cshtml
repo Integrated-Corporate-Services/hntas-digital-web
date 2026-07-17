@@ -109,7 +109,19 @@
                                 @heatNetwork.AdditionalDescription
                             </td> 
                             
-                            <td class="govuk-table__cell"><a class="govuk-link" href="#">Register with HNTAS</a></td>
+                            @if(heatNetwork.HeatNetworkType == NullableOfHeatNetworkType.Unset)
+                            {
+                                <td class="govuk-table__cell"><a class="govuk-link" href="@Url.Action("ExistingNetworksAction", "UserManagement", new { hnId = heatNetwork.HnId, hnName = heatNetwork.Name, action = "RegisterNetwork" })" aria-describedby="@heatNetwork.HnId">
+                                    Register with HNTAS
+                                </a></td>                               
+                            }
+                            else
+                            {
+                                <td class="govuk-table__cell">
+                                    <a class="govuk-link" href="#" aria-describedby="@heatNetwork.HnId">
+                                        Add Network details
+                                </a></td>
+                            }                            
                         </tr>
                     }
                 }
