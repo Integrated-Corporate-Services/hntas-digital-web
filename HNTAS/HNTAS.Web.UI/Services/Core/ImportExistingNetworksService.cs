@@ -1,8 +1,10 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HNTAS.Web.UI.Services.Core
 {
+    [ExcludeFromCodeCoverage]
     public class ImportExistingNetworksService : IImportExistingNetworksService
     {
         private readonly IImportApi _importApi;

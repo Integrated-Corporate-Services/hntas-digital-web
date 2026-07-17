@@ -1,15 +1,5 @@
 ﻿namespace HNTAS.Web.UI.Models.Soa
 {
-    public class StatementOfApplicabilityViewModel
-    {
-        public string ProjectName { get; set; }
-        public string PageTitle { get; set; }
-
-        public int Pathway { get; set; }
-        public List<PhaseViewModel> Phases { get; set; }
-        public int CurrentPhaseIndex { get; set; } = 0; // Default to Phase 1
-    }
-
     public class PhaseViewModel
     {
         public string Name { get; set; } // e.g., "Phase 1"

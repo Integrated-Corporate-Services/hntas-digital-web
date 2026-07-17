@@ -3,6 +3,8 @@ using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
+using HNTAS.Web.UI.Models.Enums;
+using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -122,8 +124,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task OrganisationDetails_ReturnsViewWithModel_WhenUserDetailsRetrievedSuccessfully()
         {
             // Arrange
-            var urlHelperMock = SetUpBackLink("Dashboard", "UserAccount");
-            _controller.Url = urlHelperMock.Object; // Assign mock to controller.Url
+            _controller.Url = SetUpBackLink("Dashboard", "UserAccount").Object; // Assign mock to controller.Url
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.OrganisationName))
                              .Returns("Test Org");
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
@@ -156,8 +157,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task OrganisationDetails_ReturnsViewWithErrorMessage_WhenUserDetailsRetrievalFails()
         {
             // Arrange
-            var urlHelperMock = SetUpBackLink("Dashboard", "UserAccount");
-            _controller.Url = urlHelperMock.Object; // Assign mock to controller.Url
+            _controller.Url = SetUpBackLink("Dashboard", "UserAccount").Object; // Assign mock to controller.Url
             var errorMessage = "Some error occured.";
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
                              .Returns("user123");
@@ -169,6 +169,91 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(errorMessage, _controller.TempData["ErrorMessage"]);
             Assert.IsType<OrganisationDetailsModel>(viewResult.Model);
+        }
+
+        [Fact]
+        public void EditOrganisationDetails_SavesJourneyFlag_AndRedirectsToOrganisationType()
+        {
+            // Act
+            var result = _controller.EditOrganisationDetails();
+
+            // Assert
+            _sessionHelperMock.Verify(x => x.SaveToSession(
+                It.IsAny<HttpContext>(),
+                SessionKeys.IsEditOrganisationDetailsJourneySessionKey,
+                true),
+                Times.Once);
+
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("OrganisationType", redirectResult.ActionName);
+            Assert.Equal("Organisation", redirectResult.ControllerName);
+        }
+
+        [Fact]
+        public void EditOrganisationDetails_SavesOnlyEditOrganisationJourneyFlag()
+        {
+            // Act
+            _controller.EditOrganisationDetails();
+
+            // Assert
+            _sessionHelperMock.Verify(x => x.SaveToSession(
+                It.IsAny<HttpContext>(),
+                SessionKeys.IsEditOrganisationDetailsJourneySessionKey,
+                true),
+                Times.Once);
+
+            _sessionHelperMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task YourDetails_UserWithOrganisation_PreferNotToSay_ReturnsViewAndSavesSession()
+        {
+            // Arrange
+            const string userId = "user1";
+            var user = new UserDetailsResponse
+            {
+                EmailId = "test@test.com",
+                FirstName = "John",
+                LastName = "Smith",
+                JobTitle = "Developer",
+                PreferredContactType = NullableOfPreferredContactType.PreferNotToSay,
+                Roles = new List<UserRole> { UserRole.ResponsiblePerson },
+                Organisation = new OrganisationResponse
+                {
+                    OrgId = "org1",
+                    Name = "Test Org"
+                }
+            };
+            var organisation = new Organisation
+            {
+                Name = "Test Org",
+                Type = Api.Client.Model.OrganisationType.OtherUkOrganisation,
+                CompaniesHouseNumber = "123456",
+                RegisteredAddress = new RegisteredAddress2("Line 1", "Line 2", "Town", "County", "POSTCODE", "Country")
+            };
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.UserModel_Id_SessionKey))
+                .Returns(userId);
+            _userServiceMock.Setup(x => x.GetUserDetails(userId))
+                .ReturnsAsync(user);
+            _organisationServiceMock.Setup(x => x.GetOrganisationById("org1"))
+                .ReturnsAsync(organisation);
+            _controller.Url = SetUpBackLink("Dashboard", "UserAccount").Object; // Assign mock to controller.Url
+
+            // Act
+            var result = await _controller.YourDetails();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<OrganisationContactDetailsModel>(viewResult.Model);
+
+            Assert.Equal(PreferredContactType.PreferNotToSay, model.PreferredContactType);
+
+            _sessionHelperMock.Verify(x =>
+                x.SaveToSession(It.IsAny<HttpContext>(),
+                    SessionKeys.OrganisationContactDetailsModelSessionKey,
+                    It.IsAny<OrganisationContactDetailsModel>()), Times.Once);
         }
     }
 }

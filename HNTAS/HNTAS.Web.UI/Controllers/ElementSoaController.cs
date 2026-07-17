@@ -451,7 +451,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
-        public async Task<IActionResult> AssessmentSelectionEcAsync()
+        public IActionResult AssessmentSelectionEcAsync()
         {            
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.EC);
@@ -463,7 +463,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
 
-            var model = await GetAssessmentModel(hnId, ElementTypeInShort.EC, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
+            var model = GetAssessmentModel(ElementTypeInShort.EC, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey, model);
             return View("AssessmentSelection", model);
@@ -514,7 +514,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
-        public async Task<IActionResult> AssessmentSelectionSs()
+        public IActionResult AssessmentSelectionSs()
         {
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.SS);
@@ -524,7 +524,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
-            var model = await GetAssessmentModel(hnId, ElementTypeInShort.SS, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
+            var model = GetAssessmentModel(ElementTypeInShort.SS, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey, model);
             return View("AssessmentSelection", model);
@@ -570,7 +570,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
-        public async Task<IActionResult> AssessmentSelectionCc()
+        public IActionResult AssessmentSelectionCc()
         {
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.CC);
@@ -580,7 +580,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
-            var model = await GetAssessmentModel(hnId, ElementTypeInShort.CC, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
+            var model = GetAssessmentModel(ElementTypeInShort.CC, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey, model);
             return View("AssessmentSelection", model);
@@ -628,7 +628,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
-        public async Task<IActionResult> AssessmentSelectionCdn()
+        public IActionResult AssessmentSelectionCdn()
         {
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.CDN);
@@ -638,7 +638,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
-            var model = await GetAssessmentModel(hnId, ElementTypeInShort.CDN, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
+            var model = GetAssessmentModel(ElementTypeInShort.CDN, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey, model);
             return View("AssessmentSelection", model);
@@ -687,7 +687,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
-        public async Task<IActionResult> AssessmentSelectionDdn()
+        public IActionResult AssessmentSelectionDdn()
         {
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.DDN);
@@ -697,7 +697,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
-            var model = await GetAssessmentModel(hnId, ElementTypeInShort.DDN, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
+            var model = GetAssessmentModel(ElementTypeInShort.DDN, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey, model);
             return View("AssessmentSelection", model);
@@ -982,15 +982,11 @@ namespace HNTAS.Web.UI.Controllers
             }
         }
 
-        private async Task<AssessorAssessmentSelectionViewModel> GetAssessmentModel(string hnId, ElementTypeInShort elementType, string sessionKey)
+        private AssessorAssessmentSelectionViewModel GetAssessmentModel(ElementTypeInShort elementType, string sessionKey)
         {
             var model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, sessionKey) ?? new AssessorAssessmentSelectionViewModel();
             model.ElementType = elementType;
-            model.AssessmentOptions = ElementSoaHelper.GetAssessmentOptions();
-
-            var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
-            var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
-            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);           
+            model.AssessmentOptions = ElementSoaHelper.GetAssessmentOptions();        
 
             return model;
         }
