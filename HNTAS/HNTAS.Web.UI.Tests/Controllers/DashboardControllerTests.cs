@@ -124,8 +124,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task OrganisationDetails_ReturnsViewWithModel_WhenUserDetailsRetrievedSuccessfully()
         {
             // Arrange
-            var urlHelperMock = SetUpBackLink("Dashboard", "UserAccount");
-            _controller.Url = urlHelperMock.Object; // Assign mock to controller.Url
+            _controller.Url = SetUpBackLink("Dashboard", "UserAccount").Object; // Assign mock to controller.Url
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.OrganisationName))
                              .Returns("Test Org");
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
@@ -158,8 +157,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task OrganisationDetails_ReturnsViewWithErrorMessage_WhenUserDetailsRetrievalFails()
         {
             // Arrange
-            var urlHelperMock = SetUpBackLink("Dashboard", "UserAccount");
-            _controller.Url = urlHelperMock.Object; // Assign mock to controller.Url
+            _controller.Url = SetUpBackLink("Dashboard", "UserAccount").Object; // Assign mock to controller.Url
             var errorMessage = "Some error occured.";
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
                              .Returns("user123");
@@ -212,7 +210,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             // Arrange
             const string userId = "user1";
-
             var user = new UserDetailsResponse
             {
                 EmailId = "test@test.com",
@@ -227,7 +224,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
                     Name = "Test Org"
                 }
             };
-
             var organisation = new Organisation
             {
                 Name = "Test Org",
@@ -235,17 +231,15 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 CompaniesHouseNumber = "123456",
                 RegisteredAddress = new RegisteredAddress2("Line 1", "Line 2", "Town", "County", "POSTCODE", "Country")
             };
-
             _sessionHelperMock.Setup(x => x.GetFromSession<string>(
                 It.IsAny<HttpContext>(),
                 SessionKeys.UserModel_Id_SessionKey))
                 .Returns(userId);
-
             _userServiceMock.Setup(x => x.GetUserDetails(userId))
                 .ReturnsAsync(user);
-
             _organisationServiceMock.Setup(x => x.GetOrganisationById("org1"))
                 .ReturnsAsync(organisation);
+            _controller.Url = SetUpBackLink("Dashboard", "UserAccount").Object; // Assign mock to controller.Url
 
             // Act
             var result = await _controller.YourDetails();

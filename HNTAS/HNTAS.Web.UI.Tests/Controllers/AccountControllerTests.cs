@@ -267,7 +267,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         [Fact]
         public void SignOut_IsAuthorized()
         {
-            var methodInfo = typeof(AccountController).GetMethod(nameof(AccountController.SignOut), new[] { typeof(string) });
+            var methodInfo = typeof(AccountController).GetMethod(nameof(AccountController.SignOut), Type.EmptyTypes);
             var authorizeAttribute = methodInfo.GetCustomAttributes(typeof(AuthorizeAttribute), false)
                 .FirstOrDefault() as AuthorizeAttribute;
 
@@ -277,7 +277,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         [Fact]
         public void OneLoginCallback_IsAllowAnonymous()
         {
-            var methodInfo = typeof(AccountController).GetMethod(nameof(AccountController.OneLoginCallback), new[] { typeof(string) });
+            var methodInfo = typeof(AccountController).GetMethod(nameof(AccountController.OneLoginCallback), Type.EmptyTypes);
             var allowAnonymousAttribute = methodInfo.GetCustomAttributes(typeof(AllowAnonymousAttribute), false)
                 .FirstOrDefault() as AllowAnonymousAttribute;
 
@@ -287,7 +287,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         [Fact]
         public void OneLoginLogoutCallback_IsAllowAnonymous()
         {
-            var methodInfo = typeof(AccountController).GetMethod(nameof(AccountController.OneLoginLogoutCallback), new[] { typeof(string) });
+            var methodInfo = typeof(AccountController).GetMethod(nameof(AccountController.OneLoginLogoutCallback), Type.EmptyTypes);
             var allowAnonymousAttribute = methodInfo.GetCustomAttributes(typeof(AllowAnonymousAttribute), false)
                 .FirstOrDefault() as AllowAnonymousAttribute;
 
