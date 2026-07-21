@@ -142,7 +142,8 @@ namespace HNTAS.Web.UI.Controllers
                                         kvp => new CarbonInputUiDisplayViewModel
                                         {
                                             Label = kvp.Value.Label,
-                                            Value = (double)kvp.Value.Value
+                                            Value = (double)kvp.Value.Value,
+                                            Unit = kvp.Value.Unit
                                         })
             };
 
@@ -155,7 +156,8 @@ namespace HNTAS.Web.UI.Controllers
                     {
                         KpiId = k.KpiName,
                         Value = k.Value.Value,
-                        Status = k.Status
+                        Status = k.Status,
+                        Unit = k.Unit
                     }).ToList()
                 }
             );
@@ -167,7 +169,8 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     KpiId = k.KpiName,
                     Value = k.Value.Value,
-                    Status = k.Status
+                    Status = k.Status,
+                    Unit = k.Unit
                 }).ToList();
             }
 
@@ -246,6 +249,8 @@ namespace HNTAS.Web.UI.Controllers
         {
             public string Label { get; set; } = null!;
             public double Value { get; set; }
+
+            public string? Unit { get; set; }
         }
 
         public class HeatNetworkRowViewModel
@@ -327,6 +332,7 @@ namespace HNTAS.Web.UI.Controllers
             public double LowerLimit { get; set; }
             public double UpperLimit { get; set; }
             public string Status { get; set; }
+            public string? Unit { get; set; }
             //public DateTime ReportingPeriod { get; internal set; }
         }
 
