@@ -12,6 +12,7 @@ docs/apis/AuditApi.md
 docs/apis/CarbonCalculatorApi.md
 docs/apis/CountriesAndTerritoriesApi.md
 docs/apis/FeedbackApi.md
+docs/apis/HNDataImportExportApi.md
 docs/apis/HeatNetworksApi.md
 docs/apis/ImportApi.md
 docs/apis/InvitationsApi.md
@@ -160,10 +161,8 @@ docs/models/UserRoleDetailResponse.md
 docs/models/UserStatus.md
 docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
-src/HNTAS.Api.Client.Test/Api/ArmsReportApiTests.cs
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/ArmsPowerBiUserReportResponseTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -174,6 +173,7 @@ src/HNTAS.Api.Client/Api/AuditApi.cs
 src/HNTAS.Api.Client/Api/CarbonCalculatorApi.cs
 src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
 src/HNTAS.Api.Client/Api/FeedbackApi.cs
+src/HNTAS.Api.Client/Api/HNDataImportExportApi.cs
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
 src/HNTAS.Api.Client/Api/ImportApi.cs

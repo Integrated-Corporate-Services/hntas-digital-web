@@ -16,6 +16,7 @@ tags:
 - name: Import
 - name: Feedback
 - name: HeatNetworks
+- name: HNDataImportExport
 - name: Invitations
 - name: NotificationHistory
 - name: Organisations
@@ -1273,6 +1274,30 @@ paths:
           description: Bad Request
       tags:
       - HeatNetworks
+  /api/HNDataImportExport/hn-users-orgs:
+    get:
+      responses:
+        "200":
+          description: OK
+      tags:
+      - HNDataImportExport
+  /api/HNDataImportExport/hn-users-orgs.csv:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: take
+        required: false
+        schema:
+          default: 100
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: OK
+      tags:
+      - HNDataImportExport
   /api/Invitations/{id}:
     get:
       parameters:
@@ -2837,6 +2862,7 @@ components:
       type: object
     AggregatedKpi:
       example:
+        unit: unit
         kpiName: kpiName
         value: 5.962133916683182
         status: status
@@ -2847,6 +2873,9 @@ components:
           format: double
           type: number
         status:
+          type: string
+        unit:
+          nullable: true
           type: string
       type: object
     ArmsPowerBiReportResponse:
@@ -3595,6 +3624,7 @@ components:
       type: object
     CarbonInputUiDisplay:
       example:
+        unit: unit
         label: label
         value: 5.637376656633329
       properties:
@@ -3603,6 +3633,9 @@ components:
         value:
           format: double
           type: number
+        unit:
+          nullable: true
+          type: string
       type: object
     CCKpiValueRequest:
       additionalProperties: false
@@ -3921,11 +3954,13 @@ components:
         elementType: elementType
         kpis:
         - isImputed: true
+          unit: unit
           kpiName: kpiName
           imputationDetails: imputationDetails
           value: 1.4658129805029452
           status: status
         - isImputed: true
+          unit: unit
           kpiName: kpiName
           imputationDetails: imputationDetails
           value: 1.4658129805029452
@@ -5257,16 +5292,19 @@ components:
       example:
         hnId: hnId
         aggregatedKpis:
-        - kpiName: kpiName
+        - unit: unit
+          kpiName: kpiName
           value: 5.962133916683182
           status: status
-        - kpiName: kpiName
+        - unit: unit
+          kpiName: kpiName
           value: 5.962133916683182
           status: status
         selectedMonth: 0
         totalCarbonEmission: 2.3021358869347655
         carbonCalculationInputs:
           key:
+            unit: unit
             label: label
             value: 5.637376656633329
         selectedYear: 6
@@ -5278,11 +5316,13 @@ components:
           elementType: elementType
           kpis:
           - isImputed: true
+            unit: unit
             kpiName: kpiName
             imputationDetails: imputationDetails
             value: 1.4658129805029452
             status: status
           - isImputed: true
+            unit: unit
             kpiName: kpiName
             imputationDetails: imputationDetails
             value: 1.4658129805029452
@@ -5291,11 +5331,13 @@ components:
           elementType: elementType
           kpis:
           - isImputed: true
+            unit: unit
             kpiName: kpiName
             imputationDetails: imputationDetails
             value: 1.4658129805029452
             status: status
           - isImputed: true
+            unit: unit
             kpiName: kpiName
             imputationDetails: imputationDetails
             value: 1.4658129805029452
@@ -6287,6 +6329,7 @@ components:
     KpiDetailDto:
       example:
         isImputed: true
+        unit: unit
         kpiName: kpiName
         imputationDetails: imputationDetails
         value: 1.4658129805029452
@@ -6297,6 +6340,9 @@ components:
         value:
           format: double
           type: number
+        unit:
+          nullable: true
+          type: string
         status:
           type: string
         isImputed:
