@@ -39,6 +39,7 @@ namespace HNTAS.Web.UI.Controllers
             var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
             if (registrationSource == RegistrationSource.OFGEM)
             {
+                _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);
                 this.ShowBackButton("ExistingNetworks", "UserManagement");
             }
             else
@@ -212,7 +213,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("HeatNetworkEcCommunal");
             if(!ModelState.IsValid)
             {
-                return View();
+                return View(model);
             }
             string nextAction = model.SuppliesOneBlock switch
             {
