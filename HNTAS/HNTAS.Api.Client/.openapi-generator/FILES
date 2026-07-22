@@ -58,7 +58,9 @@ docs/models/Element.md
 docs/models/ElementGroup.md
 docs/models/ElementGroupDto.md
 docs/models/ElementSoaAssignAssessorRequest.md
+docs/models/ElementSoaAssignAssessorRequestForExistingNetwork.md
 docs/models/ElementSoaStatusUpdateRequest.md
+docs/models/ElementSoaStatusUpdateRequestForExistingNetwork.md
 docs/models/ElementTypeInShort.md
 docs/models/Energy.md
 docs/models/EnergyCentreDetails.md
@@ -104,6 +106,7 @@ docs/models/KpiValueRequest.md
 docs/models/ManagedUserResponse.md
 docs/models/MeteringAndMonitoringStrategy.md
 docs/models/MeteringAndMonitoringStrategyResponse.md
+docs/models/Milestone.md
 docs/models/NetworkDetailsStatus.md
 docs/models/NetworkDetailsUploadedDocument.md
 docs/models/NetworkElementRequest.md
@@ -116,6 +119,7 @@ docs/models/NotificationHistoryData.md
 docs/models/NotificationHistoryRequest.md
 docs/models/NotificationHistoryResponse.md
 docs/models/NullableOfHeatNetworkType.md
+docs/models/NullableOfMilestone.md
 docs/models/NullableOfPreferredContactType.md
 docs/models/NullableOfSoaStage.md
 docs/models/NullableOfUserRole.md
@@ -136,6 +140,7 @@ docs/models/SendInvitationEmailRequest.md
 docs/models/Soa.md
 docs/models/SoaAssessor.md
 docs/models/SoaJourneyData.md
+docs/models/SoaMilestone.md
 docs/models/SoaPhase.md
 docs/models/SoaResponse.md
 docs/models/SoaResponse2.md
@@ -162,7 +167,11 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/ArmsPowerBiUserReportResponseTests.cs
+src/HNTAS.Api.Client.Test/Model/ElementSoaAssignAssessorRequestForExistingNetworkTests.cs
+src/HNTAS.Api.Client.Test/Model/ElementSoaStatusUpdateRequestForExistingNetworkTests.cs
+src/HNTAS.Api.Client.Test/Model/MilestoneTests.cs
+src/HNTAS.Api.Client.Test/Model/NullableOfMilestoneTests.cs
+src/HNTAS.Api.Client.Test/Model/SoaMilestoneTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -242,7 +251,9 @@ src/HNTAS.Api.Client/Model/Element.cs
 src/HNTAS.Api.Client/Model/ElementGroup.cs
 src/HNTAS.Api.Client/Model/ElementGroupDto.cs
 src/HNTAS.Api.Client/Model/ElementSoaAssignAssessorRequest.cs
+src/HNTAS.Api.Client/Model/ElementSoaAssignAssessorRequestForExistingNetwork.cs
 src/HNTAS.Api.Client/Model/ElementSoaStatusUpdateRequest.cs
+src/HNTAS.Api.Client/Model/ElementSoaStatusUpdateRequestForExistingNetwork.cs
 src/HNTAS.Api.Client/Model/ElementTypeInShort.cs
 src/HNTAS.Api.Client/Model/Energy.cs
 src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
@@ -288,6 +299,7 @@ src/HNTAS.Api.Client/Model/KpiValueRequest.cs
 src/HNTAS.Api.Client/Model/ManagedUserResponse.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategy.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategyResponse.cs
+src/HNTAS.Api.Client/Model/Milestone.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadedDocument.cs
 src/HNTAS.Api.Client/Model/NetworkElementRequest.cs
@@ -300,6 +312,7 @@ src/HNTAS.Api.Client/Model/NotificationHistoryData.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryRequest.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryResponse.cs
 src/HNTAS.Api.Client/Model/NullableOfHeatNetworkType.cs
+src/HNTAS.Api.Client/Model/NullableOfMilestone.cs
 src/HNTAS.Api.Client/Model/NullableOfPreferredContactType.cs
 src/HNTAS.Api.Client/Model/NullableOfSoaStage.cs
 src/HNTAS.Api.Client/Model/NullableOfUserRole.cs
@@ -320,6 +333,7 @@ src/HNTAS.Api.Client/Model/SendInvitationEmailRequest.cs
 src/HNTAS.Api.Client/Model/Soa.cs
 src/HNTAS.Api.Client/Model/SoaAssessor.cs
 src/HNTAS.Api.Client/Model/SoaJourneyData.cs
+src/HNTAS.Api.Client/Model/SoaMilestone.cs
 src/HNTAS.Api.Client/Model/SoaPhase.cs
 src/HNTAS.Api.Client/Model/SoaResponse.cs
 src/HNTAS.Api.Client/Model/SoaResponse2.cs

@@ -1930,6 +1930,49 @@ paths:
           description: Bad Request
       tags:
       - SOA
+  /api/SOA/update-soa-status-for-existing-network:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaStatusUpdateRequestForExistingNetwork"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaStatusUpdateRequestForExistingNetwork"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaStatusUpdateRequestForExistingNetwork"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SOA
   /api/SOA/soa-assign-assessor:
     patch:
       requestBody:
@@ -1943,6 +1986,49 @@ paths:
           application/*+json:
             schema:
               $ref: "#/components/schemas/ElementSoaAssignAssessorRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - SOA
+  /api/SOA/soa-assign-assessor-for-existing-network:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaAssignAssessorRequestForExistingNetwork"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaAssignAssessorRequestForExistingNetwork"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ElementSoaAssignAssessorRequestForExistingNetwork"
         required: true
       responses:
         "200":
@@ -3854,6 +3940,29 @@ components:
       type: object
     ElementGroup:
       example:
+        soaMilestones:
+        - soaStatuses:
+          - ""
+          - ""
+          soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessorUpdatedBy: assessorUpdatedBy
+          milestoneId: Milestone2
+          soaStatusUpdatedBy: soaStatusUpdatedBy
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessors:
+          - ""
+          - ""
+        - soaStatuses:
+          - ""
+          - ""
+          soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessorUpdatedBy: assessorUpdatedBy
+          milestoneId: Milestone2
+          soaStatusUpdatedBy: soaStatusUpdatedBy
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessors:
+          - ""
+          - ""
         elementDisplayType: EnergyCentre
         soaStages:
         - soaStatuses:
@@ -3910,6 +4019,11 @@ components:
         soaStages:
           items:
             $ref: "#/components/schemas/SoaStages"
+          nullable: true
+          type: array
+        soaMilestones:
+          items:
+            $ref: "#/components/schemas/SoaMilestone"
           nullable: true
           type: array
         elementType:
@@ -3978,6 +4092,44 @@ components:
         updatedBy:
           type: string
       type: object
+    ElementSoaAssignAssessorRequestForExistingNetwork:
+      example:
+        hnId: hnId
+        updatedBy: updatedBy
+        milestone: Milestone2
+        assessorAssessmentForElements:
+        - assessorAssessments:
+          - assessment: assessment
+            assessorLastName: assessorLastName
+            assessorEmail: assessorEmail
+            assessorFirstName: assessorFirstName
+          - assessment: assessment
+            assessorLastName: assessorLastName
+            assessorEmail: assessorEmail
+            assessorFirstName: assessorFirstName
+          elementType: EC
+        - assessorAssessments:
+          - assessment: assessment
+            assessorLastName: assessorLastName
+            assessorEmail: assessorEmail
+            assessorFirstName: assessorFirstName
+          - assessment: assessment
+            assessorLastName: assessorLastName
+            assessorEmail: assessorEmail
+            assessorFirstName: assessorFirstName
+          elementType: EC
+      properties:
+        assessorAssessmentForElements:
+          items:
+            $ref: "#/components/schemas/AssessorAssessmentForElement"
+          type: array
+        milestone:
+          $ref: "#/components/schemas/Milestone"
+        hnId:
+          type: string
+        updatedBy:
+          type: string
+      type: object
     ElementSoaStatusUpdateRequest:
       example:
         elementId: elementId
@@ -3996,6 +4148,50 @@ components:
       properties:
         stage:
           $ref: "#/components/schemas/SoaStage"
+        elementId:
+          nullable: true
+          type: string
+        elementType:
+          $ref: "#/components/schemas/ElementTypeInShort"
+        soaStatuses:
+          items:
+            $ref: "#/components/schemas/SoaStatusWithCount"
+          nullable: true
+          type: array
+        elementSoaStatus:
+          $ref: "#/components/schemas/NetworkDetailsStatus"
+        soaStatusUpdatedBy:
+          nullable: true
+          type: string
+        hnId:
+          type: string
+        soaPhase:
+          nullable: true
+          type: string
+        elementDisplayName:
+          nullable: true
+          type: string
+      required:
+      - hnId
+      type: object
+    ElementSoaStatusUpdateRequestForExistingNetwork:
+      example:
+        elementId: elementId
+        elementSoaStatus: InProgress
+        hnId: hnId
+        soaStatuses:
+        - soaStatus: null
+          count: 3
+        - soaStatus: null
+          count: 3
+        elementDisplayName: elementDisplayName
+        milestone: Milestone2
+        soaStatusUpdatedBy: soaStatusUpdatedBy
+        elementType: EC
+        soaPhase: soaPhase
+      properties:
+        milestone:
+          $ref: "#/components/schemas/Milestone"
         elementId:
           nullable: true
           type: string
@@ -4436,7 +4632,30 @@ components:
             updatedBy: updatedBy
             createdBy: createdBy
             elementsGroup:
-            - elementDisplayType: EnergyCentre
+            - soaMilestones:
+              - soaStatuses:
+                - ""
+                - ""
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                milestoneId: Milestone2
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - ""
+                - ""
+              - soaStatuses:
+                - ""
+                - ""
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                milestoneId: Milestone2
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - ""
+                - ""
+              elementDisplayType: EnergyCentre
               soaStages:
               - soaStatuses:
                 - soaStatus: null
@@ -4482,7 +4701,30 @@ components:
                 stageId: Stage1
               count: 9
               elementType: EC
-            - elementDisplayType: EnergyCentre
+            - soaMilestones:
+              - soaStatuses:
+                - ""
+                - ""
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                milestoneId: Milestone2
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - ""
+                - ""
+              - soaStatuses:
+                - ""
+                - ""
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                milestoneId: Milestone2
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - ""
+                - ""
+              elementDisplayType: EnergyCentre
               soaStages:
               - soaStatuses:
                 - soaStatus: null
@@ -4692,7 +4934,30 @@ components:
             updatedBy: updatedBy
             createdBy: createdBy
             elementsGroup:
-            - elementDisplayType: EnergyCentre
+            - soaMilestones:
+              - soaStatuses:
+                - ""
+                - ""
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                milestoneId: Milestone2
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - ""
+                - ""
+              - soaStatuses:
+                - ""
+                - ""
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                milestoneId: Milestone2
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - ""
+                - ""
+              elementDisplayType: EnergyCentre
               soaStages:
               - soaStatuses:
                 - soaStatus: null
@@ -4738,7 +5003,30 @@ components:
                 stageId: Stage1
               count: 9
               elementType: EC
-            - elementDisplayType: EnergyCentre
+            - soaMilestones:
+              - soaStatuses:
+                - ""
+                - ""
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                milestoneId: Milestone2
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - ""
+                - ""
+              - soaStatuses:
+                - ""
+                - ""
+                soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessorUpdatedBy: assessorUpdatedBy
+                milestoneId: Milestone2
+                soaStatusUpdatedBy: soaStatusUpdatedBy
+                assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+                assessors:
+                - ""
+                - ""
+              elementDisplayType: EnergyCentre
               soaStages:
               - soaStatuses:
                 - soaStatus: null
@@ -4949,7 +5237,30 @@ components:
             networkElementInstanceName: networkElementInstanceName
             elementType: EC
           elementsGroup:
-          - elementDisplayType: EnergyCentre
+          - soaMilestones:
+            - soaStatuses:
+              - ""
+              - ""
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - ""
+              - ""
+            - soaStatuses:
+              - ""
+              - ""
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - ""
+              - ""
+            elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
               - soaStatus: null
@@ -4995,7 +5306,30 @@ components:
               stageId: Stage1
             count: 9
             elementType: EC
-          - elementDisplayType: EnergyCentre
+          - soaMilestones:
+            - soaStatuses:
+              - ""
+              - ""
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - ""
+              - ""
+            - soaStatuses:
+              - ""
+              - ""
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - ""
+              - ""
+            elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
               - soaStatus: null
@@ -5593,7 +5927,30 @@ components:
           updatedBy: updatedBy
           createdBy: createdBy
           elementsGroup:
-          - elementDisplayType: EnergyCentre
+          - soaMilestones:
+            - soaStatuses:
+              - ""
+              - ""
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - ""
+              - ""
+            - soaStatuses:
+              - ""
+              - ""
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - ""
+              - ""
+            elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
               - soaStatus: null
@@ -5639,7 +5996,30 @@ components:
               stageId: Stage1
             count: 9
             elementType: EC
-          - elementDisplayType: EnergyCentre
+          - soaMilestones:
+            - soaStatuses:
+              - ""
+              - ""
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - ""
+              - ""
+            - soaStatuses:
+              - ""
+              - ""
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - ""
+              - ""
+            elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
               - soaStatus: null
@@ -6702,6 +7082,14 @@ components:
           nullable: true
           type: string
       type: object
+    Milestone:
+      enum:
+      - Milestone2
+      - Milestone3A
+      - Milestone3B
+      - Milestone4
+      - Milestone5
+      type: string
     NetworkDetailsStatus:
       enum:
       - InProgress
@@ -6767,7 +7155,30 @@ components:
           networkElementInstanceName: networkElementInstanceName
           elementType: EC
         elementsGroup:
-        - elementDisplayType: EnergyCentre
+        - soaMilestones:
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
             - soaStatus: null
@@ -6813,7 +7224,30 @@ components:
             stageId: Stage1
           count: 9
           elementType: EC
-        - elementDisplayType: EnergyCentre
+        - soaMilestones:
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
             - soaStatus: null
@@ -6903,7 +7337,30 @@ components:
           networkElementInstanceName: networkElementInstanceName
           elementType: EC
         elementsGroup:
-        - elementDisplayType: EnergyCentre
+        - soaMilestones:
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
             - soaStatus: null
@@ -6949,7 +7406,30 @@ components:
             stageId: Stage1
           count: 9
           elementType: EC
-        - elementDisplayType: EnergyCentre
+        - soaMilestones:
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
             - soaStatus: null
@@ -7031,7 +7511,30 @@ components:
         updatedBy: updatedBy
         createdBy: createdBy
         elementsGroup:
-        - elementDisplayType: EnergyCentre
+        - soaMilestones:
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
             - soaStatus: null
@@ -7077,7 +7580,30 @@ components:
             stageId: Stage1
           count: 9
           elementType: EC
-        - elementDisplayType: EnergyCentre
+        - soaMilestones:
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          - soaStatuses:
+            - ""
+            - ""
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - ""
+            - ""
+          elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
             - soaStatus: null
@@ -7314,6 +7840,16 @@ components:
       - Unset
       - Communal
       - District
+      - null
+      nullable: true
+      type: string
+    NullableOfMilestone:
+      enum:
+      - Milestone2
+      - Milestone3A
+      - Milestone3B
+      - Milestone4
+      - Milestone5
       - null
       nullable: true
       type: string
@@ -7848,6 +8384,45 @@ components:
           type: array
         certifierDocs:
           items: {}
+          type: array
+      type: object
+    SoaMilestone:
+      example:
+        soaStatuses:
+        - ""
+        - ""
+        soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        assessorUpdatedBy: assessorUpdatedBy
+        milestoneId: Milestone2
+        soaStatusUpdatedBy: soaStatusUpdatedBy
+        assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+        assessors:
+        - ""
+        - ""
+      properties:
+        milestoneId:
+          $ref: "#/components/schemas/NullableOfMilestone"
+        soaStatuses:
+          items: {}
+          nullable: true
+          type: array
+        soaStatusUpdatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        soaStatusUpdatedBy:
+          nullable: true
+          type: string
+        assessorUpdatedAt:
+          format: date-time
+          nullable: true
+          type: string
+        assessorUpdatedBy:
+          nullable: true
+          type: string
+        assessors:
+          items: {}
+          nullable: true
           type: array
       type: object
     SoaPhase:

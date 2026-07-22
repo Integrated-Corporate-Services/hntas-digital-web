@@ -56,6 +56,13 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> PrepareToAddNetworkDetails([FromQuery] string hnid, [FromQuery] RegistrationSource registrationSource)
+        {
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.RegistrationSourceKey, registrationSource);
+            return RedirectToAction("AddNetworkDetails", new { hnid });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> AddNetworkDetails([FromQuery] string hnid)
         {
             hnid = hnid ?? _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
@@ -69,7 +76,11 @@ namespace HNTAS.Web.UI.Controllers
 
         private async Task<HNDetailsViewModel> GetNetworkDetails(string hnid)
         {
-            this.ShowBackButton("HeatNetworks", "UserManagement");
+            var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+            if (registrationSource == RegistrationSource.OFGEM)
+                this.ShowBackButton("ExistingNetworks", "UserManagement");
+            else
+                this.ShowBackButton("HeatNetworks", "UserManagement");
             // get user details
             var response = await _heatNetworkService.GetAsync(hnid?.ToUpper());
 
@@ -147,12 +158,26 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.HnId, hnid.ToUpper());
             ClearNetworkElementSpecificSession();
             ClearSoaAssessorSpecificSession();
+            var soaController = "";
+            var soaAction = "";
+            var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+            if (registrationSource == RegistrationSource.OFGEM)
+            {
+                soaController = "ExistingElementSoa";
+                soaAction = "UnderstandingSoa";
+            }                
+            else
+            {
+                soaController = "ElementSoa";
+                soaAction = "UnderstandingSoa";
+            }
+                
             switch (networkDetailId)
             {
                 case NetworkDetailsType.NetworkElements:
                     return RedirectToAction("SelectNetworkElements", "NetworkElements");
                 case NetworkDetailsType.Soa:
-                    return RedirectToAction("UnderstandingSoa", "ElementSoa");                
+                    return RedirectToAction(soaAction, soaController);
                 default:
                     return BadRequest();
             }
