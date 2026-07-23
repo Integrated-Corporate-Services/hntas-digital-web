@@ -10,7 +10,7 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form asp-action="AssessorElementSelectionOverviewConfirm" asp-controller="ElementSoa" method="post">
+            <form asp-action="AssessorElementSelectionOverviewConfirm" asp-controller="ExistingElementSoa" method="post">
                 @Html.AntiForgeryToken()
                 <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
                 <h1 class="govuk-heading-l">

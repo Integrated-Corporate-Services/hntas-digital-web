@@ -139,6 +139,7 @@ docs/models/RegistrationSource2.md
 docs/models/SendInvitationEmailRequest.md
 docs/models/Soa.md
 docs/models/SoaAssessor.md
+docs/models/SoaAssessorExistingNetwork.md
 docs/models/SoaJourneyData.md
 docs/models/SoaMilestone.md
 docs/models/SoaPhase.md
@@ -148,6 +149,7 @@ docs/models/SoaStage.md
 docs/models/SoaStages.md
 docs/models/SoaStatus.md
 docs/models/SoaStatusWithCount.md
+docs/models/SoaStatusWithCountExistingNetwork.md
 docs/models/UpdateSoaStatusRequest.md
 docs/models/UpdateUserDetailsRequest.md
 docs/models/UpdateUserOrgIdRequest.md
@@ -167,11 +169,8 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/ElementSoaAssignAssessorRequestForExistingNetworkTests.cs
-src/HNTAS.Api.Client.Test/Model/ElementSoaStatusUpdateRequestForExistingNetworkTests.cs
-src/HNTAS.Api.Client.Test/Model/MilestoneTests.cs
-src/HNTAS.Api.Client.Test/Model/NullableOfMilestoneTests.cs
-src/HNTAS.Api.Client.Test/Model/SoaMilestoneTests.cs
+src/HNTAS.Api.Client.Test/Model/SoaAssessorExistingNetworkTests.cs
+src/HNTAS.Api.Client.Test/Model/SoaStatusWithCountExistingNetworkTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -332,6 +331,7 @@ src/HNTAS.Api.Client/Model/RegistrationSource2.cs
 src/HNTAS.Api.Client/Model/SendInvitationEmailRequest.cs
 src/HNTAS.Api.Client/Model/Soa.cs
 src/HNTAS.Api.Client/Model/SoaAssessor.cs
+src/HNTAS.Api.Client/Model/SoaAssessorExistingNetwork.cs
 src/HNTAS.Api.Client/Model/SoaJourneyData.cs
 src/HNTAS.Api.Client/Model/SoaMilestone.cs
 src/HNTAS.Api.Client/Model/SoaPhase.cs
@@ -341,6 +341,7 @@ src/HNTAS.Api.Client/Model/SoaStage.cs
 src/HNTAS.Api.Client/Model/SoaStages.cs
 src/HNTAS.Api.Client/Model/SoaStatus.cs
 src/HNTAS.Api.Client/Model/SoaStatusWithCount.cs
+src/HNTAS.Api.Client/Model/SoaStatusWithCountExistingNetwork.cs
 src/HNTAS.Api.Client/Model/UpdateSoaStatusRequest.cs
 src/HNTAS.Api.Client/Model/UpdateUserDetailsRequest.cs
 src/HNTAS.Api.Client/Model/UpdateUserOrgIdRequest.cs

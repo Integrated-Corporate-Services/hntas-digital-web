@@ -19,7 +19,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Milestone 2",
                         MilestoneId = Milestone.Milestone2,
-                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
+                        Elements = GetElementsForStage(networkElements, Milestone.Milestone2, networkType, hasOwnEc),
                         IsActive = eligibleIndex == 0,
                         Title = "Metering and monitoring (threshold performance)"
                     },
@@ -27,7 +27,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Milestone 3A",
                         MilestoneId = Milestone.Milestone3A,
-                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
+                        Elements = GetElementsForStage(networkElements, Milestone.Milestone3A, networkType, hasOwnEc),
                         IsActive = eligibleIndex == 0 || eligibleIndex == 1,
                         Title = "Performance improvement plan",
                         Description = "You may want to undertake a Stage 2 assessment to gain further assurance during your design development process, or if you want to provide an assessed design when handing over to your Design & Build Contractor."
@@ -36,7 +36,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Milestone 3B",
                         MilestoneId = Milestone.Milestone3B,
-                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
+                        Elements = GetElementsForStage(networkElements, Milestone.Milestone3B, networkType, hasOwnEc),
                         IsActive = true,
                         Title = "Metering and monitoring (end-user connections)",
                         Description = "Only applies to consumer connections"
@@ -45,7 +45,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Milestone 4",
                         MilestoneId = Milestone.Milestone4,
-                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
+                        Elements = GetElementsForStage(networkElements, Milestone.Milestone4, networkType, hasOwnEc),
                         IsActive = true,
                         Title = "TBD"
                     },
@@ -53,7 +53,7 @@ namespace HNTAS.Web.UI.Helpers
                     {
                         Name = "Milestone 5",
                         MilestoneId = Milestone.Milestone5,
-                        Elements = GetElementsForStage(networkElements, networkType, hasOwnEc),
+                        Elements = GetElementsForStage(networkElements, Milestone.Milestone5, networkType, hasOwnEc),
                         IsActive = true,
                         Title = "TBD"
                     },
@@ -172,12 +172,14 @@ namespace HNTAS.Web.UI.Helpers
                 _ => "NA"
             };
         }
-        private static List<SoaElementsView> GetElementsForStage(List<ElementGroup>? elements, HeatNetworkType? networkType = null, bool hasOwnEc = false)
+        private static List<SoaElementsViewExistingNetwork> GetElementsForStage(List<ElementGroup>? elements, Milestone milestone, HeatNetworkType? networkType = null, bool hasOwnEc = false)
         {
-            var soaElements = new List<SoaElementsView>();
+            var soaElements = new List<SoaElementsViewExistingNetwork>();
             foreach (var element in elements ?? new List<ElementGroup>())
             {
-                // Convert NullableOfHeatNetworkElementType? to HeatNetworkElementType? for comparison and lookup
+                if (milestone == Milestone.Milestone3B && element.ElementType != ElementTypeInShort.CC)
+                    continue;
+
                 HeatNetworkElementType? elementType = element.ElementDisplayType.HasValue
                     ? (HeatNetworkElementType)(int)element.ElementDisplayType.Value
                     : (HeatNetworkElementType?)null;
@@ -192,7 +194,7 @@ namespace HNTAS.Web.UI.Helpers
                 {
                     elementDisplayName = $"{el?.Label}{(element.Count > 1 ? $" ({element.Count})" : string.Empty)}";
                 }
-                soaElements.Add(new SoaElementsView
+                soaElements.Add(new SoaElementsViewExistingNetwork
                 {
                     ElementType = element.ElementType,
                     ElementDisplayType = elementType,

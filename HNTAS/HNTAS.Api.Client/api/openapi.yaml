@@ -3942,27 +3942,47 @@ components:
       example:
         soaMilestones:
         - soaStatuses:
-          - ""
-          - ""
+          - soaStatus: null
+            count: 2
+          - soaStatus: null
+            count: 2
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           milestoneId: Milestone2
           soaStatusUpdatedBy: soaStatusUpdatedBy
           assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessors:
-          - ""
-          - ""
+          - firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: null
+          - firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: null
         - soaStatuses:
-          - ""
-          - ""
+          - soaStatus: null
+            count: 2
+          - soaStatus: null
+            count: 2
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           milestoneId: Milestone2
           soaStatusUpdatedBy: soaStatusUpdatedBy
           assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessors:
-          - ""
-          - ""
+          - firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: null
+          - firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: null
         elementDisplayType: EnergyCentre
         soaStages:
         - soaStatuses:
@@ -4181,9 +4201,9 @@ components:
         hnId: hnId
         soaStatuses:
         - soaStatus: null
-          count: 3
+          count: 2
         - soaStatus: null
-          count: 3
+          count: 2
         elementDisplayName: elementDisplayName
         milestone: Milestone2
         soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -4199,7 +4219,7 @@ components:
           $ref: "#/components/schemas/ElementTypeInShort"
         soaStatuses:
           items:
-            $ref: "#/components/schemas/SoaStatusWithCount"
+            $ref: "#/components/schemas/SoaStatusWithCountExistingNetwork"
           nullable: true
           type: array
         elementSoaStatus:
@@ -4634,27 +4654,47 @@ components:
             elementsGroup:
             - soaMilestones:
               - soaStatuses:
-                - ""
-                - ""
+                - soaStatus: null
+                  count: 2
+                - soaStatus: null
+                  count: 2
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
                 soaStatusUpdatedBy: soaStatusUpdatedBy
                 assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessors:
-                - ""
-                - ""
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
               - soaStatuses:
-                - ""
-                - ""
+                - soaStatus: null
+                  count: 2
+                - soaStatus: null
+                  count: 2
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
                 soaStatusUpdatedBy: soaStatusUpdatedBy
                 assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessors:
-                - ""
-                - ""
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
               elementDisplayType: EnergyCentre
               soaStages:
               - soaStatuses:
@@ -4703,27 +4743,47 @@ components:
               elementType: EC
             - soaMilestones:
               - soaStatuses:
-                - ""
-                - ""
+                - soaStatus: null
+                  count: 2
+                - soaStatus: null
+                  count: 2
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
                 soaStatusUpdatedBy: soaStatusUpdatedBy
                 assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessors:
-                - ""
-                - ""
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
               - soaStatuses:
-                - ""
-                - ""
+                - soaStatus: null
+                  count: 2
+                - soaStatus: null
+                  count: 2
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
                 soaStatusUpdatedBy: soaStatusUpdatedBy
                 assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessors:
-                - ""
-                - ""
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
               elementDisplayType: EnergyCentre
               soaStages:
               - soaStatuses:
@@ -4936,27 +4996,47 @@ components:
             elementsGroup:
             - soaMilestones:
               - soaStatuses:
-                - ""
-                - ""
+                - soaStatus: null
+                  count: 2
+                - soaStatus: null
+                  count: 2
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
                 soaStatusUpdatedBy: soaStatusUpdatedBy
                 assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessors:
-                - ""
-                - ""
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
               - soaStatuses:
-                - ""
-                - ""
+                - soaStatus: null
+                  count: 2
+                - soaStatus: null
+                  count: 2
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
                 soaStatusUpdatedBy: soaStatusUpdatedBy
                 assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessors:
-                - ""
-                - ""
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
               elementDisplayType: EnergyCentre
               soaStages:
               - soaStatuses:
@@ -5005,27 +5085,47 @@ components:
               elementType: EC
             - soaMilestones:
               - soaStatuses:
-                - ""
-                - ""
+                - soaStatus: null
+                  count: 2
+                - soaStatus: null
+                  count: 2
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
                 soaStatusUpdatedBy: soaStatusUpdatedBy
                 assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessors:
-                - ""
-                - ""
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
               - soaStatuses:
-                - ""
-                - ""
+                - soaStatus: null
+                  count: 2
+                - soaStatus: null
+                  count: 2
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
                 soaStatusUpdatedBy: soaStatusUpdatedBy
                 assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessors:
-                - ""
-                - ""
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
+                - firstName: firstName
+                  lastName: lastName
+                  assessment: assessment
+                  email: email
+                  status: null
               elementDisplayType: EnergyCentre
               soaStages:
               - soaStatuses:
@@ -5239,27 +5339,47 @@ components:
           elementsGroup:
           - soaMilestones:
             - soaStatuses:
-              - ""
-              - ""
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessors:
-              - ""
-              - ""
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
             - soaStatuses:
-              - ""
-              - ""
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessors:
-              - ""
-              - ""
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
             elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
@@ -5308,27 +5428,47 @@ components:
             elementType: EC
           - soaMilestones:
             - soaStatuses:
-              - ""
-              - ""
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessors:
-              - ""
-              - ""
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
             - soaStatuses:
-              - ""
-              - ""
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessors:
-              - ""
-              - ""
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
             elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
@@ -5929,27 +6069,47 @@ components:
           elementsGroup:
           - soaMilestones:
             - soaStatuses:
-              - ""
-              - ""
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessors:
-              - ""
-              - ""
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
             - soaStatuses:
-              - ""
-              - ""
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessors:
-              - ""
-              - ""
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
             elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
@@ -5998,27 +6158,47 @@ components:
             elementType: EC
           - soaMilestones:
             - soaStatuses:
-              - ""
-              - ""
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessors:
-              - ""
-              - ""
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
             - soaStatuses:
-              - ""
-              - ""
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
               soaStatusUpdatedBy: soaStatusUpdatedBy
               assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessors:
-              - ""
-              - ""
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
             elementDisplayType: EnergyCentre
             soaStages:
             - soaStatuses:
@@ -7157,27 +7337,47 @@ components:
         elementsGroup:
         - soaMilestones:
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
@@ -7226,27 +7426,47 @@ components:
           elementType: EC
         - soaMilestones:
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
@@ -7339,27 +7559,47 @@ components:
         elementsGroup:
         - soaMilestones:
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
@@ -7408,27 +7648,47 @@ components:
           elementType: EC
         - soaMilestones:
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
@@ -7513,27 +7773,47 @@ components:
         elementsGroup:
         - soaMilestones:
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
@@ -7582,27 +7862,47 @@ components:
           elementType: EC
         - soaMilestones:
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           - soaStatuses:
-            - ""
-            - ""
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
             soaStatusUpdatedBy: soaStatusUpdatedBy
             assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessors:
-            - ""
-            - ""
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           elementDisplayType: EnergyCentre
           soaStages:
           - soaStatuses:
@@ -8309,6 +8609,25 @@ components:
         status:
           $ref: "#/components/schemas/UserStatus"
       type: object
+    SoaAssessorExistingNetwork:
+      example:
+        firstName: firstName
+        lastName: lastName
+        assessment: assessment
+        email: email
+        status: null
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        assessment:
+          type: string
+        status:
+          $ref: "#/components/schemas/UserStatus"
+      type: object
     SoaJourneyData:
       example:
         certifierDocs:
@@ -8389,21 +8708,32 @@ components:
     SoaMilestone:
       example:
         soaStatuses:
-        - ""
-        - ""
+        - soaStatus: null
+          count: 2
+        - soaStatus: null
+          count: 2
         soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
         assessorUpdatedBy: assessorUpdatedBy
         milestoneId: Milestone2
         soaStatusUpdatedBy: soaStatusUpdatedBy
         assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
         assessors:
-        - ""
-        - ""
+        - firstName: firstName
+          lastName: lastName
+          assessment: assessment
+          email: email
+          status: null
+        - firstName: firstName
+          lastName: lastName
+          assessment: assessment
+          email: email
+          status: null
       properties:
         milestoneId:
           $ref: "#/components/schemas/NullableOfMilestone"
         soaStatuses:
-          items: {}
+          items:
+            $ref: "#/components/schemas/SoaStatusWithCountExistingNetwork"
           nullable: true
           type: array
         soaStatusUpdatedAt:
@@ -8421,7 +8751,8 @@ components:
           nullable: true
           type: string
         assessors:
-          items: {}
+          items:
+            $ref: "#/components/schemas/SoaAssessorExistingNetwork"
           nullable: true
           type: array
       type: object
@@ -8624,6 +8955,18 @@ components:
       example:
         soaStatus: null
         count: 3
+      properties:
+        soaStatus:
+          $ref: "#/components/schemas/SoaStatus"
+        count:
+          format: int32
+          nullable: true
+          type: integer
+      type: object
+    SoaStatusWithCountExistingNetwork:
+      example:
+        soaStatus: null
+        count: 2
       properties:
         soaStatus:
           $ref: "#/components/schemas/SoaStatus"

@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.EMMA;
-using HNTAS.Api.Client.Api;
+﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Helpers;
@@ -50,7 +49,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> SoaMilestones()
         {
-            this.ShowBackButton("UnderstandingSoa", "ElementSoa");
+            this.ShowBackButton("UnderstandingSoa", "ExistingElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -84,13 +83,13 @@ namespace HNTAS.Web.UI.Controllers
                             {
                                 if (elementStage?.SoaStatuses == null)
                                 {
-                                    modelElement.SoaStatuses = new List<SoaStatusWithCount>() {
-                                        new SoaStatusWithCount { SoaStatus = SoaStatus.NotStarted, Count = elementSoaElement.Count },
+                                    modelElement.SoaStatuses = new List<SoaStatusWithCountExistingNetwork>() {
+                                        new SoaStatusWithCountExistingNetwork { SoaStatus = SoaStatus.NotStarted, Count = elementSoaElement.Count },
                                     };
                                 }
                                 else
                                 {
-                                    modelElement.SoaStatuses = elementStage.SoaStatuses.Cast<SoaStatusWithCount>().ToList();
+                                    modelElement.SoaStatuses = elementStage.SoaStatuses;
                                 }
                                 modelElement.SoaStatusUpdatedAt = elementStage?.SoaStatusUpdatedAt.HasValue == true
                                     ? elementStage.SoaStatusUpdatedAt.Value.DateTime
@@ -99,7 +98,7 @@ namespace HNTAS.Web.UI.Controllers
                                 modelElement.AssessorDetails = new List<AssessorDetails>();
                                 if (elementStage?.Assessors != null)
                                 {
-                                    foreach (var assessor in elementStage.Assessors.Cast<SoaAssessor>().ToList())
+                                    foreach (var assessor in elementStage.Assessors)
                                     {
                                         var assessorDetails = new AssessorDetails
                                         {
@@ -129,7 +128,7 @@ namespace HNTAS.Web.UI.Controllers
             var currentStageIndex = ExistingElementSoaHelper.GetMilestoneIndex(milestone);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey, currentStageIndex);
             var targetFragment = string.Concat("stage-", currentStageIndex);
-            this.ShowBackButton("SoaMilestones", "ElementSoa", targetFragment);
+            this.ShowBackButton("SoaMilestones", "ExistingElementSoa", targetFragment);
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
@@ -153,15 +152,15 @@ namespace HNTAS.Web.UI.Controllers
 
             var soaStatusesForStage = selectedNetworkElement?.SoaMilestones?
                 .Where(s => s.MilestoneId.HasValue && (Milestone)s.MilestoneId.Value == milestone)
-                .SelectMany(s => s.SoaStatuses!.Cast<SoaStatusWithCount>().ToList()!)
+                .SelectMany(s => s.SoaStatuses)
                 .ToList();
 
             if (soaStatusesForStage == null || soaStatusesForStage.Count == 0)
             {
                 // If there are no statuses for the element at the current stage, initialize with NotStarted
-                soaStatusesForStage = new List<SoaStatusWithCount>
+                soaStatusesForStage = new List<SoaStatusWithCountExistingNetwork>
                 {
-                    new SoaStatusWithCount { SoaStatus = SoaStatus.NotStarted, Count = selectedNetworkElement?.Count }
+                    new SoaStatusWithCountExistingNetwork { SoaStatus = SoaStatus.NotStarted, Count = selectedNetworkElement?.Count }
                 };
             }
 
@@ -188,7 +187,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
             var targetFragment = string.Concat("stage-", currentStageIndex);
-            this.ShowBackButton("SoaMilestones", "ElementSoa", targetFragment);
+            this.ShowBackButton("SoaMilestones", "ExistingElementSoa", targetFragment);
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -202,11 +201,11 @@ namespace HNTAS.Web.UI.Controllers
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var targetStatus = NetworkDetailsStatus.InProgress;
 
-            var soaStatusWithCountList = new List<SoaStatusWithCount>();
+            var soaStatusWithCountList = new List<SoaStatusWithCountExistingNetwork>();
 
             model.SelectedSoaStatusOptions.ForEach(s =>
             {
-                var soaStatusWithCount = new SoaStatusWithCount();
+                var soaStatusWithCount = new SoaStatusWithCountExistingNetwork();
                 soaStatusWithCount.SoaStatus = s;
                 soaStatusWithCount.Count = model.SoaStatusCounts.ContainsKey(s) ? model.SoaStatusCounts[s] : null;
                 soaStatusWithCountList.Add(soaStatusWithCount);
@@ -237,7 +236,7 @@ namespace HNTAS.Web.UI.Controllers
             var request = new ElementSoaStatusUpdateRequestForExistingNetwork(hnId: hnId!, milestone: model.Milestone, elementType: model?.ElementType, soaStatuses: soaStatusWithCountList, soaStatusUpdatedBy: userId, elementSoaStatus: targetStatus, soaPhase: model.SoaPhase, elementDisplayName: model.ElementName);
             await _soaProjectService.UpdateElementSoaStatusForExistingNetwork(request);
             ClearSoaStatusUpdateSpecificSession();
-            return RedirectToAction("SoaMilestones", "ElementSoa", targetFragment);
+            return RedirectToAction("SoaMilestones", "ExistingElementSoa", targetFragment);
         }
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
@@ -248,7 +247,7 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SoaStageTitleOfAssessorOnboarding, stageTitle);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.SoaElementTypeOfAssessorOnboarding, elementType);
 
-            return RedirectToAction("AssessorOnboarding", "ElementSoa");
+            return RedirectToAction("AssessorOnboarding", "ExistingElementSoa");
         }
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
@@ -280,7 +279,7 @@ namespace HNTAS.Web.UI.Controllers
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey, currentStageIndex);
             var targetFragment = string.Concat("stage-", currentStageIndex);
-            this.ShowBackButton("SoaMilestones", "ElementSoa", targetFragment);
+            this.ShowBackButton("SoaMilestones", "ExistingElementSoa", targetFragment);
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -321,7 +320,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedAssessor = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.DefaultSelectedAssessor);
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
             var targetFragment = string.Concat("stage-", currentStageIndex);
-            this.ShowBackButton("SoaMilestones", "ElementSoa", targetFragment);
+            this.ShowBackButton("SoaMilestones", "ExistingElementSoa", targetFragment);
             if (fullNameFromInput == null)
             {
                 var stage = _sessionHelper.GetFromSession<Milestone?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
@@ -331,7 +330,7 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.Remove("fullNameFromInput");
                 ModelState.Remove("assessor-autocomplete");
                 ModelState.AddModelError("assessor-autocomplete", "Please select an assessor before continuing.");
-                return View("AssessorOnboarding", "ElementSoa");
+                return View("AssessorOnboarding", "ExistingElementSoa");
             }
             var assessorSearchResults = _sessionHelper.GetFromSession<List<AssessorSearchResult>>(HttpContext, SessionKeys.AssessorSearchResultsSessionKey);
             if (selectedAssessor?.FullNameWithEmail?.ToLower() != fullNameFromInput?.ToLower())
@@ -348,7 +347,7 @@ namespace HNTAS.Web.UI.Controllers
                     ModelState.Remove("fullNameFromInput");
                     ModelState.Remove("assessor-autocomplete");
                     ModelState.AddModelError("assessor-autocomplete", "Please select an assessor before continuing.");
-                    return View("AssessorOnboarding", "ElementSoa");
+                    return View("AssessorOnboarding", "ExistingElementSoa");
                 }
             }
 
@@ -375,7 +374,7 @@ namespace HNTAS.Web.UI.Controllers
             var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
             var stage = _sessionHelper.GetFromSession<Milestone?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
             var initiatedElementType = _sessionHelper.GetFromSession<ElementTypeInShort?>(HttpContext, SessionKeys.SoaElementTypeOfAssessorOnboarding);
-            this.ShowBackButton("AssessorOnboarding", "ElementSoa");
+            this.ShowBackButton("AssessorOnboarding", "ExistingElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -422,7 +421,7 @@ namespace HNTAS.Web.UI.Controllers
             var stage = _sessionHelper.GetFromSession<Milestone?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);
             var selectedAssessor = $"{assessorDetails?.FirstName} {assessorDetails?.LastName} ({assessorDetails?.Email})";
 
-            this.ShowBackButton("AssessorOnboarding", "ElementSoa");
+            this.ShowBackButton("AssessorOnboarding", "ExistingElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -444,7 +443,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var assessmentRoute = GetRouteActionForElement(model.SelectedElementIds!.FirstOrDefault());
 
-            return RedirectToAction(assessmentRoute, "ElementSoa");
+            return RedirectToAction(assessmentRoute, "ExistingElementSoa");
 
 
         }
@@ -456,7 +455,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.EC);
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
@@ -478,7 +477,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
@@ -509,7 +508,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
 
-            return RedirectToAction(nextRouteAction, "ElementSoa");
+            return RedirectToAction(nextRouteAction, "ExistingElementSoa");
         }
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
@@ -519,7 +518,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.SS);
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -537,7 +536,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -565,7 +564,7 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey, model);
 
             var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
-            return RedirectToAction(nextRouteAction, "ElementSoa");
+            return RedirectToAction(nextRouteAction, "ExistingElementSoa");
         }        
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
@@ -575,7 +574,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.CC);
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -593,7 +592,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
@@ -623,7 +622,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
 
-            return RedirectToAction(nextRouteAction, "ElementSoa");
+            return RedirectToAction(nextRouteAction, "ExistingElementSoa");
         }
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
@@ -633,7 +632,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.CDN);
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -651,7 +650,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
@@ -682,7 +681,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
 
-            return RedirectToAction(nextRouteAction, "ElementSoa");
+            return RedirectToAction(nextRouteAction, "ExistingElementSoa");
         }
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
@@ -692,7 +691,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.DDN);
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -710,7 +709,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
@@ -741,7 +740,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
 
-            return RedirectToAction(nextRouteAction, "ElementSoa");
+            return RedirectToAction(nextRouteAction, "ExistingElementSoa");
         }
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
@@ -751,7 +750,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetRouteActionForElement(selectedElements.SelectedElementIds.LastOrDefault());
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
@@ -826,7 +825,7 @@ namespace HNTAS.Web.UI.Controllers
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetRouteActionForElement(selectedElements.SelectedElementIds.LastOrDefault());
 
-            this.ShowBackButton(backRoutingAction, "ElementSoa");
+            this.ShowBackButton(backRoutingAction, "ExistingElementSoa");
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
@@ -859,7 +858,7 @@ namespace HNTAS.Web.UI.Controllers
 
             };
             await _soaProjectService.AssignAssessorForExistingNetwork(requestModel);
-            return RedirectToAction("AssessorAssignedConfirmation", "ElementSoa");
+            return RedirectToAction("AssessorAssignedConfirmation", "ExistingElementSoa");
         }
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
@@ -877,7 +876,7 @@ namespace HNTAS.Web.UI.Controllers
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
             var targetFragment = string.Concat("stage-", currentStageIndex);
             ClearSoaAssessorSpecificSession();
-            return RedirectToAction("SoaMilestones", "ElementSoa", targetFragment);
+            return RedirectToAction("SoaMilestones", "ExistingElementSoa", targetFragment);
         }
 
         private string GetRouteActionForElement(ElementTypeInShort elementType)
@@ -1023,7 +1022,7 @@ namespace HNTAS.Web.UI.Controllers
                 var stageForElement = elementGroup.SoaMilestones?.Where(s => s.MilestoneId.HasValue && (Milestone)s.MilestoneId.Value == stage).FirstOrDefault();
                 if (stageForElement != null)
                 {
-                    var assessorsForStageAndElement = stageForElement.Assessors!.Cast<SoaAssessor>().ToList();
+                    var assessorsForStageAndElement = stageForElement.Assessors;
 
 
                     if (assessorsForStageAndElement != null && assessorsForStageAndElement.Count > 0)

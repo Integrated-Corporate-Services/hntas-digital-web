@@ -54,7 +54,10 @@
                                     </p>
                                 }
                             }
-                            <table class="govuk-table">
+
+                            @if (stage.Elements.Count > 0)
+                            {
+                                <table class="govuk-table">
                                 <thead class="govuk-table__head">
                                     <tr class="govuk-table__row">
                                         <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
@@ -129,7 +132,7 @@
                                                         }
                                                     }                                                    
                                                     <a class="govuk-link"
-                                                       href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { milestone = stage.MilestoneId, elementType = element.ElementType, elementDisplayType = element.ElementDisplayType })"
+                                                       href="@Url.Action("SoaUpdateStatus", "ExistingElementSoa", new { milestone = stage.MilestoneId, elementType = element.ElementType, elementDisplayType = element.ElementDisplayType })"
                                                        onclick="event.stopPropagation();">
                                                         Update status<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span>
                                                     </a>
@@ -155,12 +158,18 @@
                                                     </span>
                                                 }                                               
 
-                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { milestone = stage.MilestoneId, stageTitle = stage.Title, elementType = element.ElementType, })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
+                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ExistingElementSoa", new { milestone = stage.MilestoneId, stageTitle = stage.Title, elementType = element.ElementType, })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
                                             </td>
                                         </tr>                                        
                                     }
                                 </tbody>
                             </table>
+                            }
+                            else
+                            {
+                                <p class="govuk-body">Consumer connection(s) are not available for the @ViewBag.HnName</p>
+                            }
+                            
                         </div>
                     }                    
                 }

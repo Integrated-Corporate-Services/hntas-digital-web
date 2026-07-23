@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **Milestone** | **Milestone** |  | [optional] 
 **ElementId** | **string** |  | [optional] 
 **ElementType** | **ElementTypeInShort** |  | [optional] 
-**SoaStatuses** | [**List&lt;SoaStatusWithCount&gt;**](SoaStatusWithCount.md) |  | [optional] 
+**SoaStatuses** | [**List&lt;SoaStatusWithCountExistingNetwork&gt;**](SoaStatusWithCountExistingNetwork.md) |  | [optional] 
 **ElementSoaStatus** | **NetworkDetailsStatus** |  | [optional] 
 **SoaStatusUpdatedBy** | **string** |  | [optional] 
 **SoaPhase** | **string** |  | [optional] 

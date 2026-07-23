@@ -43,7 +43,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="soaPhase">soaPhase</param>
         /// <param name="elementDisplayName">elementDisplayName</param>
         [JsonConstructor]
-        public ElementSoaStatusUpdateRequestForExistingNetwork(string hnId, Option<Milestone?> milestone = default, Option<string?> elementId = default, Option<ElementTypeInShort?> elementType = default, Option<List<SoaStatusWithCount>?> soaStatuses = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<string?> soaStatusUpdatedBy = default, Option<string?> soaPhase = default, Option<string?> elementDisplayName = default)
+        public ElementSoaStatusUpdateRequestForExistingNetwork(string hnId, Option<Milestone?> milestone = default, Option<string?> elementId = default, Option<ElementTypeInShort?> elementType = default, Option<List<SoaStatusWithCountExistingNetwork>?> soaStatuses = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<string?> soaStatusUpdatedBy = default, Option<string?> soaPhase = default, Option<string?> elementDisplayName = default)
         {
             HnId = hnId;
             MilestoneOption = milestone;
@@ -122,13 +122,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<SoaStatusWithCount>?> SoaStatusesOption { get; private set; }
+        public Option<List<SoaStatusWithCountExistingNetwork>?> SoaStatusesOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets SoaStatuses
         /// </summary>
         [JsonPropertyName("soaStatuses")]
-        public List<SoaStatusWithCount>? SoaStatuses { get { return this.SoaStatusesOption; } set { this.SoaStatusesOption = new(value); } }
+        public List<SoaStatusWithCountExistingNetwork>? SoaStatuses { get { return this.SoaStatusesOption; } set { this.SoaStatusesOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of SoaStatusUpdatedBy
@@ -227,7 +227,7 @@ namespace HNTAS.Api.Client.Model
             Option<Milestone?> milestone = default;
             Option<string?> elementId = default;
             Option<ElementTypeInShort?> elementType = default;
-            Option<List<SoaStatusWithCount>?> soaStatuses = default;
+            Option<List<SoaStatusWithCountExistingNetwork>?> soaStatuses = default;
             Option<NetworkDetailsStatus?> elementSoaStatus = default;
             Option<string?> soaStatusUpdatedBy = default;
             Option<string?> soaPhase = default;
@@ -265,7 +265,7 @@ namespace HNTAS.Api.Client.Model
                                 elementType = new Option<ElementTypeInShort?>(ElementTypeInShortValueConverter.FromStringOrDefault(elementTypeRawValue));
                             break;
                         case "soaStatuses":
-                            soaStatuses = new Option<List<SoaStatusWithCount>?>(JsonSerializer.Deserialize<List<SoaStatusWithCount>>(ref utf8JsonReader, jsonSerializerOptions));
+                            soaStatuses = new Option<List<SoaStatusWithCountExistingNetwork>?>(JsonSerializer.Deserialize<List<SoaStatusWithCountExistingNetwork>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "elementSoaStatus":
                             string? elementSoaStatusRawValue = utf8JsonReader.GetString();

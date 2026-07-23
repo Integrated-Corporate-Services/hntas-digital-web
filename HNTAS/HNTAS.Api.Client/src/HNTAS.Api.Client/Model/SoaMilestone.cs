@@ -41,7 +41,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="assessorUpdatedBy">assessorUpdatedBy</param>
         /// <param name="assessors">assessors</param>
         [JsonConstructor]
-        public SoaMilestone(Option<NullableOfMilestone?> milestoneId = default, Option<List<Object>?> soaStatuses = default, Option<DateTimeOffset?> soaStatusUpdatedAt = default, Option<string?> soaStatusUpdatedBy = default, Option<DateTimeOffset?> assessorUpdatedAt = default, Option<string?> assessorUpdatedBy = default, Option<List<Object>?> assessors = default)
+        public SoaMilestone(Option<NullableOfMilestone?> milestoneId = default, Option<List<SoaStatusWithCountExistingNetwork>?> soaStatuses = default, Option<DateTimeOffset?> soaStatusUpdatedAt = default, Option<string?> soaStatusUpdatedBy = default, Option<DateTimeOffset?> assessorUpdatedAt = default, Option<string?> assessorUpdatedBy = default, Option<List<SoaAssessorExistingNetwork>?> assessors = default)
         {
             MilestoneIdOption = milestoneId;
             SoaStatusesOption = soaStatuses;
@@ -73,13 +73,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<Object>?> SoaStatusesOption { get; private set; }
+        public Option<List<SoaStatusWithCountExistingNetwork>?> SoaStatusesOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets SoaStatuses
         /// </summary>
         [JsonPropertyName("soaStatuses")]
-        public List<Object>? SoaStatuses { get { return this.SoaStatusesOption; } set { this.SoaStatusesOption = new(value); } }
+        public List<SoaStatusWithCountExistingNetwork>? SoaStatuses { get { return this.SoaStatusesOption; } set { this.SoaStatusesOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of SoaStatusUpdatedAt
@@ -138,13 +138,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<Object>?> AssessorsOption { get; private set; }
+        public Option<List<SoaAssessorExistingNetwork>?> AssessorsOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Assessors
         /// </summary>
         [JsonPropertyName("assessors")]
-        public List<Object>? Assessors { get { return this.AssessorsOption; } set { this.AssessorsOption = new(value); } }
+        public List<SoaAssessorExistingNetwork>? Assessors { get { return this.AssessorsOption; } set { this.AssessorsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -209,12 +209,12 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<NullableOfMilestone?> milestoneId = default;
-            Option<List<Object>?> soaStatuses = default;
+            Option<List<SoaStatusWithCountExistingNetwork>?> soaStatuses = default;
             Option<DateTimeOffset?> soaStatusUpdatedAt = default;
             Option<string?> soaStatusUpdatedBy = default;
             Option<DateTimeOffset?> assessorUpdatedAt = default;
             Option<string?> assessorUpdatedBy = default;
-            Option<List<Object>?> assessors = default;
+            Option<List<SoaAssessorExistingNetwork>?> assessors = default;
 
             while (utf8JsonReader.Read())
             {
@@ -237,7 +237,7 @@ namespace HNTAS.Api.Client.Model
                                 milestoneId = new Option<NullableOfMilestone?>(NullableOfMilestoneValueConverter.FromStringOrDefault(milestoneIdRawValue));
                             break;
                         case "soaStatuses":
-                            soaStatuses = new Option<List<Object>?>(JsonSerializer.Deserialize<List<Object>>(ref utf8JsonReader, jsonSerializerOptions));
+                            soaStatuses = new Option<List<SoaStatusWithCountExistingNetwork>?>(JsonSerializer.Deserialize<List<SoaStatusWithCountExistingNetwork>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "soaStatusUpdatedAt":
                             soaStatusUpdatedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
@@ -252,7 +252,7 @@ namespace HNTAS.Api.Client.Model
                             assessorUpdatedBy = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "assessors":
-                            assessors = new Option<List<Object>?>(JsonSerializer.Deserialize<List<Object>>(ref utf8JsonReader, jsonSerializerOptions));
+                            assessors = new Option<List<SoaAssessorExistingNetwork>?>(JsonSerializer.Deserialize<List<SoaAssessorExistingNetwork>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;

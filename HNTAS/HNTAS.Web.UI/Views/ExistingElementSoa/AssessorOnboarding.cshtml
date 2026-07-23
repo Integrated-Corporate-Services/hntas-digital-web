@@ -21,7 +21,7 @@
                 <div id="assessor-autocomplete-container"></div>
             </div>
 
-            <form asp-action="SelectedAssessorOnboarding" asp-controller="ElementSoa" method="post">
+            <form asp-action="SelectedAssessorOnboarding" asp-controller="ExistingElementSoa" method="post">
                 <input type="hidden" id="selected-assessor-firstName" name="FirstName" />
                 <input type="hidden" id="selected-assessor-lastName" name="LastName" />
                 <input type="hidden" id="selected-assessor-emailId" name="EmailId" />
@@ -51,7 +51,7 @@
                 // Create debounced search function
                 const debouncedSearch = debounce(function (query, populateResults) {                    
 
-                    fetch('@Url.Action("SearchAssessor", "ElementSoa")?q=' + encodeURIComponent(query))
+                    fetch('@Url.Action("SearchAssessor", "ExistingElementSoa")?q=' + encodeURIComponent(query))
                         .then(res => res.json())
                         .then(data => {
                             populateResults(data);

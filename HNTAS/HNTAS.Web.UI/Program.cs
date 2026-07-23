@@ -139,6 +139,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new ElementSoaAssignAssessorRequestForExistingNetworkJsonConverter(),
         new ElementSoaStatusUpdateRequestForExistingNetworkJsonConverter(),
         new SoaMilestoneJsonConverter(),
+        new SoaAssessorExistingNetworkJsonConverter(),
+        new SoaStatusWithCountExistingNetworkJsonConverter(),
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
