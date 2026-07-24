@@ -47,6 +47,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new AddressJsonConverter());
             _jsonOptions.Converters.Add(new AggregatedKpiJsonConverter());
             _jsonOptions.Converters.Add(new ArmsPowerBiReportResponseJsonConverter());
+            _jsonOptions.Converters.Add(new ArmsPowerBiUserReportResponseJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanJsonConverter());
             _jsonOptions.Converters.Add(new AssessmentPlanResponseJsonConverter());
             _jsonOptions.Converters.Add(new AssessorAssessmentJsonConverter());

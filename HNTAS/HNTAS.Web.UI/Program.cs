@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -521,3 +522,6 @@ app.MapControllerRoute(
     defaults: new { controller = "Home", action = "StartPage" });
 
 app.Run();
+
+[ExcludeFromCodeCoverage]
+public partial class Program { }

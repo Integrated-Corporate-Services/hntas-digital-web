@@ -23,7 +23,7 @@
     }
     else
     {
-        <h1 class="govuk-heading-l">My details</h1>
+        <h1 class="govuk-heading-l">My Details</h1>
     }
     <h2 class="govuk-visually-hidden">Dashboard</h2>
 
@@ -31,7 +31,7 @@
     {
         <div class="govuk-button-group govuk-!-margin-top-9">
             <span class="govuk-body">
-                <a href="@Url.Action("HeatNetworkDwellingsCheck", "HeatNetworkRegistration")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                <a href="@Url.Action("Index", "HeatNetwork")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
                     Add a heat network
                 </a> <a class="govuk-link" href="@Url.Action("ManageLeads", "NetworkLeads")">Authorise someone else to add heat networks</a>
             </span>
@@ -57,7 +57,7 @@
                 {
                     <h3 class="dashboard-card__title govuk-heading-s">
                         <a class="govuk-link govuk-link--no-visited-state" asp-controller="ExistingOrganisation" asp-action="AddOrRegister">
-                            Add Organisation details
+                            Add Organisation Details
                         </a>
                     </h3>
                     <p class="govuk-body-s">Add or register the organisation you work for.</p>
@@ -76,7 +76,7 @@
         <div class="dashboard-grid__item">
             <div class="dashboard-card">
                 <h3 class="dashboard-card__title govuk-heading-s">
-                    <a class="govuk-link govuk-link--no-visited-state" asp-action="YourDetails" asp-controller="Dashboard">Your details</a>
+                    <a class="govuk-link govuk-link--no-visited-state" asp-action="YourDetails" asp-controller="Dashboard">Your Details</a>
                 </h3>
                 <p class="govuk-body-s">View your details.</p>
             </div>

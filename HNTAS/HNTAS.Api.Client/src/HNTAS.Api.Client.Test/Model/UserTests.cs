@@ -186,6 +186,7 @@ namespace HNTAS.Api.Client.Test.Model
         public void CreatedAtTest()
         {
             // TODO unit test for the property 'CreatedAt'
+<<<<<<< HEAD
         }
 
         /// <summary>
@@ -195,6 +196,8 @@ namespace HNTAS.Api.Client.Test.Model
         public void ContributingOrganisationsTest()
         {
             // TODO unit test for the property 'ContributingOrganisations'
+=======
+>>>>>>> test
         }
     }
 }

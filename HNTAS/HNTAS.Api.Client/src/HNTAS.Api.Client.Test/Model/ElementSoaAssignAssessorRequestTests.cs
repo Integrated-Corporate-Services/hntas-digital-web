@@ -54,6 +54,7 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Test the property 'AssessorAssessmentForElements'
         /// </summary>
         [Fact]
@@ -69,6 +70,50 @@ namespace HNTAS.Api.Client.Test.Model
         public void SoaStageTest()
         {
             // TODO unit test for the property 'SoaStage'
+=======
+        /// Test the property 'ElementIds'
+        /// </summary>
+        [Fact]
+        public void ElementIdsTest()
+        {
+            // TODO unit test for the property 'ElementIds'
+        }
+
+        /// <summary>
+        /// Test the property 'AssessorEmail'
+        /// </summary>
+        [Fact]
+        public void AssessorEmailTest()
+        {
+            // TODO unit test for the property 'AssessorEmail'
+        }
+
+        /// <summary>
+        /// Test the property 'AssessorFirstName'
+        /// </summary>
+        [Fact]
+        public void AssessorFirstNameTest()
+        {
+            // TODO unit test for the property 'AssessorFirstName'
+        }
+
+        /// <summary>
+        /// Test the property 'AssessorLastName'
+        /// </summary>
+        [Fact]
+        public void AssessorLastNameTest()
+        {
+            // TODO unit test for the property 'AssessorLastName'
+        }
+
+        /// <summary>
+        /// Test the property 'Assessment'
+        /// </summary>
+        [Fact]
+        public void AssessmentTest()
+        {
+            // TODO unit test for the property 'Assessment'
+>>>>>>> test
         }
 
         /// <summary>

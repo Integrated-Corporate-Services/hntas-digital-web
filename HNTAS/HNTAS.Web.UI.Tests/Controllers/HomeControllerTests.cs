@@ -258,6 +258,19 @@ public class HomeControllerTests
     }
 
     [Fact]
+    public void DocumentLibrary_ReturnsViewResult()
+    {
+        // Arrange
+        var controller = CreateController(CreateUser());
+
+        // Act
+        var result = controller.DocumentLibrary();
+
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(result);
+    }    
+
+    [Fact]
     public void WhatDoYouWantToDo_WithModelInSession_ReturnsViewWithModel()
     {
         // Arrange

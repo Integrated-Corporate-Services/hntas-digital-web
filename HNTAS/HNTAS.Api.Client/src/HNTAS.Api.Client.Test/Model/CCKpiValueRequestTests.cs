@@ -63,6 +63,7 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Test the property 'IsImputed'
         /// </summary>
         [Fact]
@@ -78,6 +79,23 @@ namespace HNTAS.Api.Client.Test.Model
         public void ImputationDetailsTest()
         {
             // TODO unit test for the property 'ImputationDetails'
+=======
+        /// Test the property 'IsKpiImputed'
+        /// </summary>
+        [Fact]
+        public void IsKpiImputedTest()
+        {
+            // TODO unit test for the property 'IsKpiImputed'
+        }
+
+        /// <summary>
+        /// Test the property 'KpiImputationDetails'
+        /// </summary>
+        [Fact]
+        public void KpiImputationDetailsTest()
+        {
+            // TODO unit test for the property 'KpiImputationDetails'
+>>>>>>> test
         }
     }
 }

@@ -3,6 +3,7 @@ using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -141,7 +142,8 @@ namespace HNTAS.Web.UI.Controllers
                                         kvp => new CarbonInputUiDisplayViewModel
                                         {
                                             Label = kvp.Value.Label,
-                                            Value = (double)kvp.Value.Value
+                                            Value = (double)kvp.Value.Value,
+                                            Unit = kvp.Value.Unit
                                         })
             };
 
@@ -154,7 +156,8 @@ namespace HNTAS.Web.UI.Controllers
                     {
                         KpiId = k.KpiName,
                         Value = k.Value.Value,
-                        Status = k.Status
+                        Status = k.Status,
+                        Unit = k.Unit
                     }).ToList()
                 }
             );
@@ -166,7 +169,8 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     KpiId = k.KpiName,
                     Value = k.Value.Value,
-                    Status = k.Status
+                    Status = k.Status,
+                    Unit = k.Unit
                 }).ToList();
             }
 
@@ -245,6 +249,8 @@ namespace HNTAS.Web.UI.Controllers
         {
             public string Label { get; set; } = null!;
             public double Value { get; set; }
+
+            public string? Unit { get; set; }
         }
 
         public class HeatNetworkRowViewModel
@@ -257,6 +263,7 @@ namespace HNTAS.Web.UI.Controllers
             public string DataPeriod { get; set; } = string.Empty; // The "Reporting Period" column
         }
 
+        [ExcludeFromCodeCoverage]
         public class HeatNetworkStaticData
         {
             public string Hnid { get; set; } = string.Empty;
@@ -269,6 +276,7 @@ namespace HNTAS.Web.UI.Controllers
             public string DisplayName => $"{Hnid} ({Name})";
         }
 
+        [ExcludeFromCodeCoverage]
         public class ArmsDashboardViewModel
         {
             // Core Identification
@@ -324,9 +332,9 @@ namespace HNTAS.Web.UI.Controllers
             public double LowerLimit { get; set; }
             public double UpperLimit { get; set; }
             public string Status { get; set; }
+            public string? Unit { get; set; }
             //public DateTime ReportingPeriod { get; internal set; }
         }
-
 
         public enum KPIAssessmentStatus
         {

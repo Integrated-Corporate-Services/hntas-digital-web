@@ -302,6 +302,16 @@ namespace HNTAS.Web.UI.Controllers
             }
 
         [HttpGet]
+        public IActionResult ExistingNetworksAction([FromQuery] string hnId, [FromQuery] string hnName, [FromQuery] string action)
+        {
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId.ToUpper());
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnName);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.RegistrationSourceKey, RegistrationSource.OFGEM);
+
+            return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
+        }
+
+        [HttpGet]
         public async Task<IActionResult> HeatNetworkUserRolesAsync(string hnId)
         {
             if (string.IsNullOrEmpty(hnId))

@@ -81,6 +81,7 @@ namespace HNTAS.Api.Client.Test.Api
             var model = response.Ok();
             Assert.IsType<KpiConfigResponse>(model);
         }
+<<<<<<< HEAD
 
         /// <summary>
         /// Test ArmsV2HnKpiConfigPost
@@ -113,5 +114,7 @@ namespace HNTAS.Api.Client.Test.Api
             var model = response.Ok();
             Assert.IsType<KpiConfigResponseV2>(model);
         }
+=======
+>>>>>>> test
     }
 }

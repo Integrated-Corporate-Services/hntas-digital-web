@@ -51,6 +51,7 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Test ApiInvitationsAcceptInvitationPatch
         /// </summary>
         [Fact (Skip = "not implemented")]
@@ -63,6 +64,8 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
+=======
+>>>>>>> test
         /// Test ApiInvitationsIdAddUserInvitationPost
         /// </summary>
         [Fact (Skip = "not implemented")]

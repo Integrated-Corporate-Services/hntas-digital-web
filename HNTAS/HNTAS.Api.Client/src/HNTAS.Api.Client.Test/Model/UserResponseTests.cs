@@ -187,6 +187,7 @@ namespace HNTAS.Api.Client.Test.Model
         {
             // TODO unit test for the property 'HnRoleMappings'
         }
+<<<<<<< HEAD
 
         /// <summary>
         /// Test the property 'ContributingOrganisations'
@@ -196,5 +197,7 @@ namespace HNTAS.Api.Client.Test.Model
         {
             // TODO unit test for the property 'ContributingOrganisations'
         }
+=======
+>>>>>>> test
     }
 }

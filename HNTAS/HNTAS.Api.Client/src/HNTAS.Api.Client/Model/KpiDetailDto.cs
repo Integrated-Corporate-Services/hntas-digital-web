@@ -35,14 +35,16 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="kpiName">kpiName</param>
         /// <param name="value">value</param>
+        /// <param name="unit">unit</param>
         /// <param name="status">status</param>
         /// <param name="isImputed">isImputed</param>
         /// <param name="imputationDetails">imputationDetails</param>
         [JsonConstructor]
-        public KpiDetailDto(Option<string?> kpiName = default, Option<double?> value = default, Option<string?> status = default, Option<bool?> isImputed = default, Option<string?> imputationDetails = default)
+        public KpiDetailDto(Option<string?> kpiName = default, Option<double?> value = default, Option<string?> unit = default, Option<string?> status = default, Option<bool?> isImputed = default, Option<string?> imputationDetails = default)
         {
             KpiNameOption = kpiName;
             ValueOption = value;
+            UnitOption = unit;
             StatusOption = status;
             IsImputedOption = isImputed;
             ImputationDetailsOption = imputationDetails;
@@ -76,6 +78,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("value")]
         public double? Value { get { return this.ValueOption; } set { this.ValueOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Unit
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> UnitOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Unit
+        /// </summary>
+        [JsonPropertyName("unit")]
+        public string? Unit { get { return this.UnitOption; } set { this.UnitOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Status
@@ -126,6 +141,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class KpiDetailDto {\n");
             sb.Append("  KpiName: ").Append(KpiName).Append("\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
+            sb.Append("  Unit: ").Append(Unit).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  IsImputed: ").Append(IsImputed).Append("\n");
             sb.Append("  ImputationDetails: ").Append(ImputationDetails).Append("\n");
@@ -168,6 +184,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> kpiName = default;
             Option<double?> value = default;
+            Option<string?> unit = default;
             Option<string?> status = default;
             Option<bool?> isImputed = default;
             Option<string?> imputationDetails = default;
@@ -192,6 +209,9 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "value":
                             value = new Option<double?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (double?)null : utf8JsonReader.GetDouble());
+                            break;
+                        case "unit":
+                            unit = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "status":
                             status = new Option<string?>(utf8JsonReader.GetString()!);
@@ -220,7 +240,7 @@ namespace HNTAS.Api.Client.Model
             if (isImputed.IsSet && isImputed.Value == null)
                 throw new ArgumentNullException(nameof(isImputed), "Property is not nullable for class KpiDetailDto.");
 
-            return new KpiDetailDto(kpiName, value, status, isImputed, imputationDetails);
+            return new KpiDetailDto(kpiName, value, unit, status, isImputed, imputationDetails);
         }
 
         /// <summary>
@@ -258,6 +278,12 @@ namespace HNTAS.Api.Client.Model
 
             if (kpiDetailDto.ValueOption.IsSet)
                 writer.WriteNumber("value", kpiDetailDto.ValueOption.Value!.Value);
+
+            if (kpiDetailDto.UnitOption.IsSet)
+                if (kpiDetailDto.UnitOption.Value != null)
+                    writer.WriteString("unit", kpiDetailDto.Unit);
+                else
+                    writer.WriteNull("unit");
 
             if (kpiDetailDto.StatusOption.IsSet)
                 writer.WriteString("status", kpiDetailDto.Status);
