@@ -12,7 +12,6 @@ docs/apis/AuditApi.md
 docs/apis/CarbonCalculatorApi.md
 docs/apis/CountriesAndTerritoriesApi.md
 docs/apis/FeedbackApi.md
-docs/apis/HNDataImportExportApi.md
 docs/apis/HeatNetworksApi.md
 docs/apis/ImportApi.md
 docs/apis/InvitationsApi.md
@@ -173,7 +172,6 @@ src/HNTAS.Api.Client/Api/AuditApi.cs
 src/HNTAS.Api.Client/Api/CarbonCalculatorApi.cs
 src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
 src/HNTAS.Api.Client/Api/FeedbackApi.cs
-src/HNTAS.Api.Client/Api/HNDataImportExportApi.cs
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
 src/HNTAS.Api.Client/Api/ImportApi.cs
