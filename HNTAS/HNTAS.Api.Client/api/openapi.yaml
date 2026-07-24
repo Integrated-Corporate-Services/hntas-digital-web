@@ -16,7 +16,6 @@ tags:
 - name: Import
 - name: Feedback
 - name: HeatNetworks
-- name: HNDataImportExport
 - name: Invitations
 - name: NotificationHistory
 - name: Organisations
@@ -1274,30 +1273,6 @@ paths:
           description: Bad Request
       tags:
       - HeatNetworks
-  /api/HNDataImportExport/hn-users-orgs:
-    get:
-      responses:
-        "200":
-          description: OK
-      tags:
-      - HNDataImportExport
-  /api/HNDataImportExport/hn-users-orgs.csv:
-    get:
-      parameters:
-      - explode: true
-        in: query
-        name: take
-        required: false
-        schema:
-          default: 100
-          format: int32
-          type: integer
-        style: form
-      responses:
-        "200":
-          description: OK
-      tags:
-      - HNDataImportExport
   /api/Invitations/{id}:
     get:
       parameters:
@@ -4363,18 +4338,7 @@ components:
         pageSize: 6
         totalCount: 1
         items:
-        - phase: phase
-          ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
-          address:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
-          soa:
+        - soa:
             createdAt: 2000-01-23T04:56:07.000+00:00
             updatedBy: updatedBy
             createdBy: createdBy
@@ -4580,21 +4544,9 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
-          heatNetworkConnections:
-            isDomesticConsumer: true
-            noOfNonDomesticConsumer: 2
-            isNonDomesticConsumer: true
-            isCommunalBuilding: true
-            isOtherDistrictNetwork: true
-            noOfOtherDistrictNetwork: 7
-            noOfDomesticConsumer: 5
-            noOfCommunalBuilding: 5
           orgId: orgId
-          hasOwnEnergyCentre: true
-          hnId: hnId
           createdAt: 2000-01-23T04:56:07.000+00:00
           ofgemUserEmailId: ofgemUserEmailId
-          createdBy: createdBy
           additionalDescription: additionalDescription
           assessmentPlan:
             createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4605,6 +4557,32 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
+          id: id
+          phase: phase
+          ecDetails:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          heatNetworkConnections:
+            isDomesticConsumer: true
+            noOfNonDomesticConsumer: 2
+            isNonDomesticConsumer: true
+            isCommunalBuilding: true
+            isOtherDistrictNetwork: true
+            noOfOtherDistrictNetwork: 7
+            noOfDomesticConsumer: 5
+            noOfCommunalBuilding: 5
+          hasAddressAndPostcode: true
+          hasOwnEnergyCentre: true
+          hnId: hnId
+          createdBy: createdBy
+          suppliesSixOrMoreUnits: true
           name: name
           registrationSource: HNTAS
           pathway: pathway
@@ -4617,20 +4595,8 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
-          id: id
           heatNetworkType: Unset
-        - phase: phase
-          ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
-          address:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
-          soa:
+        - soa:
             createdAt: 2000-01-23T04:56:07.000+00:00
             updatedBy: updatedBy
             createdBy: createdBy
@@ -4836,21 +4802,9 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
-          heatNetworkConnections:
-            isDomesticConsumer: true
-            noOfNonDomesticConsumer: 2
-            isNonDomesticConsumer: true
-            isCommunalBuilding: true
-            isOtherDistrictNetwork: true
-            noOfOtherDistrictNetwork: 7
-            noOfDomesticConsumer: 5
-            noOfCommunalBuilding: 5
           orgId: orgId
-          hasOwnEnergyCentre: true
-          hnId: hnId
           createdAt: 2000-01-23T04:56:07.000+00:00
           ofgemUserEmailId: ofgemUserEmailId
-          createdBy: createdBy
           additionalDescription: additionalDescription
           assessmentPlan:
             createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4861,6 +4815,32 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
+          id: id
+          phase: phase
+          ecDetails:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          heatNetworkConnections:
+            isDomesticConsumer: true
+            noOfNonDomesticConsumer: 2
+            isNonDomesticConsumer: true
+            isCommunalBuilding: true
+            isOtherDistrictNetwork: true
+            noOfOtherDistrictNetwork: 7
+            noOfDomesticConsumer: 5
+            noOfCommunalBuilding: 5
+          hasAddressAndPostcode: true
+          hasOwnEnergyCentre: true
+          hnId: hnId
+          createdBy: createdBy
+          suppliesSixOrMoreUnits: true
           name: name
           registrationSource: HNTAS
           pathway: pathway
@@ -4873,7 +4853,6 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
-          id: id
           heatNetworkType: Unset
         userId: userId
       properties:
@@ -4899,17 +4878,6 @@ components:
       type: object
     HeatNetwork:
       example:
-        phase: phase
-        ecDetails:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
-        address:
-          country: country
-          town: town
-          county: county
-          postcode: postcode
-          addressLine1: addressLine1
-          addressLine2: addressLine2
         soa:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -5093,22 +5061,10 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
-        heatNetworkConnections:
-          isDomesticConsumer: true
-          noOfNonDomesticConsumer: 2
-          isNonDomesticConsumer: true
-          isCommunalBuilding: true
-          isOtherDistrictNetwork: true
-          noOfOtherDistrictNetwork: 7
-          noOfDomesticConsumer: 5
-          noOfCommunalBuilding: 5
         orgId: orgId
-        hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         ofgemUserEmailId: ofgemUserEmailId
-        createdBy: createdBy
         additionalDescription: additionalDescription
-        hasOwnEnergyCenter: true
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -5118,6 +5074,32 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        id: id
+        phase: phase
+        ecDetails:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        heatNetworkConnections:
+          isDomesticConsumer: true
+          noOfNonDomesticConsumer: 2
+          isNonDomesticConsumer: true
+          isCommunalBuilding: true
+          isOtherDistrictNetwork: true
+          noOfOtherDistrictNetwork: 7
+          noOfDomesticConsumer: 5
+          noOfCommunalBuilding: 5
+        hasAddressAndPostcode: true
+        hnId: hnId
+        createdBy: createdBy
+        suppliesSixOrMoreUnits: true
+        hasOwnEnergyCenter: true
         name: name
         registrationSource: HNTAS
         pathway: pathway
@@ -5131,7 +5113,6 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
-        id: id
         heatNetworkType: Unset
       properties:
         id:
@@ -5145,11 +5126,15 @@ components:
           type: string
         orgId:
           type: string
+        suppliesSixOrMoreUnits:
+          type: boolean
         name:
           type: string
         additionalDescription:
           nullable: true
           type: string
+        hasAddressAndPostcode:
+          type: boolean
         address:
           $ref: "#/components/schemas/RegisteredAddress"
         ecDetails:
@@ -5527,17 +5512,6 @@ components:
       type: object
     HeatNetworkResponse:
       example:
-        phase: phase
-        ecDetails:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
-        address:
-          country: country
-          town: town
-          county: county
-          postcode: postcode
-          addressLine1: addressLine1
-          addressLine2: addressLine2
         soa:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -5744,21 +5718,9 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
-        heatNetworkConnections:
-          isDomesticConsumer: true
-          noOfNonDomesticConsumer: 2
-          isNonDomesticConsumer: true
-          isCommunalBuilding: true
-          isOtherDistrictNetwork: true
-          noOfOtherDistrictNetwork: 7
-          noOfDomesticConsumer: 5
-          noOfCommunalBuilding: 5
         orgId: orgId
-        hasOwnEnergyCentre: true
-        hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         ofgemUserEmailId: ofgemUserEmailId
-        createdBy: createdBy
         additionalDescription: additionalDescription
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -5769,6 +5731,32 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        id: id
+        phase: phase
+        ecDetails:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        heatNetworkConnections:
+          isDomesticConsumer: true
+          noOfNonDomesticConsumer: 2
+          isNonDomesticConsumer: true
+          isCommunalBuilding: true
+          isOtherDistrictNetwork: true
+          noOfOtherDistrictNetwork: 7
+          noOfDomesticConsumer: 5
+          noOfCommunalBuilding: 5
+        hasAddressAndPostcode: true
+        hasOwnEnergyCentre: true
+        hnId: hnId
+        createdBy: createdBy
+        suppliesSixOrMoreUnits: true
         name: name
         registrationSource: HNTAS
         pathway: pathway
@@ -5781,7 +5769,6 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
-        id: id
         heatNetworkType: Unset
       properties:
         id:
@@ -5792,6 +5779,10 @@ components:
           type: string
         orgId:
           type: string
+        suppliesSixOrMoreUnits:
+          type: boolean
+        hasAddressAndPostcode:
+          type: boolean
         ecDetails:
           $ref: "#/components/schemas/ECDetails"
         address:

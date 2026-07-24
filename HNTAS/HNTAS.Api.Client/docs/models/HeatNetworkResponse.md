@@ -8,6 +8,8 @@ Name | Type | Description | Notes
 **UHnId** | **string** |  | [optional] 
 **HnId** | **string** |  | [optional] 
 **OrgId** | **string** |  | [optional] 
+**SuppliesSixOrMoreUnits** | **bool** |  | [optional] 
+**HasAddressAndPostcode** | **bool** |  | [optional] 
 **EcDetails** | [**ECDetails**](ECDetails.md) |  | [optional] 
 **Address** | [**RegisteredAddress**](RegisteredAddress.md) |  | [optional] 
 **Name** | **string** |  | [optional] 
