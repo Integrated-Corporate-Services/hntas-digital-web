@@ -61,4 +61,8 @@ namespace HNTAS.Api.Client.Test.Api
             Assert.IsType<List<ArmsPowerBiReportResponse>>(model);
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> test

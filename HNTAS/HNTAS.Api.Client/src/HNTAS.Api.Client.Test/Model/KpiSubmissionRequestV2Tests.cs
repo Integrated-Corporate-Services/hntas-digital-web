@@ -72,6 +72,7 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Test the property 'CarbonCalculatorInputs'
         /// </summary>
         [Fact]
@@ -81,6 +82,8 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+=======
+>>>>>>> test
         /// Test the property 'Elements'
         /// </summary>
         [Fact]

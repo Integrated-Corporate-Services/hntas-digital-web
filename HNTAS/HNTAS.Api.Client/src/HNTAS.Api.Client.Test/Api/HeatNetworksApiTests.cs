@@ -63,6 +63,7 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Test ApiHeatNetworksExistingNetworkByUserIdGet
         /// </summary>
         [Fact (Skip = "not implemented")]
@@ -75,6 +76,8 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
+=======
+>>>>>>> test
         /// Test ApiHeatNetworksGet
         /// </summary>
         [Fact (Skip = "not implemented")]
@@ -86,6 +89,7 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Test ApiHeatNetworksHeatNetworkByUserIdGet
         /// </summary>
         [Fact (Skip = "not implemented")]
@@ -99,6 +103,8 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
+=======
+>>>>>>> test
         /// Test ApiHeatNetworksHnIdGet
         /// </summary>
         [Fact (Skip = "not implemented")]
@@ -120,7 +126,11 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiHeatNetworksHnIdsGetAsync(hnIdsString);
             var model = response.Ok();
             Assert.IsType<List<HeatNetworkResponse>>(model);
+<<<<<<< HEAD
         }
+=======
+        }        
+>>>>>>> test
 
         /// <summary>
         /// Test ApiHeatNetworksNetworkElementsPut

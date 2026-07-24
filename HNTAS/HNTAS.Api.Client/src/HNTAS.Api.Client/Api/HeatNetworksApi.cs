@@ -205,6 +205,29 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="heatNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksRegisterOfgemNetworkPutApiResponse"/>&gt;</returns>
+        Task<IApiHeatNetworksRegisterOfgemNetworkPutApiResponse> ApiHeatNetworksRegisterOfgemNetworkPutAsync(HeatNetwork heatNetwork, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="heatNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksRegisterOfgemNetworkPutApiResponse"/>?&gt;</returns>
+        Task<IApiHeatNetworksRegisterOfgemNetworkPutApiResponse?> ApiHeatNetworksRegisterOfgemNetworkPutOrDefaultAsync(HeatNetwork heatNetwork, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="hnId"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IExternalHeatNetworkHnIdGetApiResponse"/>&gt;</returns>
@@ -461,6 +484,30 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiHeatNetworksRegisterOfgemNetworkPutApiResponse"/>
+    /// </summary>
+    public interface IApiHeatNetworksRegisterOfgemNetworkPutApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.HeatNetworkResponse?>, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 500 InternalServerError
+        /// </summary>
+        /// <returns></returns>
+        bool IsInternalServerError { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IExternalHeatNetworkHnIdGetApiResponse"/>
     /// </summary>
     public interface IExternalHeatNetworkHnIdGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.HeatNetworkExternalResponse?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
@@ -651,6 +698,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiHeatNetworksNetworkElementsPut(Exception exception)
         {
             OnErrorApiHeatNetworksNetworkElementsPut?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiHeatNetworksRegisterOfgemNetworkPut;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiHeatNetworksRegisterOfgemNetworkPut;
+
+        internal void ExecuteOnApiHeatNetworksRegisterOfgemNetworkPut(HeatNetworksApi.ApiHeatNetworksRegisterOfgemNetworkPutApiResponse apiResponse)
+        {
+            OnApiHeatNetworksRegisterOfgemNetworkPut?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiHeatNetworksRegisterOfgemNetworkPut(Exception exception)
+        {
+            OnErrorApiHeatNetworksRegisterOfgemNetworkPut?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -2799,6 +2866,285 @@ namespace HNTAS.Api.Client.Api
                 } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 500 InternalServerError
+            /// </summary>
+            /// <returns></returns>
+            public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiHeatNetworksRegisterOfgemNetworkPut(HeatNetwork heatNetwork);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="heatNetwork"></param>
+        /// <returns></returns>
+        private void ValidateApiHeatNetworksRegisterOfgemNetworkPut(HeatNetwork heatNetwork)
+        {
+            if (heatNetwork == null)
+                throw new ArgumentNullException(nameof(heatNetwork));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="heatNetwork"></param>
+        private void AfterApiHeatNetworksRegisterOfgemNetworkPutDefaultImplementation(IApiHeatNetworksRegisterOfgemNetworkPutApiResponse apiResponseLocalVar, HeatNetwork heatNetwork)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiHeatNetworksRegisterOfgemNetworkPut(ref suppressDefaultLog, apiResponseLocalVar, heatNetwork);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="heatNetwork"></param>
+        partial void AfterApiHeatNetworksRegisterOfgemNetworkPut(ref bool suppressDefaultLog, IApiHeatNetworksRegisterOfgemNetworkPutApiResponse apiResponseLocalVar, HeatNetwork heatNetwork);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="heatNetwork"></param>
+        private void OnErrorApiHeatNetworksRegisterOfgemNetworkPutDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, HeatNetwork heatNetwork)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiHeatNetworksRegisterOfgemNetworkPut(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, heatNetwork);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="heatNetwork"></param>
+        partial void OnErrorApiHeatNetworksRegisterOfgemNetworkPut(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, HeatNetwork heatNetwork);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="heatNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksRegisterOfgemNetworkPutApiResponse"/>&gt;</returns>
+        public async Task<IApiHeatNetworksRegisterOfgemNetworkPutApiResponse?> ApiHeatNetworksRegisterOfgemNetworkPutOrDefaultAsync(HeatNetwork heatNetwork, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiHeatNetworksRegisterOfgemNetworkPutAsync(heatNetwork, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="heatNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiHeatNetworksRegisterOfgemNetworkPutApiResponse"/>&gt;</returns>
+        public async Task<IApiHeatNetworksRegisterOfgemNetworkPutApiResponse> ApiHeatNetworksRegisterOfgemNetworkPutAsync(HeatNetwork heatNetwork, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiHeatNetworksRegisterOfgemNetworkPut(heatNetwork);
+
+                FormatApiHeatNetworksRegisterOfgemNetworkPut(heatNetwork);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/HeatNetworks/register-ofgem-network"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/HeatNetworks/register-ofgem-network");
+
+                    httpRequestMessageLocalVar.Content = (heatNetwork as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(heatNetwork, _jsonSerializerOptions));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Put;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiHeatNetworksRegisterOfgemNetworkPutApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiHeatNetworksRegisterOfgemNetworkPutApiResponse>();
+
+                        ApiHeatNetworksRegisterOfgemNetworkPutApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/HeatNetworks/register-ofgem-network", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiHeatNetworksRegisterOfgemNetworkPutDefaultImplementation(apiResponseLocalVar, heatNetwork);
+
+                        Events.ExecuteOnApiHeatNetworksRegisterOfgemNetworkPut(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiHeatNetworksRegisterOfgemNetworkPutDefaultImplementation(e, "/api/HeatNetworks/register-ofgem-network", uriBuilderLocalVar.Path, heatNetwork);
+                Events.ExecuteOnErrorApiHeatNetworksRegisterOfgemNetworkPut(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiHeatNetworksRegisterOfgemNetworkPutApiResponse"/>
+        /// </summary>
+        public partial class ApiHeatNetworksRegisterOfgemNetworkPutApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiHeatNetworksRegisterOfgemNetworkPutApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiHeatNetworksRegisterOfgemNetworkPutApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiHeatNetworksRegisterOfgemNetworkPutApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiHeatNetworksRegisterOfgemNetworkPutApiResponse(ILogger<ApiHeatNetworksRegisterOfgemNetworkPutApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.HeatNetworkResponse? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.HeatNetworkResponse>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.HeatNetworkResponse? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
 
                 return result != null;

@@ -81,6 +81,7 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Test the property 'OrgId'
         /// </summary>
         [Fact]
@@ -90,6 +91,8 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+=======
+>>>>>>> test
         /// Test the property 'Name'
         /// </summary>
         [Fact]
@@ -153,6 +156,7 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Test the property 'HasOwnEnergyCenter'
         /// </summary>
         [Fact]
@@ -171,6 +175,8 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+=======
+>>>>>>> test
         /// Test the property 'HeatNetworkConnections'
         /// </summary>
         [Fact]
@@ -225,6 +231,7 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Test the property 'OfgemUserEmailId'
         /// </summary>
         [Fact]
@@ -243,6 +250,8 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+=======
+>>>>>>> test
         /// Test the property 'CreatedBy'
         /// </summary>
         [Fact]

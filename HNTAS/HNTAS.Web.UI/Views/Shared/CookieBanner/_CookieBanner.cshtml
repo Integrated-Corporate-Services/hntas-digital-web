@@ -1,7 +1,7 @@
 ﻿@{
     var consent = Context.Request.Cookies["cookie_consent"];
     var action = TempData["cookie_banner_action"]?.ToString();
-    var url = Url.Action("Cookies", "FooterLinks");
+    var url = Url.Action("Cookies", "Help");
 }
 
 @if (consent == null)
