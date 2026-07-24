@@ -847,7 +847,7 @@ namespace HNTAS.Web.UI.Controllers
                 Name = viewModel?.HeatNetworkNameModel?.HeatNetworkName,
                 AdditionalDescription = viewModel?.HeatNetworkNameModel?.AdditionalDescription,
                 SuppliesSixOrMoreUnits = true, // cannot create heat network, unless true
-                HasAddressAndPostcode = doesHNHaveAPostcodeViewModel.HasPostcode,
+                HasAddressAndPostcode = doesHNHaveAPostcodeViewModel?.HasPostcode,
                 Address = address,
                 EcDetails = ecDetails,
                 HeatNetworkType = hnType,
