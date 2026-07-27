@@ -51,21 +51,6 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-<<<<<<< HEAD
-        /// Test ApiInvitationsAcceptInvitationPatch
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiInvitationsAcceptInvitationPatchAsyncTest()
-        {
-            InvitedUserRequest invitedUserRequest = default!;
-            var response = await _instance.ApiInvitationsAcceptInvitationPatchAsync(invitedUserRequest);
-            var model = response.Ok();
-            Assert.IsType<string>(model);
-        }
-
-        /// <summary>
-=======
->>>>>>> test
         /// Test ApiInvitationsIdAddUserInvitationPost
         /// </summary>
         [Fact (Skip = "not implemented")]

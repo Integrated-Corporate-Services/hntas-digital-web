@@ -81,18 +81,6 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-<<<<<<< HEAD
-        /// Test the property 'OrgId'
-        /// </summary>
-        [Fact]
-        public void OrgIdTest()
-        {
-            // TODO unit test for the property 'OrgId'
-        }
-
-        /// <summary>
-=======
->>>>>>> test
         /// Test the property 'Name'
         /// </summary>
         [Fact]
@@ -156,27 +144,6 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-<<<<<<< HEAD
-        /// Test the property 'HasOwnEnergyCenter'
-        /// </summary>
-        [Fact]
-        public void HasOwnEnergyCenterTest()
-        {
-            // TODO unit test for the property 'HasOwnEnergyCenter'
-        }
-
-        /// <summary>
-        /// Test the property 'EcSuppliesOneCommunalBuilding'
-        /// </summary>
-        [Fact]
-        public void EcSuppliesOneCommunalBuildingTest()
-        {
-            // TODO unit test for the property 'EcSuppliesOneCommunalBuilding'
-        }
-
-        /// <summary>
-=======
->>>>>>> test
         /// Test the property 'HeatNetworkConnections'
         /// </summary>
         [Fact]
@@ -231,27 +198,6 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-<<<<<<< HEAD
-        /// Test the property 'OfgemUserEmailId'
-        /// </summary>
-        [Fact]
-        public void OfgemUserEmailIdTest()
-        {
-            // TODO unit test for the property 'OfgemUserEmailId'
-        }
-
-        /// <summary>
-        /// Test the property 'OfgemImportedDate'
-        /// </summary>
-        [Fact]
-        public void OfgemImportedDateTest()
-        {
-            // TODO unit test for the property 'OfgemImportedDate'
-        }
-
-        /// <summary>
-=======
->>>>>>> test
         /// Test the property 'CreatedBy'
         /// </summary>
         [Fact]
