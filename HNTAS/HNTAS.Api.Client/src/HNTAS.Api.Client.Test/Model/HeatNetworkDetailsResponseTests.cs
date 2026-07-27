@@ -108,27 +108,6 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-<<<<<<< HEAD
-        /// Test the property 'CarbonCalculationInputs'
-        /// </summary>
-        [Fact]
-        public void CarbonCalculationInputsTest()
-        {
-            // TODO unit test for the property 'CarbonCalculationInputs'
-        }
-
-        /// <summary>
-        /// Test the property 'TotalCarbonEmission'
-        /// </summary>
-        [Fact]
-        public void TotalCarbonEmissionTest()
-        {
-            // TODO unit test for the property 'TotalCarbonEmission'
-        }
-
-        /// <summary>
-=======
->>>>>>> test
         /// Test the property 'CurrentPage'
         /// </summary>
         [Fact]

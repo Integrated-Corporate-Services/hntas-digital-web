@@ -62,17 +62,6 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-        /// Test ApiUsersContributorRolesGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiUsersContributorRolesGetAsyncTest()
-        {
-            var response = await _instance.ApiUsersContributorRolesGetAsync();
-            var model = response.Ok();
-            Assert.IsType<List<EnumItemResponse>>(model);
-        }
-
-        /// <summary>
         /// Test ApiUsersGet
         /// </summary>
         [Fact (Skip = "not implemented")]
@@ -179,21 +168,6 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-<<<<<<< HEAD
-        /// Test ApiUsersNetworkManagersGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiUsersNetworkManagersGetAsyncTest()
-        {
-            Client.Option<string> userId = default!;
-            var response = await _instance.ApiUsersNetworkManagersGetAsync(userId);
-            var model = response.Ok();
-            Assert.IsType<List<InvitedUserResponse>>(model);
-        }
-
-        /// <summary>
-=======
->>>>>>> test
         /// Test ApiUsersOrganisationExistsGet
         /// </summary>
         [Fact (Skip = "not implemented")]

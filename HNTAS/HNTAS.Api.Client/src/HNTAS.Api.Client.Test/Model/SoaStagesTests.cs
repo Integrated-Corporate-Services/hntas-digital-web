@@ -108,21 +108,12 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-<<<<<<< HEAD
-        /// Test the property 'Assessors'
-        /// </summary>
-        [Fact]
-        public void AssessorsTest()
-        {
-            // TODO unit test for the property 'Assessors'
-=======
         /// Test the property 'Assessor'
         /// </summary>
         [Fact]
         public void AssessorTest()
         {
             // TODO unit test for the property 'Assessor'
->>>>>>> test
         }
     }
 }
