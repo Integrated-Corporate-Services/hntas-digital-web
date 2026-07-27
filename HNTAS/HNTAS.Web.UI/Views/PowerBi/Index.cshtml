@@ -1,11 +1,60 @@
 ﻿@{
     ViewBag.Title = "Power BI Report";
 }
+<style>
+    /* Remove only the narrow content restriction */ .container,
+    .container-fluid,
+    .body-content,
+    main {
+        max-width: none !important;
+    }
 
-<iframe title="Power BI Report"
-        width="100%"
-        height="800"
-        src="https://app.powerbi.com/groups/me/reports/6d3202fb-a1e5-4167-989d-07fdbed7a9d7/72d9137f634e75ade019?experience=power-bi"
-        frameborder="0"
-        allowfullscreen="true">
-</iframe>
+    #powerBiWrapper {
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+        padding: 0;
+        overflow: hidden;
+        background: white;
+    }
+
+    #powerBiFrame {
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+</style>
+
+@{
+    var orgId = ViewBag.OrgId as string;
+
+    var powerBiUrl =
+        $"https://app.powerbi.com/reportEmbed?reportId=e8a86f10-23c4-4238-969e-46229daa7ecc" +
+        $"&autoAuth=true" +
+        $"&ctid=cbac7005-02c1-43eb-b497-e6492d1b2dd8" +
+        $"&filter=KPI_Data1/org_id eq '{orgId}'";
+}
+
+<div id="powerBiWrapper">
+    <iframe id="powerBiFrame" title="HNTAS POC"
+            src="@powerBiUrl"
+            allowfullscreen="true"></iframe>
+</div>
+<script>
+    function resizePowerBiReport() {
+            const wrapper = document.getElementById("powerBiWrapper");
+            if (!wrapper) {
+                return;
+            }
+            /*
+               Calculates the available screen height beneath the website
+               header/navigation instead of covering it.
+            */const wrapperTop = wrapper.getBoundingClientRect().top;
+            const availableHeight = window.innerHeight - wrapperTop;
+            wrapper.style.height =
+                Math.max(availableHeight, 1000) + "px";
+        }
+        window.addEventListener("load", resizePowerBiReport);
+        window.addEventListener("resize", resizePowerBiReport);</script>
