@@ -23,7 +23,12 @@
     <div class="govuk-grid-column-full">
         <span class="govuk-caption-l">@ViewBag.OrganisationName</span>
         <h1 class="govuk-heading-l" id="network-leads-list-heading">Network managers</h1>
-        <p class="govuk-body">You do not have anyone currently added to your organisation.</p>
+        
+        @if (Model.NetworkLeads.Count == 0)
+        {
+            <p class="govuk-body">You do not have anyone currently added to your organisation.</p>
+        }
+        
         <a href="@Url.Action("NewLeadDetails", "NetworkLeads")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
             Invite a network manager
         </a>

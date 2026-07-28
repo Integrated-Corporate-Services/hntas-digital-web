@@ -1,5 +1,6 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Extensions;
 
 namespace HNTAS.Web.UI.Services.Core
 {
@@ -69,6 +70,33 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
         }
+
+        public async Task<UserResponse?> GetUserByEmailIdAsync(string emailId)
+        {
+            _logger.LogInformation("Retrieving user by email ID");
+
+            try
+            {
+                var userResponse = await _usersApi.ApiUsersEmailEmailIdGetAsync(emailId);
+
+                if (userResponse.IsOk)
+                {
+                    return userResponse.Ok();
+                }
+                else if (userResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+
+                throw new Exception($"Failed to retrieve user with status code: {userResponse.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving user by email ID");
+                throw;
+            }
+        }
+
 
         public async Task<string?> CreateUser(InitialUserRegistrationRequest request)
         {
@@ -331,7 +359,7 @@ namespace HNTAS.Web.UI.Services.Core
             {
                 return null;
             }
-            var errorMessage = $"Unable to determine Responsible Person status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
+            var errorMessage = $"Unable to determine Responsible Person status. API call failed with status code: {users.StatusCode}.";
             _logger.LogError(errorMessage);
             throw new Exception(errorMessage);
         }
@@ -348,7 +376,7 @@ namespace HNTAS.Web.UI.Services.Core
             {
                 return null;
             }
-            var errorMessage = $"Unable to determine Responsible Person status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
+            var errorMessage = $"Unable to determine Responsible Person status. API call failed with status code: {users.StatusCode}.";
             _logger.LogError(errorMessage);
             throw new Exception(errorMessage);
         }
@@ -401,12 +429,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
             _logger.LogError("Failed to retrieve users by organisation ID with status code: {StatusCode}", usersResponse.StatusCode);
             throw new Exception($"Failed to retrieve users by organisation ID with status code: {usersResponse.StatusCode}");
-        }
-
-        private string SanitizeForLogging(string input)
-        {
-            return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;
-        }
+        }        
 
         public async Task<bool> IsSuperUser(string emailId)
         {

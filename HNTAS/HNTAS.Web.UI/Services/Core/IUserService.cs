@@ -7,6 +7,7 @@ namespace HNTAS.Web.UI.Services.Core
         Task<UserResponse?> GetUserById(string id);
         Task<List<HeatNetworkUserResponse>?> GetUserHeatNetworks(string id);
         Task<UserResponse?> GetUserByOneLoginId(string oneLoginId);
+        Task<UserResponse?> GetUserByEmailIdAsync(string emailId);
         Task<string?> CreateUser(InitialUserRegistrationRequest request);
         Task<string?> UpdateUserOrganisation(string id, UpdateUserOrganisationRequest request);
         Task<Organisation?> UpdateOrganisationLinkUser(string userId, OrganisationRequest organisationRequest);
