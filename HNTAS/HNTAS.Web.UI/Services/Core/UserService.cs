@@ -73,7 +73,7 @@ namespace HNTAS.Web.UI.Services.Core
 
         public async Task<UserResponse?> GetUserByEmailIdAsync(string emailId)
         {
-            _logger.LogInformation("Retrieving user by email ID: {EmailId}", StringExtensions.ToSafeLog(emailId));
+            _logger.LogInformation("Retrieving user by email ID");
 
             try
             {
@@ -92,7 +92,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving user by email ID: {EmailId}", StringExtensions.ToSafeLog(emailId));
+                _logger.LogError(ex, "Error retrieving user by email ID");
                 throw;
             }
         }
