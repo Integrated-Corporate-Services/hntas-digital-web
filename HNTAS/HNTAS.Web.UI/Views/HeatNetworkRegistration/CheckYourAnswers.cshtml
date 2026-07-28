@@ -98,8 +98,8 @@
     var hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
     var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
     {
-        Id = nameof(Model.ConfirmedDeclaration).ToLowerInvariant(),
-        Name = nameof(Model.ConfirmedDeclaration).ToLowerInvariant(),
+        Id = nameof(Model.ConfirmedDeclaration),
+        Name = nameof(Model.ConfirmedDeclaration),
         Label = $"I confirm that the summary above is correct for {Model.HeatNetworkNameModel.HeatNetworkName}{(string.IsNullOrEmpty(Model.HeatNetworkNameModel.AdditionalDescription) ? "." : $", {Model.HeatNetworkNameModel.AdditionalDescription}.")}",
         HasError = hasDeclarationErrors,
         ErrorMessage = hasDeclarationErrors ? ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors[0].ErrorMessage : null,
