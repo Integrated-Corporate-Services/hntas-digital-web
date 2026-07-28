@@ -65,7 +65,11 @@ namespace HNTAS.Web.UI.Controllers
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             try
             {
-                var invitationId = await _invitationService.AddInvitedUserAsync(
+                // verify here if they can take up this role or not
+                var invitee = await _userService.GetUserByEmailIdAsync(model.EmailId);
+                if (invitee != null && invitee.Roles.Contains(UserRole.NetworkManager))
+                {
+                    var invitationId = await _invitationService.AddInvitedUserAsync(
                        userId,
                        new AddInvitationRequest(
                            emailAddress: model.EmailId,
@@ -76,17 +80,24 @@ namespace HNTAS.Web.UI.Controllers
                            status: InvitationStatus.Invited
                        )
                    );
-                if (string.IsNullOrWhiteSpace(invitationId))
+                    if (string.IsNullOrWhiteSpace(invitationId))
+                    {
+                        TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                        return RedirectToAction("ManageLeads");
+                    }
+
+                    _logger.LogInformation("Successfully submitted new organisation user details.");
+                    var token = _iInvitationTokenService.GenerateToken(invitationId, model.EmailId);
+
+                    //send invitation email
+                    await _invitationService.SendInvitationEmailAsync(invitationId, new SendInvitationEmailRequest(token));
+                }
+                else
                 {
-                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                    TempData["ErrorMessage"] = "This user cannot be added as a Network Manager.";
                     return RedirectToAction("ManageLeads");
                 }
-
-                _logger.LogInformation("Successfully submitted new organisation user details.");
-                var token = _iInvitationTokenService.GenerateToken(invitationId, model.EmailId);
-
-                //send invitation email
-                await _invitationService.SendInvitationEmailAsync(invitationId, new SendInvitationEmailRequest(token));
+                
             }
             catch(Exception ex)
             {

@@ -70,6 +70,33 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+        public async Task<UserResponse?> GetUserByEmailIdAsync(string emailId)
+        {
+            _logger.LogInformation("Retrieving user by email ID: {EmailId}", SanitizeForLogging(emailId));
+
+            try
+            {
+                var userResponse = await _usersApi.ApiUsersEmailEmailIdGetAsync(emailId);
+
+                if (userResponse.IsOk)
+                {
+                    return userResponse.Ok();
+                }
+                else if (userResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+
+                throw new Exception($"Failed to retrieve user with status code: {userResponse.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving user by email ID: {EmailId}", SanitizeForLogging(emailId));
+                throw;
+            }
+        }
+
+
         public async Task<string?> CreateUser(InitialUserRegistrationRequest request)
         {
             try
