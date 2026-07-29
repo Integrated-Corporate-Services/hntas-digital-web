@@ -37,8 +37,10 @@ namespace HNTAS.Api.Client.Model
         /// <param name="uHnId">uHnId</param>
         /// <param name="hnId">hnId</param>
         /// <param name="orgId">orgId</param>
+        /// <param name="suppliesSixOrMoreUnits">suppliesSixOrMoreUnits</param>
         /// <param name="name">name</param>
         /// <param name="additionalDescription">additionalDescription</param>
+        /// <param name="hasAddressAndPostcode">hasAddressAndPostcode</param>
         /// <param name="address">address</param>
         /// <param name="ecDetails">ecDetails</param>
         /// <param name="pathway">pathway</param>
@@ -58,14 +60,16 @@ namespace HNTAS.Api.Client.Model
         /// <param name="createdAt">createdAt</param>
         /// <param name="phase">phase</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<RegisteredAddress?> address = default, Option<ECDetails?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<HeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCenter = default, Option<bool?> ecSuppliesOneCommunalBuilding = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> ofgemUserEmailId = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
+        public HeatNetwork(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<bool?> suppliesSixOrMoreUnits = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<bool?> hasAddressAndPostcode = default, Option<RegisteredAddress?> address = default, Option<ECDetails?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<HeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCenter = default, Option<bool?> ecSuppliesOneCommunalBuilding = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> ofgemUserEmailId = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
         {
             IdOption = id;
             UHnIdOption = uHnId;
             HnIdOption = hnId;
             OrgIdOption = orgId;
+            SuppliesSixOrMoreUnitsOption = suppliesSixOrMoreUnits;
             NameOption = name;
             AdditionalDescriptionOption = additionalDescription;
+            HasAddressAndPostcodeOption = hasAddressAndPostcode;
             AddressOption = address;
             EcDetailsOption = ecDetails;
             PathwayOption = pathway;
@@ -168,6 +172,19 @@ namespace HNTAS.Api.Client.Model
         public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of SuppliesSixOrMoreUnits
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> SuppliesSixOrMoreUnitsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets SuppliesSixOrMoreUnits
+        /// </summary>
+        [JsonPropertyName("suppliesSixOrMoreUnits")]
+        public bool? SuppliesSixOrMoreUnits { get { return this.SuppliesSixOrMoreUnitsOption; } set { this.SuppliesSixOrMoreUnitsOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of Name
         /// </summary>
         [JsonIgnore]
@@ -192,6 +209,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("additionalDescription")]
         public string? AdditionalDescription { get { return this.AdditionalDescriptionOption; } set { this.AdditionalDescriptionOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of HasAddressAndPostcode
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> HasAddressAndPostcodeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HasAddressAndPostcode
+        /// </summary>
+        [JsonPropertyName("hasAddressAndPostcode")]
+        public bool? HasAddressAndPostcode { get { return this.HasAddressAndPostcodeOption; } set { this.HasAddressAndPostcodeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Address
@@ -413,8 +443,10 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  UHnId: ").Append(UHnId).Append("\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  OrgId: ").Append(OrgId).Append("\n");
+            sb.Append("  SuppliesSixOrMoreUnits: ").Append(SuppliesSixOrMoreUnits).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  AdditionalDescription: ").Append(AdditionalDescription).Append("\n");
+            sb.Append("  HasAddressAndPostcode: ").Append(HasAddressAndPostcode).Append("\n");
             sb.Append("  Address: ").Append(Address).Append("\n");
             sb.Append("  EcDetails: ").Append(EcDetails).Append("\n");
             sb.Append("  Pathway: ").Append(Pathway).Append("\n");
@@ -484,8 +516,10 @@ namespace HNTAS.Api.Client.Model
             Option<string?> uHnId = default;
             Option<string?> hnId = default;
             Option<string?> orgId = default;
+            Option<bool?> suppliesSixOrMoreUnits = default;
             Option<string?> name = default;
             Option<string?> additionalDescription = default;
+            Option<bool?> hasAddressAndPostcode = default;
             Option<RegisteredAddress?> address = default;
             Option<ECDetails?> ecDetails = default;
             Option<string?> pathway = default;
@@ -532,11 +566,17 @@ namespace HNTAS.Api.Client.Model
                         case "orgId":
                             orgId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "suppliesSixOrMoreUnits":
+                            suppliesSixOrMoreUnits = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
                         case "name":
                             name = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "additionalDescription":
                             additionalDescription = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "hasAddressAndPostcode":
+                            hasAddressAndPostcode = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
                             break;
                         case "address":
                             address = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions));
@@ -605,8 +645,14 @@ namespace HNTAS.Api.Client.Model
             if (orgId.IsSet && orgId.Value == null)
                 throw new ArgumentNullException(nameof(orgId), "Property is not nullable for class HeatNetwork.");
 
+            if (suppliesSixOrMoreUnits.IsSet && suppliesSixOrMoreUnits.Value == null)
+                throw new ArgumentNullException(nameof(suppliesSixOrMoreUnits), "Property is not nullable for class HeatNetwork.");
+
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetwork.");
+
+            if (hasAddressAndPostcode.IsSet && hasAddressAndPostcode.Value == null)
+                throw new ArgumentNullException(nameof(hasAddressAndPostcode), "Property is not nullable for class HeatNetwork.");
 
             if (registrationSource.IsSet && registrationSource.Value == null)
                 throw new ArgumentNullException(nameof(registrationSource), "Property is not nullable for class HeatNetwork.");
@@ -626,7 +672,7 @@ namespace HNTAS.Api.Client.Model
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class HeatNetwork.");
 
-            return new HeatNetwork(id, uHnId, hnId, orgId, name, additionalDescription, address, ecDetails, pathway, registrationSource, heatNetworkType, hasOwnEnergyCenter, ecSuppliesOneCommunalBuilding, heatNetworkConnections, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemUserEmailId, ofgemImportedDate, createdBy, createdAt, phase);
+            return new HeatNetwork(id, uHnId, hnId, orgId, suppliesSixOrMoreUnits, name, additionalDescription, hasAddressAndPostcode, address, ecDetails, pathway, registrationSource, heatNetworkType, hasOwnEnergyCenter, ecSuppliesOneCommunalBuilding, heatNetworkConnections, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemUserEmailId, ofgemImportedDate, createdBy, createdAt, phase);
         }
 
         /// <summary>
@@ -683,6 +729,9 @@ namespace HNTAS.Api.Client.Model
             if (heatNetwork.OrgIdOption.IsSet)
                 writer.WriteString("orgId", heatNetwork.OrgId);
 
+            if (heatNetwork.SuppliesSixOrMoreUnitsOption.IsSet)
+                writer.WriteBoolean("suppliesSixOrMoreUnits", heatNetwork.SuppliesSixOrMoreUnitsOption.Value!.Value);
+
             if (heatNetwork.NameOption.IsSet)
                 writer.WriteString("name", heatNetwork.Name);
 
@@ -691,6 +740,9 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("additionalDescription", heatNetwork.AdditionalDescription);
                 else
                     writer.WriteNull("additionalDescription");
+
+            if (heatNetwork.HasAddressAndPostcodeOption.IsSet)
+                writer.WriteBoolean("hasAddressAndPostcode", heatNetwork.HasAddressAndPostcodeOption.Value!.Value);
 
             if (heatNetwork.AddressOption.IsSet)
                 if (heatNetwork.AddressOption.Value != null)

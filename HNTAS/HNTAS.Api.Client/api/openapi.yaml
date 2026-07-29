@@ -2120,6 +2120,57 @@ paths:
           description: Internal Server Error
       tags:
       - Users
+  /api/Users/email/{emailId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: emailId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Users
   /api/Users/is-rp-user/{emailId}:
     get:
       parameters:
@@ -2837,6 +2888,7 @@ components:
       type: object
     AggregatedKpi:
       example:
+        unit: unit
         kpiName: kpiName
         value: 5.962133916683182
         status: status
@@ -2847,6 +2899,9 @@ components:
           format: double
           type: number
         status:
+          type: string
+        unit:
+          nullable: true
           type: string
       type: object
     ArmsPowerBiReportResponse:
@@ -3595,6 +3650,7 @@ components:
       type: object
     CarbonInputUiDisplay:
       example:
+        unit: unit
         label: label
         value: 5.637376656633329
       properties:
@@ -3603,6 +3659,9 @@ components:
         value:
           format: double
           type: number
+        unit:
+          nullable: true
+          type: string
       type: object
     CCKpiValueRequest:
       additionalProperties: false
@@ -3921,11 +3980,13 @@ components:
         elementType: elementType
         kpis:
         - isImputed: true
+          unit: unit
           kpiName: kpiName
           imputationDetails: imputationDetails
           value: 1.4658129805029452
           status: status
         - isImputed: true
+          unit: unit
           kpiName: kpiName
           imputationDetails: imputationDetails
           value: 1.4658129805029452
@@ -4328,18 +4389,7 @@ components:
         pageSize: 6
         totalCount: 1
         items:
-        - phase: phase
-          ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
-          address:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
-          soa:
+        - soa:
             createdAt: 2000-01-23T04:56:07.000+00:00
             updatedBy: updatedBy
             createdBy: createdBy
@@ -4545,21 +4595,9 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
-          heatNetworkConnections:
-            isDomesticConsumer: true
-            noOfNonDomesticConsumer: 2
-            isNonDomesticConsumer: true
-            isCommunalBuilding: true
-            isOtherDistrictNetwork: true
-            noOfOtherDistrictNetwork: 7
-            noOfDomesticConsumer: 5
-            noOfCommunalBuilding: 5
           orgId: orgId
-          hasOwnEnergyCentre: true
-          hnId: hnId
           createdAt: 2000-01-23T04:56:07.000+00:00
           ofgemUserEmailId: ofgemUserEmailId
-          createdBy: createdBy
           additionalDescription: additionalDescription
           assessmentPlan:
             createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4570,6 +4608,32 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
+          id: id
+          phase: phase
+          ecDetails:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          heatNetworkConnections:
+            isDomesticConsumer: true
+            noOfNonDomesticConsumer: 2
+            isNonDomesticConsumer: true
+            isCommunalBuilding: true
+            isOtherDistrictNetwork: true
+            noOfOtherDistrictNetwork: 7
+            noOfDomesticConsumer: 5
+            noOfCommunalBuilding: 5
+          hasAddressAndPostcode: true
+          hasOwnEnergyCentre: true
+          hnId: hnId
+          createdBy: createdBy
+          suppliesSixOrMoreUnits: true
           name: name
           registrationSource: HNTAS
           pathway: pathway
@@ -4582,20 +4646,8 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
-          id: id
           heatNetworkType: Unset
-        - phase: phase
-          ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
-          address:
-            country: country
-            town: town
-            county: county
-            postcode: postcode
-            addressLine1: addressLine1
-            addressLine2: addressLine2
-          soa:
+        - soa:
             createdAt: 2000-01-23T04:56:07.000+00:00
             updatedBy: updatedBy
             createdBy: createdBy
@@ -4801,21 +4853,9 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
-          heatNetworkConnections:
-            isDomesticConsumer: true
-            noOfNonDomesticConsumer: 2
-            isNonDomesticConsumer: true
-            isCommunalBuilding: true
-            isOtherDistrictNetwork: true
-            noOfOtherDistrictNetwork: 7
-            noOfDomesticConsumer: 5
-            noOfCommunalBuilding: 5
           orgId: orgId
-          hasOwnEnergyCentre: true
-          hnId: hnId
           createdAt: 2000-01-23T04:56:07.000+00:00
           ofgemUserEmailId: ofgemUserEmailId
-          createdBy: createdBy
           additionalDescription: additionalDescription
           assessmentPlan:
             createdAt: 2000-01-23T04:56:07.000+00:00
@@ -4826,6 +4866,32 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
+          id: id
+          phase: phase
+          ecDetails:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          heatNetworkConnections:
+            isDomesticConsumer: true
+            noOfNonDomesticConsumer: 2
+            isNonDomesticConsumer: true
+            isCommunalBuilding: true
+            isOtherDistrictNetwork: true
+            noOfOtherDistrictNetwork: 7
+            noOfDomesticConsumer: 5
+            noOfCommunalBuilding: 5
+          hasAddressAndPostcode: true
+          hasOwnEnergyCentre: true
+          hnId: hnId
+          createdBy: createdBy
+          suppliesSixOrMoreUnits: true
           name: name
           registrationSource: HNTAS
           pathway: pathway
@@ -4838,7 +4904,6 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
-          id: id
           heatNetworkType: Unset
         userId: userId
       properties:
@@ -4864,17 +4929,6 @@ components:
       type: object
     HeatNetwork:
       example:
-        phase: phase
-        ecDetails:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
-        address:
-          country: country
-          town: town
-          county: county
-          postcode: postcode
-          addressLine1: addressLine1
-          addressLine2: addressLine2
         soa:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -5058,22 +5112,10 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
-        heatNetworkConnections:
-          isDomesticConsumer: true
-          noOfNonDomesticConsumer: 2
-          isNonDomesticConsumer: true
-          isCommunalBuilding: true
-          isOtherDistrictNetwork: true
-          noOfOtherDistrictNetwork: 7
-          noOfDomesticConsumer: 5
-          noOfCommunalBuilding: 5
         orgId: orgId
-        hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         ofgemUserEmailId: ofgemUserEmailId
-        createdBy: createdBy
         additionalDescription: additionalDescription
-        hasOwnEnergyCenter: true
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -5083,6 +5125,32 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        id: id
+        phase: phase
+        ecDetails:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        heatNetworkConnections:
+          isDomesticConsumer: true
+          noOfNonDomesticConsumer: 2
+          isNonDomesticConsumer: true
+          isCommunalBuilding: true
+          isOtherDistrictNetwork: true
+          noOfOtherDistrictNetwork: 7
+          noOfDomesticConsumer: 5
+          noOfCommunalBuilding: 5
+        hasAddressAndPostcode: true
+        hnId: hnId
+        createdBy: createdBy
+        suppliesSixOrMoreUnits: true
+        hasOwnEnergyCenter: true
         name: name
         registrationSource: HNTAS
         pathway: pathway
@@ -5096,7 +5164,6 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
-        id: id
         heatNetworkType: Unset
       properties:
         id:
@@ -5110,11 +5177,15 @@ components:
           type: string
         orgId:
           type: string
+        suppliesSixOrMoreUnits:
+          type: boolean
         name:
           type: string
         additionalDescription:
           nullable: true
           type: string
+        hasAddressAndPostcode:
+          type: boolean
         address:
           $ref: "#/components/schemas/RegisteredAddress"
         ecDetails:
@@ -5257,16 +5328,19 @@ components:
       example:
         hnId: hnId
         aggregatedKpis:
-        - kpiName: kpiName
+        - unit: unit
+          kpiName: kpiName
           value: 5.962133916683182
           status: status
-        - kpiName: kpiName
+        - unit: unit
+          kpiName: kpiName
           value: 5.962133916683182
           status: status
         selectedMonth: 0
         totalCarbonEmission: 2.3021358869347655
         carbonCalculationInputs:
           key:
+            unit: unit
             label: label
             value: 5.637376656633329
         selectedYear: 6
@@ -5278,11 +5352,13 @@ components:
           elementType: elementType
           kpis:
           - isImputed: true
+            unit: unit
             kpiName: kpiName
             imputationDetails: imputationDetails
             value: 1.4658129805029452
             status: status
           - isImputed: true
+            unit: unit
             kpiName: kpiName
             imputationDetails: imputationDetails
             value: 1.4658129805029452
@@ -5291,11 +5367,13 @@ components:
           elementType: elementType
           kpis:
           - isImputed: true
+            unit: unit
             kpiName: kpiName
             imputationDetails: imputationDetails
             value: 1.4658129805029452
             status: status
           - isImputed: true
+            unit: unit
             kpiName: kpiName
             imputationDetails: imputationDetails
             value: 1.4658129805029452
@@ -5485,17 +5563,6 @@ components:
       type: object
     HeatNetworkResponse:
       example:
-        phase: phase
-        ecDetails:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
-        address:
-          country: country
-          town: town
-          county: county
-          postcode: postcode
-          addressLine1: addressLine1
-          addressLine2: addressLine2
         soa:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -5702,21 +5769,9 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
-        heatNetworkConnections:
-          isDomesticConsumer: true
-          noOfNonDomesticConsumer: 2
-          isNonDomesticConsumer: true
-          isCommunalBuilding: true
-          isOtherDistrictNetwork: true
-          noOfOtherDistrictNetwork: 7
-          noOfDomesticConsumer: 5
-          noOfCommunalBuilding: 5
         orgId: orgId
-        hasOwnEnergyCentre: true
-        hnId: hnId
         createdAt: 2000-01-23T04:56:07.000+00:00
         ofgemUserEmailId: ofgemUserEmailId
-        createdBy: createdBy
         additionalDescription: additionalDescription
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
@@ -5727,6 +5782,32 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        id: id
+        phase: phase
+        ecDetails:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        address:
+          country: country
+          town: town
+          county: county
+          postcode: postcode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+        heatNetworkConnections:
+          isDomesticConsumer: true
+          noOfNonDomesticConsumer: 2
+          isNonDomesticConsumer: true
+          isCommunalBuilding: true
+          isOtherDistrictNetwork: true
+          noOfOtherDistrictNetwork: 7
+          noOfDomesticConsumer: 5
+          noOfCommunalBuilding: 5
+        hasAddressAndPostcode: true
+        hasOwnEnergyCentre: true
+        hnId: hnId
+        createdBy: createdBy
+        suppliesSixOrMoreUnits: true
         name: name
         registrationSource: HNTAS
         pathway: pathway
@@ -5739,7 +5820,6 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
-        id: id
         heatNetworkType: Unset
       properties:
         id:
@@ -5750,6 +5830,10 @@ components:
           type: string
         orgId:
           type: string
+        suppliesSixOrMoreUnits:
+          type: boolean
+        hasAddressAndPostcode:
+          type: boolean
         ecDetails:
           $ref: "#/components/schemas/ECDetails"
         address:
@@ -6287,6 +6371,7 @@ components:
     KpiDetailDto:
       example:
         isImputed: true
+        unit: unit
         kpiName: kpiName
         imputationDetails: imputationDetails
         value: 1.4658129805029452
@@ -6297,6 +6382,9 @@ components:
         value:
           format: double
           type: number
+        unit:
+          nullable: true
+          type: string
         status:
           type: string
         isImputed:

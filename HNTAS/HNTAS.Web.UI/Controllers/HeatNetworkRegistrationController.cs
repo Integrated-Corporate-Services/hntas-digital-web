@@ -39,6 +39,7 @@ namespace HNTAS.Web.UI.Controllers
             var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
             if (registrationSource == RegistrationSource.OFGEM)
             {
+                _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);
                 this.ShowBackButton("ExistingNetworks", "UserManagement");
             }
             else
@@ -212,7 +213,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("HeatNetworkEcCommunal");
             if(!ModelState.IsValid)
             {
-                return View();
+                return View(model);
             }
             string nextAction = model.SuppliesOneBlock switch
             {
@@ -746,6 +747,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             var viewModel = _sessionHelper.GetFromSession<CheckYourAnswersHeatNetworkModel>(HttpContext, SessionKeys.CheckYourAnswersHeatNetworkModelKey);
 
+            HowManyDwellingsIncludedModel howManyDwellingsIncludedModel = _sessionHelper.GetFromSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey);
             HeatNetworkOrganisationModel heatNetworkOrganisationModel = _sessionHelper.GetFromSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey);
             IsHnTypeCommunalViewModel isHnTypeCommunalViewModel = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel);
             DoesCommunalHnHaveOwnEcViewModel doesCommunalHnHaveOwnEcViewModel = _sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel);
@@ -754,6 +756,7 @@ namespace HNTAS.Web.UI.Controllers
             HeatNetworkConnectionsViewModel heatNetworkConnectionsModel = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey);
 
             HeatNetworkNameModel heatNetworkNameModel = _sessionHelper.GetFromSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey);
+            DoesHNHaveAPostcodeViewModel doesHNHaveAPostcodeViewModel = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
             HeatNetworkLocationModel heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
             ECDetailsModel ecDetailsModel = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey);
             HeatNetworkPhaseModel heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey);
@@ -836,13 +839,15 @@ namespace HNTAS.Web.UI.Controllers
 
             var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
             ViewBag.RegistrationSource = registrationSource;
-            
+
 
             var model = new HeatNetwork
             {
                 OrgId = heatNetworkOrganisationModel.SelectedOrganisation,
                 Name = viewModel?.HeatNetworkNameModel?.HeatNetworkName,
                 AdditionalDescription = viewModel?.HeatNetworkNameModel?.AdditionalDescription,
+                SuppliesSixOrMoreUnits = true, // cannot create heat network, unless true
+                HasAddressAndPostcode = doesHNHaveAPostcodeViewModel?.HasPostcode,
                 Address = address,
                 EcDetails = ecDetails,
                 HeatNetworkType = hnType,
