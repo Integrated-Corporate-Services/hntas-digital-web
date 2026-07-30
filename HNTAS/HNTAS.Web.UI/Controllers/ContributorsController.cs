@@ -19,14 +19,16 @@ namespace HNTAS.Web.UI.Controllers
         private readonly IUserService _userService;
         private readonly IInvitationService _invitationService;
         private readonly IInvitationTokenService _invitationTokenService;
+        private readonly IHeatNetworkService _heatNetworkService;
 
-        public ContributorsController(ISessionHelper sessionHelper, ILogger<ContributorsController> logger, IUserService userService, IInvitationService invitationService, IInvitationTokenService invitationTokenService)
+        public ContributorsController(ISessionHelper sessionHelper, ILogger<ContributorsController> logger, IUserService userService, IInvitationService invitationService, IInvitationTokenService invitationTokenService, IHeatNetworkService heatNetworkService)
         {
             _sessionHelper = sessionHelper;
             _logger = logger;
             _userService = userService;
             _invitationService = invitationService;
             _invitationTokenService = invitationTokenService;
+            _heatNetworkService = heatNetworkService;
         }
 
         [HttpGet]
@@ -252,7 +254,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult NewContributorHeatNetwork(NewContributorHeatNetworkViewModel model)
+        public async Task<IActionResult> NewContributorHeatNetwork(NewContributorHeatNetworkViewModel model)
         {
             this.ShowBackButton("NewContributorDetails");
             if (!ModelState.IsValid)
@@ -261,6 +263,15 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey, model);
+            var network = await _heatNetworkService.GetAsync(model.SelectedHeatNetwork);
+            if(network.RegistrationSource == RegistrationSource.OFGEM)
+            {
+                HeatNetworkPhaseViewModel phaseModel = new HeatNetworkPhaseViewModel { Phases = [], SelectedPhases = ["Operation"] };
+                _sessionHelper.SaveToSession<HeatNetworkPhaseViewModel>(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey, phaseModel);
+                _sessionHelper.SaveToSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey, RegistrationSource.OFGEM);
+                _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "NewContributorHeatNetwork");
+                return RedirectToAction("CheckYourAnswers");
+            }
             return RedirectToAction("HeatNetworkPhase");
         }
 
@@ -296,10 +307,19 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult HeatNetworkPhase()
+        public async Task<IActionResult> HeatNetworkPhase()
         {
             this.ShowBackButton("NewContributorHeatNetwork");
-            var model = _sessionHelper.GetFromSession<HeatNetworkPhaseViewModel>(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey) ?? new HeatNetworkPhaseViewModel { Phases = GetListOfHeatNetworkPhases() };
+            var hnModel = _sessionHelper.GetFromSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey);
+            var network = await _heatNetworkService.GetAsync(hnModel.SelectedHeatNetwork);            
+            HeatNetworkPhaseViewModel model;
+            if (network.RegistrationSource != RegistrationSource.OFGEM) {
+                model = new HeatNetworkPhaseViewModel { Phases = GetListOfHeatNetworkPhases() };
+                _sessionHelper.SaveToSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey, RegistrationSource.HNTAS);
+            }
+            else {
+                model = _sessionHelper.GetFromSession<HeatNetworkPhaseViewModel>(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey) ?? new HeatNetworkPhaseViewModel { Phases = GetListOfHeatNetworkPhases() };
+            }                
             return View(model);
         }
 
@@ -310,10 +330,11 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("NewContributorHeatNetwork");
             model.Phases = GetListOfHeatNetworkPhases();
             if (!ModelState.IsValid)
-            {                
+            {
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkPhaseViewModel>(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey, model);
+            _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "HeatNetworkPhase");
             return RedirectToAction("CheckYourAnswers");
         }
 
@@ -339,8 +360,10 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult CheckYourAnswers()
         {
-            this.ShowBackButton("HeatNetworkPhase");            
-            var model = _sessionHelper.GetFromSession<CheckYourAnswersViewModel>(HttpContext, SessionKeys.CheckYourAnswersContributorsModelSessionKey) ?? CreateCYAModel();
+            var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backAction");
+            this.ShowBackButton(backAction);
+            ViewBag.RegistrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+            var model = _sessionHelper.GetFromSession<CheckYourAnswersViewModel>(HttpContext, SessionKeys.CheckYourAnswersContributorsModelSessionKey) ?? CreateCYAModel();            
             return View(model);
         }
 
@@ -348,7 +371,9 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckYourAnswers(CheckYourAnswersViewModel model)
         {
-            this.ShowBackButton("HeatNetworkPhase");
+            var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backAction");
+            this.ShowBackButton(backAction);
+            ViewBag.RegistrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
             model = CreateCYAModel();
             if (!ModelState.IsValid)
             {
