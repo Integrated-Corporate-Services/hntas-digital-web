@@ -41,6 +41,15 @@ else
     Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
 }
 
+// Security fix : Configure HSTS (Strict-Transport-Security) for production environments
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromDays(365); // Standard 1-year duration
+});
+
+
 // Configure RouteOptions
 builder.Services.Configure<RouteOptions>(options =>
     {
@@ -457,7 +466,27 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
+// Security clickjacking fix : Add Security Headers Middleware
+app.Use(async (context, next) =>
+{
+    // Prevent Clickjacking
+    context.Response.Headers.Append("X-Frame-Options", "SAMEORIGIN");
+
+    // Modern frame protection & XSS mitigation
+    context.Response.Headers.Append("Content-Security-Policy",
+        "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'self';");
+
+    // Prevent MIME-type sniffing
+    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+
+    // Control referrer information sent in outbound links
+    context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+
+    // Restrict access to sensitive browser capabilities
+    context.Response.Headers.Append("Permissions-Policy", "camera=(), microphone=(), geolocation=(), accelerometer=()");
+
+    await next();
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -465,6 +494,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+//Status Code Pages & HTTPS Redirection
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
