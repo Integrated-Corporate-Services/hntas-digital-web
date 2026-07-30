@@ -19,6 +19,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<IInvitationService> _invitationServiceMock;
         private readonly Mock<IUserService> _userServiceMock;
         private readonly Mock<IInvitationTokenService> _invitationTokenService;
+        private readonly Mock<IHeatNetworkService> _heatNetworkServiceMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
 
         private readonly ContributorsController _controller;
@@ -29,6 +30,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _invitationServiceMock = new Mock<IInvitationService>();
             _userServiceMock = new Mock<IUserService>();
             _invitationTokenService = new Mock<IInvitationTokenService>();
+            _heatNetworkServiceMock = new Mock<IHeatNetworkService>();
             _sessionHelperMock = new Mock<ISessionHelper>();
             _controller = CreateController();
         }
@@ -40,7 +42,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 _loggerMock.Object,
                 _userServiceMock.Object,
                 _invitationServiceMock.Object,
-                _invitationTokenService.Object
+                _invitationTokenService.Object,
+                _heatNetworkServiceMock.Object
                 );
             controller.ControllerContext = new ControllerContext
             {
