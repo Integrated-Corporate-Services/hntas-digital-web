@@ -180,6 +180,34 @@
                         </p>
                     </div>
                 </div>
+
+                <environment names="local,dev">
+                    <div class="dashboard-grid__item">
+                        <div class="dashboard-card">
+                            <h3 class="dashboard-card__title govuk-heading-s">
+                                <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="PowerBi">
+                                    Power Bi Dashboard
+                                </a>
+                            </h3>
+                            <p class="govuk-body-s">
+                                View KPI assessments, performance thresholds, and data integrity checks for registered heat networks.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid__item">
+                        <div class="dashboard-card">
+                            <h3 class="dashboard-card__title govuk-heading-s">
+                                <a class="govuk-link govuk-link--no-visited-state" target="_blank" href="https://app.powerbi.com/groups/me/reports/6d3202fb-a1e5-4167-989d-07fdbed7a9d7/72d9137f634e75ade019?experience=power-bi">
+                                    Power Bi Dashboard (Open new window)
+                                </a>
+                            </h3>
+                            <p class="govuk-body-s">
+                                View KPI assessments, performance thresholds, and data integrity checks for registered heat networks.
+                            </p>
+                        </div>
+                    </div>
+                </environment>
             }            
                       
         }
@@ -231,7 +259,7 @@
                 <div class="dashboard-grid__item">
                     <div class="dashboard-card">
                         <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Networks for certification</a>
+                            <a class="govuk-link govukpower-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Networks for certification</a>
                         </h3>
                         <p class="govuk-body-s">View networks assigned to you.</p>
                     </div>
