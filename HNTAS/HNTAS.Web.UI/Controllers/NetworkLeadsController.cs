@@ -67,7 +67,8 @@ namespace HNTAS.Web.UI.Controllers
             {
                 // verify here if they can take up this role or not
                 var invitee = await _userService.GetUserByEmailIdAsync(model.EmailId);
-                if (invitee != null && invitee.Roles.Contains(UserRole.NetworkManager))
+                var eligibleForNetworkManager = (invitee == null) || (invitee != null && invitee.Roles.Contains(UserRole.NetworkManager));
+                if (eligibleForNetworkManager)
                 {
                     var invitationId = await _invitationService.AddInvitedUserAsync(
                        userId,
