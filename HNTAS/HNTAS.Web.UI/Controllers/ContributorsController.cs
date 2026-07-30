@@ -330,7 +330,7 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("NewContributorHeatNetwork");
             model.Phases = GetListOfHeatNetworkPhases();
             if (!ModelState.IsValid)
-            {                
+            {
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkPhaseViewModel>(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey, model);
