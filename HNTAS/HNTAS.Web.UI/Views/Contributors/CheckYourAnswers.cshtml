@@ -1,4 +1,5 @@
-﻿@using HNTAS.Web.UI.Models.Review
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.Review
 @using HNTAS.Web.UI.Models.Components
 @using HNTAS.Web.UI.Models.Contributors
 @model CheckYourAnswersViewModel
@@ -60,12 +61,12 @@
                     {
                         Key = "Phases(s)",
                         Value = string.Join(", ", Model.SelectedPhases),
-                        ChangeLink = Url.Action("HeatNetworkPhase", "Contributors"),
+                        ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("HeatNetworkPhase", "Contributors"),
                         ChangeLinkText = "Change"
                     }
                 }.Where(i => i != null).ToList()
             }
-        }                
+        }
     };
     var hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
     var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
