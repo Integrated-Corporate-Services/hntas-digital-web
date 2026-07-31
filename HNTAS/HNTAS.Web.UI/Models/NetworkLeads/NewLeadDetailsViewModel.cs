@@ -16,7 +16,7 @@ namespace HNTAS.Web.UI.Models.NetworkLeads
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Enter an email address")]
-        [EmailAddress(ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+        [RegularExpression(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         public string EmailId { get; set; }
 
         [MustBeTrue(ErrorMessage = "Confirm you are authorised to give this person a permission to add heat networks for this organisation.")]
