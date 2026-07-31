@@ -469,21 +469,34 @@ var app = builder.Build();
 // Security clickjacking fix : Add Security Headers Middleware
 app.Use(async (context, next) =>
 {
-    // Prevent Clickjacking
-    context.Response.Headers.Append("X-Frame-Options", "SAMEORIGIN");
+    context.Response.Headers["X-Frame-Options"] = "SAMEORIGIN";
 
-    // Modern frame protection & XSS mitigation
-    context.Response.Headers.Append("Content-Security-Policy",
-        "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'self';");
+    var connectSrc =
+        "connect-src 'self' " +
+        "https://*.powerbi.com " +
+        "https://*.analysis.windows.net " +
+        "https://login.microsoftonline.com";
 
-    // Prevent MIME-type sniffing
-    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+    if (builder.Environment.EnvironmentName == "Local")
+    {
+        connectSrc += " http://localhost:* ws://localhost:*";
+    }
 
-    // Control referrer information sent in outbound links
-    context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+    var csp =
+        "default-src 'self'; " +
+        "font-src 'self'; " +
+        "img-src 'self' data: https://*.powerbi.com; " +
+        "object-src 'none'; " +
+        "script-src 'self' 'unsafe-eval' 'unsafe-inline'; " +
+        "style-src 'self' 'unsafe-inline'; " +
+        "frame-src 'self' https://app.powerbi.com https://*.powerbi.com; " +
+        connectSrc + ";";
 
-    // Restrict access to sensitive browser capabilities
-    context.Response.Headers.Append("Permissions-Policy", "camera=(), microphone=(), geolocation=(), accelerometer=()");
+    context.Response.Headers["Content-Security-Policy"] = csp;
+
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    context.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), accelerometer=()";
 
     await next();
 });

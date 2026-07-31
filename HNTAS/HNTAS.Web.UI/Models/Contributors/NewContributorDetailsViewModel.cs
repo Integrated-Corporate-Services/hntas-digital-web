@@ -15,6 +15,7 @@ namespace HNTAS.Web.UI.Models.Contributors
         public string LastName { get; set; }
 
         [Required(ErrorMessage="Enter their email address")]
+        [EmailAddress(ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         public string EmailAddress { get; set; }
     }
 }
