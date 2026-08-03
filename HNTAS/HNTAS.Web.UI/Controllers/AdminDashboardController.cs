@@ -9,4 +9,11 @@ namespace HNTAS.Web.UI.Controllers
             return View();
         }
     }
+      public class AdminDashboardController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+    }
 }
