@@ -475,7 +475,8 @@ app.Use(async (context, next) =>
         "connect-src 'self' " +
         "https://*.powerbi.com " +
         "https://*.analysis.windows.net " +
-        "https://login.microsoftonline.com";
+        "https://login.microsoftonline.com" +
+        "https://www.google-analytics.com";
 
     if (builder.Environment.EnvironmentName == "Local")
     {
@@ -483,14 +484,14 @@ app.Use(async (context, next) =>
     }
 
     var csp =
-        "default-src 'self'; " +
-        "font-src 'self'; " +
-        "img-src 'self' data: https://*.powerbi.com; " +
-        "object-src 'none'; " +
-        "script-src 'self' 'unsafe-eval' 'unsafe-inline'; " +
-        "style-src 'self' 'unsafe-inline'; " +
-        "frame-src 'self' https://app.powerbi.com https://*.powerbi.com; " +
-        connectSrc + ";";
+           "default-src 'self'; " +
+           "font-src 'self'; " +
+           "img-src 'self' data: https://*.powerbi.com https://www.googletagmanager.com; " + 
+           "object-src 'none'; " +
+           "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com; " + 
+           "style-src 'self' 'unsafe-inline'; " +
+           "frame-src 'self' https://app.powerbi.com https://*.powerbi.com; " +
+           connectSrc + ";";
 
     context.Response.Headers["Content-Security-Policy"] = csp;
 
