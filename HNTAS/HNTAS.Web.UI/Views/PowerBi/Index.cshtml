@@ -29,12 +29,24 @@
 
 @{
     var orgId = ViewBag.OrgId as string;
+    var isSuperUser = ViewBag.IsSuperUser as bool?;
+    var powerBiUrl = string.Empty;
 
-    var powerBiUrl =
+    if (isSuperUser == true)
+    {
+        powerBiUrl =
+           $"https://app.powerbi.com/reportEmbed?reportId=e8a86f10-23c4-4238-969e-46229daa7ecc" +
+           $"&autoAuth=true" +
+           $"&ctid=cbac7005-02c1-43eb-b497-e6492d1b2dd8";
+    }
+    else
+    {
+        powerBiUrl =
         $"https://app.powerbi.com/reportEmbed?reportId=e8a86f10-23c4-4238-969e-46229daa7ecc" +
         $"&autoAuth=true" +
         $"&ctid=cbac7005-02c1-43eb-b497-e6492d1b2dd8" +
         $"&filter=KPI_Data1/org_id eq '{orgId}'";
+    }
 }
 
 <div id="powerBiWrapper">
