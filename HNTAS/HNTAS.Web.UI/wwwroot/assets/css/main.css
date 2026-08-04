@@ -5390,6 +5390,11 @@
     outline-offset: -3px;
   }
 }
+@media (forced-colors: active) {
+  .govuk-skip-link:focus {
+    outline-offset: -3px;
+  }
+}
 
 .govuk-skip-link-focused-element:focus {
   outline: none;

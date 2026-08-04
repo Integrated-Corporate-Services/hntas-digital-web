@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System.ComponentModel.DataAnnotations;
 
 namespace HNTAS.Web.UI.Models.User
 {
     public class OrganisationContactDetailsModel : ContactDetailsModel
     {
-        [Required(ErrorMessage = "Email address is missing.")]
-        [EmailAddress(ErrorMessage = "Email address is not in the correct format.")]
+        [Required]
+        [RegularExpression(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         public string? EmailAddress { get; set; }
 
         [Required(ErrorMessage = "Enter your job title.")]

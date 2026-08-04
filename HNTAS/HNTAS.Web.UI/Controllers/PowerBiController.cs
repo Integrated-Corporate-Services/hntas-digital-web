@@ -14,7 +14,10 @@ namespace HNTAS.Web.UI.Controllers
 
         public IActionResult Index()
         {
+            var isSuperUser = _sessionHelper.GetFromSession<bool?>(HttpContext, SessionKeys.IsSuperUserKey);
+
             ViewBag.OrgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
+            ViewBag.IsSuperUser = isSuperUser;
             return View();
         }
     }
