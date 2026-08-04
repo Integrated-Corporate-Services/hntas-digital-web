@@ -32,14 +32,22 @@
                             <input type="hidden" asp-for="HeatNetworkName" />
                         }
                     </div>
-                    <h3 class="govuk-heading-s">Additional description (optional)</h3>
-                    <p class="govuk-body">Use this to help distinguish networks with similar names or networks next to each other. For example, a location, reference number or building name.</p>
-                    <div class="govuk-form-group" style="margin-bottom: 30px;">
-                        <label class="govuk-label govuk-visually-hidden" for="@additionalDescriptionId">
-                            Additional description (optional)
-                        </label>                        
-                        <input class="govuk-input govuk-!-width-two-thirds" id="@additionalDescriptionId" name="@additionalDescriptionId" asp-for="AdditionalDescription" autocomplete="off" />
+
+                    <div class="govuk-form-group @(ViewData.ModelState["AdditionalDescription"]?.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+                        <h3 class="govuk-heading-s">Additional description (optional)</h3>
+                        <p class="govuk-body">Use this to help distinguish networks with similar names or networks next to each other. For example, a location, reference number or building name.</p>
+                        <div style="margin-bottom: 30px;">
+                            <label class="govuk-label govuk-visually-hidden" for="@additionalDescriptionId">
+                                Additional description (optional)
+                            </label>
+                            @if (ViewData.ModelState["AdditionalDescription"]?.Errors.Count > 0)
+                            {
+                                <span asp-validation-for="AdditionalDescription" class="govuk-error-message"></span>
+                            }
+                            <input class="govuk-input govuk-!-width-two-thirds" id="@additionalDescriptionId" name="@additionalDescriptionId" asp-for="AdditionalDescription" autocomplete="off" />
+                        </div>
                     </div>
+                  
                     <p class="govuk-body">You can change the heat network name later.</p>
                 </div>
                 <button type="submit" class="govuk-button" data-module="govuk-button">

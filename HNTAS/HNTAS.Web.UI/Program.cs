@@ -41,6 +41,15 @@ else
     Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
 }
 
+// Security fix : Configure HSTS (Strict-Transport-Security) for production environments
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromDays(365); // Standard 1-year duration
+});
+
+
 // Configure RouteOptions
 builder.Services.Configure<RouteOptions>(options =>
     {
@@ -457,7 +466,40 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
+// Security clickjacking fix : Add Security Headers Middleware
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["X-Frame-Options"] = "SAMEORIGIN";
+
+    var connectSrc =
+        "connect-src 'self' " +
+        "https://*.powerbi.com " +
+        "https://*.analysis.windows.net " +
+        "https://login.microsoftonline.com";
+
+    if (builder.Environment.EnvironmentName == "Local")
+    {
+        connectSrc += " http://localhost:* ws://localhost:*";
+    }
+
+    var csp =
+        "default-src 'self'; " +
+        "font-src 'self'; " +
+        "img-src 'self' data: https://*.powerbi.com; " +
+        "object-src 'none'; " +
+        "script-src 'self' 'unsafe-eval' 'unsafe-inline'; " +
+        "style-src 'self' 'unsafe-inline'; " +
+        "frame-src 'self' https://app.powerbi.com https://*.powerbi.com; " +
+        connectSrc + ";";
+
+    context.Response.Headers["Content-Security-Policy"] = csp;
+
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    context.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), accelerometer=()";
+
+    await next();
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -465,6 +507,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+//Status Code Pages & HTTPS Redirection
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

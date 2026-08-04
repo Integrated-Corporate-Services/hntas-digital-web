@@ -1,9 +1,6 @@
-@using HNTAS.Web.UI.Helpers;
 
 @{
     ViewData["Title"] = "Heat network details";
-    string RenderLine(string value, string suffix = "<br>") =>
-            !string.IsNullOrEmpty(value) ? $"{value}{suffix}" : "";
     string pathwayString = "";
     // int pathwayNumber = 1;
     if (Model.Pathway == "1")
@@ -25,18 +22,31 @@
             <dt class="govuk-summary-list__key">Name</dt>
             <dd class="govuk-summary-list__value">@Model.HnName</dd>
         </div>
+
+        @{
+            var addressLines = new[]
+            {
+                Model.OrganisationName,
+                Model.OrganisationAddress?.AddressLine1,
+                Model.OrganisationAddress?.AddressLine2,
+                Model.OrganisationAddress?.Town,
+                Model.OrganisationAddress?.County,
+                Model.OrganisationAddress?.Postcode,
+                Model.OrganisationAddress?.Country
+            }
+            .Where(x => !string.IsNullOrWhiteSpace(x));
+        }
+
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Address</dt>
             <dd class="govuk-summary-list__value">
-                @Model.OrganisationName <br />
-                @Html.Raw(RenderLine(Model.OrganisationAddress.AddressLine1 as string, ",<br>"))
-                @Html.Raw(RenderLine(Model.OrganisationAddress.AddressLine2 as string, ",<br>"))
-                @Html.Raw(RenderLine(Model.OrganisationAddress.Town as string, ",<br>"))
-                @Html.Raw(RenderLine(Model.OrganisationAddress.County as string, ",<br>"))
-                @Html.Raw(RenderLine(Model.OrganisationAddress.Postcode as string))
-                @Html.Raw(RenderLine(Model.OrganisationAddress.Country as string))
+                @foreach (var line in addressLines)
+                {
+                    <div>@line</div>
+                }
             </dd>
         </div>
+
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">UHNID</dt>
             <dd class="govuk-summary-list__value">@Model.HnId</dd>
@@ -121,8 +131,6 @@
                             }
                         </tbody>
                     </table>
-                    
-
                 }
             </div>
         }
