@@ -5176,6 +5176,7 @@ components:
           nullable: true
           type: string
         orgId:
+          nullable: true
           type: string
         suppliesSixOrMoreUnits:
           type: boolean
@@ -5829,6 +5830,7 @@ components:
         hnId:
           type: string
         orgId:
+          nullable: true
           type: string
         suppliesSixOrMoreUnits:
           type: boolean

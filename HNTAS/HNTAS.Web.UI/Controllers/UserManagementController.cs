@@ -240,10 +240,11 @@ namespace HNTAS.Web.UI.Controllers
             int pageSize = 6)
         {
              
-                var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-                this.ShowBackButton("UserAccount", "Dashboard");
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            this.ShowBackButton("UserAccount", "Dashboard");
+            _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);
 
-                try
+            try
                 {
                     // Validate and sanitize inputs
                     if (page < 1) page = 1;
@@ -308,7 +309,7 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnName);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.RegistrationSourceKey, RegistrationSource.OFGEM);
 
-            return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
+            return RedirectToAction("HeatNetworkDwellingsCheck", "ExistingHeatNetworkRegistration", new { hnid = hnId });
         }
 
         [HttpGet]
