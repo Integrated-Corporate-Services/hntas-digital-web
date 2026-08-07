@@ -26,12 +26,12 @@ using HNTAS.Api.Client.Client;
 namespace HNTAS.Api.Client.Model
 {
     /// <summary>
-    /// HeatNetwork
+    /// HeatNetwork2
     /// </summary>
-    public partial class HeatNetwork : IValidatableObject
+    public partial class HeatNetwork2 : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HeatNetwork" /> class.
+        /// Initializes a new instance of the <see cref="HeatNetwork2" /> class.
         /// </summary>
         /// <param name="id">id</param>
         /// <param name="uHnId">uHnId</param>
@@ -60,7 +60,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="createdAt">createdAt</param>
         /// <param name="phase">phase</param>
         [JsonConstructor]
-        public HeatNetwork(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<bool?> suppliesSixOrMoreUnits = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<bool?> hasAddressAndPostcode = default, Option<RegisteredAddress?> address = default, Option<ECDetails?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<HeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCenter = default, Option<bool?> ecSuppliesOneCommunalBuilding = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> ofgemUserEmailId = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
+        public HeatNetwork2(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<bool?> suppliesSixOrMoreUnits = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<bool?> hasAddressAndPostcode = default, Option<RegisteredAddress?> address = default, Option<ECDetails?> ecDetails = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<HeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCenter = default, Option<bool?> ecSuppliesOneCommunalBuilding = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElements?> networkElements = default, Option<Soa?> soa = default, Option<MeteringAndMonitoringStrategy?> meteringAndMonitoringStrategy = default, Option<AssessmentPlan?> assessmentPlan = default, Option<DesignConstructionLog?> designConstructionLog = default, Option<string?> ofgemUserEmailId = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default)
         {
             IdOption = id;
             UHnIdOption = uHnId;
@@ -438,7 +438,7 @@ namespace HNTAS.Api.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class HeatNetwork {\n");
+            sb.Append("class HeatNetwork2 {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  UHnId: ").Append(UHnId).Append("\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
@@ -481,9 +481,9 @@ namespace HNTAS.Api.Client.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="HeatNetwork" />
+    /// A Json converter for type <see cref="HeatNetwork2" />
     /// </summary>
-    public class HeatNetworkJsonConverter : JsonConverter<HeatNetwork>
+    public class HeatNetwork2JsonConverter : JsonConverter<HeatNetwork2>
     {
         /// <summary>
         /// The format to use to serialize OfgemImportedDate
@@ -496,14 +496,14 @@ namespace HNTAS.Api.Client.Model
         public static string CreatedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
         /// <summary>
-        /// Deserializes json to <see cref="HeatNetwork" />
+        /// Deserializes json to <see cref="HeatNetwork2" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override HeatNetwork Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override HeatNetwork2 Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -631,7 +631,7 @@ namespace HNTAS.Api.Client.Model
                             createdBy = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "createdAt":
-                            createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
+                            createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "phase":
                             phase = new Option<string?>(utf8JsonReader.GetString());
@@ -643,211 +643,211 @@ namespace HNTAS.Api.Client.Model
             }
 
             if (suppliesSixOrMoreUnits.IsSet && suppliesSixOrMoreUnits.Value == null)
-                throw new ArgumentNullException(nameof(suppliesSixOrMoreUnits), "Property is not nullable for class HeatNetwork.");
+                throw new ArgumentNullException(nameof(suppliesSixOrMoreUnits), "Property is not nullable for class HeatNetwork2.");
 
             if (name.IsSet && name.Value == null)
-                throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetwork.");
+                throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetwork2.");
 
             if (hasAddressAndPostcode.IsSet && hasAddressAndPostcode.Value == null)
-                throw new ArgumentNullException(nameof(hasAddressAndPostcode), "Property is not nullable for class HeatNetwork.");
+                throw new ArgumentNullException(nameof(hasAddressAndPostcode), "Property is not nullable for class HeatNetwork2.");
 
             if (registrationSource.IsSet && registrationSource.Value == null)
-                throw new ArgumentNullException(nameof(registrationSource), "Property is not nullable for class HeatNetwork.");
+                throw new ArgumentNullException(nameof(registrationSource), "Property is not nullable for class HeatNetwork2.");
 
             if (heatNetworkType.IsSet && heatNetworkType.Value == null)
-                throw new ArgumentNullException(nameof(heatNetworkType), "Property is not nullable for class HeatNetwork.");
+                throw new ArgumentNullException(nameof(heatNetworkType), "Property is not nullable for class HeatNetwork2.");
 
             if (hasOwnEnergyCenter.IsSet && hasOwnEnergyCenter.Value == null)
-                throw new ArgumentNullException(nameof(hasOwnEnergyCenter), "Property is not nullable for class HeatNetwork.");
+                throw new ArgumentNullException(nameof(hasOwnEnergyCenter), "Property is not nullable for class HeatNetwork2.");
 
             if (ecSuppliesOneCommunalBuilding.IsSet && ecSuppliesOneCommunalBuilding.Value == null)
-                throw new ArgumentNullException(nameof(ecSuppliesOneCommunalBuilding), "Property is not nullable for class HeatNetwork.");
+                throw new ArgumentNullException(nameof(ecSuppliesOneCommunalBuilding), "Property is not nullable for class HeatNetwork2.");
 
             if (createdBy.IsSet && createdBy.Value == null)
-                throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class HeatNetwork.");
+                throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class HeatNetwork2.");
 
-            if (createdAt.IsSet && createdAt.Value == null)
-                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class HeatNetwork.");
-
-            return new HeatNetwork(id, uHnId, hnId, orgId, suppliesSixOrMoreUnits, name, additionalDescription, hasAddressAndPostcode, address, ecDetails, pathway, registrationSource, heatNetworkType, hasOwnEnergyCenter, ecSuppliesOneCommunalBuilding, heatNetworkConnections, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemUserEmailId, ofgemImportedDate, createdBy, createdAt, phase);
+            return new HeatNetwork2(id, uHnId, hnId, orgId, suppliesSixOrMoreUnits, name, additionalDescription, hasAddressAndPostcode, address, ecDetails, pathway, registrationSource, heatNetworkType, hasOwnEnergyCenter, ecSuppliesOneCommunalBuilding, heatNetworkConnections, networkElements, soa, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemUserEmailId, ofgemImportedDate, createdBy, createdAt, phase);
         }
 
         /// <summary>
-        /// Serializes a <see cref="HeatNetwork" />
+        /// Serializes a <see cref="HeatNetwork2" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="heatNetwork"></param>
+        /// <param name="heatNetwork2"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, HeatNetwork heatNetwork, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, HeatNetwork2 heatNetwork2, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, heatNetwork, jsonSerializerOptions);
+            WriteProperties(writer, heatNetwork2, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="HeatNetwork" />
+        /// Serializes the properties of <see cref="HeatNetwork2" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="heatNetwork"></param>
+        /// <param name="heatNetwork2"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, HeatNetwork heatNetwork, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, HeatNetwork2 heatNetwork2, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (heatNetwork.NameOption.IsSet && heatNetwork.Name == null)
-                throw new ArgumentNullException(nameof(heatNetwork.Name), "Property is required for class HeatNetwork.");
+            if (heatNetwork2.NameOption.IsSet && heatNetwork2.Name == null)
+                throw new ArgumentNullException(nameof(heatNetwork2.Name), "Property is required for class HeatNetwork2.");
 
-            if (heatNetwork.CreatedByOption.IsSet && heatNetwork.CreatedBy == null)
-                throw new ArgumentNullException(nameof(heatNetwork.CreatedBy), "Property is required for class HeatNetwork.");
+            if (heatNetwork2.CreatedByOption.IsSet && heatNetwork2.CreatedBy == null)
+                throw new ArgumentNullException(nameof(heatNetwork2.CreatedBy), "Property is required for class HeatNetwork2.");
 
-            if (heatNetwork.IdOption.IsSet)
-                if (heatNetwork.IdOption.Value != null)
-                    writer.WriteString("id", heatNetwork.Id);
+            if (heatNetwork2.IdOption.IsSet)
+                if (heatNetwork2.IdOption.Value != null)
+                    writer.WriteString("id", heatNetwork2.Id);
                 else
                     writer.WriteNull("id");
 
-            if (heatNetwork.UHnIdOption.IsSet)
-                if (heatNetwork.UHnIdOption.Value != null)
-                    writer.WriteString("uHnId", heatNetwork.UHnId);
+            if (heatNetwork2.UHnIdOption.IsSet)
+                if (heatNetwork2.UHnIdOption.Value != null)
+                    writer.WriteString("uHnId", heatNetwork2.UHnId);
                 else
                     writer.WriteNull("uHnId");
 
-            if (heatNetwork.HnIdOption.IsSet)
-                if (heatNetwork.HnIdOption.Value != null)
-                    writer.WriteString("hnId", heatNetwork.HnId);
+            if (heatNetwork2.HnIdOption.IsSet)
+                if (heatNetwork2.HnIdOption.Value != null)
+                    writer.WriteString("hnId", heatNetwork2.HnId);
                 else
                     writer.WriteNull("hnId");
 
-            if (heatNetwork.OrgIdOption.IsSet)
-                if (heatNetwork.OrgIdOption.Value != null)
-                    writer.WriteString("orgId", heatNetwork.OrgId);
+            if (heatNetwork2.OrgIdOption.IsSet)
+                if (heatNetwork2.OrgIdOption.Value != null)
+                    writer.WriteString("orgId", heatNetwork2.OrgId);
                 else
                     writer.WriteNull("orgId");
 
-            if (heatNetwork.SuppliesSixOrMoreUnitsOption.IsSet)
-                writer.WriteBoolean("suppliesSixOrMoreUnits", heatNetwork.SuppliesSixOrMoreUnitsOption.Value!.Value);
+            if (heatNetwork2.SuppliesSixOrMoreUnitsOption.IsSet)
+                writer.WriteBoolean("suppliesSixOrMoreUnits", heatNetwork2.SuppliesSixOrMoreUnitsOption.Value!.Value);
 
-            if (heatNetwork.NameOption.IsSet)
-                writer.WriteString("name", heatNetwork.Name);
+            if (heatNetwork2.NameOption.IsSet)
+                writer.WriteString("name", heatNetwork2.Name);
 
-            if (heatNetwork.AdditionalDescriptionOption.IsSet)
-                if (heatNetwork.AdditionalDescriptionOption.Value != null)
-                    writer.WriteString("additionalDescription", heatNetwork.AdditionalDescription);
+            if (heatNetwork2.AdditionalDescriptionOption.IsSet)
+                if (heatNetwork2.AdditionalDescriptionOption.Value != null)
+                    writer.WriteString("additionalDescription", heatNetwork2.AdditionalDescription);
                 else
                     writer.WriteNull("additionalDescription");
 
-            if (heatNetwork.HasAddressAndPostcodeOption.IsSet)
-                writer.WriteBoolean("hasAddressAndPostcode", heatNetwork.HasAddressAndPostcodeOption.Value!.Value);
+            if (heatNetwork2.HasAddressAndPostcodeOption.IsSet)
+                writer.WriteBoolean("hasAddressAndPostcode", heatNetwork2.HasAddressAndPostcodeOption.Value!.Value);
 
-            if (heatNetwork.AddressOption.IsSet)
-                if (heatNetwork.AddressOption.Value != null)
+            if (heatNetwork2.AddressOption.IsSet)
+                if (heatNetwork2.AddressOption.Value != null)
                 {
                     writer.WritePropertyName("address");
-                    JsonSerializer.Serialize(writer, heatNetwork.Address, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, heatNetwork2.Address, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("address");
-            if (heatNetwork.EcDetailsOption.IsSet)
-                if (heatNetwork.EcDetailsOption.Value != null)
+            if (heatNetwork2.EcDetailsOption.IsSet)
+                if (heatNetwork2.EcDetailsOption.Value != null)
                 {
                     writer.WritePropertyName("ecDetails");
-                    JsonSerializer.Serialize(writer, heatNetwork.EcDetails, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, heatNetwork2.EcDetails, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("ecDetails");
-            if (heatNetwork.PathwayOption.IsSet)
-                if (heatNetwork.PathwayOption.Value != null)
-                    writer.WriteString("pathway", heatNetwork.Pathway);
+            if (heatNetwork2.PathwayOption.IsSet)
+                if (heatNetwork2.PathwayOption.Value != null)
+                    writer.WriteString("pathway", heatNetwork2.Pathway);
                 else
                     writer.WriteNull("pathway");
 
-            if (heatNetwork.RegistrationSourceOption.IsSet)
+            if (heatNetwork2.RegistrationSourceOption.IsSet)
             {
-                var registrationSourceRawValue = RegistrationSourceValueConverter.ToJsonValue(heatNetwork.RegistrationSource!.Value);
+                var registrationSourceRawValue = RegistrationSourceValueConverter.ToJsonValue(heatNetwork2.RegistrationSource!.Value);
                 writer.WriteString("registrationSource", registrationSourceRawValue);
             }
-            if (heatNetwork.HeatNetworkTypeOption.IsSet)
+            if (heatNetwork2.HeatNetworkTypeOption.IsSet)
             {
-                var heatNetworkTypeRawValue = HeatNetworkTypeValueConverter.ToJsonValue(heatNetwork.HeatNetworkType!.Value);
+                var heatNetworkTypeRawValue = HeatNetworkTypeValueConverter.ToJsonValue(heatNetwork2.HeatNetworkType!.Value);
                 writer.WriteString("heatNetworkType", heatNetworkTypeRawValue);
             }
-            if (heatNetwork.HasOwnEnergyCenterOption.IsSet)
-                writer.WriteBoolean("hasOwnEnergyCenter", heatNetwork.HasOwnEnergyCenterOption.Value!.Value);
+            if (heatNetwork2.HasOwnEnergyCenterOption.IsSet)
+                writer.WriteBoolean("hasOwnEnergyCenter", heatNetwork2.HasOwnEnergyCenterOption.Value!.Value);
 
-            if (heatNetwork.EcSuppliesOneCommunalBuildingOption.IsSet)
-                writer.WriteBoolean("ecSuppliesOneCommunalBuilding", heatNetwork.EcSuppliesOneCommunalBuildingOption.Value!.Value);
+            if (heatNetwork2.EcSuppliesOneCommunalBuildingOption.IsSet)
+                writer.WriteBoolean("ecSuppliesOneCommunalBuilding", heatNetwork2.EcSuppliesOneCommunalBuildingOption.Value!.Value);
 
-            if (heatNetwork.HeatNetworkConnectionsOption.IsSet)
-                if (heatNetwork.HeatNetworkConnectionsOption.Value != null)
+            if (heatNetwork2.HeatNetworkConnectionsOption.IsSet)
+                if (heatNetwork2.HeatNetworkConnectionsOption.Value != null)
                 {
                     writer.WritePropertyName("heatNetworkConnections");
-                    JsonSerializer.Serialize(writer, heatNetwork.HeatNetworkConnections, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, heatNetwork2.HeatNetworkConnections, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("heatNetworkConnections");
-            if (heatNetwork.NetworkElementsOption.IsSet)
-                if (heatNetwork.NetworkElementsOption.Value != null)
+            if (heatNetwork2.NetworkElementsOption.IsSet)
+                if (heatNetwork2.NetworkElementsOption.Value != null)
                 {
                     writer.WritePropertyName("networkElements");
-                    JsonSerializer.Serialize(writer, heatNetwork.NetworkElements, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, heatNetwork2.NetworkElements, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("networkElements");
-            if (heatNetwork.SoaOption.IsSet)
-                if (heatNetwork.SoaOption.Value != null)
+            if (heatNetwork2.SoaOption.IsSet)
+                if (heatNetwork2.SoaOption.Value != null)
                 {
                     writer.WritePropertyName("soa");
-                    JsonSerializer.Serialize(writer, heatNetwork.Soa, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, heatNetwork2.Soa, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("soa");
-            if (heatNetwork.MeteringAndMonitoringStrategyOption.IsSet)
-                if (heatNetwork.MeteringAndMonitoringStrategyOption.Value != null)
+            if (heatNetwork2.MeteringAndMonitoringStrategyOption.IsSet)
+                if (heatNetwork2.MeteringAndMonitoringStrategyOption.Value != null)
                 {
                     writer.WritePropertyName("meteringAndMonitoringStrategy");
-                    JsonSerializer.Serialize(writer, heatNetwork.MeteringAndMonitoringStrategy, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, heatNetwork2.MeteringAndMonitoringStrategy, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("meteringAndMonitoringStrategy");
-            if (heatNetwork.AssessmentPlanOption.IsSet)
-                if (heatNetwork.AssessmentPlanOption.Value != null)
+            if (heatNetwork2.AssessmentPlanOption.IsSet)
+                if (heatNetwork2.AssessmentPlanOption.Value != null)
                 {
                     writer.WritePropertyName("assessmentPlan");
-                    JsonSerializer.Serialize(writer, heatNetwork.AssessmentPlan, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, heatNetwork2.AssessmentPlan, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("assessmentPlan");
-            if (heatNetwork.DesignConstructionLogOption.IsSet)
-                if (heatNetwork.DesignConstructionLogOption.Value != null)
+            if (heatNetwork2.DesignConstructionLogOption.IsSet)
+                if (heatNetwork2.DesignConstructionLogOption.Value != null)
                 {
                     writer.WritePropertyName("designConstructionLog");
-                    JsonSerializer.Serialize(writer, heatNetwork.DesignConstructionLog, jsonSerializerOptions);
+                    JsonSerializer.Serialize(writer, heatNetwork2.DesignConstructionLog, jsonSerializerOptions);
                 }
                 else
                     writer.WriteNull("designConstructionLog");
-            if (heatNetwork.OfgemUserEmailIdOption.IsSet)
-                if (heatNetwork.OfgemUserEmailIdOption.Value != null)
-                    writer.WriteString("ofgemUserEmailId", heatNetwork.OfgemUserEmailId);
+            if (heatNetwork2.OfgemUserEmailIdOption.IsSet)
+                if (heatNetwork2.OfgemUserEmailIdOption.Value != null)
+                    writer.WriteString("ofgemUserEmailId", heatNetwork2.OfgemUserEmailId);
                 else
                     writer.WriteNull("ofgemUserEmailId");
 
-            if (heatNetwork.OfgemImportedDateOption.IsSet)
-                if (heatNetwork.OfgemImportedDateOption.Value != null)
-                    writer.WriteString("ofgemImportedDate", heatNetwork.OfgemImportedDateOption.Value!.Value.ToString(OfgemImportedDateFormat));
+            if (heatNetwork2.OfgemImportedDateOption.IsSet)
+                if (heatNetwork2.OfgemImportedDateOption.Value != null)
+                    writer.WriteString("ofgemImportedDate", heatNetwork2.OfgemImportedDateOption.Value!.Value.ToString(OfgemImportedDateFormat));
                 else
                     writer.WriteNull("ofgemImportedDate");
 
-            if (heatNetwork.CreatedByOption.IsSet)
-                writer.WriteString("createdBy", heatNetwork.CreatedBy);
+            if (heatNetwork2.CreatedByOption.IsSet)
+                writer.WriteString("createdBy", heatNetwork2.CreatedBy);
 
-            if (heatNetwork.CreatedAtOption.IsSet)
-                writer.WriteString("createdAt", heatNetwork.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
+            if (heatNetwork2.CreatedAtOption.IsSet)
+                if (heatNetwork2.CreatedAtOption.Value != null)
+                    writer.WriteString("createdAt", heatNetwork2.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
+                else
+                    writer.WriteNull("createdAt");
 
-            if (heatNetwork.PhaseOption.IsSet)
-                if (heatNetwork.PhaseOption.Value != null)
-                    writer.WriteString("phase", heatNetwork.Phase);
+            if (heatNetwork2.PhaseOption.IsSet)
+                if (heatNetwork2.PhaseOption.Value != null)
+                    writer.WriteString("phase", heatNetwork2.Phase);
                 else
                     writer.WriteNull("phase");
         }
