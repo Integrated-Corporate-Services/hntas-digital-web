@@ -547,7 +547,7 @@ namespace HNTAS.Api.Client.Model
                             hnId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "orgId":
-                            orgId = new Option<string?>(utf8JsonReader.GetString()!);
+                            orgId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "suppliesSixOrMoreUnits":
                             suppliesSixOrMoreUnits = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
@@ -631,9 +631,6 @@ namespace HNTAS.Api.Client.Model
             if (hnId.IsSet && hnId.Value == null)
                 throw new ArgumentNullException(nameof(hnId), "Property is not nullable for class HeatNetworkResponse.");
 
-            if (orgId.IsSet && orgId.Value == null)
-                throw new ArgumentNullException(nameof(orgId), "Property is not nullable for class HeatNetworkResponse.");
-
             if (suppliesSixOrMoreUnits.IsSet && suppliesSixOrMoreUnits.Value == null)
                 throw new ArgumentNullException(nameof(suppliesSixOrMoreUnits), "Property is not nullable for class HeatNetworkResponse.");
 
@@ -691,9 +688,6 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkResponse.HnIdOption.IsSet && heatNetworkResponse.HnId == null)
                 throw new ArgumentNullException(nameof(heatNetworkResponse.HnId), "Property is required for class HeatNetworkResponse.");
 
-            if (heatNetworkResponse.OrgIdOption.IsSet && heatNetworkResponse.OrgId == null)
-                throw new ArgumentNullException(nameof(heatNetworkResponse.OrgId), "Property is required for class HeatNetworkResponse.");
-
             if (heatNetworkResponse.NameOption.IsSet && heatNetworkResponse.Name == null)
                 throw new ArgumentNullException(nameof(heatNetworkResponse.Name), "Property is required for class HeatNetworkResponse.");
 
@@ -710,7 +704,10 @@ namespace HNTAS.Api.Client.Model
                 writer.WriteString("hnId", heatNetworkResponse.HnId);
 
             if (heatNetworkResponse.OrgIdOption.IsSet)
-                writer.WriteString("orgId", heatNetworkResponse.OrgId);
+                if (heatNetworkResponse.OrgIdOption.Value != null)
+                    writer.WriteString("orgId", heatNetworkResponse.OrgId);
+                else
+                    writer.WriteNull("orgId");
 
             if (heatNetworkResponse.SuppliesSixOrMoreUnitsOption.IsSet)
                 writer.WriteBoolean("suppliesSixOrMoreUnits", heatNetworkResponse.SuppliesSixOrMoreUnitsOption.Value!.Value);
