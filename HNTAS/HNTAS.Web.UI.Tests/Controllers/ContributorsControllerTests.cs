@@ -532,47 +532,142 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Equal("Error", resultVal.ActionName);
         }
 
-        [Fact(Skip = "Will be fixed later")]
-        public void NewContributorHeatNetwork_Post_ReturnsRedirectToActionResult()
+        [Fact]
+        public async Task NewContributorHeatNetwork_ShouldRedirectToCheckYourAnswers_WhenNetworkIsOfgem()
         {
+            // Arrange
+            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
             var model = new NewContributorHeatNetworkViewModel
             {
-
+                SelectedHeatNetwork = "HN1000001"
             };
-            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
-            _sessionHelperMock
-                .Setup(x => x.GetFromSession<string>(
-                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
-                .Returns("UserModelId");
-            var result = _controller.NewContributorHeatNetwork(model);
-            var resultVal = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("HeatNetworkPhase", resultVal.ActionName);
+
+            _heatNetworkServiceMock
+                .Setup(x => x.GetAsync(model.SelectedHeatNetwork))
+                .ReturnsAsync(new HeatNetworkResponse
+                {
+                    HnId = model.SelectedHeatNetwork,
+                    RegistrationSource = RegistrationSource.OFGEM
+                });
+
+            // Act
+            var result = await _controller.NewContributorHeatNetwork(model);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+
+            Assert.Equal("CheckYourAnswers", redirectResult.ActionName);
+
+            _sessionHelperMock.Verify(x =>
+                x.SaveToSession(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.RegistrationSourceKey,
+                    RegistrationSource.OFGEM),
+                Times.Once);
+
+            _sessionHelperMock.Verify(x =>
+                x.SaveToSession(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey,
+                    It.IsAny<HeatNetworkPhaseViewModel>()),
+                Times.Once);
         }
 
-        [Fact(Skip = "Will be fixed later")]
-        public void NewContributorHeatNetwork_Post_InvalidModelState_ReturnViewResult()
+        [Fact]
+        public async Task NewContributorHeatNetwork_ShouldRedirectToHeatNetworkPhase_WhenNetworkIsNotOfgem()
         {
+            // Arrange
+            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
             var model = new NewContributorHeatNetworkViewModel
             {
-
+                SelectedHeatNetwork = "HN1000001"
             };
-            _controller.Url = SetUpBackLink("AddContributor", "ContributorsController").Object;
-            _sessionHelperMock
-                .Setup(x => x.GetFromSession<string>(
-                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
-                .Returns("UserModelId");
-            _controller.ModelState.AddModelError("SelectedHeatNetworkId", "The SelectedHeatNetworkId field is required.");
-            var result = _controller.NewContributorHeatNetwork(model);
-            Assert.IsType<ViewResult>(result);
+
+            _heatNetworkServiceMock
+                .Setup(x => x.GetAsync(model.SelectedHeatNetwork))
+                .ReturnsAsync(new HeatNetworkResponse
+                {
+                    HnId = model.SelectedHeatNetwork,
+                    RegistrationSource = RegistrationSource.HNTAS
+                });
+
+            // Act
+            var result = await _controller.NewContributorHeatNetwork(model);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+
+            Assert.Equal("HeatNetworkPhase", redirectResult.ActionName);
+
+            _sessionHelperMock.Verify(x =>
+                x.SaveToSession(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.NewContributorHeatNetworkViewModelSessionKey,
+                    model),
+                Times.Once);
         }
 
-
-        [Fact(Skip = "Will be fixed later")]
-        public void HeatNetworkPhase_Get_ReturnsViewResult()
+        [Fact]
+        public async Task HeatNetworkPhase_Get_ReturnsViewResult()
         {
+            // Arrange
             _controller.Url = SetUpBackLink("NewContributorHeatNetwork", "ContributorsController").Object;
-            var result = _controller.HeatNetworkPhase();
+            var hnModel = new NewContributorHeatNetworkViewModel
+            {
+                SelectedHeatNetwork = "HN1000001"
+            };
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorHeatNetworkViewModel>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.NewContributorHeatNetworkViewModelSessionKey))
+                .Returns(hnModel);
+
+            _heatNetworkServiceMock
+                .Setup(x => x.GetAsync("HN1000001"))
+                .ReturnsAsync(new HeatNetworkResponse
+                {
+                    HnId = "HN1000001",
+                    RegistrationSource = RegistrationSource.HNTAS
+                });
+
+            // Act
+            var result = await _controller.HeatNetworkPhase();
+
+            // Assert
             Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public async Task HeatNetworkPhase_Get_ReturnsViewResult_WhenNetworkIsOfgem()
+        {
+            // Arrange
+            _controller.Url = SetUpBackLink("NewContributorHeatNetwork", "ContributorsController").Object;
+            var hnModel = new NewContributorHeatNetworkViewModel
+            {
+                SelectedHeatNetwork = "HN1000001"
+            };
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NewContributorHeatNetworkViewModel>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.NewContributorHeatNetworkViewModelSessionKey))
+                .Returns(hnModel);
+
+            _heatNetworkServiceMock
+                .Setup(x => x.GetAsync("HN1000001"))
+                .ReturnsAsync(new HeatNetworkResponse
+                {
+                    HnId = "HN1000001",
+                    RegistrationSource = RegistrationSource.OFGEM
+                });
+
+            // Act
+            var result = await _controller.HeatNetworkPhase();
+
+            // Assert
+            Assert.IsType<ViewResult>(result);
+            
         }
 
         [Fact]
