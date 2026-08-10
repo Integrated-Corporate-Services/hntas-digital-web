@@ -81,6 +81,24 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'OrgId'
+        /// </summary>
+        [Fact]
+        public void OrgIdTest()
+        {
+            // TODO unit test for the property 'OrgId'
+        }
+
+        /// <summary>
+        /// Test the property 'SuppliesSixOrMoreUnits'
+        /// </summary>
+        [Fact]
+        public void SuppliesSixOrMoreUnitsTest()
+        {
+            // TODO unit test for the property 'SuppliesSixOrMoreUnits'
+        }
+
+        /// <summary>
         /// Test the property 'Name'
         /// </summary>
         [Fact]
@@ -96,6 +114,15 @@ namespace HNTAS.Api.Client.Test.Model
         public void AdditionalDescriptionTest()
         {
             // TODO unit test for the property 'AdditionalDescription'
+        }
+
+        /// <summary>
+        /// Test the property 'HasAddressAndPostcode'
+        /// </summary>
+        [Fact]
+        public void HasAddressAndPostcodeTest()
+        {
+            // TODO unit test for the property 'HasAddressAndPostcode'
         }
 
         /// <summary>
@@ -141,6 +168,24 @@ namespace HNTAS.Api.Client.Test.Model
         public void HeatNetworkTypeTest()
         {
             // TODO unit test for the property 'HeatNetworkType'
+        }
+
+        /// <summary>
+        /// Test the property 'HasOwnEnergyCenter'
+        /// </summary>
+        [Fact]
+        public void HasOwnEnergyCenterTest()
+        {
+            // TODO unit test for the property 'HasOwnEnergyCenter'
+        }
+
+        /// <summary>
+        /// Test the property 'EcSuppliesOneCommunalBuilding'
+        /// </summary>
+        [Fact]
+        public void EcSuppliesOneCommunalBuildingTest()
+        {
+            // TODO unit test for the property 'EcSuppliesOneCommunalBuilding'
         }
 
         /// <summary>
@@ -195,6 +240,24 @@ namespace HNTAS.Api.Client.Test.Model
         public void DesignConstructionLogTest()
         {
             // TODO unit test for the property 'DesignConstructionLog'
+        }
+
+        /// <summary>
+        /// Test the property 'OfgemUserEmailId'
+        /// </summary>
+        [Fact]
+        public void OfgemUserEmailIdTest()
+        {
+            // TODO unit test for the property 'OfgemUserEmailId'
+        }
+
+        /// <summary>
+        /// Test the property 'OfgemImportedDate'
+        /// </summary>
+        [Fact]
+        public void OfgemImportedDateTest()
+        {
+            // TODO unit test for the property 'OfgemImportedDate'
         }
 
         /// <summary>
