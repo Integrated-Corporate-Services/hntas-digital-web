@@ -19,16 +19,14 @@ namespace HNTAS.Web.UI.Controllers
         private readonly ISessionHelper _sessionHelper;
         private readonly IHeatNetworkService _heatNetworkService;
         private readonly IOrganisationService _organisationService;
-        private readonly IAddressLookupService _addressLookUpService;
         private readonly IUserService _userService;
-        private readonly ILogger<HeatNetworkRegistrationController> _logger;
+        private readonly ILogger<ExistingHeatNetworkRegistrationController> _logger;
 
-        public ExistingHeatNetworkRegistrationController(ISessionHelper sessionHelper, IHeatNetworkService heatNetworkService, IOrganisationService organisationService, IAddressLookupService addressLookupService, IUserService userService, ILogger<HeatNetworkRegistrationController> logger)
+        public ExistingHeatNetworkRegistrationController(ISessionHelper sessionHelper, IHeatNetworkService heatNetworkService, IOrganisationService organisationService, IUserService userService, ILogger<ExistingHeatNetworkRegistrationController> logger)
         {
             _sessionHelper = sessionHelper;
             _heatNetworkService = heatNetworkService;
             _organisationService = organisationService;
-            _addressLookUpService = addressLookupService;
             _userService = userService;
             _logger = logger;
         }

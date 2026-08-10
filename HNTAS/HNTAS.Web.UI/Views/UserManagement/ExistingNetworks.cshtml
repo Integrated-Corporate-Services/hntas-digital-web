@@ -119,7 +119,7 @@
                             else
                             {
                                 <td class="govuk-table__cell">
-                                    <a class="govuk-link" href="#" aria-describedby="@heatNetwork.HnId">
+                                    <a class="govuk-link" href="@Url.Action("AddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId })" aria-describedby="@heatNetwork.HnId">
                                         Add Network details
                                 </a></td>
                             }                            
