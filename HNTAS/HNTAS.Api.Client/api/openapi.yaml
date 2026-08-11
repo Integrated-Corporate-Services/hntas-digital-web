@@ -3985,6 +3985,49 @@ components:
     Element:
       example:
         elementId: elementId
+        soaMilestones:
+        - soaStatuses:
+          - soaStatus: null
+            count: 2
+          - soaStatus: null
+            count: 2
+          soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessorUpdatedBy: assessorUpdatedBy
+          milestoneId: Milestone2
+          soaStatusUpdatedBy: soaStatusUpdatedBy
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessors:
+          - firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: null
+          - firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: null
+        - soaStatuses:
+          - soaStatus: null
+            count: 2
+          - soaStatus: null
+            count: 2
+          soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessorUpdatedBy: assessorUpdatedBy
+          milestoneId: Milestone2
+          soaStatusUpdatedBy: soaStatusUpdatedBy
+          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+          assessors:
+          - firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: null
+          - firstName: firstName
+            lastName: lastName
+            assessment: assessment
+            email: email
+            status: null
         networkElementInstanceName: networkElementInstanceName
         elementType: EC
       properties:
@@ -3994,6 +4037,11 @@ components:
         networkElementInstanceName:
           nullable: true
           type: string
+        soaMilestones:
+          items:
+            $ref: "#/components/schemas/SoaMilestone"
+          nullable: true
+          type: array
         elementType:
           $ref: "#/components/schemas/ElementTypeInShort"
       type: object
@@ -5385,9 +5433,95 @@ components:
           createdBy: createdBy
           elements:
           - elementId: elementId
+            soaMilestones:
+            - soaStatuses:
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+            - soaStatuses:
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
             networkElementInstanceName: networkElementInstanceName
             elementType: EC
           - elementId: elementId
+            soaMilestones:
+            - soaStatuses:
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+            - soaStatuses:
+              - soaStatus: null
+                count: 2
+              - soaStatus: null
+                count: 2
+              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessorUpdatedBy: assessorUpdatedBy
+              milestoneId: Milestone2
+              soaStatusUpdatedBy: soaStatusUpdatedBy
+              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+              assessors:
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
+              - firstName: firstName
+                lastName: lastName
+                assessment: assessment
+                email: email
+                status: null
             networkElementInstanceName: networkElementInstanceName
             elementType: EC
           elementsGroup:
@@ -7419,9 +7553,95 @@ components:
         createdBy: createdBy
         elements:
         - elementId: elementId
+          soaMilestones:
+          - soaStatuses:
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+          - soaStatuses:
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           networkElementInstanceName: networkElementInstanceName
           elementType: EC
         - elementId: elementId
+          soaMilestones:
+          - soaStatuses:
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+          - soaStatuses:
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           networkElementInstanceName: networkElementInstanceName
           elementType: EC
         elementsGroup:
@@ -7641,9 +7861,95 @@ components:
         createdBy: createdBy
         elements:
         - elementId: elementId
+          soaMilestones:
+          - soaStatuses:
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+          - soaStatuses:
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           networkElementInstanceName: networkElementInstanceName
           elementType: EC
         - elementId: elementId
+          soaMilestones:
+          - soaStatuses:
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+          - soaStatuses:
+            - soaStatus: null
+              count: 2
+            - soaStatus: null
+              count: 2
+            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessorUpdatedBy: assessorUpdatedBy
+            milestoneId: Milestone2
+            soaStatusUpdatedBy: soaStatusUpdatedBy
+            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
+            assessors:
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
+            - firstName: firstName
+              lastName: lastName
+              assessment: assessment
+              email: email
+              status: null
           networkElementInstanceName: networkElementInstanceName
           elementType: EC
         elementsGroup:
