@@ -112,7 +112,7 @@
                             @if(heatNetwork.HeatNetworkType == NullableOfHeatNetworkType.Unset)
                             {
                                 <td class="govuk-table__cell">
-                                    <a class="govuk-link" href="@Url.Action("HeatNetworkDwellingsCheck", "ExistingHeatNetworkRegistration", new { hnid = heatNetwork.HnId })" aria-describedby="@heatNetwork.HnId">
+                                    <a class="govuk-link" href="@Url.Action("HeatNetworkDwellingsCheck", "ExistingHeatNetworkRegistration", new { hnid = heatNetwork.HnId, registrationSource = RegistrationSource.OFGEM })" aria-describedby="@heatNetwork.HnId">
                                     Register with HNTAS
                                 </a></td>
                             }

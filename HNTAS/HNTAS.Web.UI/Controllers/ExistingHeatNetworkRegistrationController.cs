@@ -525,7 +525,7 @@ namespace HNTAS.Web.UI.Controllers
             switch (model.NextAction)
             {
                 case "HNDetails":
-                    return RedirectToAction("AddNetworkDetails", "HeatNetwork", new { hnid = hnId });
+                    return RedirectToAction("PrepareToAddNetworkDetails", "HeatNetwork", new { hnid = hnId, registrationSource = RegistrationSource.OFGEM });
                 case "AddHN":
                     return RedirectToAction("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
                 case "Dashboard":
