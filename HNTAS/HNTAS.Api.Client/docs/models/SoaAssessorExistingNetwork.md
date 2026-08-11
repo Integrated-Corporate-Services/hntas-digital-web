@@ -1,13 +1,14 @@
-# HNTAS.Api.Client.Model.Element
+# HNTAS.Api.Client.Model.SoaAssessorExistingNetwork
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ElementId** | **string** |  | [optional] 
-**NetworkElementInstanceName** | **string** |  | [optional] 
-**SoaMilestones** | [**List&lt;SoaMilestone&gt;**](SoaMilestone.md) |  | [optional] 
-**ElementType** | **ElementTypeInShort** |  | [optional] 
+**FirstName** | **string** |  | [optional] 
+**LastName** | **string** |  | [optional] 
+**Email** | **string** |  | [optional] 
+**Assessment** | **string** |  | [optional] 
+**Status** | **UserStatus** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 
