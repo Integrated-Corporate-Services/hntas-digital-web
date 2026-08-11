@@ -144,6 +144,11 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new ExistingNetworkResponseJsonConverter(),
         new CarbonInputUiDisplayJsonConverter(),
         new ImportResultJsonConverter(),
+        new ElementSoaAssignAssessorRequestForExistingNetworkJsonConverter(),
+        new ElementSoaStatusUpdateRequestForExistingNetworkJsonConverter(),
+        new SoaMilestoneJsonConverter(),
+        new SoaAssessorExistingNetworkJsonConverter(),
+        new SoaStatusWithCountExistingNetworkJsonConverter(),
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

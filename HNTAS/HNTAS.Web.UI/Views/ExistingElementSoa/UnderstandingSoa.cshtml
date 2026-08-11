@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Before you complete your Operational Milestones";
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Before you complete your Operational Milestones</h1>
+
+            <p class="govuk-body">
+                Operational Milestones are staged requirements that help existing heat networks progress towards HNTAS certification over time.
+            </p>
+
+            <p class="govuk-body">
+                You must complete different milestones at set points during the operational life of your heat network.
+            </p>                       
+
+            <p class="govuk-body"><strong>Operational milestones include:</strong> </p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>year 1 - register your heat network</li>
+                <li>year 3 - provide metering and monitoring data and demonstrate</li>
+                <li>year 4 - submit a Performance Improvement Plan</li>
+                <li>year 5 - provide metering and monitoring for all end-user connections</li>
+                <li>year 8 - achieve Certification 1</li>
+                <li>year 10 - achieve Certification 2 for operation and maintenance</li>
+            </ul>
+
+            <p class="govuk-body">
+                Use this part of the service to complete and track milestones for each heat network element. You may need to provide evidence such as monitoring records, maintenance information, performance data and supporting documents.
+            </p>
+
+            <p class="govuk-body">
+                An assessor will review the evidence submitted for each milestone to issue a Statement of Conformity (SOC). You need this to progress towards certification under HNTAS.
+            </p>
+
+            <form asp-action="SubmitUnderstandingSoa" method="post">
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+        </div>        
+    </div>
+</div>
