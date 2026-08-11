@@ -42,6 +42,29 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="elementSoaAssignAssessorRequestForExistingNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse"/>&gt;</returns>
+        Task<IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse> ApiSOASoaAssignAssessorForExistingNetworkPatchAsync(ElementSoaAssignAssessorRequestForExistingNetwork elementSoaAssignAssessorRequestForExistingNetwork, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="elementSoaAssignAssessorRequestForExistingNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse"/>?&gt;</returns>
+        Task<IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse?> ApiSOASoaAssignAssessorForExistingNetworkPatchOrDefaultAsync(ElementSoaAssignAssessorRequestForExistingNetwork elementSoaAssignAssessorRequestForExistingNetwork, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="elementSoaAssignAssessorRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASoaAssignAssessorPatchApiResponse"/>&gt;</returns>
@@ -57,6 +80,29 @@ namespace HNTAS.Api.Client.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASoaAssignAssessorPatchApiResponse"/>?&gt;</returns>
         Task<IApiSOASoaAssignAssessorPatchApiResponse?> ApiSOASoaAssignAssessorPatchOrDefaultAsync(ElementSoaAssignAssessorRequest elementSoaAssignAssessorRequest, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="elementSoaStatusUpdateRequestForExistingNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse"/>&gt;</returns>
+        Task<IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse> ApiSOAUpdateSoaStatusForExistingNetworkPatchAsync(ElementSoaStatusUpdateRequestForExistingNetwork elementSoaStatusUpdateRequestForExistingNetwork, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="elementSoaStatusUpdateRequestForExistingNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse"/>?&gt;</returns>
+        Task<IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse?> ApiSOAUpdateSoaStatusForExistingNetworkPatchOrDefaultAsync(ElementSoaStatusUpdateRequestForExistingNetwork elementSoaStatusUpdateRequestForExistingNetwork, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -106,9 +152,57 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse"/>
+    /// </summary>
+    public interface IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IApiSOASoaAssignAssessorPatchApiResponse"/>
     /// </summary>
     public interface IApiSOASoaAssignAssessorPatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+
+        /// <summary>
+        /// Returns true if the response is 400 BadRequest
+        /// </summary>
+        /// <returns></returns>
+        bool IsBadRequest { get; }
+
+        /// <summary>
+        /// Returns true if the response is 404 NotFound
+        /// </summary>
+        /// <returns></returns>
+        bool IsNotFound { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse"/>
+    /// </summary>
+    public interface IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse : HNTAS.Api.Client.Client.IApiResponse, IBadRequest<HNTAS.Api.Client.Model.ProblemDetails?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -179,6 +273,26 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The event raised after the server response
         /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiSOASoaAssignAssessorForExistingNetworkPatch;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiSOASoaAssignAssessorForExistingNetworkPatch;
+
+        internal void ExecuteOnApiSOASoaAssignAssessorForExistingNetworkPatch(SOAApi.ApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse apiResponse)
+        {
+            OnApiSOASoaAssignAssessorForExistingNetworkPatch?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiSOASoaAssignAssessorForExistingNetworkPatch(Exception exception)
+        {
+            OnErrorApiSOASoaAssignAssessorForExistingNetworkPatch?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
         public event EventHandler<ApiResponseEventArgs>? OnApiSOASoaAssignAssessorPatch;
 
         /// <summary>
@@ -194,6 +308,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiSOASoaAssignAssessorPatch(Exception exception)
         {
             OnErrorApiSOASoaAssignAssessorPatch?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiSOAUpdateSoaStatusForExistingNetworkPatch;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiSOAUpdateSoaStatusForExistingNetworkPatch;
+
+        internal void ExecuteOnApiSOAUpdateSoaStatusForExistingNetworkPatch(SOAApi.ApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse apiResponse)
+        {
+            OnApiSOAUpdateSoaStatusForExistingNetworkPatch?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiSOAUpdateSoaStatusForExistingNetworkPatch(Exception exception)
+        {
+            OnErrorApiSOAUpdateSoaStatusForExistingNetworkPatch?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -275,6 +409,286 @@ namespace HNTAS.Api.Client.Api
             Logger = LoggerFactory.CreateLogger<SOAApi>();
             HttpClient = httpClient;
             Events = sOAApiEvents;
+        }
+
+        partial void FormatApiSOASoaAssignAssessorForExistingNetworkPatch(ElementSoaAssignAssessorRequestForExistingNetwork elementSoaAssignAssessorRequestForExistingNetwork);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="elementSoaAssignAssessorRequestForExistingNetwork"></param>
+        /// <returns></returns>
+        private void ValidateApiSOASoaAssignAssessorForExistingNetworkPatch(ElementSoaAssignAssessorRequestForExistingNetwork elementSoaAssignAssessorRequestForExistingNetwork)
+        {
+            if (elementSoaAssignAssessorRequestForExistingNetwork == null)
+                throw new ArgumentNullException(nameof(elementSoaAssignAssessorRequestForExistingNetwork));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="elementSoaAssignAssessorRequestForExistingNetwork"></param>
+        private void AfterApiSOASoaAssignAssessorForExistingNetworkPatchDefaultImplementation(IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse apiResponseLocalVar, ElementSoaAssignAssessorRequestForExistingNetwork elementSoaAssignAssessorRequestForExistingNetwork)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiSOASoaAssignAssessorForExistingNetworkPatch(ref suppressDefaultLog, apiResponseLocalVar, elementSoaAssignAssessorRequestForExistingNetwork);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="elementSoaAssignAssessorRequestForExistingNetwork"></param>
+        partial void AfterApiSOASoaAssignAssessorForExistingNetworkPatch(ref bool suppressDefaultLog, IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse apiResponseLocalVar, ElementSoaAssignAssessorRequestForExistingNetwork elementSoaAssignAssessorRequestForExistingNetwork);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="elementSoaAssignAssessorRequestForExistingNetwork"></param>
+        private void OnErrorApiSOASoaAssignAssessorForExistingNetworkPatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, ElementSoaAssignAssessorRequestForExistingNetwork elementSoaAssignAssessorRequestForExistingNetwork)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiSOASoaAssignAssessorForExistingNetworkPatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, elementSoaAssignAssessorRequestForExistingNetwork);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="elementSoaAssignAssessorRequestForExistingNetwork"></param>
+        partial void OnErrorApiSOASoaAssignAssessorForExistingNetworkPatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, ElementSoaAssignAssessorRequestForExistingNetwork elementSoaAssignAssessorRequestForExistingNetwork);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="elementSoaAssignAssessorRequestForExistingNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse"/>&gt;</returns>
+        public async Task<IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse?> ApiSOASoaAssignAssessorForExistingNetworkPatchOrDefaultAsync(ElementSoaAssignAssessorRequestForExistingNetwork elementSoaAssignAssessorRequestForExistingNetwork, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiSOASoaAssignAssessorForExistingNetworkPatchAsync(elementSoaAssignAssessorRequestForExistingNetwork, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="elementSoaAssignAssessorRequestForExistingNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse"/>&gt;</returns>
+        public async Task<IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse> ApiSOASoaAssignAssessorForExistingNetworkPatchAsync(ElementSoaAssignAssessorRequestForExistingNetwork elementSoaAssignAssessorRequestForExistingNetwork, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiSOASoaAssignAssessorForExistingNetworkPatch(elementSoaAssignAssessorRequestForExistingNetwork);
+
+                FormatApiSOASoaAssignAssessorForExistingNetworkPatch(elementSoaAssignAssessorRequestForExistingNetwork);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/SOA/soa-assign-assessor-for-existing-network"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/SOA/soa-assign-assessor-for-existing-network");
+
+                    httpRequestMessageLocalVar.Content = (elementSoaAssignAssessorRequestForExistingNetwork as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(elementSoaAssignAssessorRequestForExistingNetwork, _jsonSerializerOptions));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "text/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Patch;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse>();
+
+                        ApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SOA/soa-assign-assessor-for-existing-network", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiSOASoaAssignAssessorForExistingNetworkPatchDefaultImplementation(apiResponseLocalVar, elementSoaAssignAssessorRequestForExistingNetwork);
+
+                        Events.ExecuteOnApiSOASoaAssignAssessorForExistingNetworkPatch(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiSOASoaAssignAssessorForExistingNetworkPatchDefaultImplementation(e, "/api/SOA/soa-assign-assessor-for-existing-network", uriBuilderLocalVar.Path, elementSoaAssignAssessorRequestForExistingNetwork);
+                Events.ExecuteOnErrorApiSOASoaAssignAssessorForExistingNetworkPatch(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse"/>
+        /// </summary>
+        public partial class ApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse(ILogger<ApiSOASoaAssignAssessorForExistingNetworkPatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
         partial void FormatApiSOASoaAssignAssessorPatch(ElementSoaAssignAssessorRequest elementSoaAssignAssessorRequest);
@@ -457,6 +871,286 @@ namespace HNTAS.Api.Client.Api
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
             public ApiSOASoaAssignAssessorPatchApiResponse(ILogger<ApiSOASoaAssignAssessorPatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public bool IsBadRequest => 400 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 400 BadRequest
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? BadRequest()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsBadRequest
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 400 BadRequest and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = BadRequest();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                }
+
+                return result != null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public bool IsNotFound => 404 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 404 NotFound
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.ProblemDetails? NotFound()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsNotFound
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.ProblemDetails>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 404 NotFound and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = NotFound();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiSOAUpdateSoaStatusForExistingNetworkPatch(ElementSoaStatusUpdateRequestForExistingNetwork elementSoaStatusUpdateRequestForExistingNetwork);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="elementSoaStatusUpdateRequestForExistingNetwork"></param>
+        /// <returns></returns>
+        private void ValidateApiSOAUpdateSoaStatusForExistingNetworkPatch(ElementSoaStatusUpdateRequestForExistingNetwork elementSoaStatusUpdateRequestForExistingNetwork)
+        {
+            if (elementSoaStatusUpdateRequestForExistingNetwork == null)
+                throw new ArgumentNullException(nameof(elementSoaStatusUpdateRequestForExistingNetwork));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="elementSoaStatusUpdateRequestForExistingNetwork"></param>
+        private void AfterApiSOAUpdateSoaStatusForExistingNetworkPatchDefaultImplementation(IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse apiResponseLocalVar, ElementSoaStatusUpdateRequestForExistingNetwork elementSoaStatusUpdateRequestForExistingNetwork)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiSOAUpdateSoaStatusForExistingNetworkPatch(ref suppressDefaultLog, apiResponseLocalVar, elementSoaStatusUpdateRequestForExistingNetwork);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="elementSoaStatusUpdateRequestForExistingNetwork"></param>
+        partial void AfterApiSOAUpdateSoaStatusForExistingNetworkPatch(ref bool suppressDefaultLog, IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse apiResponseLocalVar, ElementSoaStatusUpdateRequestForExistingNetwork elementSoaStatusUpdateRequestForExistingNetwork);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="elementSoaStatusUpdateRequestForExistingNetwork"></param>
+        private void OnErrorApiSOAUpdateSoaStatusForExistingNetworkPatchDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, ElementSoaStatusUpdateRequestForExistingNetwork elementSoaStatusUpdateRequestForExistingNetwork)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiSOAUpdateSoaStatusForExistingNetworkPatch(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, elementSoaStatusUpdateRequestForExistingNetwork);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="elementSoaStatusUpdateRequestForExistingNetwork"></param>
+        partial void OnErrorApiSOAUpdateSoaStatusForExistingNetworkPatch(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, ElementSoaStatusUpdateRequestForExistingNetwork elementSoaStatusUpdateRequestForExistingNetwork);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="elementSoaStatusUpdateRequestForExistingNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse"/>&gt;</returns>
+        public async Task<IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse?> ApiSOAUpdateSoaStatusForExistingNetworkPatchOrDefaultAsync(ElementSoaStatusUpdateRequestForExistingNetwork elementSoaStatusUpdateRequestForExistingNetwork, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiSOAUpdateSoaStatusForExistingNetworkPatchAsync(elementSoaStatusUpdateRequestForExistingNetwork, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="elementSoaStatusUpdateRequestForExistingNetwork"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse"/>&gt;</returns>
+        public async Task<IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse> ApiSOAUpdateSoaStatusForExistingNetworkPatchAsync(ElementSoaStatusUpdateRequestForExistingNetwork elementSoaStatusUpdateRequestForExistingNetwork, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiSOAUpdateSoaStatusForExistingNetworkPatch(elementSoaStatusUpdateRequestForExistingNetwork);
+
+                FormatApiSOAUpdateSoaStatusForExistingNetworkPatch(elementSoaStatusUpdateRequestForExistingNetwork);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/SOA/update-soa-status-for-existing-network"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/SOA/update-soa-status-for-existing-network");
+
+                    httpRequestMessageLocalVar.Content = (elementSoaStatusUpdateRequestForExistingNetwork as object) is System.IO.Stream stream
+                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
+                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(elementSoaStatusUpdateRequestForExistingNetwork, _jsonSerializerOptions));
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    string[] contentTypes = new string[] {
+                        "application/json",
+                        "text/json",
+                        "application/*+json"
+                    };
+
+                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
+
+                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
+                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Patch;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                        ILogger<ApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse>();
+
+                        ApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/SOA/update-soa-status-for-existing-network", requestedAtLocalVar, _jsonSerializerOptions);
+
+                        AfterApiSOAUpdateSoaStatusForExistingNetworkPatchDefaultImplementation(apiResponseLocalVar, elementSoaStatusUpdateRequestForExistingNetwork);
+
+                        Events.ExecuteOnApiSOAUpdateSoaStatusForExistingNetworkPatch(apiResponseLocalVar);
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiSOAUpdateSoaStatusForExistingNetworkPatchDefaultImplementation(e, "/api/SOA/update-soa-status-for-existing-network", uriBuilderLocalVar.Path, elementSoaStatusUpdateRequestForExistingNetwork);
+                Events.ExecuteOnErrorApiSOAUpdateSoaStatusForExistingNetworkPatch(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse"/>
+        /// </summary>
+        public partial class ApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse(ILogger<ApiSOAUpdateSoaStatusForExistingNetworkPatchApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
