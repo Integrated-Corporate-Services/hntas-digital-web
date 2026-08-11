@@ -1,4 +1,5 @@
-﻿@model HNTAS.Web.UI.Models.HeatNetworksViewModel
+﻿@using HNTAS.Api.Client.Model
+@model HNTAS.Web.UI.Models.HeatNetworksViewModel
 
 <h1 class="govuk-heading-l">Heat networks</h1>
 @if (Model.IsResponsiblePerson || Model.IsHntasCoordinator)
@@ -38,7 +39,7 @@
                     <td class="govuk-table__cell">@heatNetwork.Role</td>                                    
                     
                     <td class="govuk-table__cell">
-                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("AddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId })">Add network details</a>
+                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("PrepareToAddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId, registrationSource = RegistrationSource.HNTAS })">Add network details</a>
                     </td>
 
                     @if (ViewBag.IsRegistrationEnabled == true)
