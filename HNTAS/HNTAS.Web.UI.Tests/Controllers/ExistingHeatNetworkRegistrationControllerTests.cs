@@ -1293,7 +1293,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Equal(model, viewResult.Model);
             Assert.Equal("HN1000001", _controller.ViewBag.HnId);
             Assert.Equal("Test Network", _controller.ViewBag.HNName);
-            Assert.Equal(RegistrationSource.OFGEM, _controller.ViewBag.RegistrationSource);
         }
 
         [Fact]
@@ -1313,12 +1312,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Returns("Test Network");
 
             _sessionHelperMock
-                .Setup(x => x.GetFromSession<RegistrationSource>(
-                    It.IsAny<HttpContext>(),
-                    SessionKeys.RegistrationSourceKey))
-                .Returns(RegistrationSource.OFGEM);
-
-            _sessionHelperMock
                 .Setup(x => x.GetFromSession<HeatNetworkSuccessRedirection>(
                     It.IsAny<HttpContext>(),
                     SessionKeys.HeatNetworkSuccessRedirectionSessionKey))
@@ -1335,7 +1328,6 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             Assert.Equal("HN1000001", _controller.ViewBag.HnId);
             Assert.Equal("Test Network", _controller.ViewBag.HNName);
-            Assert.Equal(RegistrationSource.OFGEM, _controller.ViewBag.RegistrationSource);
         }
     }
 }
