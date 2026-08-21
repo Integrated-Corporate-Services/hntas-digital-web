@@ -77,15 +77,16 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult SixOrMoreDwellingsAnswerNo()
         {
-            this.ShowBackButton("HeatNetworkDwellingsCheck", "ExistingHeatNetworkRegistration");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            this.ShowBackButton("HeatNetworkDwellingsCheck", "ExistingHeatNetworkRegistration", new { hnid = hnId, registrationSource = RegistrationSource.OFGEM.ToString() });
             return View();
         }
         
         [HttpGet]
         public IActionResult HeatNetworkIntroduction()
         {
-            this.ShowBackButton("HeatNetworkDwellingsCheck");
             ViewBag.HnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            this.ShowBackButton("HeatNetworkDwellingsCheck", "ExistingHeatNetworkRegistration", new { hnid = ViewBag.HnId , registrationSource = RegistrationSource.OFGEM.ToString() });
             return View();
         }    
 
