@@ -237,7 +237,9 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> NewContributorHeatNetwork()
         {
-            var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backAction");
+            //var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backAction");
+            var addContributorModel = _sessionHelper.GetFromSession<AddContributorViewModel>(HttpContext, SessionKeys.AddContributorViewModelSessionKey);
+            var backAction = addContributorModel!.InviteNewContributor == true ? "NewContributorDetails" : "ExistingContributorsList";
             this.ShowBackButton(backAction);
             var model = _sessionHelper.GetFromSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey) ?? new NewContributorHeatNetworkViewModel();
             model.HeatNetworks = await GetListOfHeatNetworks();
@@ -363,6 +365,9 @@ namespace HNTAS.Web.UI.Controllers
             var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backAction");
             this.ShowBackButton(backAction);
             ViewBag.RegistrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+
+            var addContributorModel = _sessionHelper.GetFromSession<AddContributorViewModel>(HttpContext, SessionKeys.AddContributorViewModelSessionKey);
+            ViewBag.ChangeEmailAction = addContributorModel!.InviteNewContributor == true ? "NewContributorDetails" : "ExistingContributorsList";
             var model = _sessionHelper.GetFromSession<CheckYourAnswersViewModel>(HttpContext, SessionKeys.CheckYourAnswersContributorsModelSessionKey) ?? CreateCYAModel();            
             return View(model);
         }

@@ -83,6 +83,16 @@
                 responsible party to register.
             </p>
 
+            @Html.HiddenFor(m => m.ContactDetails.ContactNumberExtension)
+            @Html.HiddenFor(m => m.ContactDetails.EmailAddress)
+            @Html.HiddenFor(m => m.ContactDetails.FirstName)
+            @Html.HiddenFor(m => m.ContactDetails.JobTitle)
+            @Html.HiddenFor(m => m.ContactDetails.LandlineNumber)
+            @Html.HiddenFor(m => m.ContactDetails.LastName)
+            @Html.HiddenFor(m => m.ContactDetails.MobileNumber)
+            @Html.HiddenFor(m => m.ContactDetails.PreferredContactType)
+           
+
             <button type="submit" class="govuk-button" data-module="govuk-button">
                 Continue
             </button>
