@@ -33,7 +33,7 @@
                     {
                         Key = "Email",
                         Value = Model.EmailAddress,
-                        ChangeLink = Url.Action("NewContributorDetails", "Contributors"),
+                        ChangeLink = Url.Action((string)ViewBag.ChangeEmailAction, "Contributors"),
                         ChangeLinkText = "Change"
                     }                    
                 }.Where(i => i != null).ToList()
@@ -53,15 +53,15 @@
                     new ReviewItem
                     {
                         Key = "Role assigned",
-                        Value = Model.RoleAssigned,
+                        Value = !String.IsNullOrEmpty(Model.RoleAssigned) ? Char.ToUpper(Model.RoleAssigned[0]) + Model.RoleAssigned.Substring(1) : Model.RoleAssigned,
                         ChangeLink = Url.Action("NewContributorRole", "Contributors"),
                         ChangeLinkText = "Change"
                     },
                     new ReviewItem
                     {
                         Key = "Phases(s)",
-                        Value = string.Join(", ", Model.SelectedPhases),
-                        ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("HeatNetworkPhase", "Contributors"),
+                        Value = String.Join(", ", Model.SelectedPhases!.Select(p => !String.IsNullOrEmpty(p) ? Char.ToUpper(p[0]) + p.Substring(1) : p)),
+                        ChangeLink = (RegistrationSource)ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("HeatNetworkPhase", "Contributors"),
                         ChangeLinkText = "Change"
                     }
                 }.Where(i => i != null).ToList()
@@ -72,7 +72,7 @@
     var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
     {
         Id = nameof(Model.ConfirmedDeclaration),
-        Name = nameof(Model.ConfirmedDeclaration),
+        Name = nameof(Model.ConfirmedDeclaration).ToLower(),
         Label = "I confirm that I am authorised to give this person access to this heat network with this role on behalf of my organisation.",
         HasError = hasDeclarationErrors,
         ErrorMessage = hasDeclarationErrors ? ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors[0].ErrorMessage : null,

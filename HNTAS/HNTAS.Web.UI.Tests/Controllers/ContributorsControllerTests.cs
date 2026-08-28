@@ -513,6 +513,10 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .ReturnsAsync(new List<HeatNetworkUserResponse> { new HeatNetworkUserResponse {
                 HnId = "HN1", Name = "Heat Network 1"
                 } });
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<AddContributorViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.AddContributorViewModelSessionKey))
+                .Returns(new AddContributorViewModel { InviteNewContributor = true });
             var result = await _controller.NewContributorHeatNetwork();
             Assert.IsType<ViewResult>(result);
         }
@@ -527,6 +531,10 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Returns("UserModelId");
             _userServiceMock.Setup(u => u.GetUserHeatNetworks(It.IsAny<string>()))
                 .Returns(Task.FromResult((List<HeatNetworkUserResponse>)null!));
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<AddContributorViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.AddContributorViewModelSessionKey))
+                .Returns(new AddContributorViewModel { InviteNewContributor = true });
             var result = await _controller.NewContributorHeatNetwork();
             var resultVal = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Error", resultVal.ActionName);
@@ -698,6 +706,10 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Setup(x => x.GetFromSession<CheckYourAnswersViewModel>(
                     It.IsAny<HttpContext>(), SessionKeys.CheckYourAnswersContributorsModelSessionKey))
                 .Returns(new CheckYourAnswersViewModel());
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<AddContributorViewModel>(
+                    It.IsAny<HttpContext>(), SessionKeys.AddContributorViewModelSessionKey))
+                .Returns(new AddContributorViewModel { InviteNewContributor = true });
             var result = _controller.CheckYourAnswers();
             Assert.IsType<ViewResult>(result);
         }
