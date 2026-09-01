@@ -131,3 +131,9 @@ $govuk-assets-path: '/assets/'; // This points to where compiled assets will be 
     display: flex;
     justify-content: flex-end;
 }
+
+.govuk-table-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}

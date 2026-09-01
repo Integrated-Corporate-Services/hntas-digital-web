@@ -12,44 +12,51 @@
 }
 
 @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
-{    
-    <table class="govuk-table">
-        <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-                <th class="govuk-table__header" scope="col">Organisation</th>
-                <th class="govuk-table__header" scope="col">Heat network</th>
-                <th class="govuk-table__header" scope="col">Your Role</th>                
-                <th class="govuk-table__header" scope="col">Action</th>
-                @if (ViewBag.IsRegistrationEnabled == true)
-                {
-                    <th class="govuk-table__header" scope="col">Certification history</th>
-                }
-            </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-            @foreach (var heatNetwork in Model.HeatNetworks)
-            {
-                <tr class="govuk-table__row">
-                    <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
-                    <td class="govuk-table__cell">
-                        @heatNetwork.HnId<br />
-                        @heatNetwork.Name<br/>
-                        @heatNetwork.HnDescription
-                    </td>
-                    <td class="govuk-table__cell">@heatNetwork.Role</td>                                    
-                    
-                    <td class="govuk-table__cell">
-                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("PrepareToAddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId, registrationSource = RegistrationSource.HNTAS })">Add network details</a>
-                    </td>
+{  
+    <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+            <div class="govuk-table-container">
+                <table class="govuk-table">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th class="govuk-table__header" scope="col">Organisation</th>
+                            <th class="govuk-table__header" scope="col">Heat network</th>
+                            <th class="govuk-table__header" scope="col">Your Role</th>
+                            <th class="govuk-table__header" scope="col">Action</th>
+                            @if (ViewBag.IsRegistrationEnabled == true)
+                            {
+                                <th class="govuk-table__header" scope="col">Certification history</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        @foreach (var heatNetwork in Model.HeatNetworks)
+                        {
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
+                                <td class="govuk-table__cell">
+                                    @heatNetwork.HnId<br />
+                                    @heatNetwork.Name<br />
+                                    @heatNetwork.HnDescription
+                                </td>
+                                <td class="govuk-table__cell">@heatNetwork.Role</td>
 
-                    @if (ViewBag.IsRegistrationEnabled == true)
-                    {
-                        <td class="govuk-table__cell">
-                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistory", new { hnId = heatNetwork.HnId })">View history</a>
-                        </td>
-                    }                                          
-                </tr>
-            }
-        </tbody>
-    </table>
+                                <td class="govuk-table__cell">
+                                    <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("PrepareToAddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId, registrationSource = RegistrationSource.HNTAS })">Add network details</a>
+                                </td>
+
+                                @if (ViewBag.IsRegistrationEnabled == true)
+                                {
+                                    <td class="govuk-table__cell">
+                                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistory", new { hnId = heatNetwork.HnId })">View history</a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    
 }
