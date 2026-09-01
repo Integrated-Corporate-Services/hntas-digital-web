@@ -39,7 +39,7 @@
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">        
-            <h1 class="govuk-heading-l">Check your answers before submitting</h1>
+            <h1 class="govuk-heading-l">Check your answers</h1>
 
             <form asp-controller="Organisation" asp-action="SubmitAnswers" method="post" novalidate>
                 @Html.AntiForgeryToken()
@@ -107,15 +107,7 @@
 
                 <h2 class="govuk-heading-m">Your details</h2>
                 <dl class="govuk-summary-list">
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Confirmed responsibility for heat networks</dt>
-                        <dd class="govuk-summary-list__value">
-                            @(userModel?.IsRegulatoryContact ?? false ? "Yes" : "No")
-                            </dd>
-                        <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="@Url.Action("ConfirmResponsibility")">Change<span class="govuk-visually-hidden"> Confirmed responsibility for heat networks</span></a>
-                        </dd>
-                    </div>                    
+                   
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">First name</dt>
                         <dd class="govuk-summary-list__value">@userModel?.ContactDetails?.FirstName</dd>
@@ -131,7 +123,7 @@
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Preferred contact number for work</dt>
+                        <dt class="govuk-summary-list__key">Contact number</dt>
                         <dd class="govuk-summary-list__value">@displayContactNumber</dd>
                         <dd class="govuk-summary-list__actions">
                             @* <a class="govuk-link" href="@Url.Action("ContactDetails")">Change<span class="govuk-visually-hidden"> preferred contact number for work</span></a> *@
@@ -158,7 +150,7 @@
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Organisation Agreement</dt>
+                        <dt class="govuk-summary-list__key">Organisation agreement</dt>
                         <dd class="govuk-summary-list__value">
                             @(deedPollViewModel.IsDeedPollAccepted ? "Yes" : "No")
                         </dd>

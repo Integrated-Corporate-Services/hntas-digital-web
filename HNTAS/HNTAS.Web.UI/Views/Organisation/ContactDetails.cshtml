@@ -21,9 +21,7 @@
                                              (Model.PreferredContactType == PreferredContactType.Mobile && hasMobileNumberErrors);
 
     // Custom check for Landline default selection:
-    bool isLandlineSelected = ViewBag.IsRegulatoryContact == true
-     ? (Model.PreferredContactType == PreferredContactType.Landline || Model.PreferredContactType == null) : Model.PreferredContactType == PreferredContactType.Landline;
-    bool isPreferNotToSaySelected = ViewBag.IsRegulatoryContact != true && Model.PreferredContactType == PreferredContactType.PreferNotToSay;
+    bool isLandlineSelected = Model.PreferredContactType == PreferredContactType.Landline;
 }
 
 <div class="govuk-grid-row">
@@ -38,7 +36,29 @@
                 </h2>
                 <div class="govuk-error-summary__body">
                     <ul class="govuk-list govuk-error-summary__list">
-                        @foreach (var keyValuePair in ViewData.ModelState)
+
+                        @{
+                            // Define your desired display order by field key
+                            var propertyOrder = new List<string>
+                            {
+                                nameof(Model.FirstName),
+                                nameof(Model.LastName),
+                                nameof(Model.PreferredContactType),
+                                nameof(Model.LandlineNumber),
+                                nameof(Model.ContactNumberExtension),
+                                nameof(Model.MobileNumber),
+                                nameof(Model.JobTitle),
+                            };
+
+                            // Order ModelState according to propertyOrder (unknown keys go to the end)
+                            var orderedModelState = ViewData.ModelState
+                                .OrderBy(kvp =>
+                                {
+                                    var index = propertyOrder.IndexOf(kvp.Key);
+                                    return index == -1 ? int.MaxValue : index;
+                                });
+                        }
+                        @foreach (var keyValuePair in orderedModelState)
                         {
                             var fieldName = keyValuePair.Key;
                             var modelStateEntry = keyValuePair.Value;
@@ -98,7 +118,7 @@
                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.FirstName)
                     </p>
                 }
-                <input class="govuk-input govuk-!-width-two-thirds" id="FirstName" name="FirstName" type="text" autocomplete="given-name" spellcheck="false"
+                <input class="govuk-input" id="FirstName" name="FirstName" type="text" autocomplete="given-name" spellcheck="false"
                        asp-for="FirstName"
                        aria-describedby="@(hasFirstNameErrors ? "FirstName-error" : "")">
             </div>
@@ -114,7 +134,7 @@
                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.LastName)
                     </p>
                 }
-                <input class="govuk-input govuk-!-width-two-thirds" id="LastName" name="LastName" type="text" autocomplete="family-name" spellcheck="false"
+                <input class="govuk-input" id="LastName" name="LastName" type="text" autocomplete="family-name" spellcheck="false"
                        asp-for="LastName"
                        aria-describedby="@(hasLastNameErrors ? "LastName-error" : "")">
             </div>
@@ -123,10 +143,10 @@
             <div class="govuk-form-group @(hasAnyContactNumberSectionError ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset" aria-describedby="contact-number-hint @(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                        Preferred contact number for work
+                        How would you prefer to be contacted?
                     </legend>
                     <div id="contact-number-hint" class="govuk-hint">
-                        HNTAS will only use this if we need to contact you about your organisation's heat networks. For international numbers, include the country code.
+                        Select one option
                     </div>
 
                     @* Error for PreferredContactType radio buttons *@
@@ -159,7 +179,7 @@
                                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.LandlineNumber)
                                     </p>
                                 }
-                                <input class="govuk-input govuk-input--width-20" id="LandlineNumber" name="LandlineNumber" type="tel" autocomplete="tel"
+                                <input class="govuk-input govuk-!-width-one-half" id="LandlineNumber" name="LandlineNumber" type="tel" autocomplete="tel"
                                        asp-for="LandlineNumber">
                             </div>
 
@@ -173,7 +193,7 @@
                                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ContactNumberExtension)
                                     </p>
                                 }
-                                <input class="govuk-input govuk-input--width-5" id="ContactNumberExtension" name="ContactNumberExtension" type="text"
+                                <input class="govuk-input govuk-!-width-one-half" id="ContactNumberExtension" name="ContactNumberExtension" type="text"
                                        asp-for="ContactNumberExtension">
                             </div>
                         </div>
@@ -200,7 +220,7 @@
                                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.MobileNumber)
                                     </p>
                                 }
-                                <input class="govuk-input govuk-input--width-20" id="MobileNumber" name="MobileNumber" type="tel" autocomplete="tel"
+                                <input class="govuk-input govuk-!-width-one-half" id="MobileNumber" name="MobileNumber" type="tel" autocomplete="tel"
                                        asp-for="MobileNumber">
                             </div>
                         </div>                        
@@ -219,7 +239,7 @@
                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.JobTitle)
                     </p>
                 }
-                <input class="govuk-input govuk-!-width-two-thirds" id="JobTitle" name="JobTitle" type="text" spellcheck="false"
+                <input class="govuk-input" id="JobTitle" name="JobTitle" type="text" spellcheck="false"
                        asp-for="JobTitle"
                        aria-describedby="@(hasJobTitleErrors ? "JobTitle-error" : "")">
             </div>

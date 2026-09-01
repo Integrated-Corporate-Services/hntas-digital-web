@@ -135,7 +135,7 @@
                     }
                     <span class="govuk-service-navigation__service-name">
                         <a asp-action="StartPage" asp-controller="Home" class="govuk-service-navigation__link">
-                            Certify your heat networks
+                                Certify your heat networks
                         </a>
                     </span>
                     <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
@@ -144,12 +144,6 @@
                             Menu
                         </button>
                         <ul class="govuk-service-navigation__list" id="navigation">
-                           @*  <li class="govuk-service-navigation__item @(currentAction == "StartPage" && currentController == "Home" ? "govuk-service-navigation__item--active" : "")">
-                                <a class="govuk-service-navigation__link" href="@Url.Action("StartPage", "Home")"
-                                   @(currentAction == "StartPage" && currentController == "Home" ? "aria-current=page" : "")>
-                                    <strong>HNTAS</strong>
-                                </a>
-                            </li> *@
                             <li class="govuk-service-navigation__item @(currentAction == "DocumentLibrary" && currentController == "Home" ? "govuk-service-navigation__item--active" : "")">
                                 <a class="govuk-service-navigation__link" href="@Url.Action("DocumentLibrary", "Home")"
                                    @(currentAction == "DocumentLibrary" && currentController == "Home" ? "aria-current=page" : "")>
@@ -193,7 +187,7 @@
                     Beta
                 </strong>
                 <span class="govuk-phase-banner__text">
-                    This is a new service – your <a class="govuk-link" href="@Url.Action("Index", "Feedback")">feedback</a> will help us to improve it.
+                    This is a new service. Help us improve it and <a class="govuk-link" href="@Url.Action("Index", "Feedback")">give your feedback (opens in new tab). </a>
                 </span>
             </p>
         </div>

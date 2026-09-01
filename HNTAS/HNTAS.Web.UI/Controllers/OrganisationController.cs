@@ -458,14 +458,6 @@ namespace HNTAS.Web.UI.Controllers
                     if (string.IsNullOrWhiteSpace(contactDetails.MobileNumber))
                         ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number.");
                     break;
-                default:
-                    contactDetails.LandlineNumber = null;
-                    contactDetails.ContactNumberExtension = null;
-                    contactDetails.MobileNumber = null;
-                    ModelState.Remove(nameof(contactDetails.LandlineNumber));
-                    ModelState.Remove(nameof(contactDetails.ContactNumberExtension));
-                    ModelState.Remove(nameof(contactDetails.MobileNumber));
-                    break;
             }
 
             if (!ModelState.IsValid)
