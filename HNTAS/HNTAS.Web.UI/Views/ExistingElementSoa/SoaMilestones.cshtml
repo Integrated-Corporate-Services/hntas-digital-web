@@ -7,6 +7,29 @@
     ViewData["Title"] = "Track milestones";
 }
 
+@section BeforeMain {
+
+    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="@Url.Action("UserAccount", "Dashboard")">Dashboard</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="@Url.Action("HeatNetworks", "UserManagement")">Networks</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="@Url.Action("AddNetworkDetails", "HeatNetwork", new { hnid = @ViewBag.HnId })">Overview</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="@Url.Action("NetworkDetails", "HeatNetwork")">Details</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                SOA
+            </li>
+        </ol>
+    </nav>
+}
+
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
