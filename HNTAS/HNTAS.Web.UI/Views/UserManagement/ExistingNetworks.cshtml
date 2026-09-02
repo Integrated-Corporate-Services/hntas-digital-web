@@ -66,74 +66,78 @@
     <div class="govuk-grid-column-full">
 
         <h1 class="govuk-heading-l">Heat networks</h1>
+        <div class="govuk-table-container">
+            <table class="govuk-table">
 
-        <table class="govuk-table">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("OfgemImportedDate")'" type="button" class="" data-module="govuk-button">
+                                Ofgem imported date @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("hnId")'" type="button" class="" data-module="govuk-button">
+                                Heat network @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header">Action</th>
+                    </tr>
+                </thead>
 
-            <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">                        
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("OfgemImportedDate")'" type="button" class="" data-module="govuk-button">
-                            Ofgem imported date @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">                        
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("hnId")'" type="button" class="" data-module="govuk-button">
-                            Heat network @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>                    
-                    <th scope="col" class="govuk-table__header">Action</th>                    
-                </tr>
-            </thead>
-
-            <tbody class="govuk-table__body">
-                @if (Model.Items != null && Model.Items.Any())
-                {
-                    @foreach (var heatNetwork in Model.Items)
+                <tbody class="govuk-table__body">
+                    @if (Model.Items != null && Model.Items.Any())
                     {
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">
-                                @if (heatNetwork.OfgemImportedDate.HasValue)
+                        @foreach (var heatNetwork in Model.Items)
+                        {
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">
+                                    @if (heatNetwork.OfgemImportedDate.HasValue)
+                                    {
+                                        <time class="local-time" datetime="@heatNetwork.OfgemImportedDate.Value.ToString("o")">
+                                            @heatNetwork.OfgemImportedDate.Value.ToString("dd/MM/yyyy")
+                                        </time>
+                                    }
+                                    else
+                                    {
+                                        @String.Empty
+                                    }
+                                </td>
+                                <td class="govuk-table__cell">
+                                    @heatNetwork.HnId<br />
+                                    @heatNetwork.Name<br />
+                                    @heatNetwork.AdditionalDescription
+                                </td>
+
+                                @if (heatNetwork.HeatNetworkType == NullableOfHeatNetworkType.Unset)
                                 {
-                                    <time class="local-time" datetime="@heatNetwork.OfgemImportedDate.Value.ToString("o")">
-                                        @heatNetwork.OfgemImportedDate.Value.ToString("dd/MM/yyyy")
-                                    </time>
+                                    <td class="govuk-table__cell">
+                                        <a class="govuk-link" href="@Url.Action("HeatNetworkDwellingsCheck", "ExistingHeatNetworkRegistration", new { hnid = heatNetwork.HnId, registrationSource = RegistrationSource.OFGEM })" aria-describedby="@heatNetwork.HnId">
+                                            Register with HNTAS
+                                        </a>
+                                    </td>
                                 }
                                 else
                                 {
-                                    @String.Empty
+                                    <td class="govuk-table__cell">
+                                        <a class="govuk-link" href="@Url.Action("PrepareToAddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId, registrationSource = RegistrationSource.OFGEM })" aria-describedby="@heatNetwork.HnId">
+                                            Add Network details
+                                        </a>
+                                    </td>
                                 }
-                            </td>
-                            <td class="govuk-table__cell">
-                                @heatNetwork.HnId<br />
-                                @heatNetwork.Name<br />
-                                @heatNetwork.AdditionalDescription
-                            </td> 
-                            
-                            @if(heatNetwork.HeatNetworkType == NullableOfHeatNetworkType.Unset)
-                            {
-                                <td class="govuk-table__cell">
-                                    <a class="govuk-link" href="@Url.Action("HeatNetworkDwellingsCheck", "ExistingHeatNetworkRegistration", new { hnid = heatNetwork.HnId, registrationSource = RegistrationSource.OFGEM })" aria-describedby="@heatNetwork.HnId">
-                                    Register with HNTAS
-                                </a></td>
-                            }
-                            else
-                            {
-                                <td class="govuk-table__cell">
-                                    <a class="govuk-link" href="@Url.Action("PrepareToAddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId, registrationSource = RegistrationSource.OFGEM })" aria-describedby="@heatNetwork.HnId">
-                                        Add Network details
-                                </a></td>
-                            }                            
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell" colspan="5">No existing network found.</td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell" colspan="5">No existing network found.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        
 
         @if (totalPages > 1)
         {

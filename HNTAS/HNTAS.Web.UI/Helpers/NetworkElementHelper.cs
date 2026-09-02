@@ -14,7 +14,7 @@ namespace HNTAS.Web.UI.Helpers
             {
 
                 new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.ReadyToStart, IsEnabled = true },
-                new() { Id = NetworkDetailsType.Soa, Label = "Element Statement of Applicability", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                new() { Id = NetworkDetailsType.Soa, Label = "Statement of Applicability", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
             };
         }
 

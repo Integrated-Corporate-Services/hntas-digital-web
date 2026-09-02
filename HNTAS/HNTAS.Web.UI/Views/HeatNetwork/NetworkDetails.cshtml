@@ -7,8 +7,8 @@
 }
 <div class="govuk-width-container">
     <div class="govuk-grid-row">
-        <span class="govuk-caption-xl">@ViewBag.HNId</span>
-            <h1 class="govuk-heading-xl">
+        <span class="govuk-caption-l">@ViewBag.HNId @ViewBag.HNName</span>
+            <h1 class="govuk-heading-l">
                 Network details
             </h1>
 
@@ -25,6 +25,9 @@
                         case StatusConstants.InProgress:
                         case StatusConstants.Incomplete:
                             statusClass = "govuk-tag--blue";                            
+                            break;
+                        case StatusConstants.Completed:
+                            statusClass = "govuk-tag--green";
                             break;
                         default:
                             statusClass = "govuk-tag--grey";
