@@ -7,7 +7,7 @@ namespace HNTAS.Web.UI.Models.NetworkElements
     {
         public List<NetworkElementOption> ElementOptions { get; set; } = new();
 
-        [MustHaveOneItem(ErrorMessage = "Select at least one element that is part of your heat network.")]
+        [MustHaveOneItem(ErrorMessage = "Select at least one element that is part of your heat network")]
         public List<HeatNetworkElementType> SelectedElementIds { get; set; } = new();
         public Dictionary<HeatNetworkElementType, int?> ElementCounts { get; set; } = new();
     }
