@@ -476,12 +476,15 @@ app.Use(async (context, next) =>
 {
     context.Response.Headers["X-Frame-Options"] = "SAMEORIGIN";
 
-    var connectSrc =
-        "connect-src 'self' " +
-        "https://*.powerbi.com " +
-        "https://*.analysis.windows.net " +
-        "https://login.microsoftonline.com" +
-        "https://www.google-analytics.com";
+    var connectSrc = string.Join(" ",
+    [
+        "connect-src",
+        "'self'",
+        "https://*.powerbi.com",
+        "https://*.analysis.windows.net",
+        "https://login.microsoftonline.com",
+        "https://www.google-analytics.com"
+    ]);
 
     if (builder.Environment.EnvironmentName == "Local")
     {
