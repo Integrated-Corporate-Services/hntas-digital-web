@@ -102,7 +102,7 @@ namespace HNTAS.Web.UI.Controllers
                     }
                     // Remove the automatic ModelState entry first
                     ModelState.Remove($"ElementCounts.{selectedId}");
-                    ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter number of {element.SubLabel.ToLower()}.");
+                    ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter number of {element.SubLabel.ToLower()}");
                 }
             }
 
