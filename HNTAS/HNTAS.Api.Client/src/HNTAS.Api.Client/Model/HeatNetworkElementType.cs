@@ -173,7 +173,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkElementType heatNetworkElementType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkElementType.ToString());
+            writer.WriteStringValue(HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElementType).ToString());
         }
     }
 
@@ -204,14 +204,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the HeatNetworkElementType to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="heatNetworkElementType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, HeatNetworkElementType? heatNetworkElementType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(heatNetworkElementType?.ToString() ?? "null");
+            writer.WriteStringValue(heatNetworkElementType.HasValue ? HeatNetworkElementTypeValueConverter.ToJsonValue(heatNetworkElementType.Value).ToString() : "null");
         }
     }
 }
