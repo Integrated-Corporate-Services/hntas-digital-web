@@ -2738,6 +2738,65 @@ paths:
           description: Not Found
       tags:
       - Users
+  /api/Users/ddh-and-contributors-paginated:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: pageNumber
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 10
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sortBy
+        required: false
+        schema:
+          default: firstName
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortDirection
+        required: false
+        schema:
+          default: asc
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResultOfManagedUserResponse"
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Users
   /api/Users/network-managers:
     get:
       parameters:
@@ -8777,6 +8836,63 @@ components:
           type: string
         orgAddress:
           $ref: "#/components/schemas/Address"
+      type: object
+    PagedResultOfManagedUserResponse:
+      example:
+        pageNumber: 0
+        hasNextPage: true
+        totalPages: 5
+        pageSize: 6
+        hasPreviousPage: true
+        totalCount: 1
+        items:
+        - heatNetworks:
+          - hnId: hnId
+            name: name
+          - hnId: hnId
+            name: name
+          roles:
+          - roles
+          - roles
+          name: name
+          emailId: emailId
+          id: id
+          status: status
+          invitedAt: 2000-01-23T04:56:07.000+00:00
+        - heatNetworks:
+          - hnId: hnId
+            name: name
+          - hnId: hnId
+            name: name
+          roles:
+          - roles
+          - roles
+          name: name
+          emailId: emailId
+          id: id
+          status: status
+          invitedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/ManagedUserResponse"
+          type: array
+        pageNumber:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        hasPreviousPage:
+          type: boolean
+        hasNextPage:
+          type: boolean
       type: object
     PagedResultOfUserNetworkDetailsResponse:
       example:
