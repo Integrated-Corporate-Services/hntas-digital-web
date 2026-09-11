@@ -64,14 +64,13 @@ namespace HNTAS.Api.Client.Api
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="userId"> (optional)</param>
-        /// <param name="networkManagersOnly"> (optional, default to false)</param>
         /// <param name="pageNumber"> (optional, default to 1)</param>
-        /// <param name="pageSize"> (optional, default to 1)</param>
+        /// <param name="pageSize"> (optional, default to 10)</param>
         /// <param name="sortBy"> (optional, default to &quot;firstName&quot;)</param>
         /// <param name="sortDirection"> (optional, default to &quot;asc&quot;)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersDdhAndContributorsPaginatedGetApiResponse"/>&gt;</returns>
-        Task<IApiUsersDdhAndContributorsPaginatedGetApiResponse> ApiUsersDdhAndContributorsPaginatedGetAsync(Option<string> userId = default, Option<bool> networkManagersOnly = default, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default);
+        Task<IApiUsersDdhAndContributorsPaginatedGetApiResponse> ApiUsersDdhAndContributorsPaginatedGetAsync(Option<string> userId = default, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -80,14 +79,13 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <param name="userId"> (optional)</param>
-        /// <param name="networkManagersOnly"> (optional, default to false)</param>
         /// <param name="pageNumber"> (optional, default to 1)</param>
-        /// <param name="pageSize"> (optional, default to 1)</param>
+        /// <param name="pageSize"> (optional, default to 10)</param>
         /// <param name="sortBy"> (optional, default to &quot;firstName&quot;)</param>
         /// <param name="sortDirection"> (optional, default to &quot;asc&quot;)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersDdhAndContributorsPaginatedGetApiResponse"/>?&gt;</returns>
-        Task<IApiUsersDdhAndContributorsPaginatedGetApiResponse?> ApiUsersDdhAndContributorsPaginatedGetOrDefaultAsync(Option<string> userId = default, Option<bool> networkManagersOnly = default, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default);
+        Task<IApiUsersDdhAndContributorsPaginatedGetApiResponse?> ApiUsersDdhAndContributorsPaginatedGetOrDefaultAsync(Option<string> userId = default, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -1752,7 +1750,7 @@ namespace HNTAS.Api.Client.Api
             partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
-        partial void FormatApiUsersDdhAndContributorsPaginatedGet(ref Option<string> userId, ref Option<bool> networkManagersOnly, ref Option<int> pageNumber, ref Option<int> pageSize, ref Option<string> sortBy, ref Option<string> sortDirection);
+        partial void FormatApiUsersDdhAndContributorsPaginatedGet(ref Option<string> userId, ref Option<int> pageNumber, ref Option<int> pageSize, ref Option<string> sortBy, ref Option<string> sortDirection);
 
         /// <summary>
         /// Validates the request parameters
@@ -1778,15 +1776,14 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="userId"></param>
-        /// <param name="networkManagersOnly"></param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <param name="sortBy"></param>
         /// <param name="sortDirection"></param>
-        private void AfterApiUsersDdhAndContributorsPaginatedGetDefaultImplementation(IApiUsersDdhAndContributorsPaginatedGetApiResponse apiResponseLocalVar, Option<string> userId, Option<bool> networkManagersOnly, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection)
+        private void AfterApiUsersDdhAndContributorsPaginatedGetDefaultImplementation(IApiUsersDdhAndContributorsPaginatedGetApiResponse apiResponseLocalVar, Option<string> userId, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection)
         {
             bool suppressDefaultLog = false;
-            AfterApiUsersDdhAndContributorsPaginatedGet(ref suppressDefaultLog, apiResponseLocalVar, userId, networkManagersOnly, pageNumber, pageSize, sortBy, sortDirection);
+            AfterApiUsersDdhAndContributorsPaginatedGet(ref suppressDefaultLog, apiResponseLocalVar, userId, pageNumber, pageSize, sortBy, sortDirection);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -1797,12 +1794,11 @@ namespace HNTAS.Api.Client.Api
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
         /// <param name="userId"></param>
-        /// <param name="networkManagersOnly"></param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <param name="sortBy"></param>
         /// <param name="sortDirection"></param>
-        partial void AfterApiUsersDdhAndContributorsPaginatedGet(ref bool suppressDefaultLog, IApiUsersDdhAndContributorsPaginatedGetApiResponse apiResponseLocalVar, Option<string> userId, Option<bool> networkManagersOnly, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection);
+        partial void AfterApiUsersDdhAndContributorsPaginatedGet(ref bool suppressDefaultLog, IApiUsersDdhAndContributorsPaginatedGetApiResponse apiResponseLocalVar, Option<string> userId, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -1811,15 +1807,14 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="userId"></param>
-        /// <param name="networkManagersOnly"></param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <param name="sortBy"></param>
         /// <param name="sortDirection"></param>
-        private void OnErrorApiUsersDdhAndContributorsPaginatedGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId, Option<bool> networkManagersOnly, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection)
+        private void OnErrorApiUsersDdhAndContributorsPaginatedGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiUsersDdhAndContributorsPaginatedGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, userId, networkManagersOnly, pageNumber, pageSize, sortBy, sortDirection);
+            OnErrorApiUsersDdhAndContributorsPaginatedGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, userId, pageNumber, pageSize, sortBy, sortDirection);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -1832,29 +1827,27 @@ namespace HNTAS.Api.Client.Api
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
         /// <param name="userId"></param>
-        /// <param name="networkManagersOnly"></param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <param name="sortBy"></param>
         /// <param name="sortDirection"></param>
-        partial void OnErrorApiUsersDdhAndContributorsPaginatedGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId, Option<bool> networkManagersOnly, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection);
+        partial void OnErrorApiUsersDdhAndContributorsPaginatedGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<string> userId, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection);
 
         /// <summary>
         ///  
         /// </summary>
         /// <param name="userId"> (optional)</param>
-        /// <param name="networkManagersOnly"> (optional, default to false)</param>
         /// <param name="pageNumber"> (optional, default to 1)</param>
-        /// <param name="pageSize"> (optional, default to 1)</param>
+        /// <param name="pageSize"> (optional, default to 10)</param>
         /// <param name="sortBy"> (optional, default to &quot;firstName&quot;)</param>
         /// <param name="sortDirection"> (optional, default to &quot;asc&quot;)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersDdhAndContributorsPaginatedGetApiResponse"/>&gt;</returns>
-        public async Task<IApiUsersDdhAndContributorsPaginatedGetApiResponse?> ApiUsersDdhAndContributorsPaginatedGetOrDefaultAsync(Option<string> userId = default, Option<bool> networkManagersOnly = default, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default)
+        public async Task<IApiUsersDdhAndContributorsPaginatedGetApiResponse?> ApiUsersDdhAndContributorsPaginatedGetOrDefaultAsync(Option<string> userId = default, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiUsersDdhAndContributorsPaginatedGetAsync(userId, networkManagersOnly, pageNumber, pageSize, sortBy, sortDirection, cancellationToken).ConfigureAwait(false);
+                return await ApiUsersDdhAndContributorsPaginatedGetAsync(userId, pageNumber, pageSize, sortBy, sortDirection, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -1867,14 +1860,13 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="userId"> (optional)</param>
-        /// <param name="networkManagersOnly"> (optional, default to false)</param>
         /// <param name="pageNumber"> (optional, default to 1)</param>
-        /// <param name="pageSize"> (optional, default to 1)</param>
+        /// <param name="pageSize"> (optional, default to 10)</param>
         /// <param name="sortBy"> (optional, default to &quot;firstName&quot;)</param>
         /// <param name="sortDirection"> (optional, default to &quot;asc&quot;)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IApiUsersDdhAndContributorsPaginatedGetApiResponse"/>&gt;</returns>
-        public async Task<IApiUsersDdhAndContributorsPaginatedGetApiResponse> ApiUsersDdhAndContributorsPaginatedGetAsync(Option<string> userId = default, Option<bool> networkManagersOnly = default, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default)
+        public async Task<IApiUsersDdhAndContributorsPaginatedGetApiResponse> ApiUsersDdhAndContributorsPaginatedGetAsync(Option<string> userId = default, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
@@ -1882,7 +1874,7 @@ namespace HNTAS.Api.Client.Api
             {
                 ValidateApiUsersDdhAndContributorsPaginatedGet(userId, sortBy, sortDirection);
 
-                FormatApiUsersDdhAndContributorsPaginatedGet(ref userId, ref networkManagersOnly, ref pageNumber, ref pageSize, ref sortBy, ref sortDirection);
+                FormatApiUsersDdhAndContributorsPaginatedGet(ref userId, ref pageNumber, ref pageSize, ref sortBy, ref sortDirection);
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
@@ -1897,9 +1889,6 @@ namespace HNTAS.Api.Client.Api
 
                     if (userId.IsSet)
                         parseQueryStringLocalVar["userId"] = ClientUtils.ParameterToString(userId.Value);
-
-                    if (networkManagersOnly.IsSet)
-                        parseQueryStringLocalVar["networkManagersOnly"] = ClientUtils.ParameterToString(networkManagersOnly.Value);
 
                     if (pageNumber.IsSet)
                         parseQueryStringLocalVar["pageNumber"] = ClientUtils.ParameterToString(pageNumber.Value);
@@ -1944,7 +1933,7 @@ namespace HNTAS.Api.Client.Api
                             }
                         }
 
-                        AfterApiUsersDdhAndContributorsPaginatedGetDefaultImplementation(apiResponseLocalVar, userId, networkManagersOnly, pageNumber, pageSize, sortBy, sortDirection);
+                        AfterApiUsersDdhAndContributorsPaginatedGetDefaultImplementation(apiResponseLocalVar, userId, pageNumber, pageSize, sortBy, sortDirection);
 
                         Events.ExecuteOnApiUsersDdhAndContributorsPaginatedGet(apiResponseLocalVar);
 
@@ -1954,7 +1943,7 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiUsersDdhAndContributorsPaginatedGetDefaultImplementation(e, "/api/Users/ddh-and-contributors-paginated", uriBuilderLocalVar.Path, userId, networkManagersOnly, pageNumber, pageSize, sortBy, sortDirection);
+                OnErrorApiUsersDdhAndContributorsPaginatedGetDefaultImplementation(e, "/api/Users/ddh-and-contributors-paginated", uriBuilderLocalVar.Path, userId, pageNumber, pageSize, sortBy, sortDirection);
                 Events.ExecuteOnErrorApiUsersDdhAndContributorsPaginatedGet(e);
                 throw;
             }

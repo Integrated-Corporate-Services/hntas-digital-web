@@ -2750,14 +2750,6 @@ paths:
         style: form
       - explode: true
         in: query
-        name: networkManagersOnly
-        required: false
-        schema:
-          default: false
-          type: boolean
-        style: form
-      - explode: true
-        in: query
         name: pageNumber
         required: false
         schema:
@@ -2770,7 +2762,7 @@ paths:
         name: pageSize
         required: false
         schema:
-          default: 1
+          default: 10
           format: int32
           type: integer
         style: form

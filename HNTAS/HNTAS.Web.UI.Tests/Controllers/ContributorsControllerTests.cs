@@ -81,7 +81,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Returns("Duty holders and contributors");
 
             _userServiceMock
-                .Setup(u => u.GetDdhAndContributorsPaginated(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())) // Adjust boolean parameter if required by interface
+                .Setup(u => u.GetDdhAndContributorsPaginated(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())) // Adjust boolean parameter if required by interface
                 .ReturnsAsync(new PagedResultOfManagedUserResponse(new List<ManagedUserResponse>
                 {
             new ManagedUserResponse

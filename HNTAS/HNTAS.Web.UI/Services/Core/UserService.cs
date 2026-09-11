@@ -309,7 +309,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<PagedResultOfManagedUserResponse> GetDdhAndContributorsPaginated(string userId, bool networkManagersOnly = false, int pageNumber = 1,
+        public async Task<PagedResultOfManagedUserResponse> GetDdhAndContributorsPaginated(string userId, int pageNumber = 1,
             int pageSize = 1,
             string sortBy = "firstName",
             string sortDirection = "asc",
@@ -323,7 +323,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
             try
             {
-                var response = await _usersApi.ApiUsersDdhAndContributorsPaginatedGetAsync(userId, networkManagersOnly, pageNumber, pageSize, sortBy, sortDirection, cancellationToken);
+                var response = await _usersApi.ApiUsersDdhAndContributorsPaginatedGetAsync(userId, pageNumber, pageSize, sortBy, sortDirection, cancellationToken);
                 if (response.IsOk)
                 {
                     var pagedResult = response.Ok();

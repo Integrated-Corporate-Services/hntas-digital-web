@@ -59,7 +59,7 @@ No authorization required
 
 <a id="apiusersddhandcontributorspaginatedget"></a>
 # **ApiUsersDdhAndContributorsPaginatedGet**
-> PagedResultOfManagedUserResponse ApiUsersDdhAndContributorsPaginatedGet (string userId = null, bool networkManagersOnly = null, int pageNumber = null, int pageSize = null, string sortBy = null, string sortDirection = null)
+> PagedResultOfManagedUserResponse ApiUsersDdhAndContributorsPaginatedGet (string userId = null, int pageNumber = null, int pageSize = null, string sortBy = null, string sortDirection = null)
 
 
 
@@ -69,9 +69,8 @@ No authorization required
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | **userId** | **string** |  | [optional]  |
-| **networkManagersOnly** | **bool** |  | [optional] [default to false] |
 | **pageNumber** | **int** |  | [optional] [default to 1] |
-| **pageSize** | **int** |  | [optional] [default to 1] |
+| **pageSize** | **int** |  | [optional] [default to 10] |
 | **sortBy** | **string** |  | [optional] [default to &quot;firstName&quot;] |
 | **sortDirection** | **string** |  | [optional] [default to &quot;asc&quot;] |
 
