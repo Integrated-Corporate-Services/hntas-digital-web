@@ -4,7 +4,63 @@
 @{
     ViewData["Title"] = "DDH and contributors List View";
     var nextAction = ViewBag.WhoDoYouWantToAdd == "Contributors" ? "AddContributor" : "NewContributorRole";
+    var currentSort = ViewBag.CurrentSort as string;
+    var currentOrder = ViewBag.CurrentOrder as string;
+    var currentPage = (int)(ViewBag.CurrentPage);
+    var pageSize = (int)(ViewBag.PageSize);
+    var totalPages = (int)(ViewBag.TotalPages);
+
+    string GetSortDirection()
+    {
+        return currentOrder == "asc" ? "ascending" : "descending";
+    }
+
+    string GetSortUrl(string sortField)
+    {
+        var order = currentOrder == "asc" ? "desc" : "asc";
+        return Url.Action("ManageContributors", new { pageNumber = currentPage, pageSize = pageSize, sortBy = sortField, sortDirection = order }) ?? "";
+    }
+
+    string GetSortIcon()
+    {
+        if (currentOrder == "asc")
+        {
+            return "<svg class='govuk-!-margin-left-1' width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false'><path d='M6 2L10 8H2L6 2Z' fill='currentColor'/></svg>";
+        }
+        else
+        {
+            return "<svg class='govuk-!-margin-left-1' width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false'><path d='M6 10L2 4H10L6 10Z' fill='currentColor'/></svg>";
+        }
+    }
 }
+
+<style>
+    [aria-sort] button,
+    [aria-sort] button:hover {
+        display: inline-flex;
+        position: relative;
+        margin: 0;
+        padding: 0;
+        border-width: 0;
+        color: #005ea5;
+        background-color: transparent;
+        box-shadow: 0 0 0 0;
+        font-family: inherit;
+        font-size: inherit;
+        font-size: 1em;
+        font-weight: inherit;
+        text-align: inherit;
+        cursor: pointer;
+        align-items: center;
+    }
+
+        [aria-sort] button:focus {
+            outline: none;
+            color: #0b0c0c;
+            background-color: #ffdd00;
+            box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c;
+        }
+</style>
 
 @section BeforeMain {
 
@@ -43,30 +99,105 @@
             <h2 class="govuk-heading-m">Current @ViewBag.WhoDoYouWantToAdd.ToLower()</h2>
             <table class="govuk-table">
                 <thead class="govuk-table__head">
-                    <tr class="govuk-table__row">
-                        <th class="govuk-table__header" scope="col">Name</th>
-                        <th class="govuk-table__header" scope="col">Heat Network</th>
-                        <th class="govuk-table__header" scope="col">Role</th>
-                        <th class="govuk-table__header" scope="col">Status</th>
+                    <tr class="govuk-table__row">                        
+
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("firstName")'" type="button" class="" data-module="govuk-button">
+                                Name @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("invitedHnId")'" type="button" class="" data-module="govuk-button">
+                                Heat Network @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("invitedRoles")'" type="button" class="" data-module="govuk-button">
+                                Role @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("status")'" type="button" class="" data-module="govuk-button">
+                                Status @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+
+
                     </tr>
                 </thead>
-                <tbody class="govuk-table__body">
+                <tbody class="govuk-table__body">                    
                     @foreach (var user in Model)
                     {
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell">@user.Name</td>
-                            <td class="govuk-table__cell">@user.HeatNetwork</td>
+                            <td class="govuk-table__cell">@user.HeatNetworkId @user.HeatNetworkName</td>
                             <td class="govuk-table__cell">@user.Role</td>
                             <td class="govuk-table__cell">
                                 <span class="govuk-tag @user.Status.CssClass">@user.Status.Text</span>
                             </td>
                         </tr>
-                    }
+                    }                   
+                    
                 </tbody>
-            </table>
+            </table>      
+            
+            @if (totalPages > 1)
+            {
+                <nav class="govuk-pagination" role="navigation" aria-label="Pagination">
+
+                    @if (currentPage > 1)
+                    {
+                        <div class="govuk-pagination__prev">
+                            <a class="govuk-link govuk-pagination__link" href="@Url.Action("ManageContributors", new { pageNumber = currentPage - 1, pageSize = pageSize, sortBy = currentSort, sortDirection = currentOrder })" rel="prev">
+                                <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                    <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
+                                </svg>
+                                <span class="govuk-pagination__link-title">Previous</span>
+                            </a>
+                        </div>
+                    }
+
+                    <ul class="govuk-pagination__list">
+                        @{
+                            int startPage = Math.Max(1, currentPage - 2);
+                            int endPage = Math.Min(totalPages, currentPage + 2);
+
+                            for (int i = startPage; i <= endPage; i++)
+                            {
+                                if (i == currentPage)
+                                {
+                                    <li class="govuk-pagination__item govuk-pagination__item--current">
+                                        <a class="govuk-link govuk-pagination__link" href="#" aria-label="Page @i" aria-current="page">@i</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="govuk-pagination__item">
+                                        <a class="govuk-link govuk-pagination__link" href="@Url.Action("ManageContributors", new { pageNumber = i, pageSize = pageSize, sortBy = currentSort, sortDirection = currentOrder })" aria-label="Page @i">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+                            }
+
+                        }
+                    </ul>
+                    <div class="govuk-pagination__next">
+                        @if (currentPage < totalPages)
+                        {
+                            <a class="govuk-link govuk-pagination__link" href="@Url.Action("ManageContributors", new { pageNumber = currentPage + 1, pageSize = pageSize, sortBy = currentSort, sortDirection = currentOrder })" rel="next">
+                                <span class="govuk-pagination__link-title">Next</span>
+                                <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                    <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+                                </svg>
+                            </a>
+                        }
+                    </div>
+                </nav>
+            }
         }
 
-
     </div>
+
        
     </div>

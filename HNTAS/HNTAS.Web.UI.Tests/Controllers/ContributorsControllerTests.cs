@@ -81,8 +81,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Returns("Duty holders and contributors");
 
             _userServiceMock
-                .Setup(u => u.GetManagedUsers(userId, false)) // Adjust boolean parameter if required by interface
-                .ReturnsAsync(new List<ManagedUserResponse>
+                .Setup(u => u.GetDdhAndContributorsPaginated(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())) // Adjust boolean parameter if required by interface
+                .ReturnsAsync(new PagedResultOfManagedUserResponse(new List<ManagedUserResponse>
                 {
             new ManagedUserResponse
             {
@@ -95,7 +95,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                         new HeatNetworkInfo { HnId = "HN1", Name = "Heat Network 1" }
                     }
                 }
-            });
+            }));
 
             _userServiceMock
                 .Setup(u => u.GetUserRolesAsync())
@@ -113,7 +113,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             Assert.Single(model);
             Assert.Equal("Test User", model[0].Name);
-            Assert.Equal("HN1", model[0].HeatNetwork);
+            Assert.Equal("HN1", model[0].HeatNetworkId);
             Assert.Equal("Contributor Description", model[0].Role);
             Assert.Equal("govuk-tag--green", model[0].Status.CssClass);
 
