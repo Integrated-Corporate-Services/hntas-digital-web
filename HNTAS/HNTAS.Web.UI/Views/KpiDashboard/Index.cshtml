@@ -78,32 +78,35 @@
 
         @if (Model.Networks.Any())
         {
-            <table class="govuk-table">
-                <thead class="govuk-table__head">
-                    <tr class="govuk-table__row">
-                        <th class="govuk-table__header">HNID</th>
-                        <th class="govuk-table__header">Network Name</th>
-                        <th class="govuk-table__header">Provider</th>
-                        <th class="govuk-table__header">Data Period</th>
-                    </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                    @foreach (var network in Model.Networks)
-                    {
+            <div class="govuk-table-container">
+                <table class="govuk-table">
+                    <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">
-                            @* Updated Link to use submissionId *@
-                                <a href="@Url.Action("Details", new { submissionId = network.SubmissionId, month = Model.SelectedMonth, year = Model.SelectedYear })" class="govuk-link govuk-!-font-weight-bold">
-                                @network.Hnid
-                            </a>
-                        </td>
-                        <td class="govuk-table__cell">@network.Name</td>
-                        <td class="govuk-table__cell">@network.Provider</td>
-                        <td class="govuk-table__cell">@network.DataPeriod</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+                            <th class="govuk-table__header">HNID</th>
+                            <th class="govuk-table__header">Network Name</th>
+                            <th class="govuk-table__header">Provider</th>
+                            <th class="govuk-table__header">Data Period</th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        @foreach (var network in Model.Networks)
+                        {
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">
+                                    @* Updated Link to use submissionId *@
+                                    <a href="@Url.Action("Details", new { submissionId = network.SubmissionId, month = Model.SelectedMonth, year = Model.SelectedYear })" class="govuk-link govuk-!-font-weight-bold">
+                                        @network.Hnid
+                                    </a>
+                                </td>
+                                <td class="govuk-table__cell">@network.Name</td>
+                                <td class="govuk-table__cell">@network.Provider</td>
+                                <td class="govuk-table__cell">@network.DataPeriod</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
         }
         else
         {

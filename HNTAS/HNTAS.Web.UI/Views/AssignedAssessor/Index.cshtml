@@ -79,75 +79,77 @@
     <div class="govuk-grid-column-full">
 
         <h1 class="govuk-heading-l">Assessors</h1>
+        <div class="govuk-table-container">
+            <table class="govuk-table">
 
-        <table class="govuk-table">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("Name")'" type="button" class="" data-module="govuk-button">
+                                Name @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("Email")'" type="button" class="" data-module="govuk-button">
+                                Email address @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("HeatNetworkName")'" type="button" class="" data-module="govuk-button">
+                                Heat Network @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("ElementsAssigned")'" type="button" class="" data-module="govuk-button">
+                                Elements assigned @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header">Status</th>
+                    </tr>
+                </thead>
 
-            <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("Name")'" type="button" class="" data-module="govuk-button">
-                            Name @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("Email")'" type="button" class="" data-module="govuk-button">
-                            Email address @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("HeatNetworkName")'" type="button" class="" data-module="govuk-button">
-                            Heat Network @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("ElementsAssigned")'" type="button" class="" data-module="govuk-button">
-                            Elements assigned @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>
-                    <th scope="col" class="govuk-table__header">Status</th>
-                </tr>
-            </thead>
-
-            <tbody class="govuk-table__body">
-                @if (Model.Items != null && Model.Items.Any())
-                {
-                    @foreach (var log in Model.Items)
+                <tbody class="govuk-table__body">
+                    @if (Model.Items != null && Model.Items.Any())
                     {
-                        var statusClass = "";
-                        switch ((UserStatus?)log.Status) // Explicit cast to nullable UserStatus
+                        @foreach (var log in Model.Items)
                         {
-                            case UserStatus.Active:
-                                statusClass = "govuk-tag--blue";
-                                break;                                                   
-                            default:
-                                statusClass = "govuk-tag--grey";
-                                break;
+                            var statusClass = "";
+                            switch ((UserStatus?)log.Status) // Explicit cast to nullable UserStatus
+                            {
+                                case UserStatus.Active:
+                                    statusClass = "govuk-tag--blue";
+                                    break;
+                                default:
+                                    statusClass = "govuk-tag--grey";
+                                    break;
+                            }
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">@log.Name</td>
+                                <td class="govuk-table__cell">@log.Email</td>
+                                <td class="govuk-table__cell">
+                                    @log.HeatNetworkName
+                                </td>
+                                <td class="govuk-table__cell">
+                                    @log.ElementsAssigned
+                                </td>
+                                <td class="govuk-table__cell">
+                                    <span class="govuk-tag @statusClass">
+                                        @log.Status
+                                    </span>
+                                </td>
+                            </tr>
                         }
+                    }
+                    else
+                    {
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">@log.Name</td>
-                            <td class="govuk-table__cell">@log.Email</td>
-                            <td class="govuk-table__cell">
-                                @log.HeatNetworkName
-                            </td>
-                            <td class="govuk-table__cell">
-                                @log.ElementsAssigned
-                            </td>
-                            <td class="govuk-table__cell">
-                                <span class="govuk-tag @statusClass">
-                                    @log.Status
-                                </span>
-                            </td>
+                            <td class="govuk-table__cell" colspan="5">No Assessors history found.</td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell" colspan="5">No Assessors history found.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        
 
         @if (totalPages > 1)
         {

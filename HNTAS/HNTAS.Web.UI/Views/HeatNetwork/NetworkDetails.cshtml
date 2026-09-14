@@ -5,7 +5,6 @@
 @{
     ViewData["Title"] = "Heat network details";
 }
-<div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <span class="govuk-caption-l">@ViewBag.HNId @ViewBag.HNName</span>
@@ -49,9 +48,9 @@
                             }
                         </div>
                         <div class="govuk-task-list__status" id="@detail.Id">
-                            <strong class="govuk-tag @statusClass">
+                            <span class="govuk-tag @statusClass">
                                 @detail.UiStatus
-                            </strong>
+                            </span>
                         </div>
                     </li>
                 }
@@ -60,4 +59,3 @@
         </div>
 
         </div>
-</div>
