@@ -309,6 +309,35 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+        public async Task<PagedResultOfManagedUserResponse> GetDdhAndContributorsPaginated(string userId, int pageNumber = 1,
+            int pageSize = 1,
+            string sortBy = "firstName",
+            string sortDirection = "asc",
+            CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Getting managed users for user ID: {UserId}", userId);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                _logger.LogError("User ID is null or empty");
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty");
+            }
+            try
+            {
+                var response = await _usersApi.ApiUsersDdhAndContributorsPaginatedGetAsync(userId, pageNumber, pageSize, sortBy, sortDirection, cancellationToken);
+                if (response.IsOk)
+                {
+                    var pagedResult = response.Ok();
+                    return pagedResult;
+                }
+                throw new Exception($"Failed to get managed users with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting managed users for user ID: {UserId}", userId);
+                throw;
+            }
+        }
+
         public async Task<List<InvitedUserResponse>> GetNetworkLeads(string userId)
         {
             _logger.LogInformation("Getting network leads for user ID: {UserId}", userId);

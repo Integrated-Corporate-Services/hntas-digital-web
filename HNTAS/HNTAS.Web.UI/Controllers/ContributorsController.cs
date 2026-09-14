@@ -30,31 +30,72 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ManageContributors()
+        public async Task<IActionResult> ManageContributors([FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string sortBy = "firstName",
+            [FromQuery] string sortDirection = "asc")
         {
-            _sessionHelper.ClearAllContributoFlowRelatedSessionData(HttpContext);
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var managedUsers = await _userService.GetManagedUsers(userId);
-            List<DDHAndContributorsListModel> listOfContributors = new List<DDHAndContributorsListModel>();
-            var userRoles = await _userService.GetUserRolesAsync();
-
-            foreach (var user in managedUsers)
+            try
             {
-                var primaryRoleName = user.Roles?.FirstOrDefault();
+                // Validate and sanitize inputs
+                if (pageNumber < 1) pageNumber = 1;
 
-                foreach (var heatNetwork in user.HeatNetworks)
+                // Validate sort order
+                sortDirection = sortDirection?.ToLower() == "desc" ? "desc" : "asc";
+
+                _sessionHelper.ClearAllContributoFlowRelatedSessionData(HttpContext);
+                var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+                var managedUsers = await _userService.GetDdhAndContributorsPaginated(userId, pageNumber: pageNumber, pageSize: pageSize, sortBy: sortBy, sortDirection: sortDirection);
+                List<DDHAndContributorsListModel> listOfContributors = new List<DDHAndContributorsListModel>();
+                var userRoles = await _userService.GetUserRolesAsync();
+
+                foreach (var user in managedUsers.Items!)
                 {
-                    listOfContributors.Add(new DDHAndContributorsListModel
+                    var primaryRoleName = user.Roles?.FirstOrDefault();
+
+                    foreach (var heatNetwork in user.HeatNetworks)
                     {
-                        Name = user.Name,
-                        HeatNetwork = heatNetwork.HnId,
-                        Role = userRoles.FirstOrDefault(ur => ur.Name == primaryRoleName)?.Description,
-                        Status = new InvitationStatusTag(user.Status)
-                    });
+                        listOfContributors.Add(new DDHAndContributorsListModel
+                        {
+                            Name = user.Name,
+                            HeatNetworkId = heatNetwork.HnId,
+                            HeatNetworkName = heatNetwork.Name,
+                            Role = userRoles.FirstOrDefault(ur => ur.Name == primaryRoleName)?.Description,
+                            Status = new InvitationStatusTag(user.Status)
+                        });
+                    }
                 }
+                
+                ViewBag.WhoDoYouWantToAdd = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey) ?? "Duty holders and contributors";
+
+                // Pass sorting and pagination info to view
+                ViewBag.CurrentSort = sortBy;
+                ViewBag.CurrentOrder = sortDirection;
+                ViewBag.CurrentPage = pageNumber;
+                ViewBag.PageSize = pageSize;
+                ViewBag.TotalPages = managedUsers.TotalPages ?? 1;
+                ViewBag.TotalItems = managedUsers.TotalCount ?? 0;
+                return View(listOfContributors);
             }
-            ViewBag.WhoDoYouWantToAdd = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey) ?? "Duty holders and contributors";
-            return View(listOfContributors);
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving DDH and contributors");
+                TempData["ErrorMessage"] = "An error occurred while retrieving the DDH and contributors.";
+
+                // Return empty result
+                var emptyResult = new List<DDHAndContributorsListModel>();
+
+                ViewBag.CurrentSort = sortBy;
+                ViewBag.CurrentOrder = sortDirection ?? "asc";
+                ViewBag.CurrentPage = pageNumber;
+                ViewBag.PageSize = pageSize;
+                ViewBag.TotalPages = 0;
+                ViewBag.TotalItems = 0;
+                ViewBag.NextOrder = "desc";
+
+                return View(emptyResult);
+            }
+            
         }
 
         [HttpGet]

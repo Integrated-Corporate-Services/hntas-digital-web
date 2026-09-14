@@ -130,6 +130,7 @@ docs/models/Organisation.md
 docs/models/OrganisationRequest.md
 docs/models/OrganisationResponse.md
 docs/models/OrganisationType.md
+docs/models/PagedResultOfManagedUserResponse.md
 docs/models/PagedResultOfUserNetworkDetailsResponse.md
 docs/models/ProblemDetails.md
 docs/models/RecoveredInput.md
@@ -322,6 +323,7 @@ src/HNTAS.Api.Client/Model/Organisation.cs
 src/HNTAS.Api.Client/Model/OrganisationRequest.cs
 src/HNTAS.Api.Client/Model/OrganisationResponse.cs
 src/HNTAS.Api.Client/Model/OrganisationType.cs
+src/HNTAS.Api.Client/Model/PagedResultOfManagedUserResponse.cs
 src/HNTAS.Api.Client/Model/PagedResultOfUserNetworkDetailsResponse.cs
 src/HNTAS.Api.Client/Model/ProblemDetails.cs
 src/HNTAS.Api.Client/Model/RecoveredInput.cs
