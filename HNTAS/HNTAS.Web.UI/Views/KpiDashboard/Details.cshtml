@@ -45,7 +45,7 @@
                                            name="statusFilter"
                                            type="checkbox"
                                            value="Pass"
-                                           @(Model.StatusFilter.Contains("Pass") ? "checked" : "") />
+                                    @(Model.StatusFilter.Contains("Pass") ? "checked" : "") />
                                     <label class="govuk-label govuk-checkboxes__label" for="pass">Pass</label>
                                 </div>
                                 <div class="govuk-checkboxes__item">
@@ -54,7 +54,7 @@
                                            name="statusFilter"
                                            type="checkbox"
                                            value="Fail"
-                                           @(Model.StatusFilter.Contains("Fail") ? "checked" : "") />
+                                    @(Model.StatusFilter.Contains("Fail") ? "checked" : "") />
                                     <label class="govuk-label govuk-checkboxes__label" for="fail">Fail</label>
                                 </div>
 
@@ -64,7 +64,7 @@
                                            name="statusFilter"
                                            type="checkbox"
                                            value="OutsideLimit"
-                                           @(Model.StatusFilter.Contains("OutsideLimit") ? "checked" : "") />
+                                    @(Model.StatusFilter.Contains("OutsideLimit") ? "checked" : "") />
                                     <label class="govuk-label govuk-checkboxes__label" for="outside">Outside Limit</label>
                                 </div>
                             </div>
@@ -77,12 +77,12 @@
                         <fieldset class="govuk-fieldset">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Network Elements</legend>
                             <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-                               
+
                                 @foreach (var type in types)
                                 {
                                     <div class="govuk-checkboxes__item">
                                         <input class="govuk-checkboxes__input" id="type-@type.Key" name="typeFilter" type="checkbox" value="@type.Key"
-                                               @(Model.TypeFilter.Contains(type.Key) ? "checked" : "") />
+                                        @(Model.TypeFilter.Contains(type.Key) ? "checked" : "") />
                                         <label class="govuk-label govuk-checkboxes__label" for="type-@type.Key">@type.Value</label>
                                     </div>
                                 }
@@ -142,10 +142,10 @@
                                     <table class="govuk-table govuk-!-margin-bottom-0">
                                         <thead class="govuk-table__head">
                                             <tr class="govuk-table__row">
-                                                <td class="govuk-table__cell">@input.Key</td>
-                                                <td class="govuk-table__cell">@input.Value.Label</td>
-                                                <td class="govuk-table__cell govuk-table__cell--numeric">@input.Value.Value.ToString()</td>
-                                                <td class="govuk-table__cell">@input.Value.Unit</td>
+                                                <th class="govuk-table__header">Code</th>
+                                                <th class="govuk-table__header">Reference</th>
+                                                <th class="govuk-table__header govuk-table__header--numeric">Value</th>
+                                                <th class="govuk-table__header">Unit</th>
                                             </tr>
                                         </thead>
                                         <tbody class="govuk-table__body">
@@ -154,7 +154,7 @@
                                                 <tr class="govuk-table__row">
                                                     <td class="govuk-table__cell">@input.Key</td>
                                                     <td class="govuk-table__cell">@input.Value.Label</td>
-                                                    <td class="govuk-table__cell govuk-table__cell--numeric">@input.Value.Value.ToString("N0")</td>
+                                                    <td class="govuk-table__cell govuk-table__cell--numeric">@input.Value.Value.ToString()</td>
                                                     <td class="govuk-table__cell">@input.Value.Unit</td>
                                                 </tr>
                                             }
@@ -228,7 +228,7 @@
                     }
 
                     <details class="govuk-details" data-module="govuk-details"
-                             @(group.Value.KpiRows.Any(x => x.Status == "Fail") ? "open" : "")>
+                        @(group.Value.KpiRows.Any(x => x.Status == "Fail") ? "open" : "")>
 
                         <summary class="govuk-details__summary">
                             <span class="govuk-details__summary-text">
@@ -242,8 +242,8 @@
                         </summary>
 
                         <div class="govuk-details__text">
-                            @* 2. Detailed KPIs Table Section *@
                             <div class="govuk-table-container">
+                                @* 2. Detailed KPIs Table Section *@
                                 <table class="govuk-table govuk-!-margin-bottom-0">
                                     <thead class="govuk-table__head">
                                         <tr class="govuk-table__row">
@@ -270,6 +270,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                           
                             
                         </div>
                     </details>
