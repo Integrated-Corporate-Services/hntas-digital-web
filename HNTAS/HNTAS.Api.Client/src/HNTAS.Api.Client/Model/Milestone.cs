@@ -173,7 +173,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, Milestone milestone, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(milestone.ToString());
+            writer.WriteStringValue(MilestoneValueConverter.ToJsonValue(milestone).ToString());
         }
     }
 
@@ -204,14 +204,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the Milestone to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="milestone"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, Milestone? milestone, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(milestone?.ToString() ?? "null");
+            writer.WriteStringValue(milestone.HasValue ? MilestoneValueConverter.ToJsonValue(milestone.Value).ToString() : "null");
         }
     }
 }

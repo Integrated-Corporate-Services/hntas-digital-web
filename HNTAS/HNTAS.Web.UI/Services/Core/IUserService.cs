@@ -27,5 +27,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task<List<UserResponse>> GetUsersByOrganisationIdAsync(string organisationId);
 
         Task<bool> IsSuperUser(string emailId);
+        Task<PagedResultOfManagedUserResponse> GetDdhAndContributorsPaginated(string userId, int pageNumber = 1, int pageSize = 1, string sortBy = "firstName", string sortDirection = "asc", CancellationToken cancellationToken = default);
     }
 }
