@@ -32,7 +32,7 @@
         {
             <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
                 <h2 class="govuk-error-summary__title" id="error-summary-title">
-                    There is a problem
+                    There is a problem5
                 </h2>
                 <div class="govuk-error-summary__body">
                     <ul class="govuk-list govuk-error-summary__list">
@@ -70,15 +70,15 @@
                                 // Special cases for linking in the error summary
                                 if (fieldName == nameof(Model.EmailAddress))
                                 {
-                                    targetId = "EmailAddressDisplay"; // Link to the display span for EmailAddress
+                                    targetId = "emailaddressdisplay"; // Link to the display span for EmailAddress
                                 }
                                 else if (fieldName == nameof(Model.PreferredContactType))
                                 {
-                                    targetId = "PreferredContactType-Landline"; // Link to the first visible radio button in the group
+                                    targetId = "preferredcontacttype-landline"; // Link to the first visible radio button in the group
                                 }
 
                                 <li>
-                                    <a href="#@targetId">@error.ErrorMessage</a>
+                                    <a href="#@targetId.ToLower()">@error.ErrorMessage</a>
                                 </li>
                             }
                         }
@@ -94,7 +94,7 @@
 
             @* Email address - DISPLAY ONLY FIELD (No changes needed) *@
             <div class="govuk-form-group @(hasEmailAddressErrors ? "govuk-form-group--error" : "")">
-                <label class="govuk-label" for="EmailAddressDisplay">
+                <label class="govuk-label" for="emailaddressdisplay">
                     Email address
                 </label>
                 @if (hasEmailAddressErrors)
@@ -103,13 +103,13 @@
                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.EmailAddress)
                     </p>
                 }
-                <span class="govuk-body" id="EmailAddressDisplay">@Model.EmailAddress</span>
-                <input type="hidden" asp-for="EmailAddress" />
+                <span class="govuk-body" id="emailaddressdisplay">@Model.EmailAddress</span>
+                <input type="hidden" asp-for="EmailAddress" id="emailaddress" name="emailaddress" />
             </div>
 
             @* First name input (No changes needed) *@
             <div class="govuk-form-group @(hasFirstNameErrors ? "govuk-form-group--error" : "")">
-                <label class="govuk-label" for="FirstName">
+                <label class="govuk-label" for="firstname">
                     First name
                 </label>
                 @if (hasFirstNameErrors)
@@ -118,14 +118,14 @@
                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.FirstName)
                     </p>
                 }
-                <input class="govuk-input" id="FirstName" name="FirstName" type="text" autocomplete="given-name" spellcheck="false"
+                <input class="govuk-input" id="firstname" name="firstname" type="text" autocomplete="given-name" spellcheck="false"
                        asp-for="FirstName"
                        aria-describedby="@(hasFirstNameErrors ? "FirstName-error" : "")">
             </div>
 
             @* Last name input (No changes needed) *@
             <div class="govuk-form-group @(hasLastNameErrors ? "govuk-form-group--error" : "")">
-                <label class="govuk-label" for="LastName">
+                <label class="govuk-label" for="lastname">
                     Last name
                 </label>
                 @if (hasLastNameErrors)
@@ -134,7 +134,7 @@
                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.LastName)
                     </p>
                 }
-                <input class="govuk-input" id="LastName" name="LastName" type="text" autocomplete="family-name" spellcheck="false"
+                <input class="govuk-input" id="lastname" name="lastname" type="text" autocomplete="family-name" spellcheck="false"
                        asp-for="LastName"
                        aria-describedby="@(hasLastNameErrors ? "LastName-error" : "")">
             </div>
@@ -160,17 +160,17 @@
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
                             @* Landline radio button - CHECKED LOGIC UPDATED *@
-                            <input class="govuk-radios__input" id="PreferredContactType-Landline" name="PreferredContactType" type="radio"
+                            <input class="govuk-radios__input" id="preferredcontacttype-landline" name="preferredcontacttype" type="radio"
                                    value="@PreferredContactType.Landline"
-                                   data-aria-controls="conditional-Landline"
+                                   data-aria-controls="conditional-landline"
                                    @(isLandlineSelected ? "checked" : "")>
-                            <label class="govuk-label govuk-radios__label" for="PreferredContactType-Landline">
+                            <label class="govuk-label govuk-radios__label" for="preferredcontacttype-landline">
                                 Landline
                             </label>
                         </div>
-                        <div class="govuk-radios__conditional @(!isLandlineSelected ? "govuk-radios__conditional--hidden" : "")" id="conditional-Landline"> @* Conditional visibility logic needs updating too *@
+                        <div class="govuk-radios__conditional @(!isLandlineSelected ? "govuk-radios__conditional--hidden" : "")" id="conditional-landline"> @* Conditional visibility logic needs updating too *@
                             <div class="govuk-form-group @(hasLandlineNumberErrors ? "govuk-form-group--error" : "")" aria-describedby="@(hasLandlineNumberErrors ? "LandlineNumber-error" : "")">
-                                <label class="govuk-label" for="LandlineNumber">
+                                <label class="govuk-label" for="landlinenumber">
                                     Landline number
                                 </label>
                                 @if (hasLandlineNumberErrors)
@@ -179,12 +179,12 @@
                                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.LandlineNumber)
                                     </p>
                                 }
-                                <input class="govuk-input govuk-!-width-one-half" id="LandlineNumber" name="LandlineNumber" type="tel" autocomplete="tel"
+                                <input class="govuk-input govuk-!-width-one-half" id="landlinenumber" name="landlinenumber" type="tel" autocomplete="tel"
                                        asp-for="LandlineNumber">
                             </div>
 
                             <div class="govuk-form-group @(hasContactNumberExtensionErrors ? "govuk-form-group--error" : "")" aria-describedby="@(hasContactNumberExtensionErrors ? "ContactNumberExtension-error" : "")">
-                                <label class="govuk-label" for="ContactNumberExtension">
+                                <label class="govuk-label" for="contactnumberextension">
                                     Extension (optional)
                                 </label>
                                 @if (hasContactNumberExtensionErrors)
@@ -193,25 +193,25 @@
                                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.ContactNumberExtension)
                                     </p>
                                 }
-                                <input class="govuk-input govuk-!-width-one-half" id="ContactNumberExtension" name="ContactNumberExtension" type="text"
+                                <input class="govuk-input govuk-!-width-one-half" id="contactnumberextension" name="contactnumberextension" type="text"
                                        asp-for="ContactNumberExtension">
                             </div>
                         </div>
 
                         <div class="govuk-radios__item">
                             @* Mobile radio button - CHECKED LOGIC UPDATED *@
-                            <input class="govuk-radios__input" id="PreferredContactType-Mobile" name="PreferredContactType" type="radio"
+                            <input class="govuk-radios__input" id="preferredcontacttype-mobile" name="preferredcontacttype" type="radio"
                                    value="@PreferredContactType.Mobile"
-                                   data-aria-controls="conditional-Mobile"
+                                   data-aria-controls="conditional-mobile"
                                    @(Model.PreferredContactType == PreferredContactType.Mobile ? "checked" : "")>
-                            <label class="govuk-label govuk-radios__label" for="PreferredContactType-Mobile">
+                            <label class="govuk-label govuk-radios__label" for="preferredcontacttype-mobile">
                                 Mobile
                             </label>
                         </div>
-                        <div class="govuk-radios__conditional @(Model.PreferredContactType != PreferredContactType.Mobile ? "govuk-radios__conditional--hidden" : "")" id="conditional-Mobile">
+                        <div class="govuk-radios__conditional @(Model.PreferredContactType != PreferredContactType.Mobile ? "govuk-radios__conditional--hidden" : "")" id="conditional-mobile">
                             @* Conditional visibility logic needs updating too *@
                             <div class="govuk-form-group @(hasMobileNumberErrors ? "govuk-form-group--error" : "")" aria-describedby="@(hasMobileNumberErrors ? "MobileNumber-error" : "")">
-                                <label class="govuk-label" for="MobileNumber">
+                                <label class="govuk-label" for="mobilenumber">
                                     Mobile number
                                 </label>
                                 @if (hasMobileNumberErrors)
@@ -220,7 +220,7 @@
                                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.MobileNumber)
                                     </p>
                                 }
-                                <input class="govuk-input govuk-!-width-one-half" id="MobileNumber" name="MobileNumber" type="tel" autocomplete="tel"
+                                <input class="govuk-input govuk-!-width-one-half" id="mobilenumber" name="mobilenumber" type="tel" autocomplete="tel"
                                        asp-for="MobileNumber">
                             </div>
                         </div>                        
@@ -230,7 +230,7 @@
 
             @* Job title input (No changes needed) *@
             <div class="govuk-form-group @(hasJobTitleErrors ? "govuk-form-group--error" : "")">
-                <label class="govuk-label" for="JobTitle">
+                <label class="govuk-label" for="jobtitle">
                     Job title
                 </label>
                 @if (hasJobTitleErrors)
@@ -239,7 +239,7 @@
                         <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.JobTitle)
                     </p>
                 }
-                <input class="govuk-input" id="JobTitle" name="JobTitle" type="text" spellcheck="false"
+                <input class="govuk-input" id="jobtitle" name="jobtitle" type="text" spellcheck="false"
                        asp-for="JobTitle"
                        aria-describedby="@(hasJobTitleErrors ? "JobTitle-error" : "")">
             </div>
