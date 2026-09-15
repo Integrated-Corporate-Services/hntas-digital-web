@@ -29,7 +29,6 @@
         </ol>
     </nav>
 }
-<div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
@@ -76,126 +75,128 @@
                                     </p>
                                 }
                             }
-                            <table class="govuk-table">
-                                <thead class="govuk-table__head">
-                                    <tr class="govuk-table__row">
-                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
-                                            <span class="govuk-visually-hidden">Element</span>
-                                        </th>
-                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Status</th>
-                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Updated</th>
-                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Assessor</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="govuk-table__body">
-                                    @foreach (var element in stage.Elements)
-                                    {
-                                        // Create a unique key for this navigation
-                                        var tempDataKey = $"Soa_{element.ElementType}_{stage.StageId}";
-                                        TempData[$"{tempDataKey}_Phase"] = stage.Title;
-                                        TempData[$"{tempDataKey}_Element"] = element.Name;
-                                        TempData.Keep($"{tempDataKey}_Phase");
-                                        TempData.Keep($"{tempDataKey}_Element");
-
-                                        var assessorNameWithAssessmentList = new List<string>();
-                                        foreach (var assessorDetail in element.AssessorDetails)
+                            <div class="govuk-table-container">
+                                <table class="govuk-table">
+                                    <thead class="govuk-table__head">
+                                        <tr class="govuk-table__row">
+                                            <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
+                                                <span class="govuk-visually-hidden">Element</span>
+                                            </th>
+                                            <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Status</th>
+                                            <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Updated</th>
+                                            <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Assessor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="govuk-table__body">
+                                        @foreach (var element in stage.Elements)
                                         {
-                                            assessorNameWithAssessmentList.Add(
-                                                $"{assessorDetail.FirstName} {assessorDetail.LastName} ({assessorDetail.Assessment})"
-                                            );
-                                        }
-                                        //var assessorName = element.AssessorEmailId != null ? element.AssessorFirstName + " " + element.AssessorLastName + " (" + element.Assessment + ")" : "Not yet assigned";
-                                        //var assessorClass = element.AssessorEmailId != null ? "" : "govuk-tag govuk-tag--blue";
-                                        @* var fullNameWithEmail = "";
+                                            // Create a unique key for this navigation
+                                            var tempDataKey = $"Soa_{element.ElementType}_{stage.StageId}";
+                                            TempData[$"{tempDataKey}_Phase"] = stage.Title;
+                                            TempData[$"{tempDataKey}_Element"] = element.Name;
+                                            TempData.Keep($"{tempDataKey}_Phase");
+                                            TempData.Keep($"{tempDataKey}_Element");
+
+                                            var assessorNameWithAssessmentList = new List<string>();
+                                            foreach (var assessorDetail in element.AssessorDetails)
+                                            {
+                                                assessorNameWithAssessmentList.Add(
+                                                    $"{assessorDetail.FirstName} {assessorDetail.LastName} ({assessorDetail.Assessment})"
+                                                );
+                                            }
+                                            //var assessorName = element.AssessorEmailId != null ? element.AssessorFirstName + " " + element.AssessorLastName + " (" + element.Assessment + ")" : "Not yet assigned";
+                                            //var assessorClass = element.AssessorEmailId != null ? "" : "govuk-tag govuk-tag--blue";
+                                            @* var fullNameWithEmail = "";
                                         if (element.AssessorFirstName != null && element.AssessorLastName != null && element.AssessorEmailId != null)
                                             fullNameWithEmail = element.AssessorFirstName + " " + element.AssessorLastName + " (" + element.AssessorEmailId + ")";
                                                  *@
-                                        <tr class="govuk-table__row">                                            
-                                            <th scope="row" class="govuk-table__header govuk-!-width-one-quarter">@element.Name</th>
+                                            <tr class="govuk-table__row">
+                                                <th scope="row" class="govuk-table__header govuk-!-width-one-quarter">@element.Name</th>
 
-                                            <td class="govuk-table__cell govuk-!-width-one-quarter">
-                                                
-                                                <div style="display:flex; flex-direction:column; gap: 0.5rem;">
-                                                    @{
-                                                        foreach (var status in element.SoaStatuses!)
-                                                        {
-                                                            var statusClass = "";
-                                                            var statusDisplayName = "";
-                                                            var statusCount = status.Count > 0 ? $"({status.Count})" : "";
-                                                            switch (status.SoaStatus)
+                                                <td class="govuk-table__cell govuk-!-width-one-quarter">
+
+                                                    <div style="display:flex; flex-direction:column; gap: 0.5rem;">
+                                                        @{
+                                                            foreach (var status in element.SoaStatuses!)
                                                             {
-                                                                case SoaStatus.InProgress:
-                                                                    statusClass = "govuk-tag--yellow";
-                                                                    statusDisplayName = "In progress";
-                                                                    break;
-                                                                case SoaStatus.NotStarted:
-                                                                    statusClass = "govuk-tag--grey";
-                                                                    statusDisplayName = "Not started";
-                                                                    break;
-                                                                case SoaStatus.SoAAgreed:
-                                                                    statusClass = "govuk-tag--green";
-                                                                    statusDisplayName = "SoA agreed";
-                                                                    break;
-                                                                case SoaStatus.SoACompleted:
-                                                                    statusClass = "govuk-tag--teal";
-                                                                    statusDisplayName = "SoA completed";
-                                                                    break;
-                                                                case SoaStatus.BeingAssessed:
-                                                                    statusClass = "govuk-tag--blue";
-                                                                    statusDisplayName = "Being assessed";
-                                                                    break;
-                                                                default:
-                                                                    statusClass = "govuk-tag--grey";
-                                                                    statusDisplayName = "Not started";
-                                                                    break;
+                                                                var statusClass = "";
+                                                                var statusDisplayName = "";
+                                                                var statusCount = status.Count > 0 ? $"({status.Count})" : "";
+                                                                switch (status.SoaStatus)
+                                                                {
+                                                                    case SoaStatus.InProgress:
+                                                                        statusClass = "govuk-tag--yellow";
+                                                                        statusDisplayName = "In progress";
+                                                                        break;
+                                                                    case SoaStatus.NotStarted:
+                                                                        statusClass = "govuk-tag--grey";
+                                                                        statusDisplayName = "Not started";
+                                                                        break;
+                                                                    case SoaStatus.SoAAgreed:
+                                                                        statusClass = "govuk-tag--green";
+                                                                        statusDisplayName = "SoA agreed";
+                                                                        break;
+                                                                    case SoaStatus.SoACompleted:
+                                                                        statusClass = "govuk-tag--teal";
+                                                                        statusDisplayName = "SoA completed";
+                                                                        break;
+                                                                    case SoaStatus.BeingAssessed:
+                                                                        statusClass = "govuk-tag--blue";
+                                                                        statusDisplayName = "Being assessed";
+                                                                        break;
+                                                                    default:
+                                                                        statusClass = "govuk-tag--grey";
+                                                                        statusDisplayName = "Not started";
+                                                                        break;
+                                                                }
+                                                                <div style="display:flex; align-items:center; gap: 0.5rem;">
+                                                                    <span class="govuk-tag @statusClass">@statusDisplayName</span>
+                                                                    <span>@statusCount</span>
+                                                                </div>
                                                             }
-                                                            <div style="display:flex; align-items:center; gap: 0.5rem;">
-                                                                <span class="govuk-tag @statusClass">@statusDisplayName</span>
-                                                                <span>@statusCount</span>
-                                                            </div>
                                                         }
-                                                    }                                                    
-                                                    <a class="govuk-link"
-                                                       href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementType = element.ElementType, elementDisplayType = element.ElementDisplayType })"
-                                                       onclick="event.stopPropagation();">
-                                                        Update status<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span>
-                                                    </a>
-                                                </div>
-                                            </td>
+                                                        <a class="govuk-link"
+                                                           href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementType = element.ElementType, elementDisplayType = element.ElementDisplayType })"
+                                                           onclick="event.stopPropagation();">
+                                                            Update status<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span>
+                                                        </a>
+                                                    </div>
+                                                </td>
 
 
-                                            <td class="govuk-table__cell govuk-!-width-one-quarter">
-                                                @element.SoaStatusUpdatedAt?.ToString("dd MMM yyyy")
-                                            </td>
-                                            <td class="govuk-table__cell govuk-!-width-one-quarter">
-                                                @if (assessorNameWithAssessmentList.Any())
-                                                {
-                                                   @foreach (var assessorNameWithAssessment in assessorNameWithAssessmentList)
+                                                <td class="govuk-table__cell govuk-!-width-one-quarter">
+                                                    @element.SoaStatusUpdatedAt?.ToString("dd MMM yyyy")
+                                                </td>
+                                                <td class="govuk-table__cell govuk-!-width-one-quarter">
+                                                    @if (assessorNameWithAssessmentList.Any())
                                                     {
-                                                        <span>@assessorNameWithAssessment</span><br />
+                                                        @foreach (var assessorNameWithAssessment in assessorNameWithAssessmentList)
+                                                        {
+                                                            <span>@assessorNameWithAssessment</span><br />
+                                                        }
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    <span class="govuk-tag govuk-tag--blue">
-                                                        Not yet assigned
-                                                    </span>
-                                                }
+                                                    else
+                                                    {
+                                                        <span class="govuk-tag govuk-tag--blue">
+                                                            Not yet assigned
+                                                        </span>
+                                                    }
 
-                                                @* <span class="@assessorClass">
+                                                    @* <span class="@assessorClass">
                                                     @assessorName
                                                 </span> *@
-                                                @* <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, selectedAssessor = fullNameWithEmail, selectedAssessorFirstName = element.AssessorFirstName, selectedAssessorLastName = element.AssessorLastName, selectedAssessorEmail = element.AssessorEmailId })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a> *@
-                                                <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, stageTitle = stage.Title, elementType = element.ElementType, })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
-                                            </td>
-                                        </tr>                                        
-                                    }
-                                </tbody>
-                            </table>
+                                                    @* <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, selectedAssessor = fullNameWithEmail, selectedAssessorFirstName = element.AssessorFirstName, selectedAssessorLastName = element.AssessorLastName, selectedAssessorEmail = element.AssessorEmailId })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a> *@
+                                                    <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, stageTitle = stage.Title, elementType = element.ElementType, })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            
                         </div>
                     }                    
                 }
             </div>            
         </div>
     </div>
-</div>
