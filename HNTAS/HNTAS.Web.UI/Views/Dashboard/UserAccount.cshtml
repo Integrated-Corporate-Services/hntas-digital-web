@@ -15,7 +15,6 @@
     var newNetworksLabel = @ViewBag.IsExistingNetworksFeatureEnabled ? "Your heat networks (New build)" : "Your heat networks";
 }
 
-<div class="govuk-width-container">
 
     @if (Model.UserRoles.Contains(UserRole.ResponsibleParty) || Model.UserRoles.Contains(UserRole.NetworkManager))
     {
@@ -316,4 +315,3 @@
 
 
     
-</div>

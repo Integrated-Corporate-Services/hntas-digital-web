@@ -76,74 +76,77 @@
                 </a>
             </p>
         }
-        <table class="govuk-table">
-            <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetAriaSort("OrganisationName")">
-                        <a class="govuk-link govuk-link--no-visited-state" href="@GetSortUrl("OrganisationName")">
-                            Organisation @GetSortIcon("OrganisationName")
-                        </a>
-                    </th>
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetAriaSort("Name")">
-                        <a class="govuk-link govuk-link--no-visited-state" href="@GetSortUrl("Name")">
-                            Heat network @GetSortIcon("Name")
-                        </a>
-                    </th>
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetAriaSort("Role")">
-                        <a class="govuk-link govuk-link--no-visited-state" href="@GetSortUrl("Role")">
-                            Your Role @GetSortIcon("Role")
-                        </a>
-                    </th>
-                    <th scope="col" class="govuk-table__header">Action</th>
-                    @if (ViewBag.IsRegistrationEnabled == true)
-                    {
-                        <th scope="col" class="govuk-table__header">Certification history</th>
-                    }
-                </tr>
-            </thead>
+        <div class="govuk-table-container">
+            <table class="govuk-table">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetAriaSort("OrganisationName")">
+                            <a class="govuk-link govuk-link--no-visited-state" href="@GetSortUrl("OrganisationName")">
+                                Organisation @GetSortIcon("OrganisationName")
+                            </a>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetAriaSort("Name")">
+                            <a class="govuk-link govuk-link--no-visited-state" href="@GetSortUrl("Name")">
+                                Heat network @GetSortIcon("Name")
+                            </a>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetAriaSort("Role")">
+                            <a class="govuk-link govuk-link--no-visited-state" href="@GetSortUrl("Role")">
+                                Your Role @GetSortIcon("Role")
+                            </a>
+                        </th>
+                        <th scope="col" class="govuk-table__header">Action</th>
+                        @if (ViewBag.IsRegistrationEnabled == true)
+                        {
+                            <th scope="col" class="govuk-table__header">Certification history</th>
+                        }
+                    </tr>
+                </thead>
 
-            <tbody class="govuk-table__body">
-                @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
-                {
-                    @foreach (var heatNetwork in Model.HeatNetworks)
+                <tbody class="govuk-table__body">
+                    @if (Model.HeatNetworks != null && Model.HeatNetworks.Any())
                     {
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
-                            <td class="govuk-table__cell">
-                                @heatNetwork.HnId<br />
-                                @heatNetwork.Name<br />
-                                @if (!string.IsNullOrWhiteSpace(heatNetwork.HnDescription))
-                                {
-                                    <span class="govuk-hint govuk-!-margin-bottom-0">@heatNetwork.HnDescription</span>
-                                }
-                            </td>
-                            <td class="govuk-table__cell">@heatNetwork.Role</td>
-                            <td class="govuk-table__cell">
-                                <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("PrepareToAddNetworkDetails", "HeatNetwork", new { hnId = heatNetwork.HnId })">
-                                    Add network details
-                                </a>
-                            </td>
-                            @if (ViewBag.IsRegistrationEnabled == true)
-                            {
+                        @foreach (var heatNetwork in Model.HeatNetworks)
+                        {
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
                                 <td class="govuk-table__cell">
-                                    <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistory", new { hnId = heatNetwork.HnId })">
-                                        View
+                                    @heatNetwork.HnId<br />
+                                    @heatNetwork.Name<br />
+                                    @if (!string.IsNullOrWhiteSpace(heatNetwork.HnDescription))
+                                    {
+                                        <span class="govuk-hint govuk-!-margin-bottom-0">@heatNetwork.HnDescription</span>
+                                    }
+                                </td>
+                                <td class="govuk-table__cell">@heatNetwork.Role</td>
+                                <td class="govuk-table__cell">
+                                    <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("PrepareToAddNetworkDetails", "HeatNetwork", new { hnId = heatNetwork.HnId })">
+                                        Add network details
                                     </a>
                                 </td>
-                            }
+                                @if (ViewBag.IsRegistrationEnabled == true)
+                                {
+                                    <td class="govuk-table__cell">
+                                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Index", "AuditHistory", new { hnId = heatNetwork.HnId })">
+                                            View
+                                        </a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell" colspan="@(ViewBag.IsRegistrationEnabled == true ? 5 : 4)">
+                                No heat networks found.
+                            </td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell" colspan="@(ViewBag.IsRegistrationEnabled == true ? 5 : 4)">
-                            No heat networks found.
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        
 
         @if (Model.TotalPages > 1)
         {
