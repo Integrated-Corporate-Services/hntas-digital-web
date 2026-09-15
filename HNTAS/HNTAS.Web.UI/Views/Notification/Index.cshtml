@@ -80,62 +80,64 @@
     <div class="govuk-grid-column-full">
 
         <h1 class="govuk-heading-l">Notifications</h1>
+        <div class="govuk-table-container">
+            <table class="govuk-table">
 
-        <table class="govuk-table">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("Subject")'" type="button" class="" data-module="govuk-button">
+                                Subject @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("Description")'" type="button" class="" data-module="govuk-button">
+                                Description @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("Timestamp")'" type="button" class="" data-module="govuk-button">
+                                Date @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header">Action</th>
+                    </tr>
+                </thead>
 
-            <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">                        
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("Subject")'" type="button" class="" data-module="govuk-button">
-                            Subject @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">                        
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("Description")'" type="button" class="" data-module="govuk-button">
-                            Description @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">                        
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("Timestamp")'" type="button" class="" data-module="govuk-button">
-                            Date @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>
-                    <th scope="col" class="govuk-table__header">Action</th>                    
-                </tr>
-            </thead>
-
-            <tbody class="govuk-table__body">
-                @if (Model.Items != null && Model.Items.Any())
-                {
-                    @foreach (var log in Model.Items)
+                <tbody class="govuk-table__body">
+                    @if (Model.Items != null && Model.Items.Any())
+                    {
+                        @foreach (var log in Model.Items)
+                        {
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">@log.Subject</td>
+                                <td class="govuk-table__cell">@log.Description</td>
+                                <td class="govuk-table__cell">
+                                    @if (log.Timestamp.HasValue)
+                                    {
+                                        <time class="local-time" datetime="@log.Timestamp.Value.ToString("o")">
+                                            @log.Timestamp.Value.ToString("dd/MM/yyyy HH:mm")
+                                        </time>
+                                    }
+                                    else
+                                    {
+                                        @String.Empty
+                                    }
+                                </td>
+                                <td class="govuk-table__cell"><a class="govuk-link" href="@log.ActionLink">@log.Action</a></td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">@log.Subject</td>
-                            <td class="govuk-table__cell">@log.Description</td>                            
-                            <td class="govuk-table__cell">
-                                @if (log.Timestamp.HasValue)
-                                {
-                                    <time class="local-time" datetime="@log.Timestamp.Value.ToString("o")">
-                                        @log.Timestamp.Value.ToString("dd/MM/yyyy HH:mm")
-                                    </time>
-                                }
-                                else
-                                {
-                                    @String.Empty
-                                }
-                            </td>
-                            <td class="govuk-table__cell"><a class="govuk-link" href="@log.ActionLink">@log.Action</a></td>
+                            <td class="govuk-table__cell" colspan="5">No notifications history found.</td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell" colspan="5">No notifications history found.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        
 
         @if (totalPages > 1)
         {
