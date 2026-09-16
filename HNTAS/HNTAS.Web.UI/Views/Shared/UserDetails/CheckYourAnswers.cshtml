@@ -12,7 +12,7 @@
     {
         if (userModel.ContactDetails.PreferredContactType == PreferredContactType.Landline)
         {
-            displayContactNumber = $"Landline {userModel.ContactDetails.LandlineNumber}";
+            displayContactNumber = userModel.ContactDetails.LandlineNumber!;
             if (!string.IsNullOrEmpty(userModel.ContactDetails.ContactNumberExtension))
             {
                 displayContactNumber += $" ext {userModel.ContactDetails.ContactNumberExtension}";
@@ -20,7 +20,7 @@
         }
         else if (userModel.ContactDetails.PreferredContactType == PreferredContactType.Mobile)
         {
-            displayContactNumber = userModel.ContactDetails.MobileNumber;
+            displayContactNumber = userModel.ContactDetails.MobileNumber!;
         }
         else if (userModel.ContactDetails.PreferredContactType == PreferredContactType.PreferNotToSay)
         {
