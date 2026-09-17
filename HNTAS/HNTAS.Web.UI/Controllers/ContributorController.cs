@@ -130,7 +130,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 default:
                     _logger.LogWarning("Invalid invitation response option: {Option}", model.AcceptInvitation);
-                    ModelState.AddModelError(nameof(model.AcceptInvitation), "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.AcceptInvitation), "Select a valid option");
                     return View(model);
             }
         }

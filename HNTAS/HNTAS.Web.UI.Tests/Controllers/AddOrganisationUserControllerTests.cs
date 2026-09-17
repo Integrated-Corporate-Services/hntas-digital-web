@@ -150,7 +150,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Arrange
             var controller = CreateController();
             var model = new AddUserEmailAddressModel { EmailAddress = "invalid-email" };
-            controller.ModelState.AddModelError("EmailAddress", "Invalid email format.");
+            controller.ModelState.AddModelError("EmailAddress", "Invalid email format");
 
             var urlHelperMock = new Mock<IUrlHelper>();
             urlHelperMock
@@ -421,7 +421,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 FirstName = "",
                 LastName = "Doe",
             };
-            controller.ModelState.AddModelError("FirstName", "First name is required.");
+            controller.ModelState.AddModelError("FirstName", "First name is required");
 
             _mockSessionHelper
                 .Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.OrganisationName))
@@ -595,7 +595,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             {
                 SelectedRoleName = null
             };
-            controller.ModelState.AddModelError("SelectedRoleName", "Please select role.");
+            controller.ModelState.AddModelError("SelectedRoleName", "Please select role");
 
             var workflowModel = new AddOrganisationUserWorkflowModel
             {

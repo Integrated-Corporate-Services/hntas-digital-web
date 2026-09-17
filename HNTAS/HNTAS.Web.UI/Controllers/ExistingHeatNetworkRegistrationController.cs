@@ -446,7 +446,7 @@ namespace HNTAS.Web.UI.Controllers
             // Validate the mandatory checkbox
             if (ConfirmedDeclaration != true)
             {
-                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "You must confirm the declaration to proceed.");
+                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "You must confirm the declaration to proceed");
             }
 
             if (!ModelState.IsValid)

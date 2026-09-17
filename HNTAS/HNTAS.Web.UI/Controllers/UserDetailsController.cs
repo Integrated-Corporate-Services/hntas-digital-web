@@ -92,7 +92,7 @@ namespace HNTAS.Web.UI.Controllers
                         contactDetails.MobileNumber = null;
                         ModelState.Remove(nameof(contactDetails.MobileNumber));
                         if (string.IsNullOrWhiteSpace(contactDetails.LandlineNumber))
-                            ModelState.AddModelError(nameof(contactDetails.LandlineNumber), "Enter your landline number.");
+                            ModelState.AddModelError(nameof(contactDetails.LandlineNumber), "Enter your landline number");
                         break;
                     case PreferredContactType.Mobile:
                         contactDetails.LandlineNumber = null;
@@ -100,7 +100,7 @@ namespace HNTAS.Web.UI.Controllers
                         ModelState.Remove(nameof(contactDetails.LandlineNumber));
                         ModelState.Remove(nameof(contactDetails.ContactNumberExtension));
                         if (string.IsNullOrWhiteSpace(contactDetails.MobileNumber))
-                            ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number.");
+                            ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number");
                         break;
                     case PreferredContactType.PreferNotToSay:
                         contactDetails.LandlineNumber = null;

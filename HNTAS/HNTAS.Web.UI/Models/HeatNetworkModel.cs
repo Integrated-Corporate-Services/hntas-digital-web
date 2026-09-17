@@ -16,7 +16,7 @@ namespace HNTAS.Web.UI.Models
     {
         private string _heatNetworkName;
 
-        [Required(ErrorMessage = "Please enter the heat network name.")]
+        [Required(ErrorMessage = "Enter the heat network name")]
         [StringLength(100, ErrorMessage = "The heat network name cannot exceed 100 characters.")]
         [RegularExpression(@"^[A-Za-z0-9 :;\-]+$", ErrorMessage = "The heat network name contains invalid characters.")]
         [Display(Name = "HeatNetwork Name")]
@@ -50,7 +50,7 @@ namespace HNTAS.Web.UI.Models
 
     public class HeatNetworkPhaseModel
     {
-        [Required(ErrorMessage = "Select the phase your heat network is in")]
+        [Required(ErrorMessage = "Select the phase that best describes your network")]
         public string HeatNetworkPhase { get; set; }
     }   
 
@@ -81,7 +81,8 @@ namespace HNTAS.Web.UI.Models
 
     public class HeatNetworkSuccessRedirection
     {
-        public string NextAction { get; set; }
+        [Required(ErrorMessage = "Select what you want to do next")]
+        public string? NextAction { get; set; }
     }
 
 }

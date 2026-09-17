@@ -448,7 +448,7 @@ namespace HNTAS.Web.UI.Controllers
                     contactDetails.MobileNumber = null;
                     ModelState.Remove(nameof(contactDetails.MobileNumber));
                     if (string.IsNullOrWhiteSpace(contactDetails.LandlineNumber))
-                        ModelState.AddModelError(nameof(contactDetails.LandlineNumber), "Enter your landline number.");
+                        ModelState.AddModelError(nameof(contactDetails.LandlineNumber), "Enter your landline number");
                     break;
                 case PreferredContactType.Mobile:
                     contactDetails.LandlineNumber = null;
@@ -456,7 +456,7 @@ namespace HNTAS.Web.UI.Controllers
                     ModelState.Remove(nameof(contactDetails.LandlineNumber));
                     ModelState.Remove(nameof(contactDetails.ContactNumberExtension));
                     if (string.IsNullOrWhiteSpace(contactDetails.MobileNumber))
-                        ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number.");
+                        ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number");
                     break;
             }
 
@@ -512,7 +512,7 @@ namespace HNTAS.Web.UI.Controllers
             // Validate the mandatory checkbox
             if (ConfirmedDeclaration != true)
             {
-                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "You must confirm the declaration to proceed.");
+                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "Confirm the declaration to continue");
             }
             if (!ModelState.IsValid)
             {                
@@ -688,12 +688,17 @@ namespace HNTAS.Web.UI.Controllers
 
             if (isOverseasOrganisation)
             {
+                if (string.IsNullOrEmpty(model.Postalcode))
+                {
+                    ModelState.AddModelError(nameof(model.Postalcode), "Enter the postcode or ZIP code");
+                }
+
                 countries = await GetCountrySelectListItems();
 
                 if (countries.FirstOrDefault(c => c.Value == model.Country) == null)
                 {
                     //add model error
-                    ModelState.AddModelError(nameof(model.Country), "Please select a valid country.");
+                    ModelState.AddModelError(nameof(model.Country), "Select the country");
                 }
                 else
                 {
@@ -702,6 +707,11 @@ namespace HNTAS.Web.UI.Controllers
             }
             else
             {
+                if (string.IsNullOrEmpty(model.Postalcode))
+                {
+                    ModelState.AddModelError(nameof(model.Postalcode), "Enter the postcode");
+                }
+
                 // Check if the postcode is invalid AND no error has been added yet for Postalcode (e.g. from Data Annotations)
                 if (!string.IsNullOrWhiteSpace(model.Postalcode) &&
                       !Regex.IsMatch(model.Postalcode.Trim().ToUpper(), @"^(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|[A-HK-Y][0-9]{1,2}|[0-9][A-HJKS-UW]|[A-HK-Y][0-9][ABEHMNPRV-Y]) ?[0-9][ABD-HJLNP-UW-Z]{2})$"))
@@ -709,7 +719,7 @@ namespace HNTAS.Web.UI.Controllers
                     // Only add custom format error if Data Annotation validation hasn't already flagged a character issue
                     if (!ModelState.ContainsKey(nameof(model.Postalcode)) || !ModelState[nameof(model.Postalcode)]!.Errors.Any())
                     {
-                        ModelState.AddModelError(nameof(model.Postalcode), "Please enter a valid UK postcode.");
+                        ModelState.AddModelError(nameof(model.Postalcode), "Enter a valid UK postcode");
                     }
                 }
             }

@@ -190,14 +190,14 @@ namespace HNTAS.Web.UI.Controllers
             bool? isRpUser = await _userService.IsRpUserAsync(model.EmailAddress);
             if (isRpUser.HasValue && isRpUser.Value == true)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation");
                 return View(model);
             }
             // if this email address exists in the existing users list then throw error
             bool? isExistingUser = await _userService.IsActiveUserAsync(model.EmailAddress);
             if (isExistingUser.HasValue && isExistingUser.Value == true)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access");
                 this.ShowBackButton("AddContributor");
                 return View(model);
             }

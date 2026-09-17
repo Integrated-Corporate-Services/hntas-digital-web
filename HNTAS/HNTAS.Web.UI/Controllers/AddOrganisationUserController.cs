@@ -69,7 +69,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (isRpUser.HasValue && isRpUser.Value == true)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party (RP). Go back and use Add an existing user to give them access.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party (RP). Go back and use Add an existing user to give them access");
                 this.ShowBackButton("AddContributor", "UserManagement");
                 return View("Contributor/AddEmailAddress", model);
             }
@@ -78,7 +78,7 @@ namespace HNTAS.Web.UI.Controllers
             bool? isExistingUser = await _userService.IsActiveUserAsync(model.EmailAddress);
             if (isExistingUser.HasValue && isExistingUser.Value == true)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access");
                 this.ShowBackButton("AddContributor", "UserManagement");
                 return View("Contributor/AddEmailAddress", model);
             }

@@ -9,6 +9,7 @@ using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -90,19 +91,44 @@ namespace HNTAS.Web.UI.Controllers
                 var ele = new ElementGroup
                 {
                     ElementDisplayType = selectedId,
-                    Count = model.ElementCounts.TryGetValue(selectedId, out var cnt) ? cnt : null,
+                    Count = model.ElementCounts.TryGetValue(selectedId, out var cnt) ? (int?)cnt : null,
                 };
                 elements.Add(ele);
-                if ((!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
+
+
+                var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc).FirstOrDefault(x => x.Id == selectedId);
+
+                if (element == null)
                 {
-                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc).FirstOrDefault(x => x.Id == selectedId);
-                    if (element == null)
+                    return BadRequest();
+                }
+
+                if (model.ElementCounts.TryGetValue(selectedId, out var count) && count.HasValue)
+                {
+                    // Check if the double has a fractional part
+                    bool isWholeNumber = count.Value % 1 == 0;
+
+                    if (!isWholeNumber)
                     {
-                        return BadRequest();
+                        ModelState.Remove($"ElementCounts.{selectedId}");
+                        ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter the number of {element.SubLabel.ToLower()} as a whole number");
                     }
-                    // Remove the automatic ModelState entry first
-                    ModelState.Remove($"ElementCounts.{selectedId}");
-                    ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter number of {element.SubLabel.ToLower()}");
+                }
+
+                if (count == null || count <= 0)
+                {
+                 
+                    if(count == null)
+                    {
+                        // Remove the automatic ModelState entry first
+                        ModelState.Remove($"ElementCounts.{selectedId}");
+                        ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter the number of {element.SubLabel.ToLower()}");
+                    }
+                    else
+                    {
+                        ModelState.Remove($"ElementCounts.{selectedId}");
+                        ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter the number of {element.SubLabel.ToLower()} as a whole number greater than 0");
+                    }
                 }
             }
 
