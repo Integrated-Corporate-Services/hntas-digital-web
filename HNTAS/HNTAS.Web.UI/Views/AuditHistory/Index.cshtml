@@ -37,6 +37,11 @@
     .sort-link:hover {
         text-decoration: none !important;
         text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+        }
+
+    .govuk-pagination__item {
+        display: block !important;
+        text-align: center;
     }
 </style>
 
@@ -125,11 +130,32 @@
                 
                 <ul class="govuk-pagination__list">
                     @{
-                        int startPage = Math.Max(1, currentPage - 2);
-                        int endPage = Math.Min(totalPages, currentPage + 2);        
+                        var pagesToShow = new List<int>();
 
-                        for (int i = startPage; i <= endPage; i++)
+                        void AddPage(int page)
                         {
+                            if (page >= 1 && page <= totalPages && !pagesToShow.Contains(page))
+                            {
+                                pagesToShow.Add(page);
+                            }
+                        }
+
+                        AddPage(1);
+                        AddPage(currentPage - 1);
+                        AddPage(currentPage);
+                        AddPage(currentPage + 1);
+                        AddPage(totalPages);
+
+                        pagesToShow.Sort();
+
+                        int? previousPage = null;
+
+                        foreach (var i in pagesToShow)
+                        {
+                            if (previousPage.HasValue && i - previousPage.Value > 1)
+                            {
+                                <li class="govuk-pagination__item govuk-pagination__item--ellipses" aria-hidden="true">...</li>
+                            }
                             if (i == currentPage)
                             {
                                 <li class="govuk-pagination__item govuk-pagination__item--current">
@@ -144,6 +170,7 @@
                                     </a>
                                 </li>
                             }
+                            previousPage = i;
                         }                        
                         
                     }
