@@ -50,6 +50,13 @@
     }
 }
 
+<style>
+    .govuk-pagination__item {
+        display: block !important;
+        text-align: center;
+    }
+</style>
+
 @section BeforeMain {
     <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
         <ol class="govuk-breadcrumbs__list">
@@ -165,11 +172,32 @@
 
                 <ul class="govuk-pagination__list">
                     @{
-                        int startPage = Math.Max(1, Model.PageNumber - 2);
-                        int endPage = Math.Min(Model.TotalPages, Model.PageNumber + 2);
+                        var pagesToShow = new List<int>();
 
-                        for (int i = startPage; i <= endPage; i++)
+                        void AddPage(int page)
                         {
+                            if (page >= 1 && page <= Model.TotalPages && !pagesToShow.Contains(page))
+                            {
+                                pagesToShow.Add(page);
+                            }
+                        }
+
+                        AddPage(1);
+                        AddPage(Model.PageNumber - 1);
+                        AddPage(Model.PageNumber);
+                        AddPage(Model.PageNumber + 1);
+                        AddPage(Model.TotalPages);
+
+                        pagesToShow.Sort();
+
+                        int? previousPage = null;
+
+                        foreach (var i in pagesToShow)
+                        {
+                            if (previousPage.HasValue && i - previousPage.Value > 1)
+                            {
+                                <li class="govuk-pagination__item govuk-pagination__item--ellipses" aria-hidden="true">...</li>
+                            }
                             if (i == Model.PageNumber)
                             {
                                 <li class="govuk-pagination__item govuk-pagination__item--current">
@@ -184,6 +212,7 @@
                                     </a>
                                 </li>
                             }
+                            previousPage = i;
                         }
                     }
                 </ul>
