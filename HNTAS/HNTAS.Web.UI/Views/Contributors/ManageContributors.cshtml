@@ -60,6 +60,11 @@
             background-color: #ffdd00;
             box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c;
         }
+
+    .govuk-pagination__item {
+        display: block !important;
+        text-align: center;
+    }
 </style>
 
 @section BeforeMain {
@@ -97,7 +102,8 @@
         else
         {
             <h2 class="govuk-heading-m">Current @ViewBag.WhoDoYouWantToAdd.ToLower()</h2>
-            <table class="govuk-table">
+<div class="govuk-table-container">
+    <table class="govuk-table">
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">                        
 
@@ -139,7 +145,9 @@
                     }                   
                     
                 </tbody>
-            </table>      
+            </table> 
+</div>
+     
             
             @if (totalPages > 1)
             {
@@ -159,11 +167,32 @@
 
                     <ul class="govuk-pagination__list">
                         @{
-                            int startPage = Math.Max(1, currentPage - 2);
-                            int endPage = Math.Min(totalPages, currentPage + 2);
+                            var pagesToShow = new List<int>();
 
-                            for (int i = startPage; i <= endPage; i++)
+                            void AddPage(int page)
                             {
+                                if (page >= 1 && page <= totalPages && !pagesToShow.Contains(page))
+                                {
+                                    pagesToShow.Add(page);
+                                }
+                            }
+
+                            AddPage(1);
+                            AddPage(currentPage - 1);
+                            AddPage(currentPage);
+                            AddPage(currentPage + 1);
+                            AddPage(totalPages);
+
+                            pagesToShow.Sort();
+
+                            int? previousPage = null;
+
+                            foreach (var i in pagesToShow)
+                            {
+                                if (previousPage.HasValue && i - previousPage.Value > 1)
+                                {
+                                    <li class="govuk-pagination__item govuk-pagination__item--ellipses" aria-hidden="true">...</li>
+                                }
                                 if (i == currentPage)
                                 {
                                     <li class="govuk-pagination__item govuk-pagination__item--current">
@@ -178,6 +207,7 @@
                                         </a>
                                     </li>
                                 }
+                                previousPage = i;
                             }
 
                         }
