@@ -97,7 +97,8 @@
         else
         {
             <h2 class="govuk-heading-m">Current @ViewBag.WhoDoYouWantToAdd.ToLower()</h2>
-            <table class="govuk-table">
+<div class="govuk-table-container">
+    <table class="govuk-table">
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">                        
 
@@ -139,7 +140,9 @@
                     }                   
                     
                 </tbody>
-            </table>      
+            </table> 
+</div>
+     
             
             @if (totalPages > 1)
             {
