@@ -178,7 +178,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 if (selectedOrganisationTypeText == null)
                 {
-                    ModelState.AddModelError(nameof(model.SelectedOrganisationType), "Please select a valid organisation type.");
+                    ModelState.AddModelError(nameof(model.SelectedOrganisationType), "Select a valid organisation type");
                     model.OrganisationTypes = OrganisationHelper.GetOrganisationTypeOptions();
                     return View("OrganisationType", model);
                 }
@@ -235,15 +235,15 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     companyDetails = await _companiesHouseService.GetCompanyByNumberAsync(orgModel.CompanyNumber);
                     if (companyDetails == null)
-                        ModelState.AddModelError(nameof(orgModel.CompanyNumber), "Company number not found. Please check and try again.");
+                        ModelState.AddModelError(nameof(orgModel.CompanyNumber), "Company number not found. Please check and try again");
                 }
                 catch (HttpRequestException)
                 {
-                    ModelState.AddModelError(nameof(orgModel.CompanyNumber), "Could not verify company number at this time. Please try again later.");
+                    ModelState.AddModelError(nameof(orgModel.CompanyNumber), "Could not verify company number at this time. Please try again later");
                 }
                 catch (Exception)
                 {
-                    ModelState.AddModelError(nameof(orgModel.CompanyNumber), "An unexpected error occurred during company number verification.");
+                    ModelState.AddModelError(nameof(orgModel.CompanyNumber), "An unexpected error occurred during company number verification");
                 }
             }
 
@@ -572,7 +572,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "SubmitAnswers: An unexpected error occurred during API call for user {UserId}.", userId);
-                ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again or contact support.");
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again or contact support");
                 ViewBag.ShowBackButton = false;
                 return View("CheckYourAnswers", viewModel);
             }
@@ -773,7 +773,7 @@ namespace HNTAS.Web.UI.Controllers
                 model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
                 if (results == null || results.Addresses == null || results.Addresses.Length == 0)
                 {
-                    ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
+                    ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode. Please try again later");
                     return View(model);
                 }
                 results.Addresses = results.Addresses
@@ -785,7 +785,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (HttpRequestException)
             {
-                ModelState.AddModelError(string.Empty, "Unable to retrieve address data.");
+                ModelState.AddModelError(string.Empty, "Unable to retrieve address data. Please try again later");
                 return View(model);
             }
         }
@@ -915,7 +915,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "UpdateOrganisationDetailsConfirmation: Failed to parse organisation type '{OrgType}'", organisationModel.SelectedOrganisationType);
-                ModelState.AddModelError(string.Empty, "Unable to determine organisation type.");
+                ModelState.AddModelError(string.Empty, "Unable to determine organisation type");
                 return View();
             }
 
@@ -965,7 +965,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "UpdateOrganisationDetailsConfirmation: An unexpected error occurred while updating organisation for user {UserId}.", userId);
-                ModelState.AddModelError(string.Empty, "An unexpected error occurred while updating organisation details. Please try again later.");
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred while updating organisation details. Please try again later");
                 return View();
             }
         }

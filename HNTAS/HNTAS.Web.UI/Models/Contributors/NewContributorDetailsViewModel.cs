@@ -9,7 +9,7 @@ namespace HNTAS.Web.UI.Models.Contributors
         private string _emailAddress;
 
         [Required(ErrorMessage = "Enter the new contributor's first name")]
-        [RegularExpression(@"^[a-zA-Z\-]+$", ErrorMessage = "Enter a valid first name using letters, numbers or common punctuation only.")]
+        [RegularExpression(@"^[a-zA-Z\-]+$", ErrorMessage = "Enter a valid first name using letters, numbers or common punctuation only")]
         [MaxLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
         public string FirstName
         {
@@ -18,7 +18,7 @@ namespace HNTAS.Web.UI.Models.Contributors
         }
 
         [Required(ErrorMessage = "Enter the new contributor's last name")]
-        [RegularExpression(@"^[a-zA-Z\-]+$", ErrorMessage = "Enter a valid last name using letters, numbers or common punctuation only.")]
+        [RegularExpression(@"^[a-zA-Z\-]+$", ErrorMessage = "Enter a valid last name using letters, numbers or common punctuation only")]
         [MaxLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
         public string LastName
         {

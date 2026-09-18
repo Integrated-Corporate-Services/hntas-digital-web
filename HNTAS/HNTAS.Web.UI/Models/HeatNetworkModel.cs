@@ -17,8 +17,8 @@ namespace HNTAS.Web.UI.Models
         private string _heatNetworkName;
 
         [Required(ErrorMessage = "Enter the heat network name")]
-        [StringLength(100, ErrorMessage = "The heat network name cannot exceed 100 characters.")]
-        [RegularExpression(@"^[A-Za-z0-9 :;\-]+$", ErrorMessage = "The heat network name contains invalid characters.")]
+        [StringLength(100, ErrorMessage = "The heat network name cannot exceed 100 characters")]
+        [RegularExpression(@"^[A-Za-z0-9 :;\-]+$", ErrorMessage = "The heat network name contains invalid characters")]
         [Display(Name = "HeatNetwork Name")]
         public string HeatNetworkName
         {
@@ -75,7 +75,7 @@ namespace HNTAS.Web.UI.Models
 
         // The ConfirmedDeclaration property, now part of this specific ViewModel
         [Display(Name = "I confirm that")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "You must confirm the declaration to proceed.")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Confirm that the summary is correct")]
         public bool ConfirmedDeclaration { get; set; }
     }
 

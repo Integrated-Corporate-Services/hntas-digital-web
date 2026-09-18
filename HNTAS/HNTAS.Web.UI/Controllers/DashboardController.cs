@@ -41,7 +41,7 @@ namespace HNTAS.Web.UI.Controllers
                 var user = await _userService.GetUserDetails(userId);
                 if (user == null)
                 {
-                    throw new Exception("Unable to retrieve user information. Please try again later.");
+                    throw new Exception("Unable to retrieve user information. Please try again later");
                 }
                 if (user.Roles != null && user.Roles.Contains(UserRole.ResponsibleParty) && user.Organisation == null)
                 {

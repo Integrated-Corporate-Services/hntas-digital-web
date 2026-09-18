@@ -151,7 +151,8 @@ namespace HNTAS.Web.UI.Controllers
                     var label = elementOption != null ? elementOption.Label : e.ElementDisplayType.ToString();
                     label = label.ToSentenceCase();
 
-                    return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
+                    //return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
+                    return e.Count.HasValue ? $"{e.Count.Value} {GetElementLabel(label, e.Count.Value)}" : label;
                 }).ToList(),
                 HeatNetworkAddress = addressByStreetOrTownModel?.Fulladdress ?? "Not provided",
                 Coordinates = latlong,
@@ -281,7 +282,8 @@ namespace HNTAS.Web.UI.Controllers
                 var label = elementOption != null ? elementOption.Label : e.ElementDisplayType.ToString();
                 label = label.ToSentenceCase();
 
-                return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
+                //return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
+                return e.Count.HasValue? $"{e.Count.Value} {GetElementLabel(label, e.Count.Value)}" : label;
             }).ToList();
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementOverview);
@@ -413,6 +415,29 @@ namespace HNTAS.Web.UI.Controllers
                 elements.Add(element);
             }
             return elements;
+        }
+
+        private static string GetElementLabel(string label, int count)
+        {
+            return label switch
+            {
+                "Communal substation (within the communal building)" =>
+                    count == 1
+                        ? "Communal substation (within the communal building)"
+                        : "Communal substations (within the communal building)",
+
+                "Communal distribution network" =>
+                    count == 1
+                        ? "Communal distribution network"
+                        : "Communal distribution networks",
+
+                "Consumer connection" =>
+                    count == 1
+                        ? "Consumer connection"
+                        : "Consumer connections",
+
+                _ => count == 1 ? label : $"{label}s"
+            };
         }
     }
 }

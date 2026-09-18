@@ -202,7 +202,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Same(model, viewResult.Model);
             Assert.False(controller.ModelState.IsValid);
             Assert.True(controller.ModelState.ContainsKey(nameof(model.EmailAddress)));
-            Assert.Equal("This user is already registered as a Responsible Party (RP). Go back and use Add an existing user to give them access.",
+            Assert.Equal("This user is already registered as a Responsible Party (RP). Go back and use Add an existing user to give them access",
                 controller.ModelState[nameof(model.EmailAddress)].Errors[0].ErrorMessage);
 
             _mockUserService.Verify(x => x.IsRpUserAsync(model.EmailAddress), Times.Once);
@@ -243,7 +243,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Same(model, viewResult.Model);
             Assert.False(controller.ModelState.IsValid);
             Assert.True(controller.ModelState.ContainsKey(nameof(model.EmailAddress)));
-            Assert.Equal("This user already has an active account. Go back and use Add an existing user to give them access.",
+            Assert.Equal("This user already has an active account. Go back and use Add an existing user to give them access",
                 controller.ModelState[nameof(model.EmailAddress)].Errors[0].ErrorMessage);
 
             _mockUserService.Verify(x => x.IsRpUserAsync(model.EmailAddress), Times.Once);
@@ -662,7 +662,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("AssignRole", redirectResult.ActionName);
-            Assert.Equal("Unable to submit your details. Please try again later.", controller.TempData["ErrorMessage"]);
+            Assert.Equal("Unable to submit your details. Please try again later", controller.TempData["ErrorMessage"]);
 
             _mockLogger.Verify(
                 x => x.Log(
@@ -720,7 +720,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("AssignRole", redirectResult.ActionName);
-            Assert.Equal("There was an error submitting your details. Please try again later.", controller.TempData["ErrorMessage"]);
+            Assert.Equal("There was an error submitting your details. Please try again later", controller.TempData["ErrorMessage"]);
         }
 
         [Fact]
@@ -770,7 +770,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("AssignRole", redirectResult.ActionName);
-            Assert.Equal("There was an error submitting your details. Please try again later.", controller.TempData["ErrorMessage"]);
+            Assert.Equal("There was an error submitting your details. Please try again later", controller.TempData["ErrorMessage"]);
 
             _mockLogger.Verify(
                 x => x.Log(

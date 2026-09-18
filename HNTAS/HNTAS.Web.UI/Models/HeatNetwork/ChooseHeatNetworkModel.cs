@@ -5,7 +5,7 @@ namespace HNTAS.Web.UI.Models.HeatNetwork
 {
     public class ChooseHeatNetworkModel
     {
-        [Required(ErrorMessage = "Choose the heat network.")]
+        [Required(ErrorMessage = "Choose the heat network")]
         public string SelectedHeatNetworkId { get; set; } = null!;
 
         public string? SelectedHeatNetworkName { get; set; }

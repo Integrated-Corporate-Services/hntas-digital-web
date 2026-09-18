@@ -75,7 +75,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "The invitation token is missing from your request. Please use the link provided in the invitation email to proceed.";
+                TempData["ErrorMessage"] = "The invitation token is missing from your request. Please use the link provided in the invitation email to proceed";
             }
             var model = _sessionHelper.GetFromSession<YouHaveBeenInvitedModel>(HttpContext, SessionKeys.YouHaveBeenInvitedModelKey) ?? new YouHaveBeenInvitedModel();
             return View(model);
@@ -100,7 +100,7 @@ namespace HNTAS.Web.UI.Controllers
             if (string.IsNullOrWhiteSpace(invitationId))
             {
                 _logger.LogWarning("Invitation ID is missing from session during invitation response.");
-                TempData["ErrorMessage"] = "Your session has expired or is invalid. Please use the invitation link from your email.";
+                TempData["ErrorMessage"] = "Your session has expired or is invalid. Please use the invitation link from your email";
                 return View(model);
             }
 
@@ -124,7 +124,7 @@ namespace HNTAS.Web.UI.Controllers
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, "Error while rejecting invitation ID: {InvitationId}", invitationId);
-                        TempData["ErrorMessage"] = "An error occurred while declining the invitation. Please try again later.";
+                        TempData["ErrorMessage"] = "An error occurred while declining the invitation. Please try again later";
                         return View(model);
                     }
 

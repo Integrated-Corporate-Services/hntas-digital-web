@@ -89,7 +89,7 @@ public class HomeControllerTests
 
         // Assert
         var viewResult = Assert.IsType<BadRequestResult>(result);
-        Assert.Equal("Unable to retrieve essential user info. Please try again.", controller.TempData["ErrorMessage"]);
+        Assert.Equal("Unable to retrieve essential user info. Please try again later", controller.TempData["ErrorMessage"]);
     }
 
     [Fact]
@@ -106,7 +106,7 @@ public class HomeControllerTests
 
         // Assert
         var viewResult = Assert.IsType<BadRequestResult>(result);
-        Assert.Equal("Error during account setup. Please contact support.", controller.TempData["ErrorMessage"]);
+        Assert.Equal("Error during account setup. Please contact support", controller.TempData["ErrorMessage"]);
     }
 
     [Fact]

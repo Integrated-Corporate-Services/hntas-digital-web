@@ -80,7 +80,7 @@ namespace HNTAS.Web.UI.Controllers
             catch(Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving DDH and contributors");
-                TempData["ErrorMessage"] = "An error occurred while retrieving the DDH and contributors.";
+                TempData["ErrorMessage"] = "An error occurred while retrieving the DDH and contributors";
 
                 // Return empty result
                 var emptyResult = new List<DDHAndContributorsListModel>();
@@ -271,7 +271,7 @@ namespace HNTAS.Web.UI.Controllers
             if (heatNetworks == null)
             {
                 _logger.LogError("No heat networks found in API for the UserId : {UserId}", userId);
-                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later";
                 return null;
             }
             return heatNetworks;
@@ -447,7 +447,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 if (string.IsNullOrWhiteSpace(invitationId))
                 {
-                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                     return RedirectToAction("CheckYourAnswers");
                 }
 
@@ -460,7 +460,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error submitting new contributor details for email: {Email}", model.EmailAddress);
-                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                 return RedirectToAction("CheckYourAnswers");
             }
 

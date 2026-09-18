@@ -5,7 +5,7 @@ namespace HNTAS.Web.UI.Models.User
 {
     public class ChooseContributorModel
     {
-        [Required(ErrorMessage = "Please select a user.")]
+        [Required(ErrorMessage = "Select a user")]
         public string SelectedContributorId { get; set; } = null!;
 
         public string? SelectedContributorEmail { get; set; }

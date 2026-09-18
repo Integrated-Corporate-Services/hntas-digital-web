@@ -80,7 +80,7 @@ namespace HNTAS.Web.UI.Controllers
                 //add model error if preferred contact type is not selected
                 ViewBag.IsRegulatoryContact = userModel.IsRegulatoryContact;
                 TempData["ErrorSummary"] = "CustomErrorSummary";
-                ModelState.AddModelError(nameof(contactDetails.PreferredContactType), "Select your preferred contact method.");
+                ModelState.AddModelError(nameof(contactDetails.PreferredContactType), "Select your preferred contact method");
                 return View("UserDetails/ContactDetails", contactDetails);
             }
 
@@ -172,7 +172,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating OrgDetails for user {UserId}", userId);
-                TempData["ErrorMessage"] = "There was a problem saving your details. Please try again.";
+                TempData["ErrorMessage"] = "There was a problem saving your details. Please try again later";
                 return View("UserDetails/CheckYourAnswers", new CheckYourAnswersOrganisationModel
                 {
                     Organisation = new OrganisationModel(),

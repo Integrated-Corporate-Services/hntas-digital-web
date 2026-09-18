@@ -92,13 +92,14 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             var model = new NetworkElementViewModel
             {
-                ElementCounts = new Dictionary<Api.Client.Model.HeatNetworkElementType, int?>
+                ElementCounts = new Dictionary<Api.Client.Model.HeatNetworkElementType, double?>
                     {
-                        { Api.Client.Model.HeatNetworkElementType.EnergyCentre, 1 }
+                        { Api.Client.Model.HeatNetworkElementType.EnergyCentre, 1 },
+                        { Api.Client.Model.HeatNetworkElementType.Substation, 1 }
                     },
                 SelectedElementIds = new List<Api.Client.Model.HeatNetworkElementType>
                     {
-                        Api.Client.Model.HeatNetworkElementType.EnergyCentre
+                        Api.Client.Model.HeatNetworkElementType.Substation
                     }
             };
 
@@ -114,7 +115,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             var model = new NetworkElementViewModel
             {
-                ElementCounts = new Dictionary<Api.Client.Model.HeatNetworkElementType, int?>
+                ElementCounts = new Dictionary<Api.Client.Model.HeatNetworkElementType, double?>
                     {
                         { Api.Client.Model.HeatNetworkElementType.EnergyCentre, 1 }
                     },
@@ -136,7 +137,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             var model = new NetworkElementViewModel
             {
-                ElementCounts = new Dictionary<Api.Client.Model.HeatNetworkElementType, int?>
+                ElementCounts = new Dictionary<Api.Client.Model.HeatNetworkElementType, double?>
                     {
                         { Api.Client.Model.HeatNetworkElementType.EnergyCentre, 0 }
                     },
@@ -299,13 +300,13 @@ namespace HNTAS.Web.UI.Tests.Controllers
                     It.IsAny<HttpContext>(), SessionKeys.NetworkElementsViewModelSessionKey))
                 .Returns(new NetworkElementViewModel
                 {
-                    ElementCounts = new Dictionary<Api.Client.Model.HeatNetworkElementType, int?>
+                    ElementCounts = new Dictionary<HeatNetworkElementType, double?>
                     {
-                        { Api.Client.Model.HeatNetworkElementType.EnergyCentre, 1 }
+                        { HeatNetworkElementType.EnergyCentre, 1 }
                     },
-                    SelectedElementIds = new List<Api.Client.Model.HeatNetworkElementType>
+                    SelectedElementIds = new List<HeatNetworkElementType>
                     {
-                        Api.Client.Model.HeatNetworkElementType.EnergyCentre
+                        HeatNetworkElementType.EnergyCentre
                     }
                 });
 

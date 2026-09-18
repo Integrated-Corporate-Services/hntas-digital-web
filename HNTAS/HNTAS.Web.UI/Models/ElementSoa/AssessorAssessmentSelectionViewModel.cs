@@ -6,7 +6,6 @@ namespace HNTAS.Web.UI.Models.ElementSoa
     public class AssessorAssessmentSelectionViewModel
     {
         public List<AssessmentOption> AssessmentOptions { get; set; } = [];
-        //[Required(ErrorMessage = "Select the assessment before continuing.")]
         public string? SelectedAssessmentOption { get; set; }
         public ElementTypeInShort ElementType { get; set; }
     }
