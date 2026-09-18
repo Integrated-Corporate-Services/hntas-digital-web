@@ -29,10 +29,10 @@ namespace HNTAS.Web.UI.Models.User
             set => _lastName = value?.Trim();
         }
 
-        [Required(ErrorMessage = "Enter either a landline number or a mobile number")]
+        [Required(ErrorMessage = "Select whether you want to provide a landline or mobile number")]
         public PreferredContactType? PreferredContactType { get; set; }
 
-        [RegularExpression(@"^[\d\s\+\-]+$", ErrorMessage = "Enter a valid landline number — use only numbers, spaces, plus or hyphens")]
+        [RegularExpression(@"^[\d\s\+\-]+$", ErrorMessage = "Enter a valid landline number using only numbers, spaces, plus signs or hyphens")]
         [MaxLength(20, ErrorMessage = "Landline number cannot exceed 20 characters")]
         public string? LandlineNumber
         {
@@ -40,7 +40,7 @@ namespace HNTAS.Web.UI.Models.User
             set => _landlineNumber = value?.Trim();
         }
 
-        [RegularExpression(@"^[\d\s\+\-]+$", ErrorMessage = "Enter a valid extension — use only numbers, spaces, plus or hyphens")]
+        [RegularExpression(@"^[\d\s\+\-]+$", ErrorMessage = "Enter a valid extension using only numbers, spaces, plus signs or hyphens")]
         [MaxLength(10, ErrorMessage = "Extension cannot exceed 10 characters")]
         public string? ContactNumberExtension
         {
@@ -48,7 +48,7 @@ namespace HNTAS.Web.UI.Models.User
             set => _contactNumberExtension = value?.Trim();
         }
 
-        [RegularExpression(@"^[\d\s\+\-]+$", ErrorMessage = "Enter a valid mobile number — use only numbers, spaces, plus or hyphens")]
+        [RegularExpression(@"^[\d\s\+\-]+$", ErrorMessage = "Enter a valid mobile number using only numbers, spaces, plus signs or hyphens")]
         [MaxLength(13, ErrorMessage = "Mobile number cannot exceed 13 characters")]
         public string? MobileNumber
         {

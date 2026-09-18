@@ -5,7 +5,7 @@ namespace HNTAS.Web.UI.Models.OrganisationRole
 {
     public class ChooseUserModel
     {
-        [Required(ErrorMessage = "Please select a user.")]
+        [Required(ErrorMessage = "Select a user")]
         public string SelectedUserId { get; set; } = null!;
 
         public string? SelectedUserName { get; set; }

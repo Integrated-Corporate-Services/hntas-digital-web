@@ -178,7 +178,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 if (selectedOrganisationTypeText == null)
                 {
-                    ModelState.AddModelError(nameof(model.SelectedOrganisationType), "Please select a valid organisation type.");
+                    ModelState.AddModelError(nameof(model.SelectedOrganisationType), "Select a valid organisation type");
                     model.OrganisationTypes = OrganisationHelper.GetOrganisationTypeOptions();
                     return View("OrganisationType", model);
                 }
@@ -235,15 +235,15 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     companyDetails = await _companiesHouseService.GetCompanyByNumberAsync(orgModel.CompanyNumber);
                     if (companyDetails == null)
-                        ModelState.AddModelError(nameof(orgModel.CompanyNumber), "Company number not found. Please check and try again.");
+                        ModelState.AddModelError(nameof(orgModel.CompanyNumber), "Company number not found. Please check and try again");
                 }
                 catch (HttpRequestException)
                 {
-                    ModelState.AddModelError(nameof(orgModel.CompanyNumber), "Could not verify company number at this time. Please try again later.");
+                    ModelState.AddModelError(nameof(orgModel.CompanyNumber), "Could not verify company number at this time. Please try again later");
                 }
                 catch (Exception)
                 {
-                    ModelState.AddModelError(nameof(orgModel.CompanyNumber), "An unexpected error occurred during company number verification.");
+                    ModelState.AddModelError(nameof(orgModel.CompanyNumber), "An unexpected error occurred during company number verification");
                 }
             }
 
@@ -448,7 +448,7 @@ namespace HNTAS.Web.UI.Controllers
                     contactDetails.MobileNumber = null;
                     ModelState.Remove(nameof(contactDetails.MobileNumber));
                     if (string.IsNullOrWhiteSpace(contactDetails.LandlineNumber))
-                        ModelState.AddModelError(nameof(contactDetails.LandlineNumber), "Enter your landline number.");
+                        ModelState.AddModelError(nameof(contactDetails.LandlineNumber), "Enter your landline number");
                     break;
                 case PreferredContactType.Mobile:
                     contactDetails.LandlineNumber = null;
@@ -456,7 +456,7 @@ namespace HNTAS.Web.UI.Controllers
                     ModelState.Remove(nameof(contactDetails.LandlineNumber));
                     ModelState.Remove(nameof(contactDetails.ContactNumberExtension));
                     if (string.IsNullOrWhiteSpace(contactDetails.MobileNumber))
-                        ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number.");
+                        ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number");
                     break;
             }
 
@@ -512,7 +512,7 @@ namespace HNTAS.Web.UI.Controllers
             // Validate the mandatory checkbox
             if (ConfirmedDeclaration != true)
             {
-                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "You must confirm the declaration to proceed.");
+                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "Confirm the declaration to continue");
             }
             if (!ModelState.IsValid)
             {                
@@ -572,7 +572,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "SubmitAnswers: An unexpected error occurred during API call for user {UserId}.", userId);
-                ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again or contact support.");
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again or contact support");
                 ViewBag.ShowBackButton = false;
                 return View("CheckYourAnswers", viewModel);
             }
@@ -688,12 +688,17 @@ namespace HNTAS.Web.UI.Controllers
 
             if (isOverseasOrganisation)
             {
+                if (string.IsNullOrEmpty(model.Postalcode))
+                {
+                    ModelState.AddModelError(nameof(model.Postalcode), "Enter the postcode or ZIP code");
+                }
+
                 countries = await GetCountrySelectListItems();
 
                 if (countries.FirstOrDefault(c => c.Value == model.Country) == null)
                 {
                     //add model error
-                    ModelState.AddModelError(nameof(model.Country), "Please select a valid country.");
+                    ModelState.AddModelError(nameof(model.Country), "Select the country");
                 }
                 else
                 {
@@ -702,6 +707,11 @@ namespace HNTAS.Web.UI.Controllers
             }
             else
             {
+                if (string.IsNullOrEmpty(model.Postalcode))
+                {
+                    ModelState.AddModelError(nameof(model.Postalcode), "Enter the postcode");
+                }
+
                 // Check if the postcode is invalid AND no error has been added yet for Postalcode (e.g. from Data Annotations)
                 if (!string.IsNullOrWhiteSpace(model.Postalcode) &&
                       !Regex.IsMatch(model.Postalcode.Trim().ToUpper(), @"^(GIR 0AA|[A-PR-UWYZ]([0-9]{1,2}|[A-HK-Y][0-9]{1,2}|[0-9][A-HJKS-UW]|[A-HK-Y][0-9][ABEHMNPRV-Y]) ?[0-9][ABD-HJLNP-UW-Z]{2})$"))
@@ -709,7 +719,7 @@ namespace HNTAS.Web.UI.Controllers
                     // Only add custom format error if Data Annotation validation hasn't already flagged a character issue
                     if (!ModelState.ContainsKey(nameof(model.Postalcode)) || !ModelState[nameof(model.Postalcode)]!.Errors.Any())
                     {
-                        ModelState.AddModelError(nameof(model.Postalcode), "Please enter a valid UK postcode.");
+                        ModelState.AddModelError(nameof(model.Postalcode), "Enter a valid UK postcode");
                     }
                 }
             }
@@ -763,7 +773,7 @@ namespace HNTAS.Web.UI.Controllers
                 model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
                 if (results == null || results.Addresses == null || results.Addresses.Length == 0)
                 {
-                    ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
+                    ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode. Please try again later");
                     return View(model);
                 }
                 results.Addresses = results.Addresses
@@ -775,7 +785,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (HttpRequestException)
             {
-                ModelState.AddModelError(string.Empty, "Unable to retrieve address data.");
+                ModelState.AddModelError(string.Empty, "Unable to retrieve address data. Please try again later");
                 return View(model);
             }
         }
@@ -905,7 +915,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "UpdateOrganisationDetailsConfirmation: Failed to parse organisation type '{OrgType}'", organisationModel.SelectedOrganisationType);
-                ModelState.AddModelError(string.Empty, "Unable to determine organisation type.");
+                ModelState.AddModelError(string.Empty, "Unable to determine organisation type");
                 return View();
             }
 
@@ -955,7 +965,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "UpdateOrganisationDetailsConfirmation: An unexpected error occurred while updating organisation for user {UserId}.", userId);
-                ModelState.AddModelError(string.Empty, "An unexpected error occurred while updating organisation details. Please try again later.");
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred while updating organisation details. Please try again later");
                 return View();
             }
         }

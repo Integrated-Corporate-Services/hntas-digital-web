@@ -11,7 +11,7 @@ namespace HNTAS.Web.UI.Models.Contributors
         public string? HeatNetwork { get; set; }
         public string? RoleAssigned { get; set; }
         public List<string>? SelectedPhases { get; set; }
-        [MustBeTrue(ErrorMessage = "Confirm that you are authorised to proceed.")]
+        [MustBeTrue(ErrorMessage = "Confirm that you are authorised to proceed")]
         public bool ConfirmedDeclaration { get; set; }
     }
 }

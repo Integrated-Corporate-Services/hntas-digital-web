@@ -80,7 +80,7 @@ namespace HNTAS.Web.UI.Controllers
                 //add model error if preferred contact type is not selected
                 ViewBag.IsRegulatoryContact = userModel.IsRegulatoryContact;
                 TempData["ErrorSummary"] = "CustomErrorSummary";
-                ModelState.AddModelError(nameof(contactDetails.PreferredContactType), "Select your preferred contact method.");
+                ModelState.AddModelError(nameof(contactDetails.PreferredContactType), "Select your preferred contact method");
                 return View("UserDetails/ContactDetails", contactDetails);
             }
 
@@ -92,7 +92,7 @@ namespace HNTAS.Web.UI.Controllers
                         contactDetails.MobileNumber = null;
                         ModelState.Remove(nameof(contactDetails.MobileNumber));
                         if (string.IsNullOrWhiteSpace(contactDetails.LandlineNumber))
-                            ModelState.AddModelError(nameof(contactDetails.LandlineNumber), "Enter your landline number.");
+                            ModelState.AddModelError(nameof(contactDetails.LandlineNumber), "Enter your landline number");
                         break;
                     case PreferredContactType.Mobile:
                         contactDetails.LandlineNumber = null;
@@ -100,7 +100,7 @@ namespace HNTAS.Web.UI.Controllers
                         ModelState.Remove(nameof(contactDetails.LandlineNumber));
                         ModelState.Remove(nameof(contactDetails.ContactNumberExtension));
                         if (string.IsNullOrWhiteSpace(contactDetails.MobileNumber))
-                            ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number.");
+                            ModelState.AddModelError(nameof(contactDetails.MobileNumber), "Enter your mobile number");
                         break;
                     case PreferredContactType.PreferNotToSay:
                         contactDetails.LandlineNumber = null;
@@ -172,7 +172,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating OrgDetails for user {UserId}", userId);
-                TempData["ErrorMessage"] = "There was a problem saving your details. Please try again.";
+                TempData["ErrorMessage"] = "There was a problem saving your details. Please try again later";
                 return View("UserDetails/CheckYourAnswers", new CheckYourAnswersOrganisationModel
                 {
                     Organisation = new OrganisationModel(),

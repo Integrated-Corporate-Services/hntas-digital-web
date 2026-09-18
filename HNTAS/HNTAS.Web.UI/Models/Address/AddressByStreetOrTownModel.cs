@@ -1,29 +1,30 @@
 ﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Models.CompaniesHouse;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace HNTAS.Web.UI.Models.Address
 {
     public class AddressByStreetOrTownModel
     {
         // Initialize all values with a default value to avoid CS8618
-
-        [Required(ErrorMessage = "Street address is required.")]
+        [Required(ErrorMessage = "Enter the street address")]
         [RegularExpression(@"^[^<>]*$", ErrorMessage = "Street address must not include < or >")]
-        public string StreetAddress { get; set; } = string.Empty;
+        public string? StreetAddress { get; set; }
 
-        [Required(ErrorMessage = "Town or city is required.")]
+        [Required(ErrorMessage = "Enter the town or city")]
         [RegularExpression(@"^[^<>]*$", ErrorMessage = "Town or city must not include < or >")]
-        public string TownOrCity { get; set; } = string.Empty;
+        public string? TownOrCity { get; set; }
 
-        [Required(ErrorMessage = "Postal Code or Zip code is required.")]
-        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Postal Code or Zip code must not include < or >")]
-        public string Postalcode { get; set; } = string.Empty;
+        //[Required(ErrorMessage = "Enter the postcode")]
+        //[RegularExpression(@"^[^<>]*$", ErrorMessage = "Postal Code must not include < or >")]
+        public string? Postalcode { get; set; }
 
-        [Required(ErrorMessage = "Country is required.")]
         [RegularExpression(@"^[^<>]*$", ErrorMessage = "Country must not include < or >")]
-        public string Country { get; set; } = string.Empty;
+        public string? Country { get; set; }
+
         public string Fulladdress { get; set; } = string.Empty;
+
 
         public static implicit operator AddressByStreetOrTownModel(RegisteredOfficeAddressModel v)
         {

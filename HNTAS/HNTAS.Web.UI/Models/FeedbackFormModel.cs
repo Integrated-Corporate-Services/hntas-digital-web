@@ -4,7 +4,7 @@ namespace HNTAS.Web.UI.Models
 {
     public class FeedbackFormModel
     {
-        [Required(ErrorMessage = "Please select an option.")]
+        [Required(ErrorMessage = "Select an option")]
         public string SatisfactionLevel { get; set; }
         public string? Feedback { get; set; }
     }

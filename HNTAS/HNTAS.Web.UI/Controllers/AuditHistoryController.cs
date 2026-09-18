@@ -63,7 +63,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving audit history for HN ID: {HnId}", SanitizeForLogging(hnId));
-                TempData["ErrorMessage"] = "An error occurred while retrieving the certification history.";
+                TempData["ErrorMessage"] = "An error occurred while retrieving the certification history";
 
                 // Return empty result
                 var emptyResult = new AuditLogResponse

@@ -216,7 +216,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (allSoaAllStatusesCount > totalCountFromElement)
             {
-                ModelState.AddModelError($"soastatuscounts[{model.SelectedSoaStatusOptions.FirstOrDefault().ToString()}]", $"The total count of all SoA statuses cannot exceed {totalCountFromElement}");
+                ModelState.AddModelError($"soastatuscounts[{model.SelectedSoaStatusOptions.FirstOrDefault().ToString()}]", $"The total count of all SOA statuses cannot exceed {totalCountFromElement}");
             }
 
             foreach (var selectedId in model.SelectedSoaStatusOptions)
@@ -224,7 +224,7 @@ namespace HNTAS.Web.UI.Controllers
                 if ((!model.SoaStatusCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
                 {
                     ModelState.Remove($"SoaStatusCounts.{selectedId}");
-                    ModelState.AddModelError($"SoaStatusCounts[{selectedId}]", $"Enter number of connections.");
+                    ModelState.AddModelError($"SoaStatusCounts[{selectedId}]", $"Enter number of connections");
                 }
             }
 
@@ -330,7 +330,7 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.Remove("lastName");
                 ModelState.Remove("fullNameFromInput");
                 ModelState.Remove("assessor-autocomplete");
-                ModelState.AddModelError("assessor-autocomplete", "Please select an assessor before continuing.");
+                ModelState.AddModelError("assessor-autocomplete", "Select an assessor");
                 return View("AssessorOnboarding", "ElementSoa");
             }
             var assessorSearchResults = _sessionHelper.GetFromSession<List<AssessorSearchResult>>(HttpContext, SessionKeys.AssessorSearchResultsSessionKey);
@@ -347,7 +347,7 @@ namespace HNTAS.Web.UI.Controllers
                     ModelState.Remove("lastName");
                     ModelState.Remove("fullNameFromInput");
                     ModelState.Remove("assessor-autocomplete");
-                    ModelState.AddModelError("assessor-autocomplete", "Please select an assessor before continuing.");
+                    ModelState.AddModelError("assessor-autocomplete", "Select an assessor");
                     return View("AssessorOnboarding", "ElementSoa");
                 }
             }

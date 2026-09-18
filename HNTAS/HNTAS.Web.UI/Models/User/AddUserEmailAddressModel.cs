@@ -7,9 +7,9 @@ namespace HNTAS.Web.UI.Models.User
 
         [RegularExpression(
           @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-          ErrorMessage = "Invalid email format."
+          ErrorMessage = "Invalid email format"
         )]
-        [Required(ErrorMessage = "Email address is required.")]
+        [Required(ErrorMessage = "Enter the Email address")]
         [Display(Name = "Email address")]
         public string EmailAddress { get; set; } = null!;
     }

@@ -54,7 +54,7 @@
                     
                     @* Postal Code or Zip code Field *@
                     <div class="govuk-form-group @(HasError(nameof(Model.Postalcode)) ? "govuk-form-group--error" : "")">
-                        <label class="govuk-label" for="@PostalcodeId">Postal Code or Zip code</label>
+                        <label class="govuk-label" for="@PostalcodeId">Postcode</label>
                         @if (HasError(nameof(Model.Postalcode)))
                         {
                             <span asp-validation-for="Postalcode" class="govuk-error-message"></span>

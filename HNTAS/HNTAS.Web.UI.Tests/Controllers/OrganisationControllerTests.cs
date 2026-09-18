@@ -226,7 +226,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             Assert.NotNull(result);
             Assert.True(_controller.ModelState.ContainsKey(string.Empty));
-            Assert.Equal("Unable to retrieve address data.", _controller.ModelState[string.Empty].Errors[0].ErrorMessage);
+            Assert.Equal("Unable to retrieve address data. Please try again later", _controller.ModelState[string.Empty].Errors[0].ErrorMessage);
         }
 
         [Fact]
@@ -279,7 +279,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Equal("OrganisationAddress", viewResult.ViewName);
             Assert.False(_controller.ModelState.IsValid);
             Assert.True(_controller.ModelState.ContainsKey(nameof(model.Postalcode)));
-            Assert.Equal("Please enter a valid UK postcode.", _controller.ModelState[nameof(model.Postalcode)].Errors.First().ErrorMessage);
+            Assert.Equal("Enter a valid UK postcode", _controller.ModelState[nameof(model.Postalcode)].Errors.First().ErrorMessage);
         }
 
         [Fact]
