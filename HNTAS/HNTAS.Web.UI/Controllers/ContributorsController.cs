@@ -121,20 +121,33 @@ namespace HNTAS.Web.UI.Controllers
 
         private string GetRole()
         {
-            string whoDoYouWantToAdd = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey);
+            string? whoDoYouWantToAdd =
+                _sessionHelper.GetFromSession<string>(
+                    HttpContext,
+                    SessionKeys.WhoDoYouWantToAddSessionKey);
+
             if (whoDoYouWantToAdd == null)
             {
-                var role = _sessionHelper.GetFromSession<NewContributorRoleViewModel>(HttpContext, SessionKeys.NewContributorRoleViewModelSessionKey).IsDDH;
-                whoDoYouWantToAdd = role switch
+                var roleModel =
+                    _sessionHelper.GetFromSession<NewContributorRoleViewModel>(
+                        HttpContext,
+                        SessionKeys.NewContributorRoleViewModelSessionKey);
+
+                if (roleModel == null)
                 {
-                    true => "Designated duty holder",
-                    false => "Contributor"
-                };
+                    throw new InvalidOperationException(
+                        $"Session key '{SessionKeys.NewContributorRoleViewModelSessionKey}' not found.");
+                }
+
+                whoDoYouWantToAdd = roleModel.IsDDH.Value
+                    ? "Designated duty holder"
+                    : "Contributor";
             }
             else
             {
                 whoDoYouWantToAdd = "Contributor";
             }
+
             return whoDoYouWantToAdd;
         }
 
