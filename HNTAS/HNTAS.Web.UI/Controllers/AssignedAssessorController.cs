@@ -56,7 +56,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving assigned assessor(s)");
-                TempData["ErrorMessage"] = "An error occurred while retrieving the notification history.";
+                TempData["ErrorMessage"] = "An error occurred while retrieving the notification history";
 
                 // Return empty result
                 var emptyResult = new AssignedAssessorResponse

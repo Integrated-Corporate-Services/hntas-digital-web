@@ -54,7 +54,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "There was a problem reading the file. Ensure it is not password protected.");
+                ModelState.AddModelError("", "There was a problem reading the file. Ensure it is not password protected");
                 return View("Index");
             }
         }

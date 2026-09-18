@@ -88,7 +88,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while trying to manage users.");
-                TempData["ErrorMessage"] = "An unexpected error occurred. Please try again later.";
+                TempData["ErrorMessage"] = "An unexpected error occurred. Please try again later";
                 return View("ManageUsers", new ManageUsersModel());
             }
         }
@@ -109,7 +109,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (viewModel.SelectedUserType == UserType.None)
             {
-                ModelState.AddModelError("SelectedUserType", "Select how you want to add a contributor.");
+                ModelState.AddModelError("SelectedUserType", "Select how you want to add a contributor");
             }
 
             if (ModelState.IsValid)
@@ -150,7 +150,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (model.SelectedUserType == UserType.None)
             {
-                ModelState.AddModelError("SelectedUserType", "Please select an option.");
+                ModelState.AddModelError("SelectedUserType", "Select an option");
                 ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 return View("ChangeOrganisationUser");
             }
@@ -191,7 +191,7 @@ namespace HNTAS.Web.UI.Controllers
             if (string.IsNullOrEmpty(userId))
             {
                 _logger.LogError("User ID not found in session.");
-                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later";
                 return View(new HeatNetworksViewModel());
             }
 
@@ -215,7 +215,7 @@ namespace HNTAS.Web.UI.Controllers
             if (user == null)
             {
                 _logger.LogError("User not found for ID: {UserId}", userId);
-                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later";
                 return View(new HeatNetworksViewModel());
             }
 
@@ -319,7 +319,7 @@ namespace HNTAS.Web.UI.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error retrieving existing networks");
-                    TempData["ErrorMessage"] = "An error occurred while retrieving the existing networks.";
+                    TempData["ErrorMessage"] = "An error occurred while retrieving the existing networks";
 
                     // Return empty result
                     var emptyResult = new ExistingNetworkResponse
@@ -358,7 +358,7 @@ namespace HNTAS.Web.UI.Controllers
             if (string.IsNullOrEmpty(hnId))
             {
                 _logger.LogError("Heat network ID is null or empty in HeatNetworkUserRoles.");
-                TempData["ErrorMessage"] = "Invalid heat network ID.";
+                TempData["ErrorMessage"] = "Invalid heat network ID";
                 return RedirectToAction("HeatNetworks");
             }
 

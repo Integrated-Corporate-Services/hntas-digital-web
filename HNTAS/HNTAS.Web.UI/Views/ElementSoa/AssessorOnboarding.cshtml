@@ -17,6 +17,13 @@
                 <label class="govuk-label" for="assessor-autocomplete">
                     Search for assessor name or email
                 </label>
+                @if (hasCheckError)
+                {
+                    <p class="govuk-error-message" id="assessor-autocomplete-error">
+                        <span class="govuk-visually-hidden">Error:</span>
+                        @Html.ValidationMessage("assessor-autocomplete")
+                    </p>
+                }
                 <div id="assessor-autocomplete-container"></div>
             </div>
 

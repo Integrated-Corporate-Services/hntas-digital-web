@@ -81,7 +81,7 @@ namespace HNTAS.Web.UI.Controllers
                    );
                     if (string.IsNullOrWhiteSpace(invitationId))
                     {
-                        TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                        TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                         return RedirectToAction("ManageLeads");
                     }
 
@@ -93,7 +93,7 @@ namespace HNTAS.Web.UI.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "This user cannot be added as a Network Manager.";
+                    TempData["ErrorMessage"] = "This user cannot be added as a Network Manager";
                     return RedirectToAction("ManageLeads");
                 }
                 

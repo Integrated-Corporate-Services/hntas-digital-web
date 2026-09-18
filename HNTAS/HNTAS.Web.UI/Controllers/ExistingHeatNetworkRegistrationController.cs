@@ -446,7 +446,7 @@ namespace HNTAS.Web.UI.Controllers
             // Validate the mandatory checkbox
             if (ConfirmedDeclaration != true)
             {
-                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "You must confirm the declaration to proceed.");
+                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "Confirm that the summary is correct");
             }
 
             if (!ModelState.IsValid)
@@ -458,7 +458,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (hnId == null)
             {
-                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
+                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later";
                 return View("HeatNetworkRegistration/CheckYourAnswers", viewModel);
             }
             HNTAS.Api.Client.Model.HeatNetworkType hnType = isHnTypeCommunalViewModel.IsHnTypeCommunal switch
@@ -554,7 +554,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
+                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later";
                 return View("HeatNetworkRegistration/CheckYourAnswers", viewModel);
             }
             _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);

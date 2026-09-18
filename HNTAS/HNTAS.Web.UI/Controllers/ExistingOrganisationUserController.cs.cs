@@ -187,7 +187,7 @@ namespace HNTAS.Web.UI.Controllers
             if (state == null || state.Data == null)
             {
                 _logger.LogError("Workflow state or data is null when trying to submit answers.");
-                TempData["ErrorMessage"] = "Unable to submit your details. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to submit your details. Please try again later";
                 return RedirectToAction("ReplaceUserRoleConfirmation");
             }
 
@@ -243,7 +243,7 @@ namespace HNTAS.Web.UI.Controllers
 
                     if (string.IsNullOrWhiteSpace(invitationId))
                     {
-                        TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                        TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                         return RedirectToAction("ReplaceUserRoleConfirmation");
                     }
 
@@ -257,7 +257,7 @@ namespace HNTAS.Web.UI.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error submitting new contributor details.");
-                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                     return RedirectToAction("ReplaceUserRoleConfirmation");
                 }
 
