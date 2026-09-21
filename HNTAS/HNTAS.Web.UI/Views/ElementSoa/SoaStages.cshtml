@@ -4,7 +4,7 @@
 @model ElementSoaViewModel
 
 @{
-    ViewData["Title"] = "Track statements of applicability (SoA)";
+    ViewData["Title"] = "Track statements of applicability (SOA)";
 }
 
 @section BeforeMain {
@@ -33,12 +33,12 @@
         <div class="govuk-grid-column-full">
             <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
             <h1 class="govuk-heading-l">
-                Track statements of applicability (SoA)
+                Track statements of applicability (SOA)
             </h1>
 
-            <p class="govuk-body">SoA are agreed with assessors outside this service.</p>
+            <p class="govuk-body">SOA are agreed with assessors outside this service.</p>
 
-            <p class="govuk-body">Use this page to record the status of each element’s SoA and assign assessors for each element at each stage. Keep the status up to date so HNTAS can prepare for certification of your network.</p>
+        <p class="govuk-body">Use this page to record the status of each element’s SOA and assign assessors for each element at each stage. Keep the status up to date so HNTAS can prepare for certification of your network.</p>
 
             <div class="govuk-tabs" data-module="govuk-tabs">
                 <h2 class="govuk-tabs__title">Contents</h2>
@@ -134,11 +134,11 @@
                                                                         break;
                                                                     case SoaStatus.SoAAgreed:
                                                                         statusClass = "govuk-tag--green";
-                                                                        statusDisplayName = "SoA agreed";
+                                                                        statusDisplayName = "SOA agreed";
                                                                         break;
                                                                     case SoaStatus.SoACompleted:
                                                                         statusClass = "govuk-tag--teal";
-                                                                        statusDisplayName = "SoA completed";
+                                                                    statusDisplayName = "SOA completed";
                                                                         break;
                                                                     case SoaStatus.BeingAssessed:
                                                                         statusClass = "govuk-tag--blue";

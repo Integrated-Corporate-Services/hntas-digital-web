@@ -41,7 +41,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession<AreYouTheRPModel>(HttpContext, SessionKeys.AreYouTheRPModelKey, model);
                     return RedirectToAction("UserIsNotRP");
                 default:
-                    ModelState.AddModelError(nameof(model.AreYouTheRP), "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.AreYouTheRP), "Select a valid option");
                     return View(model);
             }
         }
@@ -79,7 +79,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession<IsYourOrgWorkingOnANewHNModel>(HttpContext, SessionKeys.IsYourOrgWorkingOnANewHNModelKey, model);
                     return RedirectToAction("HnIsOperational");
                 default:
-                    ModelState.AddModelError(nameof(model.IsYourOrgWorkingOnANewHN), "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.IsYourOrgWorkingOnANewHN), "Select a valid option");
                     return View(model);
             }
         }
@@ -117,7 +117,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession<IsHNLocatedInEnglandScotlandWalesModel>(HttpContext, SessionKeys.IsHNLocatedInEnglandScotlandWalesModelKey, model);
                     return RedirectToAction("HnIsInNorthernIreland");
                 default:
-                    ModelState.AddModelError(nameof(model.IsHNLocatedInEnglandScotlandWales), "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.IsHNLocatedInEnglandScotlandWales), "Select a valid option");
                     return View(model);
             }
         }
@@ -155,7 +155,7 @@ namespace HNTAS.Web.UI.Controllers
                     _sessionHelper.SaveToSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey, model);
                     return RedirectToAction("LessThan6Dwellings");
                 default:
-                    ModelState.AddModelError(nameof(model.HowManyDwellingsIncluded), "Please select a valid option.");
+                    ModelState.AddModelError(nameof(model.HowManyDwellingsIncluded), "Select a valid option");
                     return View(model);
             }
         }

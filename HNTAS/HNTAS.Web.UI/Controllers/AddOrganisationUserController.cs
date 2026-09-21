@@ -69,7 +69,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (isRpUser.HasValue && isRpUser.Value == true)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party (RP). Go back and use Add an existing user to give them access.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party (RP). Go back and use Add an existing user to give them access");
                 this.ShowBackButton("AddContributor", "UserManagement");
                 return View("Contributor/AddEmailAddress", model);
             }
@@ -78,7 +78,7 @@ namespace HNTAS.Web.UI.Controllers
             bool? isExistingUser = await _userService.IsActiveUserAsync(model.EmailAddress);
             if (isExistingUser.HasValue && isExistingUser.Value == true)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access");
                 this.ShowBackButton("AddContributor", "UserManagement");
                 return View("Contributor/AddEmailAddress", model);
             }
@@ -180,7 +180,7 @@ namespace HNTAS.Web.UI.Controllers
             if (state == null || state.Data == null)
             {
                 _logger.LogError("Workflow state or data is null when trying to submit answers.");
-                TempData["ErrorMessage"] = "Unable to submit your details. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to submit your details. Please try again later";
                 return RedirectToAction("AssignRole");
             }
 
@@ -210,7 +210,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 if (string.IsNullOrWhiteSpace(invitationId))
                 {
-                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                     return RedirectToAction("AssignRole");
                 }
 
@@ -223,7 +223,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error submitting new contributor details.");
-                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                 return RedirectToAction("AssignRole");
             }
 

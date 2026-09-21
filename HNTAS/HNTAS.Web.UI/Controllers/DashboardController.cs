@@ -11,6 +11,7 @@ using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Diagnostics;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -41,7 +42,7 @@ namespace HNTAS.Web.UI.Controllers
                 var user = await _userService.GetUserDetails(userId);
                 if (user == null)
                 {
-                    throw new Exception("Unable to retrieve user information. Please try again later.");
+                    throw new Exception("Unable to retrieve user information. Please try again later");
                 }
                 if (user.Roles != null && user.Roles.Contains(UserRole.ResponsibleParty) && user.Organisation == null)
                 {
@@ -65,6 +66,8 @@ namespace HNTAS.Web.UI.Controllers
 
             UserDetailsResponse user;
 
+            var sw = Stopwatch.StartNew();
+
             try
             {
                 var userId = _sessionHelper.GetFromSession<string>(
@@ -72,6 +75,10 @@ namespace HNTAS.Web.UI.Controllers
                     SessionKeys.UserModel_Id_SessionKey);
 
                 user = await RetrieveUserDetails(userId);
+
+                _logger.LogInformation("RetrieveUserDetails took {Ms} ms", sw.ElapsedMilliseconds);
+
+               
             }
             catch (Exception ex)
             {
@@ -108,14 +115,21 @@ namespace HNTAS.Web.UI.Controllers
                     user.Organisation.OrgId);
             }
 
+            sw.Restart();
+
             var ofgemNetworks = await _heatNetworkService.GetHeatNetworkByUserIdPaginatedAsync(
                 user.Id!,
                 RegistrationSource2.OFGEM, 1, 1);
 
+            _logger.LogInformation("GetHeatNetworkByUserIdPaginatedAsync OFGEM took {Ms} ms", sw.ElapsedMilliseconds);
+
+            sw.Restart();
 
             var hntasNetworks = await _heatNetworkService.GetHeatNetworkByUserIdPaginatedAsync(
                 user.Id!,
                 RegistrationSource2.HNTAS, 1, 1);
+
+            _logger.LogInformation("GetHeatNetworkByUserIdPaginatedAsync HNTAS took {Ms} ms", sw.ElapsedMilliseconds);
 
             var dashboardModel = new DashboardModel
             {

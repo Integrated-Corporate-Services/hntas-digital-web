@@ -17,11 +17,12 @@
 
                 <div class="govuk-form-group @(Html.HasError(nameof(Model.SelectedPhases)) ? "govuk-form-group--error" : "")">
                     <fieldset class="govuk-fieldset" aria-describedby="nationality-hint nationality-error">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 class="govuk-fieldset__heading">
-                                What phases are the designated duty holder responsible for?
-                            </h1>
-                        </legend>
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-heading-l">What phases are the designated duty holder responsible for?</h1>
+                    </legend>
+                        <div id="heat-network-phase-hint" class="govuk-hint">
+                            Select all that apply
+                          </div>
                         
                         @if (Html.HasError(nameof(Model.SelectedPhases)))
                         {

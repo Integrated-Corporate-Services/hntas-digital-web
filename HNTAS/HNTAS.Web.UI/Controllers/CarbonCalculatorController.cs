@@ -225,7 +225,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (string.IsNullOrWhiteSpace(csv))
             {
-                modelState.AddModelError(modelStateKeyCsv, $"{display}: value is required.");
+                modelState.AddModelError(modelStateKeyCsv, $"{display}: value is required");
                 return;
             }
 
@@ -263,12 +263,12 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (value is null)
             {
-                ms.AddModelError(key, $"{display} is required.");
+                ms.AddModelError(key, $"{display} is required");
                 return;
             }
             if (value < min || value > max)
             {
-                ms.AddModelError(key, $"{display} must be between {min} and {max}.");
+                ms.AddModelError(key, $"{display} must be between {min} and {max}");
             }
         }
 

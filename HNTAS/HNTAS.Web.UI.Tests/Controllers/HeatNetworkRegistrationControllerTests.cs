@@ -3081,7 +3081,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal("HeatNetworkRegistration/CheckYourAnswers", viewResult.ViewName);
             Assert.Same(viewModel, viewResult.Model);
-            Assert.Equal("An error occurred while submitting your heat network details. Please try again later.", _controller.TempData["ErrorMessage"]);
+            Assert.Equal("An error occurred while submitting your heat network details. Please try again later", _controller.TempData["ErrorMessage"]);
         }
 
         [Fact]
@@ -3097,7 +3097,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal("HeatNetworkRegistration/CheckYourAnswers", viewResult.ViewName);
-            Assert.Equal("An error occurred while submitting your heat network details. Please try again later.", _controller.TempData["ErrorMessage"]);
+            Assert.Equal("An error occurred while submitting your heat network details. Please try again later", _controller.TempData["ErrorMessage"]);
         }
 
         [Fact]

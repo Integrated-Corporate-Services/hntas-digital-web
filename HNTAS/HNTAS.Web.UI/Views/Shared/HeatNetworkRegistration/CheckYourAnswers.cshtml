@@ -14,7 +14,7 @@
         {
             new ReviewSection
             {
-                Heading = "Heat Network registration",
+                Heading = "Heat network registration",
                 Items = new List<ReviewItem>
                 {
                     new ReviewItem
@@ -26,7 +26,7 @@
                     },                    
                     new ReviewItem
                     {
-                        Key = "Network Type",
+                        Key = "Network type",
                         Value = Model.HeatNetworkType,
                         ChangeLink = Url.Action("HeatNetworkType", controllerName),
                         ChangeLinkText = "Change"
@@ -47,7 +47,7 @@
                     },
                     new ReviewItem
                     {
-                        Key = "Heat Network Name",
+                        Key = "Heat network name",
                         Value = Model.HeatNetworkNameModel.HeatNetworkName,
                         ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("HeatNetworkName", controllerName), 
                         ChangeLinkText = "Change"
