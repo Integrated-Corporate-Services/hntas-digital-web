@@ -20,9 +20,9 @@
                         <h1 class="govuk-heading-l">Does your @ViewBag.addressFor have an address and postcode?</h1>
                 </legend>
 
-                    <div id="has-postcode-hint" class="govuk-hint">Select 'Yes' only if you have a full address and postcode for the energy centre</div>
+                <div id="has-postcode-hint" class="govuk-hint">Select 'Yes' only if you have a full address and postcode for the energy centre</div>
 
-                @if (ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0)
+                @if (ViewData.ModelState[nameof(Model.HasPostcode)]?.Errors?.Count > 0)
                 {
                     <p class="govuk-error-message">
                         <span class="govuk-visually-hidden">Error:</span>
