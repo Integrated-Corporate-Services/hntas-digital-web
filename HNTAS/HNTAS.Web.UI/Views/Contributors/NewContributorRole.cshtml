@@ -16,18 +16,8 @@
             new Question
             {
                 QId = elementId,
-                QText = "Designated duty holders and contributors",
-                QDescText =
-                    @"
-                    <p class='govuk-body'>A <strong>designated duty holder</strong> leads a particular phase of the development and is given responsibility for the information entered. You may have separate leads for design, construction and operation.</p>
-
-                    <p class='govuk-body'><strong>Contributors</strong> with specific expertise can be added to provide network detail where required.</p>
-                    
-                    <legend class='govuk-fieldset__legend govuk-fieldset__legend--m'>
-                        <h1 class='govuk-fieldset__heading'>
-                            Who do you want to add?
-                        </h1>
-                    </legend>",
+                QText = "Who do you want to add?",
+                HeadingLevel = QuestionHeadingLevel.H2,
                 QHintText = null,
                 Options = new List<Option>
                 {
@@ -43,7 +33,12 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-xl">Your network team</span>
+            <span class="govuk-caption-l">Your network team</span>
+            <h1 class="govuk-heading-l">
+                Designated duty holders and contributors
+            </h1>
+        <p class='govuk-body'>A <strong>designated duty holder</strong> leads a particular phase of the development and is given responsibility for the information entered. You may have separate leads for design, construction and operation.</p>
+        <p class='govuk-body'><strong>Contributors</strong> with specific expertise can be added to provide network detail where required.</p>
             @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
         </div>
     </div>
