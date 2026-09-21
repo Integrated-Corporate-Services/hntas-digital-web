@@ -16,7 +16,7 @@ namespace HNTAS.Web.UI.Models.ElementSoa
 
         public List<SoaStatusOption> SoaStatusOptions { get; set; } = new();
 
-        [MustHaveOneItem(ErrorMessage = "Select at least one status.")]
+        [MustHaveOneItem(ErrorMessage = "Select at least one status")]
         public List<SoaStatus> SelectedSoaStatusOptions { get; set; } = new();
         public Dictionary<SoaStatus, int?> SoaStatusCounts { get; set; } = new();
     }

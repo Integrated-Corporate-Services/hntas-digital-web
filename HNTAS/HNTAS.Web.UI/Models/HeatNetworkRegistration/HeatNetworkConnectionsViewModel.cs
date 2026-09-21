@@ -29,26 +29,32 @@ namespace HNTAS.Web.UI.Models.HeatNetworkRegistration
                 {
                     if (connection.IsSelected)
                     {
+                        int count = connection.ConditionalValue.HasValue ? connection.ConditionalValue.Value : 0;
                         if (connection.Value == ConnectionType.CommunalBuildings.ToString() && connection.ConditionalValue.HasValue)
                         {
-                            displayList.Add($" {connection.ConditionalValue.Value} communal buildings");
+                            displayList.Add(FormatCount(count, "communal building"));
                         }
                         else if (connection.Value == ConnectionType.IndividualHomes.ToString() && connection.ConditionalValue.HasValue)
                         {
-                            displayList.Add($" {connection.ConditionalValue.Value} domestic consumers");
+                            displayList.Add(FormatCount(count, "domestic consumer"));
                         }
                         else if (connection.Value == ConnectionType.CommercialConnection.ToString() && connection.ConditionalValue.HasValue)
                         {
-                            displayList.Add($" {connection.ConditionalValue.Value} non domestic consumers");
+                            displayList.Add(FormatCount(count, "non-domestic consumer"));
                         }
                         else if (connection.Value == ConnectionType.OtherDistrictNetwork.ToString() && connection.ConditionalValue.HasValue)
                         {
-                            displayList.Add($" {connection.ConditionalValue.Value} district connections");
+                            displayList.Add(FormatCount(count, "district connection"));
                         }
                     }
                 }
                 return displayList;
             }
+        }
+
+        private static string FormatCount(int count, string label)
+        {
+            return $"{count} {label}{(count == 1 ? string.Empty : "s")}";
         }
     }
 }

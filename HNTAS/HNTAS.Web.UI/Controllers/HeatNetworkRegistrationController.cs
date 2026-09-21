@@ -423,7 +423,7 @@ namespace HNTAS.Web.UI.Controllers
                 model.Postcode = model.Postcode?.ToUpperInvariant().Trim();
                 if (results == null || results.Addresses == null || results.Addresses.Length == 0)
                 {
-                    ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode.");
+                    ModelState.AddModelError(string.Empty, "Unable to retrieve address data for this postcode. Please try again later");
                     return View("HeatNetworkRegistration/DoesHNHaveAPostcode", model);
                 }
                 results.Addresses = results.Addresses
@@ -504,6 +504,12 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("HeatNetworkName");
             ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
             ViewBag.addressFor = _sessionHelper.GetFromSession<string>(HttpContext, "addressFor");
+
+            if (string.IsNullOrEmpty(model.Postalcode))
+            {
+                ModelState.AddModelError(nameof(model.Postalcode), "Enter the postcode");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View("HeatNetworkRegistration/AddressManualEntry", model);
@@ -601,7 +607,7 @@ namespace HNTAS.Web.UI.Controllers
                 || !decimal.TryParse(parts[1], NumberStyles.Float | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var lon))
             {
                 ModelState.AddModelError(nameof(model.LatitudeLongitude),
-                    "Enter latitude and longitude in correct format.");
+                    "Enter the latitude and longitude in the correct format");
                 return View("HeatNetworkRegistration/ECCoordinates", model);
             }
 
@@ -636,7 +642,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             else if (string.IsNullOrWhiteSpace(model.HeatNetworkPhase))
             {
-                ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
+                ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase");
                 return View("HeatNetworkRegistration/HeatNetworkPhase", model);
             }
             else
@@ -654,7 +660,7 @@ namespace HNTAS.Web.UI.Controllers
                         _sessionHelper.SaveToSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey, new PathwayModel() { Pathway = "3" });
                         return RedirectToAction("CheckYourAnswers", "HeatNetworkRegistration");                    
                     default:
-                        ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase.");
+                        ModelState.AddModelError(nameof(model.HeatNetworkPhase), "Please select a valid heat network phase");
                         return View("HeatNetworkRegistration/HeatNetworkPhase", model);
                 }
             }
@@ -744,7 +750,7 @@ namespace HNTAS.Web.UI.Controllers
             // Validate the mandatory checkbox
             if (ConfirmedDeclaration != true)
             {
-                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "You must confirm the declaration to proceed.");
+                ModelState.AddModelError(nameof(viewModel.ConfirmedDeclaration), "Confirm that the summary is correct");
             }
 
             if (!ModelState.IsValid)
@@ -757,7 +763,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (userId == null || orgId == null)
             {
-                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
+                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later";
                 return View("HeatNetworkRegistration/CheckYourAnswers", viewModel);
             }
             HNTAS.Api.Client.Model.HeatNetworkType hnType = isHnTypeCommunalViewModel.IsHnTypeCommunal switch
@@ -853,7 +859,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later.";
+                TempData["ErrorMessage"] = "An error occurred while submitting your heat network details. Please try again later";
                 return View("HeatNetworkRegistration/CheckYourAnswers", viewModel);
             }
             _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);

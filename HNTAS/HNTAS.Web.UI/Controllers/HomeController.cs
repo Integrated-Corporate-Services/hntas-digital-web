@@ -52,7 +52,7 @@ public class HomeController : Controller
                 if (string.IsNullOrWhiteSpace(newUserId))
                 {
                     _logger.LogError("API returned no valid user object.");
-                    TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
+                    TempData["ErrorMessage"] = "Unexpected error during setup. Please try again later";
                     return BadRequest();
                 }
 
@@ -73,7 +73,7 @@ public class HomeController : Controller
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oneLoginId))
         {
             _logger.LogError("Missing claims.");
-            TempData["ErrorMessage"] = "Unable to retrieve essential user info. Please try again.";
+            TempData["ErrorMessage"] = "Unable to retrieve essential user info. Please try again later";
             return BadRequest();
         }
 
@@ -127,7 +127,7 @@ public class HomeController : Controller
                 if (string.IsNullOrWhiteSpace(newUserId))
                 {
                     _logger.LogError("API returned no valid user object.");
-                    TempData["ErrorMessage"] = "Unexpected error during setup. Try again later.";
+                    TempData["ErrorMessage"] = "Unexpected error during setup. Please try again later";
                     return BadRequest();
                 }
 
@@ -159,7 +159,7 @@ public class HomeController : Controller
         catch (Exception ex)
         {
             _logger.LogError(ex, "Exception during initial user registration");
-            TempData["ErrorMessage"] = "Error during account setup. Please contact support.";
+            TempData["ErrorMessage"] = "Error during account setup. Please contact support";
             return BadRequest();
         }
     }
@@ -235,7 +235,7 @@ public class HomeController : Controller
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.WhatDoYouWantToDoViewModelKey, model);
                 return RedirectToAction("Index", "Home");
             default:
-                ModelState.AddModelError(nameof(model.UserPathToday), "Invalid selection. Please try again.");
+                ModelState.AddModelError(nameof(model.UserPathToday), "Invalid selection. Please try again");
                 return View();
         }
     }

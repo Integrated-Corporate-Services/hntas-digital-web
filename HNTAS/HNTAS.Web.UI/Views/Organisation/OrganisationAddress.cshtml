@@ -60,7 +60,9 @@
                     
                     @* Postal Code or Zip code Field *@
                     <div class="govuk-form-group @(HasError(nameof(Model.Postalcode)) ? "govuk-form-group--error" : "")">
-                        <label class="govuk-label" for="@PostalcodeId">Postal Code or Zip code</label>
+                    <label class="govuk-label" for="@PostalcodeId">
+                        @(ViewBag.IsOverseasOrganisation == true ? "Postal Code or Zip code" : "Postcode")
+                    </label>
                         @if (HasError(nameof(Model.Postalcode)))
                         {
                             <span asp-validation-for="Postalcode" class="govuk-error-message"></span>
@@ -99,14 +101,23 @@
                     }
                     else
                     {
-                        <select class="govuk-select"
-                                asp-for="Country"
-                                id="@CountryId"
-                                name="@CountryId"
-                                aria-describedby="organisation-address-hint"
-                                asp-items="ViewBag.CountryList">
-                            <option value="">Select a country</option>
-                        </select>
+
+                        <div class="govuk-form-group @(HasError(nameof(Model.Country)) ? "govuk-form-group--error" : "")">
+                            <label class="govuk-label" for="@CountryId">Country</label>
+                                @if (HasError(nameof(Model.Country)))
+                                {
+                                    <span asp-validation-for="Country" class="govuk-error-message"></span>
+                                }
+                            <select class="govuk-select"
+                                    asp-for="Country"
+                                    id="@CountryId"
+                                    name="@CountryId"
+                                    aria-describedby="organisation-address-hint"
+                                    asp-items="ViewBag.CountryList">
+                                <option value="">Select a country</option>
+                            </select>
+                        </div>
+                       
                     }
 
                 </fieldset><br />

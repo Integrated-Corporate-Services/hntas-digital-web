@@ -2,24 +2,32 @@
 
 @{
     ViewData["Title"] = "Which heat network is this person being added to?";
+
+    bool hasError()
+    {
+        return !ViewData.ModelState.IsValid;
+    }
+
+    var describedBy = hasError() ? "SelectedHeatNetwork-error" : null;
 }
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-l">Your network team</span>
 
-            <h1 class="govuk-heading-l">
-                Which heat network is this person being added to?
-            </h1>
-
             <form method="post">
                 @Html.AntiForgeryToken()
-                <div class="govuk-form-group">
-                    <span tabindex="-1" class="govuk-error-message" asp-validation-for="SelectedHeatNetwork"></span>
+            <div class="govuk-form-group @(hasError() ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="@describedBy">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-heading-l">Which heat network is this person being added to?</h1>
+                    </legend>
+                    <span id="SelectedHeatNetwork-error" tabindex="-1" class="govuk-error-message" asp-validation-for="SelectedHeatNetwork"></span>
                     <label class="govuk-visually-hidden" asp-for="SelectedHeatNetwork">Select a heat network</label>
                     <select class="govuk-select" asp-for="SelectedHeatNetwork" asp-items="Model.HeatNetworks.Select(x => new SelectListItem { Value = x.Value, Text = x.Text })">
                         <option value="">-- Select --</option>
                     </select>
+                </fieldset>
                 </div>
 
                 <button class="govuk-button" type="submit">
