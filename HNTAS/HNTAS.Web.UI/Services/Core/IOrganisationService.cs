@@ -9,5 +9,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task<bool?> GetOrganisationByDetails(string orgName, string postCode, string country);
         Task<Organisation?> GetOrganisationByIdOrName(string searchTerm);
         Task UpdateOrgHeatNetworkId(string orgId, string userId, string heatNetworkId);
+        Task<List<Organisation>> GetAcceptedOrganisationByUserId(string userId);
     }
 }

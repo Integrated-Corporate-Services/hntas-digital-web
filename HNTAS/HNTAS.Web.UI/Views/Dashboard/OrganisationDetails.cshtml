@@ -12,7 +12,7 @@
         Model.County,
         Model.Postcode,
         Model.Country
-    }.Where(line => !string.IsNullOrWhiteSpace(line));
+    }.Where(line => !string.IsNullOrWhiteSpace(line));    
 }
 
 @section BeforeMain {
@@ -34,6 +34,13 @@
         <div class="govuk-grid-column-full">
             
             <h1 class="govuk-heading-l">Organisation details</h1>
+
+        @if (ViewBag.IsUserAnRp != true && ViewBag.IsMultipleOrganisation == true)
+        {
+            <div class="govuk-body">
+                <a class="govuk-link" href="@Url.Action("SwitchOrganisation", "Dashboard")">Switch organisation</a> to view the networks for the organisation
+            </div>
+        }        
 
             <dl class="govuk-summary-list govuk-!-margin-bottom-7">
                 <div class="govuk-summary-list__row">

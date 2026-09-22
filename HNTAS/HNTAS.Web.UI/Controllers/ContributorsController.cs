@@ -454,6 +454,7 @@ namespace HNTAS.Web.UI.Controllers
                          contributorRoles: new List<ContributorRole> { inviteeRole },
                          replacedUserId: null,
                          rolesToReplace: new List<ContributorRole> { inviteeRole },
+                         orgId: _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId),
                          status: InvitationStatus.Invited
                      )
                  );

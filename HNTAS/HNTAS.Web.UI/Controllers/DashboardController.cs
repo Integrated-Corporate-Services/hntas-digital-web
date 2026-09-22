@@ -164,6 +164,22 @@ namespace HNTAS.Web.UI.Controllers
             }
             _sessionHelper.SaveToSession<string>(HttpContext, "IsUserAnRP", isUserAnRP.ToString());
 
+            bool isMultipleOrganisation;
+
+            try
+            {
+                var orgs = await _organisationService.GetAcceptedOrganisationByUserId(user.Id!);
+                isMultipleOrganisation  = orgs.Count > 1;
+            }
+            catch(Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return View(new OrganisationDetailsModel());
+            }
+
+            ViewBag.IsUserAnRp = isUserAnRP;
+            ViewBag.IsMultipleOrganisation = isMultipleOrganisation;
+
             var model = new OrganisationDetailsModel
             {
                 OrganisationId = user.Organisation?.OrgId,
@@ -179,6 +195,63 @@ namespace HNTAS.Web.UI.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SwitchOrganisation()
+        {
+            var userId = _sessionHelper.GetFromSession<string>(
+                    HttpContext,
+                    SessionKeys.UserModel_Id_SessionKey);
+
+            try
+            {
+                var orgs = await _organisationService.GetAcceptedOrganisationByUserId(userId!);
+                var model = new SwitchOrganisationModel
+                {
+                    Organisations = orgs.Select(o => new OrganisationToSelect
+                    {
+                        OrgId = o.OrgId,
+                        OrgName = o.Name
+                    }).ToList()
+                };
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.SwitchOrganisationModelSessionKey, model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return View(new SwitchOrganisationModel());
+            }            
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SwitchOrganisation(SwitchOrganisationModel model)
+        {
+            var orgs = _sessionHelper.GetFromSession<SwitchOrganisationModel>(HttpContext, SessionKeys.SwitchOrganisationModelSessionKey);
+            model.Organisations = orgs.Organisations;
+            if (string.IsNullOrEmpty(model.SelectedOrganisation))
+            {
+                ModelState.Remove("Organisations");                
+                return View(model);
+            }
+
+            try
+            {
+                var userId = _sessionHelper.GetFromSession<string>(
+                    HttpContext,
+                    SessionKeys.UserModel_Id_SessionKey);
+                await _userService.UpdateUserWithExistingOrganisationId(userId!, model.SelectedOrganisation);
+                var selectedOrgName = orgs.Organisations.FirstOrDefault(o => o.OrgId == model.SelectedOrganisation)?.OrgName;
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, selectedOrgName);
+                return RedirectToAction("OrganisationDetails", "Dashboard");
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "An error occurred while switching organisations. Please try again later.";
+                return View(model);
+            }
         }
 
         [HttpGet]

@@ -1,0 +1,48 @@
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models
+@model SwitchOrganisationModel
+
+@{
+    ViewData["Title"] = "Switch Organisation";
+
+    var options = new List<Option>();
+    var elementId = Html.GenerateIdFromName(nameof(Model.SelectedOrganisation)).ToLowerInvariant();
+    for (int i = 0; i < Model.Organisations.Count; i++)
+    {
+        var org = Model.Organisations[i];
+        options.Add(new Option
+        {
+            OptId = i == 0 ? elementId : elementId + "-" + i,
+            OptValue = org.OrgId!,
+            OptText = org.OrgName!,
+            OptHintText = null
+        });
+    }
+    
+    
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "Dashboard",
+        Action = "SwitchOrganisation",        
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = "Switch Organisation",
+                QDescText = "When you switch organisations, your dashboard will be changed to the information from that organisation.",
+                QHintText = null,
+                Options = options,
+                SeletedOption = Model.SelectedOrganisation
+            },
+        }
+    };
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-xl">Your network team</span>
+        @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+        @Html.HiddenFor(m => m.Organisations)
+    </div>
+</div>

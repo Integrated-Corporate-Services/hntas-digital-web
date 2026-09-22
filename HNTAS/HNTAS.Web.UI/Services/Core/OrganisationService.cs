@@ -97,5 +97,24 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
         }
+
+        public async Task<List<Organisation>> GetAcceptedOrganisationByUserId(string userId)
+        {
+            try
+            {
+                var response = await _organisationsApi.ApiOrganisationsOrgsAssociatedToUserUserIdPostAsync(userId);
+                if (response.IsOk)
+                {
+                    return response.Ok() ?? new List<Organisation>();
+                }
+                throw new Exception($"Failed to fetch AcceptedOrganisationByUserId with status code: {response.StatusCode}");
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching accepted organisations for user {userId}.", userId);
+                throw;
+            }
+        }
     }
 }
