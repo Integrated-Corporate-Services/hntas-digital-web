@@ -12,7 +12,9 @@
         Model.County,
         Model.Postcode,
         Model.Country
-    }.Where(line => !string.IsNullOrWhiteSpace(line));    
+    }.Where(line => !string.IsNullOrWhiteSpace(line));
+
+    var companyNumber = !string.IsNullOrEmpty(Model.CompanyHouseNumber) ? @Model.CompanyHouseNumber : "Not applicable";
 }
 
 @section BeforeMain {
@@ -32,7 +34,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            
+            <span class="govuk-caption-l">@ViewBag.OrganisationName</span>        
             <h1 class="govuk-heading-l">Organisation details</h1>
 
         @if (ViewBag.IsUserAnRp != true && ViewBag.IsMultipleOrganisation == true)
@@ -43,39 +45,34 @@
         }        
 
             <dl class="govuk-summary-list govuk-!-margin-bottom-7">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Organisation reference number</dt>
+                <dd class="govuk-summary-list__value">@Model.OrganisationId</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Organisation type</dt>
+                <dd class="govuk-summary-list__value">@Model.OrganisationType</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Company number</dt>
+                <dd class="govuk-summary-list__value">@companyNumber</dd>
+            </div>
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Name</dt>
-                    <dd class="govuk-summary-list__value">@Model.OrganisationName</dd>
-                </div>
-                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Type</dt>
-                    <dd class="govuk-summary-list__value">@Model.OrganisationType</dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Address</dt>
+                <dt class="govuk-summary-list__key">Organisation name and address</dt>                    
                     <dd class="govuk-summary-list__value">
+                    @Model.OrganisationName <br />
                         @foreach (var line in addressLines)
                         {
-                            @line <br />
+                            @line
+                            <br />
                         }
                     </dd>
-                </div>
+                </div>                
 
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Responsible Party's <br/> Email address</dt>
+                    <dt class="govuk-summary-list__key">Email address</dt>
                     <dd class="govuk-summary-list__value">@Model.RPEmail</dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">HNTAS Organisation ID</dt>
-                    <dd class="govuk-summary-list__value">@Model.OrganisationId</dd>
-                </div>
-            </dl>
-
-@*             <a href="@Url.Action("EditOrganisationDetails", "Dashboard")" class="govuk-button" data-module="govuk-button">
-                Edit organisation details
-            </a> *@
-            
+                </div>                
+            </dl>            
         </div>
     </div>

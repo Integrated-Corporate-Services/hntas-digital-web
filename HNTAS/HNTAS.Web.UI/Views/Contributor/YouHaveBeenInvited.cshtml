@@ -15,13 +15,14 @@
             new Question
             {
                 QId = elementId,
-                QText = $"You have been invited to join {TempData["HNName"]} heat network",
+                //QText = $"You have been invited to join {TempData["HNName"]} heat network",
+                QText = $"Do you accept the invitation to join the {ViewBag.PartHeading}?",
                 QDescText = null,
                 QHintText = null,
                 Options = new List<Option>
                 {
-                    new Option { OptId = $"{elementId}", OptValue = "accept", OptText = "I accept the invitation", OptHintText = "Heat network owner will be notified" },
-                    new Option { OptId = $"{elementId}-2", OptValue = "decline", OptText = "I decline the invitation", OptHintText = "Heat network owner will be notified" }
+                    new Option { OptId = $"{elementId}", OptValue = "accept", OptText = "Yes, I accept" },
+                    new Option { OptId = $"{elementId}-2", OptValue = "decline", OptText = "No, I decline" }
                 },
                 SeletedOption = Model.AcceptInvitation
             },
@@ -31,6 +32,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">@ViewBag.InvitedOrgName</span>
             @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
         </div>
     </div>

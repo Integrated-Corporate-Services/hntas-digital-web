@@ -191,7 +191,8 @@ namespace HNTAS.Web.UI.Controllers
                 Town = user.Organisation?.RegisteredAddress?.Town,
                 County = user.Organisation?.RegisteredAddress?.County,
                 Postcode = user.Organisation?.RegisteredAddress?.Postcode,
-                Country = user.Organisation?.RegisteredAddress?.Country
+                Country = user.Organisation?.RegisteredAddress?.Country,
+                CompanyHouseNumber = user.Organisation?.CompaniesHouseNumber
             };
 
             return View(model);
@@ -200,19 +201,22 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> SwitchOrganisation()
         {
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             var userId = _sessionHelper.GetFromSession<string>(
                     HttpContext,
                     SessionKeys.UserModel_Id_SessionKey);
+
+            var currentOrgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
 
             try
             {
                 var orgs = await _organisationService.GetAcceptedOrganisationByUserId(userId!);
                 var model = new SwitchOrganisationModel
                 {
-                    Organisations = orgs.Select(o => new OrganisationToSelect
+                    Organisations = orgs.Where(w => w.OrgId != currentOrgId).Select(o => new OrganisationToSelect
                     {
-                        OrgId = o.OrgId,
-                        OrgName = o.Name
+                        OrgId = o.OrgId!,
+                        OrgName = o.Name!
                     }).ToList()
                 };
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.SwitchOrganisationModelSessionKey, model);
@@ -243,8 +247,10 @@ namespace HNTAS.Web.UI.Controllers
                     HttpContext,
                     SessionKeys.UserModel_Id_SessionKey);
                 await _userService.UpdateUserWithExistingOrganisationId(userId!, model.SelectedOrganisation);
-                var selectedOrgName = orgs.Organisations.FirstOrDefault(o => o.OrgId == model.SelectedOrganisation)?.OrgName;
-                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, selectedOrgName);
+                var selectedOrg = orgs.Organisations.FirstOrDefault(o => o.OrgId == model.SelectedOrganisation);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, selectedOrg?.OrgName);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, selectedOrg?.OrgId);
+                
                 return RedirectToAction("OrganisationDetails", "Dashboard");
             }
             catch
