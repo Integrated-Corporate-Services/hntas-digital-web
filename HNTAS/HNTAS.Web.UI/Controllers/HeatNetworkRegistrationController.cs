@@ -57,7 +57,7 @@ namespace HNTAS.Web.UI.Controllers
             switch (model.HowManyDwellingsIncluded)
             {
                 case "yes":
-                    return RedirectToAction("HeatNetworkOrganisation");
+                    return RedirectToAction("HeatNetworkStatus");
                 case "no":
                 default:
                     return RedirectToAction("SixOrMoreDwellingsAnswerNo");
@@ -70,6 +70,89 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
             this.ShowBackButton("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
             return View("HeatNetworkRegistration/SixOrMoreDwellingsAnswerNo");
+        }
+
+        [HttpGet]
+        public IActionResult HeatNetworkStatus()
+        {
+            this.ShowBackButton("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
+            var sessionModel = _sessionHelper.GetFromSession<NetworkStatusModel>(HttpContext, SessionKeys.NetworkStatusModelKey);
+            var model = sessionModel ?? new NetworkStatusModel();
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
+
+            return View("HeatNetworkRegistration/HeatNetworkStatus", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveHeatNetworkStatus(NetworkStatusModel model)
+        {
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
+           
+            if (!ModelState.IsValid)
+            {
+                this.ShowBackButton("HeatNetworkDwellingsCheck", "HeatNetworkRegistration");
+                return View("HeatNetworkRegistration/HeatNetworkStatus", model);
+            }
+
+            _sessionHelper.SaveToSession<NetworkStatusModel>(HttpContext, SessionKeys.NetworkStatusModelKey, model);
+            
+            if (string.Equals(model.BuildStatus, "NEW", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("HeatNetworkEcNewNetwork");
+            }
+
+            if (string.Equals(model.BuildStatus, "EXISTING", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("ExistingHeatNetworkOfgemSummary", "HeatNetworkRegistration");
+            }
+
+            // Handles "BOTH" or any unhandled value
+            return RedirectToAction("NewAndExistingHeatNetwork");
+        }
+
+        [HttpGet]
+        public IActionResult ExistingHeatNetworkOfgemSummary()
+        {
+            this.ShowBackButton("HeatNetworkStatus", "HeatNetworkRegistration");
+            return View();
+        }
+
+        public IActionResult HeatNetworkEcNewNetwork()
+        {
+            this.ShowBackButton("HeatNetworkStatus", "HeatNetworkRegistration");
+
+            var model = _sessionHelper.GetFromSession<NewHnEnergyCentreModel>(
+                HttpContext,
+                SessionKeys.NewHNEnergyCentreModelKey
+            ) ?? new NewHnEnergyCentreModel();
+
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
+                .Replace("Controller", string.Empty);
+
+            return View("HeatNetworkEcNewNetwork", model);
+        }
+
+        [HttpPost("heat-network-registration/ec-new-network")]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveECNewNetwork(NewHnEnergyCentreModel model)
+        {
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
+                .Replace("Controller", string.Empty);
+
+            if (!ModelState.IsValid)
+            {
+                this.ShowBackButton("HeatNetworkStatus", "HeatNetworkRegistration");
+                return View("ECNewNetwork", model);
+            }
+
+            _sessionHelper.SaveToSession<NewHnEnergyCentreModel>(
+                HttpContext,
+                SessionKeys.NewHNEnergyCentreModelKey,
+                model
+            );
+
+            return RedirectToAction("HeatNetworkConnections");
         }
 
         private async Task<List<SelectItemOption>> GetOrganisationListForUser(List<string> contributingOrganisations)
