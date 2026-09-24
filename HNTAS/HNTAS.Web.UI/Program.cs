@@ -3,6 +3,7 @@ using GovUk.OneLogin.AspNetCore;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authentication;
 using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
@@ -65,6 +66,10 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IApiTokenProvider, ApiTokenProvider>();
+
+builder.Services.AddTransient<ApiAuthenticationHandler>();
 
 var coreApiBaseUrl = Environment.GetEnvironmentVariable("CORE_BASE_URL") ?? throw new InvalidOperationException("Core API URL is not configured. Set CORE_BASE_URL environment variable.");
 
@@ -161,28 +166,28 @@ builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>(); 
 
 builder.Services.AddSingleton<OrganisationsApiEvents>();
 builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<HeatNetworksApiEvents>();
 builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<InvitationsApiEvents>();
 builder.Services.AddHttpClient<IInvitationsApi, InvitationsApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 
 builder.Services.AddSingleton<SOAApiEvents>();
@@ -190,21 +195,21 @@ builder.Services.AddHttpClient<ISOAApi, SOAApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<CountriesAndTerritoriesApiEvents>();
 builder.Services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<OrganisationsApiEvents>();
 builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 
 builder.Services.AddSingleton<OrganisationUserApiEvents>();
@@ -212,21 +217,21 @@ builder.Services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<CarbonCalculatorApiEvents>();
 builder.Services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<AssessorApiEvents>();
 builder.Services.AddHttpClient<IAssessorApi, AssessorApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 
 builder.Services.AddSingleton<AuditApiEvents>();
@@ -234,48 +239,48 @@ builder.Services.AddHttpClient<IAuditApi, AuditApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<NotificationHistoryApiEvents>();
 builder.Services.AddHttpClient<INotificationHistoryApi, NotificationHistoryApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<AssignedAssessorApiEvents>();
 builder.Services.AddHttpClient<IAssignedAssessorApi, AssignedAssessorApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
-
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<ArmsDashboardApiEvents>();
 builder.Services.AddHttpClient<IArmsDashboardApi, ArmsDashboardApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<ImportApiEvents>();
 builder.Services.AddHttpClient<IImportApi, ImportApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "text/plain");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddSingleton<SuperUserApiEvents>();
 builder.Services.AddHttpClient<ISuperUserApi, SuperUserApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+
 builder.Services.AddTransient<FeedbackApiEvents>();
 builder.Services.AddHttpClient<IFeedbackApi, FeedbackApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
-});
+}).AddHttpMessageHandler<ApiAuthenticationHandler>();
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
