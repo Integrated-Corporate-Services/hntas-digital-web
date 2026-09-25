@@ -106,8 +106,9 @@ namespace HNTAS.Web.UI.Controllers
             else
             {
                 _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "HeatNetworkDwellingsCheck");
-                var orgDetails = await _organisationService.GetOrganisationById(userDetails.OrgId);
-                _sessionHelper.SaveToSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey, new HeatNetworkOrganisationModel { SelectedOrganisation = userDetails.OrgId });
+                var orgId = userDetails.Roles!.Contains(UserRole.ResponsibleParty) ? userDetails.OrgId : userDetails.ActiveContributingOrgId;
+                var orgDetails = await _organisationService.GetOrganisationById(orgId!);
+                _sessionHelper.SaveToSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey, new HeatNetworkOrganisationModel { SelectedOrganisation = orgId! });
                 return RedirectToAction("HeatNetworkIntroduction");
             }
             var model = _sessionHelper.GetFromSession<HeatNetworkOrganisationModel>(HttpContext, SessionKeys.HeatNetworkOrganisationModelKey) ?? newModel;

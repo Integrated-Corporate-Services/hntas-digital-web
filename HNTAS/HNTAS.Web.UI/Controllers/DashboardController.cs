@@ -137,7 +137,8 @@ namespace HNTAS.Web.UI.Controllers
                 UserRoles = user.Roles,
                 IsResponsiblePerson = user.Roles.Contains(UserRole.ResponsibleParty),
                 HasHntasNetworks = hntasNetworks.TotalCount > 0,
-                HasOfgemNetworks = ofgemNetworks.TotalCount > 0
+                HasOfgemNetworks = ofgemNetworks.TotalCount > 0,
+                HasMultipleContributingOrganisations = user.ContributingOrganisations?.Count > 1
             };
 
             ViewBag.UserId = user.Id;
@@ -162,23 +163,10 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new OrganisationDetailsModel());
             }
-            _sessionHelper.SaveToSession<string>(HttpContext, "IsUserAnRP", isUserAnRP.ToString());
-
-            bool isMultipleOrganisation;
-
-            try
-            {
-                var orgs = await _organisationService.GetAcceptedOrganisationByUserId(user.Id!);
-                isMultipleOrganisation  = orgs.Count > 1;
-            }
-            catch(Exception ex)
-            {
-                TempData["ErrorMessage"] = ex.Message;
-                return View(new OrganisationDetailsModel());
-            }
+            _sessionHelper.SaveToSession<string>(HttpContext, "IsUserAnRP", isUserAnRP.ToString());            
 
             ViewBag.IsUserAnRp = isUserAnRP;
-            ViewBag.IsMultipleOrganisation = isMultipleOrganisation;
+            ViewBag.IsMultipleOrganisation = user.ContributingOrganisations?.Count > 1;
 
             var model = new OrganisationDetailsModel
             {
@@ -201,6 +189,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> SwitchOrganisation()
         {
+            this.ShowBackButton("OrganisationDetails");
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             var userId = _sessionHelper.GetFromSession<string>(
                     HttpContext,

@@ -49,7 +49,7 @@
                         try
                         {
                                 var fetched = await _userService.GetUserById(userId);
-                                hasOrg = !string.IsNullOrWhiteSpace(fetched.OrgId);
+                                hasOrg = fetched!.Roles!.Contains(HNTAS.Api.Client.Model.UserRole.ResponsibleParty) ? !string.IsNullOrWhiteSpace(fetched.OrgId) : !string.IsNullOrWhiteSpace(fetched.ActiveContributingOrgId);
 
                                 unreadNotifications = await _notificationHistoryService.GetUnreadNotificationCount(userId, fetched.Roles!.FirstOrDefault());
                         }

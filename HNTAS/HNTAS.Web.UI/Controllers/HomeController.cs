@@ -144,7 +144,7 @@ public class HomeController : Controller
                 {
                     return RedirectToAction("StartRegistration", "Organisation");
                 }
-                else if (existingUser.OrgId == null && existingUser.Roles.Count() != 0)
+                else if (existingUser.Roles?.FirstOrDefault() == UserRole.ResponsibleParty && existingUser.OrgId == null && existingUser.Roles.Count() != 0)
                 {
                     return RedirectToAction("AddOrRegister", "ExistingOrganisation");
                 }
