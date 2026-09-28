@@ -44,7 +44,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="blrSleevingPCentNotes">blrSleevingPCentNotes</param>
         /// <param name="blrMaxHeatOutput">blrMaxHeatOutput</param>
         [JsonConstructor]
-        public BoilerInput(Option<int?> blrTypeFuelUsedInput = default, Option<List<double>?> blrUsefulHeatGeneratedValue = default, Option<string?> blrUsefulHeatGeneratedNotes = default, Option<List<double>?> blrFuelUsedByValue = default, Option<string?> blrFuelUsedByNotes = default, Option<List<int>?> blrHeatUsedForCoolingProductionValue = default, Option<string?> blrHeatUsedForCoolingProductionNotes = default, Option<List<int>?> blrSleevingPCentValue = default, Option<string?> blrSleevingPCentNotes = default, Option<int?> blrMaxHeatOutput = default)
+        public BoilerInput(Option<int?> blrTypeFuelUsedInput = default, Option<List<int>?> blrUsefulHeatGeneratedValue = default, Option<string?> blrUsefulHeatGeneratedNotes = default, Option<List<int>?> blrFuelUsedByValue = default, Option<string?> blrFuelUsedByNotes = default, Option<List<int>?> blrHeatUsedForCoolingProductionValue = default, Option<string?> blrHeatUsedForCoolingProductionNotes = default, Option<List<int>?> blrSleevingPCentValue = default, Option<string?> blrSleevingPCentNotes = default, Option<int?> blrMaxHeatOutput = default)
         {
             BlrTypeFuelUsedInputOption = blrTypeFuelUsedInput;
             BlrUsefulHeatGeneratedValueOption = blrUsefulHeatGeneratedValue;
@@ -79,13 +79,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<double>?> BlrUsefulHeatGeneratedValueOption { get; private set; }
+        public Option<List<int>?> BlrUsefulHeatGeneratedValueOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets BlrUsefulHeatGeneratedValue
         /// </summary>
         [JsonPropertyName("blrUsefulHeatGeneratedValue")]
-        public List<double>? BlrUsefulHeatGeneratedValue { get { return this.BlrUsefulHeatGeneratedValueOption; } set { this.BlrUsefulHeatGeneratedValueOption = new(value); } }
+        public List<int>? BlrUsefulHeatGeneratedValue { get { return this.BlrUsefulHeatGeneratedValueOption; } set { this.BlrUsefulHeatGeneratedValueOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of BlrUsefulHeatGeneratedNotes
@@ -105,13 +105,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<double>?> BlrFuelUsedByValueOption { get; private set; }
+        public Option<List<int>?> BlrFuelUsedByValueOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets BlrFuelUsedByValue
         /// </summary>
         [JsonPropertyName("blrFuelUsedByValue")]
-        public List<double>? BlrFuelUsedByValue { get { return this.BlrFuelUsedByValueOption; } set { this.BlrFuelUsedByValueOption = new(value); } }
+        public List<int>? BlrFuelUsedByValue { get { return this.BlrFuelUsedByValueOption; } set { this.BlrFuelUsedByValueOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of BlrFuelUsedByNotes
@@ -247,9 +247,9 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<int?> blrTypeFuelUsedInput = default;
-            Option<List<double>?> blrUsefulHeatGeneratedValue = default;
+            Option<List<int>?> blrUsefulHeatGeneratedValue = default;
             Option<string?> blrUsefulHeatGeneratedNotes = default;
-            Option<List<double>?> blrFuelUsedByValue = default;
+            Option<List<int>?> blrFuelUsedByValue = default;
             Option<string?> blrFuelUsedByNotes = default;
             Option<List<int>?> blrHeatUsedForCoolingProductionValue = default;
             Option<string?> blrHeatUsedForCoolingProductionNotes = default;
@@ -276,13 +276,13 @@ namespace HNTAS.Api.Client.Model
                             blrTypeFuelUsedInput = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
                         case "blrUsefulHeatGeneratedValue":
-                            blrUsefulHeatGeneratedValue = new Option<List<double>?>(JsonSerializer.Deserialize<List<double>>(ref utf8JsonReader, jsonSerializerOptions));
+                            blrUsefulHeatGeneratedValue = new Option<List<int>?>(JsonSerializer.Deserialize<List<int>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "blrUsefulHeatGeneratedNotes":
                             blrUsefulHeatGeneratedNotes = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "blrFuelUsedByValue":
-                            blrFuelUsedByValue = new Option<List<double>?>(JsonSerializer.Deserialize<List<double>>(ref utf8JsonReader, jsonSerializerOptions));
+                            blrFuelUsedByValue = new Option<List<int>?>(JsonSerializer.Deserialize<List<int>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "blrFuelUsedByNotes":
                             blrFuelUsedByNotes = new Option<string?>(utf8JsonReader.GetString());

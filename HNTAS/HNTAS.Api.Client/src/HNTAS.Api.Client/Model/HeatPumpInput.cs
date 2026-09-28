@@ -44,7 +44,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="hpmSleevingPCentNotes">hpmSleevingPCentNotes</param>
         /// <param name="hpmMaxHeatOutput">hpmMaxHeatOutput</param>
         [JsonConstructor]
-        public HeatPumpInput(Option<int?> hpmTypeFuelUsedInput = default, Option<List<double>?> hpmUsefulHeatGeneratedValue = default, Option<string?> hpmUsefulHeatGeneratedNotes = default, Option<List<double>?> hpmEnergyUsedValue = default, Option<string?> hpmEnergyUsedNotes = default, Option<List<int>?> hpmUsefulCoolingGeneratedValue = default, Option<string?> hpmUsefulCoolingGeneratedNotes = default, Option<List<int>?> hpmSleevingPCentValue = default, Option<string?> hpmSleevingPCentNotes = default, Option<int?> hpmMaxHeatOutput = default)
+        public HeatPumpInput(Option<int?> hpmTypeFuelUsedInput = default, Option<List<int>?> hpmUsefulHeatGeneratedValue = default, Option<string?> hpmUsefulHeatGeneratedNotes = default, Option<List<int>?> hpmEnergyUsedValue = default, Option<string?> hpmEnergyUsedNotes = default, Option<List<int>?> hpmUsefulCoolingGeneratedValue = default, Option<string?> hpmUsefulCoolingGeneratedNotes = default, Option<List<int>?> hpmSleevingPCentValue = default, Option<string?> hpmSleevingPCentNotes = default, Option<int?> hpmMaxHeatOutput = default)
         {
             HpmTypeFuelUsedInputOption = hpmTypeFuelUsedInput;
             HpmUsefulHeatGeneratedValueOption = hpmUsefulHeatGeneratedValue;
@@ -79,13 +79,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<double>?> HpmUsefulHeatGeneratedValueOption { get; private set; }
+        public Option<List<int>?> HpmUsefulHeatGeneratedValueOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets HpmUsefulHeatGeneratedValue
         /// </summary>
         [JsonPropertyName("hpmUsefulHeatGeneratedValue")]
-        public List<double>? HpmUsefulHeatGeneratedValue { get { return this.HpmUsefulHeatGeneratedValueOption; } set { this.HpmUsefulHeatGeneratedValueOption = new(value); } }
+        public List<int>? HpmUsefulHeatGeneratedValue { get { return this.HpmUsefulHeatGeneratedValueOption; } set { this.HpmUsefulHeatGeneratedValueOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of HpmUsefulHeatGeneratedNotes
@@ -105,13 +105,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<double>?> HpmEnergyUsedValueOption { get; private set; }
+        public Option<List<int>?> HpmEnergyUsedValueOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets HpmEnergyUsedValue
         /// </summary>
         [JsonPropertyName("hpmEnergyUsedValue")]
-        public List<double>? HpmEnergyUsedValue { get { return this.HpmEnergyUsedValueOption; } set { this.HpmEnergyUsedValueOption = new(value); } }
+        public List<int>? HpmEnergyUsedValue { get { return this.HpmEnergyUsedValueOption; } set { this.HpmEnergyUsedValueOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of HpmEnergyUsedNotes
@@ -247,9 +247,9 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<int?> hpmTypeFuelUsedInput = default;
-            Option<List<double>?> hpmUsefulHeatGeneratedValue = default;
+            Option<List<int>?> hpmUsefulHeatGeneratedValue = default;
             Option<string?> hpmUsefulHeatGeneratedNotes = default;
-            Option<List<double>?> hpmEnergyUsedValue = default;
+            Option<List<int>?> hpmEnergyUsedValue = default;
             Option<string?> hpmEnergyUsedNotes = default;
             Option<List<int>?> hpmUsefulCoolingGeneratedValue = default;
             Option<string?> hpmUsefulCoolingGeneratedNotes = default;
@@ -276,13 +276,13 @@ namespace HNTAS.Api.Client.Model
                             hpmTypeFuelUsedInput = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
                         case "hpmUsefulHeatGeneratedValue":
-                            hpmUsefulHeatGeneratedValue = new Option<List<double>?>(JsonSerializer.Deserialize<List<double>>(ref utf8JsonReader, jsonSerializerOptions));
+                            hpmUsefulHeatGeneratedValue = new Option<List<int>?>(JsonSerializer.Deserialize<List<int>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "hpmUsefulHeatGeneratedNotes":
                             hpmUsefulHeatGeneratedNotes = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "hpmEnergyUsedValue":
-                            hpmEnergyUsedValue = new Option<List<double>?>(JsonSerializer.Deserialize<List<double>>(ref utf8JsonReader, jsonSerializerOptions));
+                            hpmEnergyUsedValue = new Option<List<int>?>(JsonSerializer.Deserialize<List<int>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "hpmEnergyUsedNotes":
                             hpmEnergyUsedNotes = new Option<string?>(utf8JsonReader.GetString());

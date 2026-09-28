@@ -49,7 +49,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="chpMaxHeatOutput">chpMaxHeatOutput</param>
         /// <param name="chpMaxElectricityOutput">chpMaxElectricityOutput</param>
         [JsonConstructor]
-        public ChpInput(Option<int?> chpFuelTypeInput = default, Option<string?> chpInstallationDateInput = default, Option<string?> chpOperationalModeInput = default, Option<List<double>?> chpUsefulHeatValue = default, Option<string?> chpUsefulHeatNotes = default, Option<List<double>?> chpElectricityGeneratedValue = default, Option<string?> chpElectricityGeneratedNotes = default, Option<List<double>?> chpFuelUsedValue = default, Option<string?> chpFuelUsedNotes = default, Option<List<int>?> chpHeatCoolingValue = default, Option<string?> chpHeatCoolingNotes = default, Option<List<int>?> chpSleevingPCentValue = default, Option<string?> chpSleevingPCentNotes = default, Option<int?> chpMaxHeatOutput = default, Option<int?> chpMaxElectricityOutput = default)
+        public ChpInput(Option<int?> chpFuelTypeInput = default, Option<string?> chpInstallationDateInput = default, Option<string?> chpOperationalModeInput = default, Option<List<int>?> chpUsefulHeatValue = default, Option<string?> chpUsefulHeatNotes = default, Option<List<int>?> chpElectricityGeneratedValue = default, Option<string?> chpElectricityGeneratedNotes = default, Option<List<int>?> chpFuelUsedValue = default, Option<string?> chpFuelUsedNotes = default, Option<List<int>?> chpHeatCoolingValue = default, Option<string?> chpHeatCoolingNotes = default, Option<List<int>?> chpSleevingPCentValue = default, Option<string?> chpSleevingPCentNotes = default, Option<int?> chpMaxHeatOutput = default, Option<int?> chpMaxElectricityOutput = default)
         {
             ChpFuelTypeInputOption = chpFuelTypeInput;
             ChpInstallationDateInputOption = chpInstallationDateInput;
@@ -115,13 +115,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<double>?> ChpUsefulHeatValueOption { get; private set; }
+        public Option<List<int>?> ChpUsefulHeatValueOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets ChpUsefulHeatValue
         /// </summary>
         [JsonPropertyName("chpUsefulHeatValue")]
-        public List<double>? ChpUsefulHeatValue { get { return this.ChpUsefulHeatValueOption; } set { this.ChpUsefulHeatValueOption = new(value); } }
+        public List<int>? ChpUsefulHeatValue { get { return this.ChpUsefulHeatValueOption; } set { this.ChpUsefulHeatValueOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ChpUsefulHeatNotes
@@ -141,13 +141,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<double>?> ChpElectricityGeneratedValueOption { get; private set; }
+        public Option<List<int>?> ChpElectricityGeneratedValueOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets ChpElectricityGeneratedValue
         /// </summary>
         [JsonPropertyName("chpElectricityGeneratedValue")]
-        public List<double>? ChpElectricityGeneratedValue { get { return this.ChpElectricityGeneratedValueOption; } set { this.ChpElectricityGeneratedValueOption = new(value); } }
+        public List<int>? ChpElectricityGeneratedValue { get { return this.ChpElectricityGeneratedValueOption; } set { this.ChpElectricityGeneratedValueOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ChpElectricityGeneratedNotes
@@ -167,13 +167,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<double>?> ChpFuelUsedValueOption { get; private set; }
+        public Option<List<int>?> ChpFuelUsedValueOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets ChpFuelUsedValue
         /// </summary>
         [JsonPropertyName("chpFuelUsedValue")]
-        public List<double>? ChpFuelUsedValue { get { return this.ChpFuelUsedValueOption; } set { this.ChpFuelUsedValueOption = new(value); } }
+        public List<int>? ChpFuelUsedValue { get { return this.ChpFuelUsedValueOption; } set { this.ChpFuelUsedValueOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ChpFuelUsedNotes
@@ -329,11 +329,11 @@ namespace HNTAS.Api.Client.Model
             Option<int?> chpFuelTypeInput = default;
             Option<string?> chpInstallationDateInput = default;
             Option<string?> chpOperationalModeInput = default;
-            Option<List<double>?> chpUsefulHeatValue = default;
+            Option<List<int>?> chpUsefulHeatValue = default;
             Option<string?> chpUsefulHeatNotes = default;
-            Option<List<double>?> chpElectricityGeneratedValue = default;
+            Option<List<int>?> chpElectricityGeneratedValue = default;
             Option<string?> chpElectricityGeneratedNotes = default;
-            Option<List<double>?> chpFuelUsedValue = default;
+            Option<List<int>?> chpFuelUsedValue = default;
             Option<string?> chpFuelUsedNotes = default;
             Option<List<int>?> chpHeatCoolingValue = default;
             Option<string?> chpHeatCoolingNotes = default;
@@ -367,19 +367,19 @@ namespace HNTAS.Api.Client.Model
                             chpOperationalModeInput = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "chpUsefulHeatValue":
-                            chpUsefulHeatValue = new Option<List<double>?>(JsonSerializer.Deserialize<List<double>>(ref utf8JsonReader, jsonSerializerOptions));
+                            chpUsefulHeatValue = new Option<List<int>?>(JsonSerializer.Deserialize<List<int>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "chpUsefulHeatNotes":
                             chpUsefulHeatNotes = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "chpElectricityGeneratedValue":
-                            chpElectricityGeneratedValue = new Option<List<double>?>(JsonSerializer.Deserialize<List<double>>(ref utf8JsonReader, jsonSerializerOptions));
+                            chpElectricityGeneratedValue = new Option<List<int>?>(JsonSerializer.Deserialize<List<int>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "chpElectricityGeneratedNotes":
                             chpElectricityGeneratedNotes = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "chpFuelUsedValue":
-                            chpFuelUsedValue = new Option<List<double>?>(JsonSerializer.Deserialize<List<double>>(ref utf8JsonReader, jsonSerializerOptions));
+                            chpFuelUsedValue = new Option<List<int>?>(JsonSerializer.Deserialize<List<int>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "chpFuelUsedNotes":
                             chpFuelUsedNotes = new Option<string?>(utf8JsonReader.GetString());
