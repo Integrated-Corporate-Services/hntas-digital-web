@@ -1846,6 +1846,51 @@ paths:
           description: Internal Server Error
       tags:
       - Organisations
+  /api/Organisations/orgs-associated-to-user/{userId}:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Organisation"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Organisation"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Organisation"
+                type: array
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Organisations
   /api/OrganisationUser/responsible-party-user/{orgId}:
     get:
       parameters:
@@ -3516,16 +3561,16 @@ components:
       example:
         blrFuelUsedByNotes: blrFuelUsedByNotes
         blrUsefulHeatGeneratedValue:
-        - 6
-        - 6
+        - 6.965117697638846
+        - 6.965117697638846
         blrTypeFuelUsedInput: 3
         blrSleevingPCentValue:
         - 6
         - 6
         blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
         blrFuelUsedByValue:
-        - 1
-        - 1
+        - 1.284659006116532
+        - 1.284659006116532
         blrMaxHeatOutput: 6
         blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
         blrHeatUsedForCoolingProductionValue:
@@ -3539,8 +3584,8 @@ components:
           type: integer
         blrUsefulHeatGeneratedValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         blrUsefulHeatGeneratedNotes:
@@ -3548,8 +3593,8 @@ components:
           type: string
         blrFuelUsedByValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         blrFuelUsedByNotes:
@@ -3599,7 +3644,9 @@ components:
       type: object
     CarbonCalculatorConfigResponse:
       example:
-        defaults: "{}"
+        defaults:
+          key:
+            value: ""
         rules:
           key: ""
       nullable: true
@@ -3609,6 +3656,8 @@ components:
           nullable: true
           type: object
         defaults:
+          additionalProperties:
+            $ref: "#/components/schemas/ConfigDefault"
           nullable: true
           type: object
       type: object
@@ -3637,8 +3686,8 @@ components:
           boilerCount: 7
           heatPumpInputs:
           - hpmUsefulHeatGeneratedValue:
-            - 7
-            - 7
+            - 7.457744773683766
+            - 7.457744773683766
             hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
             hpmEnergyUsedNotes: hpmEnergyUsedNotes
             hpmSleevingPCentNotes: hpmSleevingPCentNotes
@@ -3647,16 +3696,16 @@ components:
             - 4
             - 4
             hpmEnergyUsedValue:
-            - 1
-            - 1
+            - 1.1730742509559433
+            - 1.1730742509559433
             hpmSleevingPCentValue:
             - 5
             - 5
             hpmMaxHeatOutput: 9
             hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
           - hpmUsefulHeatGeneratedValue:
-            - 7
-            - 7
+            - 7.457744773683766
+            - 7.457744773683766
             hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
             hpmEnergyUsedNotes: hpmEnergyUsedNotes
             hpmSleevingPCentNotes: hpmSleevingPCentNotes
@@ -3665,8 +3714,8 @@ components:
             - 4
             - 4
             hpmEnergyUsedValue:
-            - 1
-            - 1
+            - 1.1730742509559433
+            - 1.1730742509559433
             hpmSleevingPCentValue:
             - 5
             - 5
@@ -3676,15 +3725,15 @@ components:
           yearCount: 0
           chpInputs:
           - chpElectricityGeneratedValue:
-            - 2
-            - 2
+            - 2.027123023002322
+            - 2.027123023002322
             chpFuelUsedValue:
-            - 4
-            - 4
+            - 4.145608029883936
+            - 4.145608029883936
             chpHeatCoolingNotes: chpHeatCoolingNotes
             chpUsefulHeatValue:
-            - 3
-            - 3
+            - 3.616076749251911
+            - 3.616076749251911
             chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
             chpOperationalModeInput: chpOperationalModeInput
             chpUsefulHeatNotes: chpUsefulHeatNotes
@@ -3701,15 +3750,15 @@ components:
             - 7
             - 7
           - chpElectricityGeneratedValue:
-            - 2
-            - 2
+            - 2.027123023002322
+            - 2.027123023002322
             chpFuelUsedValue:
-            - 4
-            - 4
+            - 4.145608029883936
+            - 4.145608029883936
             chpHeatCoolingNotes: chpHeatCoolingNotes
             chpUsefulHeatValue:
-            - 3
-            - 3
+            - 3.616076749251911
+            - 3.616076749251911
             chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
             chpOperationalModeInput: chpOperationalModeInput
             chpUsefulHeatNotes: chpUsefulHeatNotes
@@ -3767,16 +3816,16 @@ components:
           boilerInputs:
           - blrFuelUsedByNotes: blrFuelUsedByNotes
             blrUsefulHeatGeneratedValue:
-            - 6
-            - 6
+            - 6.965117697638846
+            - 6.965117697638846
             blrTypeFuelUsedInput: 3
             blrSleevingPCentValue:
             - 6
             - 6
             blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
             blrFuelUsedByValue:
-            - 1
-            - 1
+            - 1.284659006116532
+            - 1.284659006116532
             blrMaxHeatOutput: 6
             blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
             blrHeatUsedForCoolingProductionValue:
@@ -3785,16 +3834,16 @@ components:
             blrSleevingPCentNotes: blrSleevingPCentNotes
           - blrFuelUsedByNotes: blrFuelUsedByNotes
             blrUsefulHeatGeneratedValue:
-            - 6
-            - 6
+            - 6.965117697638846
+            - 6.965117697638846
             blrTypeFuelUsedInput: 3
             blrSleevingPCentValue:
             - 6
             - 6
             blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
             blrFuelUsedByValue:
-            - 1
-            - 1
+            - 1.284659006116532
+            - 1.284659006116532
             blrMaxHeatOutput: 6
             blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
             blrHeatUsedForCoolingProductionValue:
@@ -3855,15 +3904,15 @@ components:
     ChpInput:
       example:
         chpElectricityGeneratedValue:
-        - 2
-        - 2
+        - 2.027123023002322
+        - 2.027123023002322
         chpFuelUsedValue:
-        - 4
-        - 4
+        - 4.145608029883936
+        - 4.145608029883936
         chpHeatCoolingNotes: chpHeatCoolingNotes
         chpUsefulHeatValue:
-        - 3
-        - 3
+        - 3.616076749251911
+        - 3.616076749251911
         chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
         chpOperationalModeInput: chpOperationalModeInput
         chpUsefulHeatNotes: chpUsefulHeatNotes
@@ -3892,8 +3941,8 @@ components:
           type: string
         chpUsefulHeatValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         chpUsefulHeatNotes:
@@ -3901,8 +3950,8 @@ components:
           type: string
         chpElectricityGeneratedValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         chpElectricityGeneratedNotes:
@@ -3910,8 +3959,8 @@ components:
           type: string
         chpFuelUsedValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         chpFuelUsedNotes:
@@ -4448,8 +4497,8 @@ components:
         boilerCount: 7
         heatPumpInputs:
         - hpmUsefulHeatGeneratedValue:
-          - 7
-          - 7
+          - 7.457744773683766
+          - 7.457744773683766
           hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
           hpmEnergyUsedNotes: hpmEnergyUsedNotes
           hpmSleevingPCentNotes: hpmSleevingPCentNotes
@@ -4458,16 +4507,16 @@ components:
           - 4
           - 4
           hpmEnergyUsedValue:
-          - 1
-          - 1
+          - 1.1730742509559433
+          - 1.1730742509559433
           hpmSleevingPCentValue:
           - 5
           - 5
           hpmMaxHeatOutput: 9
           hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
         - hpmUsefulHeatGeneratedValue:
-          - 7
-          - 7
+          - 7.457744773683766
+          - 7.457744773683766
           hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
           hpmEnergyUsedNotes: hpmEnergyUsedNotes
           hpmSleevingPCentNotes: hpmSleevingPCentNotes
@@ -4476,8 +4525,8 @@ components:
           - 4
           - 4
           hpmEnergyUsedValue:
-          - 1
-          - 1
+          - 1.1730742509559433
+          - 1.1730742509559433
           hpmSleevingPCentValue:
           - 5
           - 5
@@ -4487,15 +4536,15 @@ components:
         yearCount: 0
         chpInputs:
         - chpElectricityGeneratedValue:
-          - 2
-          - 2
+          - 2.027123023002322
+          - 2.027123023002322
           chpFuelUsedValue:
-          - 4
-          - 4
+          - 4.145608029883936
+          - 4.145608029883936
           chpHeatCoolingNotes: chpHeatCoolingNotes
           chpUsefulHeatValue:
-          - 3
-          - 3
+          - 3.616076749251911
+          - 3.616076749251911
           chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
           chpOperationalModeInput: chpOperationalModeInput
           chpUsefulHeatNotes: chpUsefulHeatNotes
@@ -4512,15 +4561,15 @@ components:
           - 7
           - 7
         - chpElectricityGeneratedValue:
-          - 2
-          - 2
+          - 2.027123023002322
+          - 2.027123023002322
           chpFuelUsedValue:
-          - 4
-          - 4
+          - 4.145608029883936
+          - 4.145608029883936
           chpHeatCoolingNotes: chpHeatCoolingNotes
           chpUsefulHeatValue:
-          - 3
-          - 3
+          - 3.616076749251911
+          - 3.616076749251911
           chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
           chpOperationalModeInput: chpOperationalModeInput
           chpUsefulHeatNotes: chpUsefulHeatNotes
@@ -4578,16 +4627,16 @@ components:
         boilerInputs:
         - blrFuelUsedByNotes: blrFuelUsedByNotes
           blrUsefulHeatGeneratedValue:
-          - 6
-          - 6
+          - 6.965117697638846
+          - 6.965117697638846
           blrTypeFuelUsedInput: 3
           blrSleevingPCentValue:
           - 6
           - 6
           blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
           blrFuelUsedByValue:
-          - 1
-          - 1
+          - 1.284659006116532
+          - 1.284659006116532
           blrMaxHeatOutput: 6
           blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
           blrHeatUsedForCoolingProductionValue:
@@ -4596,16 +4645,16 @@ components:
           blrSleevingPCentNotes: blrSleevingPCentNotes
         - blrFuelUsedByNotes: blrFuelUsedByNotes
           blrUsefulHeatGeneratedValue:
-          - 6
-          - 6
+          - 6.965117697638846
+          - 6.965117697638846
           blrTypeFuelUsedInput: 3
           blrSleevingPCentValue:
           - 6
           - 6
           blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
           blrFuelUsedByValue:
-          - 1
-          - 1
+          - 1.284659006116532
+          - 1.284659006116532
           blrMaxHeatOutput: 6
           blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
           blrHeatUsedForCoolingProductionValue:
@@ -6683,6 +6732,7 @@ components:
           addressLine1: addressLine1
           addressLine2: addressLine2
         name: name
+        orgId: orgId
       properties:
         hnId:
           type: string
@@ -6692,12 +6742,15 @@ components:
           $ref: "#/components/schemas/ECDetails"
         address:
           $ref: "#/components/schemas/RegisteredAddress"
+        orgId:
+          nullable: true
+          type: string
       type: object
     HeatPumpInput:
       example:
         hpmUsefulHeatGeneratedValue:
-        - 7
-        - 7
+        - 7.457744773683766
+        - 7.457744773683766
         hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
         hpmEnergyUsedNotes: hpmEnergyUsedNotes
         hpmSleevingPCentNotes: hpmSleevingPCentNotes
@@ -6706,8 +6759,8 @@ components:
         - 4
         - 4
         hpmEnergyUsedValue:
-        - 1
-        - 1
+        - 1.1730742509559433
+        - 1.1730742509559433
         hpmSleevingPCentValue:
         - 5
         - 5
@@ -6720,8 +6773,8 @@ components:
           type: integer
         hpmUsefulHeatGeneratedValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         hpmUsefulHeatGeneratedNotes:
@@ -6729,8 +6782,8 @@ components:
           type: string
         hpmEnergyUsedValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         hpmEnergyUsedNotes:
@@ -7136,7 +7189,9 @@ components:
               upper_limit: 6.027456183070403
               is_mandatory: true
         carbon_calculator:
-          defaults: "{}"
+          defaults:
+            key:
+              value: ""
           rules:
             key: ""
       properties:
@@ -9816,6 +9871,7 @@ components:
         firstName: firstName
         createdAt: 2000-01-23T04:56:07.000+00:00
         id: id
+        activeContributingOrgId: activeContributingOrgId
         status: Active
       properties:
         id:
@@ -9866,6 +9922,9 @@ components:
             type: string
           nullable: true
           type: array
+        activeContributingOrgId:
+          nullable: true
+          type: string
       type: object
     UserDetailsResponse:
       example:
@@ -9910,6 +9969,7 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           name: name
+          orgId: orgId
         - hnId: hnId
           ecDetails:
             latitude: 0.8008281904610115
@@ -9922,7 +9982,9 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           name: name
+          orgId: orgId
         id: id
+        activeContributingOrgId: activeContributingOrgId
         status: Active
       properties:
         id:
@@ -9973,6 +10035,9 @@ components:
             type: string
           nullable: true
           type: array
+        activeContributingOrgId:
+          nullable: true
+          type: string
       type: object
     UserNetworkDetailsResponse:
       example:
@@ -10021,6 +10086,7 @@ components:
         orgId: orgId
         firstName: firstName
         id: id
+        activeContributingOrgId: activeContributingOrgId
         status: Active
       properties:
         id:
@@ -10072,6 +10138,9 @@ components:
             type: string
           nullable: true
           type: array
+        activeContributingOrgId:
+          nullable: true
+          type: string
       type: object
     UserRole:
       enum:
