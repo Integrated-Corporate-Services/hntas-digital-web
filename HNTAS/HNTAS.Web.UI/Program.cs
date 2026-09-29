@@ -419,8 +419,7 @@ else
             options.CallbackPath = "/onelogin-callback";
             options.SignedOutCallbackPath = "/onelogin-logout-callback";
             options.Scope.Add("openid");
-            options.Scope.Add("email");
-            options.Scope.Add("phone");
+            options.Scope.Add("email");            
             // ... your existing OneLogin event handlers and configuration ...
             options.Events.OnRedirectToIdentityProvider = context =>
             {
@@ -466,7 +465,7 @@ builder.Services.AddApplicationAuthorization();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
