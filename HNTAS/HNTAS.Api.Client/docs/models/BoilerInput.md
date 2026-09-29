@@ -5,9 +5,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **BlrTypeFuelUsedInput** | **int** |  | [optional] 
-**BlrUsefulHeatGeneratedValue** | **List&lt;int&gt;** |  | [optional] 
+**BlrUsefulHeatGeneratedValue** | **List&lt;double&gt;** |  | [optional] 
 **BlrUsefulHeatGeneratedNotes** | **string** |  | [optional] 
-**BlrFuelUsedByValue** | **List&lt;int&gt;** |  | [optional] 
+**BlrFuelUsedByValue** | **List&lt;double&gt;** |  | [optional] 
 **BlrFuelUsedByNotes** | **string** |  | [optional] 
 **BlrHeatUsedForCoolingProductionValue** | **List&lt;int&gt;** |  | [optional] 
 **BlrHeatUsedForCoolingProductionNotes** | **string** |  | [optional] 

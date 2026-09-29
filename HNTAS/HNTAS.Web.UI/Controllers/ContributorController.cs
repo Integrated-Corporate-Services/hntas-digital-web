@@ -67,7 +67,20 @@ namespace HNTAS.Web.UI.Controllers
                     return BadRequest("Invalid invitation details.");
                 }
 
-                TempData["HNName"] = inviterUser?.HeatNetworks?.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
+                var invitedOrgName = inviterUser.Organisation.Name;
+                ViewBag.InvitedOrgName = invitedOrgName;
+                var invitedRole = invitation.Roles?.FirstOrDefault();               
+                if (invitedRole == Api.Client.Model.ContributorRole.NetworkManager)
+                {
+                    ViewBag.PartHeading = invitedOrgName;
+                }
+                else
+                {
+                    var hnName = inviterUser?.HeatNetworks?.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
+                    ViewBag.PartHeading = $"{hnName} heat network";
+                }
+
+                //TempData["HNName"] = inviterUser?.HeatNetworks?.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedTokenEmail, invitationEmail);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitationId, invitation.Id);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedInviterUserId, invitation.InviterUserId);
