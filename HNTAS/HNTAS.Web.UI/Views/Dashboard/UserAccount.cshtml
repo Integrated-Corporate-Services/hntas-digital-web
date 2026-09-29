@@ -29,15 +29,16 @@
     }
     @if (userIsRP)
     {
-        <div class="govuk-button-group govuk-!-margin-top-5">
-            <span class="govuk-body">
-                <a href="@Url.Action("Index", "HeatNetwork")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
-                    Add a heat network
-                </a>
-                or
-                <a class="govuk-link" href="@Url.Action("ManageLeads", "NetworkLeads")">Authorise someone to manage heat networks</a>
-            </span>
+
+        <div class="govuk-button-group" style="flex-basis: 100%;">
+            <a href="@Url.Action("Index", "HeatNetwork")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                Add a heat network
+            </a>
+            <a class="govuk-link" href="@Url.Action("ManageLeads", "NetworkLeads")">
+                Authorise someone else to add heat networks
+            </a>
         </div>
+
     }
 
     <div class="dashboard-grid">

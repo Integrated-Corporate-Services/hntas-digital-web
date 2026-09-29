@@ -87,6 +87,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SaveHeatNetworkStatus(NetworkStatusModel model)
         {
+
             ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
            
             if (!ModelState.IsValid)
@@ -108,7 +109,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             // Handles "BOTH" or any unhandled value
-            return RedirectToAction("NewAndExistingHeatNetwork");
+            return RedirectToAction("HeatNetworkEcNewNetwork");
         }
 
         [HttpGet]
@@ -122,10 +123,10 @@ namespace HNTAS.Web.UI.Controllers
         {
             this.ShowBackButton("HeatNetworkStatus", "HeatNetworkRegistration");
 
-            var model = _sessionHelper.GetFromSession<NewHnEnergyCentreModel>(
+            var model = _sessionHelper.GetFromSession<NetworkSupplyTypeModel>(
                 HttpContext,
-                SessionKeys.NewHNEnergyCentreModelKey
-            ) ?? new NewHnEnergyCentreModel();
+                SessionKeys.NetworkSupplyTypeModelKey
+            ) ?? new NetworkSupplyTypeModel();
 
             ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
                 .Replace("Controller", string.Empty);
@@ -135,8 +136,9 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost("heat-network-registration/ec-new-network")]
         [ValidateAntiForgeryToken]
-        public IActionResult SaveECNewNetwork(NewHnEnergyCentreModel model)
+        public IActionResult SaveECNewNetwork(NetworkSupplyTypeModel model)
         {
+
             ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
                 .Replace("Controller", string.Empty);
 
@@ -146,13 +148,221 @@ namespace HNTAS.Web.UI.Controllers
                 return View("ECNewNetwork", model);
             }
 
-            _sessionHelper.SaveToSession<NewHnEnergyCentreModel>(
+            _sessionHelper.SaveToSession<NetworkSupplyTypeModel>(
                 HttpContext,
-                SessionKeys.NewHNEnergyCentreModelKey,
+                SessionKeys.NetworkSupplyTypeModelKey,
                 model
             );
 
             return RedirectToAction("HeatNetworkConnections");
+        }
+
+
+        [HttpGet]
+        public IActionResult HeatNetworkConnections()
+        {
+            // Configure back button navigation for GDS standards
+            this.ShowBackButton("HeatNetworkEcNewNetwork", "HeatNetworkRegistration");
+
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
+                .Replace("Controller", string.Empty);
+
+            // Retrieve previous steps from session
+            var statusModel = _sessionHelper.GetFromSession<NetworkStatusModel>(
+                HttpContext,
+                SessionKeys.NetworkStatusModelKey
+            );
+
+            var supplyTypeModel = _sessionHelper.GetFromSession<NetworkSupplyTypeModel>(
+                HttpContext,
+                SessionKeys.NetworkSupplyTypeModelKey
+            );
+
+            // Retrieve saved connections if user is navigating back
+            var existingConnectionsModel = _sessionHelper.GetFromSession<NetworkConnectionsViewModel>(
+                HttpContext,
+                SessionKeys.NetworkConnectionsKey
+            );
+
+            var viewModel = existingConnectionsModel ?? new NetworkConnectionsViewModel();
+
+            // Determine column visibility flags based on build status
+            var buildStatus = statusModel?.BuildStatus?.ToUpperInvariant();
+            viewModel.ShowExistingColumn = buildStatus == "EXISTING" || buildStatus == "BOTH";
+            viewModel.ShowNewColumn = buildStatus == "NEW" || buildStatus == "BOTH";
+
+            // Determine row visibility: Show "Other district heat networks" row only when supplying multiple buildings
+            var energyCentreOption = supplyTypeModel?.EnergyCentreOption;
+            viewModel.ShowOtherDistrictNetworksRow = string.Equals(energyCentreOption, "multiple_buildings", StringComparison.OrdinalIgnoreCase);
+
+            return View("TellUsAboutHeatNetworkConnections", viewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveHeatNetworkConnections(NetworkConnectionsViewModel model)
+        {
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
+                .Replace("Controller", string.Empty);
+
+            // 1. Clear validation errors for inactive columns based on context flags
+            if (!model.ShowExistingColumn)
+            {
+                ModelState.Remove(nameof(model.ExistingCommunalBuildings));
+                ModelState.Remove(nameof(model.ExistingHousesOrMaisonettes));
+                ModelState.Remove(nameof(model.ExistingNonDomesticBuildings));
+                ModelState.Remove(nameof(model.ExistingMultiTenantedNonDomestic));
+                ModelState.Remove(nameof(model.ExistingOtherDistrictNetworks));
+            }
+
+            if (!model.ShowNewColumn)
+            {
+                ModelState.Remove(nameof(model.NewCommunalBuildings));
+                ModelState.Remove(nameof(model.NewHousesOrMaisonettes));
+                ModelState.Remove(nameof(model.NewNonDomesticBuildings));
+                ModelState.Remove(nameof(model.NewMultiTenantedNonDomestic));
+                ModelState.Remove(nameof(model.NewOtherDistrictNetworks));
+            }
+
+            // 2. Clear validation errors for 'Other District Networks' row if hidden
+            if (!model.ShowOtherDistrictNetworksRow)
+            {
+                ModelState.Remove(nameof(model.ExistingOtherDistrictNetworks));
+                ModelState.Remove(nameof(model.NewOtherDistrictNetworks));
+            }
+
+            // 3. Handle model validation failure
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorSummary"] = "CustomErrorSummary";
+                this.ShowBackButton("HeatNetworkEcNewNetwork", "HeatNetworkRegistration");
+                return View("TellUsAboutHeatNetworkConnections", model);
+            }
+
+            // 4. Save connections data to session
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkConnectionsKey, model);
+
+            // 5. Check new communal buildings count for conditional routing
+            int newCommunalBuildings = model.NewCommunalBuildings ?? 0;
+
+            if (newCommunalBuildings > 0)
+            {
+                return RedirectToAction("CommunalBuildingResponsibility");
+            }
+
+            return RedirectToAction("HeatNetworkConnectionSummary");
+        }
+
+
+        [HttpGet]
+        public IActionResult CommunalBuildingResponsibility()
+        {
+            this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
+
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
+                .Replace("Controller", string.Empty);
+
+            var connectionsModel = _sessionHelper.GetFromSession<NetworkConnectionsViewModel>(
+                HttpContext,
+                SessionKeys.NetworkConnectionsKey
+            );
+
+            var existingModel = _sessionHelper.GetFromSession<CommunalBuildingResponsibilityViewModel>(
+                HttpContext,
+                SessionKeys.CommunalBuildingResponsibilityKey
+            );
+
+            // If first visit, create new model (defaults ResponsibleCommunalNetworks to 1)
+            var viewModel = existingModel ?? new CommunalBuildingResponsibilityViewModel();
+
+            viewModel.MaxAllowedCommunalBuildings = connectionsModel?.NewCommunalBuildings ?? 0;
+
+            return View("CommunalBuildingResponsibility", viewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveCommunalBuildingResponsibility(CommunalBuildingResponsibilityViewModel model)
+        {
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
+                .Replace("Controller", string.Empty);
+
+            var connectionsModel = _sessionHelper.GetFromSession<NetworkConnectionsViewModel>(
+                HttpContext,
+                SessionKeys.NetworkConnectionsKey
+            );
+
+            int maxAllowed = connectionsModel?.NewCommunalBuildings ?? 0;
+            model.MaxAllowedCommunalBuildings = maxAllowed;
+
+            // Validate that the value entered does not exceed total new communal buildings
+            if (model.ResponsibleCommunalNetworks.HasValue && model.ResponsibleCommunalNetworks.Value > maxAllowed)
+            {
+                ModelState.AddModelError(
+                    nameof(model.ResponsibleCommunalNetworks),
+                    $"You cannot have new communal buildings more than {maxAllowed}"
+                );
+            }
+
+            if (!ModelState.IsValid)
+            {
+                this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
+                return View("CommunalBuildingResponsibility", model);
+            }
+
+            // Save to session (saves 0, 1, or whatever valid number the user posted)
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.CommunalBuildingResponsibilityKey, model);
+
+            return RedirectToAction("HeatNetworkConnectionSummary");
+        }
+
+
+        [HttpGet]
+        public IActionResult HeatNetworkConnectionSummary()
+        {
+            var connectionsModel = _sessionHelper.GetFromSession<NetworkConnectionsViewModel>(
+                HttpContext,
+                SessionKeys.NetworkConnectionsKey
+            );
+
+            // Dynamic back button depending on whether communal building responsibility was required
+            if ((connectionsModel?.NewCommunalBuildings ?? 0) > 0)
+            {
+                this.ShowBackButton("CommunalBuildingResponsibility", "HeatNetworkRegistration");
+            }
+            else
+            {
+                this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
+            }
+
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
+                .Replace("Controller", string.Empty);
+
+            var responsibilityModel = _sessionHelper.GetFromSession<CommunalBuildingResponsibilityViewModel>(
+                HttpContext,
+                SessionKeys.CommunalBuildingResponsibilityKey
+            );
+
+            var viewModel = new HeatNetworkConnectionSummaryViewModel
+            {
+                Connections = connectionsModel ?? new NetworkConnectionsViewModel(),
+                Responsibility = responsibilityModel
+            };
+
+            return View("HeatNetworkConnectionSummary", viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveHeatNetworkConnectionSummary()
+        {
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
+                .Replace("Controller", string.Empty);
+
+            // Save summary confirmation state if required and redirect to next registration step
+            return RedirectToAction("HeatNetworkName");
         }
 
         private async Task<List<SelectItemOption>> GetOrganisationListForUser(List<string> contributingOrganisations)
@@ -365,43 +575,43 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("HeatNetworkConnections");
         }
 
-        [HttpGet]
-        public IActionResult HeatNetworkConnections()
-        {
-            this.ShowBackButton("HeatNetworkEcDistrict");
-            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
-            var model = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey);
-            return View("HeatNetworkRegistration/HeatNetworkConnections", model);
-        }
+        //[HttpGet]
+        //public IActionResult HeatNetworkConnections()
+        //{
+        //    this.ShowBackButton("HeatNetworkEcDistrict");
+        //    ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
+        //    var model = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey);
+        //    return View("HeatNetworkRegistration/HeatNetworkConnections", model);
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult HeatNetworkConnections(HeatNetworkConnectionsViewModel model)
-        {
-            this.ShowBackButton("HeatNetworkEcDistrict");
-            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
-            var original = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey);
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult HeatNetworkConnections(HeatNetworkConnectionsViewModel model)
+        //{
+        //    this.ShowBackButton("HeatNetworkEcDistrict");
+        //    ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
+        //    var original = _sessionHelper.GetFromSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey);
 
-            for (int i = 0; i < model.Connections.Count; i++)
-            {
-                model.Connections[i].Label = original.Connections[i].Label;
-                model.Connections[i].HintText = original.Connections[i].HintText;
-                model.Connections[i].Value = original.Connections[i].Value;
-                model.Connections[i].ConditionalLabel = original.Connections[i].ConditionalLabel;
-            }
-            if (!ModelState.IsValid)
-            {
-                return View("HeatNetworkRegistration/HeatNetworkConnections", model);
-            }
-            _sessionHelper.SaveToSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey, model);
-            var doesDistrictHnHaveOwnEcViewModel = _sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel);
-            string nextAction = doesDistrictHnHaveOwnEcViewModel.HasOwnEc switch
-            {
-                true => "HeatNetworkDistrictEcSummary",
-                false => "HeatNetworkDistrictNoEcSummary"
-            };
-            return RedirectToAction(nextAction);
-        }
+        //    for (int i = 0; i < model.Connections.Count; i++)
+        //    {
+        //        model.Connections[i].Label = original.Connections[i].Label;
+        //        model.Connections[i].HintText = original.Connections[i].HintText;
+        //        model.Connections[i].Value = original.Connections[i].Value;
+        //        model.Connections[i].ConditionalLabel = original.Connections[i].ConditionalLabel;
+        //    }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View("HeatNetworkRegistration/HeatNetworkConnections", model);
+        //    }
+        //    _sessionHelper.SaveToSession<HeatNetworkConnectionsViewModel>(HttpContext, SessionKeys.HeatNetworkConnectionsViewModelKey, model);
+        //    var doesDistrictHnHaveOwnEcViewModel = _sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel);
+        //    string nextAction = doesDistrictHnHaveOwnEcViewModel.HasOwnEc switch
+        //    {
+        //        true => "HeatNetworkDistrictEcSummary",
+        //        false => "HeatNetworkDistrictNoEcSummary"
+        //    };
+        //    return RedirectToAction(nextAction);
+        //}
 
         [HttpGet]
         public IActionResult HeatNetworkDistrictEcSummary()
@@ -448,14 +658,14 @@ namespace HNTAS.Web.UI.Controllers
             }
             _sessionHelper.SaveToSession<HeatNetworkNameModel>(HttpContext, SessionKeys.HeatNetworkNameModelKey, model);
                         
-            var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel)?.IsHnTypeCommunal ?? false;
-            bool hasOwnEc = isCommunalHn
-                ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
-                : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);
-            if (!isCommunalHn && !hasOwnEc)     
-            {
-                return RedirectToAction("ECCoordinates");
-            }
+            //var isCommunalHn = _sessionHelper.GetFromSession<IsHnTypeCommunalViewModel>(HttpContext, SessionKeys.IsHnTypeCommunalViewModel)?.IsHnTypeCommunal ?? false;
+            //bool hasOwnEc = isCommunalHn
+            //    ? (_sessionHelper.GetFromSession<DoesCommunalHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesCommunalHnHaveOwnEcViewModel)?.HasOwnEc == true)
+            //    : (_sessionHelper.GetFromSession<DoesDistrictHnHaveOwnEcViewModel>(HttpContext, SessionKeys.DoesDistrictHnHaveOwnEcViewModel)?.HasOwnEc == true);
+            //if (!isCommunalHn && !hasOwnEc)     
+            //{
+            //    return RedirectToAction("ECCoordinates");
+            //}
             return RedirectToAction("DoesHNHaveAPostcode");
         }
 

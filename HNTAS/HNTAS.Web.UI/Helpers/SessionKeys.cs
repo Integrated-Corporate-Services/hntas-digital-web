@@ -111,6 +111,12 @@
         public const string IsSuperUserKey = "IsSuperUserKey";
         public const string RegistrationSourceKey = "RegistrationSourceKey";
 
-        public const string NewHNEnergyCentreModelKey = "NewHNEnergyCentreModelKey";
+        //public const string NewHNEnergyCentreModelKey = "NewHNEnergyCentreModelKey";
+
+        public const string NetworkSupplyTypeModelKey = "NetworkSupplyTypeModelKey";
+
+        public const string NetworkConnectionsKey = "NetworkConnectionsKey";
+
+        public const string CommunalBuildingResponsibilityKey = "CommunalBuildingResponsibilityKey";
     }
 }
