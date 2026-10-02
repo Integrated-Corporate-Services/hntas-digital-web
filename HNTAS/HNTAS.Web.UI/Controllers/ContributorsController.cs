@@ -278,8 +278,10 @@ namespace HNTAS.Web.UI.Controllers
             _logger.LogInformation("Retrieving heat networks for the user.");
 
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
             var response = await _userService.GetUserHeatNetworks(userId);
-            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(response);
+            var respectiveNetworks = response?.Where(w => w.OrgId == orgId).ToList();
+            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(respectiveNetworks!);
 
             if (heatNetworks == null)
             {
@@ -454,6 +456,7 @@ namespace HNTAS.Web.UI.Controllers
                          contributorRoles: new List<ContributorRole> { inviteeRole },
                          replacedUserId: null,
                          rolesToReplace: new List<ContributorRole> { inviteeRole },
+                         orgId: _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId),
                          status: InvitationStatus.Invited
                      )
                  );

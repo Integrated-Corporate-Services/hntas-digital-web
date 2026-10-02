@@ -1898,6 +1898,51 @@ paths:
       - Bearer: []
       tags:
       - Organisations
+  /api/Organisations/orgs-associated-to-user/{userId}:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Organisation"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Organisation"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Organisation"
+                type: array
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Organisations
   /api/OrganisationUser/responsible-party-user/{orgId}:
     get:
       parameters:
@@ -6795,6 +6840,7 @@ components:
           addressLine1: addressLine1
           addressLine2: addressLine2
         name: name
+        orgId: orgId
       properties:
         hnId:
           type: string
@@ -6804,6 +6850,9 @@ components:
           $ref: "#/components/schemas/ECDetails"
         address:
           $ref: "#/components/schemas/RegisteredAddress"
+        orgId:
+          nullable: true
+          type: string
       type: object
     HeatPumpInput:
       example:
@@ -9930,6 +9979,7 @@ components:
         firstName: firstName
         createdAt: 2000-01-23T04:56:07.000+00:00
         id: id
+        activeContributingOrgId: activeContributingOrgId
         status: Active
       properties:
         id:
@@ -9980,6 +10030,9 @@ components:
             type: string
           nullable: true
           type: array
+        activeContributingOrgId:
+          nullable: true
+          type: string
       type: object
     UserDetailsResponse:
       example:
@@ -10024,6 +10077,7 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           name: name
+          orgId: orgId
         - hnId: hnId
           ecDetails:
             latitude: 0.8008281904610115
@@ -10036,7 +10090,9 @@ components:
             addressLine1: addressLine1
             addressLine2: addressLine2
           name: name
+          orgId: orgId
         id: id
+        activeContributingOrgId: activeContributingOrgId
         status: Active
       properties:
         id:
@@ -10087,6 +10143,9 @@ components:
             type: string
           nullable: true
           type: array
+        activeContributingOrgId:
+          nullable: true
+          type: string
       type: object
     UserNetworkDetailsResponse:
       example:
@@ -10135,6 +10194,7 @@ components:
         orgId: orgId
         firstName: firstName
         id: id
+        activeContributingOrgId: activeContributingOrgId
         status: Active
       properties:
         id:
@@ -10186,6 +10246,9 @@ components:
             type: string
           nullable: true
           type: array
+        activeContributingOrgId:
+          nullable: true
+          type: string
       type: object
     UserRole:
       enum:
