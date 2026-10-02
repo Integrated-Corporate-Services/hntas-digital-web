@@ -1,8 +1,10 @@
 using Amazon.S3;
 using GovUk.OneLogin.AspNetCore;
+using HNTAS.Api.Client;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authentication;
 using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
@@ -65,6 +67,8 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IApiTokenProvider, ApiTokenProvider>();
 
 var coreApiBaseUrl = Environment.GetEnvironmentVariable("CORE_BASE_URL") ?? throw new InvalidOperationException("Core API URL is not configured. Set CORE_BASE_URL environment variable.");
 
@@ -156,12 +160,16 @@ builder.Services.AddSingleton(new JsonSerializerOptions
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
 
+// Register token service for generating JWT tokens for internal API calls
+builder.Services.AddScoped<TokenProvider<BearerToken>, CustomBearerTokenProvider>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+
 builder.Services.AddSingleton<UsersApiEvents>();
 builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}); 
 
 builder.Services.AddSingleton<OrganisationsApiEvents>();
 builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
@@ -250,7 +258,6 @@ builder.Services.AddHttpClient<IAssignedAssessorApi, AssignedAssessorApi>(client
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
-
 builder.Services.AddSingleton<ArmsDashboardApiEvents>();
 builder.Services.AddHttpClient<IArmsDashboardApi, ArmsDashboardApi>(client =>
 {
@@ -271,6 +278,7 @@ builder.Services.AddHttpClient<ISuperUserApi, SuperUserApi>(client =>
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
+
 builder.Services.AddTransient<FeedbackApiEvents>();
 builder.Services.AddHttpClient<IFeedbackApi, FeedbackApi>(client =>
 {
@@ -419,7 +427,8 @@ else
             options.CallbackPath = "/onelogin-callback";
             options.SignedOutCallbackPath = "/onelogin-logout-callback";
             options.Scope.Add("openid");
-            options.Scope.Add("email");            
+            options.Scope.Add("email");
+
             // ... your existing OneLogin event handlers and configuration ...
             options.Events.OnRedirectToIdentityProvider = context =>
             {
@@ -436,6 +445,15 @@ else
 
             options.Events.OnTokenValidated = context =>
             {
+                var oneLoginId = context.Principal?.FindFirst("sub")?.Value;
+
+                var jwtService = context.HttpContext.RequestServices
+                .GetRequiredService<IJwtTokenService>();
+
+                var hntasJwt = jwtService.GenerateToken(oneLoginId!);
+
+                context.HttpContext.Session.SetString(SessionKeys.HntasJwt, hntasJwt);
+
                 var state = context.ProtocolMessage.State;
 
                 if (!string.IsNullOrWhiteSpace(state))
@@ -465,7 +483,7 @@ builder.Services.AddApplicationAuthorization();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(60);
+    options.IdleTimeout = TimeSpan.FromMinutes(builder.Configuration.GetValue<int>("SessionTimeout:Minutes"));
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
