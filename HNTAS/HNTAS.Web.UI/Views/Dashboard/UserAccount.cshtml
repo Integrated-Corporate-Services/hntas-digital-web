@@ -35,7 +35,7 @@
     <div class="dashboard-grid">
 
         <!-- Your heat networks (new)-->
-        @if (Model.HasHntasNetworks)
+    @if (Model.HasHntasNetworks || userIsActingRP)
         {
             <div class="dashboard-grid__item">
                 <div class="dashboard-card">
