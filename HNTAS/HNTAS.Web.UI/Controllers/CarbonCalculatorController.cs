@@ -308,7 +308,12 @@ namespace HNTAS.Web.UI.Controllers
 
         private delegate bool TryParseDelegate<T>(string s, out T value);
 
+        static List<double> CopyDoubleList(List<double>? src) => src != null ? new List<double>(src) : new List<double>();
+        static List<double> ToDoubleList(List<int>? src) => src?.Select(i => (double)i).ToList() ?? new List<double>();
+        static List<double> ToDoubleList(List<decimal>? src) => src?.Select(d => (double)d).ToList() ?? new List<double>();
 
+        static List<int> CopyIntList(List<int>? src) => src != null ? new List<int>(src) : new List<int>();
+        static List<int>? ToIntList(List<decimal>? src) => src != null ? src.Select(d => (int)d).ToList() : null;
 
         // Builds the nested JSON object (background+energy) from the view model values.
         /// </summary>
@@ -323,8 +328,7 @@ namespace HNTAS.Web.UI.Controllers
             var en = vmReq.Energy;
 
             // Helper local functions to deep-copy lists (avoid sharing references)
-            static List<int> CopyIntList(List<int>? src) => src != null ? new List<int>(src) : new List<int>();
-            static List<double>? ToDoubleList(List<decimal>? src) => src != null ? src.Select(d => (double)d).ToList() : null;
+          
 
             // ---- Build payload ----
             var payload = new HNTAS.Api.Client.Model.CarbonCalculatorRequest
@@ -371,15 +375,15 @@ namespace HNTAS.Web.UI.Controllers
                         ChpFuelTypeInput = chp.ChpFuelTypeInput,
                         ChpInstallationDateInput = chp.ChpInstallationDateInput,
                         ChpOperationalModeInput = chp.ChpOperationalModeInput, // keep actual value from model
-                        ChpUsefulHeatValue = CopyIntList(chp.ChpUsefulHeatValues),
+                        ChpUsefulHeatValue = ToDoubleList(chp.ChpUsefulHeatValues),
                         ChpUsefulHeatNotes = chp.ChpUsefulHeatNotes,
-                        ChpElectricityGeneratedValue = CopyIntList(chp.ChpElectricityGeneratedValues),
+                        ChpElectricityGeneratedValue = ToDoubleList(chp.ChpElectricityGeneratedValues),
                         ChpElectricityGeneratedNotes = chp.ChpElectricityGeneratedNotes,
-                        ChpFuelUsedValue = CopyIntList(chp.ChpFuelUsedValues),
+                        ChpFuelUsedValue = ToDoubleList(chp.ChpFuelUsedValues),
                         ChpFuelUsedNotes = chp.ChpFuelUsedNotes,
-                        ChpHeatCoolingValue = CopyIntList(chp.ChpHeatCoolingValues),
+                        ChpHeatCoolingValue = chp.ChpHeatCoolingValues,
                         ChpHeatCoolingNotes = chp.ChpHeatCoolingNotes,
-                        ChpSleevingPCentValue = CopyIntList(chp.ChpSleevingPCentValues),
+                        ChpSleevingPCentValue = chp.ChpSleevingPCentValues,
                         ChpSleevingPCentNotes = chp.ChpSleevingPCentNotes,
                         ChpMaxHeatOutput = chp.ChpMaxHeatOutput,
                         ChpMaxElectricityOutput = chp.ChpMaxElectricityOutput
@@ -389,13 +393,13 @@ namespace HNTAS.Web.UI.Controllers
                     HeatPumpInputs = (en.HeatPumpInputs).Select(hp => new HNTAS.Api.Client.Model.HeatPumpInput
                     {
                         HpmTypeFuelUsedInput = hp.HpmTypeFuelUsedInput,
-                        HpmUsefulHeatGeneratedValue = CopyIntList(hp.HpmUsefulHeatGeneratedValues),
+                        HpmUsefulHeatGeneratedValue = ToDoubleList(hp.HpmUsefulHeatGeneratedValues),
                         HpmUsefulHeatGeneratedNotes = hp.HpmUsefulHeatGeneratedNotes,
-                        HpmEnergyUsedValue = CopyIntList(hp.HpmEnergyUsedValues),
+                        HpmEnergyUsedValue = ToDoubleList(hp.HpmEnergyUsedValues),
                         HpmEnergyUsedNotes = hp.HpmEnergyUsedNotes,
-                        HpmUsefulCoolingGeneratedValue = CopyIntList(hp.HpmUsefulCoolingGeneratedValues),
+                        HpmUsefulCoolingGeneratedValue = hp.HpmUsefulCoolingGeneratedValues,
                         HpmUsefulCoolingGeneratedNotes = hp.HpmUsefulCoolingGeneratedNotes,
-                        HpmSleevingPCentValue = CopyIntList(hp.HpmSleevingPCentValues),
+                        HpmSleevingPCentValue = hp.HpmSleevingPCentValues,
                         HpmSleevingPCentNotes = hp.HpmSleevingPCentNotes,
                         HpmMaxHeatOutput = hp.HpmMaxHeatOutput
                     }).ToList(),
@@ -404,11 +408,11 @@ namespace HNTAS.Web.UI.Controllers
                     RecoveredInputs = (en.RecoveredInputs).Select(hr => new HNTAS.Api.Client.Model.RecoveredInput
                     {
                         HrwHeatRecoverySourceInput = hr.HrwHeatRecoverySourceInput,
-                        HrwUsefulHeatGeneratedValue = CopyIntList(hr.HrwUsefulHeatGeneratedValues),
+                        HrwUsefulHeatGeneratedValue = hr.HrwUsefulHeatGeneratedValues,
                         HrwUsefulHeatGeneratedNotes = hr.HrwUsefulHeatGeneratedNotes,
-                        HrwHeatUsedByCoolingProductionValue = CopyIntList(hr.HrwHeatUsedByCoolingProductionValues),
+                        HrwHeatUsedByCoolingProductionValue = hr.HrwHeatUsedByCoolingProductionValues,
                         HrwHeatUsedByCoolingProductionNotes = hr.HrwHeatUsedByCoolingProductionNotes,
-                        HrwSleevingPCentValue = CopyIntList(hr.HrwSleevingPCentValues),
+                        HrwSleevingPCentValue = hr.HrwSleevingPCentValues,
                         HrwSleevingPCentNotes = hr.HrwSleevingPCentNotes,
                         HrwMaxHeatOutput = hr.HrwMaxHeatOutput,
                     }).ToList(),
@@ -417,13 +421,13 @@ namespace HNTAS.Web.UI.Controllers
                     BoilerInputs = (en.BoilerInputs).Select(b => new HNTAS.Api.Client.Model.BoilerInput
                     {
                         BlrTypeFuelUsedInput = b.BlrTypeFuelUsedInput,
-                        BlrUsefulHeatGeneratedValue = CopyIntList(b.BlrUsefulHeatGeneratedValues),
+                        BlrUsefulHeatGeneratedValue = ToDoubleList(b.BlrUsefulHeatGeneratedValues),
                         BlrUsefulHeatGeneratedNotes = b.BlrUsefulHeatGeneratedNotes,
-                        BlrFuelUsedByValue = CopyIntList(b.BlrFuelUsedByValues),
+                        BlrFuelUsedByValue = ToDoubleList(b.BlrFuelUsedByValues),
                         BlrFuelUsedByNotes = b.BlrFuelUsedByNotes,
-                        BlrHeatUsedForCoolingProductionValue = CopyIntList(b.BlrHeatUsedForCoolingProductionValues),
+                        BlrHeatUsedForCoolingProductionValue = b.BlrHeatUsedForCoolingProductionValues,
                         BlrHeatUsedForCoolingProductionNotes = b.BlrHeatUsedForCoolingProductionNotes,
-                        BlrSleevingPCentValue = CopyIntList(b.BlrSleevingPCentValues),
+                        BlrSleevingPCentValue = b.BlrSleevingPCentValues,
                         BlrSleevingPCentNotes = b.BlrSleevingPCentNotes,
                         BlrMaxHeatOutput = b.BlrMaxHeatOutput
                     }).ToList(),

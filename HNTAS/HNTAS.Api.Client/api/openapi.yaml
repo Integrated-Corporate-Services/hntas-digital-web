@@ -390,6 +390,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - ArmsDashboard
   /api/ArmsDashboard/get-kpi-network-details:
@@ -462,6 +464,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - ArmsDashboard
   /api/ArmsDashboard/{submissionId}/history:
@@ -495,6 +499,8 @@ paths:
           description: OK
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - ArmsDashboard
   /api/ArmsReport/powerbi-data:
@@ -576,6 +582,8 @@ paths:
                   $ref: "#/components/schemas/AssessorSearchResult"
                 type: array
           description: OK
+      security:
+      - Bearer: []
       tags:
       - Assessor
   /api/AssignedAssessor/assigned-assessor:
@@ -617,6 +625,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - AssignedAssessor
   /api/Audit/heat-network-audit-logs:
@@ -658,6 +668,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Audit
   /api/CarbonCalculator/run:
@@ -687,6 +699,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/CarbonCalculatorResponse"
           description: OK
+      security:
+      - Bearer: []
       tags:
       - CarbonCalculator
   /api/CountriesAndTerritories:
@@ -712,6 +726,8 @@ paths:
           description: OK
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - CountriesAndTerritories
   /api/Import/upload-csv:
@@ -751,6 +767,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Client Closed Request
+      security:
+      - Bearer: []
       tags:
       - Import
   /api/feedback:
@@ -795,6 +813,8 @@ paths:
           description: OK
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/hnIds:
@@ -852,6 +872,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/{hnId}:
@@ -903,6 +925,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/heat-network-by-userId-paginated:
@@ -995,6 +1019,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/existing-network-by-userId:
@@ -1047,6 +1073,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/add-heat-network:
@@ -1087,6 +1115,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/register-ofgem-network:
@@ -1127,6 +1157,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/network-elements:
@@ -1187,6 +1219,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /external/heat-networks:
@@ -1402,6 +1436,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Invitations
   /api/Invitations/{invitationId}/send-email:
@@ -1440,6 +1476,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Invitations
   /api/Invitations/accept-invitation:
@@ -1562,6 +1600,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - NotificationHistory
   /api/NotificationHistory/unread-notification-count:
@@ -1609,6 +1649,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - NotificationHistory
   /api/Organisations/{orgId}/edit-org-details:
@@ -1676,6 +1718,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/Organisations/exists-by-details:
@@ -1727,6 +1771,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/Organisations/search:
@@ -1764,6 +1810,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/Organisations/{orgId}:
@@ -1801,6 +1849,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/Organisations/{orgId}/user/{userId}/heatnetwork/{heatNetworkId}:
@@ -1844,6 +1894,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/OrganisationUser/responsible-party-user/{orgId}:
@@ -1883,6 +1935,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - OrganisationUser
   /api/SOA/update-soa-status:
@@ -1926,6 +1980,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - SOA
     put:
@@ -1956,6 +2012,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Bad Request
+      security:
+      - Bearer: []
       tags:
       - SOA
   /api/SOA/update-soa-status-for-existing-network:
@@ -1999,6 +2057,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - SOA
   /api/SOA/soa-assign-assessor:
@@ -2042,6 +2102,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - SOA
   /api/SOA/soa-assign-assessor-for-existing-network:
@@ -2085,6 +2147,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - SOA
   /api/SuperUser/is-super-user/{emailId}:
@@ -2110,6 +2174,8 @@ paths:
               schema:
                 type: boolean
           description: OK
+      security:
+      - Bearer: []
       tags:
       - SuperUser
   /api/Users:
@@ -2135,6 +2201,8 @@ paths:
           description: OK
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/user-details-by-id:
@@ -2191,6 +2259,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
     get:
@@ -2232,6 +2302,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/email/{emailId}:
@@ -2283,6 +2355,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/is-rp-user/{emailId}:
@@ -2322,6 +2396,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/is-active-user/{emailId}:
@@ -2347,6 +2423,8 @@ paths:
               schema:
                 type: boolean
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/onelogin/{oneLoginId}:
@@ -2387,6 +2465,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/initial-entry:
@@ -2439,6 +2519,8 @@ paths:
           description: Conflict
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/{id}/org-details:
@@ -2501,6 +2583,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/register-org-and-link/{userId}:
@@ -2564,6 +2648,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/{id}/user-details:
@@ -2616,6 +2702,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/contributor-roles:
@@ -2639,6 +2727,8 @@ paths:
                   $ref: "#/components/schemas/EnumItemResponse"
                 type: array
           description: OK
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/user-roles:
@@ -2662,6 +2752,8 @@ paths:
                   $ref: "#/components/schemas/EnumItemResponse"
                 type: array
           description: OK
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/organisation/exists:
@@ -2701,6 +2793,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/managed-users:
@@ -2736,6 +2830,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/ddh-and-contributors-paginated:
@@ -2795,6 +2891,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/network-managers:
@@ -2822,6 +2920,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/registered-users:
@@ -2849,6 +2949,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/heat-network/{hnId}/roles:
@@ -2882,6 +2984,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/update-orgid:
@@ -2925,6 +3029,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/organisation/{organisationId}:
@@ -2980,6 +3086,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Bad Request
+      security:
+      - Bearer: []
       tags:
       - Users
 components:
@@ -3516,16 +3624,16 @@ components:
       example:
         blrFuelUsedByNotes: blrFuelUsedByNotes
         blrUsefulHeatGeneratedValue:
-        - 6
-        - 6
+        - 6.965117697638846
+        - 6.965117697638846
         blrTypeFuelUsedInput: 3
         blrSleevingPCentValue:
         - 6
         - 6
         blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
         blrFuelUsedByValue:
-        - 1
-        - 1
+        - 1.284659006116532
+        - 1.284659006116532
         blrMaxHeatOutput: 6
         blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
         blrHeatUsedForCoolingProductionValue:
@@ -3539,8 +3647,8 @@ components:
           type: integer
         blrUsefulHeatGeneratedValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         blrUsefulHeatGeneratedNotes:
@@ -3548,8 +3656,8 @@ components:
           type: string
         blrFuelUsedByValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         blrFuelUsedByNotes:
@@ -3599,7 +3707,9 @@ components:
       type: object
     CarbonCalculatorConfigResponse:
       example:
-        defaults: "{}"
+        defaults:
+          key:
+            value: ""
         rules:
           key: ""
       nullable: true
@@ -3609,6 +3719,8 @@ components:
           nullable: true
           type: object
         defaults:
+          additionalProperties:
+            $ref: "#/components/schemas/ConfigDefault"
           nullable: true
           type: object
       type: object
@@ -3637,8 +3749,8 @@ components:
           boilerCount: 7
           heatPumpInputs:
           - hpmUsefulHeatGeneratedValue:
-            - 7
-            - 7
+            - 7.457744773683766
+            - 7.457744773683766
             hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
             hpmEnergyUsedNotes: hpmEnergyUsedNotes
             hpmSleevingPCentNotes: hpmSleevingPCentNotes
@@ -3647,16 +3759,16 @@ components:
             - 4
             - 4
             hpmEnergyUsedValue:
-            - 1
-            - 1
+            - 1.1730742509559433
+            - 1.1730742509559433
             hpmSleevingPCentValue:
             - 5
             - 5
             hpmMaxHeatOutput: 9
             hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
           - hpmUsefulHeatGeneratedValue:
-            - 7
-            - 7
+            - 7.457744773683766
+            - 7.457744773683766
             hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
             hpmEnergyUsedNotes: hpmEnergyUsedNotes
             hpmSleevingPCentNotes: hpmSleevingPCentNotes
@@ -3665,8 +3777,8 @@ components:
             - 4
             - 4
             hpmEnergyUsedValue:
-            - 1
-            - 1
+            - 1.1730742509559433
+            - 1.1730742509559433
             hpmSleevingPCentValue:
             - 5
             - 5
@@ -3676,15 +3788,15 @@ components:
           yearCount: 0
           chpInputs:
           - chpElectricityGeneratedValue:
-            - 2
-            - 2
+            - 2.027123023002322
+            - 2.027123023002322
             chpFuelUsedValue:
-            - 4
-            - 4
+            - 4.145608029883936
+            - 4.145608029883936
             chpHeatCoolingNotes: chpHeatCoolingNotes
             chpUsefulHeatValue:
-            - 3
-            - 3
+            - 3.616076749251911
+            - 3.616076749251911
             chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
             chpOperationalModeInput: chpOperationalModeInput
             chpUsefulHeatNotes: chpUsefulHeatNotes
@@ -3701,15 +3813,15 @@ components:
             - 7
             - 7
           - chpElectricityGeneratedValue:
-            - 2
-            - 2
+            - 2.027123023002322
+            - 2.027123023002322
             chpFuelUsedValue:
-            - 4
-            - 4
+            - 4.145608029883936
+            - 4.145608029883936
             chpHeatCoolingNotes: chpHeatCoolingNotes
             chpUsefulHeatValue:
-            - 3
-            - 3
+            - 3.616076749251911
+            - 3.616076749251911
             chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
             chpOperationalModeInput: chpOperationalModeInput
             chpUsefulHeatNotes: chpUsefulHeatNotes
@@ -3767,16 +3879,16 @@ components:
           boilerInputs:
           - blrFuelUsedByNotes: blrFuelUsedByNotes
             blrUsefulHeatGeneratedValue:
-            - 6
-            - 6
+            - 6.965117697638846
+            - 6.965117697638846
             blrTypeFuelUsedInput: 3
             blrSleevingPCentValue:
             - 6
             - 6
             blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
             blrFuelUsedByValue:
-            - 1
-            - 1
+            - 1.284659006116532
+            - 1.284659006116532
             blrMaxHeatOutput: 6
             blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
             blrHeatUsedForCoolingProductionValue:
@@ -3785,16 +3897,16 @@ components:
             blrSleevingPCentNotes: blrSleevingPCentNotes
           - blrFuelUsedByNotes: blrFuelUsedByNotes
             blrUsefulHeatGeneratedValue:
-            - 6
-            - 6
+            - 6.965117697638846
+            - 6.965117697638846
             blrTypeFuelUsedInput: 3
             blrSleevingPCentValue:
             - 6
             - 6
             blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
             blrFuelUsedByValue:
-            - 1
-            - 1
+            - 1.284659006116532
+            - 1.284659006116532
             blrMaxHeatOutput: 6
             blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
             blrHeatUsedForCoolingProductionValue:
@@ -3855,15 +3967,15 @@ components:
     ChpInput:
       example:
         chpElectricityGeneratedValue:
-        - 2
-        - 2
+        - 2.027123023002322
+        - 2.027123023002322
         chpFuelUsedValue:
-        - 4
-        - 4
+        - 4.145608029883936
+        - 4.145608029883936
         chpHeatCoolingNotes: chpHeatCoolingNotes
         chpUsefulHeatValue:
-        - 3
-        - 3
+        - 3.616076749251911
+        - 3.616076749251911
         chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
         chpOperationalModeInput: chpOperationalModeInput
         chpUsefulHeatNotes: chpUsefulHeatNotes
@@ -3892,8 +4004,8 @@ components:
           type: string
         chpUsefulHeatValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         chpUsefulHeatNotes:
@@ -3901,8 +4013,8 @@ components:
           type: string
         chpElectricityGeneratedValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         chpElectricityGeneratedNotes:
@@ -3910,8 +4022,8 @@ components:
           type: string
         chpFuelUsedValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         chpFuelUsedNotes:
@@ -4448,8 +4560,8 @@ components:
         boilerCount: 7
         heatPumpInputs:
         - hpmUsefulHeatGeneratedValue:
-          - 7
-          - 7
+          - 7.457744773683766
+          - 7.457744773683766
           hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
           hpmEnergyUsedNotes: hpmEnergyUsedNotes
           hpmSleevingPCentNotes: hpmSleevingPCentNotes
@@ -4458,16 +4570,16 @@ components:
           - 4
           - 4
           hpmEnergyUsedValue:
-          - 1
-          - 1
+          - 1.1730742509559433
+          - 1.1730742509559433
           hpmSleevingPCentValue:
           - 5
           - 5
           hpmMaxHeatOutput: 9
           hpmUsefulHeatGeneratedNotes: hpmUsefulHeatGeneratedNotes
         - hpmUsefulHeatGeneratedValue:
-          - 7
-          - 7
+          - 7.457744773683766
+          - 7.457744773683766
           hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
           hpmEnergyUsedNotes: hpmEnergyUsedNotes
           hpmSleevingPCentNotes: hpmSleevingPCentNotes
@@ -4476,8 +4588,8 @@ components:
           - 4
           - 4
           hpmEnergyUsedValue:
-          - 1
-          - 1
+          - 1.1730742509559433
+          - 1.1730742509559433
           hpmSleevingPCentValue:
           - 5
           - 5
@@ -4487,15 +4599,15 @@ components:
         yearCount: 0
         chpInputs:
         - chpElectricityGeneratedValue:
-          - 2
-          - 2
+          - 2.027123023002322
+          - 2.027123023002322
           chpFuelUsedValue:
-          - 4
-          - 4
+          - 4.145608029883936
+          - 4.145608029883936
           chpHeatCoolingNotes: chpHeatCoolingNotes
           chpUsefulHeatValue:
-          - 3
-          - 3
+          - 3.616076749251911
+          - 3.616076749251911
           chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
           chpOperationalModeInput: chpOperationalModeInput
           chpUsefulHeatNotes: chpUsefulHeatNotes
@@ -4512,15 +4624,15 @@ components:
           - 7
           - 7
         - chpElectricityGeneratedValue:
-          - 2
-          - 2
+          - 2.027123023002322
+          - 2.027123023002322
           chpFuelUsedValue:
-          - 4
-          - 4
+          - 4.145608029883936
+          - 4.145608029883936
           chpHeatCoolingNotes: chpHeatCoolingNotes
           chpUsefulHeatValue:
-          - 3
-          - 3
+          - 3.616076749251911
+          - 3.616076749251911
           chpElectricityGeneratedNotes: chpElectricityGeneratedNotes
           chpOperationalModeInput: chpOperationalModeInput
           chpUsefulHeatNotes: chpUsefulHeatNotes
@@ -4578,16 +4690,16 @@ components:
         boilerInputs:
         - blrFuelUsedByNotes: blrFuelUsedByNotes
           blrUsefulHeatGeneratedValue:
-          - 6
-          - 6
+          - 6.965117697638846
+          - 6.965117697638846
           blrTypeFuelUsedInput: 3
           blrSleevingPCentValue:
           - 6
           - 6
           blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
           blrFuelUsedByValue:
-          - 1
-          - 1
+          - 1.284659006116532
+          - 1.284659006116532
           blrMaxHeatOutput: 6
           blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
           blrHeatUsedForCoolingProductionValue:
@@ -4596,16 +4708,16 @@ components:
           blrSleevingPCentNotes: blrSleevingPCentNotes
         - blrFuelUsedByNotes: blrFuelUsedByNotes
           blrUsefulHeatGeneratedValue:
-          - 6
-          - 6
+          - 6.965117697638846
+          - 6.965117697638846
           blrTypeFuelUsedInput: 3
           blrSleevingPCentValue:
           - 6
           - 6
           blrHeatUsedForCoolingProductionNotes: blrHeatUsedForCoolingProductionNotes
           blrFuelUsedByValue:
-          - 1
-          - 1
+          - 1.284659006116532
+          - 1.284659006116532
           blrMaxHeatOutput: 6
           blrUsefulHeatGeneratedNotes: blrUsefulHeatGeneratedNotes
           blrHeatUsedForCoolingProductionValue:
@@ -6696,8 +6808,8 @@ components:
     HeatPumpInput:
       example:
         hpmUsefulHeatGeneratedValue:
-        - 7
-        - 7
+        - 7.457744773683766
+        - 7.457744773683766
         hpmUsefulCoolingGeneratedNotes: hpmUsefulCoolingGeneratedNotes
         hpmEnergyUsedNotes: hpmEnergyUsedNotes
         hpmSleevingPCentNotes: hpmSleevingPCentNotes
@@ -6706,8 +6818,8 @@ components:
         - 4
         - 4
         hpmEnergyUsedValue:
-        - 1
-        - 1
+        - 1.1730742509559433
+        - 1.1730742509559433
         hpmSleevingPCentValue:
         - 5
         - 5
@@ -6720,8 +6832,8 @@ components:
           type: integer
         hpmUsefulHeatGeneratedValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         hpmUsefulHeatGeneratedNotes:
@@ -6729,8 +6841,8 @@ components:
           type: string
         hpmEnergyUsedValue:
           items:
-            format: int32
-            type: integer
+            format: double
+            type: number
           nullable: true
           type: array
         hpmEnergyUsedNotes:
@@ -7136,7 +7248,9 @@ components:
               upper_limit: 6.027456183070403
               is_mandatory: true
         carbon_calculator:
-          defaults: "{}"
+          defaults:
+            key:
+              value: ""
           rules:
             key: ""
       properties:
@@ -10106,4 +10220,10 @@ components:
       - InvitationAccepted
       - InvitationDeclined
       type: string
+  securitySchemes:
+    Bearer:
+      bearerFormat: JWT
+      description: Enter your Bearer token
+      scheme: Bearer
+      type: http
 

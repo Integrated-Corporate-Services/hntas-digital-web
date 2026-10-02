@@ -196,6 +196,7 @@ src/HNTAS.Api.Client/Client/ApiException.cs
 src/HNTAS.Api.Client/Client/ApiFactory.cs
 src/HNTAS.Api.Client/Client/ApiResponseEventArgs.cs
 src/HNTAS.Api.Client/Client/ApiResponse`1.cs
+src/HNTAS.Api.Client/Client/BearerToken.cs
 src/HNTAS.Api.Client/Client/ClientUtils.cs
 src/HNTAS.Api.Client/Client/CookieContainer.cs
 src/HNTAS.Api.Client/Client/DateOnlyJsonConverter.cs

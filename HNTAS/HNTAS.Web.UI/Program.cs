@@ -1,5 +1,6 @@
 using Amazon.S3;
 using GovUk.OneLogin.AspNetCore;
+using HNTAS.Api.Client;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
@@ -68,8 +69,6 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IApiTokenProvider, ApiTokenProvider>();
-
-builder.Services.AddTransient<ApiAuthenticationHandler>();
 
 var coreApiBaseUrl = Environment.GetEnvironmentVariable("CORE_BASE_URL") ?? throw new InvalidOperationException("Core API URL is not configured. Set CORE_BASE_URL environment variable.");
 
@@ -161,33 +160,37 @@ builder.Services.AddSingleton(new JsonSerializerOptions
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
 
+// Register token service for generating JWT tokens for internal API calls
+builder.Services.AddScoped<TokenProvider<BearerToken>, CustomBearerTokenProvider>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+
 builder.Services.AddSingleton<UsersApiEvents>();
 builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>(); 
+}); 
 
 builder.Services.AddSingleton<OrganisationsApiEvents>();
 builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<HeatNetworksApiEvents>();
 builder.Services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<InvitationsApiEvents>();
 builder.Services.AddHttpClient<IInvitationsApi, InvitationsApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 
 builder.Services.AddSingleton<SOAApiEvents>();
@@ -195,21 +198,21 @@ builder.Services.AddHttpClient<ISOAApi, SOAApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<CountriesAndTerritoriesApiEvents>();
 builder.Services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<OrganisationsApiEvents>();
 builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 
 builder.Services.AddSingleton<OrganisationUserApiEvents>();
@@ -217,21 +220,21 @@ builder.Services.AddHttpClient<IOrganisationUserApi, OrganisationUserApi>(client
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<CarbonCalculatorApiEvents>();
 builder.Services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<AssessorApiEvents>();
 builder.Services.AddHttpClient<IAssessorApi, AssessorApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 
 builder.Services.AddSingleton<AuditApiEvents>();
@@ -239,48 +242,48 @@ builder.Services.AddHttpClient<IAuditApi, AuditApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<NotificationHistoryApiEvents>();
 builder.Services.AddHttpClient<INotificationHistoryApi, NotificationHistoryApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<AssignedAssessorApiEvents>();
 builder.Services.AddHttpClient<IAssignedAssessorApi, AssignedAssessorApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<ArmsDashboardApiEvents>();
 builder.Services.AddHttpClient<IArmsDashboardApi, ArmsDashboardApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<ImportApiEvents>();
 builder.Services.AddHttpClient<IImportApi, ImportApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "text/plain");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddSingleton<SuperUserApiEvents>();
 builder.Services.AddHttpClient<ISuperUserApi, SuperUserApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddTransient<FeedbackApiEvents>();
 builder.Services.AddHttpClient<IFeedbackApi, FeedbackApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
-}).AddHttpMessageHandler<ApiAuthenticationHandler>();
+});
 
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
@@ -425,7 +428,7 @@ else
             options.SignedOutCallbackPath = "/onelogin-logout-callback";
             options.Scope.Add("openid");
             options.Scope.Add("email");
-            options.Scope.Add("phone");
+
             // ... your existing OneLogin event handlers and configuration ...
             options.Events.OnRedirectToIdentityProvider = context =>
             {
@@ -442,6 +445,15 @@ else
 
             options.Events.OnTokenValidated = context =>
             {
+                var oneLoginId = context.Principal?.FindFirst("sub")?.Value;
+
+                var jwtService = context.HttpContext.RequestServices
+                .GetRequiredService<IJwtTokenService>();
+
+                var hntasJwt = jwtService.GenerateToken(oneLoginId!);
+
+                context.HttpContext.Session.SetString(SessionKeys.HntasJwt, hntasJwt);
+
                 var state = context.ProtocolMessage.State;
 
                 if (!string.IsNullOrWhiteSpace(state))
@@ -471,7 +483,7 @@ builder.Services.AddApplicationAuthorization();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(builder.Configuration.GetValue<int>("SessionTimeout:Minutes"));
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });

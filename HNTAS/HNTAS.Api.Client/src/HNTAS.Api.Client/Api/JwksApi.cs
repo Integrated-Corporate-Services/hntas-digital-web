@@ -19,7 +19,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using HNTAS.Api.Client.Client;
-using HNTAS.Api.Client.Model;
 using System.Diagnostics.CodeAnalysis;
 
 namespace HNTAS.Api.Client.Api
@@ -28,12 +27,12 @@ namespace HNTAS.Api.Client.Api
     /// Represents a collection of functions to interact with the API endpoints
     /// This class is registered as transient.
     /// </summary>
-    public interface IFeedbackApi : IApi
+    public interface IJwksApi : IApi
     {
         /// <summary>
         /// The class containing the events
         /// </summary>
-        FeedbackApiEvents Events { get; }
+        JwksApiEvents Events { get; }
 
         /// <summary>
         /// 
@@ -42,10 +41,9 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createFeedbackRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiFeedbackPostApiResponse"/>&gt;</returns>
-        Task<IApiFeedbackPostApiResponse> ApiFeedbackPostAsync(CreateFeedbackRequest createFeedbackRequest, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IWellKnownJwksJsonGetApiResponse"/>&gt;</returns>
+        Task<IWellKnownJwksJsonGetApiResponse> WellKnownJwksJsonGetAsync(System.Threading.CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 
@@ -53,16 +51,15 @@ namespace HNTAS.Api.Client.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <param name="createFeedbackRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiFeedbackPostApiResponse"/>?&gt;</returns>
-        Task<IApiFeedbackPostApiResponse?> ApiFeedbackPostOrDefaultAsync(CreateFeedbackRequest createFeedbackRequest, System.Threading.CancellationToken cancellationToken = default);
+        /// <returns><see cref="Task"/>&lt;<see cref="IWellKnownJwksJsonGetApiResponse"/>?&gt;</returns>
+        Task<IWellKnownJwksJsonGetApiResponse?> WellKnownJwksJsonGetOrDefaultAsync(System.Threading.CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// The <see cref="IApiFeedbackPostApiResponse"/>
+    /// The <see cref="IWellKnownJwksJsonGetApiResponse"/>
     /// </summary>
-    public interface IApiFeedbackPostApiResponse : HNTAS.Api.Client.Client.IApiResponse
+    public interface IWellKnownJwksJsonGetApiResponse : HNTAS.Api.Client.Client.IApiResponse
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -74,33 +71,33 @@ namespace HNTAS.Api.Client.Api
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public class FeedbackApiEvents
+    public class JwksApiEvents
     {
         /// <summary>
         /// The event raised after the server response
         /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnApiFeedbackPost;
+        public event EventHandler<ApiResponseEventArgs>? OnWellKnownJwksJsonGet;
 
         /// <summary>
         /// The event raised after an error querying the server
         /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorApiFeedbackPost;
+        public event EventHandler<ExceptionEventArgs>? OnErrorWellKnownJwksJsonGet;
 
-        internal void ExecuteOnApiFeedbackPost(FeedbackApi.ApiFeedbackPostApiResponse apiResponse)
+        internal void ExecuteOnWellKnownJwksJsonGet(JwksApi.WellKnownJwksJsonGetApiResponse apiResponse)
         {
-            OnApiFeedbackPost?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+            OnWellKnownJwksJsonGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
         }
 
-        internal void ExecuteOnErrorApiFeedbackPost(Exception exception)
+        internal void ExecuteOnErrorWellKnownJwksJsonGet(Exception exception)
         {
-            OnErrorApiFeedbackPost?.Invoke(this, new ExceptionEventArgs(exception));
+            OnErrorWellKnownJwksJsonGet?.Invoke(this, new ExceptionEventArgs(exception));
         }
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public sealed partial class FeedbackApi : IFeedbackApi
+    public sealed partial class JwksApi : IJwksApi
     {
         private JsonSerializerOptions _jsonSerializerOptions;
 
@@ -112,7 +109,7 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The logger
         /// </summary>
-        public ILogger<FeedbackApi> Logger { get; }
+        public ILogger<JwksApi> Logger { get; }
 
         /// <summary>
         /// The HttpClient
@@ -122,7 +119,7 @@ namespace HNTAS.Api.Client.Api
         /// <summary>
         /// The class containing the events
         /// </summary>
-        public FeedbackApiEvents Events { get; }
+        public JwksApiEvents Events { get; }
 
         /// <summary>
         /// A token provider of type <see cref="BearerToken"/>
@@ -130,42 +127,28 @@ namespace HNTAS.Api.Client.Api
         public TokenProvider<BearerToken> BearerTokenProvider { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FeedbackApi"/> class.
+        /// Initializes a new instance of the <see cref="JwksApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public FeedbackApi(ILogger<FeedbackApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, FeedbackApiEvents feedbackApiEvents,
+        public JwksApi(ILogger<JwksApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, JwksApiEvents jwksApiEvents,
             TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
-            Logger = LoggerFactory.CreateLogger<FeedbackApi>();
+            Logger = LoggerFactory.CreateLogger<JwksApi>();
             HttpClient = httpClient;
-            Events = feedbackApiEvents;
+            Events = jwksApiEvents;
             BearerTokenProvider = bearerTokenProvider;
-        }
-
-        partial void FormatApiFeedbackPost(CreateFeedbackRequest createFeedbackRequest);
-
-        /// <summary>
-        /// Validates the request parameters
-        /// </summary>
-        /// <param name="createFeedbackRequest"></param>
-        /// <returns></returns>
-        private void ValidateApiFeedbackPost(CreateFeedbackRequest createFeedbackRequest)
-        {
-            if (createFeedbackRequest == null)
-                throw new ArgumentNullException(nameof(createFeedbackRequest));
         }
 
         /// <summary>
         /// Processes the server response
         /// </summary>
         /// <param name="apiResponseLocalVar"></param>
-        /// <param name="createFeedbackRequest"></param>
-        private void AfterApiFeedbackPostDefaultImplementation(IApiFeedbackPostApiResponse apiResponseLocalVar, CreateFeedbackRequest createFeedbackRequest)
+        private void AfterWellKnownJwksJsonGetDefaultImplementation(IWellKnownJwksJsonGetApiResponse apiResponseLocalVar)
         {
             bool suppressDefaultLog = false;
-            AfterApiFeedbackPost(ref suppressDefaultLog, apiResponseLocalVar, createFeedbackRequest);
+            AfterWellKnownJwksJsonGet(ref suppressDefaultLog, apiResponseLocalVar);
             if (!suppressDefaultLog)
                 Logger.LogInformation("{0,-9} | {1} | {3}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
         }
@@ -175,8 +158,7 @@ namespace HNTAS.Api.Client.Api
         /// </summary>
         /// <param name="suppressDefaultLog"></param>
         /// <param name="apiResponseLocalVar"></param>
-        /// <param name="createFeedbackRequest"></param>
-        partial void AfterApiFeedbackPost(ref bool suppressDefaultLog, IApiFeedbackPostApiResponse apiResponseLocalVar, CreateFeedbackRequest createFeedbackRequest);
+        partial void AfterWellKnownJwksJsonGet(ref bool suppressDefaultLog, IWellKnownJwksJsonGetApiResponse apiResponseLocalVar);
 
         /// <summary>
         /// Logs exceptions that occur while retrieving the server response
@@ -184,11 +166,10 @@ namespace HNTAS.Api.Client.Api
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
-        /// <param name="createFeedbackRequest"></param>
-        private void OnErrorApiFeedbackPostDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, CreateFeedbackRequest createFeedbackRequest)
+        private void OnErrorWellKnownJwksJsonGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorApiFeedbackPost(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, createFeedbackRequest);
+            OnErrorWellKnownJwksJsonGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -200,20 +181,18 @@ namespace HNTAS.Api.Client.Api
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
         /// <param name="pathLocalVar"></param>
-        /// <param name="createFeedbackRequest"></param>
-        partial void OnErrorApiFeedbackPost(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, CreateFeedbackRequest createFeedbackRequest);
+        partial void OnErrorWellKnownJwksJsonGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar);
 
         /// <summary>
         ///  
         /// </summary>
-        /// <param name="createFeedbackRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiFeedbackPostApiResponse"/>&gt;</returns>
-        public async Task<IApiFeedbackPostApiResponse?> ApiFeedbackPostOrDefaultAsync(CreateFeedbackRequest createFeedbackRequest, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IWellKnownJwksJsonGetApiResponse"/>&gt;</returns>
+        public async Task<IWellKnownJwksJsonGetApiResponse?> WellKnownJwksJsonGetOrDefaultAsync(System.Threading.CancellationToken cancellationToken = default)
         {
             try
             {
-                return await ApiFeedbackPostAsync(createFeedbackRequest, cancellationToken).ConfigureAwait(false);
+                return await WellKnownJwksJsonGetAsync(cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -225,46 +204,26 @@ namespace HNTAS.Api.Client.Api
         ///  
         /// </summary>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createFeedbackRequest"></param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns><see cref="Task"/>&lt;<see cref="IApiFeedbackPostApiResponse"/>&gt;</returns>
-        public async Task<IApiFeedbackPostApiResponse> ApiFeedbackPostAsync(CreateFeedbackRequest createFeedbackRequest, System.Threading.CancellationToken cancellationToken = default)
+        /// <returns><see cref="Task"/>&lt;<see cref="IWellKnownJwksJsonGetApiResponse"/>&gt;</returns>
+        public async Task<IWellKnownJwksJsonGetApiResponse> WellKnownJwksJsonGetAsync(System.Threading.CancellationToken cancellationToken = default)
         {
             UriBuilder uriBuilderLocalVar = new UriBuilder();
 
             try
             {
-                ValidateApiFeedbackPost(createFeedbackRequest);
-
-                FormatApiFeedbackPost(createFeedbackRequest);
-
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
                     uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
                     uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
                     uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
                     uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
-                        ? "/api/feedback"
-                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/feedback");
-
-                    httpRequestMessageLocalVar.Content = (createFeedbackRequest as object) is System.IO.Stream stream
-                        ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
-                        : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(createFeedbackRequest, _jsonSerializerOptions));
+                        ? "/.well-known/jwks.json"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/.well-known/jwks.json");
 
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    string[] contentTypes = new string[] {
-                        "application/json",
-                        "text/json",
-                        "application/*+json"
-                    };
-
-                    string? contentTypeLocalVar = ClientUtils.SelectHeaderContentType(contentTypes);
-
-                    if (contentTypeLocalVar != null && httpRequestMessageLocalVar.Content != null)
-                        httpRequestMessageLocalVar.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeLocalVar);
-
-                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
 
                     DateTime requestedAtLocalVar = DateTime.UtcNow;
 
@@ -272,13 +231,13 @@ namespace HNTAS.Api.Client.Api
                     {
                         string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-                        ILogger<ApiFeedbackPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiFeedbackPostApiResponse>();
+                        ILogger<WellKnownJwksJsonGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<WellKnownJwksJsonGetApiResponse>();
 
-                        ApiFeedbackPostApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/feedback", requestedAtLocalVar, _jsonSerializerOptions);
+                        WellKnownJwksJsonGetApiResponse apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/.well-known/jwks.json", requestedAtLocalVar, _jsonSerializerOptions);
 
-                        AfterApiFeedbackPostDefaultImplementation(apiResponseLocalVar, createFeedbackRequest);
+                        AfterWellKnownJwksJsonGetDefaultImplementation(apiResponseLocalVar);
 
-                        Events.ExecuteOnApiFeedbackPost(apiResponseLocalVar);
+                        Events.ExecuteOnWellKnownJwksJsonGet(apiResponseLocalVar);
 
                         return apiResponseLocalVar;
                     }
@@ -286,24 +245,24 @@ namespace HNTAS.Api.Client.Api
             }
             catch(Exception e)
             {
-                OnErrorApiFeedbackPostDefaultImplementation(e, "/api/feedback", uriBuilderLocalVar.Path, createFeedbackRequest);
-                Events.ExecuteOnErrorApiFeedbackPost(e);
+                OnErrorWellKnownJwksJsonGetDefaultImplementation(e, "/.well-known/jwks.json", uriBuilderLocalVar.Path);
+                Events.ExecuteOnErrorWellKnownJwksJsonGet(e);
                 throw;
             }
         }
 
         /// <summary>
-        /// The <see cref="ApiFeedbackPostApiResponse"/>
+        /// The <see cref="WellKnownJwksJsonGetApiResponse"/>
         /// </summary>
-        public partial class ApiFeedbackPostApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiFeedbackPostApiResponse
+        public partial class WellKnownJwksJsonGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IWellKnownJwksJsonGetApiResponse
         {
             /// <summary>
             /// The logger
             /// </summary>
-            public ILogger<ApiFeedbackPostApiResponse> Logger { get; }
+            public ILogger<WellKnownJwksJsonGetApiResponse> Logger { get; }
 
             /// <summary>
-            /// The <see cref="ApiFeedbackPostApiResponse"/>
+            /// The <see cref="WellKnownJwksJsonGetApiResponse"/>
             /// </summary>
             /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
@@ -312,7 +271,7 @@ namespace HNTAS.Api.Client.Api
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ApiFeedbackPostApiResponse(ILogger<ApiFeedbackPostApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public WellKnownJwksJsonGetApiResponse(ILogger<WellKnownJwksJsonGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
                 Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
