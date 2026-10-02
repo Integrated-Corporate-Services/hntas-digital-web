@@ -1941,6 +1941,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/OrganisationUser/responsible-party-user/{orgId}:
@@ -8781,6 +8783,19 @@ components:
       type: object
     NotificationHistoryType:
       type: integer
+    NotificationStats:
+      example:
+        notificationHistoryCount: 0
+        lastVisitedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        notificationHistoryCount:
+          format: int32
+          type: integer
+        lastVisitedAt:
+          format: date-time
+          type: string
+      type: object
     NullableOfHeatNetworkType:
       enum:
       - Unset
@@ -9978,6 +9993,9 @@ components:
         contactNumberExtension: contactNumberExtension
         firstName: firstName
         createdAt: 2000-01-23T04:56:07.000+00:00
+        notificationStats:
+          notificationHistoryCount: 0
+          lastVisitedAt: 2000-01-23T04:56:07.000+00:00
         id: id
         activeContributingOrgId: activeContributingOrgId
         status: Active
@@ -10033,6 +10051,8 @@ components:
         activeContributingOrgId:
           nullable: true
           type: string
+        notificationStats:
+          $ref: "#/components/schemas/NotificationStats"
       type: object
     UserDetailsResponse:
       example:
