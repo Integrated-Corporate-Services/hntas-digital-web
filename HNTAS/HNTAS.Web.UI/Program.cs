@@ -468,11 +468,9 @@ else
             {
                 rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
 
-                var activeKeyId = builder.Configuration["Jwks:ActiveKeyId"];
-
                 var rsaKey = new RsaSecurityKey(rsa.ExportParameters(true))
                 {
-                    KeyId = activeKeyId
+                    KeyId = builder.Configuration["Jwks:KeyId"]
                 };
 
                 options.ClientAuthenticationCredentials =
