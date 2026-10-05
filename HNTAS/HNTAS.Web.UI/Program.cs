@@ -403,7 +403,6 @@ else
             options.SignedOutCallbackPath = "/onelogin-logout-callback";
             options.Scope.Add("openid");
             options.Scope.Add("email");
-            options.Scope.Add("phone");
             // ... your existing OneLogin event handlers and configuration ...
             options.Events.OnRedirectToIdentityProvider = context =>
             {
