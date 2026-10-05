@@ -467,9 +467,16 @@ else
             using (var rsa = RSA.Create())
             {
                 rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
-                options.ClientAuthenticationCredentials = new SigningCredentials(
-                    new RsaSecurityKey(rsa.ExportParameters(true)),
-                    SecurityAlgorithms.RsaSha256);
+
+                var rsaKey = new RsaSecurityKey(rsa.ExportParameters(true))
+                {
+                    KeyId = builder.Configuration["Jwks:KeyId"]
+                };
+
+                options.ClientAuthenticationCredentials =
+                    new SigningCredentials(
+                        rsaKey,
+                        SecurityAlgorithms.RsaSha256);
             }
 
             options.VectorsOfTrust = [builder.Configuration.GetValue<string>("OneLogin:VectorsOfTrust")];
