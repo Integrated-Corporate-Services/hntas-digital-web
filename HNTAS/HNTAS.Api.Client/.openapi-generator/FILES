@@ -12,6 +12,7 @@ docs/apis/AuditApi.md
 docs/apis/CarbonCalculatorApi.md
 docs/apis/CountriesAndTerritoriesApi.md
 docs/apis/FeedbackApi.md
+docs/apis/HNDataImportExportApi.md
 docs/apis/HeatNetworksApi.md
 docs/apis/ImportApi.md
 docs/apis/InvitationsApi.md
@@ -118,6 +119,7 @@ docs/models/NetworkTypeSelection.md
 docs/models/NotificationHistoryData.md
 docs/models/NotificationHistoryRequest.md
 docs/models/NotificationHistoryResponse.md
+docs/models/NotificationStats.md
 docs/models/NullableOfHeatNetworkType.md
 docs/models/NullableOfMilestone.md
 docs/models/NullableOfPreferredContactType.md
@@ -182,6 +184,7 @@ src/HNTAS.Api.Client/Api/AuditApi.cs
 src/HNTAS.Api.Client/Api/CarbonCalculatorApi.cs
 src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
 src/HNTAS.Api.Client/Api/FeedbackApi.cs
+src/HNTAS.Api.Client/Api/HNDataImportExportApi.cs
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
 src/HNTAS.Api.Client/Api/ImportApi.cs
@@ -196,6 +199,7 @@ src/HNTAS.Api.Client/Client/ApiException.cs
 src/HNTAS.Api.Client/Client/ApiFactory.cs
 src/HNTAS.Api.Client/Client/ApiResponseEventArgs.cs
 src/HNTAS.Api.Client/Client/ApiResponse`1.cs
+src/HNTAS.Api.Client/Client/BearerToken.cs
 src/HNTAS.Api.Client/Client/ClientUtils.cs
 src/HNTAS.Api.Client/Client/CookieContainer.cs
 src/HNTAS.Api.Client/Client/DateOnlyJsonConverter.cs
@@ -311,6 +315,7 @@ src/HNTAS.Api.Client/Model/NetworkTypeSelection.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryData.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryRequest.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryResponse.cs
+src/HNTAS.Api.Client/Model/NotificationStats.cs
 src/HNTAS.Api.Client/Model/NullableOfHeatNetworkType.cs
 src/HNTAS.Api.Client/Model/NullableOfMilestone.cs
 src/HNTAS.Api.Client/Model/NullableOfPreferredContactType.cs

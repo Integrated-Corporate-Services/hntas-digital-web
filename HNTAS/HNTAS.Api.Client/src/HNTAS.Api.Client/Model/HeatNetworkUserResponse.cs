@@ -37,13 +37,15 @@ namespace HNTAS.Api.Client.Model
         /// <param name="name">name</param>
         /// <param name="ecDetails">ecDetails</param>
         /// <param name="address">address</param>
+        /// <param name="orgId">orgId</param>
         [JsonConstructor]
-        public HeatNetworkUserResponse(Option<string?> hnId = default, Option<string?> name = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default)
+        public HeatNetworkUserResponse(Option<string?> hnId = default, Option<string?> name = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> orgId = default)
         {
             HnIdOption = hnId;
             NameOption = name;
             EcDetailsOption = ecDetails;
             AddressOption = address;
+            OrgIdOption = orgId;
             OnCreated();
         }
 
@@ -102,6 +104,19 @@ namespace HNTAS.Api.Client.Model
         public RegisteredAddress? Address { get { return this.AddressOption; } set { this.AddressOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of OrgId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> OrgIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets OrgId
+        /// </summary>
+        [JsonPropertyName("orgId")]
+        public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -113,6 +128,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  EcDetails: ").Append(EcDetails).Append("\n");
             sb.Append("  Address: ").Append(Address).Append("\n");
+            sb.Append("  OrgId: ").Append(OrgId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -154,6 +170,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> name = default;
             Option<ECDetails?> ecDetails = default;
             Option<RegisteredAddress?> address = default;
+            Option<string?> orgId = default;
 
             while (utf8JsonReader.Read())
             {
@@ -182,6 +199,9 @@ namespace HNTAS.Api.Client.Model
                         case "address":
                             address = new Option<RegisteredAddress?>(JsonSerializer.Deserialize<RegisteredAddress>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "orgId":
+                            orgId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         default:
                             break;
                     }
@@ -194,7 +214,7 @@ namespace HNTAS.Api.Client.Model
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetworkUserResponse.");
 
-            return new HeatNetworkUserResponse(hnId, name, ecDetails, address);
+            return new HeatNetworkUserResponse(hnId, name, ecDetails, address, orgId);
         }
 
         /// <summary>
@@ -249,6 +269,11 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("address");
+            if (heatNetworkUserResponse.OrgIdOption.IsSet)
+                if (heatNetworkUserResponse.OrgIdOption.Value != null)
+                    writer.WriteString("orgId", heatNetworkUserResponse.OrgId);
+                else
+                    writer.WriteNull("orgId");
         }
     }
 }

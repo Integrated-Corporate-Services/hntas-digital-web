@@ -148,6 +148,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NotificationHistoryDataJsonConverter());
             _jsonOptions.Converters.Add(new NotificationHistoryRequestJsonConverter());
             _jsonOptions.Converters.Add(new NotificationHistoryResponseJsonConverter());
+            _jsonOptions.Converters.Add(new NotificationStatsJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfHeatNetworkTypeJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfHeatNetworkTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfMilestoneJsonConverter());
@@ -224,6 +225,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<CarbonCalculatorApiEvents>();
             _services.AddSingleton<CountriesAndTerritoriesApiEvents>();
             _services.AddSingleton<FeedbackApiEvents>();
+            _services.AddSingleton<HNDataImportExportApiEvents>();
             _services.AddSingleton<HeatNetworksApiEvents>();
             _services.AddSingleton<ImportApiEvents>();
             _services.AddSingleton<InvitationsApiEvents>();
@@ -259,6 +261,7 @@ namespace HNTAS.Api.Client.Client
             builders.Add(_services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client));
             builders.Add(_services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client));
             builders.Add(_services.AddHttpClient<IFeedbackApi, FeedbackApi>(client));
+            builders.Add(_services.AddHttpClient<IHNDataImportExportApi, HNDataImportExportApi>(client));
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
             builders.Add(_services.AddHttpClient<IImportApi, ImportApi>(client));
             builders.Add(_services.AddHttpClient<IInvitationsApi, InvitationsApi>(client));

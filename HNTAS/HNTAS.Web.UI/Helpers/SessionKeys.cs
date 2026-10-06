@@ -110,5 +110,8 @@
         public const string IsSuperUserKey = "IsSuperUserKey";
         public const string RegistrationSourceKey = "RegistrationSourceKey";
 
+        public const string SwitchOrganisationModelSessionKey = "SwitchOrganisationModelSessionKey";
+
+        public const string HntasJwt = "HNTASJWTKey";
     }
 }

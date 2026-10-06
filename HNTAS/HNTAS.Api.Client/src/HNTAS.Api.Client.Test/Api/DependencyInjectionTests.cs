@@ -27,14 +27,16 @@ namespace HNTAS.Api.Client.Test.Api
         private readonly IHost _hostUsingConfigureWithoutAClient =
             Host.CreateDefaultBuilder([]).ConfigureApi((context, services, options) =>
             {
-
+                BearerToken bearerToken1 = new("<token>", timeout: TimeSpan.FromSeconds(1));
+                options.AddTokens(bearerToken1);
             })
             .Build();
 
         private readonly IHost _hostUsingConfigureWithAClient =
             Host.CreateDefaultBuilder([]).ConfigureApi((context, services, options) =>
             {
-
+                BearerToken bearerToken1 = new("<token>", timeout: TimeSpan.FromSeconds(1));
+                options.AddTokens(bearerToken1);
                 options.AddApiHttpClients(client => client.BaseAddress = new Uri(ClientUtils.BASE_ADDRESS));
             })
             .Build();
@@ -44,7 +46,8 @@ namespace HNTAS.Api.Client.Test.Api
             {
                 services.AddApi(options =>
                 {
-
+                    BearerToken bearerToken1 = new("<token>", timeout: TimeSpan.FromSeconds(1));
+                    options.AddTokens(bearerToken1);
                 });
             })
             .Build();
@@ -54,7 +57,8 @@ namespace HNTAS.Api.Client.Test.Api
             {
                 services.AddApi(options =>
                 {
-
+                    BearerToken bearerToken1 = new("<token>", timeout: TimeSpan.FromSeconds(1));
+                    options.AddTokens(bearerToken1);
                     options.AddApiHttpClients(client => client.BaseAddress = new Uri(ClientUtils.BASE_ADDRESS));
                 });
             })
@@ -92,6 +96,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var feedbackApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IFeedbackApi>();
             Assert.True(feedbackApi.HttpClient.BaseAddress != null);
+
+            var hNDataImportExportApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHNDataImportExportApi>();
+            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
 
             var heatNetworksApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
@@ -154,6 +161,9 @@ namespace HNTAS.Api.Client.Test.Api
             var feedbackApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IFeedbackApi>();
             Assert.True(feedbackApi.HttpClient.BaseAddress != null);
 
+            var hNDataImportExportApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHNDataImportExportApi>();
+            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 
@@ -215,6 +225,9 @@ namespace HNTAS.Api.Client.Test.Api
             var feedbackApi = _hostUsingAddWithAClient.Services.GetRequiredService<IFeedbackApi>();
             Assert.True(feedbackApi.HttpClient.BaseAddress != null);
             
+            var hNDataImportExportApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHNDataImportExportApi>();
+            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
+            
             var heatNetworksApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
             
@@ -275,6 +288,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var feedbackApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IFeedbackApi>();
             Assert.True(feedbackApi.HttpClient.BaseAddress != null);
+
+            var hNDataImportExportApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHNDataImportExportApi>();
+            Assert.True(hNDataImportExportApi.HttpClient.BaseAddress != null);
 
             var heatNetworksApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);

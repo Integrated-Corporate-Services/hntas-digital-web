@@ -54,12 +54,21 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Test the property 'InviterUserId'
         /// </summary>
         [Fact]
         public void InviterUserIdTest()
         {
             // TODO unit test for the property 'InviterUserId'
+=======
+        /// Test the property 'Id'
+        /// </summary>
+        [Fact]
+        public void IdTest()
+        {
+            // TODO unit test for the property 'Id'
+>>>>>>> dev
         }
 
         /// <summary>
@@ -90,7 +99,10 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
+<<<<<<< HEAD
 <<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Model/AssessorSearchResultTests.cs
+=======
+>>>>>>> dev
         /// Test the property 'Email'
         /// </summary>
         [Fact]
@@ -101,13 +113,17 @@ namespace HNTAS.Api.Client.Test.Model
 
         /// <summary>
         /// Test the property 'FullNameWithEmail'
+<<<<<<< HEAD
 ========
         /// Test the property 'InvitedEmail'
 >>>>>>>> 85ce0a485198ce622888d991f6943ba12baa54fa:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Model/InvitationTests.cs
+=======
+>>>>>>> dev
         /// </summary>
         [Fact]
         public void FullNameWithEmailTest()
         {
+<<<<<<< HEAD
 <<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Model/AssessorSearchResultTests.cs
             // TODO unit test for the property 'FullNameWithEmail'
 ========
@@ -212,6 +228,9 @@ namespace HNTAS.Api.Client.Test.Model
         public void RolesToReplaceTest()
         {
             // TODO unit test for the property 'RolesToReplace'
+=======
+            // TODO unit test for the property 'FullNameWithEmail'
+>>>>>>> dev
         }
     }
 }

@@ -177,16 +177,23 @@ namespace HNTAS.Api.Client.Api
         public HNDataImportExportApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="HNDataImportExportApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public HNDataImportExportApi(ILogger<HNDataImportExportApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, HNDataImportExportApiEvents hNDataImportExportApiEvents)
+        public HNDataImportExportApi(ILogger<HNDataImportExportApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, HNDataImportExportApiEvents hNDataImportExportApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<HNDataImportExportApi>();
             HttpClient = httpClient;
             Events = hNDataImportExportApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatApiHNDataImportExportHnUsersOrgsCsvGet(ref Option<int> take);
