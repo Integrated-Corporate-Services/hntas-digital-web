@@ -163,7 +163,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An exception occurred while retrieving invitations for email: {InvitedEmail} and org ID: {InvitedOrgId}", invitedEmail, invitedOrgId);
+                _logger.LogError(ex, "An exception occurred while retrieving invitations");
                 throw;
             }
         }
