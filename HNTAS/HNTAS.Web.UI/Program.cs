@@ -39,7 +39,7 @@ else
 {
     builder.Services.AddDataProtection()
         .PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
-        .SetDefaultKeyLifetime(TimeSpan.FromDays(8));
+        .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
     Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
 }
 
@@ -155,7 +155,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new SoaStatusWithCountExistingNetworkJsonConverter(),
         new PagedResultOfUserNetworkDetailsResponseJsonConverter(),
         new UserNetworkDetailsResponseJsonConverter(),
-        new PagedResultOfManagedUserResponseJsonConverter()
+        new PagedResultOfManagedUserResponseJsonConverter(),
+        new InvitationJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

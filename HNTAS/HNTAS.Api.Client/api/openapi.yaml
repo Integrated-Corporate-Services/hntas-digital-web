@@ -1561,6 +1561,56 @@ paths:
           description: Bad Request
       tags:
       - Invitations
+  /api/Invitations/user-invitations:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: invitedEmail
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: invitedOrgId
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Invitation"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Invitation"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Invitation"
+                type: array
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Invitations
   /api/NotificationHistory/notification-history:
     get:
       requestBody:
@@ -7009,6 +7059,86 @@ components:
       required:
       - emailId
       - oneLoginId
+      - status
+      type: object
+    Invitation:
+      example:
+        lastName: lastName
+        inviterUserId: inviterUserId
+        invitedRoles:
+        - DesignatedDutyHolder
+        - DesignatedDutyHolder
+        invitedHnId: invitedHnId
+        invitedEmail: invitedEmail
+        firstName: firstName
+        rolesToReplace:
+        - null
+        - null
+        permissions:
+        - permissions
+        - permissions
+        rejectedAt: 2000-01-23T04:56:07.000+00:00
+        invitedOrgId: invitedOrgId
+        id: id
+        invitedAt: 2000-01-23T04:56:07.000+00:00
+        acceptedAt: 2000-01-23T04:56:07.000+00:00
+        status: Invited
+        replacedUserId: replacedUserId
+      properties:
+        id:
+          nullable: true
+          type: string
+        inviterUserId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        permissions:
+          items:
+            type: string
+          nullable: true
+          type: array
+        invitedEmail:
+          type: string
+        invitedHnId:
+          nullable: true
+          type: string
+        invitedOrgId:
+          nullable: true
+          type: string
+        invitedRoles:
+          items:
+            $ref: "#/components/schemas/ContributorRole"
+          type: array
+        invitedAt:
+          format: date-time
+          type: string
+        acceptedAt:
+          format: date-time
+          nullable: true
+          type: string
+        rejectedAt:
+          format: date-time
+          nullable: true
+          type: string
+        status:
+          $ref: "#/components/schemas/InvitationStatus"
+        replacedUserId:
+          nullable: true
+          type: string
+        rolesToReplace:
+          items:
+            $ref: "#/components/schemas/ContributorRole"
+          nullable: true
+          type: array
+      required:
+      - firstName
+      - invitedAt
+      - invitedEmail
+      - invitedRoles
+      - inviterUserId
+      - lastName
       - status
       type: object
     InvitationStatus:

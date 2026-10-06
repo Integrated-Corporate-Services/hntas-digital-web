@@ -84,6 +84,7 @@ docs/models/HeatPumpInput.md
 docs/models/HnRoleMapping.md
 docs/models/ImportResult.md
 docs/models/InitialUserRegistrationRequest.md
+docs/models/Invitation.md
 docs/models/InvitationStatus.md
 docs/models/InvitedUserRequest.md
 docs/models/InvitedUserResponse.md
@@ -173,7 +174,6 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/NotificationStatsTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -280,6 +280,7 @@ src/HNTAS.Api.Client/Model/HeatPumpInput.cs
 src/HNTAS.Api.Client/Model/HnRoleMapping.cs
 src/HNTAS.Api.Client/Model/ImportResult.cs
 src/HNTAS.Api.Client/Model/InitialUserRegistrationRequest.cs
+src/HNTAS.Api.Client/Model/Invitation.cs
 src/HNTAS.Api.Client/Model/InvitationStatus.cs
 src/HNTAS.Api.Client/Model/InvitedUserRequest.cs
 src/HNTAS.Api.Client/Model/InvitedUserResponse.cs

@@ -9,6 +9,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiInvitationsIdGet**](InvitationsApi.md#apiinvitationsidget) | **GET** /api/Invitations/{id} |  |
 | [**ApiInvitationsInvitationIdRejectPost**](InvitationsApi.md#apiinvitationsinvitationidrejectpost) | **POST** /api/Invitations/{invitationId}/Reject |  |
 | [**ApiInvitationsInvitationIdSendEmailPost**](InvitationsApi.md#apiinvitationsinvitationidsendemailpost) | **POST** /api/Invitations/{invitationId}/send-email |  |
+| [**ApiInvitationsUserInvitationsGet**](InvitationsApi.md#apiinvitationsuserinvitationsget) | **GET** /api/Invitations/user-invitations |  |
 
 <a id="apiinvitationsacceptinvitationpatch"></a>
 # **ApiInvitationsAcceptInvitationPatch**
@@ -192,6 +193,42 @@ void (empty response body)
 | **204** | No Content |  -  |
 | **404** | Not Found |  -  |
 | **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiinvitationsuserinvitationsget"></a>
+# **ApiInvitationsUserInvitationsGet**
+> List&lt;Invitation&gt; ApiInvitationsUserInvitationsGet (string invitedEmail = null, string invitedOrgId = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **invitedEmail** | **string** |  | [optional]  |
+| **invitedOrgId** | **string** |  | [optional]  |
+
+### Return type
+
+[**List&lt;Invitation&gt;**](Invitation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
