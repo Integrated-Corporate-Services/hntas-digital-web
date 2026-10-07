@@ -277,16 +277,23 @@ namespace HNTAS.Api.Client.Api
         public ArmsDashboardApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ArmsDashboardApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public ArmsDashboardApi(ILogger<ArmsDashboardApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, ArmsDashboardApiEvents armsDashboardApiEvents)
+        public ArmsDashboardApi(ILogger<ArmsDashboardApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, ArmsDashboardApiEvents armsDashboardApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<ArmsDashboardApi>();
             HttpClient = httpClient;
             Events = armsDashboardApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatApiArmsDashboardGetKpiNetworkDetailsGet(ref Option<string> submissionId, ref Option<string> statusFilter, ref Option<string> typeFilter, ref Option<int> page);
@@ -434,7 +441,14 @@ namespace HNTAS.Api.Client.Api
 
                     uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -468,6 +482,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiArmsDashboardGetKpiNetworkDetailsGetDefaultImplementation(apiResponseLocalVar, submissionId, statusFilter, typeFilter, page);
 
                         Events.ExecuteOnApiArmsDashboardGetKpiNetworkDetailsGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
@@ -787,7 +805,14 @@ namespace HNTAS.Api.Client.Api
 
                     uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -821,6 +846,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiArmsDashboardGetKpiNetworksByRpUserGetDefaultImplementation(apiResponseLocalVar, userId, month, year, pageNumber);
 
                         Events.ExecuteOnApiArmsDashboardGetKpiNetworksByRpUserGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
@@ -1107,7 +1136,14 @@ namespace HNTAS.Api.Client.Api
                         : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/ArmsDashboard/{submissionId}/history");
                     uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BsubmissionId%7D", Uri.EscapeDataString(submissionId.ToString()));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -1141,6 +1177,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiArmsDashboardSubmissionIdHistoryGetDefaultImplementation(apiResponseLocalVar, submissionId);
 
                         Events.ExecuteOnApiArmsDashboardSubmissionIdHistoryGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }

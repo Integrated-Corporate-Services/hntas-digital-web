@@ -129,16 +129,23 @@ namespace HNTAS.Api.Client.Api
         public CountriesAndTerritoriesApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CountriesAndTerritoriesApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public CountriesAndTerritoriesApi(ILogger<CountriesAndTerritoriesApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, CountriesAndTerritoriesApiEvents countriesAndTerritoriesApiEvents)
+        public CountriesAndTerritoriesApi(ILogger<CountriesAndTerritoriesApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, CountriesAndTerritoriesApiEvents countriesAndTerritoriesApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<CountriesAndTerritoriesApi>();
             HttpClient = httpClient;
             Events = countriesAndTerritoriesApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         /// <summary>
@@ -221,7 +228,14 @@ namespace HNTAS.Api.Client.Api
                         ? "/api/CountriesAndTerritories"
                         : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/CountriesAndTerritories");
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -255,6 +269,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiCountriesAndTerritoriesGetDefaultImplementation(apiResponseLocalVar);
 
                         Events.ExecuteOnApiCountriesAndTerritoriesGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }

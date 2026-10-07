@@ -206,14 +206,36 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation");
                 return View(model);
             }
-            // if this email address exists in the existing users list then throw error
-            bool? isExistingUser = await _userService.IsActiveUserAsync(model.EmailAddress);
-            if (isExistingUser.HasValue && isExistingUser.Value == true)
+
+            var invitedUserDetails = await _userService.GetUserByEmailIdAsync(model.EmailAddress);
+            var invitedRoleData = _sessionHelper.GetFromSession<NewContributorRoleViewModel>(HttpContext, SessionKeys.NewContributorRoleViewModelSessionKey);
+            var currentUserOrgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
+
+            ContributorRole invitedRole = (invitedRoleData != null && invitedRoleData!.IsDDH == true) ? ContributorRole.DesignatedDutyHolder : ContributorRole.Contributor;
+
+            if (invitedUserDetails != null && invitedUserDetails.ContributingOrganisations!.Contains(currentUserOrgId!))
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access");
-                this.ShowBackButton("AddContributor");
-                return View(model);
+                var userInvitations = await _invitationService.GetInvitationsByEmailAndOrg(model.EmailAddress, currentUserOrgId!);
+
+                if (userInvitations != null && userInvitations.Any())
+                {
+
+                    var hasActiveInvitationForRole = userInvitations!.Any(invitation =>
+                    invitation.InvitedRoles.Contains(invitedRole));
+
+                    if (hasActiveInvitationForRole)
+                    {
+                        ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active invitation for the same role. Go back and Add another user to give them access");
+                        this.ShowBackButton("AddContributor");
+                        return View(model);
+                    }   
+
+                    ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access");
+                    this.ShowBackButton("AddContributor");
+                    return View(model);
+                }                
             }
+            
             _sessionHelper.SaveToSession<NewContributorDetailsViewModel>(HttpContext, SessionKeys.NewContributorDetailsViewModelSessionKey, model);
             _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "NewContributorDetails");
             return RedirectToAction("NewContributorHeatNetwork");

@@ -1,14 +1,14 @@
-# HNTAS.Api.Client.Api.CountriesAndTerritoriesApi
+# HNTAS.Api.Client.Api.JwksApi
 
 All URIs are relative to *https://localhost:7117*
 
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
-| [**ApiCountriesAndTerritoriesGet**](CountriesAndTerritoriesApi.md#apicountriesandterritoriesget) | **GET** /api/CountriesAndTerritories |  |
+| [**WellKnownJwksJsonGet**](JwksApi.md#wellknownjwksjsonget) | **GET** /.well-known/jwks.json |  |
 
-<a id="apicountriesandterritoriesget"></a>
-# **ApiCountriesAndTerritoriesGet**
-> List&lt;CountryAndTerritory&gt; ApiCountriesAndTerritoriesGet ()
+<a id="wellknownjwksjsonget"></a>
+# **WellKnownJwksJsonGet**
+> void WellKnownJwksJsonGet ()
 
 
 
@@ -17,23 +17,22 @@ All URIs are relative to *https://localhost:7117*
 This endpoint does not need any parameter.
 ### Return type
 
-[**List&lt;CountryAndTerritory&gt;**](CountryAndTerritory.md)
+void (empty response body)
 
 ### Authorization
 
-[Bearer](../README.md#Bearer)
+No authorization required
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+ - **Accept**: Not defined
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
-| **500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

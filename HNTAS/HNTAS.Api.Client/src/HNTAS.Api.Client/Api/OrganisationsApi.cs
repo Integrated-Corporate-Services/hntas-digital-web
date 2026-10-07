@@ -472,16 +472,23 @@ namespace HNTAS.Api.Client.Api
         public OrganisationsApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="OrganisationsApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public OrganisationsApi(ILogger<OrganisationsApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, OrganisationsApiEvents organisationsApiEvents)
+        public OrganisationsApi(ILogger<OrganisationsApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, OrganisationsApiEvents organisationsApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<OrganisationsApi>();
             HttpClient = httpClient;
             Events = organisationsApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatApiOrganisationsExistsByDetailsGet(ref Option<string> name, ref Option<string> postCode, ref Option<string> country);
@@ -620,7 +627,14 @@ namespace HNTAS.Api.Client.Api
 
                     uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -654,6 +668,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiOrganisationsExistsByDetailsGetDefaultImplementation(apiResponseLocalVar, name, postCode, country);
 
                         Events.ExecuteOnApiOrganisationsExistsByDetailsGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
@@ -933,7 +951,14 @@ namespace HNTAS.Api.Client.Api
                         ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
                         : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(organisationRequest, _jsonSerializerOptions));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] contentTypes = new string[] {
                         "application/json",
@@ -977,6 +1002,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiOrganisationsOrgIdEditOrgDetailsPatchDefaultImplementation(apiResponseLocalVar, orgId, organisationRequest, userId);
 
                         Events.ExecuteOnApiOrganisationsOrgIdEditOrgDetailsPatch(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
@@ -1269,7 +1298,14 @@ namespace HNTAS.Api.Client.Api
                         : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Organisations/{orgId}");
                     uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BorgId%7D", Uri.EscapeDataString(orgId.ToString()));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -1303,6 +1339,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiOrganisationsOrgIdGetDefaultImplementation(apiResponseLocalVar, orgId);
 
                         Events.ExecuteOnApiOrganisationsOrgIdGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
@@ -1573,7 +1613,14 @@ namespace HNTAS.Api.Client.Api
                     uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BuserId%7D", Uri.EscapeDataString(userId.ToString()));
                     uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BheatNetworkId%7D", Uri.EscapeDataString(heatNetworkId.ToString()));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -1607,6 +1654,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatchDefaultImplementation(apiResponseLocalVar, orgId, userId, heatNetworkId);
 
                         Events.ExecuteOnApiOrganisationsOrgIdUserUserIdHeatnetworkHeatNetworkIdPatch(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
@@ -1829,7 +1880,14 @@ namespace HNTAS.Api.Client.Api
                         : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Organisations/orgs-associated-to-user/{userId}");
                     uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BuserId%7D", Uri.EscapeDataString(userId.ToString()));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -1863,6 +1921,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiOrganisationsOrgsAssociatedToUserUserIdPostDefaultImplementation(apiResponseLocalVar, userId);
 
                         Events.ExecuteOnApiOrganisationsOrgsAssociatedToUserUserIdPost(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
@@ -2123,7 +2185,14 @@ namespace HNTAS.Api.Client.Api
 
                     uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -2157,6 +2226,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiOrganisationsSearchGetDefaultImplementation(apiResponseLocalVar, term);
 
                         Events.ExecuteOnApiOrganisationsSearchGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }

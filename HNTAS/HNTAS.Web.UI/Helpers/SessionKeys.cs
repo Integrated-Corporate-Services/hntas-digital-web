@@ -112,5 +112,6 @@
 
         public const string SwitchOrganisationModelSessionKey = "SwitchOrganisationModelSessionKey";
 
+        public const string HntasJwt = "HNTASJWTKey";
     }
 }

@@ -390,6 +390,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - ArmsDashboard
   /api/ArmsDashboard/get-kpi-network-details:
@@ -462,6 +464,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - ArmsDashboard
   /api/ArmsDashboard/{submissionId}/history:
@@ -495,6 +499,8 @@ paths:
           description: OK
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - ArmsDashboard
   /api/ArmsReport/powerbi-data:
@@ -576,6 +582,8 @@ paths:
                   $ref: "#/components/schemas/AssessorSearchResult"
                 type: array
           description: OK
+      security:
+      - Bearer: []
       tags:
       - Assessor
   /api/AssignedAssessor/assigned-assessor:
@@ -617,6 +625,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - AssignedAssessor
   /api/Audit/heat-network-audit-logs:
@@ -658,6 +668,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Audit
   /api/CarbonCalculator/run:
@@ -687,6 +699,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/CarbonCalculatorResponse"
           description: OK
+      security:
+      - Bearer: []
       tags:
       - CarbonCalculator
   /api/CountriesAndTerritories:
@@ -712,6 +726,8 @@ paths:
           description: OK
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - CountriesAndTerritories
   /api/Import/upload-csv:
@@ -751,6 +767,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Client Closed Request
+      security:
+      - Bearer: []
       tags:
       - Import
   /api/feedback:
@@ -795,6 +813,8 @@ paths:
           description: OK
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/hnIds:
@@ -852,6 +872,209 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - HeatNetworks
+  /api/HeatNetworks/{hnId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: hnId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - HeatNetworks
+  /api/HeatNetworks/heat-network-by-userId-paginated:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: registrationSource
+        required: false
+        schema:
+          $ref: "#/components/schemas/RegistrationSource2"
+        style: form
+      - explode: true
+        in: query
+        name: pageNumber
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 10
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sortBy
+        required: false
+        schema:
+          default: Name
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortDirection
+        required: false
+        schema:
+          default: asc
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/PagedResultOfUserNetworkDetailsResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResultOfUserNetworkDetailsResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PagedResultOfUserNetworkDetailsResponse"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - HeatNetworks
+  /api/HeatNetworks/existing-network-by-userId:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExistingNetworkRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ExistingNetworkRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ExistingNetworkResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExistingNetworkResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ExistingNetworkResponse"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/{hnId}:
@@ -1087,6 +1310,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/register-ofgem-network:
@@ -1127,6 +1352,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /api/HeatNetworks/network-elements:
@@ -1187,6 +1414,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - HeatNetworks
   /external/heat-networks:
@@ -1402,6 +1631,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Invitations
   /api/Invitations/{invitationId}/send-email:
@@ -1440,6 +1671,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Invitations
   /api/Invitations/accept-invitation:
@@ -1523,6 +1756,56 @@ paths:
           description: Bad Request
       tags:
       - Invitations
+  /api/Invitations/user-invitations:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: invitedEmail
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: invitedOrgId
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Invitation"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Invitation"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Invitation"
+                type: array
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+      tags:
+      - Invitations
   /api/NotificationHistory/notification-history:
     get:
       requestBody:
@@ -1562,6 +1845,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - NotificationHistory
   /api/NotificationHistory/unread-notification-count:
@@ -1609,6 +1894,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - NotificationHistory
   /api/Organisations/{orgId}/edit-org-details:
@@ -1676,6 +1963,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/Organisations/exists-by-details:
@@ -1727,6 +2016,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/Organisations/search:
@@ -1764,6 +2055,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/Organisations/{orgId}:
@@ -1801,6 +2094,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/Organisations/{orgId}/user/{userId}/heatnetwork/{heatNetworkId}:
@@ -1844,6 +2139,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/Organisations/orgs-associated-to-user/{userId}:
@@ -1889,6 +2186,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Organisations
   /api/OrganisationUser/responsible-party-user/{orgId}:
@@ -1928,6 +2227,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - OrganisationUser
   /api/SOA/update-soa-status:
@@ -1971,6 +2272,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - SOA
     put:
@@ -2001,6 +2304,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Bad Request
+      security:
+      - Bearer: []
       tags:
       - SOA
   /api/SOA/update-soa-status-for-existing-network:
@@ -2044,6 +2349,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - SOA
   /api/SOA/soa-assign-assessor:
@@ -2087,6 +2394,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - SOA
   /api/SOA/soa-assign-assessor-for-existing-network:
@@ -2130,6 +2439,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - SOA
   /api/SuperUser/is-super-user/{emailId}:
@@ -2155,6 +2466,8 @@ paths:
               schema:
                 type: boolean
           description: OK
+      security:
+      - Bearer: []
       tags:
       - SuperUser
   /api/Users:
@@ -2177,6 +2490,35 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserResponse"
                 type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - Users
+  /api/Users/user-details-by-id:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/UserDetailsResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDetailsResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/UserDetailsResponse"
           description: OK
         "500":
           description: Internal Server Error
@@ -2236,6 +2578,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
     get:
@@ -2277,6 +2621,129 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - Users
+  /api/Users/email/{emailId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: emailId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - Users
+  /api/Users/is-rp-user/{emailId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: emailId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - Users
+  /api/Users/is-active-user/{emailId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: emailId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/email/{emailId}:
@@ -2432,6 +2899,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/initial-entry:
@@ -2484,6 +2953,8 @@ paths:
           description: Conflict
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/{id}/org-details:
@@ -2546,6 +3017,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/register-org-and-link/{userId}:
@@ -2609,6 +3082,112 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - Users
+  /api/Users/{id}/user-details:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserDetailsRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserDetailsRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - Users
+  /api/Users/contributor-roles:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+          description: OK
+      security:
+      - Bearer: []
+      tags:
+      - Users
+  /api/Users/user-roles:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EnumItemResponse"
+                type: array
+          description: OK
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/{id}/user-details:
@@ -2746,6 +3325,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/managed-users:
@@ -2781,6 +3362,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/ddh-and-contributors-paginated:
@@ -2840,6 +3423,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/network-managers:
@@ -2867,6 +3452,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/registered-users:
@@ -2894,6 +3481,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/heat-network/{hnId}/roles:
@@ -2927,6 +3516,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/update-orgid:
@@ -2970,6 +3561,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
+      security:
+      - Bearer: []
       tags:
       - Users
   /api/Users/organisation/{organisationId}:
@@ -3025,6 +3618,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Bad Request
+      security:
+      - Bearer: []
       tags:
       - Users
 components:
@@ -6924,6 +7519,109 @@ components:
       example:
         lastName: lastName
         inviterUserId: inviterUserId
+        invitedRoles:
+        - DesignatedDutyHolder
+        - DesignatedDutyHolder
+        invitedHnId: invitedHnId
+        invitedEmail: invitedEmail
+        firstName: firstName
+        rolesToReplace:
+        - null
+        - null
+        permissions:
+        - permissions
+        - permissions
+        rejectedAt: 2000-01-23T04:56:07.000+00:00
+        invitedOrgId: invitedOrgId
+        id: id
+        invitedAt: 2000-01-23T04:56:07.000+00:00
+        acceptedAt: 2000-01-23T04:56:07.000+00:00
+        status: Invited
+        replacedUserId: replacedUserId
+      properties:
+        id:
+          nullable: true
+          type: string
+        inviterUserId:
+          type: string
+        inviterUserId:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        permissions:
+          items:
+            type: string
+          nullable: true
+          type: array
+        invitedEmail:
+          type: string
+        invitedHnId:
+          nullable: true
+          type: string
+        invitedOrgId:
+          nullable: true
+          type: string
+        invitedRoles:
+          items:
+            $ref: "#/components/schemas/ContributorRole"
+          type: array
+        invitedAt:
+          format: date-time
+          type: string
+        acceptedAt:
+          format: date-time
+          nullable: true
+          type: string
+        rejectedAt:
+          format: date-time
+          nullable: true
+          type: string
+        status:
+          $ref: "#/components/schemas/InvitationStatus"
+        replacedUserId:
+          nullable: true
+          type: string
+        rolesToReplace:
+          items:
+            $ref: "#/components/schemas/ContributorRole"
+          nullable: true
+          type: array
+      required:
+      - firstName
+      - invitedAt
+      - invitedEmail
+      - invitedRoles
+      - inviterUserId
+      - lastName
+      - status
+      type: object
+    InvitationStatus:
+      enum:
+      - Invited
+      - Accepted
+      - Rejected
+      type: string
+    InvitedUserRequest:
+      example:
+        oneLoginId: oneLoginId
+        invitationId: invitationId
+      properties:
+        invitationId:
+          type: string
+        oneLoginId:
+          type: string
+      required:
+      - invitationId
+      - oneLoginId
+      type: object
+    InvitedUserResponse:
+      example:
+        lastName: lastName
+        inviterUserId: inviterUserId
         roles:
         - DesignatedDutyHolder
         - DesignatedDutyHolder
@@ -8673,6 +9371,19 @@ components:
       type: object
     NotificationHistoryType:
       type: integer
+    NotificationStats:
+      example:
+        notificationHistoryCount: 0
+        lastVisitedAt: 2000-01-23T04:56:07.000+00:00
+      nullable: true
+      properties:
+        notificationHistoryCount:
+          format: int32
+          type: integer
+        lastVisitedAt:
+          format: date-time
+          type: string
+      type: object
     NullableOfHeatNetworkType:
       enum:
       - Unset
@@ -9870,6 +10581,9 @@ components:
         contactNumberExtension: contactNumberExtension
         firstName: firstName
         createdAt: 2000-01-23T04:56:07.000+00:00
+        notificationStats:
+          notificationHistoryCount: 0
+          lastVisitedAt: 2000-01-23T04:56:07.000+00:00
         id: id
         activeContributingOrgId: activeContributingOrgId
         status: Active
@@ -9925,6 +10639,8 @@ components:
         activeContributingOrgId:
           nullable: true
           type: string
+        notificationStats:
+          $ref: "#/components/schemas/NotificationStats"
       type: object
     UserDetailsResponse:
       example:
@@ -10175,4 +10891,10 @@ components:
       - InvitationAccepted
       - InvitationDeclined
       type: string
+  securitySchemes:
+    Bearer:
+      bearerFormat: JWT
+      description: Enter your Bearer token
+      scheme: Bearer
+      type: http
 

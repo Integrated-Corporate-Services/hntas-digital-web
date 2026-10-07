@@ -131,16 +131,23 @@ namespace HNTAS.Api.Client.Api
         public AssignedAssessorApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AssignedAssessorApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public AssignedAssessorApi(ILogger<AssignedAssessorApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, AssignedAssessorApiEvents assignedAssessorApiEvents)
+        public AssignedAssessorApi(ILogger<AssignedAssessorApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, AssignedAssessorApiEvents assignedAssessorApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<AssignedAssessorApi>();
             HttpClient = httpClient;
             Events = assignedAssessorApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatApiAssignedAssessorAssignedAssessorGet(AssignedAssessorRequest assignedAssessorRequest);
@@ -250,7 +257,14 @@ namespace HNTAS.Api.Client.Api
                         ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
                         : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(assignedAssessorRequest, _jsonSerializerOptions));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] contentTypes = new string[] {
                         "application/json",
@@ -295,6 +309,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiAssignedAssessorAssignedAssessorGetDefaultImplementation(apiResponseLocalVar, assignedAssessorRequest);
 
                         Events.ExecuteOnApiAssignedAssessorAssignedAssessorGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
