@@ -423,6 +423,14 @@ else
         .AddOneLogin(options =>
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            if (builder.Environment.IsEnvironment("prod"))
+            {
+                options.Environment = OneLoginEnvironments.Production;
+            }
+            else
+            {
+                options.Environment = OneLoginEnvironments.Integration;
+            }
             options.Environment = OneLoginEnvironments.Integration;
             options.ClientId = Environment.GetEnvironmentVariable("ONELOGIN_CLIENT_ID");
             options.CallbackPath = "/onelogin-callback";
