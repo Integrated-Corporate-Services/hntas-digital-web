@@ -469,10 +469,14 @@ else
             {
                 rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
 
-                var rsaKey = new RsaSecurityKey(rsa.ExportParameters(true))
+                var rsaKey = new RsaSecurityKey(rsa.ExportParameters(true));
+
+                var keyId = builder.Configuration["Jwks:KeyId"];
+
+                if (!string.IsNullOrWhiteSpace(keyId))
                 {
-                    KeyId = builder.Configuration["Jwks:KeyId"]
-                };
+                    rsaKey.KeyId = keyId;
+                }
 
                 options.ClientAuthenticationCredentials =
                     new SigningCredentials(
