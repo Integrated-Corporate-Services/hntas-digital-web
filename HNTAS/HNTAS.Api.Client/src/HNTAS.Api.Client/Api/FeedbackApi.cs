@@ -125,16 +125,23 @@ namespace HNTAS.Api.Client.Api
         public FeedbackApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FeedbackApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public FeedbackApi(ILogger<FeedbackApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, FeedbackApiEvents feedbackApiEvents)
+        public FeedbackApi(ILogger<FeedbackApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, FeedbackApiEvents feedbackApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<FeedbackApi>();
             HttpClient = httpClient;
             Events = feedbackApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatApiFeedbackPost(CreateFeedbackRequest createFeedbackRequest);

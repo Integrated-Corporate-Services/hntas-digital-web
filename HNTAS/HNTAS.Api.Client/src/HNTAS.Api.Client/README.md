@@ -11,7 +11,7 @@ outputDir: out
 
 # https://openapi-generator.tech/docs/generators/csharp
 additionalProperties:
-  packageGuid: '{9D3C5CE8-71F5-4E1A-B71A-462C0BE774FF}'
+  packageGuid: '{B58D72C1-42E6-4785-9378-98117FC209FE}'
 
 # https://openapi-generator.tech/docs/integrations/#github-integration
 # gitHost:
@@ -62,6 +62,14 @@ namespace YourProject
         public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
           .ConfigureApi((context, services, options) =>
           {
+              // The type of token here depends on the api security specifications
+              // Available token types are ApiKeyToken, BasicToken, BearerToken, HttpSigningToken, and OAuthToken.
+              BearerToken token = new("<your token>");
+              options.AddTokens(token);
+
+              // optionally choose the method the tokens will be provided with, default is RateLimitProvider
+              options.UseProvider<RateLimitProvider<BearerToken>, BearerToken>();
+
               options.ConfigureJsonOptions((jsonOptions) =>
               {
                   // your custom converters if any

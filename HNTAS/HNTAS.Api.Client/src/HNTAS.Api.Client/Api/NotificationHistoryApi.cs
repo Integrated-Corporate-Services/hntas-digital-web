@@ -194,16 +194,23 @@ namespace HNTAS.Api.Client.Api
         public NotificationHistoryApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NotificationHistoryApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public NotificationHistoryApi(ILogger<NotificationHistoryApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, NotificationHistoryApiEvents notificationHistoryApiEvents)
+        public NotificationHistoryApi(ILogger<NotificationHistoryApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, NotificationHistoryApiEvents notificationHistoryApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<NotificationHistoryApi>();
             HttpClient = httpClient;
             Events = notificationHistoryApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatApiNotificationHistoryNotificationHistoryGet(NotificationHistoryRequest notificationHistoryRequest);
@@ -313,7 +320,14 @@ namespace HNTAS.Api.Client.Api
                         ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
                         : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(notificationHistoryRequest, _jsonSerializerOptions));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] contentTypes = new string[] {
                         "application/json",
@@ -358,6 +372,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiNotificationHistoryNotificationHistoryGetDefaultImplementation(apiResponseLocalVar, notificationHistoryRequest);
 
                         Events.ExecuteOnApiNotificationHistoryNotificationHistoryGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
@@ -621,7 +639,14 @@ namespace HNTAS.Api.Client.Api
 
                     uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -655,6 +680,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiNotificationHistoryUnreadNotificationCountGetDefaultImplementation(apiResponseLocalVar, userId, role);
 
                         Events.ExecuteOnApiNotificationHistoryUnreadNotificationCountGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }

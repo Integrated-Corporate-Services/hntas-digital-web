@@ -124,16 +124,23 @@ namespace HNTAS.Api.Client.Api
         public SuperUserApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SuperUserApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public SuperUserApi(ILogger<SuperUserApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, SuperUserApiEvents superUserApiEvents)
+        public SuperUserApi(ILogger<SuperUserApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, SuperUserApiEvents superUserApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<SuperUserApi>();
             HttpClient = httpClient;
             Events = superUserApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatApiSuperUserIsSuperUserEmailIdGet(ref string emailId);
@@ -240,7 +247,14 @@ namespace HNTAS.Api.Client.Api
                         : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/SuperUser/is-super-user/{emailId}");
                     uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BemailId%7D", Uri.EscapeDataString(emailId.ToString()));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -274,6 +288,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiSuperUserIsSuperUserEmailIdGetDefaultImplementation(apiResponseLocalVar, emailId);
 
                         Events.ExecuteOnApiSuperUserIsSuperUserEmailIdGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
