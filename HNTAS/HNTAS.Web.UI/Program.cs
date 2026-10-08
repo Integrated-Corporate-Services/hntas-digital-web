@@ -279,6 +279,7 @@ builder.Services.AddHttpClient<ISuperUserApi, SuperUserApi>(client =>
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
+
 builder.Services.AddTransient<FeedbackApiEvents>();
 builder.Services.AddHttpClient<IFeedbackApi, FeedbackApi>(client =>
 {
@@ -422,6 +423,14 @@ else
         .AddOneLogin(options =>
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            if (builder.Environment.IsEnvironment("prod"))
+            {
+                options.Environment = OneLoginEnvironments.Production;
+            }
+            else
+            {
+                options.Environment = OneLoginEnvironments.Integration;
+            }
             options.Environment = OneLoginEnvironments.Integration;
             options.ClientId = Environment.GetEnvironmentVariable("ONELOGIN_CLIENT_ID");
             options.CallbackPath = "/onelogin-callback";
@@ -468,10 +477,14 @@ else
             {
                 rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
 
-                var rsaKey = new RsaSecurityKey(rsa.ExportParameters(true))
+                var rsaKey = new RsaSecurityKey(rsa.ExportParameters(true));
+
+                var keyId = builder.Configuration["Jwks:KeyId"];
+
+                if (!string.IsNullOrWhiteSpace(keyId))
                 {
-                    KeyId = builder.Configuration["Jwks:KeyId"]
-                };
+                    rsaKey.KeyId = keyId;
+                }
 
                 options.ClientAuthenticationCredentials =
                     new SigningCredentials(
