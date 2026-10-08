@@ -173,7 +173,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         //    var model = Assert.IsType<ChooseRoleModel>(viewResult.Model);
         //    Assert.Null(model.Roles);
         //    Assert.Equal("Contributor/ChooseRole", viewResult.ViewName);
-        //    Assert.Equal("Unable to retrieve contributor roles. Please try again later.", _controller.TempData["ErrorMessage"]);
+        //    Assert.Equal("Unable to retrieve contributor roles. Please try again later", _controller.TempData["ErrorMessage"]);
         //}
 
         //[Fact]

@@ -48,7 +48,7 @@ namespace HNTAS.Api.Client.Test.Api
         public UsersApiTests(): base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<IUsersApi>();
-        }
+        }        
 
         /// <summary>
         /// Test ApiUsersContributorRolesGet
@@ -165,18 +165,6 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiUsersManagedUsersGetAsync(userId, networkManagersOnly);
             var model = response.Ok();
             Assert.IsType<List<ManagedUserResponse>>(model);
-        }
-
-        /// <summary>
-        /// Test ApiUsersNetworkManagersGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiUsersNetworkManagersGetAsyncTest()
-        {
-            Client.Option<string> userId = default!;
-            var response = await _instance.ApiUsersNetworkManagersGetAsync(userId);
-            var model = response.Ok();
-            Assert.IsType<List<InvitedUserResponse>>(model);
         }
 
         /// <summary>

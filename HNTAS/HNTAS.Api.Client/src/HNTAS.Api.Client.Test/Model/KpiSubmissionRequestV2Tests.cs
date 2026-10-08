@@ -72,15 +72,6 @@ namespace HNTAS.Api.Client.Test.Model
         }
 
         /// <summary>
-        /// Test the property 'CarbonCalculatorInputs'
-        /// </summary>
-        [Fact]
-        public void CarbonCalculatorInputsTest()
-        {
-            // TODO unit test for the property 'CarbonCalculatorInputs'
-        }
-
-        /// <summary>
         /// Test the property 'Elements'
         /// </summary>
         [Fact]

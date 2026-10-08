@@ -8,8 +8,8 @@
     bool hasEmailErrors = ViewData.ModelState.ContainsKey(nameof(Model.EmailAddress)) && ViewData.ModelState[nameof(Model.EmailAddress)].Errors.Any();
     var firstNameInputComponentData = new GovUkInputModel
     {
-        Id = nameof(Model.FirstName),
-        Name = nameof(Model.FirstName),
+        Id = nameof(Model.FirstName).ToLower(),
+        Name = nameof(Model.FirstName).ToLower(),
         Label = "First name",
         HasError = hasFirstNameErrors,
         AdditionalClasses = "govuk-input--width-20",
@@ -18,8 +18,8 @@
     };
     var lastNameInputComponentData = new GovUkInputModel
     {
-        Id = nameof(Model.LastName),
-        Name = nameof(Model.LastName),
+        Id = nameof(Model.LastName).ToLower(),
+        Name = nameof(Model.LastName).ToLower(),
         Label = "Last name",
         HasError = hasLastNameErrors,
         AdditionalClasses = "govuk-input--width-20",
@@ -28,8 +28,8 @@
     };
     var emailInputComponentData = new GovUkInputModel
     {
-        Id = nameof(Model.EmailAddress),
-        Name = nameof(Model.EmailAddress),
+        Id = nameof(Model.EmailAddress).ToLower(),
+        Name = nameof(Model.EmailAddress).ToLower(),
         Label = "Email",
         HasError = hasEmailErrors,
         AdditionalClasses = "govuk-input--width-20",
@@ -38,7 +38,6 @@
     };
 }
 
-<div class="govuk-width-container">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-l">Your network team</span>
@@ -46,7 +45,7 @@
                 Enter their contact details
             </h1>
             <p class="govuk-body">
-                You are adding a designated duty holder.
+                You are adding a @ViewBag.whoDoYouWantToAdd?.ToString().ToLower().
             </p>
             <form method="post">
                 @Html.AntiForgeryToken()
@@ -66,4 +65,3 @@
             </form>
         </div>
     </div>
-</div>

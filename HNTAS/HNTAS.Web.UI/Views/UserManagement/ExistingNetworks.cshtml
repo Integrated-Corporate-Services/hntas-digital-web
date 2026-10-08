@@ -60,67 +60,89 @@
             background-color: #ffdd00;
             box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c;
         }
+
+    .govuk-pagination__item {
+        display: block !important;
+        text-align: center;
+    }
 </style>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
 
         <h1 class="govuk-heading-l">Heat networks</h1>
+        <div class="govuk-table-container">
+            <table class="govuk-table">
 
-        <table class="govuk-table">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("OfgemImportedDate")'" type="button" class="" data-module="govuk-button">
+                                Ofgem imported date @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">
+                            <button data-index="0" onclick="window.location.href='@GetSortUrl("hnId")'" type="button" class="" data-module="govuk-button">
+                                Heat network @Html.Raw(GetSortIcon())
+                            </button>
+                        </th>
+                        <th scope="col" class="govuk-table__header">Action</th>
+                    </tr>
+                </thead>
 
-            <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">                        
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("OfgemImportedDate")'" type="button" class="" data-module="govuk-button">
-                            Ofgem imported date @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>
-                    <th scope="col" class="govuk-table__header" aria-sort="@GetSortDirection()">                        
-                        <button data-index="0" onclick="window.location.href='@GetSortUrl("hnId")'" type="button" class="" data-module="govuk-button">
-                            Heat network @Html.Raw(GetSortIcon())
-                        </button>
-                    </th>                    
-                    <th scope="col" class="govuk-table__header">Action</th>                    
-                </tr>
-            </thead>
-
-            <tbody class="govuk-table__body">
-                @if (Model.Items != null && Model.Items.Any())
-                {
-                    @foreach (var heatNetwork in Model.Items)
+                <tbody class="govuk-table__body">
+                    @if (Model.Items != null && Model.Items.Any())
                     {
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">
-                                @if (heatNetwork.OfgemImportedDate.HasValue)
+                        @foreach (var heatNetwork in Model.Items)
+                        {
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">
+                                    @if (heatNetwork.OfgemImportedDate.HasValue)
+                                    {
+                                        <time class="local-time" datetime="@heatNetwork.OfgemImportedDate.Value.ToString("o")">
+                                            @heatNetwork.OfgemImportedDate.Value.ToString("dd/MM/yyyy")
+                                        </time>
+                                    }
+                                    else
+                                    {
+                                        @String.Empty
+                                    }
+                                </td>
+                                <td class="govuk-table__cell">
+                                    @heatNetwork.HnId<br />
+                                    @heatNetwork.Name<br />
+                                    @heatNetwork.AdditionalDescription
+                                </td>
+
+                                @if (heatNetwork.HeatNetworkType == NullableOfHeatNetworkType.Unset)
                                 {
-                                    <time class="local-time" datetime="@heatNetwork.OfgemImportedDate.Value.ToString("o")">
-                                        @heatNetwork.OfgemImportedDate.Value.ToString("dd/MM/yyyy")
-                                    </time>
+                                    <td class="govuk-table__cell">
+                                        <a class="govuk-link" href="@Url.Action("HeatNetworkDwellingsCheck", "ExistingHeatNetworkRegistration", new { hnid = heatNetwork.HnId, registrationSource = RegistrationSource.OFGEM })" aria-describedby="@heatNetwork.HnId">
+                                            Register with HNTAS
+                                        </a>
+                                    </td>
                                 }
                                 else
                                 {
-                                    @String.Empty
+                                    <td class="govuk-table__cell">
+                                        <a class="govuk-link" href="@Url.Action("PrepareToAddNetworkDetails", "HeatNetwork", new { hnId = @heatNetwork.HnId, registrationSource = RegistrationSource.OFGEM })" aria-describedby="@heatNetwork.HnId">
+                                            Add Network details
+                                        </a>
+                                    </td>
                                 }
-                            </td>
-                            <td class="govuk-table__cell">
-                                @heatNetwork.HnId<br />
-                                @heatNetwork.Name<br />
-                                @heatNetwork.AdditionalDescription
-                            </td> 
-                            
-                            <td class="govuk-table__cell"><a class="govuk-link" href="#">Register with HNTAS</a></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell" colspan="5">No existing network found.</td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell" colspan="5">No existing network found.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        
 
         @if (totalPages > 1)
         {
@@ -140,11 +162,32 @@
 
                 <ul class="govuk-pagination__list">
                     @{
-                        int startPage = Math.Max(1, currentPage - 2);
-                        int endPage = Math.Min(totalPages, currentPage + 2);
+                        var pagesToShow = new List<int>();
 
-                        for (int i = startPage; i <= endPage; i++)
+                        void AddPage(int page)
                         {
+                            if (page >= 1 && page <= totalPages && !pagesToShow.Contains(page))
+                            {
+                                pagesToShow.Add(page);
+                            }
+                        }
+
+                        AddPage(1);
+                        AddPage(currentPage - 1);
+                        AddPage(currentPage);
+                        AddPage(currentPage + 1);
+                        AddPage(totalPages);
+
+                        pagesToShow.Sort();
+
+                        int? previousPage = null;
+
+                        foreach (var i in pagesToShow)
+                        {
+                            if (previousPage.HasValue && i - previousPage.Value > 1)
+                            {
+                                <li class="govuk-pagination__item govuk-pagination__item--ellipses" aria-hidden="true">...</li>
+                            }
                             if (i == currentPage)
                             {
                                 <li class="govuk-pagination__item govuk-pagination__item--current">
@@ -159,6 +202,7 @@
                                     </a>
                                 </li>
                             }
+                            previousPage = i;
                         }
 
                     }

@@ -60,7 +60,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (organisation == null)
             {
-                ModelState.AddModelError(nameof(searchViewModel.SearchTerm), "No organisation found with the provided ID or Name. Please check and try again.");
+                ModelState.AddModelError(nameof(searchViewModel.SearchTerm), "No organisation found with the provided ID or Name. Please check and try again");
                 return View("Search", searchViewModel);
             }
 

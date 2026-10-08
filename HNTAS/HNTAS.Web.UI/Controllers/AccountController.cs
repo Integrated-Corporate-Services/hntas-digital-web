@@ -37,8 +37,6 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return SignOut(new AuthenticationProperties(), OneLoginDefaults.AuthenticationScheme);
             }
-
-
         }
 
         // This action will be called after successful authentication by One Login

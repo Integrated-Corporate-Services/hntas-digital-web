@@ -56,9 +56,9 @@ namespace HNTAS.Api.Client.Model
         NetworkManager = 5,
 
         /// <summary>
-        /// Enum ResponsiblePerson for value: ResponsiblePerson
+        /// Enum ResponsibleParty for value: ResponsibleParty
         /// </summary>
-        ResponsiblePerson = 6
+        ResponsibleParty = 6
     }
 
     /// <summary>
@@ -88,8 +88,8 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("NetworkManager"))
                 return ContributorRole.NetworkManager;
 
-            if (value.Equals("ResponsiblePerson"))
-                return ContributorRole.ResponsiblePerson;
+            if (value.Equals("ResponsibleParty"))
+                return ContributorRole.ResponsibleParty;
 
             throw new NotImplementedException($"Could not convert value to type ContributorRole: '{value}'");
         }
@@ -116,8 +116,8 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("NetworkManager"))
                 return ContributorRole.NetworkManager;
 
-            if (value.Equals("ResponsiblePerson"))
-                return ContributorRole.ResponsiblePerson;
+            if (value.Equals("ResponsibleParty"))
+                return ContributorRole.ResponsibleParty;
 
             return null;
         }
@@ -145,8 +145,8 @@ namespace HNTAS.Api.Client.Model
             if (value == ContributorRole.NetworkManager)
                 return "NetworkManager";
 
-            if (value == ContributorRole.ResponsiblePerson)
-                return "ResponsiblePerson";
+            if (value == ContributorRole.ResponsibleParty)
+                return "ResponsibleParty";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
@@ -187,7 +187,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, ContributorRole contributorRole, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(contributorRole.ToString());
+            writer.WriteStringValue(ContributorRoleValueConverter.ToJsonValue(contributorRole).ToString());
         }
     }
 
@@ -218,14 +218,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the ContributorRole to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="contributorRole"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, ContributorRole? contributorRole, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(contributorRole?.ToString() ?? "null");
+            writer.WriteStringValue(contributorRole.HasValue ? ContributorRoleValueConverter.ToJsonValue(contributorRole.Value).ToString() : "null");
         }
     }
 }

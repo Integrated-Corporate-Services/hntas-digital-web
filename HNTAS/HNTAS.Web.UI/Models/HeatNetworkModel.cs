@@ -14,19 +14,26 @@ namespace HNTAS.Web.UI.Models
 
     public class HeatNetworkNameModel
     {
-        [Required(ErrorMessage = "Please enter the heat network name.")]
-        [StringLength(100, ErrorMessage = "The heat network name cannot exceed 100 characters.")]
-        [RegularExpression(@"^[A-Za-z0-9 :;\-]+$", ErrorMessage = "The heat network name contains invalid characters.")]
+        private string _heatNetworkName;
+
+        [Required(ErrorMessage = "Enter the heat network name")]
+        [StringLength(100, ErrorMessage = "The heat network name cannot exceed 100 characters")]
+        [RegularExpression(@"^[A-Za-z0-9 :;\-]+$", ErrorMessage = "The heat network name contains invalid characters")]
         [Display(Name = "HeatNetwork Name")]
-        public string HeatNetworkName { get; set; }
+        public string HeatNetworkName
+        {
+            get => _heatNetworkName;
+            set => _heatNetworkName = value?.Trim();
+        }
 
-        private string? _additionalDescription;
-
+        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Additional description must not include < or >")]
         public string? AdditionalDescription
         {
             get => _additionalDescription;
             set => _additionalDescription = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
         }
+
+        private string? _additionalDescription;
     }
 
     public class HeatNetworkLocationModel
@@ -36,14 +43,14 @@ namespace HNTAS.Web.UI.Models
 
     public class ECDetailsModel
     {
-        [Required(ErrorMessage = "Please enter the latitude and longitude.")]
+        [Required(ErrorMessage = "Enter the latitude and longitude")]
         public string LatitudeLongitude { get; set; }
         public AddressByLatLongModel ECAddressByLatLong { get; set; } = new AddressByLatLongModel();
     }
 
     public class HeatNetworkPhaseModel
     {
-        [Required(ErrorMessage = "Please select the heat network phase.")]
+        [Required(ErrorMessage = "Select the phase that best describes your network")]
         public string HeatNetworkPhase { get; set; }
     }   
 
@@ -55,7 +62,7 @@ namespace HNTAS.Web.UI.Models
     public class CheckYourAnswersHeatNetworkModel
     {
         public string DoesHnHaveMoreThan6Dwellings { get; set; }
-        public string OrgId { get; set; }
+        public string? OrgId { get; set; }
         public string HeatNetworkType { get; set; }
         public string HasOwnEnergyCenter { get; set; }
         public string ECSuppliesOneCommunalBuilding { get; set; }
@@ -68,13 +75,14 @@ namespace HNTAS.Web.UI.Models
 
         // The ConfirmedDeclaration property, now part of this specific ViewModel
         [Display(Name = "I confirm that")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "You must confirm the declaration to proceed.")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Confirm that the summary is correct")]
         public bool ConfirmedDeclaration { get; set; }
     }
 
     public class HeatNetworkSuccessRedirection
     {
-        public string NextAction { get; set; }
+        [Required(ErrorMessage = "Select what you want to do next")]
+        public string? NextAction { get; set; }
     }
 
 }

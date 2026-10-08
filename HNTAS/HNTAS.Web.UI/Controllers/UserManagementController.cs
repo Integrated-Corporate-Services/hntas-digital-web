@@ -88,7 +88,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while trying to manage users.");
-                TempData["ErrorMessage"] = "An unexpected error occurred. Please try again later.";
+                TempData["ErrorMessage"] = "An unexpected error occurred. Please try again later";
                 return View("ManageUsers", new ManageUsersModel());
             }
         }
@@ -109,7 +109,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (viewModel.SelectedUserType == UserType.None)
             {
-                ModelState.AddModelError("SelectedUserType", "Select how you want to add a contributor.");
+                ModelState.AddModelError("SelectedUserType", "Select how you want to add a contributor");
             }
 
             if (ModelState.IsValid)
@@ -150,7 +150,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             if (model.SelectedUserType == UserType.None)
             {
-                ModelState.AddModelError("SelectedUserType", "Please select an option.");
+                ModelState.AddModelError("SelectedUserType", "Select an option");
                 ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
                 return View("ChangeOrganisationUser");
             }
@@ -178,56 +178,96 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> HeatNetworksAsync()
+        public async Task<IActionResult> HeatNetworksAsync(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 6,
+            [FromQuery] string sortBy = "Name",
+            [FromQuery] string sortDirection = "asc")
         {
             ClearNetworkDetailsSession();
 
-            this.ShowBackButton("UserAccount", "Dashboard");
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var user = await _userService.GetUserDetails(userId);
-            var userWithHnRoles = await _userService.GetUserById(userId);
-            var hnRoleMappings = userWithHnRoles.HnRoleMappings;
 
-            ViewBag.UserRole = user?.Roles[0].ToString();
-            ViewBag.HasDeclaredImpartiality = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(HttpContext, SessionKeys.DeclarationOfImpartialityModelKey)?.HasDeclaredImpartiality;
-
-            if (user == null)
+            if (string.IsNullOrEmpty(userId))
             {
-                _logger.LogError("User not found in session or API.");
-                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later.";
+                _logger.LogError("User ID not found in session.");
+                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later";
                 return View(new HeatNetworksViewModel());
             }
 
-            var heatNetworks = new List<HeatNetworkModel>();
-            var networks = await _heatNetworkService.GetHeatNetworkByUserId(userId, RegistrationSource2.HNTAS);
+            // 1. Fetch user, contributor roles, and paginated networks concurrently
+            var userTask = _userService.GetUserById(userId);
+            var rolesTask = _userService.GetContributorRolesAsync();
+            var paginatedResponseTask = _heatNetworkService.GetHeatNetworkByUserIdPaginatedAsync(
+                userId: userId,
+                registrationSource: RegistrationSource2.HNTAS,
+                pageNumber: pageNumber,
+                pageSize: pageSize,
+                sortBy: sortBy,
+                sortDirection: sortDirection);
 
-            heatNetworks = (await Task.WhenAll(networks.Select(async network =>
+            await Task.WhenAll(userTask, rolesTask, paginatedResponseTask);
+
+            var user = await userTask;
+            var contributorRoles = await rolesTask ?? new List<EnumItemResponse>();
+            var paginatedResponse = await paginatedResponseTask;
+
+            if (user == null)
             {
-                var org = await _organisationService.GetOrganisationById(network.OrgId);
+                _logger.LogError("User not found for ID: {UserId}", userId);
+                TempData["ErrorMessage"] = "Unable to retrieve user information. Please try again later";
+                return View(new HeatNetworksViewModel());
+            }
+
+            var hnRoleMappings = user.HnRoleMappings ?? new List<HnRoleMapping>();
+
+            ViewBag.UserRole = user.Roles?.FirstOrDefault().ToString();
+            ViewBag.HasDeclaredImpartiality = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(
+                HttpContext, SessionKeys.DeclarationOfImpartialityModelKey)?.HasDeclaredImpartiality;
+
+            // 2. Pre-index contributor roles into a Dictionary for O(1) lookup
+            var rolesDictionary = contributorRoles
+                .Where(r => !string.IsNullOrEmpty(r.Name))
+                .ToDictionary(r => r.Name, r => r.Description, StringComparer.OrdinalIgnoreCase);
+
+            // 3. Clean synchronous mapping
+            var heatNetworks = paginatedResponse?.Items?.Select(network =>
+            {
+                var matchingRoleEnum = hnRoleMappings
+                    .FirstOrDefault(x => x.HnId == network.HnId)?.Role.ToString();
+
+                var roleDescription = !string.IsNullOrEmpty(matchingRoleEnum) && rolesDictionary.TryGetValue(matchingRoleEnum, out var desc)
+                    ? desc
+                    : "Not specified";
 
                 return new HeatNetworkModel
                 {
                     HnId = network.HnId,
                     Name = network.Name,
-                    OrganisationName = org?.Name,
+                    OrganisationName = network.OrganisationName,
                     HnDescription = network.AdditionalDescription,
-                    Role = hnRoleMappings
-                        .FirstOrDefault(x => x.HnId == network.HnId)?.Role.ToString() ?? "Not specified"
+                    Role = roleDescription
                 };
-            }))).ToList();
-
-
+            }).ToList() ?? new List<HeatNetworkModel>();
 
             var model = new HeatNetworksViewModel
             {
                 HeatNetworks = heatNetworks,
-                IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
+                IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsibleParty) ?? false,
                 IsHntasCoordinator = user.Roles?.Contains(UserRole.NetworkManager) ?? false,
+
+                // Pagination metadata for Razor View
+                PageNumber = paginatedResponse?.PageNumber ?? pageNumber,
+                PageSize = paginatedResponse?.PageSize ?? pageSize,
+                TotalCount = paginatedResponse?.TotalCount ?? 0,
+                TotalPages = paginatedResponse?.TotalPages ?? 0,
+                SortBy = sortBy,
+                SortDirection = sortDirection
             };
 
             var isRegistrationEnabledString = Environment.GetEnvironmentVariable("IS_REGISTRATION_ENABLED");
             ViewBag.IsRegistrationEnabled = !string.IsNullOrEmpty(isRegistrationEnabledString) &&
-                                             isRegistrationEnabledString.ToLower() == "true";
+                                             isRegistrationEnabledString.Equals("true", StringComparison.OrdinalIgnoreCase);
 
             return View(model);
         }
@@ -240,10 +280,11 @@ namespace HNTAS.Web.UI.Controllers
             int pageSize = 6)
         {
              
-                var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-                this.ShowBackButton("UserAccount", "Dashboard");
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            this.ShowBackButton("UserAccount", "Dashboard");
+            _sessionHelper.ClearAllHNRegistrationFlowRelatedSessionData(HttpContext);
 
-                try
+            try
                 {
                     // Validate and sanitize inputs
                     if (page < 1) page = 1;
@@ -278,7 +319,7 @@ namespace HNTAS.Web.UI.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error retrieving existing networks");
-                    TempData["ErrorMessage"] = "An error occurred while retrieving the existing networks.";
+                    TempData["ErrorMessage"] = "An error occurred while retrieving the existing networks";
 
                     // Return empty result
                     var emptyResult = new ExistingNetworkResponse
@@ -302,12 +343,22 @@ namespace HNTAS.Web.UI.Controllers
             }
 
         [HttpGet]
+        public IActionResult ExistingNetworksAction([FromQuery] string hnId, [FromQuery] string hnName, [FromQuery] string action)
+        {
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId.ToUpper());
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnName);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.RegistrationSourceKey, RegistrationSource.OFGEM);
+
+            return RedirectToAction("HeatNetworkDwellingsCheck", "ExistingHeatNetworkRegistration", new { hnid = hnId });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> HeatNetworkUserRolesAsync(string hnId)
         {
             if (string.IsNullOrEmpty(hnId))
             {
                 _logger.LogError("Heat network ID is null or empty in HeatNetworkUserRoles.");
-                TempData["ErrorMessage"] = "Invalid heat network ID.";
+                TempData["ErrorMessage"] = "Invalid heat network ID";
                 return RedirectToAction("HeatNetworks");
             }
 

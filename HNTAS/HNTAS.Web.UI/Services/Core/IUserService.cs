@@ -7,6 +7,7 @@ namespace HNTAS.Web.UI.Services.Core
         Task<UserResponse?> GetUserById(string id);
         Task<List<HeatNetworkUserResponse>?> GetUserHeatNetworks(string id);
         Task<UserResponse?> GetUserByOneLoginId(string oneLoginId);
+        Task<UserResponse?> GetUserByEmailIdAsync(string emailId);
         Task<string?> CreateUser(InitialUserRegistrationRequest request);
         Task<string?> UpdateUserOrganisation(string id, UpdateUserOrganisationRequest request);
         Task<Organisation?> UpdateOrganisationLinkUser(string userId, OrganisationRequest organisationRequest);
@@ -26,5 +27,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task<List<UserResponse>> GetUsersByOrganisationIdAsync(string organisationId);
 
         Task<bool> IsSuperUser(string emailId);
+        Task<PagedResultOfManagedUserResponse> GetDdhAndContributorsPaginated(string userId, int pageNumber = 1, int pageSize = 1, string sortBy = "firstName", string sortDirection = "asc", CancellationToken cancellationToken = default);
     }
 }

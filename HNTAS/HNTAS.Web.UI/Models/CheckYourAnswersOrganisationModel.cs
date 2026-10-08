@@ -18,7 +18,7 @@ namespace HNTAS.Web.UI.Models
 
         // The ConfirmedDeclaration property, now part of this specific ViewModel
         [Display(Name = "I confirm that")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "You must confirm the declaration to proceed.")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Confirm the declaration to continue")]
         public bool ConfirmedDeclaration { get; set; } = true;
     }
 }

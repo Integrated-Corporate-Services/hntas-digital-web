@@ -150,7 +150,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Arrange
             var controller = CreateController();
             var model = new AddUserEmailAddressModel { EmailAddress = "invalid-email" };
-            controller.ModelState.AddModelError("EmailAddress", "Invalid email format.");
+            controller.ModelState.AddModelError("EmailAddress", "Invalid email format");
 
             var urlHelperMock = new Mock<IUrlHelper>();
             urlHelperMock
@@ -202,7 +202,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Same(model, viewResult.Model);
             Assert.False(controller.ModelState.IsValid);
             Assert.True(controller.ModelState.ContainsKey(nameof(model.EmailAddress)));
-            Assert.Equal("This user is already registered as a Responsible Party (RP). Go back and use Add an existing user to give them access.",
+            Assert.Equal("This user is already registered as a Responsible Party (RP). Go back and use Add an existing user to give them access",
                 controller.ModelState[nameof(model.EmailAddress)].Errors[0].ErrorMessage);
 
             _mockUserService.Verify(x => x.IsRpUserAsync(model.EmailAddress), Times.Once);
@@ -243,7 +243,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Same(model, viewResult.Model);
             Assert.False(controller.ModelState.IsValid);
             Assert.True(controller.ModelState.ContainsKey(nameof(model.EmailAddress)));
-            Assert.Equal("This user already has an active account. Go back and use Add an existing user to give them access.",
+            Assert.Equal("This user already has an active account. Go back and use Add an existing user to give them access",
                 controller.ModelState[nameof(model.EmailAddress)].Errors[0].ErrorMessage);
 
             _mockUserService.Verify(x => x.IsRpUserAsync(model.EmailAddress), Times.Once);
@@ -421,7 +421,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 FirstName = "",
                 LastName = "Doe",
             };
-            controller.ModelState.AddModelError("FirstName", "First name is required.");
+            controller.ModelState.AddModelError("FirstName", "First name is required");
 
             _mockSessionHelper
                 .Setup(x => x.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.OrganisationName))
@@ -595,7 +595,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             {
                 SelectedRoleName = null
             };
-            controller.ModelState.AddModelError("SelectedRoleName", "Please select role.");
+            controller.ModelState.AddModelError("SelectedRoleName", "Please select role");
 
             var workflowModel = new AddOrganisationUserWorkflowModel
             {
@@ -662,7 +662,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("AssignRole", redirectResult.ActionName);
-            Assert.Equal("Unable to submit your details. Please try again later.", controller.TempData["ErrorMessage"]);
+            Assert.Equal("Unable to submit your details. Please try again later", controller.TempData["ErrorMessage"]);
 
             _mockLogger.Verify(
                 x => x.Log(
@@ -720,7 +720,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("AssignRole", redirectResult.ActionName);
-            Assert.Equal("There was an error submitting your details. Please try again later.", controller.TempData["ErrorMessage"]);
+            Assert.Equal("There was an error submitting your details. Please try again later", controller.TempData["ErrorMessage"]);
         }
 
         [Fact]
@@ -770,7 +770,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("AssignRole", redirectResult.ActionName);
-            Assert.Equal("There was an error submitting your details. Please try again later.", controller.TempData["ErrorMessage"]);
+            Assert.Equal("There was an error submitting your details. Please try again later", controller.TempData["ErrorMessage"]);
 
             _mockLogger.Verify(
                 x => x.Log(

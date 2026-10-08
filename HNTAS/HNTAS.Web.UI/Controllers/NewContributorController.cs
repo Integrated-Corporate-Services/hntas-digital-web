@@ -75,7 +75,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (isRpUser.HasValue && isRpUser.Value == true)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation");
                 this.ShowBackButton("AddContributor", "UserManagement");
                 return View("Contributor/AddEmailAddress", model);
             }
@@ -84,7 +84,7 @@ namespace HNTAS.Web.UI.Controllers
             bool? isExistingUser = await _userService.IsActiveUserAsync(model.EmailAddress);
             if (isExistingUser.HasValue && isExistingUser.Value == true)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access");
                 this.ShowBackButton("AddContributor", "UserManagement");
                 return View("Contributor/AddEmailAddress", model);
             }
@@ -141,7 +141,7 @@ namespace HNTAS.Web.UI.Controllers
             if (heatNetworks == null)
             {
                 _logger.LogError("No heat networks found in API for the UserId : {UserId}", userId);
-                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later";
                 return View("Contributors/ChooseHeatNetwork");
             }
 
@@ -173,7 +173,7 @@ namespace HNTAS.Web.UI.Controllers
             if (heatNetworks == null)
             {
                 _logger.LogError("No heat networks found in API for the UserId : {UserId}", userId);
-                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later";
                 ViewBag.FormAction = "SaveChosenHeatNetwork";
                 ViewBag.FormController = "NewContributor";
                 return View("Contributor/ChooseHeatNetwork");
@@ -215,7 +215,7 @@ namespace HNTAS.Web.UI.Controllers
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");
-                TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later";
                 return View("Contributor/ChooseRole", model);
             }
 
@@ -241,7 +241,7 @@ namespace HNTAS.Web.UI.Controllers
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");
-                TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later";
                 return View("Contributor/ChooseRole", model);
             }
             model.Roles = roles;
@@ -302,7 +302,7 @@ namespace HNTAS.Web.UI.Controllers
             if (state == null || state.Data == null)
             {
                 _logger.LogError("Workflow state or data is null when trying to submit answers.");
-                TempData["ErrorMessage"] = "Unable to submit your details. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to submit your details. Please try again later";
                 return RedirectToAction("CheckYourAnswers");
             }
 
@@ -335,7 +335,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 if (string.IsNullOrWhiteSpace(invitationId))
                 {
-                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                     return RedirectToAction("CheckYourAnswers");
                 }
 
@@ -348,7 +348,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error submitting new contributor details.");
-                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                 return RedirectToAction("CheckYourAnswers");
             }
 

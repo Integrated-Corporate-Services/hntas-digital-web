@@ -221,6 +221,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .ReturnsAsync(new UserResponse
                 {
                     OrgId = "org1",
+                    Roles = new List<UserRole> { UserRole.ResponsibleParty },
                     ContributingOrganisations = new List<string> { "org1" }
                 });
 
@@ -852,7 +853,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("HeatNetworkEcDistrict", viewResult.ViewName);
+            Assert.Equal("HeatNetworkRegistration/HeatNetworkEcDistrict", viewResult.ViewName);
             Assert.Equal(model, viewResult.Model);
         }
 
@@ -875,7 +876,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("HeatNetworkEcDistrict", viewResult.ViewName);
+            Assert.Equal("HeatNetworkRegistration/HeatNetworkEcDistrict", viewResult.ViewName);
             Assert.IsType<DoesDistrictHnHaveOwnEcViewModel>(viewResult.Model);
         }
 
@@ -1293,6 +1294,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
         }
+        
 
         [Fact]
         public void HeatNetworkName_Get_NoSession_ReturnsNewModel()
@@ -1885,7 +1887,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("DoesHNHaveAPostcode", viewResult.ViewName);
+            Assert.Equal("HeatNetworkRegistration/DoesHNHaveAPostcode", viewResult.ViewName);
 
             // ✅ verify logger called
             _loggerMock.Verify(
@@ -2643,7 +2645,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("ECCoordinates", viewResult.ViewName);
+            Assert.Equal("HeatNetworkRegistration/ECCoordinates", viewResult.ViewName);
 
             Assert.False(_controller.ModelState.IsValid);
             Assert.Contains("LatitudeLongitude", _controller.ModelState.Keys);
@@ -2779,7 +2781,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("HeatNetworkPhase", viewResult.ViewName);
+            Assert.Equal("HeatNetworkRegistration/HeatNetworkPhase", viewResult.ViewName);
             Assert.Equal(model, viewResult.Model);
         }
 
@@ -2898,7 +2900,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void CheckYourAnswers_Get_MissingCriticalData_RedirectsToDashboard()
+        public async Task CheckYourAnswers_Get_MissingCriticalData_RedirectsToDashboard()
         {
             // Arrange
             _controller.ControllerContext = new ControllerContext
@@ -2912,7 +2914,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Returns((HeatNetworkNameModel)null); // triggers guard
 
             // Act
-            var result = _controller.CheckYourAnswers();
+            var result = await _controller.CheckYourAnswersAsync();
 
             // Assert
             var redirect = Assert.IsType<RedirectToActionResult>(result);
@@ -2921,7 +2923,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void CheckYourAnswers_Get_CommunalWithEc_BuildsCorrectModel()
+        public async Task CheckYourAnswers_Get_CommunalWithEc_BuildsCorrectModel()
         {
             // Arrange
             _controller.ControllerContext = new ControllerContext
@@ -2932,7 +2934,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             SetupAllValidSessionData(isCommunal: true, hasOwnEc: true);
 
             // Act
-            var result = _controller.CheckYourAnswers();
+            var result = await _controller.CheckYourAnswersAsync();
 
             // Assert
             var view = Assert.IsType<ViewResult>(result);
@@ -2943,7 +2945,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void CheckYourAnswers_Get_CommunalNoEc_SetsCorrectText()
+        public async Task CheckYourAnswers_Get_CommunalNoEc_SetsCorrectText()
         {
             _controller.ControllerContext = new ControllerContext
             {
@@ -2952,7 +2954,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             SetupAllValidSessionData(isCommunal: true, hasOwnEc: false);
 
-            var result = _controller.CheckYourAnswers();
+            var result = await _controller.CheckYourAnswersAsync();
 
             var model = Assert.IsType<CheckYourAnswersHeatNetworkModel>(
                 ((ViewResult)result).Model);
@@ -2961,7 +2963,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
-        public void CheckYourAnswers_Get_SavesModelToSession()
+        public async Task CheckYourAnswers_Get_SavesModelToSession()
         {
             _controller.ControllerContext = new ControllerContext
             {
@@ -2970,14 +2972,14 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             SetupAllValidSessionData(isCommunal: true, hasOwnEc: true);
 
-            _controller.CheckYourAnswers();
+            await _controller.CheckYourAnswersAsync();
 
             _sessionHelperMock.Verify(x => x.SaveToSession(
                 It.IsAny<HttpContext>(),
                 SessionKeys.CheckYourAnswersHeatNetworkModelKey,
                 It.IsAny<CheckYourAnswersHeatNetworkModel>()),
                 Times.Once);
-        }
+        }        
 
         private void SetupAllValidSessionData(bool isCommunal = true, bool hasOwnEc = true)
         {
@@ -3058,7 +3060,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("CheckYourAnswers", viewResult.ViewName);
+            Assert.Equal("HeatNetworkRegistration/CheckYourAnswers", viewResult.ViewName);
             Assert.Same(viewModel, viewResult.Model);
             Assert.True(_controller.ModelState.ContainsKey(nameof(viewModel.ConfirmedDeclaration)));
         }
@@ -3078,9 +3080,9 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("CheckYourAnswers", viewResult.ViewName);
+            Assert.Equal("HeatNetworkRegistration/CheckYourAnswers", viewResult.ViewName);
             Assert.Same(viewModel, viewResult.Model);
-            Assert.Equal("An error occurred while submitting your heat network details. Please try again later.", _controller.TempData["ErrorMessage"]);
+            Assert.Equal("An error occurred while submitting your heat network details. Please try again later", _controller.TempData["ErrorMessage"]);
         }
 
         [Fact]
@@ -3095,8 +3097,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("CheckYourAnswers", viewResult.ViewName);
-            Assert.Equal("An error occurred while submitting your heat network details. Please try again later.", _controller.TempData["ErrorMessage"]);
+            Assert.Equal("HeatNetworkRegistration/CheckYourAnswers", viewResult.ViewName);
+            Assert.Equal("An error occurred while submitting your heat network details. Please try again later", _controller.TempData["ErrorMessage"]);
         }
 
         [Fact]
@@ -3119,7 +3121,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             Assert.Equal("hn123", _controller.TempData["Confirmation_HN_Id"]);
             Assert.Equal("HN Name", _controller.TempData["HNName"]);
             Assert.Equal("desc", _controller.TempData["AdditionalDescription"]);
-        }
+        }        
 
         [Fact]
         public async Task SubmitAnswers_HeatNetworkConnections_IsNull_ForCommunal()

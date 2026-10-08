@@ -38,12 +38,12 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (Api.Client.Client.ApiException ex)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while submitting feedback. Please try again.");
+                ModelState.AddModelError(string.Empty, "An error occurred while submitting feedback. Please try again");
                 return View(model);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again.");
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again");
                 return View(model);
             }
         }

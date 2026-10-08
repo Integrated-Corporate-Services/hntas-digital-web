@@ -11,6 +11,7 @@ using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Diagnostics;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -39,17 +40,14 @@ namespace HNTAS.Web.UI.Controllers
             try
             {
                 var user = await _userService.GetUserDetails(userId);
-
                 if (user == null)
                 {
-                    throw new Exception("Unable to retrieve user information. Please try again later.");
+                    throw new Exception("Unable to retrieve user information. Please try again later");
                 }
-
-                if (user.Roles != null && user.Roles.Contains(UserRole.ResponsiblePerson) && user.Organisation == null)
+                if (user.Roles != null && user.Roles.Contains(UserRole.ResponsibleParty) && user.Organisation == null)
                 {
                     throw new Exception("Your account is not associated with any organisation. Please contact support.");
                 }
-
                 return user; // Assuming you want to return user details here
             }
             catch (Exception ex)
@@ -62,65 +60,96 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> UserAccount()
         {
-            _ = bool.TryParse(_configuration?.GetSection("ExistingNetworks:EnableFeature")?.Value, out bool isExistingNetworksFeatureEnabled);
+            var isExistingNetworksFeatureEnabled = bool.TryParse( _configuration["ExistingNetworks:EnableFeature"], out var featureEnabled) && featureEnabled;
+
             ViewBag.IsExistingNetworksFeatureEnabled = isExistingNetworksFeatureEnabled;
+
             UserDetailsResponse user;
+
+            var sw = Stopwatch.StartNew();
+
             try
             {
-                user = await RetrieveUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+                var userId = _sessionHelper.GetFromSession<string>(
+                    HttpContext,
+                    SessionKeys.UserModel_Id_SessionKey);
+
+                user = await RetrieveUserDetails(userId);
+
+                _logger.LogInformation("RetrieveUserDetails took {Ms} ms", sw.ElapsedMilliseconds);
+
+               
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new DashboardModel());
-            }            
-            var isAssessorOrCertifier = "false";
-            if (user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Assessor.ToString() || user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.Certifier.ToString())
-            {
-                isAssessorOrCertifier = "true";
-            }
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.IsAssessorOrCertifier, isAssessorOrCertifier);
-            if(user.Roles[0].ToString() == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString())
-            {
-                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey, "Contributors");
-            }
-            else
-            {
-                _sessionHelper.SaveToSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey, null);
-            }
-            if (user.Organisation?.Name != null)
-            {
-                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, user.Organisation.Name);
-                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, user.Organisation.OrgId);
             }
 
-            var networks = await _heatNetworkService.GetHeatNetworkByUserId(user.Id!, RegistrationSource2.OFGEM);
+            var isAssessorOrCertifier =
+                user.Roles.Contains(UserRole.Assessor) ||
+                user.Roles.Contains(UserRole.Certifier);
+
+            _sessionHelper.SaveToSession(
+                HttpContext,
+                SessionKeys.IsAssessorOrCertifier,
+                isAssessorOrCertifier.ToString().ToLowerInvariant());
+
+            _sessionHelper.SaveToSession<string>(
+                HttpContext,
+                SessionKeys.WhoDoYouWantToAddSessionKey,
+                user.Roles.Contains(UserRole.DesignatedDutyHolder)
+                    ? "Contributors"
+                    : null);
+
+            if (user.Organisation?.Name is not null)
+            {
+                _sessionHelper.SaveToSession(
+                    HttpContext,
+                    SessionKeys.OrganisationName,
+                    user.Organisation.Name);
+
+                _sessionHelper.SaveToSession(
+                    HttpContext,
+                    SessionKeys.OrganisationId,
+                    user.Organisation.OrgId);
+            }
+
+            sw.Restart();
+
+            var ofgemNetworks = await _heatNetworkService.GetHeatNetworkByUserIdPaginatedAsync(
+                user.Id!,
+                RegistrationSource2.OFGEM, 1, 1);
+
+            _logger.LogInformation("GetHeatNetworkByUserIdPaginatedAsync OFGEM took {Ms} ms", sw.ElapsedMilliseconds);
+
+            sw.Restart();
+
+            var hntasNetworks = await _heatNetworkService.GetHeatNetworkByUserIdPaginatedAsync(
+                user.Id!,
+                RegistrationSource2.HNTAS, 1, 1);
+
+            _logger.LogInformation("GetHeatNetworkByUserIdPaginatedAsync HNTAS took {Ms} ms", sw.ElapsedMilliseconds);
 
             var dashboardModel = new DashboardModel
             {
-                OrganisationName = user?.Organisation?.Name,
-                UserRole = user.Roles[0].ToString(),
-                IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsiblePerson) ?? false,
-                HasHeatNetworks = user.HeatNetworks != null && user.HeatNetworks.Any(),
-                HasOfgemNetworks = networks.Count != 0
+                OrganisationName = user.Organisation?.Name,
+                UserRoles = user.Roles,
+                IsResponsiblePerson = user.Roles.Contains(UserRole.ResponsibleParty),
+                HasHntasNetworks = hntasNetworks.TotalCount > 0,
+                HasOfgemNetworks = ofgemNetworks.TotalCount > 0,
+                HasMultipleContributingOrganisations = user.ContributingOrganisations?.Count > 1
             };
-            var managedUsers = await _userService.GetManagedUsers(user.Id);
-            if(dashboardModel.IsResponsiblePerson && managedUsers.Count <= 1 && !dashboardModel.HasHeatNetworks)
-            {
-                ViewBag.RPLoggedInForFirstTime = true;
-            }
-            else
-            {
-                ViewBag.RPLoggedInForFirstTime = false;
-            }
+
             ViewBag.UserId = user.Id;
+
             return View(dashboardModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> OrganisationDetails()
         {
-            this.ShowBackButton("UserAccount");
+ 
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             UserDetailsResponse user;
             bool isUserAnRP;
@@ -134,7 +163,10 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new OrganisationDetailsModel());
             }
-            _sessionHelper.SaveToSession<string>(HttpContext, "IsUserAnRP", isUserAnRP.ToString());
+            _sessionHelper.SaveToSession<string>(HttpContext, "IsUserAnRP", isUserAnRP.ToString());            
+
+            ViewBag.IsUserAnRp = isUserAnRP;
+            ViewBag.IsMultipleOrganisation = user.ContributingOrganisations?.Count > 1;
 
             var model = new OrganisationDetailsModel
             {
@@ -147,10 +179,74 @@ namespace HNTAS.Web.UI.Controllers
                 Town = user.Organisation?.RegisteredAddress?.Town,
                 County = user.Organisation?.RegisteredAddress?.County,
                 Postcode = user.Organisation?.RegisteredAddress?.Postcode,
-                Country = user.Organisation?.RegisteredAddress?.Country
+                Country = user.Organisation?.RegisteredAddress?.Country,
+                CompanyHouseNumber = user.Organisation?.CompaniesHouseNumber
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SwitchOrganisation()
+        {
+            this.ShowBackButton("OrganisationDetails");
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            var userId = _sessionHelper.GetFromSession<string>(
+                    HttpContext,
+                    SessionKeys.UserModel_Id_SessionKey);
+
+            var currentOrgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
+
+            try
+            {
+                var orgs = await _organisationService.GetAcceptedOrganisationByUserId(userId!);
+                var model = new SwitchOrganisationModel
+                {
+                    Organisations = orgs.Where(w => w.OrgId != currentOrgId).Select(o => new OrganisationToSelect
+                    {
+                        OrgId = o.OrgId!,
+                        OrgName = o.Name!
+                    }).ToList()
+                };
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.SwitchOrganisationModelSessionKey, model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return View(new SwitchOrganisationModel());
+            }            
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SwitchOrganisation(SwitchOrganisationModel model)
+        {
+            var orgs = _sessionHelper.GetFromSession<SwitchOrganisationModel>(HttpContext, SessionKeys.SwitchOrganisationModelSessionKey);
+            model.Organisations = orgs.Organisations;
+            if (string.IsNullOrEmpty(model.SelectedOrganisation))
+            {
+                ModelState.Remove("Organisations");                
+                return View(model);
+            }
+
+            try
+            {
+                var userId = _sessionHelper.GetFromSession<string>(
+                    HttpContext,
+                    SessionKeys.UserModel_Id_SessionKey);
+                await _userService.UpdateUserWithExistingOrganisationId(userId!, model.SelectedOrganisation);
+                var selectedOrg = orgs.Organisations.FirstOrDefault(o => o.OrgId == model.SelectedOrganisation);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, selectedOrg?.OrgName);
+                _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, selectedOrg?.OrgId);
+                
+                return RedirectToAction("OrganisationDetails", "Dashboard");
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "An error occurred while switching organisations. Please try again later.";
+                return View(model);
+            }
         }
 
         [HttpGet]
@@ -163,7 +259,6 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> YourDetails()
         {
-            this.ShowBackButton("UserAccount", "Dashboard");
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var user = await _userService.GetUserDetails(userId);
 
@@ -211,7 +306,7 @@ namespace HNTAS.Web.UI.Controllers
             };
             var userModel = new UserModel
             {
-                IsRegulatoryContact = user.Roles.Contains(UserRole.ResponsiblePerson),
+                IsRegulatoryContact = user.Roles.Contains(UserRole.ResponsibleParty),
                 OrganisationName = user.Organisation?.Name,
                 ContactDetails = model
             };

@@ -20,6 +20,7 @@ Name | Type | Description | Notes
 **Organisation** | [**OrganisationResponse**](OrganisationResponse.md) |  | [optional] 
 **HeatNetworks** | [**List&lt;HeatNetworkUserResponse&gt;**](HeatNetworkUserResponse.md) |  | [optional] 
 **ContributingOrganisations** | **List&lt;string&gt;** |  | [optional] 
+**ActiveContributingOrgId** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

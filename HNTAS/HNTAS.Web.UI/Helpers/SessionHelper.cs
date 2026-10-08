@@ -78,6 +78,7 @@ namespace HNTAS.Web.UI.Helpers
             ClearFromSession(context, SessionKeys.NewContributorDetailsViewModelSessionKey);
             ClearFromSession(context, SessionKeys.ExistingContributorsListViewModelSessionKey);
             ClearFromSession(context, SessionKeys.NewContributorHeatNetworkViewModelSessionKey);
+            ClearFromSession(context, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey);
             ClearFromSession(context, SessionKeys.CheckYourAnswersContributorsModelSessionKey);
         }
 

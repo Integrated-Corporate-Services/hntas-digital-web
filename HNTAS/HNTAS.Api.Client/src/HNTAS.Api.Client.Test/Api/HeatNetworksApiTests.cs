@@ -63,37 +63,12 @@ namespace HNTAS.Api.Client.Test.Api
         }
 
         /// <summary>
-        /// Test ApiHeatNetworksExistingNetworkByUserIdGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiHeatNetworksExistingNetworkByUserIdGetAsyncTest()
-        {
-            ExistingNetworkRequest existingNetworkRequest = default!;
-            var response = await _instance.ApiHeatNetworksExistingNetworkByUserIdGetAsync(existingNetworkRequest);
-            var model = response.Ok();
-            Assert.IsType<ExistingNetworkResponse>(model);
-        }
-
-        /// <summary>
         /// Test ApiHeatNetworksGet
         /// </summary>
         [Fact (Skip = "not implemented")]
         public async Task ApiHeatNetworksGetAsyncTest()
         {
             var response = await _instance.ApiHeatNetworksGetAsync();
-            var model = response.Ok();
-            Assert.IsType<List<HeatNetworkResponse>>(model);
-        }
-
-        /// <summary>
-        /// Test ApiHeatNetworksHeatNetworkByUserIdGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiHeatNetworksHeatNetworkByUserIdGetAsyncTest()
-        {
-            Client.Option<string> userId = default!;
-            Client.Option<RegistrationSource2> registrationSource = default!;
-            var response = await _instance.ApiHeatNetworksHeatNetworkByUserIdGetAsync(userId, registrationSource);
             var model = response.Ok();
             Assert.IsType<List<HeatNetworkResponse>>(model);
         }
@@ -120,7 +95,7 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiHeatNetworksHnIdsGetAsync(hnIdsString);
             var model = response.Ok();
             Assert.IsType<List<HeatNetworkResponse>>(model);
-        }
+        }        
 
         /// <summary>
         /// Test ApiHeatNetworksNetworkElementsPut

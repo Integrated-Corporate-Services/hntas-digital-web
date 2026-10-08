@@ -13,52 +13,66 @@
         Model.Postcode,
         Model.Country
     }.Where(line => !string.IsNullOrWhiteSpace(line));
+
+    var companyNumber = !string.IsNullOrEmpty(Model.CompanyHouseNumber) ? @Model.CompanyHouseNumber : "Not applicable";
 }
 
-<div class="govuk-width-container">
+@section BeforeMain {
+
+    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="@Url.Action("UserAccount", "Dashboard")">Dashboard</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item">
+                Organisation details
+            </li>
+        </ol>
+    </nav>
+}
+
+
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            
-            <span class="govuk-hint">@Model.OrganisationName</span>
+            <span class="govuk-caption-l">@ViewBag.OrganisationName</span>        
             <h1 class="govuk-heading-l">Organisation details</h1>
 
-            <h2 class="govuk-heading-m">Heat networks</h2>
+        @if (ViewBag.IsUserAnRp != true && ViewBag.IsMultipleOrganisation == true)
+        {
+            <div class="govuk-body">
+                <a class="govuk-link" href="@Url.Action("SwitchOrganisation", "Dashboard")">Switch organisation</a> to view the networks for the organisation
+            </div>
+        }        
 
             <dl class="govuk-summary-list govuk-!-margin-bottom-7">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Organisation reference number</dt>
+                <dd class="govuk-summary-list__value">@Model.OrganisationId</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Organisation type</dt>
+                <dd class="govuk-summary-list__value">@Model.OrganisationType</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Company number</dt>
+                <dd class="govuk-summary-list__value">@companyNumber</dd>
+            </div>
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Name</dt>
-                    <dd class="govuk-summary-list__value">@Model.OrganisationName</dd>
-                </div>
-                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Type</dt>
-                    <dd class="govuk-summary-list__value">@Model.OrganisationType</dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Address</dt>
+                <dt class="govuk-summary-list__key">Organisation name and address</dt>                    
                     <dd class="govuk-summary-list__value">
+                    @Model.OrganisationName <br />
                         @foreach (var line in addressLines)
                         {
-                            @line <br />
+                            @line
+                            <br />
                         }
                     </dd>
-                </div>
+                </div>                
 
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Responsible Person's <br/> Email address</dt>
+                    <dt class="govuk-summary-list__key">Email address</dt>
                     <dd class="govuk-summary-list__value">@Model.RPEmail</dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">HNTAS Organisation ID</dt>
-                    <dd class="govuk-summary-list__value">@Model.OrganisationId</dd>
-                </div>
-            </dl>
-
-            <a href="@Url.Action("EditOrganisationDetails", "Dashboard")" class="govuk-button" data-module="govuk-button">
-                Edit organisation details
-            </a>
-            
+                </div>                
+            </dl>            
         </div>
     </div>
-</div>

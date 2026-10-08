@@ -44,7 +44,7 @@ namespace HNTAS.Web.UI.Filters
             {
                 if (context.Controller is Controller controller)
                 {
-                    controller.TempData["ErrorMessage"] = "Your previous session has expired. Please start the process again.";
+                    controller.TempData["ErrorMessage"] = "Your previous session has expired. Please start the process again";
                 }
 
                 context.Result = new RedirectToActionResult("Start", "Organisation", null);

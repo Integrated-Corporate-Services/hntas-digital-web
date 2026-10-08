@@ -9,6 +9,7 @@ using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -16,20 +17,14 @@ namespace HNTAS.Web.UI.Controllers
     public class NetworkElementsController : Controller
     {
         private readonly ILogger<NetworkElementsController> _logger;
-        private readonly IHeatNetworkService _heatNetworkService;
-        private readonly IUserService _userService;
-        private readonly ISessionHelper _sessionHelper;
-        private readonly IOrganisationService _organisationService;
-        private readonly IAddressLookupService _addressLookUpService;
+        private readonly IHeatNetworkService _heatNetworkService;        
+        private readonly ISessionHelper _sessionHelper;              
 
-        public NetworkElementsController(ILogger<NetworkElementsController> logger, IHeatNetworkService heatNetworkService, IUserService userService, ISessionHelper sessionHelper, IOrganisationService organisationService, IAddressLookupService addressLookupService)
+        public NetworkElementsController(ILogger<NetworkElementsController> logger, IHeatNetworkService heatNetworkService,  ISessionHelper sessionHelper)
         {
             _logger = logger;
-            _heatNetworkService = heatNetworkService;
-            _userService = userService;
-            _sessionHelper = sessionHelper;
-            _organisationService = organisationService;
-            _addressLookUpService = addressLookupService;
+            _heatNetworkService = heatNetworkService;            
+            _sessionHelper = sessionHelper;                    
         }
 
         [HttpGet]
@@ -96,19 +91,44 @@ namespace HNTAS.Web.UI.Controllers
                 var ele = new ElementGroup
                 {
                     ElementDisplayType = selectedId,
-                    Count = model.ElementCounts.TryGetValue(selectedId, out var cnt) ? cnt : null,
+                    Count = model.ElementCounts.TryGetValue(selectedId, out var cnt) ? (int?)cnt : null,
                 };
                 elements.Add(ele);
-                if ((!model.ElementCounts.TryGetValue(selectedId, out var count) || count == null || count <= 0))
+
+
+                var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc).FirstOrDefault(x => x.Id == selectedId);
+
+                if (element == null)
                 {
-                    var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc).FirstOrDefault(x => x.Id == selectedId);
-                    if (element == null)
+                    return BadRequest();
+                }
+
+                if (model.ElementCounts.TryGetValue(selectedId, out var count) && count.HasValue)
+                {
+                    // Check if the double has a fractional part
+                    bool isWholeNumber = count.Value % 1 == 0;
+
+                    if (!isWholeNumber)
                     {
-                        return BadRequest();
+                        ModelState.Remove($"ElementCounts.{selectedId}");
+                        ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter the number of {element.SubLabel.ToLower()} as a whole number");
                     }
-                    // Remove the automatic ModelState entry first
-                    ModelState.Remove($"ElementCounts.{selectedId}");
-                    ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter number of {element.SubLabel.ToLower()}.");
+                }
+
+                if (count == null || count <= 0)
+                {
+                 
+                    if(count == null)
+                    {
+                        // Remove the automatic ModelState entry first
+                        ModelState.Remove($"ElementCounts.{selectedId}");
+                        ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter the number of {element.SubLabel.ToLower()}");
+                    }
+                    else
+                    {
+                        ModelState.Remove($"ElementCounts.{selectedId}");
+                        ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter the number of {element.SubLabel.ToLower()} as a whole number greater than 0");
+                    }
                 }
             }
 
@@ -131,7 +151,8 @@ namespace HNTAS.Web.UI.Controllers
                     var label = elementOption != null ? elementOption.Label : e.ElementDisplayType.ToString();
                     label = label.ToSentenceCase();
 
-                    return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
+                    //return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
+                    return e.Count.HasValue ? $"{e.Count.Value} {GetElementLabel(label, e.Count.Value)}" : label;
                 }).ToList(),
                 HeatNetworkAddress = addressByStreetOrTownModel?.Fulladdress ?? "Not provided",
                 Coordinates = latlong,
@@ -261,7 +282,8 @@ namespace HNTAS.Web.UI.Controllers
                 var label = elementOption != null ? elementOption.Label : e.ElementDisplayType.ToString();
                 label = label.ToSentenceCase();
 
-                return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
+                //return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
+                return e.Count.HasValue? $"{e.Count.Value} {GetElementLabel(label, e.Count.Value)}" : label;
             }).ToList();
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementOverview);
@@ -393,6 +415,29 @@ namespace HNTAS.Web.UI.Controllers
                 elements.Add(element);
             }
             return elements;
+        }
+
+        private static string GetElementLabel(string label, int count)
+        {
+            return label switch
+            {
+                "Communal substation (within the communal building)" =>
+                    count == 1
+                        ? "Communal substation (within the communal building)"
+                        : "Communal substations (within the communal building)",
+
+                "Communal distribution network" =>
+                    count == 1
+                        ? "Communal distribution network"
+                        : "Communal distribution networks",
+
+                "Consumer connection" =>
+                    count == 1
+                        ? "Consumer connection"
+                        : "Consumer connections",
+
+                _ => count == 1 ? label : $"{label}s"
+            };
         }
     }
 }

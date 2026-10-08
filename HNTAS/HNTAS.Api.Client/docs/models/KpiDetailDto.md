@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **KpiName** | **string** |  | [optional] 
 **Value** | **double** |  | [optional] 
+**Unit** | **string** |  | [optional] 
 **Status** | **string** |  | [optional] 
 **IsImputed** | **bool** |  | [optional] 
 **ImputationDetails** | **string** |  | [optional] 

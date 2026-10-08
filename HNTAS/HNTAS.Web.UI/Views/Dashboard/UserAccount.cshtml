@@ -5,39 +5,91 @@
 
 @{
     ViewData["Title"] = "User Account";
-    var disabled = Model.HasHeatNetworks ? "" : "dashboard-card--disabled";
-    var userIsRP = Model.UserRole == UserRole.ResponsiblePerson.ToString();
-    var userIsActingRP = Model.UserRole == UserRole.NetworkManager.ToString();
-    var userIsAssessor = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Assessor.ToString();
-    var userIsCertifier = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Certifier.ToString();
-    var userIsContributor = Model.UserRole == HNTAS.Api.Client.Model.UserRole.Contributor.ToString();
-    var userIsDesignatedDutyHolder = Model.UserRole == HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder.ToString();
+    var disabled = Model.HasHntasNetworks ? "" : "dashboard-card--disabled";
+    var userIsRP = Model.UserRoles.Contains(UserRole.ResponsibleParty);
+    var userIsActingRP = Model.UserRoles.Contains(UserRole.NetworkManager);
+    var userIsAssessor = Model.UserRoles.Contains(HNTAS.Api.Client.Model.UserRole.Assessor);
+    var userIsCertifier = Model.UserRoles.Contains(HNTAS.Api.Client.Model.UserRole.Certifier);
+    var userIsContributor = Model.UserRoles.Contains(HNTAS.Api.Client.Model.UserRole.Contributor);
+    var userIsDesignatedDutyHolder = Model.UserRoles.Contains(HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder);
     var newNetworksLabel = @ViewBag.IsExistingNetworksFeatureEnabled ? "Your heat networks (New build)" : "Your heat networks";
 }
 
-<div class="govuk-width-container">
-    @if (Model.UserRole == UserRole.ResponsiblePerson.ToString() || Model.UserRole == UserRole.NetworkManager.ToString())
-    {
-        <div><span class="govuk-hint">Your organisation</span></div>
-        <h1 class="govuk-heading-l">@Model.OrganisationName</h1>
-    }
-    else
-    {
-        <h1 class="govuk-heading-l">My details</h1>
-    }
-    <h2 class="govuk-visually-hidden">Dashboard</h2>
 
+
+    <span class="govuk-caption-l">Dashboard</span>
+    <h1 class="govuk-heading-l">@Model.OrganisationName</h1>
     @if (userIsRP)
     {
-        <div class="govuk-button-group govuk-!-margin-top-9">
+        <div class="govuk-button-group govuk-!-margin-top-5">
             <span class="govuk-body">
-                <a href="@Url.Action("HeatNetworkDwellingsCheck", "HeatNetworkRegistration")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                <a href="@Url.Action("Index", "HeatNetwork")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
                     Add a heat network
-                </a> <a class="govuk-link" href="@Url.Action("ManageLeads", "NetworkLeads")">Authorise someone else to add heat networks</a>
+                </a>
+                or
+                <a class="govuk-link" href="@Url.Action("ManageLeads", "NetworkLeads")">Authorise someone to manage heat networks</a>
             </span>
         </div>
     }
+
     <div class="dashboard-grid">
+
+        <!-- Your heat networks (new)-->
+    @if (Model.HasHntasNetworks || userIsActingRP)
+        {
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">@newNetworksLabel</a>
+                    </h3>
+                    <p class="govuk-body-s">View and add details to your heat network(s)</p>
+                </div>
+            </div>
+        }
+
+    @if (Model.HasHntasNetworks && !userIsDesignatedDutyHolder && !userIsContributor)
+        {
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageContributors" asp-controller="Contributors">Duty holders and contributors</a>
+                    </h3>
+                    <p class="govuk-body-s">Personnel providing expertise at a per network level only</p>
+                </div>
+            </div>
+        }
+
+        @if (userIsRP)
+        {
+            <!-- Network Managers -->
+            @if (Model.HasHntasNetworks)
+            {
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            @* <a class="govuk-link govuk-link--no-visited-state" asp-controller="NetworkLeads" asp-action="ManageLeads"> *@
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageLeads" asp-controller="NetworkLeads">
+                                Network Managers
+                            </a>
+                        </h3>
+                        <p class="govuk-body-s">Accountable personnel able to add heat networks and dutyholders</p>
+                    </div>
+                </div>
+            }
+        }
+
+        @if ((userIsRP || userIsActingRP) && Model.HasHntasNetworks)
+        {
+            <div class="dashboard-grid__item">
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card__title govuk-heading-s">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="AssignedAssessor">Assessors</a>
+                    </h3>
+                    <p class="govuk-body-s">View assessors assigned to your networks</p>
+                </div>
+            </div>
+        }
+
         <!-- Notifications -->
         <div class="dashboard-grid__item">
             <div class="dashboard-card">
@@ -57,7 +109,7 @@
                 {
                     <h3 class="dashboard-card__title govuk-heading-s">
                         <a class="govuk-link govuk-link--no-visited-state" asp-controller="ExistingOrganisation" asp-action="AddOrRegister">
-                            Add Organisation details
+                            Add Organisation Details
                         </a>
                     </h3>
                     <p class="govuk-body-s">Add or register the organisation you work for.</p>
@@ -67,7 +119,7 @@
                     <h3 class="dashboard-card__title govuk-heading-s">
                         <a asp-controller="Dashboard" asp-action="OrganisationDetails" class="govuk-link govuk-link--no-visited-state">Organisation details</a>
                     </h3>
-                    <p class="govuk-body-s">View or change your organisation's details.</p>
+                <p class="govuk-body-s">@(!Model.HasMultipleContributingOrganisations ? "View organisation" : "View or switch organisation")</p>
                 }
             </div>
         </div>
@@ -76,7 +128,7 @@
         <div class="dashboard-grid__item">
             <div class="dashboard-card">
                 <h3 class="dashboard-card__title govuk-heading-s">
-                    <a class="govuk-link govuk-link--no-visited-state" asp-action="YourDetails" asp-controller="Dashboard">Your details</a>
+                    <a class="govuk-link govuk-link--no-visited-state" asp-action="YourDetails" asp-controller="Dashboard">Your Details</a>
                 </h3>
                 <p class="govuk-body-s">View your details.</p>
             </div>
@@ -85,37 +137,7 @@
         
         @if (userIsRP || userIsActingRP)
         {
-            @if (userIsRP)
-            {
-                <!-- Network Managers -->
-                @if (Model.HasHeatNetworks)
-                {
-                    <div class="dashboard-grid__item">
-                        <div class="dashboard-card">
-                            <h3 class="dashboard-card__title govuk-heading-s">
-                                @* <a class="govuk-link govuk-link--no-visited-state" asp-controller="NetworkLeads" asp-action="ManageLeads"> *@
-                                <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageLeads" asp-controller="NetworkLeads">
-                                    Network Managers
-                                </a>
-                            </h3>
-                            <p class="govuk-body-s">Accountable personnel able to add heat networks and dutyholders</p>
-                        </div>
-                    </div>
-                }                
-            }
-
-            @if (Model.HasHeatNetworks)
-            {
-                <div class="dashboard-grid__item">
-                    <div class="dashboard-card">
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">@newNetworksLabel</a>
-                        </h3>
-                        <p class="govuk-body-s">View and add details to your heat network(s)</p>
-                    </div>
-                </div>
-            }            
-
+           
             @if (Model.HasOfgemNetworks && @ViewBag.IsExistingNetworksFeatureEnabled)
             {
                 <div class="dashboard-grid__item">
@@ -127,33 +149,6 @@
                     </div>
                 </div>
             }            
-
-            @if (Model.HasHeatNetworks)
-            {
-                <div class="dashboard-grid__item">
-                    <div class="dashboard-card">
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageContributors" asp-controller="Contributors">Duty holders and contributors</a>
-                        </h3>
-                        <p class="govuk-body-s">Personnel providing expertise at a per network level only</p>
-                    </div>
-                </div>
-            }
-                      
-            @if (Model.HasHeatNetworks)
-            {
-                <div class="dashboard-grid__item">
-                    <div class="dashboard-card">
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="AssignedAssessor">Assessors</a>
-                        </h3>
-                        <p class="govuk-body-s">View assessors assigned to your networks</p>
-                    </div>
-                </div>
-            }
-            
-
-
             @if (@ViewBag.IsExistingNetworksFeatureEnabled)
             {
                 <div class="dashboard-grid__item">
@@ -166,7 +161,7 @@
                 </div>
             }            
 
-            @if (Model.HasHeatNetworks)
+            @if (Model.HasHntasNetworks)
             {
                 <div class="dashboard-grid__item">
                     <div class="dashboard-card">
@@ -180,93 +175,49 @@
                         </p>
                     </div>
                 </div>
-            }            
-                      
-        }
-        else if (userIsAssessor)
-        {
-            @if (Model.HasHeatNetworks)
-            {
-                <div class="dashboard-grid__item">
-                    <div class="dashboard-card ">
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-action="UserDetails" asp-controller="Assessor">User Details</a>
-                        </h3>
-                        <p class="govuk-body-s">View your details</p>
-                    </div>
-                </div>
-            }
-            
 
-            @if (Model.HasHeatNetworks)
-            {
-                <div class="dashboard-grid__item">
-                    <div class="dashboard-card">
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">@newNetworksLabel</a>
-                        </h3>
-                        <p class="govuk-body-s">View the heat network to be assessed.</p>
-                    </div>
-                </div>
-            }
-                       
-        }
-        else if (userIsCertifier)
-        {
-            @if (Model.HasHeatNetworks)
-            {
-                <div class="dashboard-grid__item">
-                    <div class="dashboard-card">
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-action="UserDetails" asp-controller="Assessor">User Details</a>
-                        </h3>
-                        <p class="govuk-body-s">View your details</p>
-                    </div>
-                </div>
-            }
-            
-
-            @if (Model.HasHeatNetworks)
-            {
-                <div class="dashboard-grid__item">
-                    <div class="dashboard-card">
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">Networks for certification</a>
-                        </h3>
-                        <p class="govuk-body-s">View networks assigned to you.</p>
-                    </div>
-                </div>
-            }
-            
-        }
-        else if(userIsContributor || userIsDesignatedDutyHolder)
-        {
-            @if (Model.HasHeatNetworks)
-            {
-                <div class="dashboard-grid__item">
-                    <div class="dashboard-card">
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-action="HeatNetworks" asp-controller="UserManagement">@newNetworksLabel</a>
-                        </h3>
-                        <p class="govuk-body-s">View, add or edit heat network details.</p>
-                    </div>
-                </div>
-            }
-            
-            @if (userIsDesignatedDutyHolder)
-            {
-                @if (Model.HasHeatNetworks)
-                {
+                <environment names="local,dev">
                     <div class="dashboard-grid__item">
                         <div class="dashboard-card">
                             <h3 class="dashboard-card__title govuk-heading-s">
-                                <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageContributors" asp-controller="Contributors">Contributors</a>
+                                <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="PowerBi">
+                                    Power Bi Dashboard
+                                </a>
                             </h3>
-                            <p class="govuk-body-s">Personnel providing expertise at a per network level only</p>
+                            <p class="govuk-body-s">
+                                View KPI assessments, performance thresholds, and data integrity checks for registered heat networks.
+                            </p>
                         </div>
                     </div>
-                }
-                
+
+                    <div class="dashboard-grid__item">
+                        <div class="dashboard-card">
+                            <h3 class="dashboard-card__title govuk-heading-s">
+                                <a class="govuk-link govuk-link--no-visited-state" target="_blank" href="https://app.powerbi.com/groups/me/reports/6d3202fb-a1e5-4167-989d-07fdbed7a9d7/72d9137f634e75ade019?experience=power-bi">
+                                    Power Bi Dashboard (Open new window)
+                                </a>
+                            </h3>
+                            <p class="govuk-body-s">
+                                View KPI assessments, performance thresholds, and data integrity checks for registered heat networks.
+                            </p>
+                        </div>
+                    </div>
+                </environment>
+            }            
+                      
+        }        
+        else if(userIsDesignatedDutyHolder)
+        {
+            @if (Model.HasHntasNetworks)
+            {
+                <div class="dashboard-grid__item">
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card__title govuk-heading-s">
+                            <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageContributors" asp-controller="Contributors">Contributors</a>
+                        </h3>
+                        <p class="govuk-body-s">Personnel providing expertise at a per network level only</p>
+                    </div>
+                </div>
             }
         }
         <environment names="dev">
@@ -282,5 +233,6 @@
         </environment>
 
     </div>
+
+
     
-</div>
