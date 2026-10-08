@@ -36,12 +36,14 @@ namespace HNTAS.Api.Client.Model
         /// <param name="kpiName">kpiName</param>
         /// <param name="value">value</param>
         /// <param name="status">status</param>
+        /// <param name="unit">unit</param>
         [JsonConstructor]
-        public AggregatedKpi(Option<string?> kpiName = default, Option<double?> value = default, Option<string?> status = default)
+        public AggregatedKpi(Option<string?> kpiName = default, Option<double?> value = default, Option<string?> status = default, Option<string?> unit = default)
         {
             KpiNameOption = kpiName;
             ValueOption = value;
             StatusOption = status;
+            UnitOption = unit;
             OnCreated();
         }
 
@@ -87,6 +89,19 @@ namespace HNTAS.Api.Client.Model
         public string? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Unit
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> UnitOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Unit
+        /// </summary>
+        [JsonPropertyName("unit")]
+        public string? Unit { get { return this.UnitOption; } set { this.UnitOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -97,6 +112,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  KpiName: ").Append(KpiName).Append("\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  Unit: ").Append(Unit).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -137,6 +153,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> kpiName = default;
             Option<double?> value = default;
             Option<string?> status = default;
+            Option<string?> unit = default;
 
             while (utf8JsonReader.Read())
             {
@@ -162,6 +179,9 @@ namespace HNTAS.Api.Client.Model
                         case "status":
                             status = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "unit":
+                            unit = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         default:
                             break;
                     }
@@ -177,7 +197,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class AggregatedKpi.");
 
-            return new AggregatedKpi(kpiName, value, status);
+            return new AggregatedKpi(kpiName, value, status, unit);
         }
 
         /// <summary>
@@ -218,6 +238,12 @@ namespace HNTAS.Api.Client.Model
 
             if (aggregatedKpi.StatusOption.IsSet)
                 writer.WriteString("status", aggregatedKpi.Status);
+
+            if (aggregatedKpi.UnitOption.IsSet)
+                if (aggregatedKpi.UnitOption.Value != null)
+                    writer.WriteString("unit", aggregatedKpi.Unit);
+                else
+                    writer.WriteNull("unit");
         }
     }
 }

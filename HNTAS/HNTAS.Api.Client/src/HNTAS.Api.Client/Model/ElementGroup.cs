@@ -36,13 +36,15 @@ namespace HNTAS.Api.Client.Model
         /// <param name="elementDisplayType">elementDisplayType</param>
         /// <param name="count">count</param>
         /// <param name="soaStages">soaStages</param>
+        /// <param name="soaMilestones">soaMilestones</param>
         /// <param name="elementType">elementType</param>
         [JsonConstructor]
-        public ElementGroup(Option<HeatNetworkElementType?> elementDisplayType = default, Option<int?> count = default, Option<List<SoaStages>?> soaStages = default, Option<ElementTypeInShort?> elementType = default)
+        public ElementGroup(Option<HeatNetworkElementType?> elementDisplayType = default, Option<int?> count = default, Option<List<SoaStages>?> soaStages = default, Option<List<SoaMilestone>?> soaMilestones = default, Option<ElementTypeInShort?> elementType = default)
         {
             ElementDisplayTypeOption = elementDisplayType;
             CountOption = count;
             SoaStagesOption = soaStages;
+            SoaMilestonesOption = soaMilestones;
             ElementTypeOption = elementType;
             OnCreated();
         }
@@ -102,6 +104,19 @@ namespace HNTAS.Api.Client.Model
         public List<SoaStages>? SoaStages { get { return this.SoaStagesOption; } set { this.SoaStagesOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of SoaMilestones
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<SoaMilestone>?> SoaMilestonesOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets SoaMilestones
+        /// </summary>
+        [JsonPropertyName("soaMilestones")]
+        public List<SoaMilestone>? SoaMilestones { get { return this.SoaMilestonesOption; } set { this.SoaMilestonesOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -112,6 +127,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  ElementDisplayType: ").Append(ElementDisplayType).Append("\n");
             sb.Append("  Count: ").Append(Count).Append("\n");
             sb.Append("  SoaStages: ").Append(SoaStages).Append("\n");
+            sb.Append("  SoaMilestones: ").Append(SoaMilestones).Append("\n");
             sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -153,6 +169,7 @@ namespace HNTAS.Api.Client.Model
             Option<HeatNetworkElementType?> elementDisplayType = default;
             Option<int?> count = default;
             Option<List<SoaStages>?> soaStages = default;
+            Option<List<SoaMilestone>?> soaMilestones = default;
             Option<ElementTypeInShort?> elementType = default;
 
             while (utf8JsonReader.Read())
@@ -181,6 +198,9 @@ namespace HNTAS.Api.Client.Model
                         case "soaStages":
                             soaStages = new Option<List<SoaStages>?>(JsonSerializer.Deserialize<List<SoaStages>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "soaMilestones":
+                            soaMilestones = new Option<List<SoaMilestone>?>(JsonSerializer.Deserialize<List<SoaMilestone>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         case "elementType":
                             string? elementTypeRawValue = utf8JsonReader.GetString();
                             if (elementTypeRawValue != null)
@@ -198,7 +218,7 @@ namespace HNTAS.Api.Client.Model
             if (elementType.IsSet && elementType.Value == null)
                 throw new ArgumentNullException(nameof(elementType), "Property is not nullable for class ElementGroup.");
 
-            return new ElementGroup(elementDisplayType, count, soaStages, elementType);
+            return new ElementGroup(elementDisplayType, count, soaStages, soaMilestones, elementType);
         }
 
         /// <summary>
@@ -244,6 +264,14 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("soaStages");
+            if (elementGroup.SoaMilestonesOption.IsSet)
+                if (elementGroup.SoaMilestonesOption.Value != null)
+                {
+                    writer.WritePropertyName("soaMilestones");
+                    JsonSerializer.Serialize(writer, elementGroup.SoaMilestones, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("soaMilestones");
             if (elementGroup.ElementTypeOption.IsSet)
             {
                 var elementTypeRawValue = ElementTypeInShortValueConverter.ToJsonValue(elementGroup.ElementType!.Value);

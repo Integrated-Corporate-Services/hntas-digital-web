@@ -60,7 +60,7 @@ namespace HNTAS.Web.UI.Controllers
             if (contributors == null || !contributors.Any())
             {
                 _logger.LogError("No contributors found for the current user.");
-                ViewData["ErrorMessage"] = "No users found. Please contact support.";
+                ViewData["ErrorMessage"] = "No users found. Please contact support";
                 ViewBag.NoUsers = true;
                 return View("ChooseUser", state.Data.ChooseContributorModel);
             }
@@ -114,7 +114,7 @@ namespace HNTAS.Web.UI.Controllers
             if (heatNetworks == null)
             {
                 _logger.LogError("No heat networks found in API for the UserId : {UserId}", userId);
-                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later";
                 return View("Contributor/ChooseHeatNetwork");
             }
 
@@ -143,7 +143,7 @@ namespace HNTAS.Web.UI.Controllers
             if (heatNetworks == null)
             {
                 _logger.LogError("No heat networks found in API for the UserId : {UserId}", userId);
-                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later";
                 ViewBag.FormAction = "SaveChooseHeatNetwork";
                 ViewBag.FormController = "ExistingContributor";
                 return View("Contributor/ChooseHeatNetwork");
@@ -189,7 +189,7 @@ namespace HNTAS.Web.UI.Controllers
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");
-                TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later";
                 return View("Contributor/ChooseRole", model);
             }
             var state = _workflowManager.GetState<AddExistingContributorWorkflowModel>();
@@ -214,7 +214,7 @@ namespace HNTAS.Web.UI.Controllers
             if (roles == null)
             {
                 _logger.LogError("No contributor roles found in API.");
-                TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve contributor roles. Please try again later";
                 return View("Contributor/ChooseRole", model);
             }
             model.Roles = roles;
@@ -279,7 +279,7 @@ namespace HNTAS.Web.UI.Controllers
             if (state == null || state.Data == null)
             {
                 _logger.LogError("Workflow state or data is null when trying to submit answers.");
-                TempData["ErrorMessage"] = "Unable to submit your details. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to submit your details. Please try again later";
                 return RedirectToAction("CheckYourAnswers");
             }
 
@@ -309,7 +309,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 if (string.IsNullOrWhiteSpace(invitationId))
                 {
-                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                     return RedirectToAction("CheckYourAnswers");
                 }
 
@@ -322,7 +322,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error submitting new contributor details for email: {Email}", state.Data.ChooseContributorModel?.SelectedContributorEmail);
-                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                 return RedirectToAction("CheckYourAnswers");
             }
 

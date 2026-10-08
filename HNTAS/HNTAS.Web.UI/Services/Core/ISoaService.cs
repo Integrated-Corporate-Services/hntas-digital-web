@@ -6,5 +6,7 @@ namespace HNTAS.Web.UI.Services.Core
     {        
         Task UpdateElementSoaStatus(ElementSoaStatusUpdateRequest request);
         Task AssignAssessor(ElementSoaAssignAssessorRequest request);
+        Task UpdateElementSoaStatusForExistingNetwork(ElementSoaStatusUpdateRequestForExistingNetwork request);
+        Task AssignAssessorForExistingNetwork(ElementSoaAssignAssessorRequestForExistingNetwork request);
     }
 }

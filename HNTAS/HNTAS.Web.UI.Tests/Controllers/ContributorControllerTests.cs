@@ -160,7 +160,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.True(_controller.TempData.ContainsKey("ErrorMessage"));
-            Assert.Equal("The invitation token is missing from your request. Please use the link provided in the invitation email to proceed.", _controller.TempData["ErrorMessage"]);
+            Assert.Equal("The invitation token is missing from your request. Please use the link provided in the invitation email to proceed", _controller.TempData["ErrorMessage"]);
         }
 
         [Fact]
@@ -236,7 +236,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal(model, viewResult.Model);
             Assert.True(_controller.TempData.ContainsKey("ErrorMessage"));
-            Assert.Equal("An error occurred while declining the invitation. Please try again later.", _controller.TempData["ErrorMessage"]);
+            Assert.Equal("An error occurred while declining the invitation. Please try again later", _controller.TempData["ErrorMessage"]);
         }
 
         [Fact]

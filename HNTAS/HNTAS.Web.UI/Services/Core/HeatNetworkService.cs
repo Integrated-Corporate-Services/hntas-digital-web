@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Api;
+using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
 
 namespace HNTAS.Web.UI.Services.Core
@@ -35,28 +36,44 @@ namespace HNTAS.Web.UI.Services.Core
             throw new Exception($"Failed to fetch heat network '{hnId}' — status code: {response.StatusCode}");
         }
 
-        public async Task<List<HeatNetworkResponse>> GetHeatNetworkByUserId(string userId, RegistrationSource2 registrationSource = RegistrationSource2.HNTAS)
+        public async Task<PagedResultOfUserNetworkDetailsResponse> GetHeatNetworkByUserIdPaginatedAsync(
+            string userId,
+            RegistrationSource2 registrationSource = RegistrationSource2.HNTAS,
+            int pageNumber = 1,
+            int pageSize = 10,
+            string sortBy = "Name",
+            string sortDirection = "asc",
+            CancellationToken cancellationToken = default)
         {
             try
             {
-                var response = await _heatNetworksApi.ApiHeatNetworksHeatNetworkByUserIdGetAsync(userId, registrationSource);
+                var response = await _heatNetworksApi.ApiHeatNetworksHeatNetworkByUserIdPaginatedGetAsync(
+                    userId: new Option<string>(userId),
+                    registrationSource: new Option<RegistrationSource2>(registrationSource),
+                    pageNumber: new Option<int>(pageNumber),
+                    pageSize: new Option<int>(pageSize),
+                    sortBy: new Option<string>(sortBy),
+                    sortDirection: new Option<string>(sortDirection),
+                    cancellationToken: cancellationToken);
 
                 if (response.IsOk)
                 {
-                    var networks = response.Ok();
-                    _logger.LogInformation("Retrieved {Count} heat networks for user ID: {UserId}.", networks.Count, userId);
-                    return networks;
-                }
-                else
-                {
-                    return new List<HeatNetworkResponse>();
+                    var pagedResult = response.Ok();
+                    _logger.LogInformation("Retrieved {Count} heat networks for user ID: {UserId}.", pagedResult.Items?.Count ?? 0, userId);
+                    return pagedResult;
                 }
 
-                throw new InvalidOperationException($"Failed to retrieve heat networks for user ID: {userId}. Status code: {response.StatusCode}");
+                _logger.LogWarning("Failed to retrieve heat networks for user ID: {UserId}. Status code: {StatusCode}", userId, response.StatusCode);
+                return new PagedResultOfUserNetworkDetailsResponse();
+            }
+            catch (ApiException ex)
+            {
+                _logger.LogError(ex, "API call failed while retrieving heat networks for user ID: {UserId}.", userId);
+                throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving heat networks for user ID: {UserId}.", userId);
+                _logger.LogError(ex, "Unexpected error retrieving heat networks for user ID: {UserId}.", userId);
                 throw;
             }
         }
@@ -107,7 +124,26 @@ namespace HNTAS.Web.UI.Services.Core
                 _logger.LogError(ex, "Error submitting heat network answers.");
                 throw;
             }
-        }        
+        }
+
+        public async Task<HeatNetworkResponse> RegisterOfgemNetwork(HeatNetwork heatNetwork)
+        {            
+            try
+            {
+                var response = await _heatNetworksApi.ApiHeatNetworksRegisterOfgemNetworkPutAsync(heatNetwork);
+
+                if (response.IsOk)
+                {                    
+                    return response.Ok()!;
+                }
+                throw new Exception($"Failed to register Ofgem network with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {   
+                _logger.LogError(ex, "Error submitting Ofgem network registration.");
+                throw;
+            }
+        }
 
         public async Task<HeatNetworkResponse> UpdateNetworkElements(string hnId, NetworkElements2 request)
         {

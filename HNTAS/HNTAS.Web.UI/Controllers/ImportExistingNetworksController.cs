@@ -1,9 +1,11 @@
 ﻿using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HNTAS.Web.UI.Controllers
 {
+    [ExcludeFromCodeCoverage]
     public class ImportExistingNetworksController : Controller
     {
         private readonly IImportExistingNetworksService _importExistingNetworksService;
@@ -52,7 +54,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "There was a problem reading the file. Ensure it is not password protected.");
+                ModelState.AddModelError("", "There was a problem reading the file. Ensure it is not password protected");
                 return View("Index");
             }
         }

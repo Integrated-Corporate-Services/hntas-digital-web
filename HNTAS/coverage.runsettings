@@ -4,7 +4,7 @@
 		<DataCollectors>
 			<DataCollector friendlyName="XPlat code coverage">
 				<Configuration>
-
+					<Format>cobertura</Format>
 					<!-- ✅ Only exclude full projects -->
 					<Exclude>
 						<ModulePath>.*HNTAS\.Api\.Client.*</ModulePath>
@@ -17,6 +17,7 @@
 						**/Model/*.cs
 						**/DTOs/*.cs
 						**/Dtos/*.cs
+						**/Program.cs
 					</ExcludeByFile>
 
 					<!-- ✅ Exclude generated code -->

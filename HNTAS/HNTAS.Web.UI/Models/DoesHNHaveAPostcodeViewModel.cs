@@ -4,11 +4,11 @@ namespace HNTAS.Web.UI.Models
 {
     public class DoesHNHaveAPostcodeViewModel : IValidatableObject
     {
-        [Required(ErrorMessage = "Select yes if it has a postcode.")]
+        [Required(ErrorMessage = "Select whether the energy centre has an address and postcode")]
         public bool? HasPostcode { get; set; } = null;
 
         [RegularExpression(@"^[A-Za-z]{1,2}\d[A-Za-z\d]?\s*\d[A-Za-z]{2}$",
-            ErrorMessage = "Please enter a valid UK postcode.")]
+            ErrorMessage = "Enter a valid UK postcode")]
         public string? Postcode { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -18,7 +18,7 @@ namespace HNTAS.Web.UI.Models
                 if (string.IsNullOrWhiteSpace(Postcode))
                 {
                     yield return new ValidationResult(
-                        "Enter a postcode.",
+                        "Enter the postcode",
                         new[] { nameof(Postcode) }
                     );
                 }

@@ -35,11 +35,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="label">label</param>
         /// <param name="value">value</param>
+        /// <param name="unit">unit</param>
         [JsonConstructor]
-        public CarbonInputUiDisplay(Option<string?> label = default, Option<double?> value = default)
+        public CarbonInputUiDisplay(Option<string?> label = default, Option<double?> value = default, Option<string?> unit = default)
         {
             LabelOption = label;
             ValueOption = value;
+            UnitOption = unit;
             OnCreated();
         }
 
@@ -72,6 +74,19 @@ namespace HNTAS.Api.Client.Model
         public double? Value { get { return this.ValueOption; } set { this.ValueOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Unit
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> UnitOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Unit
+        /// </summary>
+        [JsonPropertyName("unit")]
+        public string? Unit { get { return this.UnitOption; } set { this.UnitOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -81,6 +96,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class CarbonInputUiDisplay {\n");
             sb.Append("  Label: ").Append(Label).Append("\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
+            sb.Append("  Unit: ").Append(Unit).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -120,6 +136,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> label = default;
             Option<double?> value = default;
+            Option<string?> unit = default;
 
             while (utf8JsonReader.Read())
             {
@@ -142,6 +159,9 @@ namespace HNTAS.Api.Client.Model
                         case "value":
                             value = new Option<double?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (double?)null : utf8JsonReader.GetDouble());
                             break;
+                        case "unit":
+                            unit = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         default:
                             break;
                     }
@@ -154,7 +174,7 @@ namespace HNTAS.Api.Client.Model
             if (value.IsSet && value.Value == null)
                 throw new ArgumentNullException(nameof(value), "Property is not nullable for class CarbonInputUiDisplay.");
 
-            return new CarbonInputUiDisplay(label, value);
+            return new CarbonInputUiDisplay(label, value, unit);
         }
 
         /// <summary>
@@ -189,6 +209,12 @@ namespace HNTAS.Api.Client.Model
 
             if (carbonInputUiDisplay.ValueOption.IsSet)
                 writer.WriteNumber("value", carbonInputUiDisplay.ValueOption.Value!.Value);
+
+            if (carbonInputUiDisplay.UnitOption.IsSet)
+                if (carbonInputUiDisplay.UnitOption.Value != null)
+                    writer.WriteString("unit", carbonInputUiDisplay.Unit);
+                else
+                    writer.WriteNull("unit");
         }
     }
 }

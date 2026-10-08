@@ -6,8 +6,6 @@ using HNTAS.Web.UI.Models.Contributors;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
-using Mono.TextTemplating;
-using System.Threading.Tasks;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -19,38 +17,85 @@ namespace HNTAS.Web.UI.Controllers
         private readonly IUserService _userService;
         private readonly IInvitationService _invitationService;
         private readonly IInvitationTokenService _invitationTokenService;
+        private readonly IHeatNetworkService _heatNetworkService;
 
-        public ContributorsController(ISessionHelper sessionHelper, ILogger<ContributorsController> logger, IUserService userService, IInvitationService invitationService, IInvitationTokenService invitationTokenService)
+        public ContributorsController(ISessionHelper sessionHelper, ILogger<ContributorsController> logger, IUserService userService, IInvitationService invitationService, IInvitationTokenService invitationTokenService, IHeatNetworkService heatNetworkService)
         {
             _sessionHelper = sessionHelper;
             _logger = logger;
             _userService = userService;
             _invitationService = invitationService;
             _invitationTokenService = invitationTokenService;
+            _heatNetworkService = heatNetworkService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> ManageContributors()
+        public async Task<IActionResult> ManageContributors([FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string sortBy = "firstName",
+            [FromQuery] string sortDirection = "asc")
         {
-            _sessionHelper.ClearAllContributoFlowRelatedSessionData(HttpContext);
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var managedUsers = await _userService.GetManagedUsers(userId);
-            List<DDHAndContributorsListModel> listOfContributors = new List<DDHAndContributorsListModel>();
-            foreach (var user in managedUsers)
+            try
             {
-                foreach (var heatNetwork in user.HeatNetworks)
+                // Validate and sanitize inputs
+                if (pageNumber < 1) pageNumber = 1;
+
+                // Validate sort order
+                sortDirection = sortDirection?.ToLower() == "desc" ? "desc" : "asc";
+
+                _sessionHelper.ClearAllContributoFlowRelatedSessionData(HttpContext);
+                var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+                var managedUsers = await _userService.GetDdhAndContributorsPaginated(userId, pageNumber: pageNumber, pageSize: pageSize, sortBy: sortBy, sortDirection: sortDirection);
+                List<DDHAndContributorsListModel> listOfContributors = new List<DDHAndContributorsListModel>();
+                var userRoles = await _userService.GetUserRolesAsync();
+
+                foreach (var user in managedUsers.Items!)
                 {
-                    listOfContributors.Add(new DDHAndContributorsListModel
+                    var primaryRoleName = user.Roles?.FirstOrDefault();
+
+                    foreach (var heatNetwork in user.HeatNetworks)
                     {
-                        Name = user.Name,
-                        HeatNetwork = heatNetwork.HnId,
-                        Role = user.Roles[0],
-                        Status = new InvitationStatusTag(user.Status)
-                    });
+                        listOfContributors.Add(new DDHAndContributorsListModel
+                        {
+                            Name = user.Name,
+                            HeatNetworkId = heatNetwork.HnId,
+                            HeatNetworkName = heatNetwork.Name,
+                            Role = userRoles.FirstOrDefault(ur => ur.Name == primaryRoleName)?.Description,
+                            Status = new InvitationStatusTag(user.Status)
+                        });
+                    }
                 }
+                
+                ViewBag.WhoDoYouWantToAdd = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey) ?? "Duty holders and contributors";
+
+                // Pass sorting and pagination info to view
+                ViewBag.CurrentSort = sortBy;
+                ViewBag.CurrentOrder = sortDirection;
+                ViewBag.CurrentPage = pageNumber;
+                ViewBag.PageSize = pageSize;
+                ViewBag.TotalPages = managedUsers.TotalPages ?? 1;
+                ViewBag.TotalItems = managedUsers.TotalCount ?? 0;
+                return View(listOfContributors);
             }
-            ViewBag.WhoDoYouWantToAdd = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey) ?? "Duty holders and contributors";
-            return View(listOfContributors);
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving DDH and contributors");
+                TempData["ErrorMessage"] = "An error occurred while retrieving the DDH and contributors";
+
+                // Return empty result
+                var emptyResult = new List<DDHAndContributorsListModel>();
+
+                ViewBag.CurrentSort = sortBy;
+                ViewBag.CurrentOrder = sortDirection ?? "asc";
+                ViewBag.CurrentPage = pageNumber;
+                ViewBag.PageSize = pageSize;
+                ViewBag.TotalPages = 0;
+                ViewBag.TotalItems = 0;
+                ViewBag.NextOrder = "desc";
+
+                return View(emptyResult);
+            }
+            
         }
 
         [HttpGet]
@@ -76,20 +121,33 @@ namespace HNTAS.Web.UI.Controllers
 
         private string GetRole()
         {
-            string whoDoYouWantToAdd = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey);
+            string? whoDoYouWantToAdd =
+                _sessionHelper.GetFromSession<string>(
+                    HttpContext,
+                    SessionKeys.WhoDoYouWantToAddSessionKey);
+
             if (whoDoYouWantToAdd == null)
             {
-                var role = _sessionHelper.GetFromSession<NewContributorRoleViewModel>(HttpContext, SessionKeys.NewContributorRoleViewModelSessionKey).IsDDH;
-                whoDoYouWantToAdd = role switch
+                var roleModel =
+                    _sessionHelper.GetFromSession<NewContributorRoleViewModel>(
+                        HttpContext,
+                        SessionKeys.NewContributorRoleViewModelSessionKey);
+
+                if (roleModel == null)
                 {
-                    true => "Designated duty holder",
-                    false => "Contributor"
-                };
+                    throw new InvalidOperationException(
+                        $"Session key '{SessionKeys.NewContributorRoleViewModelSessionKey}' not found.");
+                }
+
+                whoDoYouWantToAdd = roleModel.IsDDH.Value
+                    ? "Designated duty holder"
+                    : "Contributor";
             }
             else
             {
                 whoDoYouWantToAdd = "Contributor";
             }
+
             return whoDoYouWantToAdd;
         }
 
@@ -126,6 +184,7 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult NewContributorDetails()
         {
             this.ShowBackButton("AddContributor");
+            ViewBag.whoDoYouWantToAdd = GetRole();
             var model = _sessionHelper.GetFromSession<NewContributorDetailsViewModel>(HttpContext, SessionKeys.NewContributorDetailsViewModelSessionKey) ?? new NewContributorDetailsViewModel();
             return View(model);
         }
@@ -135,6 +194,7 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> NewContributorDetails(NewContributorDetailsViewModel model)
         {
             this.ShowBackButton("AddContributor");
+            ViewBag.whoDoYouWantToAdd = GetRole();
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -143,17 +203,39 @@ namespace HNTAS.Web.UI.Controllers
             bool? isRpUser = await _userService.IsRpUserAsync(model.EmailAddress);
             if (isRpUser.HasValue && isRpUser.Value == true)
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation.");
+                ModelState.AddModelError(nameof(model.EmailAddress), "This user is already registered as a Responsible Party and cannot be assigned as a contributor or Designated Duty Holder under another organisation");
                 return View(model);
             }
-            // if this email address exists in the existing users list then throw error
-            bool? isExistingUser = await _userService.IsActiveUserAsync(model.EmailAddress);
-            if (isExistingUser.HasValue && isExistingUser.Value == true)
+
+            var invitedUserDetails = await _userService.GetUserByEmailIdAsync(model.EmailAddress);
+            var invitedRoleData = _sessionHelper.GetFromSession<NewContributorRoleViewModel>(HttpContext, SessionKeys.NewContributorRoleViewModelSessionKey);
+            var currentUserOrgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
+
+            ContributorRole invitedRole = (invitedRoleData != null && invitedRoleData!.IsDDH == true) ? ContributorRole.DesignatedDutyHolder : ContributorRole.Contributor;
+
+            if (invitedUserDetails != null && invitedUserDetails.ContributingOrganisations!.Contains(currentUserOrgId!))
             {
-                ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access.");
-                this.ShowBackButton("AddContributor");
-                return View(model);
+                var userInvitations = await _invitationService.GetInvitationsByEmailAndOrg(model.EmailAddress, currentUserOrgId!);
+
+                if (userInvitations != null && userInvitations.Any())
+                {
+
+                    var hasActiveInvitationForRole = userInvitations!.Any(invitation =>
+                    invitation.InvitedRoles.Contains(invitedRole));
+
+                    if (hasActiveInvitationForRole)
+                    {
+                        ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active invitation for the same role. Go back and Add another user to give them access");
+                        this.ShowBackButton("AddContributor");
+                        return View(model);
+                    }   
+
+                    ModelState.AddModelError(nameof(model.EmailAddress), "This user already has an active account. Go back and use Add an existing user to give them access");
+                    this.ShowBackButton("AddContributor");
+                    return View(model);
+                }                
             }
+            
             _sessionHelper.SaveToSession<NewContributorDetailsViewModel>(HttpContext, SessionKeys.NewContributorDetailsViewModelSessionKey, model);
             _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "NewContributorDetails");
             return RedirectToAction("NewContributorHeatNetwork");
@@ -218,13 +300,15 @@ namespace HNTAS.Web.UI.Controllers
             _logger.LogInformation("Retrieving heat networks for the user.");
 
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
             var response = await _userService.GetUserHeatNetworks(userId);
-            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(response);
+            var respectiveNetworks = response?.Where(w => w.OrgId == orgId).ToList();
+            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(respectiveNetworks!);
 
             if (heatNetworks == null)
             {
                 _logger.LogError("No heat networks found in API for the UserId : {UserId}", userId);
-                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later.";
+                TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later";
                 return null;
             }
             return heatNetworks;
@@ -233,7 +317,9 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> NewContributorHeatNetwork()
         {
-            var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backAction");
+            //var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backAction");
+            var addContributorModel = _sessionHelper.GetFromSession<AddContributorViewModel>(HttpContext, SessionKeys.AddContributorViewModelSessionKey);
+            var backAction = addContributorModel!.InviteNewContributor == true ? "NewContributorDetails" : "ExistingContributorsList";
             this.ShowBackButton(backAction);
             var model = _sessionHelper.GetFromSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey) ?? new NewContributorHeatNetworkViewModel();
             model.HeatNetworks = await GetListOfHeatNetworks();
@@ -259,6 +345,15 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
             _sessionHelper.SaveToSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey, model);
+            var network = await _heatNetworkService.GetAsync(model.SelectedHeatNetwork);
+            if(network.RegistrationSource == RegistrationSource.OFGEM)
+            {
+                HeatNetworkPhaseViewModel phaseModel = new HeatNetworkPhaseViewModel { Phases = [], SelectedPhases = ["Operation"] };
+                _sessionHelper.SaveToSession<HeatNetworkPhaseViewModel>(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey, phaseModel);
+                _sessionHelper.SaveToSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey, RegistrationSource.OFGEM);
+                _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "NewContributorHeatNetwork");
+                return RedirectToAction("CheckYourAnswers");
+            }
             return RedirectToAction("HeatNetworkPhase");
         }
 
@@ -294,10 +389,19 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult HeatNetworkPhase()
+        public async Task<IActionResult> HeatNetworkPhase()
         {
             this.ShowBackButton("NewContributorHeatNetwork");
-            var model = _sessionHelper.GetFromSession<HeatNetworkPhaseViewModel>(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey) ?? new HeatNetworkPhaseViewModel { Phases = GetListOfHeatNetworkPhases() };
+            var hnModel = _sessionHelper.GetFromSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey);
+            var network = await _heatNetworkService.GetAsync(hnModel.SelectedHeatNetwork);            
+            HeatNetworkPhaseViewModel model;
+            if (network.RegistrationSource != RegistrationSource.OFGEM) {
+                model = new HeatNetworkPhaseViewModel { Phases = GetListOfHeatNetworkPhases() };
+                _sessionHelper.SaveToSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey, RegistrationSource.HNTAS);
+            }
+            else {
+                model = _sessionHelper.GetFromSession<HeatNetworkPhaseViewModel>(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey) ?? new HeatNetworkPhaseViewModel { Phases = GetListOfHeatNetworkPhases() };
+            }                
             return View(model);
         }
 
@@ -308,10 +412,11 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("NewContributorHeatNetwork");
             model.Phases = GetListOfHeatNetworkPhases();
             if (!ModelState.IsValid)
-            {                
+            {
                 return View(model);
             }
             _sessionHelper.SaveToSession<HeatNetworkPhaseViewModel>(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey, model);
+            _sessionHelper.SaveToSession<string>(HttpContext, "backAction", "HeatNetworkPhase");
             return RedirectToAction("CheckYourAnswers");
         }
 
@@ -337,8 +442,13 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult CheckYourAnswers()
         {
-            this.ShowBackButton("HeatNetworkPhase");            
-            var model = _sessionHelper.GetFromSession<CheckYourAnswersViewModel>(HttpContext, SessionKeys.CheckYourAnswersContributorsModelSessionKey) ?? CreateCYAModel();
+            var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backAction");
+            this.ShowBackButton(backAction);
+            ViewBag.RegistrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
+
+            var addContributorModel = _sessionHelper.GetFromSession<AddContributorViewModel>(HttpContext, SessionKeys.AddContributorViewModelSessionKey);
+            ViewBag.ChangeEmailAction = addContributorModel!.InviteNewContributor == true ? "NewContributorDetails" : "ExistingContributorsList";
+            var model = _sessionHelper.GetFromSession<CheckYourAnswersViewModel>(HttpContext, SessionKeys.CheckYourAnswersContributorsModelSessionKey) ?? CreateCYAModel();            
             return View(model);
         }
 
@@ -346,7 +456,9 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckYourAnswers(CheckYourAnswersViewModel model)
         {
-            this.ShowBackButton("HeatNetworkPhase");
+            var backAction = _sessionHelper.GetFromSession<string>(HttpContext, "backAction");
+            this.ShowBackButton(backAction);
+            ViewBag.RegistrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
             model = CreateCYAModel();
             if (!ModelState.IsValid)
             {
@@ -366,13 +478,14 @@ namespace HNTAS.Web.UI.Controllers
                          contributorRoles: new List<ContributorRole> { inviteeRole },
                          replacedUserId: null,
                          rolesToReplace: new List<ContributorRole> { inviteeRole },
+                         orgId: _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId),
                          status: InvitationStatus.Invited
                      )
                  );
 
                 if (string.IsNullOrWhiteSpace(invitationId))
                 {
-                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                     return RedirectToAction("CheckYourAnswers");
                 }
 
@@ -385,7 +498,7 @@ namespace HNTAS.Web.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error submitting new contributor details for email: {Email}", model.EmailAddress);
-                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
                 return RedirectToAction("CheckYourAnswers");
             }
 

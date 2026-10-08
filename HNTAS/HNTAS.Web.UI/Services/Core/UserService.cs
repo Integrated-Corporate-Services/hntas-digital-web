@@ -1,5 +1,6 @@
 ﻿using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Extensions;
 
 namespace HNTAS.Web.UI.Services.Core
 {
@@ -70,6 +71,33 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+        public async Task<UserResponse?> GetUserByEmailIdAsync(string emailId)
+        {
+            _logger.LogInformation("Retrieving user by email ID");
+
+            try
+            {
+                var userResponse = await _usersApi.ApiUsersEmailEmailIdGetAsync(emailId);
+
+                if (userResponse.IsOk)
+                {
+                    return userResponse.Ok();
+                }
+                else if (userResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+
+                throw new Exception($"Failed to retrieve user with status code: {userResponse.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving user by email ID");
+                throw;
+            }
+        }
+
+
         public async Task<string?> CreateUser(InitialUserRegistrationRequest request)
         {
             try
@@ -103,7 +131,7 @@ namespace HNTAS.Web.UI.Services.Core
 
                 if (response.IsOk)
                 {
-                    return response.Ok()?.OrgId;
+                    return response.Ok()?.ActiveContributingOrgId;
                 }
 
                 throw new Exception($"Failed to create user with status code: {response.StatusCode}");
@@ -281,6 +309,35 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+        public async Task<PagedResultOfManagedUserResponse> GetDdhAndContributorsPaginated(string userId, int pageNumber = 1,
+            int pageSize = 1,
+            string sortBy = "firstName",
+            string sortDirection = "asc",
+            CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Getting managed users for user ID: {UserId}", userId);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                _logger.LogError("User ID is null or empty");
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty");
+            }
+            try
+            {
+                var response = await _usersApi.ApiUsersDdhAndContributorsPaginatedGetAsync(userId, pageNumber, pageSize, sortBy, sortDirection, cancellationToken);
+                if (response.IsOk)
+                {
+                    var pagedResult = response.Ok();
+                    return pagedResult;
+                }
+                throw new Exception($"Failed to get managed users with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting managed users for user ID: {UserId}", userId);
+                throw;
+            }
+        }
+
         public async Task<List<InvitedUserResponse>> GetNetworkLeads(string userId)
         {
             _logger.LogInformation("Getting network leads for user ID: {UserId}", userId);
@@ -331,7 +388,7 @@ namespace HNTAS.Web.UI.Services.Core
             {
                 return null;
             }
-            var errorMessage = $"Unable to determine Responsible Person status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
+            var errorMessage = $"Unable to determine Responsible Party status. API call failed with status code: {users.StatusCode}.";
             _logger.LogError(errorMessage);
             throw new Exception(errorMessage);
         }
@@ -348,7 +405,7 @@ namespace HNTAS.Web.UI.Services.Core
             {
                 return null;
             }
-            var errorMessage = $"Unable to determine Responsible Person status for user '{SanitizeForLogging(emailId)}'. API call failed with status code: {users.StatusCode}.";
+            var errorMessage = $"Unable to determine Responsible Party status. API call failed with status code: {users.StatusCode}.";
             _logger.LogError(errorMessage);
             throw new Exception(errorMessage);
         }
@@ -401,12 +458,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
             _logger.LogError("Failed to retrieve users by organisation ID with status code: {StatusCode}", usersResponse.StatusCode);
             throw new Exception($"Failed to retrieve users by organisation ID with status code: {usersResponse.StatusCode}");
-        }
-
-        private string SanitizeForLogging(string input)
-        {
-            return input?.Replace("\r", "").Replace("\n", "") ?? string.Empty;
-        }
+        }        
 
         public async Task<bool> IsSuperUser(string emailId)
         {

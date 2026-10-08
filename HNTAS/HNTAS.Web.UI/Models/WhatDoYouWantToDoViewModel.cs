@@ -4,7 +4,7 @@ namespace HNTAS.Web.UI.Models
 {
     public class WhatDoYouWantToDoViewModel
     {
-        [Required(ErrorMessage = "Please select an option.")]
+        [Required(ErrorMessage = "Select whether you want to register an organisation or sign in")]
         public string UserPathToday { get; set; } = string.Empty;
     }
 }

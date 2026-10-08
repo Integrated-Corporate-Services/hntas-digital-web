@@ -2,7 +2,7 @@
 @using HNTAS.Web.UI.Models.Enums
 @model HNTAS.Web.UI.Models.OrganisationModel
 @{
-    ViewData["Title"] = "Which type of organisation do you work for?";
+    ViewData["Title"] = "What type of organisation are you registering?";
 }
 
 <div class="govuk-grid-row">
@@ -15,7 +15,7 @@
                           aria-describedby="@(ViewData.ModelState.ContainsKey(nameof(Model.SelectedOrganisationType)) && ViewData.ModelState[nameof(Model.SelectedOrganisationType)].Errors.Any() ? "organisation-type-error" : "")">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
-                            Which type of organisation do you work for?
+                            What type of organisation are you registering?
                         </h1>
                     </legend>
 

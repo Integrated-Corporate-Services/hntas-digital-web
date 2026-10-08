@@ -4,7 +4,7 @@ namespace HNTAS.Web.UI.Models
 {
     public class ReplaceUserRoleViewModel
     {
-        [Required(ErrorMessage = "Please select a valid option.")]
+        [Required(ErrorMessage = "Select a valid option")]
         public string ReplaceExistingRole { get; set; } = null!;
         public string? CurrentRoleUserId { get; set; }
         public string? HeatNetworkName { get; set; }

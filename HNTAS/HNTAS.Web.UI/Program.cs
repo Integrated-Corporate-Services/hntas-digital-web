@@ -1,7 +1,10 @@
+using Amazon.S3;
 using GovUk.OneLogin.AspNetCore;
+using HNTAS.Api.Client;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Client;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authentication;
 using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Filters;
 using HNTAS.Web.UI.Helpers;
@@ -17,6 +20,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -35,9 +39,18 @@ else
 {
     builder.Services.AddDataProtection()
         .PersistKeysToAWSSystemsManager("/HNTAS/DataProtection")
-        .SetDefaultKeyLifetime(TimeSpan.FromDays(8));
+        .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
     Console.WriteLine("DataProtection Enabled: " + builder.Environment.EnvironmentName);
 }
+
+// Security fix : Configure HSTS (Strict-Transport-Security) for production environments
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromDays(365); // Standard 1-year duration
+});
+
 
 // Configure RouteOptions
 builder.Services.Configure<RouteOptions>(options =>
@@ -54,6 +67,8 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IApiTokenProvider, ApiTokenProvider>();
 
 var coreApiBaseUrl = Environment.GetEnvironmentVariable("CORE_BASE_URL") ?? throw new InvalidOperationException("Core API URL is not configured. Set CORE_BASE_URL environment variable.");
 
@@ -133,16 +148,29 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new ExistingNetworkResponseJsonConverter(),
         new CarbonInputUiDisplayJsonConverter(),
         new ImportResultJsonConverter(),
+        new ElementSoaAssignAssessorRequestForExistingNetworkJsonConverter(),
+        new ElementSoaStatusUpdateRequestForExistingNetworkJsonConverter(),
+        new SoaMilestoneJsonConverter(),
+        new SoaAssessorExistingNetworkJsonConverter(),
+        new SoaStatusWithCountExistingNetworkJsonConverter(),
+        new PagedResultOfUserNetworkDetailsResponseJsonConverter(),
+        new UserNetworkDetailsResponseJsonConverter(),
+        new PagedResultOfManagedUserResponseJsonConverter(),
+        new InvitationJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
+
+// Register token service for generating JWT tokens for internal API calls
+builder.Services.AddScoped<TokenProvider<BearerToken>, CustomBearerTokenProvider>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddSingleton<UsersApiEvents>();
 builder.Services.AddHttpClient<IUsersApi, UsersApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+}); 
 
 builder.Services.AddSingleton<OrganisationsApiEvents>();
 builder.Services.AddHttpClient<IOrganisationsApi, OrganisationsApi>(client =>
@@ -231,7 +259,6 @@ builder.Services.AddHttpClient<IAssignedAssessorApi, AssignedAssessorApi>(client
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
-
 builder.Services.AddSingleton<ArmsDashboardApiEvents>();
 builder.Services.AddHttpClient<IArmsDashboardApi, ArmsDashboardApi>(client =>
 {
@@ -252,6 +279,7 @@ builder.Services.AddHttpClient<ISuperUserApi, SuperUserApi>(client =>
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
+
 builder.Services.AddTransient<FeedbackApiEvents>();
 builder.Services.AddHttpClient<IFeedbackApi, FeedbackApi>(client =>
 {
@@ -292,6 +320,11 @@ builder.Services.AddScoped<IArmsDashboardService, ArmsDashboardService>();
 builder.Services.AddScoped<IImportExistingNetworksService, ImportExistingNetworksService>();
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
+builder.Services.AddSingleton<IAmazonS3>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    return S3ClientHelper.Create(config);
+});
 
 builder.Services.AddSingleton(sp =>
 {
@@ -390,13 +423,21 @@ else
         .AddOneLogin(options =>
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            if (builder.Environment.IsEnvironment("prod"))
+            {
+                options.Environment = OneLoginEnvironments.Production;
+            }
+            else
+            {
+                options.Environment = OneLoginEnvironments.Integration;
+            }
             options.Environment = OneLoginEnvironments.Integration;
             options.ClientId = Environment.GetEnvironmentVariable("ONELOGIN_CLIENT_ID");
             options.CallbackPath = "/onelogin-callback";
             options.SignedOutCallbackPath = "/onelogin-logout-callback";
             options.Scope.Add("openid");
             options.Scope.Add("email");
-            options.Scope.Add("phone");
+
             // ... your existing OneLogin event handlers and configuration ...
             options.Events.OnRedirectToIdentityProvider = context =>
             {
@@ -413,6 +454,15 @@ else
 
             options.Events.OnTokenValidated = context =>
             {
+                var oneLoginId = context.Principal?.FindFirst("sub")?.Value;
+
+                var jwtService = context.HttpContext.RequestServices
+                .GetRequiredService<IJwtTokenService>();
+
+                var hntasJwt = jwtService.GenerateToken(oneLoginId!);
+
+                context.HttpContext.Session.SetString(SessionKeys.HntasJwt, hntasJwt);
+
                 var state = context.ProtocolMessage.State;
 
                 if (!string.IsNullOrWhiteSpace(state))
@@ -426,9 +476,20 @@ else
             using (var rsa = RSA.Create())
             {
                 rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
-                options.ClientAuthenticationCredentials = new SigningCredentials(
-                    new RsaSecurityKey(rsa.ExportParameters(true)),
-                    SecurityAlgorithms.RsaSha256);
+
+                var rsaKey = new RsaSecurityKey(rsa.ExportParameters(true));
+
+                var keyId = builder.Configuration["Jwks:KeyId"];
+
+                if (!string.IsNullOrWhiteSpace(keyId))
+                {
+                    rsaKey.KeyId = keyId;
+                }
+
+                options.ClientAuthenticationCredentials =
+                    new SigningCredentials(
+                        rsaKey,
+                        SecurityAlgorithms.RsaSha256);
             }
 
             options.VectorsOfTrust = [builder.Configuration.GetValue<string>("OneLogin:VectorsOfTrust")];
@@ -442,7 +503,7 @@ builder.Services.AddApplicationAuthorization();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(builder.Configuration.GetValue<int>("SessionTimeout:Minutes"));
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -450,7 +511,44 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
+// Security clickjacking fix : Add Security Headers Middleware
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["X-Frame-Options"] = "SAMEORIGIN";
+
+    var connectSrc = string.Join(" ",
+    [
+        "connect-src",
+        "'self'",
+        "https://*.powerbi.com",
+        "https://*.analysis.windows.net",
+        "https://login.microsoftonline.com",
+        "https://*.google-analytics.com"
+    ]);
+
+    if (builder.Environment.EnvironmentName == "Local")
+    {
+        connectSrc += " http://localhost:* ws://localhost:*";
+    }
+
+    var csp =
+           "default-src 'self'; " +
+           "font-src 'self'; " +
+           "img-src 'self' data: https://*.powerbi.com https://www.googletagmanager.com https://*.google-analytics.com; " + 
+           "object-src 'none'; " +
+           "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com; " + 
+           "style-src 'self' 'unsafe-inline'; " +
+           "frame-src 'self' https://app.powerbi.com https://*.powerbi.com; " +
+           connectSrc + ";";
+
+    context.Response.Headers["Content-Security-Policy"] = csp;
+
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    context.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), accelerometer=()";
+
+    await next();
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -458,6 +556,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+//Status Code Pages & HTTPS Redirection
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -515,3 +616,6 @@ app.MapControllerRoute(
     defaults: new { controller = "Home", action = "StartPage" });
 
 app.Run();
+
+[ExcludeFromCodeCoverage]
+public partial class Program { }

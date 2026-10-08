@@ -35,12 +35,14 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="elementId">elementId</param>
         /// <param name="networkElementInstanceName">networkElementInstanceName</param>
+        /// <param name="soaMilestones">soaMilestones</param>
         /// <param name="elementType">elementType</param>
         [JsonConstructor]
-        public Element(Option<string?> elementId = default, Option<string?> networkElementInstanceName = default, Option<ElementTypeInShort?> elementType = default)
+        public Element(Option<string?> elementId = default, Option<string?> networkElementInstanceName = default, Option<List<SoaMilestone>?> soaMilestones = default, Option<ElementTypeInShort?> elementType = default)
         {
             ElementIdOption = elementId;
             NetworkElementInstanceNameOption = networkElementInstanceName;
+            SoaMilestonesOption = soaMilestones;
             ElementTypeOption = elementType;
             OnCreated();
         }
@@ -87,6 +89,19 @@ namespace HNTAS.Api.Client.Model
         public string? NetworkElementInstanceName { get { return this.NetworkElementInstanceNameOption; } set { this.NetworkElementInstanceNameOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of SoaMilestones
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<SoaMilestone>?> SoaMilestonesOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets SoaMilestones
+        /// </summary>
+        [JsonPropertyName("soaMilestones")]
+        public List<SoaMilestone>? SoaMilestones { get { return this.SoaMilestonesOption; } set { this.SoaMilestonesOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -96,6 +111,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class Element {\n");
             sb.Append("  ElementId: ").Append(ElementId).Append("\n");
             sb.Append("  NetworkElementInstanceName: ").Append(NetworkElementInstanceName).Append("\n");
+            sb.Append("  SoaMilestones: ").Append(SoaMilestones).Append("\n");
             sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -136,6 +152,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> elementId = default;
             Option<string?> networkElementInstanceName = default;
+            Option<List<SoaMilestone>?> soaMilestones = default;
             Option<ElementTypeInShort?> elementType = default;
 
             while (utf8JsonReader.Read())
@@ -159,6 +176,9 @@ namespace HNTAS.Api.Client.Model
                         case "networkElementInstanceName":
                             networkElementInstanceName = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "soaMilestones":
+                            soaMilestones = new Option<List<SoaMilestone>?>(JsonSerializer.Deserialize<List<SoaMilestone>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         case "elementType":
                             string? elementTypeRawValue = utf8JsonReader.GetString();
                             if (elementTypeRawValue != null)
@@ -173,7 +193,7 @@ namespace HNTAS.Api.Client.Model
             if (elementType.IsSet && elementType.Value == null)
                 throw new ArgumentNullException(nameof(elementType), "Property is not nullable for class Element.");
 
-            return new Element(elementId, networkElementInstanceName, elementType);
+            return new Element(elementId, networkElementInstanceName, soaMilestones, elementType);
         }
 
         /// <summary>
@@ -212,6 +232,14 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("networkElementInstanceName");
 
+            if (element.SoaMilestonesOption.IsSet)
+                if (element.SoaMilestonesOption.Value != null)
+                {
+                    writer.WritePropertyName("soaMilestones");
+                    JsonSerializer.Serialize(writer, element.SoaMilestones, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("soaMilestones");
             if (element.ElementTypeOption.IsSet)
             {
                 var elementTypeRawValue = ElementTypeInShortValueConverter.ToJsonValue(element.ElementType!.Value);

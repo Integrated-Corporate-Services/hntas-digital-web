@@ -76,7 +76,7 @@
             <div class="govuk-form-group @(hasEmailAddressErrors ? "govuk-form-group--error" : "")">
                 <span class="govuk-body">
                     Email address
-                </span><br/>
+                </span><br />
                 <span class="govuk-body">
                     @Model.EmailAddress
                 </span>
@@ -140,13 +140,14 @@
                             <input class="govuk-radios__input" id="PreferredContactType-Landline" name="PreferredContactType" type="radio"
                                    value="@PreferredContactType.Landline"
                                    data-aria-controls="conditional-Landline"
-                                   @(isLandlineSelected ? "checked" : "")
+                            @(isLandlineSelected ? "checked" : "")
                                    aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
                             <label class="govuk-label govuk-radios__label" for="PreferredContactType-Landline">
                                 Landline
                             </label>
                         </div>
-                        <div class="govuk-radios__conditional @(!isLandlineSelected ? "govuk-radios__conditional--hidden" : "")" id="conditional-Landline"> @* Conditional visibility logic needs updating too *@
+                        <div class="govuk-radios__conditional @(!isLandlineSelected ? "govuk-radios__conditional--hidden" : "")" id="conditional-Landline">
+                            @* Conditional visibility logic needs updating too *@
                             <div class="govuk-form-group @(hasLandlineNumberErrors ? "govuk-form-group--error" : "")">
                                 <label class="govuk-label" for="LandlineNumber">
                                     Landline number
@@ -183,7 +184,7 @@
                             <input class="govuk-radios__input" id="PreferredContactType-Mobile" name="PreferredContactType" type="radio"
                                    value="@PreferredContactType.Mobile"
                                    data-aria-controls="conditional-Mobile"
-                                   @(Model.PreferredContactType == PreferredContactType.Mobile ? "checked" : "")
+                            @(Model.PreferredContactType == PreferredContactType.Mobile ? "checked" : "")
                                    aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
                             <label class="govuk-label govuk-radios__label" for="PreferredContactType-Mobile">
                                 Mobile
@@ -212,7 +213,7 @@
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" id="PreferredContactType-PreferNotToSay" name="PreferredContactType" type="radio"
                                        value="@PreferredContactType.PreferNotToSay"
-                                       @(isPreferNotToSaySelected ? "checked" : "")
+                                @(isPreferNotToSaySelected ? "checked" : "")
                                        aria-describedby="@(hasPreferredContactTypeErrors ? "PreferredContactType-error" : "")">
                                 <label class="govuk-label govuk-radios__label" for="PreferredContactType-PreferNotToSay">
                                     Prefer not to say

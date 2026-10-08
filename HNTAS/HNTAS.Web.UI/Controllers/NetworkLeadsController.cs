@@ -5,8 +5,6 @@ using HNTAS.Web.UI.Models.User;
 using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
-using Mono.TextTemplating;
-using System.Threading.Tasks;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -65,7 +63,12 @@ namespace HNTAS.Web.UI.Controllers
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             try
             {
-                var invitationId = await _invitationService.AddInvitedUserAsync(
+                // verify here if they can take up this role or not
+                var invitee = await _userService.GetUserByEmailIdAsync(model.EmailId);
+                var eligibleForNetworkManager = (invitee == null) || (invitee != null && invitee.Roles.Contains(UserRole.NetworkManager));
+                if (eligibleForNetworkManager)
+                {
+                    var invitationId = await _invitationService.AddInvitedUserAsync(
                        userId,
                        new AddInvitationRequest(
                            emailAddress: model.EmailId,
@@ -76,17 +79,24 @@ namespace HNTAS.Web.UI.Controllers
                            status: InvitationStatus.Invited
                        )
                    );
-                if (string.IsNullOrWhiteSpace(invitationId))
+                    if (string.IsNullOrWhiteSpace(invitationId))
+                    {
+                        TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later";
+                        return RedirectToAction("ManageLeads");
+                    }
+
+                    _logger.LogInformation("Successfully submitted new organisation user details.");
+                    var token = _iInvitationTokenService.GenerateToken(invitationId, model.EmailId);
+
+                    //send invitation email
+                    await _invitationService.SendInvitationEmailAsync(invitationId, new SendInvitationEmailRequest(token));
+                }
+                else
                 {
-                    TempData["ErrorMessage"] = "There was an error submitting your details. Please try again later.";
+                    TempData["ErrorMessage"] = "This user cannot be added as a Network Manager";
                     return RedirectToAction("ManageLeads");
                 }
-
-                _logger.LogInformation("Successfully submitted new organisation user details.");
-                var token = _iInvitationTokenService.GenerateToken(invitationId, model.EmailId);
-
-                //send invitation email
-                await _invitationService.SendInvitationEmailAsync(invitationId, new SendInvitationEmailRequest(token));
+                
             }
             catch(Exception ex)
             {

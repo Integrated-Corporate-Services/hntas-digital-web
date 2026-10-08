@@ -48,7 +48,7 @@ namespace HNTAS.Api.Client.Test.Api
         public SOAApiTests(): base(Array.Empty<string>())
         {
             _instance = _host.Services.GetRequiredService<ISOAApi>();
-        }
+        }        
 
         /// <summary>
         /// Test ApiSOASoaAssignAssessorPatch

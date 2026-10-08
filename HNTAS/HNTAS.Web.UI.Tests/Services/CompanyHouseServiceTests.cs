@@ -1,6 +1,8 @@
-﻿using HNTAS.Web.UI.Services;
-using HNTAS.Web.UI.Models.CompaniesHouse;
+﻿using HNTAS.Web.UI.Models.CompaniesHouse;
+using HNTAS.Web.UI.Services;
 using Moq;
+using Moq.Protected;
+using System.Net;
 
 namespace HNTAS.Web.UI.Tests.Services
 {
@@ -13,46 +15,66 @@ namespace HNTAS.Web.UI.Tests.Services
             _service = new Mock<ICompaniesHouseService>();
         }
 
-        [Fact(Skip = "TODO: API key null issue to be fixed")]
+        [Fact]
         public async Task GetCompanyByNumberAsync_ReturnsCompanyDetails_WhenCompanyExists()
         {
             // Arrange
-            var companyNumber = "83031634";
-
-            var expected = new CompanyDetailsModel
+            var json = """
             {
-                Title = "Some company"
+                "company_name": "Some company",
+                "registered_office_address": {
+                    "address_line_1": "Street 1",
+                    "postal_code": "AB1 2CD"
+                }
+            }
+            """;
+
+            var handler = new Mock<HttpMessageHandler>();
+
+            handler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(json)
+                });
+
+            var httpClient = new HttpClient(handler.Object)
+            {
+                BaseAddress = new Uri("https://api.company-information.service.gov.uk/")
             };
 
-            _service
-                .Setup(s => s.GetCompanyByNumberAsync(companyNumber))
-                .ReturnsAsync(expected);
+            var service = new CompaniesHouseService(
+                httpClient,
+                "test-api-key");
 
             // Act
-            var result = await _service.Object.GetCompanyByNumberAsync(companyNumber);
+            var result = await service.GetCompanyByNumberAsync("83031634");
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal("Some company", result.Title);
-
-            _service.Verify(s => s.GetCompanyByNumberAsync(companyNumber), Times.Once);
+            Assert.NotNull(result.RegisteredOfficeAddress);
+            Assert.Equal("Street 1", result.RegisteredOfficeAddress.AddressLine1);
         }
 
-        [Fact(Skip = "TODO: API key null issue to be fixed")]
-        public async Task GetCompanyByNumberAsync_ThrowsException_WhenApiKeyIsMissing()
+        [Fact]
+        public async Task GetCompanyByNumberAsync_ThrowsInvalidOperationException_WhenApiKeyNotConfigured()
         {
             // Arrange
-            var companyNumber = "48850136";
-
-            _service
-                .Setup(s => s.GetCompanyByNumberAsync(companyNumber))
-                .ThrowsAsync(new InvalidOperationException("API key missing"));
+            _service.Setup(s => s.GetCompanyByNumberAsync(It.IsAny<string>()))
+                .ThrowsAsync(new InvalidOperationException("Companies House API key is not configured."));
 
             // Act & Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                _service.Object.GetCompanyByNumberAsync(companyNumber));
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(
+                () => _service.Object.GetCompanyByNumberAsync("83031634"));
 
-            _service.Verify(s => s.GetCompanyByNumberAsync(companyNumber), Times.Once);
+            Assert.Equal(
+                "Companies House API key is not configured.",
+                exception.Message);
         }
     }
 }

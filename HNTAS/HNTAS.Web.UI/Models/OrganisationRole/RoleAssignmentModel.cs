@@ -7,7 +7,7 @@ namespace HNTAS.Web.UI.Models.OrganisationRole
     {
         public List<SelectItemOption> AvailableRoles { get; set; } = new List<SelectItemOption>();
 
-        [Required(ErrorMessage = "Please select role.")]
+        [Required(ErrorMessage = "Select a role")]
         public string SelectedRoleName { get; set; } = null!;
         public string? InvitedUserName { get; set; }
     }

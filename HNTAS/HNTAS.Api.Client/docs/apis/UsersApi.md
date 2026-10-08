@@ -5,6 +5,8 @@ All URIs are relative to *https://localhost:7117*
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
 | [**ApiUsersContributorRolesGet**](UsersApi.md#apiuserscontributorrolesget) | **GET** /api/Users/contributor-roles |  |
+| [**ApiUsersDdhAndContributorsPaginatedGet**](UsersApi.md#apiusersddhandcontributorspaginatedget) | **GET** /api/Users/ddh-and-contributors-paginated |  |
+| [**ApiUsersEmailEmailIdGet**](UsersApi.md#apiusersemailemailidget) | **GET** /api/Users/email/{emailId} |  |
 | [**ApiUsersGet**](UsersApi.md#apiusersget) | **GET** /api/Users |  |
 | [**ApiUsersHeatNetworkHnIdRolesGet**](UsersApi.md#apiusersheatnetworkhnidrolesget) | **GET** /api/Users/heat-network/{hnId}/roles |  |
 | [**ApiUsersIdDelete**](UsersApi.md#apiusersiddelete) | **DELETE** /api/Users/{id} |  |
@@ -40,7 +42,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -52,6 +54,82 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersddhandcontributorspaginatedget"></a>
+# **ApiUsersDdhAndContributorsPaginatedGet**
+> PagedResultOfManagedUserResponse ApiUsersDdhAndContributorsPaginatedGet (string userId = null, int pageNumber = null, int pageSize = null, string sortBy = null, string sortDirection = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **userId** | **string** |  | [optional]  |
+| **pageNumber** | **int** |  | [optional] [default to 1] |
+| **pageSize** | **int** |  | [optional] [default to 10] |
+| **sortBy** | **string** |  | [optional] [default to &quot;firstName&quot;] |
+| **sortDirection** | **string** |  | [optional] [default to &quot;asc&quot;] |
+
+### Return type
+
+[**PagedResultOfManagedUserResponse**](PagedResultOfManagedUserResponse.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiusersemailemailidget"></a>
+# **ApiUsersEmailEmailIdGet**
+> UserResponse ApiUsersEmailEmailIdGet (string emailId)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **emailId** | **string** |  |  |
+
+### Return type
+
+[**UserResponse**](UserResponse.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
+| **500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
@@ -70,7 +148,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -105,7 +183,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -141,7 +219,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -178,7 +256,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -216,7 +294,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -253,7 +331,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -290,7 +368,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -325,7 +403,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -362,7 +440,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -397,7 +475,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -432,7 +510,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -468,7 +546,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -505,7 +583,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -542,7 +620,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -577,7 +655,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -644,7 +722,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -678,7 +756,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -714,7 +792,7 @@ No authorization required
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 

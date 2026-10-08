@@ -67,7 +67,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets HnId
         /// </summary>
-        [JsonPropertyName("hnId")]
+        [JsonPropertyName("hn_id")]
         public string? HnId { get { return this.HnIdOption; } set { this.HnIdOption = new(value); } }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets OrgId
         /// </summary>
-        [JsonPropertyName("orgId")]
+        [JsonPropertyName("org_id")]
         public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets PeriodStart
         /// </summary>
-        [JsonPropertyName("periodStart")]
+        [JsonPropertyName("period_start")]
         public string? PeriodStart { get { return this.PeriodStartOption; } set { this.PeriodStartOption = new(value); } }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets ElementId
         /// </summary>
-        [JsonPropertyName("elementId")]
+        [JsonPropertyName("element_id")]
         public string? ElementId { get { return this.ElementIdOption; } set { this.ElementIdOption = new(value); } }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets ElementType
         /// </summary>
-        [JsonPropertyName("elementType")]
+        [JsonPropertyName("element_type")]
         public string? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets KpiId
         /// </summary>
-        [JsonPropertyName("kpiId")]
+        [JsonPropertyName("kpi_id")]
         public string? KpiId { get { return this.KpiIdOption; } set { this.KpiIdOption = new(value); } }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Gets or Sets AssessmentStatus
         /// </summary>
-        [JsonPropertyName("assessmentStatus")]
+        [JsonPropertyName("assessment_status")]
         public string? AssessmentStatus { get { return this.AssessmentStatusOption; } set { this.AssessmentStatusOption = new(value); } }
 
         /// <summary>
@@ -238,28 +238,28 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "hnId":
+                        case "hn_id":
                             hnId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "orgId":
+                        case "org_id":
                             orgId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "periodStart":
+                        case "period_start":
                             periodStart = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "elementId":
+                        case "element_id":
                             elementId = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "elementType":
+                        case "element_type":
                             elementType = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
-                        case "kpiId":
+                        case "kpi_id":
                             kpiId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "value":
                             value = new Option<double?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (double?)null : utf8JsonReader.GetDouble());
                             break;
-                        case "assessmentStatus":
+                        case "assessment_status":
                             assessmentStatus = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         default:
@@ -335,31 +335,31 @@ namespace HNTAS.Api.Client.Model
                 throw new ArgumentNullException(nameof(armsPowerBiReportResponse.AssessmentStatus), "Property is required for class ArmsPowerBiReportResponse.");
 
             if (armsPowerBiReportResponse.HnIdOption.IsSet)
-                writer.WriteString("hnId", armsPowerBiReportResponse.HnId);
+                writer.WriteString("hn_id", armsPowerBiReportResponse.HnId);
 
             if (armsPowerBiReportResponse.OrgIdOption.IsSet)
-                writer.WriteString("orgId", armsPowerBiReportResponse.OrgId);
+                writer.WriteString("org_id", armsPowerBiReportResponse.OrgId);
 
             if (armsPowerBiReportResponse.PeriodStartOption.IsSet)
-                writer.WriteString("periodStart", armsPowerBiReportResponse.PeriodStart);
+                writer.WriteString("period_start", armsPowerBiReportResponse.PeriodStart);
 
             if (armsPowerBiReportResponse.ElementIdOption.IsSet)
                 if (armsPowerBiReportResponse.ElementIdOption.Value != null)
-                    writer.WriteString("elementId", armsPowerBiReportResponse.ElementId);
+                    writer.WriteString("element_id", armsPowerBiReportResponse.ElementId);
                 else
-                    writer.WriteNull("elementId");
+                    writer.WriteNull("element_id");
 
             if (armsPowerBiReportResponse.ElementTypeOption.IsSet)
-                writer.WriteString("elementType", armsPowerBiReportResponse.ElementType);
+                writer.WriteString("element_type", armsPowerBiReportResponse.ElementType);
 
             if (armsPowerBiReportResponse.KpiIdOption.IsSet)
-                writer.WriteString("kpiId", armsPowerBiReportResponse.KpiId);
+                writer.WriteString("kpi_id", armsPowerBiReportResponse.KpiId);
 
             if (armsPowerBiReportResponse.ValueOption.IsSet)
                 writer.WriteNumber("value", armsPowerBiReportResponse.ValueOption.Value!.Value);
 
             if (armsPowerBiReportResponse.AssessmentStatusOption.IsSet)
-                writer.WriteString("assessmentStatus", armsPowerBiReportResponse.AssessmentStatus);
+                writer.WriteString("assessment_status", armsPowerBiReportResponse.AssessmentStatus);
         }
     }
 }

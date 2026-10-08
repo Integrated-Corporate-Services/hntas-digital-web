@@ -5,7 +5,6 @@
     ViewData["Title"] = "Duty Holder Dashboard";
 }
 
-<div class="govuk-width-container">
 
     <h1 class="govuk-heading-l">My Details</h1>
 
@@ -35,7 +34,8 @@
     @if (Model?.HeatNetwork != null)
     {
         <h2 class="govuk-heading-m" style="margin-top: 2rem;">My heat network list</h2>
-        <table class="govuk-table">
+<div class="govuk-table-container">
+    <table class="govuk-table">
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
                     <th class="govuk-table__header" scope="col">Heat network name</th>
@@ -76,6 +76,8 @@
                 </tr>
             </tbody>
         </table>
+</div>
+        
     }
     else
     {
@@ -83,4 +85,3 @@
         <p class="govuk-body">To comply with all of heat network's regulations you must register all of model.OrganisationName's heat networks.</p>
     }
 
-</div>
