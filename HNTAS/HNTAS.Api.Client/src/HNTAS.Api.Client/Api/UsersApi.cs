@@ -1620,7 +1620,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -1646,30 +1646,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersContributorRolesGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersContributorRolesGetApiResponse>();
                         ApiUsersContributorRolesGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/contributor-roles", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/contributor-roles", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersContributorRolesGetDefaultImplementation(apiResponseLocalVar);
 
                         Events.ExecuteOnApiUsersContributorRolesGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersContributorRolesGetDefaultImplementation(e, "/api/Users/contributor-roles", uriBuilderLocalVar.Path);
                 Events.ExecuteOnErrorApiUsersContributorRolesGet(e);
@@ -1744,15 +1742,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<EnumItemResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<EnumItemResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -1928,7 +1925,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -1952,30 +1949,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersDdhAndContributorsPaginatedGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersDdhAndContributorsPaginatedGetApiResponse>();
                         ApiUsersDdhAndContributorsPaginatedGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/ddh-and-contributors-paginated", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/ddh-and-contributors-paginated", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersDdhAndContributorsPaginatedGetDefaultImplementation(apiResponseLocalVar, userId, pageNumber, pageSize, sortBy, sortDirection);
 
                         Events.ExecuteOnApiUsersDdhAndContributorsPaginatedGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersDdhAndContributorsPaginatedGetDefaultImplementation(e, "/api/Users/ddh-and-contributors-paginated", uriBuilderLocalVar.Path, userId, pageNumber, pageSize, sortBy, sortDirection);
                 Events.ExecuteOnErrorApiUsersDdhAndContributorsPaginatedGet(e);
@@ -2050,15 +2045,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.PagedResultOfManagedUserResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.PagedResultOfManagedUserResponse? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -2089,15 +2083,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -2223,7 +2216,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -2249,30 +2242,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersEmailEmailIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersEmailEmailIdGetApiResponse>();
                         ApiUsersEmailEmailIdGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/email/{emailId}", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/email/{emailId}", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersEmailEmailIdGetDefaultImplementation(apiResponseLocalVar, emailId);
 
                         Events.ExecuteOnApiUsersEmailEmailIdGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersEmailEmailIdGetDefaultImplementation(e, "/api/Users/email/{emailId}", uriBuilderLocalVar.Path, emailId);
                 Events.ExecuteOnErrorApiUsersEmailEmailIdGet(e);
@@ -2347,15 +2338,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.UserResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.UserResponse? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -2386,15 +2376,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -2425,15 +2414,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -2541,7 +2529,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -2567,30 +2555,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersGetApiResponse>();
                         ApiUsersGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersGetDefaultImplementation(apiResponseLocalVar);
 
                         Events.ExecuteOnApiUsersGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersGetDefaultImplementation(e, "/api/Users", uriBuilderLocalVar.Path);
                 Events.ExecuteOnErrorApiUsersGet(e);
@@ -2665,15 +2651,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<UserResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<UserResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -2805,7 +2790,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -2829,30 +2814,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersHeatNetworkHnIdRolesGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersHeatNetworkHnIdRolesGetApiResponse>();
                         ApiUsersHeatNetworkHnIdRolesGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/heat-network/{hnId}/roles", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/heat-network/{hnId}/roles", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersHeatNetworkHnIdRolesGetDefaultImplementation(apiResponseLocalVar, hnId);
 
                         Events.ExecuteOnApiUsersHeatNetworkHnIdRolesGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersHeatNetworkHnIdRolesGetDefaultImplementation(e, "/api/Users/heat-network/{hnId}/roles", uriBuilderLocalVar.Path, hnId);
                 Events.ExecuteOnErrorApiUsersHeatNetworkHnIdRolesGet(e);
@@ -2927,15 +2910,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<UserRoleDetailResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<UserRoleDetailResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -2966,15 +2948,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -3005,15 +2986,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -3139,7 +3119,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -3165,30 +3145,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersIdDeleteApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersIdDeleteApiResponse>();
                         ApiUsersIdDeleteApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/{id}", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/{id}", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersIdDeleteDefaultImplementation(apiResponseLocalVar, id);
 
                         Events.ExecuteOnApiUsersIdDelete(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersIdDeleteDefaultImplementation(e, "/api/Users/{id}", uriBuilderLocalVar.Path, id);
                 Events.ExecuteOnErrorApiUsersIdDelete(e);
@@ -3269,15 +3247,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -3423,7 +3400,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -3459,30 +3436,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersIdOrgDetailsPatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersIdOrgDetailsPatchApiResponse>();
                         ApiUsersIdOrgDetailsPatchApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/{id}/org-details", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/{id}/org-details", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersIdOrgDetailsPatchDefaultImplementation(apiResponseLocalVar, id, updateUserOrganisationRequest);
 
                         Events.ExecuteOnApiUsersIdOrgDetailsPatch(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersIdOrgDetailsPatchDefaultImplementation(e, "/api/Users/{id}/org-details", uriBuilderLocalVar.Path, id, updateUserOrganisationRequest);
                 Events.ExecuteOnErrorApiUsersIdOrgDetailsPatch(e);
@@ -3557,15 +3532,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.User? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.User? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -3596,15 +3570,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -3635,15 +3608,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -3789,7 +3761,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -3825,30 +3797,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersIdUserDetailsPatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersIdUserDetailsPatchApiResponse>();
                         ApiUsersIdUserDetailsPatchApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/{id}/user-details", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/{id}/user-details", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersIdUserDetailsPatchDefaultImplementation(apiResponseLocalVar, id, updateUserDetailsRequest);
 
                         Events.ExecuteOnApiUsersIdUserDetailsPatch(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersIdUserDetailsPatchDefaultImplementation(e, "/api/Users/{id}/user-details", uriBuilderLocalVar.Path, id, updateUserDetailsRequest);
                 Events.ExecuteOnErrorApiUsersIdUserDetailsPatch(e);
@@ -3929,15 +3899,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -3968,15 +3937,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -4111,7 +4079,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -4147,30 +4115,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersInitialEntryPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersInitialEntryPostApiResponse>();
                         ApiUsersInitialEntryPostApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/initial-entry", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/initial-entry", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersInitialEntryPostDefaultImplementation(apiResponseLocalVar, initialUserRegistrationRequest);
 
                         Events.ExecuteOnApiUsersInitialEntryPost(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersInitialEntryPostDefaultImplementation(e, "/api/Users/initial-entry", uriBuilderLocalVar.Path, initialUserRegistrationRequest);
                 Events.ExecuteOnErrorApiUsersInitialEntryPost(e);
@@ -4245,15 +4211,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryCreated([NotNullWhen(true)] out string? result)
+            public bool TryCreated([NotNullWhen(true)]out string? result)
             {
                 result = null;
 
                 try
                 {
                     result = Created();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)201);
                 }
@@ -4284,15 +4249,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -4323,15 +4287,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryConflict([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryConflict([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = Conflict();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)409);
                 }
@@ -4463,7 +4426,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -4487,30 +4450,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersIsActiveUserEmailIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersIsActiveUserEmailIdGetApiResponse>();
                         ApiUsersIsActiveUserEmailIdGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/is-active-user/{emailId}", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/is-active-user/{emailId}", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersIsActiveUserEmailIdGetDefaultImplementation(apiResponseLocalVar, emailId);
 
                         Events.ExecuteOnApiUsersIsActiveUserEmailIdGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersIsActiveUserEmailIdGetDefaultImplementation(e, "/api/Users/is-active-user/{emailId}", uriBuilderLocalVar.Path, emailId);
                 Events.ExecuteOnErrorApiUsersIsActiveUserEmailIdGet(e);
@@ -4585,15 +4546,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out bool? result)
+            public bool TryOk([NotNullWhen(true)]out bool? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -4624,15 +4584,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out bool? result)
+            public bool TryNotFound([NotNullWhen(true)]out bool? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -4758,7 +4717,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -4784,30 +4743,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersIsRpUserEmailIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersIsRpUserEmailIdGetApiResponse>();
                         ApiUsersIsRpUserEmailIdGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/is-rp-user/{emailId}", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/is-rp-user/{emailId}", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersIsRpUserEmailIdGetDefaultImplementation(apiResponseLocalVar, emailId);
 
                         Events.ExecuteOnApiUsersIsRpUserEmailIdGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersIsRpUserEmailIdGetDefaultImplementation(e, "/api/Users/is-rp-user/{emailId}", uriBuilderLocalVar.Path, emailId);
                 Events.ExecuteOnErrorApiUsersIsRpUserEmailIdGet(e);
@@ -4882,15 +4839,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out bool? result)
+            public bool TryOk([NotNullWhen(true)]out bool? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -4921,15 +4877,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -5076,7 +5031,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -5100,30 +5055,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersManagedUsersGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersManagedUsersGetApiResponse>();
                         ApiUsersManagedUsersGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/managed-users", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/managed-users", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersManagedUsersGetDefaultImplementation(apiResponseLocalVar, userId, networkManagersOnly);
 
                         Events.ExecuteOnApiUsersManagedUsersGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersManagedUsersGetDefaultImplementation(e, "/api/Users/managed-users", uriBuilderLocalVar.Path, userId, networkManagersOnly);
                 Events.ExecuteOnErrorApiUsersManagedUsersGet(e);
@@ -5198,15 +5151,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<ManagedUserResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<ManagedUserResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -5237,15 +5189,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -5377,7 +5328,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -5401,30 +5352,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersNetworkManagersGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersNetworkManagersGetApiResponse>();
                         ApiUsersNetworkManagersGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/network-managers", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/network-managers", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersNetworkManagersGetDefaultImplementation(apiResponseLocalVar, userId);
 
                         Events.ExecuteOnApiUsersNetworkManagersGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersNetworkManagersGetDefaultImplementation(e, "/api/Users/network-managers", uriBuilderLocalVar.Path, userId);
                 Events.ExecuteOnErrorApiUsersNetworkManagersGet(e);
@@ -5499,15 +5448,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<InvitedUserResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<InvitedUserResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -5538,15 +5486,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -5678,7 +5625,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -5704,30 +5651,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersOrganisationExistsGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersOrganisationExistsGetApiResponse>();
                         ApiUsersOrganisationExistsGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/organisation/exists", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/organisation/exists", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersOrganisationExistsGetDefaultImplementation(apiResponseLocalVar, companiesHouseNumber);
 
                         Events.ExecuteOnApiUsersOrganisationExistsGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersOrganisationExistsGetDefaultImplementation(e, "/api/Users/organisation/exists", uriBuilderLocalVar.Path, companiesHouseNumber);
                 Events.ExecuteOnErrorApiUsersOrganisationExistsGet(e);
@@ -5802,15 +5747,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out bool? result)
+            public bool TryOk([NotNullWhen(true)]out bool? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -5841,15 +5785,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -5981,7 +5924,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -6007,30 +5950,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersOrganisationOrganisationIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersOrganisationOrganisationIdGetApiResponse>();
                         ApiUsersOrganisationOrganisationIdGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/organisation/{organisationId}", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/organisation/{organisationId}", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersOrganisationOrganisationIdGetDefaultImplementation(apiResponseLocalVar, organisationId);
 
                         Events.ExecuteOnApiUsersOrganisationOrganisationIdGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersOrganisationOrganisationIdGetDefaultImplementation(e, "/api/Users/organisation/{organisationId}", uriBuilderLocalVar.Path, organisationId);
                 Events.ExecuteOnErrorApiUsersOrganisationOrganisationIdGet(e);
@@ -6105,15 +6046,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<UserResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<UserResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -6144,15 +6084,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -6183,15 +6122,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -6331,7 +6269,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -6368,30 +6306,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersRegisterOrgAndLinkUserIdPostApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersRegisterOrgAndLinkUserIdPostApiResponse>();
                         ApiUsersRegisterOrgAndLinkUserIdPostApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/register-org-and-link/{userId}", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/register-org-and-link/{userId}", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersRegisterOrgAndLinkUserIdPostDefaultImplementation(apiResponseLocalVar, userId, organisationRequest);
 
                         Events.ExecuteOnApiUsersRegisterOrgAndLinkUserIdPost(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersRegisterOrgAndLinkUserIdPostDefaultImplementation(e, "/api/Users/register-org-and-link/{userId}", uriBuilderLocalVar.Path, userId, organisationRequest);
                 Events.ExecuteOnErrorApiUsersRegisterOrgAndLinkUserIdPost(e);
@@ -6466,15 +6402,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryCreated([NotNullWhen(true)] out HNTAS.Api.Client.Model.Organisation? result)
+            public bool TryCreated([NotNullWhen(true)]out HNTAS.Api.Client.Model.Organisation? result)
             {
                 result = null;
 
                 try
                 {
                     result = Created();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)201);
                 }
@@ -6505,15 +6440,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -6544,15 +6478,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -6690,7 +6623,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -6714,30 +6647,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersRegisteredUsersGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersRegisteredUsersGetApiResponse>();
                         ApiUsersRegisteredUsersGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/registered-users", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/registered-users", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersRegisteredUsersGetDefaultImplementation(apiResponseLocalVar, userId);
 
                         Events.ExecuteOnApiUsersRegisteredUsersGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersRegisteredUsersGetDefaultImplementation(e, "/api/Users/registered-users", uriBuilderLocalVar.Path, userId);
                 Events.ExecuteOnErrorApiUsersRegisteredUsersGet(e);
@@ -6812,15 +6743,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<UserResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<UserResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -6851,15 +6781,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -6988,7 +6917,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -7025,30 +6954,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersUpdateOrgidPatchApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersUpdateOrgidPatchApiResponse>();
                         ApiUsersUpdateOrgidPatchApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/update-orgid", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/update-orgid", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersUpdateOrgidPatchDefaultImplementation(apiResponseLocalVar, updateUserOrgIdRequest);
 
                         Events.ExecuteOnApiUsersUpdateOrgidPatch(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersUpdateOrgidPatchDefaultImplementation(e, "/api/Users/update-orgid", uriBuilderLocalVar.Path, updateUserOrgIdRequest);
                 Events.ExecuteOnErrorApiUsersUpdateOrgidPatch(e);
@@ -7129,15 +7056,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryBadRequest([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = BadRequest();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
                 }
@@ -7168,15 +7094,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -7327,15 +7252,13 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersUserDetailsByIdGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersUserDetailsByIdGetApiResponse>();
                         ApiUsersUserDetailsByIdGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/user-details-by-id", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/user-details-by-id", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersUserDetailsByIdGetDefaultImplementation(apiResponseLocalVar, id);
@@ -7346,7 +7269,7 @@ namespace HNTAS.Api.Client.Api
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersUserDetailsByIdGetDefaultImplementation(e, "/api/Users/user-details-by-id", uriBuilderLocalVar.Path, id);
                 Events.ExecuteOnErrorApiUsersUserDetailsByIdGet(e);
@@ -7421,15 +7344,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.UserDetailsResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.UserDetailsResponse? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -7537,7 +7459,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -7563,30 +7485,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<ApiUsersUserRolesGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiUsersUserRolesGetApiResponse>();
                         ApiUsersUserRolesGetApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/user-roles", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/user-roles", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterApiUsersUserRolesGetDefaultImplementation(apiResponseLocalVar);
 
                         Events.ExecuteOnApiUsersUserRolesGet(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorApiUsersUserRolesGetDefaultImplementation(e, "/api/Users/user-roles", uriBuilderLocalVar.Path);
                 Events.ExecuteOnErrorApiUsersUserRolesGet(e);
@@ -7661,15 +7581,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out List<EnumItemResponse>? result)
+            public bool TryOk([NotNullWhen(true)]out List<EnumItemResponse>? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -7795,7 +7714,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -7821,30 +7740,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<GetUserByIdApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<GetUserByIdApiResponse>();
                         GetUserByIdApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/{id}", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/{id}", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterGetUserByIdDefaultImplementation(apiResponseLocalVar, id);
 
                         Events.ExecuteOnGetUserById(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorGetUserByIdDefaultImplementation(e, "/api/Users/{id}", uriBuilderLocalVar.Path, id);
                 Events.ExecuteOnErrorGetUserById(e);
@@ -7919,15 +7836,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.UserResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.UserResponse? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -7958,15 +7874,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
@@ -8098,7 +8013,7 @@ namespace HNTAS.Api.Client.Api
                     List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
-                    BearerToken bearerTokenLocalVar1 = (BearerToken)await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
 
                     tokenBaseLocalVars.Add(bearerTokenLocalVar1);
 
@@ -8124,30 +8039,28 @@ namespace HNTAS.Api.Client.Api
                         ILogger<GetUserByOneLoginIdApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<GetUserByOneLoginIdApiResponse>();
                         GetUserByOneLoginIdApiResponse apiResponseLocalVar;
 
-                        switch ((int)httpResponseMessageLocalVar.StatusCode)
-                        {
-                            default:
-                                {
-                                    string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                    apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/onelogin/{oneLoginId}", requestedAtLocalVar, _jsonSerializerOptions);
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Users/onelogin/{oneLoginId}", requestedAtLocalVar, _jsonSerializerOptions);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
 
                         AfterGetUserByOneLoginIdDefaultImplementation(apiResponseLocalVar, oneLoginId);
 
                         Events.ExecuteOnGetUserByOneLoginId(apiResponseLocalVar);
 
-                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode)429)
-                            foreach (TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
                                 tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 OnErrorGetUserByOneLoginIdDefaultImplementation(e, "/api/Users/onelogin/{oneLoginId}", uriBuilderLocalVar.Path, oneLoginId);
                 Events.ExecuteOnErrorGetUserByOneLoginId(e);
@@ -8222,15 +8135,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)] out HNTAS.Api.Client.Model.UserResponse? result)
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.UserResponse? result)
             {
                 result = null;
 
                 try
                 {
                     result = Ok();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
                 }
@@ -8261,15 +8173,14 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)] out HNTAS.Api.Client.Model.ProblemDetails? result)
+            public bool TryNotFound([NotNullWhen(true)]out HNTAS.Api.Client.Model.ProblemDetails? result)
             {
                 result = null;
 
                 try
                 {
                     result = NotFound();
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
                 }
