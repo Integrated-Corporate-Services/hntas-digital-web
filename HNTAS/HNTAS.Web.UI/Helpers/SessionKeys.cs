@@ -113,5 +113,8 @@
         public const string SwitchOrganisationModelSessionKey = "SwitchOrganisationModelSessionKey";
 
         public const string HntasJwt = "HNTASJWTKey";
+
+        public const string ExistingNetworkElementsViewModelSessionKey = "ExistingNetworkElementsViewModelSessionKey";
+        public const string ExistingNetworkEcNameViewModelSessionKey = "ExistingNetworkEcNameViewModelSessionKey";
     }
 }

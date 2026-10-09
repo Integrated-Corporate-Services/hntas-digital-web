@@ -68,6 +68,101 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ExistingNetworkElementsAsync()
+        {
+            this.ShowBackButton("NetworkDetails", "HeatNetwork");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
+            ViewBag.HnId = hnId?.ToUpper();
+            ViewBag.HnName = hnName;
+            var model = _sessionHelper.GetFromSession<ExistingNetworkElementViewModel>(HttpContext, SessionKeys.ExistingNetworkElementsViewModelSessionKey);
+
+            if (model != null)
+            {
+                return View(model);
+            }
+
+            model = new ExistingNetworkElementViewModel();
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var networkType = heatNetworkData?.HeatNetworkType;
+            bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
+
+            model.ElementOptions = NetworkElementHelper.GetExistingNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType);
+            //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc);
+            var selectedNetworkElements = heatNetworkData?.NetworkElements;            
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ExistingNetworkElementsAsync(ExistingNetworkElementViewModel model)
+        {
+            this.ShowBackButton("NetworkDetails", "HeatNetwork");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnId = hnId?.ToUpper();
+            ViewBag.HnName = hnName;
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var networkType = heatNetworkData?.HeatNetworkType;
+            bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
+            
+            foreach(var option in model.ElementOptions)
+            {                
+                if (!option.ExistingCount.HasValue)
+                {
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].ExistingCount", $"Enter number of existing {option.Label?.ToLower()}");
+                }
+                if (option.Id == HeatNetworkElementType.EnergyCentre && option.NewCount.HasValue && option.NewCount.Value == 0)
+                {
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"You mentioned previously that you have a main energy centre. You need to provide atleast one energy centre");
+                }
+                if (!option.NewCount.HasValue)
+                {
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"Enter number of new {option.Label?.ToLower()}");
+                }                
+            }            
+            
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.ExistingNetworkElementsViewModelSessionKey, model);
+            return RedirectToAction("ExistingNetworkEnergyCentreName");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExistingNetworkEnergyCentreName()
+        {
+            this.ShowBackButton("ExistingNetworkElements", "NetworkElements");
+
+            var model = _sessionHelper.GetFromSession<ExistingNetworkEcNameViewModel>(HttpContext, SessionKeys.ExistingNetworkEcNameViewModelSessionKey);
+            if (model != null)
+            {
+                return View(model);
+            }
+            var existingNetworkElement = _sessionHelper.GetFromSession<ExistingNetworkElementViewModel>(HttpContext, SessionKeys.ExistingNetworkElementsViewModelSessionKey);
+            var ecOption = existingNetworkElement?.ElementOptions.FirstOrDefault(x => x.Id == HeatNetworkElementType.EnergyCentre);
+
+            model = NetworkElementHelper.GetExistingNetworkEcName(ecOption!);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExistingNetworkEnergyCentreName(ExistingNetworkEcNameViewModel model)
+        {
+            this.ShowBackButton("ExistingNetworkElements", "NetworkElements");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.ExistingNetworkEcNameViewModelSessionKey, model);
+            return RedirectToAction("SelectNetworkElements");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SelectNetworkElements(NetworkElementViewModel model)

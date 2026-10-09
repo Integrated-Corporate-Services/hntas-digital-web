@@ -1,0 +1,83 @@
+﻿@using HNTAS.Web.UI.Models.NetworkElements
+@model ExistingNetworkElementViewModel
+
+@{
+    ViewData["Title"] = "Tell us about the heat network elements";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <form class="form" asp-action="ExistingNetworkElements" method="post">
+        
+            <span class="govuk-caption-l">HN2000154 safd, asf</span>
+
+            <h1 class="govuk-heading-l">Tell us about the heat network elements</h1>
+            <p class="govuk-hint">Enter the number of existing and new network elements. Enter 0 if none apply.</p>
+
+            <table class="govuk-table">
+                <caption class="govuk-table__caption govuk-table__caption--m">
+                    Elements
+                </caption>
+
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header">Type</th>
+                        <th scope="col" class="govuk-table__header">Existing heat network</th>
+                        <th scope="col" class="govuk-table__header">New network</th>
+                    </tr>
+                </thead>
+
+                <tbody class="govuk-table__body">
+
+                    @for(int i = 0; i < Model.ElementOptions.Count; i++)
+                    {
+                        var item = Model.ElementOptions[i];
+                        var hasExistingCountError = ViewData.ModelState[$"ElementOptions[{i}].ExistingCount"]?.Errors.Count > 0;
+                        var hasNewCountError = ViewData.ModelState[$"ElementOptions[{i}].NewCount"]?.Errors.Count > 0;
+                        
+                        <input type="hidden" name="@($"ElementOptions[{i}].Id")" value="@item.Id" />
+                        <input type="hidden" name="@($"ElementOptions[{i}].Hint")" value="@item.Hint" />
+                        <input type="hidden" name="@($"ElementOptions[{i}].Label")" value="@item.Label" />
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">
+                                @item.Label
+                                <p class="govuk-hint">@item.Hint</p>
+                            </th>
+                            <td class="govuk-table__cell" style="vertical-align: bottom">
+                                <label class="govuk-visually-hidden" for="@($"elementoptions[{i}].existingcount")">Number of existing @item.Label</label>
+                                
+                                    <p id="@($"existing-{item.Id}-error")" class="govuk-error-message">
+                                        @if (hasExistingCountError)
+                                        {
+                                            <span class="govuk-visually-hidden">Error:</span> 
+                                            @Html.ValidationMessageFor(m => m.ElementOptions[i].ExistingCount)
+                                        }
+                                    </p>
+                                                              
+                                <input class="govuk-input govuk-input--width-3 @(hasExistingCountError ? "govuk-input--error" : "")" id="@($"elementoptions[{i}].existingcount")" name="@($"elementoptions[{i}].existingcount")" type="text" inputmode="numeric" pattern="[0-9]*" value="@item.ExistingCount">
+                            </td>
+                            <td class="govuk-table__cell" style="vertical-align: bottom">
+                                <label class="govuk-visually-hidden" for="@($"elementoptions[{i}].newcount")">Number of new @item.Label</label>
+                                <p id="@($"new-{item.Id}-error")" class="govuk-error-message">
+                                    @if (hasNewCountError)
+                                    {
+                                        <span class="govuk-visually-hidden">Error:</span>
+                                        @Html.ValidationMessageFor(m => m.ElementOptions[i].NewCount)
+                                    }
+                                </p>
+                                <input class="govuk-input govuk-input--width-3 @(hasNewCountError ? "govuk-input--error" : "")" id="@($"elementoptions[{i}].newcount")" name="@($"elementoptions[{i}].newcount")" type="text" inputmode="numeric" pattern="[0-9]*" value="@item.NewCount">
+                            </td>
+                        </tr>
+                    }                  
+
+                </tbody>
+            </table>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
+                Continue
+            </button>
+            
+        </form>
+    </div>
+</div>

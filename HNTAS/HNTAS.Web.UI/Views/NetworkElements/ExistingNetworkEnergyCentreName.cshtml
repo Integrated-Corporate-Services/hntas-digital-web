@@ -1,0 +1,54 @@
+﻿@using HNTAS.Web.UI.Models.NetworkElements
+@model ExistingNetworkEcNameViewModel
+
+@{
+    ViewData["Title"] = "Provide a name for each energy centre";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <form class="form" asp-action="ExistingNetworkEnergyCentreName" method="post">
+
+            <span class="govuk-caption-l">HN2000154 asf, </span>
+            <h1 class="govuk-heading-l">Provide a name for each energy centre</h1>
+
+            <p class="govuk-hint">Enter the reference for each energy centre.</p>
+
+            <h2 class="govuk-heading-m">Existing energy centres</h2>
+
+            @for(int i = 0; i < Model.ExistingEcNameOptions.Count; i++)
+            {
+                var item = Model.ExistingEcNameOptions[i];
+                <input type="hidden" name="@($"ExistingEcNameOptions[{i}].Label")" value="@item.Label" />
+                <input type="hidden" name="@($"ExistingEcNameOptions[{i}].IsMainEc")" value="@item.IsMainEc.ToString().ToLowerInvariant()" />
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="@($"ExistingEcNameOptions[{i}].EcName")">
+                        @item.Label
+                    </label>
+                    <input class="govuk-input govuk-input--width-20" id="@($"ExistingEcNameOptions[{i}].EcName")" name="@($"ExistingEcNameOptions[{i}].EcName")" type="text" spellcheck="false" value="@item.EcName">
+                </div>
+            }               
+  
+            <h2 class="govuk-heading-m">New energy centres</h2>
+
+            @for (int i = 0; i < Model.NewEcNameOptions.Count; i++)
+            {
+                var item = Model.NewEcNameOptions[i];
+                <input type="hidden" name="@($"NewEcNameOptions[{i}].Label")" value="@item.Label" />
+                <input type="hidden" name="@($"NewEcNameOptions[{i}].IsMainEc")" value="@item.IsMainEc.ToString().ToLowerInvariant()" />
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="@($"NewEcNameOptions[{i}].EcName")">
+                        @item.Label
+                    </label>
+                    <input class="govuk-input govuk-input--width-20" id="@($"NewEcNameOptions[{i}].EcName")" name="@($"NewEcNameOptions[{i}].EcName")" type="text" spellcheck="false" value="@item.EcName">
+                </div>
+            }
+
+            <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
+                Continue
+            </button>
+        </form>
+
+    </div>
+</div>
