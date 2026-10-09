@@ -431,7 +431,6 @@ else
             {
                 options.Environment = OneLoginEnvironments.Integration;
             }
-            options.Environment = OneLoginEnvironments.Integration;
             options.ClientId = Environment.GetEnvironmentVariable("ONELOGIN_CLIENT_ID");
             options.CallbackPath = "/onelogin-callback";
             options.SignedOutCallbackPath = "/onelogin-logout-callback";
