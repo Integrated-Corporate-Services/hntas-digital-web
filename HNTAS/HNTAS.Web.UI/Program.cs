@@ -18,6 +18,7 @@ using HNTAS.Web.UI.Workflows.Services;
 using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics.CodeAnalysis;
@@ -337,6 +338,13 @@ builder.Services.AddSingleton(sp =>
     return client;
 });
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor |
+        ForwardedHeaders.XForwardedProto;
+});
+
 // Decide which authentication to use based on the environment variable
 var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
 
@@ -493,7 +501,6 @@ else
 
             options.VectorsOfTrust = [builder.Configuration.GetValue<string>("OneLogin:VectorsOfTrust")];
         });
-
 }
 
 
@@ -603,6 +610,14 @@ catch (Exception ex)
 app.UseRouting();
 
 app.UseSession();
+
+app.UseForwardedHeaders();
+
+app.Use(async (context, next) =>
+{
+    Console.WriteLine($"Scheme: {context.Request.Scheme}");
+    await next();
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
