@@ -343,6 +343,9 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders =
         ForwardedHeaders.XForwardedFor |
         ForwardedHeaders.XForwardedProto;
+
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
 });
 
 // Decide which authentication to use based on the environment variable
@@ -517,6 +520,18 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
+
+app.UseForwardedHeaders();
+
+app.Use(async (context, next) =>
+{
+    Console.WriteLine(
+        $"Scheme={context.Request.Scheme}, " +
+        $"X-Forwarded-Proto={context.Request.Headers["X-Forwarded-Proto"]}");
+
+    await next();
+});
+
 // Security clickjacking fix : Add Security Headers Middleware
 app.Use(async (context, next) =>
 {
@@ -610,14 +625,6 @@ catch (Exception ex)
 app.UseRouting();
 
 app.UseSession();
-
-app.UseForwardedHeaders();
-
-app.Use(async (context, next) =>
-{
-    Console.WriteLine($"Scheme: {context.Request.Scheme}");
-    await next();
-});
 
 app.UseAuthentication();
 app.UseAuthorization();
