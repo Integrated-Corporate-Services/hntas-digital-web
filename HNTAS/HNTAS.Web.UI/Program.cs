@@ -626,8 +626,6 @@ app.UseRouting();
 
 app.UseSession();
 
-
-
 app.UseAuthentication();
 app.UseAuthorization();
 
