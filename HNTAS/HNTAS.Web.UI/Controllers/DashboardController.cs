@@ -85,20 +85,11 @@ namespace HNTAS.Web.UI.Controllers
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new DashboardModel());
             }
-
-            var isAssessorOrCertifier =
-                user.Roles.Contains(UserRole.Assessor) ||
-                user.Roles.Contains(UserRole.Certifier);
-
-            _sessionHelper.SaveToSession(
-                HttpContext,
-                SessionKeys.IsAssessorOrCertifier,
-                isAssessorOrCertifier.ToString().ToLowerInvariant());
-
+            
             _sessionHelper.SaveToSession<string>(
                 HttpContext,
                 SessionKeys.WhoDoYouWantToAddSessionKey,
-                user.Roles.Contains(UserRole.DesignatedDutyHolder)
+                user.InvitedRoles.Contains(ContributorRole.DesignatedDutyHolder)
                     ? "Contributors"
                     : null);
 
@@ -138,7 +129,8 @@ namespace HNTAS.Web.UI.Controllers
                 IsResponsiblePerson = user.Roles.Contains(UserRole.ResponsibleParty),
                 HasHntasNetworks = hntasNetworks.TotalCount > 0,
                 HasOfgemNetworks = ofgemNetworks.TotalCount > 0,
-                HasMultipleContributingOrganisations = user.ContributingOrganisations?.Count > 1
+                HasMultipleContributingOrganisations = user.ContributingOrganisations?.Count > 1,
+                InvitedRoles = user.InvitedRoles
             };
 
             ViewBag.UserId = user.Id;

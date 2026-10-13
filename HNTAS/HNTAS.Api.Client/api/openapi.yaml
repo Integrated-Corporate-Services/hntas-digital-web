@@ -10187,6 +10187,9 @@ components:
     UserDetailsResponse:
       example:
         lastName: lastName
+        invitedRoles:
+        - DesignatedDutyHolder
+        - DesignatedDutyHolder
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
@@ -10296,6 +10299,11 @@ components:
         activeContributingOrgId:
           nullable: true
           type: string
+        invitedRoles:
+          items:
+            $ref: "#/components/schemas/ContributorRole"
+          nullable: true
+          type: array
       type: object
     UserNetworkDetailsResponse:
       example:

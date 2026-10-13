@@ -63,9 +63,10 @@ namespace HNTAS.Web.UI.Controllers
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             try
             {
+                var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
                 // verify here if they can take up this role or not
                 var invitee = await _userService.GetUserByEmailIdAsync(model.EmailId);
-                var eligibleForNetworkManager = (invitee == null) || (invitee != null && invitee.Roles.Contains(UserRole.NetworkManager));
+                var eligibleForNetworkManager = (invitee == null) || (invitee != null && !invitee.ContributingOrganisations!.Contains(orgId!));
                 if (eligibleForNetworkManager)
                 {
                     var invitationId = await _invitationService.AddInvitedUserAsync(
@@ -74,7 +75,7 @@ namespace HNTAS.Web.UI.Controllers
                            emailAddress: model.EmailId,
                            firstName: model.FirstName,
                            lastName: model.LastName,
-                           orgId: _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId),
+                           orgId: orgId,
                            contributorRoles: new List<ContributorRole> { ContributorRole.NetworkManager },
                            status: InvitationStatus.Invited
                        )
