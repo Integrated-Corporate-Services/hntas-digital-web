@@ -247,9 +247,7 @@ namespace HNTAS.Web.UI.Controllers
             // Call API to get list of contributors
             var contributors = await _userService.GetRegisteredUsersAsync(userIdFromSession);
 
-            //remove hntas coordinator users
-            contributors = contributors.Where(u => !u.Roles.Contains(UserRole.NetworkManager)).ToList();
-
+            
             // Check for null or empty list and return an empty list if necessary
             if (contributors == null || !contributors.Any())
             {
