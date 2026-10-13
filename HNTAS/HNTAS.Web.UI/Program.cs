@@ -523,15 +523,6 @@ var app = builder.Build();
 
 app.UseForwardedHeaders();
 
-app.Use(async (context, next) =>
-{
-    Console.WriteLine(
-        $"Scheme={context.Request.Scheme}, " +
-        $"X-Forwarded-Proto={context.Request.Headers["X-Forwarded-Proto"]}");
-
-    await next();
-});
-
 // Security clickjacking fix : Add Security Headers Middleware
 app.Use(async (context, next) =>
 {
