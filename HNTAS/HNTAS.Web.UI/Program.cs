@@ -18,6 +18,7 @@ using HNTAS.Web.UI.Workflows.Services;
 using HNTAS.Web.UI.Workflows.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics.CodeAnalysis;
@@ -337,6 +338,16 @@ builder.Services.AddSingleton(sp =>
     return client;
 });
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor |
+        ForwardedHeaders.XForwardedProto;
+
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
 // Decide which authentication to use based on the environment variable
 var useGovUkSimulator = Environment.GetEnvironmentVariable("SIMULATOR_PROP4");
 
@@ -423,7 +434,14 @@ else
         .AddOneLogin(options =>
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.Environment = OneLoginEnvironments.Integration;
+            if (builder.Environment.IsEnvironment("prod"))
+            {
+                options.Environment = OneLoginEnvironments.Production;
+            }
+            else
+            {
+                options.Environment = OneLoginEnvironments.Integration;
+            }
             options.ClientId = Environment.GetEnvironmentVariable("ONELOGIN_CLIENT_ID");
             options.CallbackPath = "/onelogin-callback";
             options.SignedOutCallbackPath = "/onelogin-logout-callback";
@@ -469,10 +487,14 @@ else
             {
                 rsa.ImportFromPem(Environment.GetEnvironmentVariable("ONELOGIN_PRIVATE_KEY").AsSpan().ToString().Replace("\\n", "\n"));
 
-                var rsaKey = new RsaSecurityKey(rsa.ExportParameters(true))
+                var rsaKey = new RsaSecurityKey(rsa.ExportParameters(true));
+
+                var keyId = builder.Configuration["Jwks:KeyId"];
+
+                if (!string.IsNullOrWhiteSpace(keyId))
                 {
-                    KeyId = builder.Configuration["Jwks:KeyId"]
-                };
+                    rsaKey.KeyId = keyId;
+                }
 
                 options.ClientAuthenticationCredentials =
                     new SigningCredentials(
@@ -482,7 +504,6 @@ else
 
             options.VectorsOfTrust = [builder.Configuration.GetValue<string>("OneLogin:VectorsOfTrust")];
         });
-
 }
 
 
@@ -498,6 +519,9 @@ builder.Services.AddSession(options =>
 
 
 var app = builder.Build();
+
+
+app.UseForwardedHeaders();
 
 // Security clickjacking fix : Add Security Headers Middleware
 app.Use(async (context, next) =>
