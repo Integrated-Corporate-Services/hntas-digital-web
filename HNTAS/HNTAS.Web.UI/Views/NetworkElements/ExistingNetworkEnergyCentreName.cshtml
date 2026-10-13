@@ -23,10 +23,10 @@
                 <input type="hidden" name="@($"ExistingEcNameOptions[{i}].Label")" value="@item.Label" />
                 <input type="hidden" name="@($"ExistingEcNameOptions[{i}].IsMainEc")" value="@item.IsMainEc.ToString().ToLowerInvariant()" />
                 <div class="govuk-form-group">
-                    <label class="govuk-label" for="@($"ExistingEcNameOptions[{i}].EcName")">
+                    <label class="govuk-label" for="@($"existingecnameoptions[{i}].name")">
                         @item.Label
                     </label>
-                    <input class="govuk-input govuk-input--width-20" id="@($"ExistingEcNameOptions[{i}].EcName")" name="@($"ExistingEcNameOptions[{i}].EcName")" type="text" spellcheck="false" value="@item.EcName">
+                    <input class="govuk-input govuk-input--width-20" id="@($"existingecnameoptions[{i}].name")" name="@($"existingecnameoptions[{i}].name")" type="text" spellcheck="false" value="@item.EcName">
                 </div>
             }               
   
@@ -38,10 +38,10 @@
                 <input type="hidden" name="@($"NewEcNameOptions[{i}].Label")" value="@item.Label" />
                 <input type="hidden" name="@($"NewEcNameOptions[{i}].IsMainEc")" value="@item.IsMainEc.ToString().ToLowerInvariant()" />
                 <div class="govuk-form-group">
-                    <label class="govuk-label" for="@($"NewEcNameOptions[{i}].EcName")">
+                    <label class="govuk-label" for="@($"newecnameoptions[{i}].name")">
                         @item.Label
                     </label>
-                    <input class="govuk-input govuk-input--width-20" id="@($"NewEcNameOptions[{i}].EcName")" name="@($"NewEcNameOptions[{i}].EcName")" type="text" spellcheck="false" value="@item.EcName">
+                    <input class="govuk-input govuk-input--width-20" id="@($"newecnameoptions[{i}].name")" name="@($"newecnameoptions[{i}].name")" type="text" spellcheck="false" value="@item.EcName">
                 </div>
             }
 

@@ -155,12 +155,47 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult ExistingNetworkEnergyCentreName(ExistingNetworkEcNameViewModel model)
         {
             this.ShowBackButton("ExistingNetworkElements", "NetworkElements");
+            foreach(var existingEc in model.ExistingEcNameOptions)
+            {
+                if (string.IsNullOrWhiteSpace(existingEc.EcName))
+                {
+                    var index = model.ExistingEcNameOptions.IndexOf(existingEc);
+                    ModelState.AddModelError($"existingecnameoptions[{index}].name", $"Enter the name for Existing energy centre {index + 1}");
+                }
+            }
+            foreach (var newEc in model.NewEcNameOptions)
+            {
+                if (string.IsNullOrWhiteSpace(newEc.EcName))
+                {
+                    var index = model.NewEcNameOptions.IndexOf(newEc);
+                    if (newEc.IsMainEc)
+                    {
+                        ModelState.AddModelError($"newecnameoptions[{index}].name", $"Enter the name of the main energy centre {index + 1}");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError($"newecnameoptions[{index}].name", $"Enter the name of the new energy centre {index + 1}");
+                    }
+                }
+            }
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.ExistingNetworkEcNameViewModelSessionKey, model);
-            return RedirectToAction("SelectNetworkElements");
+            return RedirectToAction("ExistingEnergyCentreSupplyCheck");
+        }
+
+        [HttpGet]
+        public IActionResult ExistingEnergyCentreSupplyCheck()
+        {
+            this.ShowBackButton("ExistingNetworkEnergyCentreName", "NetworkElements");
+            var model = _sessionHelper.GetFromSession<ExistingNetworkEcNameViewModel>(HttpContext, SessionKeys.ExistingEcSupplyCheckViewModelSessionKey);
+            if (model != null)
+            {
+                return View(model);
+            }
+            return View(model);
         }
 
         [HttpPost]
