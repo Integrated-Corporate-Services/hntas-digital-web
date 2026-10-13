@@ -11,5 +11,6 @@ namespace HNTAS.Web.UI.Models
         public bool HasHntasNetworks { get; set; }
         public bool HasOfgemNetworks { get; set; }
         public bool HasMultipleContributingOrganisations { get; set; }
+        public List<ContributorRole> InvitedRoles { get; set; } = null!;
     }
 }
