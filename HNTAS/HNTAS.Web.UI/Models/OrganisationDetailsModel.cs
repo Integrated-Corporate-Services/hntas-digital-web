@@ -12,5 +12,6 @@
         public string? County { get; set; }
         public string? Postcode { get; set; }
         public string? Country { get; set; }
+        public string? CompanyHouseNumber { get; set; }
     }
 }

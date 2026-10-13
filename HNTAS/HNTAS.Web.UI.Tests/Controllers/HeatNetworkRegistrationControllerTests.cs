@@ -221,6 +221,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .ReturnsAsync(new UserResponse
                 {
                     OrgId = "org1",
+                    Roles = new List<UserRole> { UserRole.ResponsibleParty },
                     ContributingOrganisations = new List<string> { "org1" }
                 });
 

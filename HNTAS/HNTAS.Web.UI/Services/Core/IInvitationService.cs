@@ -9,5 +9,6 @@ namespace HNTAS.Web.UI.Services.Core
         Task SendInvitationEmailAsync(string invitationId, SendInvitationEmailRequest request);
         Task<string?> AcceptInvitationAsync(InvitedUserRequest invitationRequest);
         Task RejectInvitationAsync(string invitationId);
+        Task<List<Invitation>?> GetInvitationsByEmailAndOrg(string invitedEmail, string invitedOrgId);
     }
 }

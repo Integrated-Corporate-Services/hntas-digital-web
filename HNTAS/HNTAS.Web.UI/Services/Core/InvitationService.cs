@@ -149,5 +149,23 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
         }
+
+        public async Task<List<Invitation>?> GetInvitationsByEmailAndOrg(string invitedEmail, string invitedOrgId)
+        {
+            try
+            {
+                var response = await _invitationsApi.ApiInvitationsUserInvitationsGetAsync(invitedEmail, invitedOrgId);
+                if (response != null && response.IsOk)
+                {
+                    return response.Ok();
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An exception occurred while retrieving invitations");
+                throw;
+            }
+        }
     }
 }

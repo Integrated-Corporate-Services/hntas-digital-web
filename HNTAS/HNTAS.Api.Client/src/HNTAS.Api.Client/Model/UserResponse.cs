@@ -49,8 +49,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="status">status</param>
         /// <param name="hnRoleMappings">hnRoleMappings</param>
         /// <param name="contributingOrganisations">contributingOrganisations</param>
+        /// <param name="activeContributingOrgId">activeContributingOrgId</param>
         [JsonConstructor]
-        public UserResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<string?> orgId = default, Option<List<UserRole>?> roles = default, Option<UserStatus?> status = default, Option<List<HnRoleMapping>?> hnRoleMappings = default, Option<List<string>?> contributingOrganisations = default)
+        public UserResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<string?> orgId = default, Option<List<UserRole>?> roles = default, Option<UserStatus?> status = default, Option<List<HnRoleMapping>?> hnRoleMappings = default, Option<List<string>?> contributingOrganisations = default, Option<string?> activeContributingOrgId = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
@@ -68,6 +69,7 @@ namespace HNTAS.Api.Client.Model
             StatusOption = status;
             HnRoleMappingsOption = hnRoleMappings;
             ContributingOrganisationsOption = contributingOrganisations;
+            ActiveContributingOrgIdOption = activeContributingOrgId;
             OnCreated();
         }
 
@@ -282,6 +284,19 @@ namespace HNTAS.Api.Client.Model
         public List<string>? ContributingOrganisations { get { return this.ContributingOrganisationsOption; } set { this.ContributingOrganisationsOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of ActiveContributingOrgId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> ActiveContributingOrgIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets ActiveContributingOrgId
+        /// </summary>
+        [JsonPropertyName("activeContributingOrgId")]
+        public string? ActiveContributingOrgId { get { return this.ActiveContributingOrgIdOption; } set { this.ActiveContributingOrgIdOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -305,6 +320,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  HnRoleMappings: ").Append(HnRoleMappings).Append("\n");
             sb.Append("  ContributingOrganisations: ").Append(ContributingOrganisations).Append("\n");
+            sb.Append("  ActiveContributingOrgId: ").Append(ActiveContributingOrgId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -358,6 +374,7 @@ namespace HNTAS.Api.Client.Model
             Option<UserStatus?> status = default;
             Option<List<HnRoleMapping>?> hnRoleMappings = default;
             Option<List<string>?> contributingOrganisations = default;
+            Option<string?> activeContributingOrgId = default;
 
             while (utf8JsonReader.Read())
             {
@@ -426,6 +443,9 @@ namespace HNTAS.Api.Client.Model
                         case "contributingOrganisations":
                             contributingOrganisations = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "activeContributingOrgId":
+                            activeContributingOrgId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         default:
                             break;
                     }
@@ -444,7 +464,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class UserResponse.");
 
-            return new UserResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, orgId, roles, status, hnRoleMappings, contributingOrganisations);
+            return new UserResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, orgId, roles, status, hnRoleMappings, contributingOrganisations, activeContributingOrgId);
         }
 
         /// <summary>
@@ -574,6 +594,11 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("contributingOrganisations");
+            if (userResponse.ActiveContributingOrgIdOption.IsSet)
+                if (userResponse.ActiveContributingOrgIdOption.Value != null)
+                    writer.WriteString("activeContributingOrgId", userResponse.ActiveContributingOrgId);
+                else
+                    writer.WriteNull("activeContributingOrgId");
         }
     }
 }

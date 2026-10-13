@@ -1,13 +1,10 @@
 ﻿using GovUk.OneLogin.AspNetCore;
 using HNTAS.Web.UI.Controllers;
 using Microsoft.AspNetCore.Authentication;
-//using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Session;
 using Moq;
-//using Xunit;
 
 namespace HNTAS.Web.UI.Tests.Controllers
 {

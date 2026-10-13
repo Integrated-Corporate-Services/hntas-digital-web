@@ -84,6 +84,7 @@ docs/models/HeatPumpInput.md
 docs/models/HnRoleMapping.md
 docs/models/ImportResult.md
 docs/models/InitialUserRegistrationRequest.md
+docs/models/Invitation.md
 docs/models/InvitationStatus.md
 docs/models/InvitedUserRequest.md
 docs/models/InvitedUserResponse.md
@@ -118,6 +119,7 @@ docs/models/NetworkTypeSelection.md
 docs/models/NotificationHistoryData.md
 docs/models/NotificationHistoryRequest.md
 docs/models/NotificationHistoryResponse.md
+docs/models/NotificationStats.md
 docs/models/NullableOfHeatNetworkType.md
 docs/models/NullableOfMilestone.md
 docs/models/NullableOfPreferredContactType.md
@@ -196,6 +198,7 @@ src/HNTAS.Api.Client/Client/ApiException.cs
 src/HNTAS.Api.Client/Client/ApiFactory.cs
 src/HNTAS.Api.Client/Client/ApiResponseEventArgs.cs
 src/HNTAS.Api.Client/Client/ApiResponse`1.cs
+src/HNTAS.Api.Client/Client/BearerToken.cs
 src/HNTAS.Api.Client/Client/ClientUtils.cs
 src/HNTAS.Api.Client/Client/CookieContainer.cs
 src/HNTAS.Api.Client/Client/DateOnlyJsonConverter.cs
@@ -277,6 +280,7 @@ src/HNTAS.Api.Client/Model/HeatPumpInput.cs
 src/HNTAS.Api.Client/Model/HnRoleMapping.cs
 src/HNTAS.Api.Client/Model/ImportResult.cs
 src/HNTAS.Api.Client/Model/InitialUserRegistrationRequest.cs
+src/HNTAS.Api.Client/Model/Invitation.cs
 src/HNTAS.Api.Client/Model/InvitationStatus.cs
 src/HNTAS.Api.Client/Model/InvitedUserRequest.cs
 src/HNTAS.Api.Client/Model/InvitedUserResponse.cs
@@ -311,6 +315,7 @@ src/HNTAS.Api.Client/Model/NetworkTypeSelection.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryData.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryRequest.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryResponse.cs
+src/HNTAS.Api.Client/Model/NotificationStats.cs
 src/HNTAS.Api.Client/Model/NullableOfHeatNetworkType.cs
 src/HNTAS.Api.Client/Model/NullableOfMilestone.cs
 src/HNTAS.Api.Client/Model/NullableOfPreferredContactType.cs

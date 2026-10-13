@@ -5,9 +5,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **HpmTypeFuelUsedInput** | **int** |  | [optional] 
-**HpmUsefulHeatGeneratedValue** | **List&lt;int&gt;** |  | [optional] 
+**HpmUsefulHeatGeneratedValue** | **List&lt;double&gt;** |  | [optional] 
 **HpmUsefulHeatGeneratedNotes** | **string** |  | [optional] 
-**HpmEnergyUsedValue** | **List&lt;int&gt;** |  | [optional] 
+**HpmEnergyUsedValue** | **List&lt;double&gt;** |  | [optional] 
 **HpmEnergyUsedNotes** | **string** |  | [optional] 
 **HpmUsefulCoolingGeneratedValue** | **List&lt;int&gt;** |  | [optional] 
 **HpmUsefulCoolingGeneratedNotes** | **string** |  | [optional] 

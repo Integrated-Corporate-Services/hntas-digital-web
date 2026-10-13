@@ -137,16 +137,23 @@ namespace HNTAS.Api.Client.Api
         public OrganisationUserApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="OrganisationUserApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public OrganisationUserApi(ILogger<OrganisationUserApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, OrganisationUserApiEvents organisationUserApiEvents)
+        public OrganisationUserApi(ILogger<OrganisationUserApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, OrganisationUserApiEvents organisationUserApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<OrganisationUserApi>();
             HttpClient = httpClient;
             Events = organisationUserApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatApiOrganisationUserResponsiblePartyUserOrgIdGet(ref string orgId);
@@ -253,7 +260,14 @@ namespace HNTAS.Api.Client.Api
                         : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/OrganisationUser/responsible-party-user/{orgId}");
                     uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BorgId%7D", Uri.EscapeDataString(orgId.ToString()));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] acceptLocalVars = new string[] {
                         "text/plain",
@@ -287,6 +301,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiOrganisationUserResponsiblePartyUserOrgIdGetDefaultImplementation(apiResponseLocalVar, orgId);
 
                         Events.ExecuteOnApiOrganisationUserResponsiblePartyUserOrgIdGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }

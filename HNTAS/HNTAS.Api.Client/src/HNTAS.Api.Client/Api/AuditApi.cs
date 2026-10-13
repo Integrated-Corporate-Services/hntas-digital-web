@@ -131,16 +131,23 @@ namespace HNTAS.Api.Client.Api
         public AuditApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AuditApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public AuditApi(ILogger<AuditApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, AuditApiEvents auditApiEvents)
+        public AuditApi(ILogger<AuditApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, AuditApiEvents auditApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<AuditApi>();
             HttpClient = httpClient;
             Events = auditApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatApiAuditHeatNetworkAuditLogsGet(AuditLogRequest auditLogRequest);
@@ -250,7 +257,14 @@ namespace HNTAS.Api.Client.Api
                         ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
                         : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(auditLogRequest, _jsonSerializerOptions));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] contentTypes = new string[] {
                         "application/json",
@@ -295,6 +309,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiAuditHeatNetworkAuditLogsGetDefaultImplementation(apiResponseLocalVar, auditLogRequest);
 
                         Events.ExecuteOnApiAuditHeatNetworkAuditLogsGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }

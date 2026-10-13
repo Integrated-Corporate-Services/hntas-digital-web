@@ -413,6 +413,50 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _userServiceMock.Setup(x => x.IsActiveUserAsync(model.EmailAddress))
                 .ReturnsAsync(true);
 
+            _userServiceMock.Setup(x => x.GetUserByEmailIdAsync(It.IsAny<string>())).ReturnsAsync(new UserResponse
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                EmailId = model.EmailAddress,
+                ActiveContributingOrgId = "test-org-id",
+                ContributingOrganisations = new List<string> { "test-org-id" },
+                Roles = new List<UserRole> { UserRole.Contributor }
+            });
+
+            _invitationServiceMock.Setup(x => x.GetInvitationsByEmailAndOrg(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new List<Invitation>
+                {
+                    new Invitation(
+                        inviterUserId: "test-inviter-id",
+                        firstName: "John",
+                        lastName: "Doe",
+                        invitedEmail: model.EmailAddress,
+                        invitedRoles: new List<ContributorRole>(),
+                        invitedAt: DateTimeOffset.UtcNow,
+                        status: InvitationStatus.Invited,
+                        id: default,
+                        permissions: default,
+                        invitedHnId: default,
+                        invitedOrgId: default,
+                        acceptedAt: default,
+                        rejectedAt: default,
+                        replacedUserId: default,
+                        rolesToReplace: default)
+                    {
+                        InvitedOrgId = "test-org-id"
+                    }       
+                });
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<NewContributorRoleViewModel>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.NewContributorRoleViewModelSessionKey))
+                .Returns(new NewContributorRoleViewModel { IsDDH = false });
+
+            _sessionHelperMock.Setup(x => x.GetFromSession<string>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.OrganisationId))
+                .Returns("test-org-id");
+
             // Act
             var result = await _controller.NewContributorDetails(model);
 

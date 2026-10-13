@@ -111,7 +111,9 @@
         public const string IsSuperUserKey = "IsSuperUserKey";
         public const string RegistrationSourceKey = "RegistrationSourceKey";
 
-        //public const string NewHNEnergyCentreModelKey = "NewHNEnergyCentreModelKey";
+        public const string SwitchOrganisationModelSessionKey = "SwitchOrganisationModelSessionKey";
+
+        public const string HntasJwt = "HNTASJWTKey";
 
         public const string NetworkSupplyTypeModelKey = "NetworkSupplyTypeModelKey";
 

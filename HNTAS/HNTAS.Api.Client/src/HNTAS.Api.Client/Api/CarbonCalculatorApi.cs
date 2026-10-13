@@ -125,16 +125,23 @@ namespace HNTAS.Api.Client.Api
         public CarbonCalculatorApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CarbonCalculatorApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public CarbonCalculatorApi(ILogger<CarbonCalculatorApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, CarbonCalculatorApiEvents carbonCalculatorApiEvents)
+        public CarbonCalculatorApi(ILogger<CarbonCalculatorApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, CarbonCalculatorApiEvents carbonCalculatorApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<CarbonCalculatorApi>();
             HttpClient = httpClient;
             Events = carbonCalculatorApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatApiCarbonCalculatorRunPost(CarbonCalculatorRequest carbonCalculatorRequest);
@@ -244,7 +251,14 @@ namespace HNTAS.Api.Client.Api
                         ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
                         : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(carbonCalculatorRequest, _jsonSerializerOptions));
 
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
                     httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
 
                     string[] contentTypes = new string[] {
                         "application/json",
@@ -289,6 +303,10 @@ namespace HNTAS.Api.Client.Api
                         AfterApiCarbonCalculatorRunPostDefaultImplementation(apiResponseLocalVar, carbonCalculatorRequest);
 
                         Events.ExecuteOnApiCarbonCalculatorRunPost(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
 
                         return apiResponseLocalVar;
                     }

@@ -36,7 +36,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="rules">rules</param>
         /// <param name="defaults">defaults</param>
         [JsonConstructor]
-        public CarbonCalculatorConfigResponse(Option<Dictionary<string, Object>?> rules = default, Option<Object?> defaults = default)
+        public CarbonCalculatorConfigResponse(Option<Dictionary<string, Object>?> rules = default, Option<Dictionary<string, ConfigDefault>?> defaults = default)
         {
             RulesOption = rules;
             DefaultsOption = defaults;
@@ -63,13 +63,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<Object?> DefaultsOption { get; private set; }
+        public Option<Dictionary<string, ConfigDefault>?> DefaultsOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets Defaults
         /// </summary>
         [JsonPropertyName("defaults")]
-        public Object? Defaults { get { return this.DefaultsOption; } set { this.DefaultsOption = new(value); } }
+        public Dictionary<string, ConfigDefault>? Defaults { get { return this.DefaultsOption; } set { this.DefaultsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -119,7 +119,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<Dictionary<string, Object>?> rules = default;
-            Option<Object?> defaults = default;
+            Option<Dictionary<string, ConfigDefault>?> defaults = default;
 
             while (utf8JsonReader.Read())
             {
@@ -140,7 +140,7 @@ namespace HNTAS.Api.Client.Model
                             rules = new Option<Dictionary<string, Object>?>(JsonSerializer.Deserialize<Dictionary<string, Object>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "defaults":
-                            defaults = new Option<Object?>(JsonSerializer.Deserialize<Object>(ref utf8JsonReader, jsonSerializerOptions));
+                            defaults = new Option<Dictionary<string, ConfigDefault>?>(JsonSerializer.Deserialize<Dictionary<string, ConfigDefault>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;

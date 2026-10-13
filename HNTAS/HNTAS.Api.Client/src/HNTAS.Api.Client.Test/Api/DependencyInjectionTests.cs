@@ -27,14 +27,16 @@ namespace HNTAS.Api.Client.Test.Api
         private readonly IHost _hostUsingConfigureWithoutAClient =
             Host.CreateDefaultBuilder([]).ConfigureApi((context, services, options) =>
             {
-
+                BearerToken bearerToken1 = new("<token>", timeout: TimeSpan.FromSeconds(1));
+                options.AddTokens(bearerToken1);
             })
             .Build();
 
         private readonly IHost _hostUsingConfigureWithAClient =
             Host.CreateDefaultBuilder([]).ConfigureApi((context, services, options) =>
             {
-
+                BearerToken bearerToken1 = new("<token>", timeout: TimeSpan.FromSeconds(1));
+                options.AddTokens(bearerToken1);
                 options.AddApiHttpClients(client => client.BaseAddress = new Uri(ClientUtils.BASE_ADDRESS));
             })
             .Build();
@@ -44,7 +46,8 @@ namespace HNTAS.Api.Client.Test.Api
             {
                 services.AddApi(options =>
                 {
-
+                    BearerToken bearerToken1 = new("<token>", timeout: TimeSpan.FromSeconds(1));
+                    options.AddTokens(bearerToken1);
                 });
             })
             .Build();
@@ -54,7 +57,8 @@ namespace HNTAS.Api.Client.Test.Api
             {
                 services.AddApi(options =>
                 {
-
+                    BearerToken bearerToken1 = new("<token>", timeout: TimeSpan.FromSeconds(1));
+                    options.AddTokens(bearerToken1);
                     options.AddApiHttpClients(client => client.BaseAddress = new Uri(ClientUtils.BASE_ADDRESS));
                 });
             })

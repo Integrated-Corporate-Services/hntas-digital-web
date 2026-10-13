@@ -484,16 +484,23 @@ namespace HNTAS.Api.Client.Api
         public ArmsApiEvents Events { get; }
 
         /// <summary>
+        /// A token provider of type <see cref="BearerToken"/>
+        /// </summary>
+        public TokenProvider<BearerToken> BearerTokenProvider { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ArmsApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public ArmsApi(ILogger<ArmsApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, ArmsApiEvents armsApiEvents)
+        public ArmsApi(ILogger<ArmsApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, ArmsApiEvents armsApiEvents,
+            TokenProvider<BearerToken> bearerTokenProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<ArmsApi>();
             HttpClient = httpClient;
             Events = armsApiEvents;
+            BearerTokenProvider = bearerTokenProvider;
         }
 
         partial void FormatArmsV1HnKpiConfigPost(KpiConfigRequest kpiConfigRequest);

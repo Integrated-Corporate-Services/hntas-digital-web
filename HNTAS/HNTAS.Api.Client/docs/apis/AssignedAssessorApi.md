@@ -25,7 +25,7 @@ All URIs are relative to *https://localhost:7117*
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
