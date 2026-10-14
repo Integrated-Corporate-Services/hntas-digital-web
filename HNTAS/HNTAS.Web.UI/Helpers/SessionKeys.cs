@@ -117,5 +117,6 @@
         public const string ExistingNetworkElementsViewModelSessionKey = "ExistingNetworkElementsViewModelSessionKey";
         public const string ExistingNetworkEcNameViewModelSessionKey = "ExistingNetworkEcNameViewModelSessionKey";
         public const string ExistingEcSupplyCheckViewModelSessionKey = "ExistingEcSupplyCheckViewModelSessionKey";
+        public const string ExistingEcSupplyViewModelSessionKey = "ExistingEcSupplyViewModelSessionKey";
     }
 }

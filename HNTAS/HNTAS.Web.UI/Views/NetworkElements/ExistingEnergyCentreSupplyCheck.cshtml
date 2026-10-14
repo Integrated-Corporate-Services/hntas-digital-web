@@ -1,1 +1,37 @@
-﻿
+﻿@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.NetworkElements
+@model ExistingEnergyCentreSupplyViewModel
+
+@{
+    ViewData["Title"] = "Do any existing energy centres supply the new buildings?";
+    var fieldOrder = new[] { nameof(Model.IsExistingEcSupply) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.IsExistingEcSupply)).ToLowerInvariant();    
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = "NetworkElements",
+        Action = "ExistingEnergyCentreSupplyCheck",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = "Do any existing energy centres supply the new buildings?",
+                QHintText = null,
+                Options = new List<Option>
+                {
+                    new Option { OptId = $"{elementId}", OptValue = "yes", OptText = "Yes", OptHintText = "The existing energy centre supplies the new buildings" },
+                    new Option { OptId = $"{elementId}-2", OptValue = "no", OptText = "No", OptHintText = "The new buildings are supplied by another district network" }
+                },
+                SeletedOption = Model.IsExistingEcSupply
+            },
+        }
+    };
+}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">        
+        @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+    </div>
+</div>

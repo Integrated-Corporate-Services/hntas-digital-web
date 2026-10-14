@@ -20,13 +20,20 @@
             @for(int i = 0; i < Model.ExistingEcNameOptions.Count; i++)
             {
                 var item = Model.ExistingEcNameOptions[i];
+                var hasExistingCountError = ViewData.ModelState[$"existingecnameoptions[{i}].ecname"]?.Errors.Count > 0;
                 <input type="hidden" name="@($"ExistingEcNameOptions[{i}].Label")" value="@item.Label" />
                 <input type="hidden" name="@($"ExistingEcNameOptions[{i}].IsMainEc")" value="@item.IsMainEc.ToString().ToLowerInvariant()" />
-                <div class="govuk-form-group">
-                    <label class="govuk-label" for="@($"existingecnameoptions[{i}].name")">
+                <div class="govuk-form-group @(hasExistingCountError ? "govuk-form-group--error" : "")">
+                    <label class="govuk-label" for="@($"existingecnameoptions[{i}].ecname")">
                         @item.Label
                     </label>
-                    <input class="govuk-input govuk-input--width-20" id="@($"existingecnameoptions[{i}].name")" name="@($"existingecnameoptions[{i}].name")" type="text" spellcheck="false" value="@item.EcName">
+                    @if (hasExistingCountError)
+                    {
+                        <span class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[$"existingecnameoptions[{i}].ecname"]?.Errors.FirstOrDefault()?.ErrorMessage
+                        </span>
+                    }
+                    <input class="govuk-input govuk-input--width-20 @(hasExistingCountError ? "govuk-input--error" : "")" id="@($"existingecnameoptions[{i}].ecname")" name="@($"existingecnameoptions[{i}].ecname")" type="text" spellcheck="false" value="@item.EcName">
                 </div>
             }               
   
@@ -35,13 +42,20 @@
             @for (int i = 0; i < Model.NewEcNameOptions.Count; i++)
             {
                 var item = Model.NewEcNameOptions[i];
+                var hasNewCountError = ViewData.ModelState[$"newecnameoptions[{i}].ecname"]?.Errors.Count > 0;
                 <input type="hidden" name="@($"NewEcNameOptions[{i}].Label")" value="@item.Label" />
                 <input type="hidden" name="@($"NewEcNameOptions[{i}].IsMainEc")" value="@item.IsMainEc.ToString().ToLowerInvariant()" />
-                <div class="govuk-form-group">
-                    <label class="govuk-label" for="@($"newecnameoptions[{i}].name")">
+                <div class="govuk-form-group @(hasNewCountError ? "govuk-form-group--error" : "")">
+                    <label class="govuk-label" for="@($"newecnameoptions[{i}].ecname")">
                         @item.Label
                     </label>
-                    <input class="govuk-input govuk-input--width-20" id="@($"newecnameoptions[{i}].name")" name="@($"newecnameoptions[{i}].name")" type="text" spellcheck="false" value="@item.EcName">
+                    @if (hasNewCountError)
+                    {
+                        <span class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[$"newecnameoptions[{i}].ecname"]?.Errors.FirstOrDefault()?.ErrorMessage
+                        </span>
+                    }
+                    <input class="govuk-input govuk-input--width-20 @(hasNewCountError ? "govuk-input--error" : "")" id="@($"newecnameoptions[{i}].ecname")" name="@($"newecnameoptions[{i}].ecname")" type="text" spellcheck="false" value="@item.EcName">
                 </div>
             }
 
