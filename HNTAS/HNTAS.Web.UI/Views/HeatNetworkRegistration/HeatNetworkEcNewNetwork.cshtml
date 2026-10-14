@@ -1,0 +1,85 @@
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.HeatNetworkRegistration
+@model NetworkSupplyTypeModel
+
+@{
+    ViewData["Title"] = "Energy centre – Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
+    var fieldOrder = new[] { nameof(Model.EnergyCentreOption) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.EnergyCentreOption)).ToLowerInvariant();
+    string controllerName = Convert.ToString(ViewBag.ControllerName) ?? string.Empty;
+
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = controllerName,
+        Action = "SaveECNewNetwork",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = "Does this heat network have a main energy centre?",
+                QDescText = null,
+                QHintText = null,
+                HeadingLevel= QuestionHeadingLevel.H2,
+                Options = new List<Option>
+                {
+                    new Option
+                    {
+                        OptId = elementId,
+                        OptValue = NullableOfEnergyCentreType.SuppliesMultipleBuildings.ToString(),
+                        OptText = "Yes, it supplies multiple buildings",
+                        OptHintText = null
+                    },
+                    new Option
+                    {
+                        OptId = $"{elementId}-2",
+                        OptValue = NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString(),
+                        OptText = "No, multiple buildings are supplied by a separate district network",
+                        OptHintText = null
+                    },
+                    new Option
+                    {
+                        OptId = $"{elementId}-3",
+                        OptValue = NullableOfEnergyCentreType.SuppliesOneCommunalBuildingOnly.ToString(),
+                        OptText = "No, the energy centre supplies one communal building only",
+                        OptHintText = null
+                    },
+                    new Option
+                    {
+                        OptId = $"{elementId}-4",
+                        OptValue = NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString(),
+                        OptText = "No, a single communal building is supplied by a separate district network",
+                        OptHintText = null
+                    }
+                },
+                SeletedOption = Model.EnergyCentreOption
+            }
+        }
+    };
+}
+
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Add a heat network</span>
+        <h1 class="govuk-heading-l">Energy centre</h1>
+
+        <p class="govuk-body">A main energy centre is the primary heat source for multiple buildings.</p>
+
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Help with the energy centre
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                The energy centre is a plant room that contains heat generation equipment and/or equipment connecting to an energy source. An energy centre may have an independent location or be situated within a communal building.
+            </div>
+        </details>
+
+        @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+    </div>
+</div>

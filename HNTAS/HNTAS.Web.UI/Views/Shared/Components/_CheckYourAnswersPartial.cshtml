@@ -12,7 +12,7 @@
                     @item.Key
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    @item.Value
+                    @Html.Raw(item.Value)
                 </dd>
                 <dd class="govuk-summary-list__actions">                    
                     @if (item.ChangeLink != null) {

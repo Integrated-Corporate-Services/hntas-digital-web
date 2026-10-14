@@ -1,0 +1,53 @@
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models
+@using HNTAS.Web.UI.Models.HeatNetworkRegistration
+@model NetworkStatusModel
+
+@{
+    ViewData["Title"] = "Current heat network status – Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
+    var fieldOrder = new[] { nameof(Model.BuildStatus) };
+    var elementId = Html.GenerateIdFromName(nameof(Model.BuildStatus)).ToLowerInvariant();
+    string controllerName = Convert.ToString(ViewBag.ControllerName) ?? string.Empty;
+    var pageData = new QuestionWithRadiobuttonsModel
+    {
+        Controller = controllerName,
+        Action = "SaveHeatNetworkStatus",
+        FieldOrder = fieldOrder,
+        Questions = new List<Question>
+        {
+            new Question
+            {
+                QId = elementId,
+                QText = "What is the current state of this network?",
+                QDescText = @"",
+                QHintText = null,
+                HeadingLevel= QuestionHeadingLevel.H2,
+                Options = new List<Option>
+                {
+                    new Option { OptId = $"{elementId}", OptValue = NullableOfNetworkBuildStatus.Existing.ToString(), OptText = "It is an existing heat network", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = NullableOfNetworkBuildStatus.New.ToString(), OptText = "It is a new heat network", OptHintText = null },
+                    new Option { OptId = $"{elementId}-3", OptValue = NullableOfNetworkBuildStatus.NewAndExisting.ToString(), OptText = "It is a new and existing heat network", OptHintText = null }
+                },
+                SeletedOption = Model.BuildStatus
+            },
+        }
+    };
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+     
+        <h1 class="govuk-heading-l">Current heat network status</h1>
+
+        <p class="govuk-body">
+            If the entire heat network already supplies customers, then this is an <strong>existing heat network.</strong>
+        </p>
+        <p class="govuk-body">
+            If the entire heat network doesn't yet supply customers, and all connection and elements within the network are currently in a feasibility, design or construction phase, then this is a <strong>new heat network.</strong>
+        </p>
+        <p class="govuk-body">
+            If the heat network combines all of the above in some way, your network is considered <strong>both new and existing.</strong>
+        </p>
+        @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+    </div>
+</div>
