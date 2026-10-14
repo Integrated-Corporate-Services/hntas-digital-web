@@ -1,0 +1,56 @@
+﻿@using HNTAS.Web.UI.Models.HeatNetworkRegistration
+@model CommunalBuildingResponsibilityViewModel
+
+@{
+    ViewData["Title"] = "How many of the new communal building networks are you responsible for beyond the initial connection point – Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
+
+    if (!ViewData.ModelState.IsValid)
+    {
+        ViewData["Title"] = "Error: " + ViewData["Title"];
+    }
+
+    var fieldName = nameof(Model.ResponsibleCommunalNetworks);
+    var hasError = ViewData.ModelState.TryGetValue(fieldName, out var state) && state.Errors.Count > 0;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-l">Add a heat network</span>
+
+        <form asp-action="SaveCommunalBuildingResponsibility" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="MaxAllowedCommunalBuildings" />
+
+            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+                <h1 class="govuk-label-wrapper">
+                    <label class="govuk-label govuk-label--l" for="@fieldName">
+                        How many of the new communal building networks are you responsible for beyond the initial connection point?
+                    </label>
+                </h1>
+
+                <div id="@(fieldName)-hint" class="govuk-hint">
+                    Enter the number of networks where your organization retains ongoing technical responsibility. Enter 0 if none apply.
+                </div>
+
+                @if (hasError)
+                {
+                    <p class="govuk-error-message" id="@(fieldName)-error">
+                        <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[fieldName]!.Errors.First().ErrorMessage
+                    </p>
+                }
+
+                <input class="govuk-input govuk-input--width-4 @(hasError ? "govuk-input--error" : "")"
+                       id="@fieldName"
+                       name="@fieldName"
+                       type="number"
+                       value="@Model.ResponsibleCommunalNetworks"
+                       aria-describedby="@(hasError ? $"{fieldName}-error" : $"{fieldName}-hint")" />
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
+
+    </div>
+</div>

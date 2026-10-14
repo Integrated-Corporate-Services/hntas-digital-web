@@ -41,8 +41,18 @@ namespace HNTAS.Api.Client.Model
         /// <param name="noOfNonDomesticConsumer">noOfNonDomesticConsumer</param>
         /// <param name="isOtherDistrictNetwork">isOtherDistrictNetwork</param>
         /// <param name="noOfOtherDistrictNetwork">noOfOtherDistrictNetwork</param>
+        /// <param name="noOfExistingCommunalBuilding">noOfExistingCommunalBuilding</param>
+        /// <param name="noOfExistingHousesOrMaisonettes">noOfExistingHousesOrMaisonettes</param>
+        /// <param name="noOfExistingNonDomesticBuildings">noOfExistingNonDomesticBuildings</param>
+        /// <param name="noOfExistingMultiTenantedNonDomestic">noOfExistingMultiTenantedNonDomestic</param>
+        /// <param name="noOfExistingOtherDistrictNetworks">noOfExistingOtherDistrictNetworks</param>
+        /// <param name="noOfNewCommunalBuilding">noOfNewCommunalBuilding</param>
+        /// <param name="noOfNewHousesOrMaisonettes">noOfNewHousesOrMaisonettes</param>
+        /// <param name="noOfNewNonDomesticBuildings">noOfNewNonDomesticBuildings</param>
+        /// <param name="noOfNewMultiTenantedNonDomestic">noOfNewMultiTenantedNonDomestic</param>
+        /// <param name="noOfNewOtherDistrictNetworks">noOfNewOtherDistrictNetworks</param>
         [JsonConstructor]
-        public HeatNetworkConnections(Option<bool?> isCommunalBuilding = default, Option<int?> noOfCommunalBuilding = default, Option<bool?> isDomesticConsumer = default, Option<int?> noOfDomesticConsumer = default, Option<bool?> isNonDomesticConsumer = default, Option<int?> noOfNonDomesticConsumer = default, Option<bool?> isOtherDistrictNetwork = default, Option<int?> noOfOtherDistrictNetwork = default)
+        public HeatNetworkConnections(Option<bool?> isCommunalBuilding = default, Option<int?> noOfCommunalBuilding = default, Option<bool?> isDomesticConsumer = default, Option<int?> noOfDomesticConsumer = default, Option<bool?> isNonDomesticConsumer = default, Option<int?> noOfNonDomesticConsumer = default, Option<bool?> isOtherDistrictNetwork = default, Option<int?> noOfOtherDistrictNetwork = default, Option<int?> noOfExistingCommunalBuilding = default, Option<int?> noOfExistingHousesOrMaisonettes = default, Option<int?> noOfExistingNonDomesticBuildings = default, Option<int?> noOfExistingMultiTenantedNonDomestic = default, Option<int?> noOfExistingOtherDistrictNetworks = default, Option<int?> noOfNewCommunalBuilding = default, Option<int?> noOfNewHousesOrMaisonettes = default, Option<int?> noOfNewNonDomesticBuildings = default, Option<int?> noOfNewMultiTenantedNonDomestic = default, Option<int?> noOfNewOtherDistrictNetworks = default)
         {
             IsCommunalBuildingOption = isCommunalBuilding;
             NoOfCommunalBuildingOption = noOfCommunalBuilding;
@@ -52,6 +62,16 @@ namespace HNTAS.Api.Client.Model
             NoOfNonDomesticConsumerOption = noOfNonDomesticConsumer;
             IsOtherDistrictNetworkOption = isOtherDistrictNetwork;
             NoOfOtherDistrictNetworkOption = noOfOtherDistrictNetwork;
+            NoOfExistingCommunalBuildingOption = noOfExistingCommunalBuilding;
+            NoOfExistingHousesOrMaisonettesOption = noOfExistingHousesOrMaisonettes;
+            NoOfExistingNonDomesticBuildingsOption = noOfExistingNonDomesticBuildings;
+            NoOfExistingMultiTenantedNonDomesticOption = noOfExistingMultiTenantedNonDomestic;
+            NoOfExistingOtherDistrictNetworksOption = noOfExistingOtherDistrictNetworks;
+            NoOfNewCommunalBuildingOption = noOfNewCommunalBuilding;
+            NoOfNewHousesOrMaisonettesOption = noOfNewHousesOrMaisonettes;
+            NoOfNewNonDomesticBuildingsOption = noOfNewNonDomesticBuildings;
+            NoOfNewMultiTenantedNonDomesticOption = noOfNewMultiTenantedNonDomestic;
+            NoOfNewOtherDistrictNetworksOption = noOfNewOtherDistrictNetworks;
             OnCreated();
         }
 
@@ -162,6 +182,136 @@ namespace HNTAS.Api.Client.Model
         public int? NoOfOtherDistrictNetwork { get { return this.NoOfOtherDistrictNetworkOption; } set { this.NoOfOtherDistrictNetworkOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of NoOfExistingCommunalBuilding
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfExistingCommunalBuildingOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfExistingCommunalBuilding
+        /// </summary>
+        [JsonPropertyName("noOfExistingCommunalBuilding")]
+        public int? NoOfExistingCommunalBuilding { get { return this.NoOfExistingCommunalBuildingOption; } set { this.NoOfExistingCommunalBuildingOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfExistingHousesOrMaisonettes
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfExistingHousesOrMaisonettesOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfExistingHousesOrMaisonettes
+        /// </summary>
+        [JsonPropertyName("noOfExistingHousesOrMaisonettes")]
+        public int? NoOfExistingHousesOrMaisonettes { get { return this.NoOfExistingHousesOrMaisonettesOption; } set { this.NoOfExistingHousesOrMaisonettesOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfExistingNonDomesticBuildings
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfExistingNonDomesticBuildingsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfExistingNonDomesticBuildings
+        /// </summary>
+        [JsonPropertyName("noOfExistingNonDomesticBuildings")]
+        public int? NoOfExistingNonDomesticBuildings { get { return this.NoOfExistingNonDomesticBuildingsOption; } set { this.NoOfExistingNonDomesticBuildingsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfExistingMultiTenantedNonDomestic
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfExistingMultiTenantedNonDomesticOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfExistingMultiTenantedNonDomestic
+        /// </summary>
+        [JsonPropertyName("noOfExistingMultiTenantedNonDomestic")]
+        public int? NoOfExistingMultiTenantedNonDomestic { get { return this.NoOfExistingMultiTenantedNonDomesticOption; } set { this.NoOfExistingMultiTenantedNonDomesticOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfExistingOtherDistrictNetworks
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfExistingOtherDistrictNetworksOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfExistingOtherDistrictNetworks
+        /// </summary>
+        [JsonPropertyName("noOfExistingOtherDistrictNetworks")]
+        public int? NoOfExistingOtherDistrictNetworks { get { return this.NoOfExistingOtherDistrictNetworksOption; } set { this.NoOfExistingOtherDistrictNetworksOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfNewCommunalBuilding
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfNewCommunalBuildingOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfNewCommunalBuilding
+        /// </summary>
+        [JsonPropertyName("noOfNewCommunalBuilding")]
+        public int? NoOfNewCommunalBuilding { get { return this.NoOfNewCommunalBuildingOption; } set { this.NoOfNewCommunalBuildingOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfNewHousesOrMaisonettes
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfNewHousesOrMaisonettesOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfNewHousesOrMaisonettes
+        /// </summary>
+        [JsonPropertyName("noOfNewHousesOrMaisonettes")]
+        public int? NoOfNewHousesOrMaisonettes { get { return this.NoOfNewHousesOrMaisonettesOption; } set { this.NoOfNewHousesOrMaisonettesOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfNewNonDomesticBuildings
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfNewNonDomesticBuildingsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfNewNonDomesticBuildings
+        /// </summary>
+        [JsonPropertyName("noOfNewNonDomesticBuildings")]
+        public int? NoOfNewNonDomesticBuildings { get { return this.NoOfNewNonDomesticBuildingsOption; } set { this.NoOfNewNonDomesticBuildingsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfNewMultiTenantedNonDomestic
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfNewMultiTenantedNonDomesticOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfNewMultiTenantedNonDomestic
+        /// </summary>
+        [JsonPropertyName("noOfNewMultiTenantedNonDomestic")]
+        public int? NoOfNewMultiTenantedNonDomestic { get { return this.NoOfNewMultiTenantedNonDomesticOption; } set { this.NoOfNewMultiTenantedNonDomesticOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfNewOtherDistrictNetworks
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfNewOtherDistrictNetworksOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfNewOtherDistrictNetworks
+        /// </summary>
+        [JsonPropertyName("noOfNewOtherDistrictNetworks")]
+        public int? NoOfNewOtherDistrictNetworks { get { return this.NoOfNewOtherDistrictNetworksOption; } set { this.NoOfNewOtherDistrictNetworksOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -177,6 +327,16 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  NoOfNonDomesticConsumer: ").Append(NoOfNonDomesticConsumer).Append("\n");
             sb.Append("  IsOtherDistrictNetwork: ").Append(IsOtherDistrictNetwork).Append("\n");
             sb.Append("  NoOfOtherDistrictNetwork: ").Append(NoOfOtherDistrictNetwork).Append("\n");
+            sb.Append("  NoOfExistingCommunalBuilding: ").Append(NoOfExistingCommunalBuilding).Append("\n");
+            sb.Append("  NoOfExistingHousesOrMaisonettes: ").Append(NoOfExistingHousesOrMaisonettes).Append("\n");
+            sb.Append("  NoOfExistingNonDomesticBuildings: ").Append(NoOfExistingNonDomesticBuildings).Append("\n");
+            sb.Append("  NoOfExistingMultiTenantedNonDomestic: ").Append(NoOfExistingMultiTenantedNonDomestic).Append("\n");
+            sb.Append("  NoOfExistingOtherDistrictNetworks: ").Append(NoOfExistingOtherDistrictNetworks).Append("\n");
+            sb.Append("  NoOfNewCommunalBuilding: ").Append(NoOfNewCommunalBuilding).Append("\n");
+            sb.Append("  NoOfNewHousesOrMaisonettes: ").Append(NoOfNewHousesOrMaisonettes).Append("\n");
+            sb.Append("  NoOfNewNonDomesticBuildings: ").Append(NoOfNewNonDomesticBuildings).Append("\n");
+            sb.Append("  NoOfNewMultiTenantedNonDomestic: ").Append(NoOfNewMultiTenantedNonDomestic).Append("\n");
+            sb.Append("  NoOfNewOtherDistrictNetworks: ").Append(NoOfNewOtherDistrictNetworks).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -222,6 +382,16 @@ namespace HNTAS.Api.Client.Model
             Option<int?> noOfNonDomesticConsumer = default;
             Option<bool?> isOtherDistrictNetwork = default;
             Option<int?> noOfOtherDistrictNetwork = default;
+            Option<int?> noOfExistingCommunalBuilding = default;
+            Option<int?> noOfExistingHousesOrMaisonettes = default;
+            Option<int?> noOfExistingNonDomesticBuildings = default;
+            Option<int?> noOfExistingMultiTenantedNonDomestic = default;
+            Option<int?> noOfExistingOtherDistrictNetworks = default;
+            Option<int?> noOfNewCommunalBuilding = default;
+            Option<int?> noOfNewHousesOrMaisonettes = default;
+            Option<int?> noOfNewNonDomesticBuildings = default;
+            Option<int?> noOfNewMultiTenantedNonDomestic = default;
+            Option<int?> noOfNewOtherDistrictNetworks = default;
 
             while (utf8JsonReader.Read())
             {
@@ -262,25 +432,43 @@ namespace HNTAS.Api.Client.Model
                         case "noOfOtherDistrictNetwork":
                             noOfOtherDistrictNetwork = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
+                        case "noOfExistingCommunalBuilding":
+                            noOfExistingCommunalBuilding = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "noOfExistingHousesOrMaisonettes":
+                            noOfExistingHousesOrMaisonettes = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "noOfExistingNonDomesticBuildings":
+                            noOfExistingNonDomesticBuildings = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "noOfExistingMultiTenantedNonDomestic":
+                            noOfExistingMultiTenantedNonDomestic = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "noOfExistingOtherDistrictNetworks":
+                            noOfExistingOtherDistrictNetworks = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "noOfNewCommunalBuilding":
+                            noOfNewCommunalBuilding = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "noOfNewHousesOrMaisonettes":
+                            noOfNewHousesOrMaisonettes = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "noOfNewNonDomesticBuildings":
+                            noOfNewNonDomesticBuildings = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "noOfNewMultiTenantedNonDomestic":
+                            noOfNewMultiTenantedNonDomestic = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "noOfNewOtherDistrictNetworks":
+                            noOfNewOtherDistrictNetworks = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
                         default:
                             break;
                     }
                 }
             }
 
-            if (isCommunalBuilding.IsSet && isCommunalBuilding.Value == null)
-                throw new ArgumentNullException(nameof(isCommunalBuilding), "Property is not nullable for class HeatNetworkConnections.");
-
-            if (isDomesticConsumer.IsSet && isDomesticConsumer.Value == null)
-                throw new ArgumentNullException(nameof(isDomesticConsumer), "Property is not nullable for class HeatNetworkConnections.");
-
-            if (isNonDomesticConsumer.IsSet && isNonDomesticConsumer.Value == null)
-                throw new ArgumentNullException(nameof(isNonDomesticConsumer), "Property is not nullable for class HeatNetworkConnections.");
-
-            if (isOtherDistrictNetwork.IsSet && isOtherDistrictNetwork.Value == null)
-                throw new ArgumentNullException(nameof(isOtherDistrictNetwork), "Property is not nullable for class HeatNetworkConnections.");
-
-            return new HeatNetworkConnections(isCommunalBuilding, noOfCommunalBuilding, isDomesticConsumer, noOfDomesticConsumer, isNonDomesticConsumer, noOfNonDomesticConsumer, isOtherDistrictNetwork, noOfOtherDistrictNetwork);
+            return new HeatNetworkConnections(isCommunalBuilding, noOfCommunalBuilding, isDomesticConsumer, noOfDomesticConsumer, isNonDomesticConsumer, noOfNonDomesticConsumer, isOtherDistrictNetwork, noOfOtherDistrictNetwork, noOfExistingCommunalBuilding, noOfExistingHousesOrMaisonettes, noOfExistingNonDomesticBuildings, noOfExistingMultiTenantedNonDomestic, noOfExistingOtherDistrictNetworks, noOfNewCommunalBuilding, noOfNewHousesOrMaisonettes, noOfNewNonDomesticBuildings, noOfNewMultiTenantedNonDomestic, noOfNewOtherDistrictNetworks);
         }
 
         /// <summary>
@@ -308,7 +496,10 @@ namespace HNTAS.Api.Client.Model
         public void WriteProperties(Utf8JsonWriter writer, HeatNetworkConnections heatNetworkConnections, JsonSerializerOptions jsonSerializerOptions)
         {
             if (heatNetworkConnections.IsCommunalBuildingOption.IsSet)
-                writer.WriteBoolean("isCommunalBuilding", heatNetworkConnections.IsCommunalBuildingOption.Value!.Value);
+                if (heatNetworkConnections.IsCommunalBuildingOption.Value != null)
+                    writer.WriteBoolean("isCommunalBuilding", heatNetworkConnections.IsCommunalBuildingOption.Value!.Value);
+                else
+                    writer.WriteNull("isCommunalBuilding");
 
             if (heatNetworkConnections.NoOfCommunalBuildingOption.IsSet)
                 if (heatNetworkConnections.NoOfCommunalBuildingOption.Value != null)
@@ -317,7 +508,10 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("noOfCommunalBuilding");
 
             if (heatNetworkConnections.IsDomesticConsumerOption.IsSet)
-                writer.WriteBoolean("isDomesticConsumer", heatNetworkConnections.IsDomesticConsumerOption.Value!.Value);
+                if (heatNetworkConnections.IsDomesticConsumerOption.Value != null)
+                    writer.WriteBoolean("isDomesticConsumer", heatNetworkConnections.IsDomesticConsumerOption.Value!.Value);
+                else
+                    writer.WriteNull("isDomesticConsumer");
 
             if (heatNetworkConnections.NoOfDomesticConsumerOption.IsSet)
                 if (heatNetworkConnections.NoOfDomesticConsumerOption.Value != null)
@@ -326,7 +520,10 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("noOfDomesticConsumer");
 
             if (heatNetworkConnections.IsNonDomesticConsumerOption.IsSet)
-                writer.WriteBoolean("isNonDomesticConsumer", heatNetworkConnections.IsNonDomesticConsumerOption.Value!.Value);
+                if (heatNetworkConnections.IsNonDomesticConsumerOption.Value != null)
+                    writer.WriteBoolean("isNonDomesticConsumer", heatNetworkConnections.IsNonDomesticConsumerOption.Value!.Value);
+                else
+                    writer.WriteNull("isNonDomesticConsumer");
 
             if (heatNetworkConnections.NoOfNonDomesticConsumerOption.IsSet)
                 if (heatNetworkConnections.NoOfNonDomesticConsumerOption.Value != null)
@@ -335,13 +532,76 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteNull("noOfNonDomesticConsumer");
 
             if (heatNetworkConnections.IsOtherDistrictNetworkOption.IsSet)
-                writer.WriteBoolean("isOtherDistrictNetwork", heatNetworkConnections.IsOtherDistrictNetworkOption.Value!.Value);
+                if (heatNetworkConnections.IsOtherDistrictNetworkOption.Value != null)
+                    writer.WriteBoolean("isOtherDistrictNetwork", heatNetworkConnections.IsOtherDistrictNetworkOption.Value!.Value);
+                else
+                    writer.WriteNull("isOtherDistrictNetwork");
 
             if (heatNetworkConnections.NoOfOtherDistrictNetworkOption.IsSet)
                 if (heatNetworkConnections.NoOfOtherDistrictNetworkOption.Value != null)
                     writer.WriteNumber("noOfOtherDistrictNetwork", heatNetworkConnections.NoOfOtherDistrictNetworkOption.Value!.Value);
                 else
                     writer.WriteNull("noOfOtherDistrictNetwork");
+
+            if (heatNetworkConnections.NoOfExistingCommunalBuildingOption.IsSet)
+                if (heatNetworkConnections.NoOfExistingCommunalBuildingOption.Value != null)
+                    writer.WriteNumber("noOfExistingCommunalBuilding", heatNetworkConnections.NoOfExistingCommunalBuildingOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfExistingCommunalBuilding");
+
+            if (heatNetworkConnections.NoOfExistingHousesOrMaisonettesOption.IsSet)
+                if (heatNetworkConnections.NoOfExistingHousesOrMaisonettesOption.Value != null)
+                    writer.WriteNumber("noOfExistingHousesOrMaisonettes", heatNetworkConnections.NoOfExistingHousesOrMaisonettesOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfExistingHousesOrMaisonettes");
+
+            if (heatNetworkConnections.NoOfExistingNonDomesticBuildingsOption.IsSet)
+                if (heatNetworkConnections.NoOfExistingNonDomesticBuildingsOption.Value != null)
+                    writer.WriteNumber("noOfExistingNonDomesticBuildings", heatNetworkConnections.NoOfExistingNonDomesticBuildingsOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfExistingNonDomesticBuildings");
+
+            if (heatNetworkConnections.NoOfExistingMultiTenantedNonDomesticOption.IsSet)
+                if (heatNetworkConnections.NoOfExistingMultiTenantedNonDomesticOption.Value != null)
+                    writer.WriteNumber("noOfExistingMultiTenantedNonDomestic", heatNetworkConnections.NoOfExistingMultiTenantedNonDomesticOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfExistingMultiTenantedNonDomestic");
+
+            if (heatNetworkConnections.NoOfExistingOtherDistrictNetworksOption.IsSet)
+                if (heatNetworkConnections.NoOfExistingOtherDistrictNetworksOption.Value != null)
+                    writer.WriteNumber("noOfExistingOtherDistrictNetworks", heatNetworkConnections.NoOfExistingOtherDistrictNetworksOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfExistingOtherDistrictNetworks");
+
+            if (heatNetworkConnections.NoOfNewCommunalBuildingOption.IsSet)
+                if (heatNetworkConnections.NoOfNewCommunalBuildingOption.Value != null)
+                    writer.WriteNumber("noOfNewCommunalBuilding", heatNetworkConnections.NoOfNewCommunalBuildingOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfNewCommunalBuilding");
+
+            if (heatNetworkConnections.NoOfNewHousesOrMaisonettesOption.IsSet)
+                if (heatNetworkConnections.NoOfNewHousesOrMaisonettesOption.Value != null)
+                    writer.WriteNumber("noOfNewHousesOrMaisonettes", heatNetworkConnections.NoOfNewHousesOrMaisonettesOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfNewHousesOrMaisonettes");
+
+            if (heatNetworkConnections.NoOfNewNonDomesticBuildingsOption.IsSet)
+                if (heatNetworkConnections.NoOfNewNonDomesticBuildingsOption.Value != null)
+                    writer.WriteNumber("noOfNewNonDomesticBuildings", heatNetworkConnections.NoOfNewNonDomesticBuildingsOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfNewNonDomesticBuildings");
+
+            if (heatNetworkConnections.NoOfNewMultiTenantedNonDomesticOption.IsSet)
+                if (heatNetworkConnections.NoOfNewMultiTenantedNonDomesticOption.Value != null)
+                    writer.WriteNumber("noOfNewMultiTenantedNonDomestic", heatNetworkConnections.NoOfNewMultiTenantedNonDomesticOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfNewMultiTenantedNonDomestic");
+
+            if (heatNetworkConnections.NoOfNewOtherDistrictNetworksOption.IsSet)
+                if (heatNetworkConnections.NoOfNewOtherDistrictNetworksOption.Value != null)
+                    writer.WriteNumber("noOfNewOtherDistrictNetworks", heatNetworkConnections.NoOfNewOtherDistrictNetworksOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfNewOtherDistrictNetworks");
         }
     }
 }

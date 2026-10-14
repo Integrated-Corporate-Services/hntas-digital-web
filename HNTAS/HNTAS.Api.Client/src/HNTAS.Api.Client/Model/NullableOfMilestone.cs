@@ -173,7 +173,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, NullableOfMilestone nullableOfMilestone, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(NullableOfMilestoneValueConverter.ToJsonValue(nullableOfMilestone).ToString());
+            writer.WriteStringValue(nullableOfMilestone.ToString());
         }
     }
 
@@ -204,14 +204,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the NullableOfMilestone to the json writer
+        /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="nullableOfMilestone"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, NullableOfMilestone? nullableOfMilestone, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(nullableOfMilestone.HasValue ? NullableOfMilestoneValueConverter.ToJsonValue(nullableOfMilestone.Value).ToString() : "null");
+            writer.WriteStringValue(nullableOfMilestone?.ToString() ?? "null");
         }
     }
 }

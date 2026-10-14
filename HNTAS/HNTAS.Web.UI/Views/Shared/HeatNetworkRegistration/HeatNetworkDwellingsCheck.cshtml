@@ -16,9 +16,10 @@
             new Question
             {
                 QId = elementId,
-                QText = "Does the network have or help supply 6 or more dwellings or units?",
+                QText = "Does the network have (or help supply networks with) 6 or more dwellings or units?",
                 QDescText = @"
-                This applies to residential, non-domestic and mixed-use buildings. Within HNTAS, 45kW is representative of a single dwelling or unit. For example, an apartment or house with a heat interface unit (HIU) is one dwelling and a supermarket with a 135kW connection is equivalent to three units.",
+                This applies to residential, non-domestic and mixed-use buildings. Within HNTAS, 45kW is representative of a single unit. For example, an apartment or house with a heat interface unit (HIU) is one unit and a supermarket with a 135kW connection is equivalent to three units. 
+                <p class='govuk-body'>Choose yes, if your network is primarily a bulk supplier to multiple domesticand non-domestic buildings.</p>",
                 QHintText = null,
                 Options = new List<Option>
                 {

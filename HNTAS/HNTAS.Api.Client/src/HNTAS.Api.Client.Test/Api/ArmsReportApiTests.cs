@@ -39,7 +39,6 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/ArmsReportApiTests.cs
     ///  Class for testing ArmsReportApi
     /// </summary>
     public sealed class ArmsReportApiTests : ApiTestsBase
@@ -60,26 +59,6 @@ namespace HNTAS.Api.Client.Test.Api
             var response = await _instance.ApiArmsReportPowerbiDataGetAsync();
             var model = response.Ok();
             Assert.IsType<List<ArmsPowerBiReportResponse>>(model);
-========
-    ///  Class for testing JwksApi
-    /// </summary>
-    public sealed class JwksApiTests : ApiTestsBase
-    {
-        private readonly IJwksApi _instance;
-
-        public JwksApiTests(): base(Array.Empty<string>())
-        {
-            _instance = _host.Services.GetRequiredService<IJwksApi>();
-        }
-
-        /// <summary>
-        /// Test WellKnownJwksJsonGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task WellKnownJwksJsonGetAsyncTest()
-        {
-            await _instance.WellKnownJwksJsonGetAsync();
->>>>>>>> d17344f6a41c7b6834b854e365457966c6aa8cc8:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/JwksApiTests.cs
         }
     }
 }

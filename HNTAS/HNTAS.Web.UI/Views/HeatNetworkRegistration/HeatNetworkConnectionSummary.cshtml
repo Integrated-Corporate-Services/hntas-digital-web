@@ -1,0 +1,131 @@
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.HeatNetworkRegistration
+@model HeatNetworkConnectionSummaryViewModel
+
+@{
+    ViewData["Title"] = "Heat network connection summary – Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-l">Add a heat network</span>
+        <h1 class="govuk-heading-l">Heat network connection summary</h1>
+
+        <p class="govuk-body">You have told us you have the following connections on your network:</p>
+
+        @* Existing Connections Card *@
+        @if (Model.ShowExistingSection)
+        {
+            <div class="govuk-summary-card">
+                <div class="govuk-summary-card__title-wrapper">
+                    <h2 class="govuk-summary-card__title">Connections</h2>
+                    <ul class="govuk-summary-card__actions">
+                        <li class="govuk-summary-card__action">
+                            <a class="govuk-link" asp-action="HeatNetworkConnections">
+                                Change<span class="govuk-visually-hidden"> existing connections</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="govuk-summary-card__content">
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Existing
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                <ul class="govuk-list govuk-list--bullet">
+                                    @if ((Model.Connections.ExistingCommunalBuildings ?? 0) > 0)
+                                    {
+                                        <li>@Model.Connections.ExistingCommunalBuildings existing communal buildings</li>
+                                    }
+                                    @if ((Model.Connections.ExistingHousesOrMaisonettes ?? 0) > 0)
+                                    {
+                                        <li>@Model.Connections.ExistingHousesOrMaisonettes existing houses or maisonettes</li>
+                                    }
+                                    @if ((Model.Connections.ExistingNonDomesticBuildings ?? 0) > 0)
+                                    {
+                                        <li>@Model.Connections.ExistingNonDomesticBuildings existing non-domestic buildings</li>
+                                    }
+                                    @if ((Model.Connections.ExistingMultiTenantedNonDomestic ?? 0) > 0)
+                                    {
+                                        <li>@Model.Connections.ExistingMultiTenantedNonDomestic existing multi-tenanted non-domestic buildings</li>
+                                    }
+                                    @if ((Model.Connections.ExistingOtherDistrictNetworks ?? 0) > 0)
+                                    {
+                                        <li>@Model.Connections.ExistingOtherDistrictNetworks existing other district heat networks</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        }
+
+        @* New Connections Card *@
+        @if (Model.ShowNewSection)
+        {
+            <div class="govuk-summary-card">
+                <div class="govuk-summary-card__title-wrapper">
+                    <h2 class="govuk-summary-card__title">Connections</h2>
+                    <ul class="govuk-summary-card__actions">
+                        <li class="govuk-summary-card__action">
+                            <a class="govuk-link" asp-action="HeatNetworkConnections">
+                                Change<span class="govuk-visually-hidden"> new connections</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="govuk-summary-card__content">
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                New
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                <ul class="govuk-list govuk-list--bullet">
+                                    @if ((Model.Connections.NewCommunalBuildings ?? 0) > 0)
+                                    {
+                                        <li>@Model.Connections.NewCommunalBuildings new communal buildings</li>
+                                    }
+                                    @if ((Model.Connections.NewHousesOrMaisonettes ?? 0) > 0)
+                                    {
+                                        <li>@Model.Connections.NewHousesOrMaisonettes new houses or maisonettes</li>
+                                    }
+                                    @if ((Model.Connections.NewNonDomesticBuildings ?? 0) > 0)
+                                    {
+                                        <li>@Model.Connections.NewNonDomesticBuildings new non-domestic buildings</li>
+                                    }
+                                    @if ((Model.Connections.NewMultiTenantedNonDomestic ?? 0) > 0)
+                                    {
+                                        <li>@Model.Connections.NewMultiTenantedNonDomestic new multi-tenanted non-domestic buildings</li>
+                                    }
+
+                                    @if ((Model.Connections.NewOtherDistrictNetworks ?? 0) > 0)
+                                    {
+                                        @if (Model.Connections.NewOtherDistrictNetworks == 1 && Model.EnergyCentreOption == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString())
+                                        {
+                                            <li>@Model.Connections.NewOtherDistrictNetworks Separate supplying district heat network</li>
+                                        }
+                                        else
+                                        {
+                                            <li>@Model.Connections.NewOtherDistrictNetworks new other district heat networks</li>
+                                        }
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        }
+
+        <form asp-action="SaveHeatNetworkConnectionSummary" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
+
+    </div>
+</div>
