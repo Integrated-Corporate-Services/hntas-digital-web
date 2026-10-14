@@ -1,9 +1,13 @@
-﻿namespace HNTAS.Web.UI.Models.HeatNetworkRegistration
+﻿using HNTAS.Api.Client.Model;
+
+namespace HNTAS.Web.UI.Models.HeatNetworkRegistration
 {
     public class HeatNetworkConnectionSummaryViewModel
     {
         public NetworkConnectionsViewModel Connections { get; set; } = new();
         public CommunalBuildingResponsibilityViewModel? Responsibility { get; set; }
+
+        public string EnergyCentreOption { get; set; } = string.Empty;
 
         public bool ShowExistingSection => Connections.ShowExistingColumn && HasAnyExistingConnections;
         public bool ShowNewSection => Connections.ShowNewColumn && HasAnyNewConnections;

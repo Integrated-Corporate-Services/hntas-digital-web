@@ -117,8 +117,10 @@
 
         public const string NetworkSupplyTypeModelKey = "NetworkSupplyTypeModelKey";
 
-        public const string NetworkConnectionsKey = "NetworkConnectionsKey";
+        public const string NetworkConnectionsModelKey = "NetworkConnectionsKey";
 
-        public const string CommunalBuildingResponsibilityKey = "CommunalBuildingResponsibilityKey";
+        public const string CommunalBuildingResponsibilityModelKey = "CommunalBuildingResponsibilityKey";
+
+        public const string DistrictNetworksResponsibilityModelKey = "DistrictNetworksResponsibilityKey";
     }
 }

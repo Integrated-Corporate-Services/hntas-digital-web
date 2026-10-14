@@ -50,5 +50,37 @@ namespace HNTAS.Web.UI.Models.HeatNetworkRegistration
         [Required(ErrorMessage = "Enter number of new other district heat networks supplied")]
         [Range(0, 99999, ErrorMessage = "Number of new other district heat networks supplied must be 0 or more")]
         public int? NewOtherDistrictNetworks { get; set; }
+
+        public List<string> GetExistingConnectionsToDisplay()
+        {
+            var list = new List<string>();
+            if (ExistingCommunalBuildings.HasValue && ExistingCommunalBuildings > 0)
+                list.Add($"{ExistingCommunalBuildings} communal buildings");
+            if (ExistingHousesOrMaisonettes.HasValue && ExistingHousesOrMaisonettes > 0)
+                list.Add($"{ExistingHousesOrMaisonettes} houses or maisonettes");
+            if (ExistingNonDomesticBuildings.HasValue && ExistingNonDomesticBuildings > 0)
+                list.Add($"{ExistingNonDomesticBuildings} non-domestic buildings");
+            if (ExistingMultiTenantedNonDomestic.HasValue && ExistingMultiTenantedNonDomestic > 0)
+                list.Add($"{ExistingMultiTenantedNonDomestic} multi-tenanted non-domestic buildings");
+            if (ExistingOtherDistrictNetworks.HasValue && ExistingOtherDistrictNetworks > 0)
+                list.Add($"{ExistingOtherDistrictNetworks} district networks supplied");
+            return list;
+        }
+
+        public List<string> GetNewConnectionsToDisplay()
+        {
+            var list = new List<string>();
+            if (NewCommunalBuildings.HasValue && NewCommunalBuildings > 0)
+                list.Add($"{NewCommunalBuildings} communal buildings");
+            if (NewHousesOrMaisonettes.HasValue && NewHousesOrMaisonettes > 0)
+                list.Add($"{NewHousesOrMaisonettes} houses or maisonettes");
+            if (NewNonDomesticBuildings.HasValue && NewNonDomesticBuildings > 0)
+                list.Add($"{NewNonDomesticBuildings} non-domestic buildings");
+            if (NewMultiTenantedNonDomestic.HasValue && NewMultiTenantedNonDomestic > 0)
+                list.Add($"{NewMultiTenantedNonDomestic} multi-tenanted non-domestic buildings");
+            if (NewOtherDistrictNetworks.HasValue && NewOtherDistrictNetworks > 0)
+                list.Add($"{NewOtherDistrictNetworks} district networks supplied");
+            return list;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿@using HNTAS.Web.UI.Models
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.HeatNetworkRegistration
 @model NetworkStatusModel
 
@@ -23,9 +24,9 @@
                 HeadingLevel= QuestionHeadingLevel.H2,
                 Options = new List<Option>
                 {
-                    new Option { OptId = $"{elementId}", OptValue = "existing", OptText = "It is an existing heat network", OptHintText = null },
-                    new Option { OptId = $"{elementId}-2", OptValue = "new", OptText = "It is a new heat network", OptHintText = null },
-                    new Option { OptId = $"{elementId}-3", OptValue = "both", OptText = "It is a new and existing heat network", OptHintText = null }
+                    new Option { OptId = $"{elementId}", OptValue = NullableOfNetworkBuildStatus.Existing.ToString(), OptText = "It is an existing heat network", OptHintText = null },
+                    new Option { OptId = $"{elementId}-2", OptValue = NullableOfNetworkBuildStatus.New.ToString(), OptText = "It is a new heat network", OptHintText = null },
+                    new Option { OptId = $"{elementId}-3", OptValue = NullableOfNetworkBuildStatus.NewAndExisting.ToString(), OptText = "It is a new and existing heat network", OptHintText = null }
                 },
                 SeletedOption = Model.BuildStatus
             },

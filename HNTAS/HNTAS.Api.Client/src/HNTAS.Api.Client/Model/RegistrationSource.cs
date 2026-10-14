@@ -131,7 +131,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, RegistrationSource registrationSource, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(RegistrationSourceValueConverter.ToJsonValue(registrationSource).ToString());
+            writer.WriteStringValue(registrationSource.ToString());
         }
     }
 
@@ -162,14 +162,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the RegistrationSource to the json writer
+        /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="registrationSource"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, RegistrationSource? registrationSource, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(registrationSource.HasValue ? RegistrationSourceValueConverter.ToJsonValue(registrationSource.Value).ToString() : "null");
+            writer.WriteStringValue(registrationSource?.ToString() ?? "null");
         }
     }
 }

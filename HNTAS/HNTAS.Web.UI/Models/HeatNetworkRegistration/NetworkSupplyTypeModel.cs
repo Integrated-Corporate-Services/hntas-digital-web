@@ -4,7 +4,7 @@ namespace HNTAS.Web.UI.Models.HeatNetworkRegistration
 {
     public class NetworkSupplyTypeModel
     {
-        [Required(ErrorMessage = "Select whether your new heat network has or helps supply 6 or more units")]
+        [Required(ErrorMessage = "Select whether this heat network has a main energy centre")]
         public string? EnergyCentreOption { get; set; }
     }
 }

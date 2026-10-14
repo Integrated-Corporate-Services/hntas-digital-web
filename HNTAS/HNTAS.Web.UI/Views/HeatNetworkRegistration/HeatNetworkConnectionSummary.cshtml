@@ -1,4 +1,5 @@
-﻿@using HNTAS.Web.UI.Models.HeatNetworkRegistration
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.HeatNetworkRegistration
 @model HeatNetworkConnectionSummaryViewModel
 
 @{
@@ -101,9 +102,17 @@
                                     {
                                         <li>@Model.Connections.NewMultiTenantedNonDomestic new multi-tenanted non-domestic buildings</li>
                                     }
+
                                     @if ((Model.Connections.NewOtherDistrictNetworks ?? 0) > 0)
                                     {
-                                        <li>@Model.Connections.NewOtherDistrictNetworks new other district heat networks</li>
+                                        @if (Model.Connections.NewOtherDistrictNetworks == 1 && Model.EnergyCentreOption == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString())
+                                        {
+                                            <li>@Model.Connections.NewOtherDistrictNetworks Separate supplying district heat network</li>
+                                        }
+                                        else
+                                        {
+                                            <li>@Model.Connections.NewOtherDistrictNetworks new other district heat networks</li>
+                                        }
                                     }
                                 </ul>
                             </dd>

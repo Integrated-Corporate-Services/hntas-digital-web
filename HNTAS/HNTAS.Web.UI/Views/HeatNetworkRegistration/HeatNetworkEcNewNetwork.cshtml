@@ -1,4 +1,5 @@
-﻿@using HNTAS.Web.UI.Models
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.HeatNetworkRegistration
 @model NetworkSupplyTypeModel
 
@@ -24,9 +25,34 @@
                 HeadingLevel= QuestionHeadingLevel.H2,
                 Options = new List<Option>
                 {
-                    new Option { OptId = $"{elementId}", OptValue = "multiple_buildings", OptText = "Yes, it supplies multiple buildings", OptHintText = null },
-                    new Option { OptId = $"{elementId}-2", OptValue = "one_communal_building", OptText = "No, it supplies only one communal building", OptHintText = null },
-                    new Option { OptId = $"{elementId}-3", OptValue = "supplied_by_another_network", OptText = "No, it is supplied by another network", OptHintText = null }
+                    new Option
+                    {
+                        OptId = elementId,
+                        OptValue = NullableOfEnergyCentreType.SuppliesMultipleBuildings.ToString(),
+                        OptText = "Yes, it supplies multiple buildings",
+                        OptHintText = null
+                    },
+                    new Option
+                    {
+                        OptId = $"{elementId}-2",
+                        OptValue = NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString(),
+                        OptText = "No, multiple buildings are supplied by a separate district network",
+                        OptHintText = null
+                    },
+                    new Option
+                    {
+                        OptId = $"{elementId}-3",
+                        OptValue = NullableOfEnergyCentreType.SuppliesOneCommunalBuildingOnly.ToString(),
+                        OptText = "No, the energy centre supplies one communal building only",
+                        OptHintText = null
+                    },
+                    new Option
+                    {
+                        OptId = $"{elementId}-4",
+                        OptValue = NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString(),
+                        OptText = "No, a single communal building is supplied by a separate district network",
+                        OptHintText = null
+                    }
                 },
                 SeletedOption = Model.EnergyCentreOption
             }
