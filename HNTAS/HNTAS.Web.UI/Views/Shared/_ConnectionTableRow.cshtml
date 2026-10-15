@@ -1,0 +1,51 @@
+﻿@using HNTAS.Web.UI.Models.HeatNetworkRegistration
+@model ConnectionRowViewModel
+
+<tr class="govuk-table__row">
+    <td class="govuk-table__cell">
+        <strong>@Model.Label</strong><br />
+        <span class="govuk-hint">@Model.Description</span>
+    </td>
+
+    @if (Model.ShowExisting)
+    {
+        var hasError = ViewData.ModelState.TryGetValue(Model.ExistingProperty, out var state) && state.Errors.Count > 0;
+        <td class="govuk-table__cell">
+            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+                @if (hasError)
+                {
+                    <p class="govuk-error-message" id="@(Model.ExistingProperty)-error">
+                        <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[Model.ExistingProperty]!.Errors.First().ErrorMessage
+                    </p>
+                }
+                <input class="govuk-input govuk-input--width-4 @(hasError ? "govuk-input--error" : "")"
+                       id="@Model.ExistingProperty"
+                       name="@Model.ExistingProperty"
+                       type="number"
+                       value="@Model.ExistingValue"
+                       aria-describedby="@(hasError ? $"{Model.ExistingProperty}-error" : null)" />
+            </div>
+        </td>
+    }
+
+    @if (Model.ShowNew)
+    {
+        var hasError = ViewData.ModelState.TryGetValue(Model.NewProperty, out var state) && state.Errors.Count > 0;
+        <td class="govuk-table__cell">
+            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+                @if (hasError)
+                {
+                    <p class="govuk-error-message" id="@(Model.NewProperty)-error">
+                        <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[Model.NewProperty]!.Errors.First().ErrorMessage
+                    </p>
+                }
+                <input class="govuk-input govuk-input--width-4 @(hasError ? "govuk-input--error" : "")"
+                       id="@Model.NewProperty"
+                       name="@Model.NewProperty"
+                       type="number"
+                       value="@Model.NewValue"
+                       aria-describedby="@(hasError ? $"{Model.NewProperty}-error" : null)" />
+            </div>
+        </td>
+    }
+</tr>

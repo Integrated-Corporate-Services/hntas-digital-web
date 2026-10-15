@@ -63,10 +63,12 @@ namespace HNTAS.Web.UI.Models
     {
         public string DoesHnHaveMoreThan6Dwellings { get; set; }
         public string? OrgId { get; set; }
-        public string HeatNetworkType { get; set; }
-        public string HasOwnEnergyCenter { get; set; }
-        public string ECSuppliesOneCommunalBuilding { get; set; }
+        public string? HeatNetworkType { get; set; }
+        public string? HasOwnEnergyCenter { get; set; }
+        public string? ECSuppliesOneCommunalBuilding { get; set; }
         public HeatNetworkConnectionsViewModel? HeatNetworkConnectionsModel { get; set; }
+        public NetworkStatusModel? NetworkStatusModel { get; set; }
+        public NetworkConnectionsViewModel? NetworkConnectionsModel { get; set; }
         public ECDetailsModel ECDetailsModel { get; set; }
         public HeatNetworkNameModel HeatNetworkNameModel { get; set; }
         public AddressByStreetOrTownModel? HeatNetworkAddressModel { get; set; }        

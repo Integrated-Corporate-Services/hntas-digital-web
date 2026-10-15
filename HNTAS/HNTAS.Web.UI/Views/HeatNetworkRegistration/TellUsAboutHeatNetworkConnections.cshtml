@@ -1,0 +1,174 @@
+﻿@using HNTAS.Web.UI.Models.HeatNetworkRegistration
+@model NetworkConnectionsViewModel
+
+@{
+    ViewData["Title"] = "Tell us about the heat network connections – Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
+
+    // Dynamic page title prefix for error state
+    if (!ViewData.ModelState.IsValid)
+    {
+        ViewData["Title"] = "Error: " + ViewData["Title"];
+    }
+}
+
+
+@if (!ViewData.ModelState.IsValid)
+{
+    // Define the desired field order matching the UI layout
+    var orderedKeys = new[]
+    {
+        nameof(Model.NewCommunalBuildings),
+        nameof(Model.NewHousesOrMaisonettes),
+        nameof(Model.NewNonDomesticBuildings),
+        nameof(Model.NewMultiTenantedNonDomestic),
+        nameof(Model.NewOtherDistrictNetworks),
+        nameof(Model.ExistingCommunalBuildings),
+        nameof(Model.ExistingHousesOrMaisonettes),
+        nameof(Model.ExistingNonDomesticBuildings),
+        nameof(Model.ExistingMultiTenantedNonDomestic),
+        nameof(Model.ExistingOtherDistrictNetworks)
+    };
+
+    var sortedErrors = ViewData.ModelState
+        .Where(x => x.Value.Errors.Any())
+        .OrderBy(x => Array.IndexOf(orderedKeys, x.Key) >= 0 ? Array.IndexOf(orderedKeys, x.Key) : int.MaxValue);
+
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+            <h2 class="govuk-error-summary__title">
+                There is a problem
+            </h2>
+            <div class="govuk-error-summary__body">
+                <ul class="govuk-list govuk-error-summary__list">
+                    @foreach (var state in sortedErrors)
+                    {
+                        foreach (var error in state.Value.Errors)
+                        {
+                            <li>
+                                <a href="#@state.Key">@error.ErrorMessage</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <span class="govuk-caption-l">Add a heat network</span>
+        <h1 class="govuk-heading-l">Tell us about the heat network connections</h1>
+
+        <p class="govuk-body">
+            @if (Model.ShowExistingColumn && Model.ShowNewColumn)
+            {
+                @:Enter the number of existing and new network connections. Enter 0 if none apply.
+            }
+            else
+            {
+                @:Enter the number of new network connections. Enter 0 if none apply.
+            }
+        </p>
+
+        <form asp-action="SaveHeatNetworkConnections" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            @* Preserve hidden flags across form posts *@
+            <input type="hidden" asp-for="ShowExistingColumn" />
+            <input type="hidden" asp-for="ShowNewColumn" />
+            <input type="hidden" asp-for="ShowOtherDistrictNetworksRow" />
+
+            <table class="govuk-table">
+                <caption class="govuk-table__caption govuk-table__caption--m">Connections</caption>
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header">Type</th>
+                        @if (Model.ShowExistingColumn)
+                        {
+                            <th scope="col" class="govuk-table__header">Existing heat network</th>
+                        }
+                        @if (Model.ShowNewColumn)
+                        {
+                            <th scope="col" class="govuk-table__header">New network</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+
+                    @* Communal buildings *@
+                    @await Html.PartialAsync("_ConnectionTableRow", new ConnectionRowViewModel
+                    {
+                        Label = "Communal buildings",
+                        Description = "Multiple consumers in a residential building (could also include a commercial space)",
+                        ExistingProperty = nameof(Model.ExistingCommunalBuildings),
+                        ExistingValue = Model.ExistingCommunalBuildings,
+                        NewProperty = nameof(Model.NewCommunalBuildings),
+                        NewValue = Model.NewCommunalBuildings,
+                        ShowExisting = Model.ShowExistingColumn,
+                        ShowNew = Model.ShowNewColumn
+                    })
+
+                    @* Houses or maisonettes *@
+                    @await Html.PartialAsync("_ConnectionTableRow", new ConnectionRowViewModel
+                    {
+                        Label = "Houses or maisonettes",
+                        Description = "Homes with their own entrance from outside",
+                        ExistingProperty = nameof(Model.ExistingHousesOrMaisonettes),
+                        ExistingValue = Model.ExistingHousesOrMaisonettes,
+                        NewProperty = nameof(Model.NewHousesOrMaisonettes),
+                        NewValue = Model.NewHousesOrMaisonettes,
+                        ShowExisting = Model.ShowExistingColumn,
+                        ShowNew = Model.ShowNewColumn
+                    })
+
+                    @* Non-domestic buildings *@
+                    @await Html.PartialAsync("_ConnectionTableRow", new ConnectionRowViewModel
+                    {
+                        Label = "Non-domestic buildings",
+                        Description = "Single connection to a building such as offices, hotels, retails or schools",
+                        ExistingProperty = nameof(Model.ExistingNonDomesticBuildings),
+                        ExistingValue = Model.ExistingNonDomesticBuildings,
+                        NewProperty = nameof(Model.NewNonDomesticBuildings),
+                        NewValue = Model.NewNonDomesticBuildings,
+                        ShowExisting = Model.ShowExistingColumn,
+                        ShowNew = Model.ShowNewColumn
+                    })
+
+                    @* Multi-tenanted non-domestic buildings *@
+                    @await Html.PartialAsync("_ConnectionTableRow", new ConnectionRowViewModel
+                    {
+                        Label = "Multi-tenanted non-domestic buildings",
+                        Description = "Buildings such as offices or retail units with separately supplied tenant spaces",
+                        ExistingProperty = nameof(Model.ExistingMultiTenantedNonDomestic),
+                        ExistingValue = Model.ExistingMultiTenantedNonDomestic,
+                        NewProperty = nameof(Model.NewMultiTenantedNonDomestic),
+                        NewValue = Model.NewMultiTenantedNonDomestic,
+                        ShowExisting = Model.ShowExistingColumn,
+                        ShowNew = Model.ShowNewColumn
+                    })
+
+                    @* Other district heat networks supplied by this network (Conditional Row) *@
+                    @if (Model.ShowOtherDistrictNetworksRow)
+                    {
+                        @await Html.PartialAsync("_ConnectionTableRow", new ConnectionRowViewModel
+                        {
+                            Label = "Other district heat networks supplied by this network",
+                            Description = "As your network has a main energy centre, you could be supplying other district networks",
+                            ExistingProperty = nameof(Model.ExistingOtherDistrictNetworks),
+                            ExistingValue = Model.ExistingOtherDistrictNetworks,
+                            NewProperty = nameof(Model.NewOtherDistrictNetworks),
+                            NewValue = Model.NewOtherDistrictNetworks,
+                            ShowExisting = Model.ShowExistingColumn,
+                            ShowNew = Model.ShowNewColumn
+                        })
+                    }
+
+                </tbody>
+            </table>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
+    </div>
+</div>

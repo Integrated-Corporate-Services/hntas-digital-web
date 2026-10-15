@@ -28,6 +28,7 @@
         public const string IsYourOrgWorkingOnANewHNModelKey = "IsYourOrgWorkingOnANewHN";
         public const string IsHNLocatedInEnglandScotlandWalesModelKey = "IsHNLocatedInEnglandScotlandWales";
         public const string HowManyDwellingsIncludedModelKey = "HowManyDwellingsIncluded";
+        public const string NetworkStatusModelKey = "NetworkStatusModelKey";
 
         // Session keys for heat network registration
         public const string HeatNetworkOrganisationModelKey = "HeatNetworkOrganisationModelKey";
@@ -113,5 +114,13 @@
         public const string SwitchOrganisationModelSessionKey = "SwitchOrganisationModelSessionKey";
 
         public const string HntasJwt = "HNTASJWTKey";
+
+        public const string NetworkSupplyTypeModelKey = "NetworkSupplyTypeModelKey";
+
+        public const string NetworkConnectionsModelKey = "NetworkConnectionsKey";
+
+        public const string CommunalBuildingResponsibilityModelKey = "CommunalBuildingResponsibilityKey";
+
+        public const string DistrictNetworksResponsibilityModelKey = "DistrictNetworksResponsibilityKey";
     }
 }
