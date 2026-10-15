@@ -43,6 +43,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             //get token from query string
             var token = HttpContext.Request.Query["token"].ToString();
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.InvitedTokenKey, token);
             //decrypt token to get email
             if (!string.IsNullOrWhiteSpace(token))
             {
