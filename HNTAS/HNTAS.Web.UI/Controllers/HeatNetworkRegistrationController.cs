@@ -1204,7 +1204,8 @@ namespace HNTAS.Web.UI.Controllers
                 false => HNTAS.Api.Client.Model.HeatNetworkType.District
             };
 
-            bool HasOwnEc = networkSupplyTypeModel.EnergyCentreOption == NullableOfEnergyCentreType.SuppliesMultipleBuildings.ToString() == true;
+            bool HasOwnEc = networkSupplyTypeModel.EnergyCentreOption == NullableOfEnergyCentreType.SuppliesMultipleBuildings.ToString() == true
+                                    || networkSupplyTypeModel.EnergyCentreOption == NullableOfEnergyCentreType.SuppliesOneCommunalBuildingOnly.ToString() == true;
 
             HeatNetworkConnections heatNetworkConnections = new HeatNetworkConnections();
 
