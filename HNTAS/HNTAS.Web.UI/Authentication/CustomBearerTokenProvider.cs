@@ -14,7 +14,7 @@ namespace HNTAS.Web.UI.Authentication
         }
 
         // Paste your logic into the auto-generated method signature:
-        protected internal override async ValueTask<BearerToken> GetAsync(string header, CancellationToken cancellation)
+        internal override async ValueTask<BearerToken> GetAsync(string header, CancellationToken cancellation)
         {
             var token = await _tokenProvider.GetTokenAsync();
     
