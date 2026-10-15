@@ -175,7 +175,7 @@ namespace HNTAS.Web.UI.Controllers
             switch (networkDetailId)
             {
                 case NetworkDetailsType.NetworkElements:
-                    return RedirectToAction("ExistingNetworkElements", "NetworkElements");
+                    return RedirectToAction("NewAndExistingNetworkElements", "NetworkElements");
                 case NetworkDetailsType.Soa:
                     return RedirectToAction(soaAction, soaController);
                 default:

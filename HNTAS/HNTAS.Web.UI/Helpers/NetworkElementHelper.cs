@@ -178,11 +178,11 @@ namespace HNTAS.Web.UI.Helpers
 
         // new changes
 
-        public static List<ExistingNetworkElementOption> GetExistingNetworkElementOptionsForNetworkType(Api.Client.Model.HeatNetworkType? networkType = null, bool hasOwnEnergyCentre = false)
+        public static List<NewAndExistingNetworkElementOption> GetNewAndExistingNetworkElementOptionsForNetworkType(Api.Client.Model.HeatNetworkType? networkType = null, bool hasOwnEnergyCentre = false)
         {
             if (networkType == Api.Client.Model.HeatNetworkType.District)
             {
-                return new List<ExistingNetworkElementOption>
+                return new List<NewAndExistingNetworkElementOption>
                 {
                     new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy centres", Hint = "The energy centre is a plant room that contains heat generation equipment and/or equipment connecting to an energy source. It may be in the building or located nearby" },
                     new() { Id = HeatNetworkElementType.DistrictDistribution, Label = "District distribution networks", Hint = "The district distribution network connects the energy centre to the buildings it serves."},
@@ -193,7 +193,7 @@ namespace HNTAS.Web.UI.Helpers
             }
             else if (networkType == Api.Client.Model.HeatNetworkType.Communal)
             {
-                return new List<ExistingNetworkElementOption>
+                return new List<NewAndExistingNetworkElementOption>
                 {
                     new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy centres", Hint = "The energy centre is a plant room that contains heat generation equipment and/or equipment connecting to an energy source. It may be in the building or located nearby" },
                     new() { Id = HeatNetworkElementType.DistrictDistribution, Label = "District distribution networks", Hint = "The district distribution network connects the energy centre to the buildings it serves."},
@@ -204,7 +204,7 @@ namespace HNTAS.Web.UI.Helpers
             }            
             else
             {
-                return new List<ExistingNetworkElementOption>
+                return new List<NewAndExistingNetworkElementOption>
                 {
                     new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy centres", Hint = "The energy centre is a plant room that contains heat generation equipment and/or equipment connecting to an energy source. It may be in the building or located nearby" },
                     new() { Id = HeatNetworkElementType.DistrictDistribution, Label = "District distribution networks", Hint = "The district distribution network connects the energy centre to the buildings it serves."},
@@ -215,9 +215,9 @@ namespace HNTAS.Web.UI.Helpers
             }
         }
 
-        public static ExistingNetworkEcNameViewModel GetExistingNetworkEcName(ExistingNetworkElementOption elementOption)
+        public static NewAndExistingNetworkEcNameViewModel GetExistingNetworkEcName(NewAndExistingNetworkElementOption elementOption)
         {
-            var existingEcNameModel = new ExistingNetworkEcNameViewModel();
+            var existingEcNameModel = new NewAndExistingNetworkEcNameViewModel();
             for(int i = 0; i < elementOption.ExistingCount; i++)
             {                
                 existingEcNameModel.ExistingEcNameOptions.Add(new EcNameOption { Label = $"{i + 1}. Existing energy centre" });
@@ -232,6 +232,19 @@ namespace HNTAS.Web.UI.Helpers
             }
 
             return existingEcNameModel;
+        }
+
+        public static string GetNetworkElementLabelByElementType(HeatNetworkElementType elementType)
+        {
+            return elementType switch
+            {
+                HeatNetworkElementType.EnergyCentre => "Energy Centre",
+                HeatNetworkElementType.Substation => "Substation",
+                HeatNetworkElementType.DistrictDistribution => "District Distribution Network",
+                HeatNetworkElementType.ConsumerConnection => "Consumer Connection",
+                HeatNetworkElementType.CommunalDistribution => "Communal Distribution Network",
+                _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element ID value: {elementType}")
+            };
         }
     }
 }

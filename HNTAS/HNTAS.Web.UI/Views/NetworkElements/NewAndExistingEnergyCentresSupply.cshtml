@@ -1,5 +1,5 @@
 ﻿@using HNTAS.Web.UI.Models.NetworkElements
-@model ExistingEnergyCentresSupplyViewModel
+@model NewAndExistingEnergyCentresSupplyViewModel
 
 @{
     var hasExistingCountError = ViewData.ModelState[$"existingenergycentressupply[0].ischecked"]?.Errors.Count > 0;
@@ -7,7 +7,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <form class="form" asp-action="ExistingEnergyCentresSupply" method="post">
+        <form class="form" asp-action="NewAndExistingEnergyCentresSupply" method="post">
             <div class="govuk-form-group @(hasExistingCountError ? "govuk-form-group--error" : "")">
           <fieldset class="govuk-fieldset" aria-describedby="existing-ec-selection-hint">  
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">  

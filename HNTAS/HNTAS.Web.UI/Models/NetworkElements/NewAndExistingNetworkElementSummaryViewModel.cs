@@ -2,7 +2,7 @@
 
 namespace HNTAS.Web.UI.Models.NetworkElements
 {
-    public class ExistingNetworkElementSummaryViewModel
+    public class NewAndExistingNetworkElementSummaryViewModel
     {
         public List<string>? ExistingNetworkElements { get; set; }
         public List<string>? NewNetworkElements { get; set; }

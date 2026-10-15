@@ -2,12 +2,12 @@
 
 namespace HNTAS.Web.UI.Models.NetworkElements
 {
-    public class ExistingNetworkElementViewModel
+    public class NewAndExistingNetworkElementViewModel
     {
-        public List<ExistingNetworkElementOption> ElementOptions { get; set; } = new();
+        public List<NewAndExistingNetworkElementOption> ElementOptions { get; set; } = new();
     }
 
-    public class ExistingNetworkElementOption
+    public class NewAndExistingNetworkElementOption
     {
         public HeatNetworkElementType Id { get; set; }
         public string? Label { get; set; } = null;

@@ -1,6 +1,6 @@
 ﻿@using HNTAS.Web.UI.Models.Components
 @using HNTAS.Web.UI.Models.NetworkElements
-@model ExistingNetworkElementSummaryViewModel
+@model NewAndExistingNetworkElementSummaryViewModel
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
@@ -9,7 +9,7 @@
         <div class="govuk-hint">
             You have told us you have the following elements on your network:
         </div>
-        <form asp-action="ExistingNetworkElementSummary" method="post" novalidate>
+        <form asp-action="NewAndExistingNetworkElementSummary" method="post" novalidate>
         <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
                 <h2 class="govuk-summary-card__title">
@@ -17,7 +17,7 @@
                 </h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                        <a class="govuk-link" href="@Url.Action("ExistingNetworkElements", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            <a class="govuk-link" href="@Url.Action("NewAndExistingNetworkElements", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
                     </li>                    
                 </ul>
             </div>
@@ -47,7 +47,7 @@
                 </h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                        <a class="govuk-link" href="@Url.Action("ExistingNetworkElements", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            <a class="govuk-link" href="@Url.Action("NewAndExistingNetworkElements", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
                     </li>
                 </ul>
             </div>
@@ -77,7 +77,7 @@
                 </h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                        <a class="govuk-link" href="@Url.Action("ExistingNetworkEnergyCentreName", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            <a class="govuk-link" href="@Url.Action("NewAndExistingNetworkEnergyCentreName", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
                     </li>
                 </ul>
             </div>
@@ -107,7 +107,7 @@
                 </h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                        <a class="govuk-link" href="@Url.Action("ExistingNetworkEnergyCentreName", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            <a class="govuk-link" href="@Url.Action("NewAndExistingNetworkEnergyCentreName", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
                     </li>
                 </ul>
             </div>
@@ -137,7 +137,7 @@
                 </h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                        <a class="govuk-link" href="@Url.Action("ExistingEnergyCentresSupply", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            <a class="govuk-link" href="@Url.Action("NewAndExistingEnergyCentresSupply", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
                     </li>
                 </ul>
             </div>
