@@ -184,7 +184,17 @@ public class HomeController : Controller
 
         if (!string.IsNullOrEmpty(invitedEmail))
         {
-            this.ShowBackButton("YouHaveBeenInvited", "Contributor");
+            var invitedTokenKey = _sessionHelper.GetFromSession<string?>(HttpContext, SessionKeys.InvitedTokenKey);
+            if (string.IsNullOrEmpty(invitedTokenKey))
+            {
+                this.ShowBackButton("YouHaveBeenInvited", "Contributor");
+            }                
+            else
+            {
+                this.ShowBackButton("YouHaveBeenInvited", "Contributor", new { token = invitedTokenKey });
+                _sessionHelper.ClearFromSession(HttpContext, SessionKeys.InvitedTokenKey);
+            }
+                
             ViewBag.NavigateUrl = Url.Action("Index", "Home");
         }
         else
