@@ -14,5 +14,5 @@ namespace HNTAS.Web.UI.Models.NetworkElements
         [Range(typeof(bool), "true", "true", ErrorMessage = "Confirm that the summary is correct")]
 
         public bool ConfirmedDeclaration { get; set; }
-    }
+    }    
 }

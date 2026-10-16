@@ -136,7 +136,7 @@ namespace HNTAS.Web.UI.Controllers
                 }
                 else if (option.Id == NetworkDetailsType.NetworkElements)
                 {
-                    NetworkElementHelper.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkElements?.NetworkElementStatus, null, false);
+                    NetworkElementHelper.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkElements?.NetworkElementStatus, null);
                 }                
             }
 
@@ -171,11 +171,16 @@ namespace HNTAS.Web.UI.Controllers
                 soaController = "ElementSoa";
                 soaAction = "UnderstandingSoa";
             }
-                
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var networkStatus = heatNetworkData?.NetworkElements?.NetworkElementStatus;
+            var networkElementAction = networkStatus == NetworkDetailsStatus.Complete ? "NetworkElementsOverView" : "NewAndExistingNetworkElements";
+
             switch (networkDetailId)
             {
                 case NetworkDetailsType.NetworkElements:
-                    return RedirectToAction("NewAndExistingNetworkElements", "NetworkElements");
+                    return RedirectToAction(networkElementAction, "NetworkElements");
                 case NetworkDetailsType.Soa:
                     return RedirectToAction(soaAction, soaController);
                 default:

@@ -5,10 +5,9 @@
     ViewData["Title"] = "Network elements overview";
 }
 
-
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <form asp-action="NetworkElementsOverViewAsync" method="post">
+        <form asp-action="NetworkDetails" asp-controller="HeatNetwork" method="get">
                 @Html.AntiForgeryToken()
                 <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
                 <h1 class="govuk-heading-l">
@@ -18,51 +17,109 @@
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
-                            Address
+                        Main energy centre address and postcode
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            @Model.HeatNetworkAddress
+                            @Model.Address
                         </dd>
                     </div>
 
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
-                            Coordinates
+                        Energy centre grid coordinates
                         </dt>
                         <dd class="govuk-summary-list__value">
                             @Model.Coordinates
                         </dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Network type
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.NetworkType
-                        </dd>
-                    </div>
+                    </div> 
+                    
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Connections
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        To be added
+                    </dd>
+                </div>
 
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Elements
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            <ul class="govuk-list">
-                                @foreach (var element in Model.Elements)
-                                {
-                                    <li>@element</li>
-                                }
-                            </ul>
-                        </dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Phase
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.Phase
-                        </dd>
-                    </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Network type
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.NetworkType
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Phase
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.Phase
+                    </dd>
+                </div>                    
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Elements
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        <h3 class="govuk-heading-s">Existing elements</h3>
+                        <ul class="govuk-list govuk-list--bullet">
+                            @foreach (var element in Model.ExistingNetworkElements!)
+                            {
+                                <li>@element</li>
+                            }
+                        </ul>
+
+                        <h3 class="govuk-heading-s">New elements</h3>
+                        <ul class="govuk-list govuk-list--bullet">
+                            @foreach (var element in Model.NewNetworkElements!)
+                            {
+                                <li>@element</li>
+                            }
+                        </ul>
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Energy centres
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        <h3 class="govuk-heading-s">Existing EC</h3>
+                        <ul class="govuk-list govuk-list--bullet">
+                            @foreach (var element in Model.ExistingNetworkEcNames!)
+                            {
+                                <li>@element</li>
+                            }
+                        </ul>
+
+                        <h3 class="govuk-heading-s">New EC</h3>
+                        <ul class="govuk-list govuk-list--bullet">
+                            @foreach (var element in Model.NewNetworkEcNames!)
+                            {
+                                <li>@element</li>
+                            }
+                        </ul>
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Existing energy centre supplying new buildings
+                    </dt>
+                    <dd class="govuk-summary-list__value">                        
+                        <ul class="govuk-list govuk-list--bullet">
+                            @foreach (var element in Model.ExistingEcSupplyingNewBuilding!)
+                            {
+                                <li>@element</li>
+                            }
+                        </ul>                        
+                    </dd>
+                </div>
+                    
                 </dl>
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     Continue

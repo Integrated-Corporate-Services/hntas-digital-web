@@ -5,11 +5,16 @@ namespace HNTAS.Web.UI.Models.NetworkElements
 {
     public class NetworkElementsOverViewModel
     {
-        public List<string> Elements { get; set; } = new List<string>();
-        public string? HeatNetworkAddress { get; set; }
+        public List<string>? ExistingNetworkElements { get; set; }
+        public List<string>? NewNetworkElements { get; set; }
+        public List<string>? ExistingNetworkEcNames { get; set; }
+        public List<string>? NewNetworkEcNames { get; set; }
+        public List<string>? ExistingEcSupplyingNewBuilding { get; set; }
+        public string? Address { get; set; }
         public string? Coordinates { get; set; }
-        public string NetworkType { get; set; } = null!;
-        public string Phase { get; set; } = null!;
+        public string? Phase { get; set; }
+        public string? NetworkType { get; set; }
+        public List<string>? Connections { get; set; }
     }    
 
     public class NetworkElementGroup

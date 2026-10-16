@@ -215,7 +215,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, NullableOfSoaStage nullableOfSoaStage, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(nullableOfSoaStage.ToString());
+            writer.WriteStringValue(NullableOfSoaStageValueConverter.ToJsonValue(nullableOfSoaStage).ToString());
         }
     }
 
@@ -246,14 +246,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the NullableOfSoaStage to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="nullableOfSoaStage"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, NullableOfSoaStage? nullableOfSoaStage, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(nullableOfSoaStage?.ToString() ?? "null");
+            writer.WriteStringValue(nullableOfSoaStage.HasValue ? NullableOfSoaStageValueConverter.ToJsonValue(nullableOfSoaStage.Value).ToString() : "null");
         }
     }
 }

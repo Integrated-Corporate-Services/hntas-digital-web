@@ -108,6 +108,7 @@ docs/models/ManagedUserResponse.md
 docs/models/MeteringAndMonitoringStrategy.md
 docs/models/MeteringAndMonitoringStrategyResponse.md
 docs/models/Milestone.md
+docs/models/NetworkBuildStatus.md
 docs/models/NetworkDetailsStatus.md
 docs/models/NetworkDetailsUploadedDocument.md
 docs/models/NetworkElementRequest.md
@@ -306,6 +307,7 @@ src/HNTAS.Api.Client/Model/ManagedUserResponse.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategy.cs
 src/HNTAS.Api.Client/Model/MeteringAndMonitoringStrategyResponse.cs
 src/HNTAS.Api.Client/Model/Milestone.cs
+src/HNTAS.Api.Client/Model/NetworkBuildStatus.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsStatus.cs
 src/HNTAS.Api.Client/Model/NetworkDetailsUploadedDocument.cs
 src/HNTAS.Api.Client/Model/NetworkElementRequest.cs
