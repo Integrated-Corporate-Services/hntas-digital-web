@@ -1,6 +1,6 @@
 ﻿namespace HNTAS.Web.UI.Models.NetworkElements
 {
-    public class NewAndExistingNetworkEcNameViewModel
+    public class NetworkEcNameViewModel
     {
         public List<EcNameOption> ExistingEcNameOptions { get; set; } = new();
         public List<EcNameOption> NewEcNameOptions { get; set; } = new();

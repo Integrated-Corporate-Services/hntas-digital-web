@@ -1,6 +1,6 @@
 ﻿@using HNTAS.Web.UI.Models.Components
 @using HNTAS.Web.UI.Models.NetworkElements
-@model NewAndExistingNetworkElementSummaryViewModel
+@model NetworkElementSummaryViewModel
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
@@ -9,7 +9,7 @@
         <div class="govuk-hint">
             You have told us you have the following elements on your network:
         </div>
-        <form asp-action="NewAndExistingNetworkElementSummary" method="post" novalidate>
+        <form asp-action="NetworkElementSummary" method="post" novalidate>
         <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
                 <h2 class="govuk-summary-card__title">
@@ -17,7 +17,7 @@
                 </h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                            <a class="govuk-link" href="@Url.Action("NewAndExistingNetworkElements", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            <a class="govuk-link" href="@Url.Action("NetworkElementsList", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
                     </li>                    
                 </ul>
             </div>
@@ -30,7 +30,7 @@
                         <dd class="govuk-summary-list__value">
                             <ul>
                                 @foreach(var existingEl in Model.ExistingNetworkElements!)
-                                {
+                                {                                    
                                     <li>@existingEl</li>
                                 }                                
                             </ul>
@@ -47,7 +47,7 @@
                 </h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                            <a class="govuk-link" href="@Url.Action("NewAndExistingNetworkElements", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            <a class="govuk-link" href="@Url.Action("NetworkElementsList", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
                     </li>
                 </ul>
             </div>
@@ -77,7 +77,7 @@
                 </h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                            <a class="govuk-link" href="@Url.Action("NewAndExistingNetworkEnergyCentreName", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            <a class="govuk-link" href="@Url.Action("NetworkEnergyCentreName", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
                     </li>
                 </ul>
             </div>
@@ -107,7 +107,7 @@
                 </h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                            <a class="govuk-link" href="@Url.Action("NewAndExistingNetworkEnergyCentreName", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            <a class="govuk-link" href="@Url.Action("NetworkEnergyCentreName", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
                     </li>
                 </ul>
             </div>
@@ -130,35 +130,80 @@
             </div>
         </div>
 
-        <div class="govuk-summary-card">
-            <div class="govuk-summary-card__title-wrapper">
-                <h2 class="govuk-summary-card__title">
-                    Existing energy centre supplying new buildings
-                </h2>
-                <ul class="govuk-summary-card__actions">
-                    <li class="govuk-summary-card__action">
-                            <a class="govuk-link" href="@Url.Action("NewAndExistingEnergyCentresSupply", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
-                    </li>
-                </ul>
-            </div>
-            <div class="govuk-summary-card__content">
-                <dl class="govuk-summary-list">
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Existing
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            <ul>
-                                @foreach (var existingEcSupplying in Model.ExistingEcSupplyingNewBuilding!)
-                                {
-                                    <li>@existingEcSupplying</li>
-                                }
-                            </ul>
-                        </dd>
+            @if (ViewBag.SupplyToNewBuildings == true)
+                {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">
+                            Existing energy centre supplying new buildings
+                        </h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="@Url.Action("EnergyCentresSupply", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            </li>
+                        </ul>
                     </div>
-                </dl>
-            </div>
-        </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Existing
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    <ul>
+                                        @foreach (var existingEcSupplying in Model.ExistingEcSupplyingNewBuilding!)
+                                        {
+                                            <li>@existingEcSupplying</li>
+                                        }
+                                    </ul>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+                }
+                
+
+            @if (Model.ExistingNetworkElements != null)
+            {
+                for (var i = 0; i < Model.ExistingNetworkElements.Count; i++)
+                {
+                    <input type="hidden" asp-for="ExistingNetworkElements[i]" />
+                }
+            }
+
+            @if (Model.NewNetworkElements != null)
+            {
+                for (var i = 0; i < Model.NewNetworkElements.Count; i++)
+                {
+                    <input type="hidden" asp-for="NewNetworkElements[i]" />
+                }
+            }
+
+            @if (Model.ExistingNetworkEcNames != null)
+            {
+                for (var i = 0; i < Model.ExistingNetworkEcNames.Count; i++)
+                {
+                    <input type="hidden" asp-for="ExistingNetworkEcNames[i]" />
+                }
+            }
+
+            @if (Model.NewNetworkEcNames != null)
+            {
+                for (var i = 0; i < Model.NewNetworkEcNames.Count; i++)
+                {
+                    <input type="hidden" asp-for="NewNetworkEcNames[i]" />
+                }
+            }
+
+            @if (Model.ExistingEcSupplyingNewBuilding != null)
+            {
+                for (var i = 0; i < Model.ExistingEcSupplyingNewBuilding.Count; i++)
+                {
+                    <input type="hidden" asp-for="ExistingEcSupplyingNewBuilding[i]" />
+                }
+            }
+
 
         @{
             var hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();

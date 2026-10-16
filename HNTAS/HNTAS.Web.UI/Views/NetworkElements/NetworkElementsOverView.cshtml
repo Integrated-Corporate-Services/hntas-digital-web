@@ -106,19 +106,22 @@
                     </dd>
                 </div>
 
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Existing energy centre supplying new buildings
-                    </dt>
-                    <dd class="govuk-summary-list__value">                        
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var element in Model.ExistingEcSupplyingNewBuilding!)
-                            {
-                                <li>@element</li>
-                            }
-                        </ul>                        
-                    </dd>
-                </div>
+                @if (ViewBag.SupplyToNewBuildings == true)
+                    {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Existing energy centre supplying new buildings
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var element in Model.ExistingEcSupplyingNewBuilding!)
+                                {
+                                    <li>@element</li>
+                                }
+                            </ul>
+                        </dd>
+                    </div>
+                    }                    
                     
                 </dl>
                 <button type="submit" class="govuk-button" data-module="govuk-button">

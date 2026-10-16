@@ -1,6 +1,6 @@
 ﻿namespace HNTAS.Web.UI.Models.NetworkElements
 {
-    public class NewAndExistingEnergyCentresSupplyViewModel
+    public class EnergyCentresSupplyViewModel
     {
         public List<ExistingEnergyCentreSupply> ExistingEnergyCentresSupply { get; set; } = new List<ExistingEnergyCentreSupply>();
     }

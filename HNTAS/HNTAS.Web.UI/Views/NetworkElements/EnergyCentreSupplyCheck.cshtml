@@ -1,6 +1,6 @@
 ﻿@using HNTAS.Web.UI.Models
 @using HNTAS.Web.UI.Models.NetworkElements
-@model NewAndExistingEnergyCentreSupplyViewModel
+@model EnergyCentreSupplyViewModel
 
 @{
     ViewData["Title"] = "Do any existing energy centres supply the new buildings?";
@@ -9,7 +9,7 @@
     var pageData = new QuestionWithRadiobuttonsModel
     {
         Controller = "NetworkElements",
-        Action = "NewAndExistingEnergyCentreSupplyCheck",
+        Action = "EnergyCentreSupplyCheck",
         FieldOrder = fieldOrder,
         Questions = new List<Question>
         {

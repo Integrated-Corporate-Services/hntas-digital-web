@@ -69,7 +69,7 @@ namespace HNTAS.Web.UI.Controllers
         //}
 
         [HttpGet]
-        public async Task<IActionResult> NewAndExistingNetworkElementsAsync()
+        public async Task<IActionResult> NetworkElementsListAsync()
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
@@ -77,20 +77,20 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
-            var model = _sessionHelper.GetFromSession<NewAndExistingNetworkElementViewModel>(HttpContext, SessionKeys.NewAndExistingNetworkElementsViewModelSessionKey);
+            var model = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
 
             if (model != null)
             {
                 return View(model);
             }
 
-            model = new NewAndExistingNetworkElementViewModel();
+            model = new NetworkElementViewModel();
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
             var networkBuildStatus = heatNetworkData?.NetworkBuildStatus;
             //bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
 
-            model.ElementOptions = NetworkElementHelper.GetNewAndExistingNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType);
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType);
             //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc);
             var selectedNetworkElements = heatNetworkData?.NetworkElements;            
 
@@ -99,7 +99,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewAndExistingNetworkElementsAsync(NewAndExistingNetworkElementViewModel model)
+        public async Task<IActionResult> NetworkElementsListAsync(NetworkElementViewModel model)
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
@@ -130,30 +130,30 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NewAndExistingNetworkElementsViewModelSessionKey, model);
-            return RedirectToAction("NewAndExistingNetworkEnergyCentreName");
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey, model);
+            return RedirectToAction("NetworkEnergyCentreName");
         }
 
         [HttpGet]
-        public async Task<IActionResult> NewAndExistingNetworkEnergyCentreName()
+        public async Task<IActionResult> NetworkEnergyCentreName()
         {
-            this.ShowBackButton("NewAndExistingNetworkElements", "NetworkElements");
+            this.ShowBackButton("NetworkElementsList", "NetworkElements");
 
-            var model = _sessionHelper.GetFromSession<NewAndExistingNetworkEcNameViewModel>(HttpContext, SessionKeys.NewAndExistingNetworkEcNameViewModelSessionKey);
+            var model = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
             if (model != null)
             {
                 return View(model);
             }
-            var existingNetworkElement = _sessionHelper.GetFromSession<NewAndExistingNetworkElementViewModel>(HttpContext, SessionKeys.NewAndExistingNetworkElementsViewModelSessionKey);
+            var existingNetworkElement = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
             var ecOption = existingNetworkElement?.ElementOptions.FirstOrDefault(x => x.Id == HeatNetworkElementType.EnergyCentre);
 
-            model = NetworkElementHelper.GetExistingNetworkEcName(ecOption!);
+            model = NetworkElementHelper.GetNetworkEcName(ecOption!);
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult NewAndExistingNetworkEnergyCentreName(NewAndExistingNetworkEcNameViewModel model)
+        public IActionResult NetworkEnergyCentreName(NetworkEcNameViewModel model)
         {
             this.ShowBackButton("NewAndExistingNetworkElements", "NetworkElements");
             foreach(var existingEc in model.ExistingEcNameOptions)
@@ -218,15 +218,15 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NewAndExistingNetworkEcNameViewModelSessionKey, model);
-            return RedirectToAction("NewAndExistingEnergyCentreSupplyCheck");
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey, model);
+            return RedirectToAction("EnergyCentreSupplyCheck");
         }
 
         [HttpGet]
-        public IActionResult NewAndExistingEnergyCentreSupplyCheck()
+        public IActionResult EnergyCentreSupplyCheck()
         {
-            this.ShowBackButton("NewAndExistingNetworkEnergyCentreName", "NetworkElements");
-            var model = _sessionHelper.GetFromSession<NewAndExistingEnergyCentreSupplyViewModel>(HttpContext, SessionKeys.NewAndExistingEcSupplyCheckViewModelSessionKey) ?? new NewAndExistingEnergyCentreSupplyViewModel();
+            this.ShowBackButton("NetworkEnergyCentreName", "NetworkElements");
+            var model = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey) ?? new EnergyCentreSupplyViewModel();
             if (model != null)
             {
                 return View(model);
@@ -236,31 +236,31 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult NewAndExistingEnergyCentreSupplyCheck(NewAndExistingEnergyCentreSupplyViewModel model)
+        public IActionResult EnergyCentreSupplyCheck(EnergyCentreSupplyViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NewAndExistingEcSupplyCheckViewModelSessionKey, model);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey, model);
             
             if (model.IsExistingEcSupply == "yes")
-                return RedirectToAction("NewAndExistingEnergyCentresSupply", "NetworkElements");            
-            return RedirectToAction("SelectNetworkElements");
+                return RedirectToAction("EnergyCentresSupply", "NetworkElements");            
+            return RedirectToAction("NetworkElementSummary");
         }
 
         [HttpGet]
-        public IActionResult NewAndExistingEnergyCentresSupply()
+        public IActionResult EnergyCentresSupply()
         {
-            this.ShowBackButton("NewAndExistingEnergyCentreSupplyCheck", "NetworkElements");
-            var model = _sessionHelper.GetFromSession<NewAndExistingEnergyCentresSupplyViewModel>(HttpContext, SessionKeys.NewAndExistingEcSupplyViewModelSessionKey);
+            this.ShowBackButton("EnergyCentreSupplyCheck", "NetworkElements");
+            var model = _sessionHelper.GetFromSession<EnergyCentresSupplyViewModel>(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
 
-            var existingNetworkEcsModel = _sessionHelper.GetFromSession<NewAndExistingNetworkEcNameViewModel>(HttpContext, SessionKeys.NewAndExistingNetworkEcNameViewModelSessionKey);
+            var existingNetworkEcsModel = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
             if (model != null)
             {
                 return View(model);
             }
-            model = new NewAndExistingEnergyCentresSupplyViewModel();
+            model = new EnergyCentresSupplyViewModel();
             var existingNetworkEcs = existingNetworkEcsModel?.ExistingEcNameOptions.Select(x => x.EcName).ToList();
             model.ExistingEnergyCentresSupply.AddRange(existingNetworkEcs!.Select(x => new ExistingEnergyCentreSupply { EcName = x }));
                         
@@ -269,7 +269,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult NewAndExistingEnergyCentresSupply(NewAndExistingEnergyCentresSupplyViewModel model)
+        public IActionResult EnergyCentresSupply(EnergyCentresSupplyViewModel model)
         {
             var selectedEcNames = model.ExistingEnergyCentresSupply.Where(x => x.IsChecked == true).Select(x => x.EcName).ToList();
             if (!selectedEcNames.Any())
@@ -277,18 +277,17 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.AddModelError("existingenergycentressupply[0].ischecked", "Select at least one existing energy centre");
                 return View(model);
             }
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NewAndExistingEcSupplyViewModelSessionKey, model);
-            return RedirectToAction("NewAndExistingNetworkElementSummary");
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey, model);
+            return RedirectToAction("NetworkElementSummary");
         }
 
         [HttpGet]
-        public IActionResult NewAndExistingNetworkElementSummary()
+        public IActionResult NetworkElementSummary()
         {
-            var existingNetworkElements = _sessionHelper.GetFromSession<NewAndExistingNetworkElementViewModel>(HttpContext, SessionKeys.NewAndExistingNetworkElementsViewModelSessionKey);
-            var existingNetworkEcNames = _sessionHelper.GetFromSession<NewAndExistingNetworkEcNameViewModel>(HttpContext, SessionKeys.NewAndExistingNetworkEcNameViewModelSessionKey);
-            var existingEcSupplyingNewBuilding = _sessionHelper.GetFromSession<NewAndExistingEnergyCentresSupplyViewModel>(HttpContext, SessionKeys.NewAndExistingEcSupplyViewModelSessionKey);
+            var existingNetworkElements = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+            var existingNetworkEcNames = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);            
 
-            var model = new NewAndExistingNetworkElementSummaryViewModel();
+            var model = new NetworkElementSummaryViewModel();
 
             foreach (var option in existingNetworkElements!.ElementOptions)
             {
@@ -322,31 +321,37 @@ namespace HNTAS.Web.UI.Controllers
                     model.NewNetworkEcNames.Add($"New {ec.EcName!}");
             }
 
-            var selectedEcNames = existingEcSupplyingNewBuilding?.ExistingEnergyCentresSupply.Where(x => x.IsChecked == true).Select(x => x.EcName).ToList();
-            foreach (var ecName in selectedEcNames)
+            var supplyToNewBuilding = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+            ViewBag.SupplyToNewBuildings = supplyToNewBuilding != null && supplyToNewBuilding!.IsExistingEcSupply == "yes";
+            if (supplyToNewBuilding != null && supplyToNewBuilding!.IsExistingEcSupply == "yes")
             {
-                model.ExistingEcSupplyingNewBuilding ??= new List<string>();
-                model.ExistingEcSupplyingNewBuilding.Add($"Existing { ecName }");
-            }
+                var existingEcSupplyingNewBuilding = _sessionHelper.GetFromSession<EnergyCentresSupplyViewModel>(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
+                var selectedEcNames = existingEcSupplyingNewBuilding?.ExistingEnergyCentresSupply.Where(x => x.IsChecked == true).Select(x => x.EcName).ToList();
+                foreach (var ecName in selectedEcNames)
+                {
+                    model.ExistingEcSupplyingNewBuilding ??= new List<string>();
+                    model.ExistingEcSupplyingNewBuilding.Add($"Existing {ecName}");
+                }
+            }            
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewAndExistingNetworkElementSummaryAsync(NewAndExistingNetworkElementSummaryViewModel model)
+        public async Task<IActionResult> NetworkElementSummaryAsync(NetworkElementSummaryViewModel model)
         {
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
 
-            var newAndExistingNetworkElements = _sessionHelper.GetFromSession<NewAndExistingNetworkElementViewModel>(HttpContext, SessionKeys.NewAndExistingNetworkElementsViewModelSessionKey);
-            var newAndExistingNetworkEcNames = _sessionHelper.GetFromSession<NewAndExistingNetworkEcNameViewModel>(HttpContext, SessionKeys.NewAndExistingNetworkEcNameViewModelSessionKey);
-            var newAndExistingEcSupplyingNewBuilding = _sessionHelper.GetFromSession<NewAndExistingEnergyCentresSupplyViewModel>(HttpContext, SessionKeys.NewAndExistingEcSupplyViewModelSessionKey);
-            var newAndExistingEnergyCentreSupplyNewBuildingCheck = _sessionHelper.GetFromSession<NewAndExistingEnergyCentreSupplyViewModel>(HttpContext, SessionKeys.NewAndExistingEcSupplyCheckViewModelSessionKey);
+            var newAndExistingNetworkElements = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+            var newAndExistingNetworkEcNames = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            
+            var newAndExistingEnergyCentreSupplyNewBuildingCheck = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
 
             if (model.ConfirmedDeclaration != true)
             {
-                ModelState.AddModelError(nameof(model.ConfirmedDeclaration), "Confirm that the summary is correct");
+                //ModelState.AddModelError(nameof(model.ConfirmedDeclaration), "Confirm that the summary is correct");
                 return View(model);
             }
 
@@ -409,7 +414,9 @@ namespace HNTAS.Web.UI.Controllers
             var existingElements = elementList.Where(x => x.BuildType == NetworkBuildStatus.Existing).ToList();
             var existingElementsWithEcNames = newAndExistingNetworkEcNames!.ExistingEcNameOptions;
 
-            var selectedEcNames = newAndExistingEcSupplyingNewBuilding?.ExistingEnergyCentresSupply.Where(x => x.IsChecked == true).Select(x => x.EcName).ToList();
+            var supplyToNewBuilding = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+            var newAndExistingEcSupplyingNewBuilding = _sessionHelper.GetFromSession<EnergyCentresSupplyViewModel>(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
+            var selectedEcNames = (supplyToNewBuilding != null && supplyToNewBuilding.IsExistingEcSupply == "yes") ? newAndExistingEcSupplyingNewBuilding?.ExistingEnergyCentresSupply.Where(x => x.IsChecked == true).Select(x => x.EcName).ToList() : null;
 
             for (int i = 0; i< newElementsWithEcNames.Count; i++)
             {
@@ -441,14 +448,12 @@ namespace HNTAS.Web.UI.Controllers
 
             await _heatNetworkService.UpdateNetworkElements(hnId!, request);
 
-            return RedirectToAction("NewAndExistingNetworkConfirmation");
+            return RedirectToAction("NetworkConfirmation");
         }
 
         [HttpGet]
-        public IActionResult NewAndExistingNetworkConfirmationAsync()
+        public IActionResult NetworkConfirmationAsync()
         {
-            
-
             return View();
         }
 
@@ -467,7 +472,7 @@ namespace HNTAS.Web.UI.Controllers
 
             foreach (var newElementGroup in newElementGroups!)
             {
-                var elementOption = NetworkElementHelper.GetNewAndExistingNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)heatNetworkData?.HeatNetworkType).FirstOrDefault(x => x.Id == newElementGroup.ElementDisplayType);
+                var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)heatNetworkData?.HeatNetworkType).FirstOrDefault(x => x.Id == newElementGroup.ElementDisplayType);
                 var label = elementOption != null ? elementOption.Label : newElementGroup.ElementDisplayType.ToString();
                 label = label.ToSentenceCase();
                 model.NewNetworkElements ??= new List<string>();
@@ -476,7 +481,7 @@ namespace HNTAS.Web.UI.Controllers
 
             foreach (var existingElementGroup in existingElementGroups!)
             {
-                var elementOption = NetworkElementHelper.GetNewAndExistingNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)heatNetworkData?.HeatNetworkType).FirstOrDefault(x => x.Id == existingElementGroup.ElementDisplayType);
+                var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)heatNetworkData?.HeatNetworkType).FirstOrDefault(x => x.Id == existingElementGroup.ElementDisplayType);
                 var label = elementOption != null ? elementOption.Label : existingElementGroup.ElementDisplayType.ToString();
                 label = label.ToSentenceCase();
                 model.ExistingNetworkElements ??= new List<string>();
@@ -498,12 +503,18 @@ namespace HNTAS.Web.UI.Controllers
                 model.ExistingNetworkEcNames.Add($"{existingEcElement.ElementName}");
             }
 
-            var existingEcSupplyingNewBuildings = networkElements.Elements?.Where(x => x.BuildType == NetworkBuildStatus.Existing && x.ElementType == ElementTypeInShort.EC && x.IsSupplyNewBuildings == true).ToList();
-            foreach (var existingEcSupplyingNewBuilding in existingEcSupplyingNewBuildings!)
+            var isExistingEcSupplyNewBuildings = networkElements.IsExistingEnergyCentreSupplyNewBuildings;
+            ViewBag.SupplyToNewBuildings = isExistingEcSupplyNewBuildings;
+            if (isExistingEcSupplyNewBuildings == true)
             {
-                model.ExistingEcSupplyingNewBuilding ??= new List<string>();
-                model.ExistingEcSupplyingNewBuilding.Add($"{existingEcSupplyingNewBuilding.ElementName}");
+                var existingEcSupplyingNewBuildings = networkElements.Elements?.Where(x => x.BuildType == NetworkBuildStatus.Existing && x.ElementType == ElementTypeInShort.EC && x.IsSupplyNewBuildings == true).ToList();
+                foreach (var existingEcSupplyingNewBuilding in existingEcSupplyingNewBuildings!)
+                {
+                    model.ExistingEcSupplyingNewBuilding ??= new List<string>();
+                    model.ExistingEcSupplyingNewBuilding.Add($"{existingEcSupplyingNewBuilding.ElementName}");
+                }
             }
+            
 
             var address = heatNetworkData?.Address;
             var coordinates = heatNetworkData?.EcDetails;

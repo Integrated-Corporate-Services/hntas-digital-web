@@ -175,7 +175,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkStatus = heatNetworkData?.NetworkElements?.NetworkElementStatus;
-            var networkElementAction = networkStatus == NetworkDetailsStatus.Complete ? "NetworkElementsOverView" : "NewAndExistingNetworkElements";
+            var networkElementAction = networkStatus == NetworkDetailsStatus.Complete ? "NetworkElementsOverView" : "NetworkElementsList";
 
             switch (networkDetailId)
             {
@@ -196,6 +196,9 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SubstationViewModelKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DistributionNetworksViewModelKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);            
         }
 
         private void ClearSoaAssessorSpecificSession()
