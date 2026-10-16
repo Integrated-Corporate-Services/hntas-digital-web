@@ -6,11 +6,9 @@
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-
-        <form class="form" asp-action="NetworkElementsList" method="post">
-        
-            <span class="govuk-caption-l">HN2000154 safd, asf</span>
+    <div class="govuk-grid-column-full">        
+        <form class="form" asp-action="NetworkElementsList" method="post">        
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
 
             <h1 class="govuk-heading-l">Tell us about the heat network elements</h1>
             <p class="govuk-hint">Enter the number of existing and new network elements. Enter 0 if none apply.</p>

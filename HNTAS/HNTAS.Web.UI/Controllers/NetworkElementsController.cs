@@ -138,6 +138,8 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> NetworkEnergyCentreName()
         {
             this.ShowBackButton("NetworkElementsList", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
 
             var model = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
             if (model != null)
@@ -155,8 +157,10 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult NetworkEnergyCentreName(NetworkEcNameViewModel model)
         {
-            this.ShowBackButton("NewAndExistingNetworkElements", "NetworkElements");
-            foreach(var existingEc in model.ExistingEcNameOptions)
+            this.ShowBackButton("NetworkElementsList", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            foreach (var existingEc in model.ExistingEcNameOptions)
             {
                 if (string.IsNullOrWhiteSpace(existingEc.EcName))
                 {
@@ -226,6 +230,8 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnergyCentreSupplyCheck()
         {
             this.ShowBackButton("NetworkEnergyCentreName", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var model = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey) ?? new EnergyCentreSupplyViewModel();
             if (model != null)
             {
@@ -238,6 +244,9 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnergyCentreSupplyCheck(EnergyCentreSupplyViewModel model)
         {
+            this.ShowBackButton("NetworkEnergyCentreName", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -253,6 +262,8 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult EnergyCentresSupply()
         {
             this.ShowBackButton("EnergyCentreSupplyCheck", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var model = _sessionHelper.GetFromSession<EnergyCentresSupplyViewModel>(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
 
             var existingNetworkEcsModel = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
@@ -271,6 +282,10 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EnergyCentresSupply(EnergyCentresSupplyViewModel model)
         {
+            this.ShowBackButton("EnergyCentreSupplyCheck", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
             var selectedEcNames = model.ExistingEnergyCentresSupply.Where(x => x.IsChecked == true).Select(x => x.EcName).ToList();
             if (!selectedEcNames.Any())
             {
@@ -284,6 +299,11 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult NetworkElementSummary()
         {
+            //TODO: Backbutton fix
+            this.ShowBackButton("EnergyCentresSupply", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
             var existingNetworkElements = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
             var existingNetworkEcNames = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);            
 
@@ -341,8 +361,12 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NetworkElementSummaryAsync(NetworkElementSummaryViewModel model)
         {
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+            //TODO: Backbutton fix
+            this.ShowBackButton("EnergyCentresSupply", "NetworkElements");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);            
 
             var newAndExistingNetworkElements = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
             var newAndExistingNetworkEcNames = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
@@ -447,6 +471,7 @@ namespace HNTAS.Web.UI.Controllers
             };
 
             await _heatNetworkService.UpdateNetworkElements(hnId!, request);
+            ClearNetworkElementSpecificSession();
 
             return RedirectToAction("NetworkConfirmation");
         }
@@ -459,8 +484,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpGet]
         public async Task<IActionResult> NetworkElementsOverViewAsync()
-        {
-            this.ShowBackButton("NetworkDetails", "HeatNetwork");
+        {            
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
@@ -528,6 +552,14 @@ namespace HNTAS.Web.UI.Controllers
             model.NetworkType = heatNetworkData!.HeatNetworkType.ToString();
             
             return View(model);
+        }
+
+        private void ClearNetworkElementSpecificSession()
+        {
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);            
         }
 
 

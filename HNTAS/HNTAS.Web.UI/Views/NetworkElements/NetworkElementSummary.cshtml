@@ -1,10 +1,13 @@
 ﻿@using HNTAS.Web.UI.Models.Components
 @using HNTAS.Web.UI.Models.NetworkElements
 @model NetworkElementSummaryViewModel
+@{
+    ViewData["Title"] = "Heat network element summary";
+}
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        <span class="govuk-caption-l">HN2000154 asdf, sf</span>
+        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
         <h1 class="govuk-heading-l">Heat network element summary</h1>
         <div class="govuk-hint">
             You have told us you have the following elements on your network:
