@@ -120,6 +120,7 @@
         public const string NetworkEcNameViewModelSessionKey = "NetworkEcNameViewModelSessionKey";
         public const string EcSupplyCheckViewModelSessionKey = "EcSupplyCheckViewModelSessionKey";
         public const string EcSupplyViewModelSessionKey = "EcSupplyViewModelSessionKey";
+        public const string NetworkBuildStatusSessionKey = "NetworkBuildStatusSessionKey";
         public const string NetworkSupplyTypeModelKey = "NetworkSupplyTypeModelKey";
 
         public const string NetworkConnectionsModelKey = "NetworkConnectionsKey";

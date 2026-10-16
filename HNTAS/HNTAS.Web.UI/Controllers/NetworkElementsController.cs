@@ -25,48 +25,7 @@ namespace HNTAS.Web.UI.Controllers
             _logger = logger;
             _heatNetworkService = heatNetworkService;            
             _sessionHelper = sessionHelper;                    
-        }
-
-        //[HttpGet]
-        //public async Task<IActionResult> SelectNetworkElementsAsync()
-        //{
-        //    this.ShowBackButton("NetworkDetails", "HeatNetwork");
-        //    var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-        //    var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-
-        //    ViewBag.HnId = hnId?.ToUpper();
-        //    ViewBag.HnName = hnName;
-        //    var model = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
-
-        //    if (model != null)
-        //    {
-        //        return View(model);
-        //    }
-
-        //    model = new NetworkElementViewModel();
-        //    var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
-        //    var networkType = heatNetworkData?.HeatNetworkType;
-        //    bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
-
-        //    model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc);
-        //    ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc);
-        //    var selectedNetworkElements = heatNetworkData?.NetworkElements;
-
-        //    if (selectedNetworkElements != null)
-        //    {
-        //        selectedNetworkElements.ElementsGroup?.DistinctBy(a => a.ElementType).ToList().ForEach(e =>
-        //        {
-        //            var displayType = NetworkElementHelper.GetNetworkElementDisplayTypeById(e.ElementType!);
-        //            model.SelectedElementIds.Add(displayType);
-        //            if (e.Count.HasValue)
-        //            {
-        //                model.ElementCounts[displayType] = e.Count.Value;
-        //            }
-        //        });
-        //    }
-
-        //    return View(model);
-        //}
+        }        
 
         [HttpGet]
         public async Task<IActionResult> NetworkElementsListAsync()
@@ -88,11 +47,10 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
             var networkBuildStatus = heatNetworkData?.NetworkBuildStatus;
-            //bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
 
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkBuildStatusSessionKey, networkBuildStatus?.ToString());
+            ViewBag.NetworkBuildStatus = networkBuildStatus?.ToString();
             model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType);
-            //ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc);
-            var selectedNetworkElements = heatNetworkData?.NetworkElements;            
 
             return View(model);
         }
@@ -106,13 +64,11 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
-            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
-            var networkType = heatNetworkData?.HeatNetworkType;
-            bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
-            
-            foreach(var option in model.ElementOptions)
+            var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
+            ViewBag.NetworkBuildStatus = networkBuildStatus;
+            foreach (var option in model.ElementOptions)
             {                
-                if (!option.ExistingCount.HasValue)
+                if (networkBuildStatus == (NetworkBuildStatus.NewAndExisting.ToString()) && !option.ExistingCount.HasValue)
                 {
                     ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].ExistingCount", $"Enter number of existing {option.Label?.ToLower()}");
                 }
@@ -141,6 +97,9 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
 
+            var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
+            ViewBag.NetworkBuildStatus = networkBuildStatus;
+
             var model = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
             if (model != null)
             {
@@ -160,6 +119,10 @@ namespace HNTAS.Web.UI.Controllers
             this.ShowBackButton("NetworkElementsList", "NetworkElements");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
+            var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
+            ViewBag.NetworkBuildStatus = networkBuildStatus;
+
             foreach (var existingEc in model.ExistingEcNameOptions)
             {
                 if (string.IsNullOrWhiteSpace(existingEc.EcName))
@@ -183,35 +146,65 @@ namespace HNTAS.Web.UI.Controllers
                     }
                 }
             }
-            
-            var allEcNames = model.ExistingEcNameOptions.Select(x => x.EcName?.Trim().ToLower()).Concat(model.NewEcNameOptions.Select(x => x.EcName?.Trim().ToLower())).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-            var duplicateEcNames = allEcNames.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
-            if (duplicateEcNames.Any())
+
+            if (networkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString())
             {
-                foreach (var duplicateEcName in duplicateEcNames)
+                var allEcNames = model.ExistingEcNameOptions.Select(x => x.EcName?.Trim().ToLower()).Concat(model.NewEcNameOptions.Select(x => x.EcName?.Trim().ToLower())).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+                var duplicateEcNames = allEcNames.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+                if (duplicateEcNames.Any())
                 {
-                    var existingEc = model.ExistingEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
-                    if (existingEc != null)
+                    foreach (var duplicateEcName in duplicateEcNames)
                     {
-                        foreach (var ec in existingEc)
+                        var existingEc = model.ExistingEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
+                        if (existingEc != null)
                         {
-                            var index = model.ExistingEcNameOptions.IndexOf(ec);
-                            ModelState.AddModelError($"existingecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (energy centre {index + 1})");
+                            foreach (var ec in existingEc)
+                            {
+                                var index = model.ExistingEcNameOptions.IndexOf(ec);
+                                ModelState.AddModelError($"existingecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (energy centre {index + 1})");
+                            }
+                        }
+                        var newEc = model.NewEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
+                        if (newEc != null)
+                        {
+                            foreach (var ec in newEc)
+                            {
+                                var index = model.NewEcNameOptions.IndexOf(ec);
+                                if (ec.IsMainEc)
+                                {
+                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (main energy centre {index + 1})");
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (new energy centre {index + 1})");
+                                }
+                            }
                         }
                     }
-                    var newEc = model.NewEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
-                    if (newEc != null)
+                }
+            }
+            else if (networkBuildStatus == NetworkBuildStatus.New.ToString())
+            {
+                var allEcNames = model.NewEcNameOptions.Select(x => x.EcName?.Trim().ToLower()).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+                var duplicateEcNames = allEcNames.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+                if (duplicateEcNames.Any())
+                {
+                    foreach (var duplicateEcName in duplicateEcNames)
                     {
-                        foreach (var ec in newEc)
+                        var newEc = model.NewEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
+                        if (newEc != null)
                         {
-                            var index = model.NewEcNameOptions.IndexOf(ec);
-                            if (ec.IsMainEc)
+                            foreach (var ec in newEc)
                             {
-                                ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (main energy centre {index + 1})");
-                            }
-                            else
-                            {
-                                ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (new energy centre {index + 1})");
+                                var index = model.NewEcNameOptions.IndexOf(ec);
+                                if (ec.IsMainEc)
+                                {
+                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (main energy centre {index + 1})");
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (new energy centre {index + 1})");
+                                }
                             }
                         }
                     }
