@@ -4265,8 +4265,8 @@ components:
       type: object
     ECDetails:
       example:
-        latitude: 0.8008281904610115
-        longitude: 6.027456183070403
+        latitude: 1.4658129805029452
+        longitude: 5.962133916683182
       nullable: true
       properties:
         latitude:
@@ -4284,9 +4284,9 @@ components:
         soaMilestones:
         - soaStatuses:
           - soaStatus: null
-            count: 5
+            count: 9
           - soaStatus: null
-            count: 5
+            count: 9
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           milestoneId: Milestone2
@@ -4305,9 +4305,9 @@ components:
             status: null
         - soaStatuses:
           - soaStatus: null
-            count: 5
+            count: 9
           - soaStatus: null
-            count: 5
+            count: 9
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           milestoneId: Milestone2
@@ -4346,9 +4346,9 @@ components:
         soaMilestones:
         - soaStatuses:
           - soaStatus: null
-            count: 5
+            count: 9
           - soaStatus: null
-            count: 5
+            count: 9
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           milestoneId: Milestone2
@@ -4367,9 +4367,9 @@ components:
             status: null
         - soaStatuses:
           - soaStatus: null
-            count: 5
+            count: 9
           - soaStatus: null
-            count: 5
+            count: 9
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           milestoneId: Milestone2
@@ -4390,9 +4390,9 @@ components:
         soaStages:
         - soaStatuses:
           - soaStatus: null
-            count: 4
+            count: 9
           - soaStatus: null
-            count: 4
+            count: 9
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -4411,9 +4411,9 @@ components:
           stageId: Stage1
         - soaStatuses:
           - soaStatus: null
-            count: 4
+            count: 9
           - soaStatus: null
-            count: 4
+            count: 9
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -4430,7 +4430,7 @@ components:
             email: email
             status: Active
           stageId: Stage1
-        count: 1
+        count: 5
         elementType: EC
       properties:
         elementDisplayType:
@@ -4562,9 +4562,9 @@ components:
         hnId: hnId
         soaStatuses:
         - soaStatus: null
-          count: 4
+          count: 9
         - soaStatus: null
-          count: 4
+          count: 9
         elementDisplayName: elementDisplayName
         stage: Stage1
         soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -4606,9 +4606,9 @@ components:
         hnId: hnId
         soaStatuses:
         - soaStatus: null
-          count: 5
+          count: 9
         - soaStatus: null
-          count: 5
+          count: 9
         elementDisplayName: elementDisplayName
         milestone: Milestone2
         soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -4982,7 +4982,7 @@ components:
                   uploadedAt: 2000-01-23T04:56:07.000+00:00
                   uploadedBy: uploadedBy
                 name: name
-                count: 1
+                count: 5
                 locations:
                 - locations
                 - locations
@@ -5000,7 +5000,7 @@ components:
                   uploadedAt: 2000-01-23T04:56:07.000+00:00
                   uploadedBy: uploadedBy
                 name: name
-                count: 1
+                count: 5
                 locations:
                 - locations
                 - locations
@@ -5049,9 +5049,9 @@ components:
             - soaMilestones:
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5070,9 +5070,9 @@ components:
                   status: null
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5093,9 +5093,9 @@ components:
               soaStages:
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5114,9 +5114,9 @@ components:
                 stageId: Stage1
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5133,14 +5133,14 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
-              count: 1
+              count: 5
               elementType: EC
             - soaMilestones:
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5159,9 +5159,9 @@ components:
                   status: null
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5182,9 +5182,9 @@ components:
               soaStages:
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5203,9 +5203,9 @@ components:
                 stageId: Stage1
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5222,7 +5222,7 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
-              count: 1
+              count: 5
               elementType: EC
             updatedAt: 2000-01-23T04:56:07.000+00:00
           ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
@@ -5257,8 +5257,8 @@ components:
           id: id
           phase: phase
           ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
           address:
             country: country
             town: town
@@ -5266,28 +5266,30 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
+          noOfResponsibleCommunalBuilding: 0
           heatNetworkConnections:
-            noOfExistingCommunalBuilding: 9
-            noOfExistingNonDomesticBuildings: 2
+            noOfExistingCommunalBuilding: 2
+            noOfExistingNonDomesticBuildings: 7
             noOfNewCommunalBuilding: 1
-            noOfNewHousesOrMaisonettes: 1
-            noOfNonDomesticConsumer: 2
+            noOfNewHousesOrMaisonettes: 6
+            noOfNonDomesticConsumer: 9
             isCommunalBuilding: true
             isOtherDistrictNetwork: true
-            noOfDomesticConsumer: 5
-            noOfExistingHousesOrMaisonettes: 3
+            noOfDomesticConsumer: 7
+            noOfExistingHousesOrMaisonettes: 4
             isDomesticConsumer: true
-            noOfExistingOtherDistrictNetworks: 7
+            noOfExistingOtherDistrictNetworks: 1
             isNonDomesticConsumer: true
-            noOfNewMultiTenantedNonDomestic: 6
-            noOfOtherDistrictNetwork: 7
-            noOfNewOtherDistrictNetworks: 7
-            noOfExistingMultiTenantedNonDomestic: 4
-            noOfCommunalBuilding: 5
-            noOfNewNonDomesticBuildings: 1
+            noOfNewMultiTenantedNonDomestic: 1
+            noOfOtherDistrictNetwork: 3
+            noOfNewOtherDistrictNetworks: 4
+            noOfExistingMultiTenantedNonDomestic: 1
+            noOfCommunalBuilding: 2
+            noOfNewNonDomesticBuildings: 7
           hasAddressAndPostcode: true
           hasOwnEnergyCentre: true
           hnId: hnId
+          networkBuildStatus: Existing
           createdBy: createdBy
           suppliesSixOrMoreUnits: true
           name: name
@@ -5302,6 +5304,7 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
+          noOfResponsibleDistrictNetwork: 6
           heatNetworkType: Unset
         - soa:
             createdAt: 2000-01-23T04:56:07.000+00:00
@@ -5336,7 +5339,7 @@ components:
                   uploadedAt: 2000-01-23T04:56:07.000+00:00
                   uploadedBy: uploadedBy
                 name: name
-                count: 1
+                count: 5
                 locations:
                 - locations
                 - locations
@@ -5354,7 +5357,7 @@ components:
                   uploadedAt: 2000-01-23T04:56:07.000+00:00
                   uploadedBy: uploadedBy
                 name: name
-                count: 1
+                count: 5
                 locations:
                 - locations
                 - locations
@@ -5403,9 +5406,9 @@ components:
             - soaMilestones:
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5424,9 +5427,9 @@ components:
                   status: null
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5447,9 +5450,9 @@ components:
               soaStages:
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5468,9 +5471,9 @@ components:
                 stageId: Stage1
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5487,14 +5490,14 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
-              count: 1
+              count: 5
               elementType: EC
             - soaMilestones:
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5513,9 +5516,9 @@ components:
                   status: null
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5536,9 +5539,9 @@ components:
               soaStages:
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5557,9 +5560,9 @@ components:
                 stageId: Stage1
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5576,7 +5579,7 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
-              count: 1
+              count: 5
               elementType: EC
             updatedAt: 2000-01-23T04:56:07.000+00:00
           ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
@@ -5611,8 +5614,8 @@ components:
           id: id
           phase: phase
           ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
           address:
             country: country
             town: town
@@ -5620,28 +5623,30 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
+          noOfResponsibleCommunalBuilding: 0
           heatNetworkConnections:
-            noOfExistingCommunalBuilding: 9
-            noOfExistingNonDomesticBuildings: 2
+            noOfExistingCommunalBuilding: 2
+            noOfExistingNonDomesticBuildings: 7
             noOfNewCommunalBuilding: 1
-            noOfNewHousesOrMaisonettes: 1
-            noOfNonDomesticConsumer: 2
+            noOfNewHousesOrMaisonettes: 6
+            noOfNonDomesticConsumer: 9
             isCommunalBuilding: true
             isOtherDistrictNetwork: true
-            noOfDomesticConsumer: 5
-            noOfExistingHousesOrMaisonettes: 3
+            noOfDomesticConsumer: 7
+            noOfExistingHousesOrMaisonettes: 4
             isDomesticConsumer: true
-            noOfExistingOtherDistrictNetworks: 7
+            noOfExistingOtherDistrictNetworks: 1
             isNonDomesticConsumer: true
-            noOfNewMultiTenantedNonDomestic: 6
-            noOfOtherDistrictNetwork: 7
-            noOfNewOtherDistrictNetworks: 7
-            noOfExistingMultiTenantedNonDomestic: 4
-            noOfCommunalBuilding: 5
-            noOfNewNonDomesticBuildings: 1
+            noOfNewMultiTenantedNonDomestic: 1
+            noOfOtherDistrictNetwork: 3
+            noOfNewOtherDistrictNetworks: 4
+            noOfExistingMultiTenantedNonDomestic: 1
+            noOfCommunalBuilding: 2
+            noOfNewNonDomesticBuildings: 7
           hasAddressAndPostcode: true
           hasOwnEnergyCentre: true
           hnId: hnId
+          networkBuildStatus: Existing
           createdBy: createdBy
           suppliesSixOrMoreUnits: true
           name: name
@@ -5656,6 +5661,7 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
+          noOfResponsibleDistrictNetwork: 6
           heatNetworkType: Unset
         userId: userId
       properties:
@@ -5752,9 +5758,9 @@ components:
             soaMilestones:
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5773,9 +5779,9 @@ components:
                 status: null
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5798,9 +5804,9 @@ components:
             soaMilestones:
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5819,9 +5825,9 @@ components:
                 status: null
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5844,9 +5850,9 @@ components:
           - soaMilestones:
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5865,9 +5871,9 @@ components:
                 status: null
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5888,9 +5894,9 @@ components:
             soaStages:
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5909,9 +5915,9 @@ components:
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5928,14 +5934,14 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
-            count: 1
+            count: 5
             elementType: EC
           - soaMilestones:
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5954,9 +5960,9 @@ components:
                 status: null
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5977,9 +5983,9 @@ components:
             soaStages:
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5998,9 +6004,9 @@ components:
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -6017,7 +6023,7 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
-            count: 1
+            count: 5
             elementType: EC
           updatedAt: 2000-01-23T04:56:07.000+00:00
         ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
@@ -6053,8 +6059,8 @@ components:
         id: id
         phase: phase
         ecDetails:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
+          latitude: 1.4658129805029452
+          longitude: 5.962133916683182
         address:
           country: country
           town: town
@@ -6064,24 +6070,24 @@ components:
           addressLine2: addressLine2
         noOfResponsibleCommunalBuilding: 0
         heatNetworkConnections:
-          noOfExistingCommunalBuilding: 9
-          noOfExistingNonDomesticBuildings: 2
+          noOfExistingCommunalBuilding: 2
+          noOfExistingNonDomesticBuildings: 7
           noOfNewCommunalBuilding: 1
-          noOfNewHousesOrMaisonettes: 1
-          noOfNonDomesticConsumer: 2
+          noOfNewHousesOrMaisonettes: 6
+          noOfNonDomesticConsumer: 9
           isCommunalBuilding: true
           isOtherDistrictNetwork: true
-          noOfDomesticConsumer: 5
-          noOfExistingHousesOrMaisonettes: 3
+          noOfDomesticConsumer: 7
+          noOfExistingHousesOrMaisonettes: 4
           isDomesticConsumer: true
-          noOfExistingOtherDistrictNetworks: 7
+          noOfExistingOtherDistrictNetworks: 1
           isNonDomesticConsumer: true
-          noOfNewMultiTenantedNonDomestic: 6
-          noOfOtherDistrictNetwork: 7
-          noOfNewOtherDistrictNetworks: 7
-          noOfExistingMultiTenantedNonDomestic: 4
-          noOfCommunalBuilding: 5
-          noOfNewNonDomesticBuildings: 1
+          noOfNewMultiTenantedNonDomestic: 1
+          noOfOtherDistrictNetwork: 3
+          noOfNewOtherDistrictNetworks: 4
+          noOfExistingMultiTenantedNonDomestic: 1
+          noOfCommunalBuilding: 2
+          noOfNewNonDomesticBuildings: 7
         hasAddressAndPostcode: true
         hnId: hnId
         networkBuildStatus: Existing
@@ -6183,24 +6189,24 @@ components:
       type: object
     HeatNetworkConnections:
       example:
-        noOfExistingCommunalBuilding: 9
-        noOfExistingNonDomesticBuildings: 2
+        noOfExistingCommunalBuilding: 2
+        noOfExistingNonDomesticBuildings: 7
         noOfNewCommunalBuilding: 1
-        noOfNewHousesOrMaisonettes: 1
-        noOfNonDomesticConsumer: 2
+        noOfNewHousesOrMaisonettes: 6
+        noOfNonDomesticConsumer: 9
         isCommunalBuilding: true
         isOtherDistrictNetwork: true
-        noOfDomesticConsumer: 5
-        noOfExistingHousesOrMaisonettes: 3
+        noOfDomesticConsumer: 7
+        noOfExistingHousesOrMaisonettes: 4
         isDomesticConsumer: true
-        noOfExistingOtherDistrictNetworks: 7
+        noOfExistingOtherDistrictNetworks: 1
         isNonDomesticConsumer: true
-        noOfNewMultiTenantedNonDomestic: 6
-        noOfOtherDistrictNetwork: 7
-        noOfNewOtherDistrictNetworks: 7
-        noOfExistingMultiTenantedNonDomestic: 4
-        noOfCommunalBuilding: 5
-        noOfNewNonDomesticBuildings: 1
+        noOfNewMultiTenantedNonDomestic: 1
+        noOfOtherDistrictNetwork: 3
+        noOfNewOtherDistrictNetworks: 4
+        noOfExistingMultiTenantedNonDomestic: 1
+        noOfCommunalBuilding: 2
+        noOfNewNonDomesticBuildings: 7
       nullable: true
       properties:
         isCommunalBuilding:
@@ -6475,7 +6481,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         name: name
-        count: 1
+        count: 5
         locations:
         - locations
         - locations
@@ -6602,7 +6608,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: name
-              count: 1
+              count: 5
               locations:
               - locations
               - locations
@@ -6620,7 +6626,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: name
-              count: 1
+              count: 5
               locations:
               - locations
               - locations
@@ -6669,9 +6675,9 @@ components:
           - soaMilestones:
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -6690,9 +6696,9 @@ components:
                 status: null
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -6713,9 +6719,9 @@ components:
             soaStages:
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -6734,9 +6740,9 @@ components:
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -6753,14 +6759,14 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
-            count: 1
+            count: 5
             elementType: EC
           - soaMilestones:
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -6779,9 +6785,9 @@ components:
                 status: null
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -6802,9 +6808,9 @@ components:
             soaStages:
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -6823,9 +6829,9 @@ components:
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -6842,7 +6848,7 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
-            count: 1
+            count: 5
             elementType: EC
           updatedAt: 2000-01-23T04:56:07.000+00:00
         ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
@@ -6877,8 +6883,8 @@ components:
         id: id
         phase: phase
         ecDetails:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
+          latitude: 1.4658129805029452
+          longitude: 5.962133916683182
         address:
           country: country
           town: town
@@ -6886,28 +6892,30 @@ components:
           postcode: postcode
           addressLine1: addressLine1
           addressLine2: addressLine2
+        noOfResponsibleCommunalBuilding: 0
         heatNetworkConnections:
-          noOfExistingCommunalBuilding: 9
-          noOfExistingNonDomesticBuildings: 2
+          noOfExistingCommunalBuilding: 2
+          noOfExistingNonDomesticBuildings: 7
           noOfNewCommunalBuilding: 1
-          noOfNewHousesOrMaisonettes: 1
-          noOfNonDomesticConsumer: 2
+          noOfNewHousesOrMaisonettes: 6
+          noOfNonDomesticConsumer: 9
           isCommunalBuilding: true
           isOtherDistrictNetwork: true
-          noOfDomesticConsumer: 5
-          noOfExistingHousesOrMaisonettes: 3
+          noOfDomesticConsumer: 7
+          noOfExistingHousesOrMaisonettes: 4
           isDomesticConsumer: true
-          noOfExistingOtherDistrictNetworks: 7
+          noOfExistingOtherDistrictNetworks: 1
           isNonDomesticConsumer: true
-          noOfNewMultiTenantedNonDomestic: 6
-          noOfOtherDistrictNetwork: 7
-          noOfNewOtherDistrictNetworks: 7
-          noOfExistingMultiTenantedNonDomestic: 4
-          noOfCommunalBuilding: 5
-          noOfNewNonDomesticBuildings: 1
+          noOfNewMultiTenantedNonDomestic: 1
+          noOfOtherDistrictNetwork: 3
+          noOfNewOtherDistrictNetworks: 4
+          noOfExistingMultiTenantedNonDomestic: 1
+          noOfCommunalBuilding: 2
+          noOfNewNonDomesticBuildings: 7
         hasAddressAndPostcode: true
         hasOwnEnergyCentre: true
         hnId: hnId
+        networkBuildStatus: Existing
         createdBy: createdBy
         suppliesSixOrMoreUnits: true
         name: name
@@ -6922,6 +6930,7 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        noOfResponsibleDistrictNetwork: 6
         heatNetworkType: Unset
       properties:
         id:
@@ -6935,6 +6944,16 @@ components:
           type: string
         suppliesSixOrMoreUnits:
           type: boolean
+        networkBuildStatus:
+          $ref: "#/components/schemas/NullableOfNetworkBuildStatus"
+        noOfResponsibleCommunalBuilding:
+          format: int32
+          nullable: true
+          type: integer
+        noOfResponsibleDistrictNetwork:
+          format: int32
+          nullable: true
+          type: integer
         hasAddressAndPostcode:
           type: boolean
         ecDetails:
@@ -6993,8 +7012,8 @@ components:
       example:
         hnId: hnId
         ecDetails:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
+          latitude: 1.4658129805029452
+          longitude: 5.962133916683182
         address:
           country: country
           town: town
@@ -7356,7 +7375,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: name
-          count: 1
+          count: 5
           locations:
           - locations
           - locations
@@ -7374,7 +7393,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: name
-          count: 1
+          count: 5
           locations:
           - locations
           - locations
@@ -8049,9 +8068,9 @@ components:
           soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8070,9 +8089,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8095,9 +8114,9 @@ components:
           soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8116,9 +8135,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8141,9 +8160,9 @@ components:
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8162,9 +8181,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8185,9 +8204,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8206,9 +8225,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8225,14 +8244,14 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          count: 5
           elementType: EC
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8251,9 +8270,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8274,9 +8293,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8295,9 +8314,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8314,7 +8333,7 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          count: 5
           elementType: EC
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
@@ -8357,9 +8376,9 @@ components:
           soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8378,9 +8397,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8403,9 +8422,9 @@ components:
           soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8424,9 +8443,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8449,9 +8468,9 @@ components:
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8470,9 +8489,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8493,9 +8512,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8514,9 +8533,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8533,14 +8552,14 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          count: 5
           elementType: EC
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8559,9 +8578,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8582,9 +8601,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8603,9 +8622,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8622,7 +8641,7 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          count: 5
           elementType: EC
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
@@ -8663,9 +8682,9 @@ components:
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8684,9 +8703,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8707,9 +8726,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8728,9 +8747,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8747,14 +8766,14 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          count: 5
           elementType: EC
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8773,9 +8792,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8796,9 +8815,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8817,9 +8836,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8836,7 +8855,7 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          count: 5
           elementType: EC
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
@@ -9726,9 +9745,9 @@ components:
       example:
         soaStatuses:
         - soaStatus: null
-          count: 5
+          count: 9
         - soaStatus: null
-          count: 5
+          count: 9
         soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
         assessorUpdatedBy: assessorUpdatedBy
         milestoneId: Milestone2
@@ -9815,7 +9834,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: name
-            count: 1
+            count: 5
             locations:
             - locations
             - locations
@@ -9833,7 +9852,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: name
-            count: 1
+            count: 5
             locations:
             - locations
             - locations
@@ -9913,9 +9932,9 @@ components:
       example:
         soaStatuses:
         - soaStatus: null
-          count: 4
+          count: 9
         - soaStatus: null
-          count: 4
+          count: 9
         soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
         assessorUpdatedBy: assessorUpdatedBy
         soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -9971,7 +9990,7 @@ components:
     SoaStatusWithCount:
       example:
         soaStatus: null
-        count: 4
+        count: 9
       properties:
         soaStatus:
           $ref: "#/components/schemas/SoaStatus"
@@ -9983,7 +10002,7 @@ components:
     SoaStatusWithCountExistingNetwork:
       example:
         soaStatus: null
-        count: 5
+        count: 9
       properties:
         soaStatus:
           $ref: "#/components/schemas/SoaStatus"
@@ -10348,8 +10367,8 @@ components:
         heatNetworks:
         - hnId: hnId
           ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
           address:
             country: country
             town: town
@@ -10361,8 +10380,8 @@ components:
           orgId: orgId
         - hnId: hnId
           ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
           address:
             country: country
             town: town
