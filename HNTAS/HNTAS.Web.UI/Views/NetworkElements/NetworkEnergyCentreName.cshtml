@@ -16,7 +16,7 @@
 
             <p class="govuk-hint">Enter the reference for each energy centre.</p>
 
-            @if (ViewBag.NetworkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString())
+            @if (ViewBag.NetworkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString() && Model.ExistingEcNameOptions.Count > 0)
                 {
                     <h2 class="govuk-heading-m">Existing energy centres</h2>
 

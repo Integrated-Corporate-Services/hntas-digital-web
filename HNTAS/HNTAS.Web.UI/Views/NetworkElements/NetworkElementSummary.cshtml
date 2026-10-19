@@ -13,6 +13,8 @@
             You have told us you have the following elements on your network:
         </div>
         <form asp-action="NetworkElementSummary" method="post" novalidate>
+            @if(Model.ExistingNetworkElements != null && Model.ExistingNetworkElements.Count > 0)
+                    {
         <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
                 <h2 class="govuk-summary-card__title">
@@ -24,25 +26,28 @@
                     </li>                    
                 </ul>
             </div>
-            <div class="govuk-summary-card__content">
-                <dl class="govuk-summary-list">
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Existing
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            <ul>
-                                @foreach(var existingEl in Model.ExistingNetworkElements!)
-                                {                                    
-                                    <li>@existingEl</li>
-                                }                                
-                            </ul>
-                        </dd>
-                    </div>                    
-                </dl>
-            </div> 
+            
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Existing
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    <ul>
+                                        @foreach (var existingEl in Model.ExistingNetworkElements!)
+                                        {
+                                            <li>@existingEl</li>
+                                        }
+                                    </ul>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                   
+                    
         </div>
-
+            }
         <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
                 <h2 class="govuk-summary-card__title">
@@ -72,7 +77,8 @@
                 </dl>
             </div>
         </div>
-
+        @if (Model.ExistingNetworkEcNames != null && Model.ExistingNetworkEcNames.Count > 0)
+                    {
         <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
                 <h2 class="govuk-summary-card__title">
@@ -84,7 +90,9 @@
                     </li>
                 </ul>
             </div>
-            <div class="govuk-summary-card__content">
+
+                
+                        <div class="govuk-summary-card__content">
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
@@ -101,8 +109,10 @@
                     </div>
                 </dl>
             </div>
+                    
+                    
         </div>
-
+            }
         <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
                 <h2 class="govuk-summary-card__title">

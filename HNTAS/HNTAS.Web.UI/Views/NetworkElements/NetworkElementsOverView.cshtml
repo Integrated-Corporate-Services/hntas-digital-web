@@ -65,13 +65,16 @@
                         Elements
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        <h3 class="govuk-heading-s">Existing elements</h3>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var element in Model.ExistingNetworkElements!)
+                        @if (Model.ExistingNetworkElements != null && Model.ExistingNetworkElements.Count > 0)
                             {
-                                <li>@element</li>
-                            }
-                        </ul>
+                            <h3 class="govuk-heading-s">Existing elements</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var element in Model.ExistingNetworkElements!)
+                                {
+                                    <li>@element</li>
+                                }
+                            </ul>
+                            }                            
 
                         <h3 class="govuk-heading-s">New elements</h3>
                         <ul class="govuk-list govuk-list--bullet">
@@ -88,13 +91,17 @@
                         Energy centres
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        <h3 class="govuk-heading-s">Existing EC</h3>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var element in Model.ExistingNetworkEcNames!)
+                        @if (Model.ExistingNetworkEcNames != null && Model.ExistingNetworkEcNames.Count > 0)
                             {
-                                <li>@element</li>
+                            <h3 class="govuk-heading-s">Existing EC</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var element in Model.ExistingNetworkEcNames!)
+                                {
+                                    <li>@element</li>
+                                }
+                            </ul>
                             }
-                        </ul>
+                            
 
                         <h3 class="govuk-heading-s">New EC</h3>
                         <ul class="govuk-list govuk-list--bullet">
