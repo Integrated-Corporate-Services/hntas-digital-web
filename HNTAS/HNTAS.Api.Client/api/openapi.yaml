@@ -5247,6 +5247,7 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           ofgemUserEmailId: ofgemUserEmailId
           additionalDescription: additionalDescription
+          energyCentreType: SuppliesMultipleBuildings
           assessmentPlan:
             createdAt: 2000-01-23T04:56:07.000+00:00
             updatedBy: updatedBy
@@ -5626,6 +5627,7 @@ components:
           createdAt: 2000-01-23T04:56:07.000+00:00
           ofgemUserEmailId: ofgemUserEmailId
           additionalDescription: additionalDescription
+          energyCentreType: SuppliesMultipleBuildings
           assessmentPlan:
             createdAt: 2000-01-23T04:56:07.000+00:00
             updatedBy: updatedBy
@@ -6849,6 +6851,7 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         ofgemUserEmailId: ofgemUserEmailId
         additionalDescription: additionalDescription
+        energyCentreType: SuppliesMultipleBuildings
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -6950,6 +6953,8 @@ components:
           $ref: "#/components/schemas/NullableOfHeatNetworkType"
         networkBuildStatus:
           $ref: "#/components/schemas/NullableOfNetworkBuildStatus"
+        energyCentreType:
+          $ref: "#/components/schemas/NullableOfEnergyCentreType"
         hasOwnEnergyCentre:
           type: boolean
         heatNetworkConnections:

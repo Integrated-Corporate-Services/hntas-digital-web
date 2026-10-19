@@ -1,5 +1,6 @@
 ﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Models.Enums;
+using HNTAS.Web.UI.Models.HeatNetworkRegistration;
 
 namespace HNTAS.Web.UI.Models.NetworkElements
 {
@@ -14,7 +15,9 @@ namespace HNTAS.Web.UI.Models.NetworkElements
         public string? Coordinates { get; set; }
         public string? Phase { get; set; }
         public string? NetworkType { get; set; }
-        public List<string>? Connections { get; set; }
+        public NetworkConnectionsViewModel NetworkConnections { get; set; } = new();
+        public string? EnergyCentreType { get; set; }
+        public string? NetworkBuildStatus { get; set; }
     }    
 
     public class NetworkElementGroup

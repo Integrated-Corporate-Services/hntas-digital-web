@@ -92,6 +92,7 @@ namespace HNTAS.Web.UI.Controllers
             var coordinates = response?.EcDetails;
             var latlong = coordinates != null ? $"{coordinates.Latitude},{coordinates.Longitude}" : null;
             var networkType = NetworkElementHelper.GetNetworkTypeLabel((Api.Client.Model.HeatNetworkType?)response!.HeatNetworkType);
+            var networkConnections = response?.HeatNetworkConnections;
             var model = new HNDetailsViewModel
             {
                 Name = response?.Name,
@@ -110,6 +111,21 @@ namespace HNTAS.Web.UI.Controllers
                 Coordinates = latlong,
                 NetworkType = networkType
             };
+
+            var buildType = response.NetworkBuildStatus;
+            
+            model.NetworkConnections.ExistingCommunalBuildings = networkConnections?.NoOfExistingCommunalBuilding;
+            model.NetworkConnections.ExistingHousesOrMaisonettes = networkConnections?.NoOfExistingHousesOrMaisonettes;
+            model.NetworkConnections.ExistingNonDomesticBuildings = networkConnections?.NoOfExistingNonDomesticBuildings;
+            model.NetworkConnections.ExistingMultiTenantedNonDomestic = networkConnections?.NoOfExistingMultiTenantedNonDomestic;
+            model.NetworkConnections.ExistingOtherDistrictNetworks = networkConnections?.NoOfExistingOtherDistrictNetworks;
+            model.NetworkConnections.NewCommunalBuildings = networkConnections?.NoOfNewCommunalBuilding;
+            model.NetworkConnections.NewHousesOrMaisonettes = networkConnections?.NoOfNewHousesOrMaisonettes;
+            model.NetworkConnections.NewNonDomesticBuildings = networkConnections?.NoOfNewNonDomesticBuildings;
+            model.NetworkConnections.NewMultiTenantedNonDomestic = networkConnections?.NoOfNewMultiTenantedNonDomestic;
+            model.NetworkConnections.NewOtherDistrictNetworks = networkConnections?.NoOfNewOtherDistrictNetworks;
+            model.EnergyCentreType = response?.EnergyCentreType?.ToString() ?? string.Empty;
+            model.NetworkBuildStatus = response?.NetworkBuildStatus?.ToString();
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, model.Name);

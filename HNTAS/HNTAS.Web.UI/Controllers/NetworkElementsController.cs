@@ -71,8 +71,7 @@ namespace HNTAS.Web.UI.Controllers
             var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
             ViewBag.NetworkBuildStatus = networkBuildStatus;
             foreach (var option in model.ElementOptions)
-            {
-                // for all (new and existing) elements, the value should be between 1 and 9999, and it should not except negative values and decimal values. The value should be a whole number.
+            {                
                 if (option.ExistingCount.HasValue && (option.ExistingCount.Value < 0 || option.ExistingCount.Value > 9999))
                 {
                     ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].ExistingCount", $"Number of existing {option.Label?.ToLower()} must be 0 or more");
@@ -331,8 +330,7 @@ namespace HNTAS.Web.UI.Controllers
                 backAction = "NetworkEnergyCentreName";
             }
             else
-            {                
-
+            {
                 var ecInExistingNetworkElement = existingNetworkElements?.ElementOptions.FirstOrDefault(x => x.Id == HeatNetworkElementType.EnergyCentre)?.ExistingCount;
                 if (ecInExistingNetworkElement.HasValue && ecInExistingNetworkElement.Value > 0)
                 {
@@ -349,17 +347,13 @@ namespace HNTAS.Web.UI.Controllers
                 else
                 {
                     backAction = "NetworkEnergyCentreName";
-                }
-
-                
+                }                
             }
             this.ShowBackButton(backAction, "NetworkElements");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-
             
             var model = new NetworkElementSummaryViewModel();
-
             foreach (var option in existingNetworkElements!.ElementOptions)
             {
                 if (option.ExistingCount.HasValue && option.ExistingCount.Value > 0)
@@ -391,12 +385,10 @@ namespace HNTAS.Web.UI.Controllers
                 else
                     model.NewNetworkEcNames.Add($"New {ec.EcName!}");
             }
-
             
             ViewBag.SupplyToNewBuildings = supplyToNewBuilding != null && supplyToNewBuilding!.IsExistingEcSupply == "yes";
             if (supplyToNewBuilding != null && supplyToNewBuilding!.IsExistingEcSupply == "yes")
-            {
-                
+            {                
                 var selectedEcNames = existingEcSupplyingNewBuilding?.ExistingEnergyCentresSupply.Where(x => x.IsChecked == true).Select(x => x.EcName).ToList();
                 foreach (var ecName in selectedEcNames)
                 {
@@ -417,9 +409,33 @@ namespace HNTAS.Web.UI.Controllers
 
             var newAndExistingEnergyCentreSupplyNewBuildingCheck = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
             var supplyToNewBuilding = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
-
-            //TODO: Backbutton fix
-            this.ShowBackButton("EnergyCentresSupply", "NetworkElements");
+            var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
+            var backAction = string.Empty;
+            if (networkBuildStatus == NetworkBuildStatus.New.ToString())
+            {
+                backAction = "NetworkEnergyCentreName";
+            }
+            else
+            {
+                var ecInExistingNetworkElement = newAndExistingNetworkElements?.ElementOptions.FirstOrDefault(x => x.Id == HeatNetworkElementType.EnergyCentre)?.ExistingCount;
+                if (ecInExistingNetworkElement.HasValue && ecInExistingNetworkElement.Value > 0)
+                {
+                    var ecSupplyToNewBuildCheck = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey) ?? new EnergyCentreSupplyViewModel();
+                    if (ecSupplyToNewBuildCheck.IsExistingEcSupply == "yes")
+                    {
+                        backAction = "EnergyCentresSupply";
+                    }
+                    else
+                    {
+                        backAction = "EnergyCentreSupplyCheck";
+                    }
+                }
+                else
+                {
+                    backAction = "NetworkEnergyCentreName";
+                }
+            }
+            this.ShowBackButton(backAction, "NetworkElements");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
 
@@ -427,8 +443,7 @@ namespace HNTAS.Web.UI.Controllers
 
             
             if (model.ConfirmedDeclaration != true)
-            {
-                //ModelState.AddModelError(nameof(model.ConfirmedDeclaration), "Confirm that the summary is correct");
+            {                
                 return View(model);
             }
 
@@ -541,9 +556,23 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
-
-            var networkElements = heatNetworkData?.NetworkElements;
             var model = new NetworkElementsOverViewModel();
+            // Network Connections
+            var networkConnections = heatNetworkData?.HeatNetworkConnections;
+            model.NetworkConnections.ExistingCommunalBuildings = networkConnections?.NoOfExistingCommunalBuilding;
+            model.NetworkConnections.ExistingHousesOrMaisonettes = networkConnections?.NoOfExistingHousesOrMaisonettes;
+            model.NetworkConnections.ExistingNonDomesticBuildings = networkConnections?.NoOfExistingNonDomesticBuildings;
+            model.NetworkConnections.ExistingMultiTenantedNonDomestic = networkConnections?.NoOfExistingMultiTenantedNonDomestic;
+            model.NetworkConnections.ExistingOtherDistrictNetworks = networkConnections?.NoOfExistingOtherDistrictNetworks;
+            model.NetworkConnections.NewCommunalBuildings = networkConnections?.NoOfNewCommunalBuilding;
+            model.NetworkConnections.NewHousesOrMaisonettes = networkConnections?.NoOfNewHousesOrMaisonettes;
+            model.NetworkConnections.NewNonDomesticBuildings = networkConnections?.NoOfNewNonDomesticBuildings;
+            model.NetworkConnections.NewMultiTenantedNonDomestic = networkConnections?.NoOfNewMultiTenantedNonDomestic;
+            model.NetworkConnections.NewOtherDistrictNetworks = networkConnections?.NoOfNewOtherDistrictNetworks;
+            model.EnergyCentreType = heatNetworkData?.EnergyCentreType?.ToString() ?? string.Empty;
+            model.NetworkBuildStatus = heatNetworkData?.NetworkBuildStatus?.ToString() ?? string.Empty;
+            var networkElements = heatNetworkData?.NetworkElements;
+            
             var newElementGroups = networkElements?.ElementsGroup?.Where(x => x.BuildType == NetworkBuildStatus.New).ToList();
             var existingElementGroups  = networkElements?.ElementsGroup?.Where(x => x.BuildType == NetworkBuildStatus.Existing).ToList();
 

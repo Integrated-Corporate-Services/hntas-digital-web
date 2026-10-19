@@ -1,4 +1,5 @@
-﻿@using HNTAS.Web.UI.Models.HeatNetwork
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.HeatNetwork
 @model HNDetailsViewModel
 
 @{
@@ -15,17 +16,15 @@
                 </h1>
 
                 <dl class="govuk-summary-list">
-                    @if (!string.IsNullOrEmpty(Model.Address.Fulladdress))
-                    {
+                    
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">
                                 Address
                             </dt>
                             <dd class="govuk-summary-list__value">
-                                @Model.Address.Fulladdress
+                            @(!string.IsNullOrEmpty(Model.Address.Fulladdress) ? @Model.Address.Fulladdress : "Not provided")
                             </dd>
-                        </div>
-                    }
+                        </div>                    
 
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
@@ -37,11 +36,68 @@
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
-                            Network type
+                            Connections
                         </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.NetworkType
-                        </dd>
+                    <dd class="govuk-summary-list__value">
+                        @if (Model.NetworkBuildStatus != null && Model.NetworkBuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString())
+                        {
+                            <h3 class="govuk-heading-s">Existing connections</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @if ((Model.NetworkConnections.ExistingCommunalBuildings ?? 0) > 0)
+                                {
+                                    <li>@Model.NetworkConnections.ExistingCommunalBuildings existing communal buildings</li>
+                                }
+                                @if ((Model.NetworkConnections.ExistingHousesOrMaisonettes ?? 0) > 0)
+                                {
+                                    <li>@Model.NetworkConnections.ExistingHousesOrMaisonettes existing houses or maisonettes</li>
+                                }
+                                @if ((Model.NetworkConnections.ExistingNonDomesticBuildings ?? 0) > 0)
+                                {
+                                    <li>@Model.NetworkConnections.ExistingNonDomesticBuildings existing non-domestic buildings</li>
+                                }
+                                @if ((Model.NetworkConnections.ExistingMultiTenantedNonDomestic ?? 0) > 0)
+                                {
+                                    <li>@Model.NetworkConnections.ExistingMultiTenantedNonDomestic existing multi-tenanted non-domestic buildings</li>
+                                }
+                                @if ((Model.NetworkConnections.ExistingOtherDistrictNetworks ?? 0) > 0)
+                                {
+                                    <li>@Model.NetworkConnections.ExistingOtherDistrictNetworks existing other district heat networks</li>
+                                }
+                            </ul>
+                        }
+
+                        <h3 class="govuk-heading-s">New connections</h3>
+                        <ul class="govuk-list govuk-list--bullet">
+                            @if ((Model.NetworkConnections.NewCommunalBuildings ?? 0) > 0)
+                            {
+                                <li>@Model.NetworkConnections.NewCommunalBuildings new communal buildings</li>
+                            }
+                            @if ((Model.NetworkConnections.NewHousesOrMaisonettes ?? 0) > 0)
+                            {
+                                <li>@Model.NetworkConnections.NewHousesOrMaisonettes new houses or maisonettes</li>
+                            }
+                            @if ((Model.NetworkConnections.NewNonDomesticBuildings ?? 0) > 0)
+                            {
+                                <li>@Model.NetworkConnections.NewNonDomesticBuildings new non-domestic buildings</li>
+                            }
+                            @if ((Model.NetworkConnections.NewMultiTenantedNonDomestic ?? 0) > 0)
+                            {
+                                <li>@Model.NetworkConnections.NewMultiTenantedNonDomestic new multi-tenanted non-domestic buildings</li>
+                            }
+
+                            @if ((Model.NetworkConnections.NewOtherDistrictNetworks ?? 0) > 0)
+                            {
+                                @if (Model.NetworkConnections.NewOtherDistrictNetworks == 1 && Model.EnergyCentreType == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString())
+                                {
+                                    <li>@Model.NetworkConnections.NewOtherDistrictNetworks Separate supplying district heat network</li>
+                                }
+                                else
+                                {
+                                    <li>@Model.NetworkConnections.NewOtherDistrictNetworks new other district heat networks</li>
+                                }
+                            }
+                        </ul>
+                    </dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">

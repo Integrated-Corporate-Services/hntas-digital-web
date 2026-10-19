@@ -22,6 +22,7 @@ Name | Type | Description | Notes
 **Phase** | **string** |  | [optional] 
 **HeatNetworkType** | **NullableOfHeatNetworkType** |  | [optional] 
 **NetworkBuildStatus** | **NullableOfNetworkBuildStatus** |  | [optional] 
+**EnergyCentreType** | **NullableOfEnergyCentreType** |  | [optional] 
 **HasOwnEnergyCentre** | **bool** |  | [optional] 
 **HeatNetworkConnections** | [**HeatNetworkConnections**](HeatNetworkConnections.md) |  | [optional] 
 **NetworkElements** | [**NetworkElementsResponse**](NetworkElementsResponse.md) |  | [optional] 
