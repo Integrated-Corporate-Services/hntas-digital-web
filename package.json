@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@ministryofjustice/frontend": "^9.0.0",
+    "@ministryofjustice/frontend": "^11.1.0",
     "sass": "^1.101.0"
   }
 }
