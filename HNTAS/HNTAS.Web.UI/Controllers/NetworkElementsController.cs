@@ -145,7 +145,7 @@ namespace HNTAS.Web.UI.Controllers
                         ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter the name of the new energy centre {index + 1}");
                     }
                 }
-            }
+            }            
 
             if (networkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString())
             {
@@ -164,52 +164,51 @@ namespace HNTAS.Web.UI.Controllers
                                 ModelState.AddModelError($"existingecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (energy centre {index + 1})");
                             }
                         }
-                        var newEc = model.NewEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
-                        if (newEc != null)
-                        {
-                            foreach (var ec in newEc)
-                            {
-                                var index = model.NewEcNameOptions.IndexOf(ec);
-                                if (ec.IsMainEc)
-                                {
-                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (main energy centre {index + 1})");
-                                }
-                                else
-                                {
-                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (new energy centre {index + 1})");
-                                }
-                            }
-                        }
+                        //var newEc = model.NewEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
+                        //if (newEc != null)
+                        //{
+                        //    foreach (var ec in newEc)
+                        //    {
+                        //        var index = model.NewEcNameOptions.IndexOf(ec);
+                        //        if (ec.IsMainEc)
+                        //        {
+                        //            ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (main energy centre {index + 1})");
+                        //        }
+                        //        else
+                        //        {
+                        //            ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (new energy centre {index + 1})");
+                        //        }
+                        //    }
+                        //}
                     }
                 }
             }
-            else if (networkBuildStatus == NetworkBuildStatus.New.ToString())
+
+            var allNewEcNames = model.NewEcNameOptions.Select(x => x.EcName?.Trim().ToLower()).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+            var duplicateNewEcNames = allNewEcNames.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+            if (duplicateNewEcNames.Any())
             {
-                var allEcNames = model.NewEcNameOptions.Select(x => x.EcName?.Trim().ToLower()).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-                var duplicateEcNames = allEcNames.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
-                if (duplicateEcNames.Any())
+                foreach (var duplicateEcName in duplicateNewEcNames)
                 {
-                    foreach (var duplicateEcName in duplicateEcNames)
+                    var newEc = model.NewEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
+                    if (newEc != null)
                     {
-                        var newEc = model.NewEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
-                        if (newEc != null)
+                        foreach (var ec in newEc)
                         {
-                            foreach (var ec in newEc)
+                            var index = model.NewEcNameOptions.IndexOf(ec);
+                            if (ec.IsMainEc)
                             {
-                                var index = model.NewEcNameOptions.IndexOf(ec);
-                                if (ec.IsMainEc)
-                                {
-                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (main energy centre {index + 1})");
-                                }
-                                else
-                                {
-                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (new energy centre {index + 1})");
-                                }
+                                ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (main energy centre {index + 1})");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (new energy centre {index + 1})");
                             }
                         }
                     }
                 }
             }
+
 
             if (!ModelState.IsValid)
             {
