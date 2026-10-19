@@ -38,6 +38,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="hnId">hnId</param>
         /// <param name="orgId">orgId</param>
         /// <param name="suppliesSixOrMoreUnits">suppliesSixOrMoreUnits</param>
+        /// <param name="networkBuildStatus">networkBuildStatus</param>
+        /// <param name="noOfResponsibleCommunalBuilding">noOfResponsibleCommunalBuilding</param>
+        /// <param name="noOfResponsibleDistrictNetwork">noOfResponsibleDistrictNetwork</param>
         /// <param name="hasAddressAndPostcode">hasAddressAndPostcode</param>
         /// <param name="ecDetails">ecDetails</param>
         /// <param name="address">address</param>
@@ -59,13 +62,16 @@ namespace HNTAS.Api.Client.Model
         /// <param name="ofgemImportedDate">ofgemImportedDate</param>
         /// <param name="ofgemUserEmailId">ofgemUserEmailId</param>
         [JsonConstructor]
-        public HeatNetworkResponse(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<bool?> suppliesSixOrMoreUnits = default, Option<bool?> hasAddressAndPostcode = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<NullableOfHeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCentre = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> ofgemUserEmailId = default)
+        public HeatNetworkResponse(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<bool?> suppliesSixOrMoreUnits = default, Option<NullableOfNetworkBuildStatus?> networkBuildStatus = default, Option<int?> noOfResponsibleCommunalBuilding = default, Option<int?> noOfResponsibleDistrictNetwork = default, Option<bool?> hasAddressAndPostcode = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<NullableOfHeatNetworkType?> heatNetworkType = default, Option<bool?> hasOwnEnergyCentre = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> ofgemUserEmailId = default)
         {
             IdOption = id;
             UHnIdOption = uHnId;
             HnIdOption = hnId;
             OrgIdOption = orgId;
             SuppliesSixOrMoreUnitsOption = suppliesSixOrMoreUnits;
+            NetworkBuildStatusOption = networkBuildStatus;
+            NoOfResponsibleCommunalBuildingOption = noOfResponsibleCommunalBuilding;
+            NoOfResponsibleDistrictNetworkOption = noOfResponsibleDistrictNetwork;
             HasAddressAndPostcodeOption = hasAddressAndPostcode;
             EcDetailsOption = ecDetails;
             AddressOption = address;
@@ -90,6 +96,19 @@ namespace HNTAS.Api.Client.Model
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Used to track the state of NetworkBuildStatus
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NullableOfNetworkBuildStatus?> NetworkBuildStatusOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NetworkBuildStatus
+        /// </summary>
+        [JsonPropertyName("networkBuildStatus")]
+        public NullableOfNetworkBuildStatus? NetworkBuildStatus { get { return this.NetworkBuildStatusOption; } set { this.NetworkBuildStatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of RegistrationSource
@@ -181,6 +200,32 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("suppliesSixOrMoreUnits")]
         public bool? SuppliesSixOrMoreUnits { get { return this.SuppliesSixOrMoreUnitsOption; } set { this.SuppliesSixOrMoreUnitsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfResponsibleCommunalBuilding
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfResponsibleCommunalBuildingOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfResponsibleCommunalBuilding
+        /// </summary>
+        [JsonPropertyName("noOfResponsibleCommunalBuilding")]
+        public int? NoOfResponsibleCommunalBuilding { get { return this.NoOfResponsibleCommunalBuildingOption; } set { this.NoOfResponsibleCommunalBuildingOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of NoOfResponsibleDistrictNetwork
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<int?> NoOfResponsibleDistrictNetworkOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets NoOfResponsibleDistrictNetwork
+        /// </summary>
+        [JsonPropertyName("noOfResponsibleDistrictNetwork")]
+        public int? NoOfResponsibleDistrictNetwork { get { return this.NoOfResponsibleDistrictNetworkOption; } set { this.NoOfResponsibleDistrictNetworkOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of HasAddressAndPostcode
@@ -429,6 +474,9 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  OrgId: ").Append(OrgId).Append("\n");
             sb.Append("  SuppliesSixOrMoreUnits: ").Append(SuppliesSixOrMoreUnits).Append("\n");
+            sb.Append("  NetworkBuildStatus: ").Append(NetworkBuildStatus).Append("\n");
+            sb.Append("  NoOfResponsibleCommunalBuilding: ").Append(NoOfResponsibleCommunalBuilding).Append("\n");
+            sb.Append("  NoOfResponsibleDistrictNetwork: ").Append(NoOfResponsibleDistrictNetwork).Append("\n");
             sb.Append("  HasAddressAndPostcode: ").Append(HasAddressAndPostcode).Append("\n");
             sb.Append("  EcDetails: ").Append(EcDetails).Append("\n");
             sb.Append("  Address: ").Append(Address).Append("\n");
@@ -501,6 +549,9 @@ namespace HNTAS.Api.Client.Model
             Option<string?> hnId = default;
             Option<string?> orgId = default;
             Option<bool?> suppliesSixOrMoreUnits = default;
+            Option<NullableOfNetworkBuildStatus?> networkBuildStatus = default;
+            Option<int?> noOfResponsibleCommunalBuilding = default;
+            Option<int?> noOfResponsibleDistrictNetwork = default;
             Option<bool?> hasAddressAndPostcode = default;
             Option<ECDetails?> ecDetails = default;
             Option<RegisteredAddress?> address = default;
@@ -551,6 +602,17 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "suppliesSixOrMoreUnits":
                             suppliesSixOrMoreUnits = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
+                        case "networkBuildStatus":
+                            string? networkBuildStatusRawValue = utf8JsonReader.GetString();
+                            if (networkBuildStatusRawValue != null)
+                                networkBuildStatus = new Option<NullableOfNetworkBuildStatus?>(NullableOfNetworkBuildStatusValueConverter.FromStringOrDefault(networkBuildStatusRawValue));
+                            break;
+                        case "noOfResponsibleCommunalBuilding":
+                            noOfResponsibleCommunalBuilding = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "noOfResponsibleDistrictNetwork":
+                            noOfResponsibleDistrictNetwork = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
                         case "hasAddressAndPostcode":
                             hasAddressAndPostcode = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
@@ -652,7 +714,7 @@ namespace HNTAS.Api.Client.Model
             if (hasOwnEnergyCentre.IsSet && hasOwnEnergyCentre.Value == null)
                 throw new ArgumentNullException(nameof(hasOwnEnergyCentre), "Property is not nullable for class HeatNetworkResponse.");
 
-            return new HeatNetworkResponse(id, uHnId, hnId, orgId, suppliesSixOrMoreUnits, hasAddressAndPostcode, ecDetails, address, name, additionalDescription, pathway, registrationSource, soa, createdBy, createdAt, phase, heatNetworkType, hasOwnEnergyCentre, heatNetworkConnections, networkElements, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemImportedDate, ofgemUserEmailId);
+            return new HeatNetworkResponse(id, uHnId, hnId, orgId, suppliesSixOrMoreUnits, networkBuildStatus, noOfResponsibleCommunalBuilding, noOfResponsibleDistrictNetwork, hasAddressAndPostcode, ecDetails, address, name, additionalDescription, pathway, registrationSource, soa, createdBy, createdAt, phase, heatNetworkType, hasOwnEnergyCentre, heatNetworkConnections, networkElements, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemImportedDate, ofgemUserEmailId);
         }
 
         /// <summary>
@@ -711,6 +773,26 @@ namespace HNTAS.Api.Client.Model
 
             if (heatNetworkResponse.SuppliesSixOrMoreUnitsOption.IsSet)
                 writer.WriteBoolean("suppliesSixOrMoreUnits", heatNetworkResponse.SuppliesSixOrMoreUnitsOption.Value!.Value);
+
+            if (heatNetworkResponse.NetworkBuildStatusOption.IsSet)
+                if (heatNetworkResponse.NetworkBuildStatusOption!.Value != null)
+                {
+                    var networkBuildStatusRawValue = NullableOfNetworkBuildStatusValueConverter.ToJsonValue(heatNetworkResponse.NetworkBuildStatusOption.Value!.Value);
+                    writer.WriteString("networkBuildStatus", networkBuildStatusRawValue);
+                }
+                else
+                    writer.WriteNull("networkBuildStatus");
+            if (heatNetworkResponse.NoOfResponsibleCommunalBuildingOption.IsSet)
+                if (heatNetworkResponse.NoOfResponsibleCommunalBuildingOption.Value != null)
+                    writer.WriteNumber("noOfResponsibleCommunalBuilding", heatNetworkResponse.NoOfResponsibleCommunalBuildingOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfResponsibleCommunalBuilding");
+
+            if (heatNetworkResponse.NoOfResponsibleDistrictNetworkOption.IsSet)
+                if (heatNetworkResponse.NoOfResponsibleDistrictNetworkOption.Value != null)
+                    writer.WriteNumber("noOfResponsibleDistrictNetwork", heatNetworkResponse.NoOfResponsibleDistrictNetworkOption.Value!.Value);
+                else
+                    writer.WriteNull("noOfResponsibleDistrictNetwork");
 
             if (heatNetworkResponse.HasAddressAndPostcodeOption.IsSet)
                 writer.WriteBoolean("hasAddressAndPostcode", heatNetworkResponse.HasAddressAndPostcodeOption.Value!.Value);

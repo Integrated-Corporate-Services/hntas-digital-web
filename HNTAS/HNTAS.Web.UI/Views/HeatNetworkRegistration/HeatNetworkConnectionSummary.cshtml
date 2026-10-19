@@ -22,7 +22,7 @@
                     <h2 class="govuk-summary-card__title">Connections</h2>
                     <ul class="govuk-summary-card__actions">
                         <li class="govuk-summary-card__action">
-                            <a class="govuk-link" asp-action="HeatNetworkConnections">
+                            <a class="govuk-link" asp-action="@ViewBag.ChangeAction">
                                 Change<span class="govuk-visually-hidden"> existing connections</span>
                             </a>
                         </li>
@@ -72,7 +72,7 @@
                     <h2 class="govuk-summary-card__title">Connections</h2>
                     <ul class="govuk-summary-card__actions">
                         <li class="govuk-summary-card__action">
-                            <a class="govuk-link" asp-action="HeatNetworkConnections">
+                            <a class="govuk-link" asp-action="@ViewBag.ChangeAction">
                                 Change<span class="govuk-visually-hidden"> new connections</span>
                             </a>
                         </li>
@@ -107,7 +107,7 @@
                                     {
                                         @if (Model.Connections.NewOtherDistrictNetworks == 1 && Model.EnergyCentreOption == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString())
                                         {
-                                            <li>@Model.Connections.NewOtherDistrictNetworks Separate supplying district heat network</li>
+                                            <li>@Model.Connections.NewOtherDistrictNetworks separate supplying district heat network</li>
                                         }
                                         else
                                         {

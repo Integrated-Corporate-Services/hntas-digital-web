@@ -25,6 +25,7 @@
                     new Option { OptId = $"{elementId}", OptValue = "Feasibility", OptText = "Feasibility", OptHintText = "Concept design" },
                     new Option { OptId = $"{elementId}-1", OptValue = "Design", OptText = "Design", OptHintText =  "Developed design, technical design" },
                     new Option { OptId = $"{elementId}-2", OptValue = "Construction", OptText = "Construction", OptHintText = "Construction design, installation, commissioning" },
+                    new Option { OptId = $"{elementId}-3", OptValue = "Operation", OptText = "Operation", OptHintText = "Operation, maintenance, ongoing monitoring" }
                 },
                 SeletedOption = Model.HeatNetworkPhase
             },
@@ -39,8 +40,7 @@
             <h1 class="govuk-heading-l">
                 Network phase
             </h1>
-           <p class='govuk-body'>Different parts of your network may be at different phases of development.</p>
-            <p class='govuk-body'>Choose the earliest phase that applies to your network. For example, if your energy centre is in construction but your distribution network is still being designed, then choose Design.</p>
+           <p class='govuk-body'>Parts of your network may be at different phases of development.</p>
             @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
         </div>
     </div>
