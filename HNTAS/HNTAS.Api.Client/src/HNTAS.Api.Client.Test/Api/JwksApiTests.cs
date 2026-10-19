@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using HNTAS.Api.Client.Api;
-using HNTAS.Api.Client.Model;
 
 
 /* *********************************************************************************
@@ -39,28 +38,6 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
-<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/ArmsReportApiTests.cs
-    ///  Class for testing ArmsReportApi
-    /// </summary>
-    public sealed class ArmsReportApiTests : ApiTestsBase
-    {
-        private readonly IArmsReportApi _instance;
-
-        public ArmsReportApiTests(): base(Array.Empty<string>())
-        {
-            _instance = _host.Services.GetRequiredService<IArmsReportApi>();
-        }
-
-        /// <summary>
-        /// Test ApiArmsReportPowerbiDataGet
-        /// </summary>
-        [Fact (Skip = "not implemented")]
-        public async Task ApiArmsReportPowerbiDataGetAsyncTest()
-        {
-            var response = await _instance.ApiArmsReportPowerbiDataGetAsync();
-            var model = response.Ok();
-            Assert.IsType<List<ArmsPowerBiReportResponse>>(model);
-========
     ///  Class for testing JwksApi
     /// </summary>
     public sealed class JwksApiTests : ApiTestsBase
@@ -79,7 +56,6 @@ namespace HNTAS.Api.Client.Test.Api
         public async Task WellKnownJwksJsonGetAsyncTest()
         {
             await _instance.WellKnownJwksJsonGetAsync();
->>>>>>>> c74dd1ea308cb46838362b642d2f5f0b04d0188f:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/JwksApiTests.cs
         }
     }
 }

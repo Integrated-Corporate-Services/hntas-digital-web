@@ -33,13 +33,6 @@
                     },
                     new ReviewItem
                     {
-                        Key = "Has own energy centre",
-                        Value = Model.HasOwnEnergyCenter,
-                        ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null :  Url.Action(Model.HeatNetworkType == "Communal" ? "HeatNetworkEcCommunal" : "HeatNetworkEcDistrict", controllerName),
-                        ChangeLinkText = "Change"
-                    },
-                    new ReviewItem
-                    {
                         Key = "Coordinates",
                         Value = Model.ECDetailsModel.LatitudeLongitude,
                         ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("ECCoordinates", controllerName),
@@ -78,15 +71,39 @@
             }
         }
     };
-    @if (Model.HeatNetworkType == "District" && Model.HeatNetworkConnectionsModel.ConnectionsToDisplay.Any())
+
+    @if (Model.NetworkConnectionsModel != null)
     {
-        viewModel.Sections[0].Items.Insert(3, new ReviewItem
-                {
-                    Key = "Connections",
-                    Value = string.Join(", ", Model.HeatNetworkConnectionsModel.ConnectionsToDisplay),
-                    ChangeLink = Url.Action("HeatNetworkConnections", controllerName),
-                    ChangeLinkText = "Change"
-                });
+        var connectionLines = new List<string>();
+
+        var existingItems = Model.NetworkConnectionsModel.GetExistingConnectionsToDisplay();
+        if (existingItems.Any())
+        {
+            connectionLines.Add("<strong>Existing connections</strong>");
+            connectionLines.AddRange(existingItems);
+        }
+
+        var newItems = Model.NetworkConnectionsModel.GetNewConnectionsToDisplay();
+        if (newItems.Any())
+        {
+            if (connectionLines.Any())
+            {
+                connectionLines.Add("<br />"); // Spacer if both exist
+            }
+            connectionLines.Add("<strong>New connections</strong>");
+            connectionLines.AddRange(newItems);
+        }
+
+        if (connectionLines.Any())
+        {
+            viewModel.Sections[0].Items.Insert(2, new ReviewItem
+            {
+                Key = "Connections",
+                Value = string.Join("<br />", connectionLines),
+                ChangeLink = Url.Action("HeatNetworkConnections", controllerName),
+                ChangeLinkText = "Change"
+            });
+        }
     }
     
     var hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
