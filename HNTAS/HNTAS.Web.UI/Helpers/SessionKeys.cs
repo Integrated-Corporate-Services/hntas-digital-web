@@ -128,5 +128,8 @@
         public const string CommunalBuildingResponsibilityModelKey = "CommunalBuildingResponsibilityKey";
 
         public const string DistrictNetworksResponsibilityModelKey = "DistrictNetworksResponsibilityKey";
+
+        public const string IsCommualNetworkKey = "IsCommualNetworkKey";
+        public const string HasOwnEnergyCentreKey = "HasOwnedEnergyCentreKey";
     }
 }
