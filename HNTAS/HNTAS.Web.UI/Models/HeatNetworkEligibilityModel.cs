@@ -19,7 +19,7 @@ namespace HNTAS.Web.UI.Models
     }  
     public class  HowManyDwellingsIncludedModel
     {
-        [Required(ErrorMessage = "Select whether any of your new heat networks have or help supply 6 or more units")]
+        [Required(ErrorMessage = "Select whether the network has (or helps supply networks with) 6 or more dwellings or units")]
         public string HowManyDwellingsIncluded { get; set; }
     }
 }

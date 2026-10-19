@@ -1,7 +1,4 @@
-﻿using DocumentFormat.OpenXml.EMMA;
-using DocumentFormat.OpenXml.Spreadsheet;
-using HNTAS.Api.Client.Api;
-using HNTAS.Api.Client.Model;
+﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.CompaniesHouse;
@@ -11,7 +8,6 @@ using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Diagnostics;
 
 namespace HNTAS.Web.UI.Controllers
 {
@@ -66,8 +62,6 @@ namespace HNTAS.Web.UI.Controllers
 
             UserDetailsResponse user;
 
-            var sw = Stopwatch.StartNew();
-
             try
             {
                 var userId = _sessionHelper.GetFromSession<string>(
@@ -75,30 +69,17 @@ namespace HNTAS.Web.UI.Controllers
                     SessionKeys.UserModel_Id_SessionKey);
 
                 user = await RetrieveUserDetails(userId);
-
-                _logger.LogInformation("RetrieveUserDetails took {Ms} ms", sw.ElapsedMilliseconds);
-
-               
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
                 return View(new DashboardModel());
             }
-
-            var isAssessorOrCertifier =
-                user.Roles.Contains(UserRole.Assessor) ||
-                user.Roles.Contains(UserRole.Certifier);
-
-            _sessionHelper.SaveToSession(
-                HttpContext,
-                SessionKeys.IsAssessorOrCertifier,
-                isAssessorOrCertifier.ToString().ToLowerInvariant());
-
+            
             _sessionHelper.SaveToSession<string>(
                 HttpContext,
                 SessionKeys.WhoDoYouWantToAddSessionKey,
-                user.Roles.Contains(UserRole.DesignatedDutyHolder)
+                user.InvitedRoles.Contains(ContributorRole.DesignatedDutyHolder)
                     ? "Contributors"
                     : null);
 
@@ -115,21 +96,13 @@ namespace HNTAS.Web.UI.Controllers
                     user.Organisation.OrgId);
             }
 
-            sw.Restart();
-
             var ofgemNetworks = await _heatNetworkService.GetHeatNetworkByUserIdPaginatedAsync(
                 user.Id!,
                 RegistrationSource2.OFGEM, 1, 1);
 
-            _logger.LogInformation("GetHeatNetworkByUserIdPaginatedAsync OFGEM took {Ms} ms", sw.ElapsedMilliseconds);
-
-            sw.Restart();
-
             var hntasNetworks = await _heatNetworkService.GetHeatNetworkByUserIdPaginatedAsync(
                 user.Id!,
                 RegistrationSource2.HNTAS, 1, 1);
-
-            _logger.LogInformation("GetHeatNetworkByUserIdPaginatedAsync HNTAS took {Ms} ms", sw.ElapsedMilliseconds);
 
             var dashboardModel = new DashboardModel
             {
@@ -138,7 +111,8 @@ namespace HNTAS.Web.UI.Controllers
                 IsResponsiblePerson = user.Roles.Contains(UserRole.ResponsibleParty),
                 HasHntasNetworks = hntasNetworks.TotalCount > 0,
                 HasOfgemNetworks = ofgemNetworks.TotalCount > 0,
-                HasMultipleContributingOrganisations = user.ContributingOrganisations?.Count > 1
+                HasMultipleContributingOrganisations = user.ContributingOrganisations?.Count > 1,
+                InvitedRoles = user.InvitedRoles
             };
 
             ViewBag.UserId = user.Id;

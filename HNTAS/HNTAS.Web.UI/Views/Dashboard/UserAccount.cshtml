@@ -7,11 +7,9 @@
     ViewData["Title"] = "User Account";
     var disabled = Model.HasHntasNetworks ? "" : "dashboard-card--disabled";
     var userIsRP = Model.UserRoles.Contains(UserRole.ResponsibleParty);
-    var userIsActingRP = Model.UserRoles.Contains(UserRole.NetworkManager);
-    var userIsAssessor = Model.UserRoles.Contains(HNTAS.Api.Client.Model.UserRole.Assessor);
-    var userIsCertifier = Model.UserRoles.Contains(HNTAS.Api.Client.Model.UserRole.Certifier);
-    var userIsContributor = Model.UserRoles.Contains(HNTAS.Api.Client.Model.UserRole.Contributor);
-    var userIsDesignatedDutyHolder = Model.UserRoles.Contains(HNTAS.Api.Client.Model.UserRole.DesignatedDutyHolder);
+    var userIsActingRP = Model.InvitedRoles.Contains(ContributorRole.NetworkManager);
+    var userIsContributor = Model.InvitedRoles.Contains(ContributorRole.Contributor);
+    var userIsDesignatedDutyHolder = Model.InvitedRoles.Contains(ContributorRole.DesignatedDutyHolder);
     var newNetworksLabel = @ViewBag.IsExistingNetworksFeatureEnabled ? "Your heat networks (New build)" : "Your heat networks";
 }
 
@@ -21,15 +19,16 @@
     <h1 class="govuk-heading-l">@Model.OrganisationName</h1>
     @if (userIsRP)
     {
-        <div class="govuk-button-group govuk-!-margin-top-5">
-            <span class="govuk-body">
-                <a href="@Url.Action("Index", "HeatNetwork")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
-                    Add a heat network
-                </a>
-                or
-                <a class="govuk-link" href="@Url.Action("ManageLeads", "NetworkLeads")">Authorise someone to manage heat networks</a>
-            </span>
+
+        <div class="govuk-button-group" style="flex-basis: 100%;">
+            <a href="@Url.Action("Index", "HeatNetwork")" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                Add a heat network
+            </a>
+            <a class="govuk-link" href="@Url.Action("ManageLeads", "NetworkLeads")">
+                Authorise someone else to add heat networks
+            </a>
         </div>
+
     }
 
     <div class="dashboard-grid">

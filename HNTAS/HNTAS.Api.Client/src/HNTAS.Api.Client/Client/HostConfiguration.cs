@@ -150,10 +150,14 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NotificationHistoryRequestJsonConverter());
             _jsonOptions.Converters.Add(new NotificationHistoryResponseJsonConverter());
             _jsonOptions.Converters.Add(new NotificationStatsJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfEnergyCentreTypeJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfEnergyCentreTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfHeatNetworkTypeJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfHeatNetworkTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfMilestoneJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfMilestoneNullableJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfNetworkBuildStatusJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfNetworkBuildStatusNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfPreferredContactTypeJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfPreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfSoaStageJsonConverter());
