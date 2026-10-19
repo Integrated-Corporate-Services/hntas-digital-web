@@ -4282,48 +4282,10 @@ components:
       example:
         elementId: elementId
         soaMilestones:
-        - soaStatuses:
-          - soaStatus: null
-            count: 9
-          - soaStatus: null
-            count: 9
-          soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-          assessorUpdatedBy: assessorUpdatedBy
-          milestoneId: Milestone2
-          soaStatusUpdatedBy: soaStatusUpdatedBy
-          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-          assessors:
-          - firstName: firstName
-            lastName: lastName
-            assessment: assessment
-            email: email
-            status: null
-          - firstName: firstName
-            lastName: lastName
-            assessment: assessment
-            email: email
-            status: null
-        - soaStatuses:
-          - soaStatus: null
-            count: 9
-          - soaStatus: null
-            count: 9
-          soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-          assessorUpdatedBy: assessorUpdatedBy
-          milestoneId: Milestone2
-          soaStatusUpdatedBy: soaStatusUpdatedBy
-          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-          assessors:
-          - firstName: firstName
-            lastName: lastName
-            assessment: assessment
-            email: email
-            status: null
-          - firstName: firstName
-            lastName: lastName
-            assessment: assessment
-            email: email
-            status: null
+        - ""
+        - ""
+        buildType: null
+        isSupplyNewBuildings: true
         networkElementInstanceName: networkElementInstanceName
         elementType: null
         isMainEnergyCentre: true
@@ -4442,6 +4404,7 @@ components:
             email: email
             status: Active
           stageId: Stage1
+        buildType: Existing
         count: 5
         elementType: EC
       properties:
@@ -5169,6 +5132,7 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
+              buildType: Existing
               count: 5
               elementType: EC
             - soaMilestones:
@@ -5258,6 +5222,7 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
+              buildType: Existing
               count: 5
               elementType: EC
             isExistingEnergyCentreSupplyNewBuildings: true
@@ -5329,7 +5294,6 @@ components:
           hnId: hnId
           networkBuildStatus: Existing
           createdBy: createdBy
-          networkBuildStatus: Existing
           suppliesSixOrMoreUnits: true
           name: name
           registrationSource: HNTAS
@@ -5550,6 +5514,7 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
+              buildType: Existing
               count: 5
               elementType: EC
             - soaMilestones:
@@ -5639,6 +5604,7 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
+              buildType: Existing
               count: 5
               elementType: EC
             isExistingEnergyCentreSupplyNewBuildings: true
@@ -5710,7 +5676,6 @@ components:
           hnId: hnId
           networkBuildStatus: Existing
           createdBy: createdBy
-          networkBuildStatus: Existing
           suppliesSixOrMoreUnits: true
           name: name
           registrationSource: HNTAS
@@ -5819,96 +5784,20 @@ components:
           elements:
           - elementId: elementId
             soaMilestones:
-            - soaStatuses:
-              - soaStatus: null
-                count: 9
-              - soaStatus: null
-                count: 9
-              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessorUpdatedBy: assessorUpdatedBy
-              milestoneId: Milestone2
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessors:
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-            - soaStatuses:
-              - soaStatus: null
-                count: 9
-              - soaStatus: null
-                count: 9
-              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessorUpdatedBy: assessorUpdatedBy
-              milestoneId: Milestone2
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessors:
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
+            - ""
+            - ""
+            buildType: null
+            isSupplyNewBuildings: true
             networkElementInstanceName: networkElementInstanceName
             elementType: null
             isMainEnergyCentre: true
             elementName: elementName
           - elementId: elementId
             soaMilestones:
-            - soaStatuses:
-              - soaStatus: null
-                count: 9
-              - soaStatus: null
-                count: 9
-              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessorUpdatedBy: assessorUpdatedBy
-              milestoneId: Milestone2
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessors:
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-            - soaStatuses:
-              - soaStatus: null
-                count: 9
-              - soaStatus: null
-                count: 9
-              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessorUpdatedBy: assessorUpdatedBy
-              milestoneId: Milestone2
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessors:
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
+            - ""
+            - ""
+            buildType: null
+            isSupplyNewBuildings: true
             networkElementInstanceName: networkElementInstanceName
             elementType: null
             isMainEnergyCentre: true
@@ -6001,6 +5890,7 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
+            buildType: Existing
             count: 5
             elementType: EC
           - soaMilestones:
@@ -6090,6 +5980,7 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
+            buildType: Existing
             count: 5
             elementType: EC
           isExistingEnergyCentreSupplyNewBuildings: true
@@ -6849,6 +6740,7 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
+            buildType: Existing
             count: 5
             elementType: EC
           - soaMilestones:
@@ -6938,6 +6830,7 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
+            buildType: Existing
             count: 5
             elementType: EC
           isExistingEnergyCentreSupplyNewBuildings: true
@@ -7009,7 +6902,6 @@ components:
         hnId: hnId
         networkBuildStatus: Existing
         createdBy: createdBy
-        networkBuildStatus: Existing
         suppliesSixOrMoreUnits: true
         name: name
         registrationSource: HNTAS
@@ -7075,8 +6967,6 @@ components:
           type: string
         heatNetworkType:
           $ref: "#/components/schemas/NullableOfHeatNetworkType"
-        networkBuildStatus:
-          $ref: "#/components/schemas/NullableOfNetworkBuildStatus"
         energyCentreType:
           $ref: "#/components/schemas/NullableOfEnergyCentreType"
         hasOwnEnergyCentre:
@@ -8169,96 +8059,20 @@ components:
         elements:
         - elementId: elementId
           soaMilestones:
-          - soaStatuses:
-            - soaStatus: null
-              count: 9
-            - soaStatus: null
-              count: 9
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          - soaStatuses:
-            - soaStatus: null
-              count: 9
-            - soaStatus: null
-              count: 9
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
+          - ""
+          - ""
+          buildType: null
+          isSupplyNewBuildings: true
           networkElementInstanceName: networkElementInstanceName
           elementType: null
           isMainEnergyCentre: true
           elementName: elementName
         - elementId: elementId
           soaMilestones:
-          - soaStatuses:
-            - soaStatus: null
-              count: 9
-            - soaStatus: null
-              count: 9
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          - soaStatuses:
-            - soaStatus: null
-              count: 9
-            - soaStatus: null
-              count: 9
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
+          - ""
+          - ""
+          buildType: null
+          isSupplyNewBuildings: true
           networkElementInstanceName: networkElementInstanceName
           elementType: null
           isMainEnergyCentre: true
@@ -8351,6 +8165,7 @@ components:
               email: email
               status: Active
             stageId: Stage1
+          buildType: Existing
           count: 5
           elementType: EC
         - soaMilestones:
@@ -8440,6 +8255,7 @@ components:
               email: email
               status: Active
             stageId: Stage1
+          buildType: Existing
           count: 5
           elementType: EC
         isExistingEnergyCentreSupplyNewBuildings: true
@@ -8485,96 +8301,20 @@ components:
         elements:
         - elementId: elementId
           soaMilestones:
-          - soaStatuses:
-            - soaStatus: null
-              count: 9
-            - soaStatus: null
-              count: 9
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          - soaStatuses:
-            - soaStatus: null
-              count: 9
-            - soaStatus: null
-              count: 9
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
+          - ""
+          - ""
+          buildType: null
+          isSupplyNewBuildings: true
           networkElementInstanceName: networkElementInstanceName
           elementType: null
           isMainEnergyCentre: true
           elementName: elementName
         - elementId: elementId
           soaMilestones:
-          - soaStatuses:
-            - soaStatus: null
-              count: 9
-            - soaStatus: null
-              count: 9
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          - soaStatuses:
-            - soaStatus: null
-              count: 9
-            - soaStatus: null
-              count: 9
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
+          - ""
+          - ""
+          buildType: null
+          isSupplyNewBuildings: true
           networkElementInstanceName: networkElementInstanceName
           elementType: null
           isMainEnergyCentre: true
@@ -8667,6 +8407,7 @@ components:
               email: email
               status: Active
             stageId: Stage1
+          buildType: Existing
           count: 5
           elementType: EC
         - soaMilestones:
@@ -8756,6 +8497,7 @@ components:
               email: email
               status: Active
             stageId: Stage1
+          buildType: Existing
           count: 5
           elementType: EC
         isExistingEnergyCentreSupplyNewBuildings: true
@@ -8906,6 +8648,7 @@ components:
               email: email
               status: Active
             stageId: Stage1
+          buildType: Existing
           count: 5
           elementType: EC
         - soaMilestones:
@@ -8995,6 +8738,7 @@ components:
               email: email
               status: Active
             stageId: Stage1
+          buildType: Existing
           count: 5
           elementType: EC
         isExistingEnergyCentreSupplyNewBuildings: true
