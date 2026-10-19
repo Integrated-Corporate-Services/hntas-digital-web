@@ -43,8 +43,7 @@ namespace HNTAS.Web.UI.Models
 
     public class ECDetailsModel
     {
-        [Required(ErrorMessage = "Enter the latitude and longitude")]
-        public string LatitudeLongitude { get; set; }
+        public string? LatitudeLongitude { get; set; }
         public AddressByLatLongModel ECAddressByLatLong { get; set; } = new AddressByLatLongModel();
     }
 

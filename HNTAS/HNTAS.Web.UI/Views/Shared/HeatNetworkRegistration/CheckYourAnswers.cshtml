@@ -28,7 +28,7 @@
                     {
                         Key = "Network type",
                         Value = Model.HeatNetworkType,
-                        ChangeLink = Url.Action("HeatNetworkType", controllerName),
+                        ChangeLink = Url.Action("HeatNetworkEcNewNetwork", controllerName),
                         ChangeLinkText = "Change"
                     },
                     new ReviewItem
@@ -54,7 +54,7 @@
                     },
                     new ReviewItem
                     {
-                        Key = "Main energy centre address and postcode",
+                        Key = ViewBag.AddressPostCodeLable,
                         Value = Model.HeatNetworkAddressModel?.Fulladdress ?? "Not provided",
                         ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("DoesHNHaveAPostcode", controllerName),
                         ChangeLinkText = "Change"
