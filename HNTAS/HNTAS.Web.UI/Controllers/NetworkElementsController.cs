@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize(Policy = SecurityConstants.Policies.CanAddHeatNetworkDetail)]
+    [Authorize(Policy = SecurityConstants.Policies.CanAddNetworkElements)]
     public class NetworkElementsController : Controller
     {
         private readonly ILogger<NetworkElementsController> _logger;
