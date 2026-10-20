@@ -1,14 +1,14 @@
-﻿﻿@using HNTAS.Web.UI.Models.NetworkElements
+﻿﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.NetworkElements
 @model NetworkElementsOverViewModel
 
 @{
-    ViewData["Title"] = "Network elements overview";
+    ViewData["Title"] = "Network overview";
 }
-
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <form asp-action="NetworkElementsOverViewAsync" method="post">
+        <form asp-action="NetworkDetails" asp-controller="HeatNetwork" method="get">
                 @Html.AntiForgeryToken()
                 <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
                 <h1 class="govuk-heading-l">
@@ -18,51 +18,176 @@
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
-                            Address
+                        Main energy centre address and postcode
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            @Model.HeatNetworkAddress
+                            @Model.Address
                         </dd>
                     </div>
 
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
-                            Coordinates
+                        Energy centre grid coordinates
                         </dt>
                         <dd class="govuk-summary-list__value">
                             @Model.Coordinates
                         </dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Network type
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.NetworkType
-                        </dd>
-                    </div>
+                    </div> 
+                    
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Connections
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @if (Model.NetworkBuildStatus != null && Model.NetworkBuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString())
+                        {
+                            <h3 class="govuk-heading-s">Existing connections</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @if ((Model.NetworkConnections.ExistingCommunalBuildings ?? 0) > 0)
+                                {
+                                    <li>@Model.NetworkConnections.ExistingCommunalBuildings existing communal buildings</li>
+                                }
+                                @if ((Model.NetworkConnections.ExistingHousesOrMaisonettes ?? 0) > 0)
+                                {
+                                    <li>@Model.NetworkConnections.ExistingHousesOrMaisonettes existing houses or maisonettes</li>
+                                }
+                                @if ((Model.NetworkConnections.ExistingNonDomesticBuildings ?? 0) > 0)
+                                {
+                                    <li>@Model.NetworkConnections.ExistingNonDomesticBuildings existing non-domestic buildings</li>
+                                }
+                                @if ((Model.NetworkConnections.ExistingMultiTenantedNonDomestic ?? 0) > 0)
+                                {
+                                    <li>@Model.NetworkConnections.ExistingMultiTenantedNonDomestic existing multi-tenanted non-domestic buildings</li>
+                                }
+                                @if ((Model.NetworkConnections.ExistingOtherDistrictNetworks ?? 0) > 0)
+                                {
+                                    <li>@Model.NetworkConnections.ExistingOtherDistrictNetworks existing other district heat networks</li>
+                                }
+                            </ul>
+                        }
 
+                        <h3 class="govuk-heading-s">New connections</h3>
+                        <ul class="govuk-list govuk-list--bullet">
+                            @if ((Model.NetworkConnections.NewCommunalBuildings ?? 0) > 0)
+                            {
+                                <li>@Model.NetworkConnections.NewCommunalBuildings new communal buildings</li>
+                            }
+                            @if ((Model.NetworkConnections.NewHousesOrMaisonettes ?? 0) > 0)
+                            {
+                                <li>@Model.NetworkConnections.NewHousesOrMaisonettes new houses or maisonettes</li>
+                            }
+                            @if ((Model.NetworkConnections.NewNonDomesticBuildings ?? 0) > 0)
+                            {
+                                <li>@Model.NetworkConnections.NewNonDomesticBuildings new non-domestic buildings</li>
+                            }
+                            @if ((Model.NetworkConnections.NewMultiTenantedNonDomestic ?? 0) > 0)
+                            {
+                                <li>@Model.NetworkConnections.NewMultiTenantedNonDomestic new multi-tenanted non-domestic buildings</li>
+                            }
+
+                            @if ((Model.NetworkConnections.NewOtherDistrictNetworks ?? 0) > 0)
+                            {
+                                @if (Model.NetworkConnections.NewOtherDistrictNetworks == 1 && Model.EnergyCentreType == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString())
+                                {
+                                    <li>@Model.NetworkConnections.NewOtherDistrictNetworks Separate supplying district heat network</li>
+                                }
+                                else
+                                {
+                                    <li>@Model.NetworkConnections.NewOtherDistrictNetworks new other district heat networks</li>
+                                }
+                            }
+                        </ul>
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Network type
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.NetworkType
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Phase
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.Phase
+                    </dd>
+                </div>                    
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Elements
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @if (Model.ExistingNetworkElements != null && Model.ExistingNetworkElements.Count > 0)
+                            {
+                            <h3 class="govuk-heading-s">Existing elements</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var element in Model.ExistingNetworkElements!)
+                                {
+                                    <li>@element</li>
+                                }
+                            </ul>
+                            }                            
+
+                        <h3 class="govuk-heading-s">New elements</h3>
+                        <ul class="govuk-list govuk-list--bullet">
+                            @foreach (var element in Model.NewNetworkElements!)
+                            {
+                                <li>@element</li>
+                            }
+                        </ul>
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Energy centres
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @if (Model.ExistingNetworkEcNames != null && Model.ExistingNetworkEcNames.Count > 0)
+                            {
+                            <h3 class="govuk-heading-s">Existing EC</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var element in Model.ExistingNetworkEcNames!)
+                                {
+                                    <li>@element</li>
+                                }
+                            </ul>
+                            }
+                            
+
+                        <h3 class="govuk-heading-s">New EC</h3>
+                        <ul class="govuk-list govuk-list--bullet">
+                            @foreach (var element in Model.NewNetworkEcNames!)
+                            {
+                                <li>@element</li>
+                            }
+                        </ul>
+                    </dd>
+                </div>
+
+                @if (ViewBag.SupplyToNewBuildings == true)
+                    {
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
-                            Elements
+                            Existing energy centre supplying new buildings
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            <ul class="govuk-list">
-                                @foreach (var element in Model.Elements)
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var element in Model.ExistingEcSupplyingNewBuilding!)
                                 {
                                     <li>@element</li>
                                 }
                             </ul>
                         </dd>
                     </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Phase
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.Phase
-                        </dd>
-                    </div>
+                    }                    
+                    
                 </dl>
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     Continue

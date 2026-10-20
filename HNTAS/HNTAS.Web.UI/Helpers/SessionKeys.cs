@@ -80,7 +80,7 @@
         public const string EnergyCentreDetailsModelSessionKey = "EnergyCentreDetailsModelSessionKey";
         public const string SelectedElementsSessionKey = "SelectedElements";
 
-        public const string NetworkElementsViewModelSessionKey = "NetworkElementsViewModelSessionKey";
+        //public const string NetworkElementsViewModelSessionKey = "NetworkElementsViewModelSessionKey";
         public const string NetworkDetailsUploadSessionKey = "NetworkDetailsUploadSessionKey";
         public const string ElementSoaViewModelSessionKey = "ElementSoaViewModelSessionKey";
         public const string ElementSoaUploadViewModelSessionKey = "ElementSoaUploadViewModelSessionKey";
@@ -116,6 +116,11 @@
 
         public const string HntasJwt = "HNTASJWTKey";
 
+        public const string NetworkElementsViewModelSessionKey = "NetworkElementsViewModelSessionKey";
+        public const string NetworkEcNameViewModelSessionKey = "NetworkEcNameViewModelSessionKey";
+        public const string EcSupplyCheckViewModelSessionKey = "EcSupplyCheckViewModelSessionKey";
+        public const string EcSupplyViewModelSessionKey = "EcSupplyViewModelSessionKey";
+        public const string NetworkBuildStatusSessionKey = "NetworkBuildStatusSessionKey";
         public const string NetworkSupplyTypeModelKey = "NetworkSupplyTypeModelKey";
 
         public const string NetworkConnectionsModelKey = "NetworkConnectionsKey";

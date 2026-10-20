@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **SoaStages** | [**List&lt;SoaStages&gt;**](SoaStages.md) |  | [optional] 
 **SoaMilestones** | [**List&lt;SoaMilestone&gt;**](SoaMilestone.md) |  | [optional] 
 **ElementType** | **ElementTypeInShort** |  | [optional] 
+**BuildType** | **NetworkBuildStatus** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 
