@@ -992,7 +992,13 @@ namespace HNTAS.Web.UI.Controllers
 
             HeatNetworkConnections heatNetworkConnections = new HeatNetworkConnections();
 
-            if(networkConnectionsViewModel != null && networkStatusModel?.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString())
+            if (networkConnectionsViewModel == null)
+            {
+                TempData["ErrorMessage"] = "Your session has expired. Please start again.";
+                return RedirectToAction("HeatNetworkConnections");
+            }
+
+            if (networkConnectionsViewModel != null && networkStatusModel?.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString())
             {
                 heatNetworkConnections.NoOfExistingCommunalBuilding = networkConnectionsViewModel.ExistingCommunalBuildings;
                 heatNetworkConnections.NoOfExistingHousesOrMaisonettes = networkConnectionsViewModel.ExistingHousesOrMaisonettes;
