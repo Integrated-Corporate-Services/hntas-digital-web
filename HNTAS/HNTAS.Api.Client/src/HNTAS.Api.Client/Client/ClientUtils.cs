@@ -125,6 +125,8 @@ namespace HNTAS.Api.Client.Client
                 return InvitationStatusValueConverter.ToJsonValue(invitationStatus);
             if (obj is Milestone milestone)
                 return MilestoneValueConverter.ToJsonValue(milestone);
+            if (obj is NetworkBuildStatus networkBuildStatus)
+                return NetworkBuildStatusValueConverter.ToJsonValue(networkBuildStatus);
             if (obj is NetworkDetailsStatus networkDetailsStatus)
                 return NetworkDetailsStatusValueConverter.ToJsonValue(networkDetailsStatus);
             if (obj is NullableOfEnergyCentreType nullableOfEnergyCentreType)

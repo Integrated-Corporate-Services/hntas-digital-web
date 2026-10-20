@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **ElementSoaStatus** | **NetworkDetailsStatus** |  | [optional] 
 **Elements** | [**List&lt;Element&gt;**](Element.md) |  | [optional] 
 **ElementsGroup** | [**List&lt;ElementGroup&gt;**](ElementGroup.md) |  | [optional] 
+**IsExistingEnergyCentreSupplyNewBuildings** | **bool** |  | [optional] 
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **CreatedBy** | **string** |  | [optional] 
 **UpdatedAt** | **DateTimeOffset** |  | [optional] 
