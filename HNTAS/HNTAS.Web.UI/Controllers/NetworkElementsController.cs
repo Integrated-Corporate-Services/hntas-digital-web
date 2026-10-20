@@ -9,11 +9,10 @@ using HNTAS.Web.UI.Services;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize(Policy = SecurityConstants.Policies.CanAddHeatNetworkDetail)]
+    [Authorize(Policy = SecurityConstants.Policies.CanAddNetworkElements)]
     public class NetworkElementsController : Controller
     {
         private readonly ILogger<NetworkElementsController> _logger;
@@ -25,12 +24,15 @@ namespace HNTAS.Web.UI.Controllers
             _logger = logger;
             _heatNetworkService = heatNetworkService;            
             _sessionHelper = sessionHelper;                    
-        }
+        }        
 
         [HttpGet]
-        public async Task<IActionResult> SelectNetworkElementsAsync()
+        public async Task<IActionResult> NetworkElementsListAsync()
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
 
@@ -40,102 +42,534 @@ namespace HNTAS.Web.UI.Controllers
 
             if (model != null)
             {
+                ViewBag.NetworkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey); ;
                 return View(model);
             }
 
             model = new NetworkElementViewModel();
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkType = heatNetworkData?.HeatNetworkType;
-            bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
+            var networkBuildStatus = heatNetworkData?.NetworkBuildStatus;
 
-            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc);
-            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc);
-            var selectedNetworkElements = heatNetworkData?.NetworkElements;
-
-            if (selectedNetworkElements != null)
-            {
-                selectedNetworkElements.ElementsGroup?.DistinctBy(a => a.ElementType).ToList().ForEach(e =>
-                {
-                    var displayType = NetworkElementHelper.GetNetworkElementDisplayTypeById(e.ElementType!);
-                    model.SelectedElementIds.Add(displayType);
-                    if (e.Count.HasValue)
-                    {
-                        model.ElementCounts[displayType] = e.Count.Value;
-                    }
-                });
-            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkBuildStatusSessionKey, networkBuildStatus?.ToString());
+            ViewBag.NetworkBuildStatus = networkBuildStatus?.ToString();
+            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType);
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SelectNetworkElements(NetworkElementViewModel model)
+        public async Task<IActionResult> NetworkElementsListAsync(NetworkElementViewModel model)
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
+            ViewBag.NetworkBuildStatus = networkBuildStatus;
+            foreach (var option in model.ElementOptions)
+            {                
+                if (option.ExistingCount.HasValue && (option.ExistingCount.Value < 0 || option.ExistingCount.Value > 9999))
+                {
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].ExistingCount", $"Number of existing {option.Label?.ToLower()} must be 0 or more");
+                }
 
-            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
-            var networkType = heatNetworkData?.HeatNetworkType;
-            bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
+                if (networkBuildStatus == (NetworkBuildStatus.NewAndExisting.ToString()) && !option.ExistingCount.HasValue)
+                {
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].ExistingCount", $"Enter number of existing {option.Label?.ToLower()}");
+                }
 
-            model.ElementOptions = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc);
-            ViewBag.Heading = NetworkElementHelper.GetNetworkElementHeadingForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc);
-            var elements = new List<ElementGroup>();
-
-            foreach (var selectedId in model.SelectedElementIds)
+                if (option.NewCount.HasValue && (option.NewCount.Value < 0 || option.NewCount.Value > 9999))
+                {
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"Number of new {option.Label?.ToLower()} must be 0 or more");
+                }
+                if (option.Id == HeatNetworkElementType.EnergyCentre && option.NewCount.HasValue && option.NewCount.Value == 0)
+                {
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"You mentioned previously that you have a main energy centre. You need to provide atleast one energy centre");
+                }
+                if (!option.NewCount.HasValue)
+                {
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"Enter number of new {option.Label?.ToLower()}");
+                }
+            }            
+            
+            if (!ModelState.IsValid)
             {
-                var ele = new ElementGroup
+                return View(model);
+            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey, model);
+            return RedirectToAction("NetworkEnergyCentreName");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> NetworkEnergyCentreName()
+        {
+            this.ShowBackButton("NetworkElementsList", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
+            var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
+            ViewBag.NetworkBuildStatus = networkBuildStatus;
+
+            var model = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            if (model != null)
+            {
+                return View(model);
+            }
+            var existingNetworkElement = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+            var ecOption = existingNetworkElement?.ElementOptions.FirstOrDefault(x => x.Id == HeatNetworkElementType.EnergyCentre);
+
+            model = NetworkElementHelper.GetNetworkEcName(ecOption!);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult NetworkEnergyCentreName(NetworkEcNameViewModel model)
+        {
+            this.ShowBackButton("NetworkElementsList", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
+            var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
+            ViewBag.NetworkBuildStatus = networkBuildStatus;
+            var nextAction = "NetworkElementSummary";
+
+            foreach (var existingEc in model.ExistingEcNameOptions)
+            {
+                nextAction = "EnergyCentreSupplyCheck";
+                if (string.IsNullOrWhiteSpace(existingEc.EcName))
                 {
-                    ElementDisplayType = selectedId,
-                    Count = model.ElementCounts.TryGetValue(selectedId, out var cnt) ? (int?)cnt : null,
-                };
-                elements.Add(ele);
-
-
-                var element = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc).FirstOrDefault(x => x.Id == selectedId);
-
-                if (element == null)
-                {
-                    return BadRequest();
+                    var index = model.ExistingEcNameOptions.IndexOf(existingEc);
+                    ModelState.AddModelError($"existingecnameoptions[{index}].ecname", $"Enter the name for Existing energy centre {index + 1}");
                 }
-
-                if (model.ElementCounts.TryGetValue(selectedId, out var count) && count.HasValue)
+            }
+            foreach (var newEc in model.NewEcNameOptions)
+            {
+                if (string.IsNullOrWhiteSpace(newEc.EcName))
                 {
-                    // Check if the double has a fractional part
-                    bool isWholeNumber = count.Value % 1 == 0;
-
-                    if (!isWholeNumber)
+                    var index = model.NewEcNameOptions.IndexOf(newEc);
+                    if (newEc.IsMainEc)
                     {
-                        ModelState.Remove($"ElementCounts.{selectedId}");
-                        ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter the number of {element.SubLabel.ToLower()} as a whole number");
-                    }
-                }
-
-                if (count == null || count <= 0)
-                {
-                 
-                    if(count == null)
-                    {
-                        // Remove the automatic ModelState entry first
-                        ModelState.Remove($"ElementCounts.{selectedId}");
-                        ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter the number of {element.SubLabel.ToLower()}");
+                        ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter the name of the main energy centre {index + 1}");
                     }
                     else
                     {
-                        ModelState.Remove($"ElementCounts.{selectedId}");
-                        ModelState.AddModelError($"ElementCounts[{selectedId}]", $"Enter the number of {element.SubLabel.ToLower()} as a whole number greater than 0");
+                        ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter the name of the new energy centre {index + 1}");
+                    }
+                }
+            }            
+
+            if (networkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString())
+            {                
+                var allEcNames = model.ExistingEcNameOptions.Select(x => x.EcName?.Trim().ToLower()).Concat(model.NewEcNameOptions.Select(x => x.EcName?.Trim().ToLower())).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+                var duplicateEcNames = allEcNames.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+                if (duplicateEcNames.Any())
+                {
+                    foreach (var duplicateEcName in duplicateEcNames)
+                    {
+                        var existingEc = model.ExistingEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
+                        if (existingEc != null)
+                        {
+                            foreach (var ec in existingEc)
+                            {
+                                var index = model.ExistingEcNameOptions.IndexOf(ec);
+                                ModelState.AddModelError($"existingecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (energy centre {index + 1})");
+                            }
+                        }
+                        var newEc = model.NewEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
+                        if (newEc != null)
+                        {
+                            foreach (var ec in newEc)
+                            {
+                                var index = model.NewEcNameOptions.IndexOf(ec);
+                                if (ec.IsMainEc)
+                                {
+                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (main energy centre {index + 1})");
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (new energy centre {index + 1})");
+                                }
+                            }
+                        }
                     }
                 }
             }
 
+            if (networkBuildStatus == NetworkBuildStatus.New.ToString())
+            {                
+                var allNewEcNames = model.NewEcNameOptions.Select(x => x.EcName?.Trim().ToLower()).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+                var duplicateNewEcNames = allNewEcNames.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+                if (duplicateNewEcNames.Any())
+                {
+                    foreach (var duplicateEcName in duplicateNewEcNames)
+                    {
+                        var newEc = model.NewEcNameOptions.Where(x => x.EcName?.Trim().ToLower() == duplicateEcName);
+                        if (newEc != null)
+                        {
+                            foreach (var ec in newEc)
+                            {
+                                var index = model.NewEcNameOptions.IndexOf(ec);
+                                if (ec.IsMainEc)
+                                {
+                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (main energy centre {index + 1})");
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError($"newecnameoptions[{index}].ecname", $"Enter a different name for each energy centre (new energy centre {index + 1})");
+                                }
+                            }
+                        }
+                    }
+                }
+            }            
+
+
             if (!ModelState.IsValid)
             {
-                return View("SelectNetworkElements", model);
+                return View(model);
             }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey, model);
+            
+            return RedirectToAction(nextAction);
+        }
+
+        [HttpGet]
+        public IActionResult EnergyCentreSupplyCheck()
+        {
+            this.ShowBackButton("NetworkEnergyCentreName", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var model = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey) ?? new EnergyCentreSupplyViewModel();
+            if (model != null)
+            {
+                return View(model);
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EnergyCentreSupplyCheck(EnergyCentreSupplyViewModel model)
+        {
+            this.ShowBackButton("NetworkEnergyCentreName", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey, model);
+            
+            if (model.IsExistingEcSupply == "yes")
+            {
+                return RedirectToAction("EnergyCentresSupply", "NetworkElements");
+            }                 
+            else
+            {                
+                _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
+            }
+                
+            return RedirectToAction("NetworkElementSummary");
+        }
+
+        [HttpGet]
+        public IActionResult EnergyCentresSupply()
+        {
+            this.ShowBackButton("EnergyCentreSupplyCheck", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var model = _sessionHelper.GetFromSession<EnergyCentresSupplyViewModel>(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
+
+            var existingNetworkEcsModel = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            if (model != null)
+            {
+                return View(model);
+            }
+            model = new EnergyCentresSupplyViewModel();
+            var existingNetworkEcs = existingNetworkEcsModel?.ExistingEcNameOptions.Select(x => x.EcName).ToList();
+            model.ExistingEnergyCentresSupply.AddRange(existingNetworkEcs!.Select(x => new ExistingEnergyCentreSupply { EcName = x }));
+                        
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EnergyCentresSupply(EnergyCentresSupplyViewModel model)
+        {
+            this.ShowBackButton("EnergyCentreSupplyCheck", "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
+            var selectedEcNames = model.ExistingEnergyCentresSupply.Where(x => x.IsChecked == true).Select(x => x.EcName).ToList();
+            if (!selectedEcNames.Any())
+            {
+                ModelState.AddModelError("existingenergycentressupply[0].ischecked", "Select at least one existing energy centre");
+                return View(model);
+            }
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey, model);
+            return RedirectToAction("NetworkElementSummary");
+        }
+
+        [HttpGet]
+        public IActionResult NetworkElementSummary()
+        {
+            var supplyToNewBuilding = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+            var networkElementsList = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+            var networkEcNames = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            var existingEcSupplyingNewBuilding = _sessionHelper.GetFromSession<EnergyCentresSupplyViewModel>(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
+            var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
+
+            var backAction = SummaryBackAction(networkBuildStatus, networkElementsList, supplyToNewBuilding);
+            
+            this.ShowBackButton(backAction, "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            
+            var model = new NetworkElementSummaryViewModel();
+            foreach (var option in networkElementsList!.ElementOptions)
+            {
+                if (option.ExistingCount.HasValue && option.ExistingCount.Value > 0)
+                {
+                    model.ExistingNetworkElements ??= new List<string>();
+                    model.ExistingNetworkElements.Add($"{option.ExistingCount.Value} existing {option.Label?.ToLower()}");
+                }
+                if (option.NewCount.HasValue && option.NewCount.Value > 0)
+                {
+                    model.NewNetworkElements ??= new List<string>();
+                    if (option.Id == HeatNetworkElementType.EnergyCentre)
+                        model.NewNetworkElements.Add($"{option.NewCount.Value} main {option.Label?.ToLower()}");
+                    else
+                        model.NewNetworkElements.Add($"{option.NewCount.Value} new {option.Label?.ToLower()}");
+                }
+            }
+
+            foreach (var ec in networkEcNames!.ExistingEcNameOptions)
+            {
+                model.ExistingNetworkEcNames ??= new List<string>();
+                model.ExistingNetworkEcNames.Add($"Existing {ec.EcName!}");
+            }
+
+            foreach (var ec in networkEcNames!.NewEcNameOptions)
+            {
+                model.NewNetworkEcNames ??= new List<string>();
+                if (ec.IsMainEc)
+                    model.NewNetworkEcNames.Add($"Main {ec.EcName!}");
+                else
+                    model.NewNetworkEcNames.Add($"New {ec.EcName!}");
+            }
+            
+            ViewBag.SupplyToNewBuildings = supplyToNewBuilding != null && supplyToNewBuilding!.IsExistingEcSupply == "yes";
+            if (supplyToNewBuilding != null && supplyToNewBuilding!.IsExistingEcSupply == "yes")
+            {                
+                var selectedEcNames = existingEcSupplyingNewBuilding?.ExistingEnergyCentresSupply.Where(x => x.IsChecked == true).Select(x => x.EcName).ToList();
+                foreach (var ecName in selectedEcNames)
+                {
+                    model.ExistingEcSupplyingNewBuilding ??= new List<string>();
+                    model.ExistingEcSupplyingNewBuilding.Add($"Existing {ecName}");
+                }
+            }            
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NetworkElementSummaryAsync(NetworkElementSummaryViewModel model)
+        {
+            var supplyToNewBuilding = _sessionHelper.GetFromSession<EnergyCentreSupplyViewModel>(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+            var networkElementsList = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+            var networkEcNames = _sessionHelper.GetFromSession<NetworkEcNameViewModel>(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            var existingEcSupplyingNewBuilding = _sessionHelper.GetFromSession<EnergyCentresSupplyViewModel>(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
+            var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
+            
+            var backAction = SummaryBackAction(networkBuildStatus, networkElementsList, supplyToNewBuilding);
+            
+            this.ShowBackButton(backAction, "NetworkElements");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
+            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);            
+                        
+            if (model.ConfirmedDeclaration != true)
+            {                
+                return View(model);
+            }
+
+            var elementGroupList = new List<ElementGroup>();
+            var elementList = new List<Element>();
+            var instanceCounter = 1;
+            foreach (var option in networkElementsList!.ElementOptions)
+            {
+                if (option.ExistingCount.HasValue && option.ExistingCount.Value > 0)
+                {
+                    var elementGroup = new ElementGroup
+                    {
+                        BuildType = NetworkBuildStatus.Existing,
+                        Count = option.ExistingCount.Value,
+                        ElementDisplayType = option.Id,
+                        ElementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!)
+                    };
+                    elementGroupList.Add(elementGroup);
+
+                    for (int cnt = 0; cnt < option.ExistingCount.Value; cnt++)
+                    {
+                        var el = new Element
+                        {
+                            BuildType = NetworkBuildStatus.Existing,
+                            ElementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!),
+                            ElementId = (instanceCounter).ToString("D5"),
+                            NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(option.Id) + " - " + instanceCounter,                            
+                        };
+                        elementList.Add(el);
+                        instanceCounter++;
+                    }
+                }
+                if (option.NewCount.HasValue && option.NewCount.Value > 0)
+                {                    
+                    var elementGroup = new ElementGroup
+                    {
+                        BuildType = NetworkBuildStatus.New,
+                        Count = option.NewCount.Value,
+                        ElementDisplayType = option.Id,
+                        ElementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!)
+                    };
+                    elementGroupList.Add(elementGroup);
+                    for (int cnt = 0; cnt < option.NewCount.Value; cnt++)
+                    {
+                        var el = new Element
+                        {
+                            BuildType = NetworkBuildStatus.New,
+                            ElementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!),
+                            ElementId = (instanceCounter).ToString("D5"),
+                            NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(option.Id) + " - " + instanceCounter,
+                        };
+                        elementList.Add(el);
+                        instanceCounter++;
+                    }
+                }
+            }
+
+            var newElements = elementList.Where(x => x.BuildType == NetworkBuildStatus.New).ToList();
+            var newElementsWithEcNames = networkEcNames!.NewEcNameOptions;
+            var existingElements = elementList.Where(x => x.BuildType == NetworkBuildStatus.Existing).ToList();
+            var existingElementsWithEcNames = networkEcNames!.ExistingEcNameOptions;            
+            
+            var selectedEcNames = (supplyToNewBuilding != null && supplyToNewBuilding.IsExistingEcSupply == "yes") ? existingEcSupplyingNewBuilding?.ExistingEnergyCentresSupply.Where(x => x.IsChecked == true).Select(x => x.EcName).ToList() : null;
+
+            for (int i = 0; i< newElementsWithEcNames.Count; i++)
+            {
+                var newElement = newElements[i];
+                var newEcName = newElementsWithEcNames[i];
+                newElement.ElementName = newEcName.EcName;
+                newElement.IsMainEnergyCentre = newEcName.IsMainEc;
+                newElement.IsSupplyNewBuildings = true;
+            }
+
+            for (int i = 0; i < existingElementsWithEcNames.Count; i++)
+            {
+                var existingElement = existingElements[i];
+                var existingEcName = existingElementsWithEcNames[i];
+                existingElement.ElementName = existingEcName.EcName;
+                existingElement.IsSupplyNewBuildings = selectedEcNames != null && selectedEcNames.Contains(existingEcName.EcName);
+            }
+
+            var request = new NetworkElements2
+            {
+                ElementsGroup = elementGroupList,
+                Elements = elementList,
+                IsExistingEnergyCentreSupplyNewBuildings = supplyToNewBuilding != null && supplyToNewBuilding!.IsExistingEcSupply == "yes",
+                NetworkElementStatus = NetworkDetailsStatus.Complete,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = userId,
+                ElementSoaStatus = NetworkDetailsStatus.ReadyToStart
+            };
+
+            await _heatNetworkService.UpdateNetworkElements(hnId!, request);
+            ClearNetworkElementSpecificSession();
+
+            return RedirectToAction("NetworkConfirmation");
+        }
+
+        [HttpGet]
+        public IActionResult NetworkConfirmationAsync()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> NetworkElementsOverViewAsync()
+        {            
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var model = new NetworkElementsOverViewModel();
+            // Network Connections
+            var networkConnections = heatNetworkData?.HeatNetworkConnections;
+            model.NetworkConnections.ExistingCommunalBuildings = networkConnections?.NoOfExistingCommunalBuilding;
+            model.NetworkConnections.ExistingHousesOrMaisonettes = networkConnections?.NoOfExistingHousesOrMaisonettes;
+            model.NetworkConnections.ExistingNonDomesticBuildings = networkConnections?.NoOfExistingNonDomesticBuildings;
+            model.NetworkConnections.ExistingMultiTenantedNonDomestic = networkConnections?.NoOfExistingMultiTenantedNonDomestic;
+            model.NetworkConnections.ExistingOtherDistrictNetworks = networkConnections?.NoOfExistingOtherDistrictNetworks;
+            model.NetworkConnections.NewCommunalBuildings = networkConnections?.NoOfNewCommunalBuilding;
+            model.NetworkConnections.NewHousesOrMaisonettes = networkConnections?.NoOfNewHousesOrMaisonettes;
+            model.NetworkConnections.NewNonDomesticBuildings = networkConnections?.NoOfNewNonDomesticBuildings;
+            model.NetworkConnections.NewMultiTenantedNonDomestic = networkConnections?.NoOfNewMultiTenantedNonDomestic;
+            model.NetworkConnections.NewOtherDistrictNetworks = networkConnections?.NoOfNewOtherDistrictNetworks;
+            model.EnergyCentreType = heatNetworkData?.EnergyCentreType?.ToString() ?? string.Empty;
+            model.NetworkBuildStatus = heatNetworkData?.NetworkBuildStatus?.ToString() ?? string.Empty;
+            var networkElements = heatNetworkData?.NetworkElements;
+            
+            var newElementGroups = networkElements?.ElementsGroup?.Where(x => x.BuildType == NetworkBuildStatus.New).ToList();
+            var existingElementGroups  = networkElements?.ElementsGroup?.Where(x => x.BuildType == NetworkBuildStatus.Existing).ToList();
+
+            foreach (var newElementGroup in newElementGroups!)
+            {
+                var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)heatNetworkData?.HeatNetworkType).FirstOrDefault(x => x.Id == newElementGroup.ElementDisplayType);
+                var label = elementOption != null ? elementOption.Label : newElementGroup.ElementDisplayType.ToString();
+                label = label.ToSentenceCase();
+                model.NewNetworkElements ??= new List<string>();
+                model.NewNetworkElements.Add($"{newElementGroup.Count} new {label?.ToLower()}");
+            }
+
+            foreach (var existingElementGroup in existingElementGroups!)
+            {
+                var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)heatNetworkData?.HeatNetworkType).FirstOrDefault(x => x.Id == existingElementGroup.ElementDisplayType);
+                var label = elementOption != null ? elementOption.Label : existingElementGroup.ElementDisplayType.ToString();
+                label = label.ToSentenceCase();
+                model.ExistingNetworkElements ??= new List<string>();
+                model.ExistingNetworkElements.Add($"{existingElementGroup.Count} existing {label?.ToLower()}");
+            }
+
+            
+            var newEcElements = networkElements.Elements?.Where(x => x.BuildType == NetworkBuildStatus.New && x.ElementType == ElementTypeInShort.EC).ToList();    
+            foreach (var newEcElement in newEcElements!)
+            {
+                model.NewNetworkEcNames ??= new List<string>();
+                model.NewNetworkEcNames.Add($"{newEcElement.ElementName}");
+            }
+
+            var existingEcElements = networkElements.Elements?.Where(x => x.BuildType == NetworkBuildStatus.Existing && x.ElementType == ElementTypeInShort.EC).ToList();
+            foreach (var existingEcElement in existingEcElements!)
+            {
+                model.ExistingNetworkEcNames ??= new List<string>();
+                model.ExistingNetworkEcNames.Add($"{existingEcElement.ElementName}");
+            }
+
+            var isExistingEcSupplyNewBuildings = networkElements.IsExistingEnergyCentreSupplyNewBuildings;
+            ViewBag.SupplyToNewBuildings = isExistingEcSupplyNewBuildings;
+            if (isExistingEcSupplyNewBuildings == true)
+            {
+                var existingEcSupplyingNewBuildings = networkElements.Elements?.Where(x => x.BuildType == NetworkBuildStatus.Existing && x.ElementType == ElementTypeInShort.EC && x.IsSupplyNewBuildings == true).ToList();
+                foreach (var existingEcSupplyingNewBuilding in existingEcSupplyingNewBuildings!)
+                {
+                    model.ExistingEcSupplyingNewBuilding ??= new List<string>();
+                    model.ExistingEcSupplyingNewBuilding.Add($"{existingEcSupplyingNewBuilding.ElementName}");
+                }
+            }            
 
             var address = heatNetworkData?.Address;
             var coordinates = heatNetworkData?.EcDetails;
@@ -143,301 +577,50 @@ namespace HNTAS.Web.UI.Controllers
             var latlong = coordinates != null ? $"{coordinates.Latitude},{coordinates.Longitude}" : null;
             var addressByStreetOrTownModel = address != null ? (AddressByStreetOrTownModel)address! : null;
 
-            var networkElementsOverViewModel = new NetworkElementsOverViewModel
-            {
-                Elements = elements.Select(e =>
-                {
-                    var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc).FirstOrDefault(x => x.Id == e.ElementDisplayType);
-                    var label = elementOption != null ? elementOption.Label : e.ElementDisplayType.ToString();
-                    label = label.ToSentenceCase();
-
-                    //return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
-                    return e.Count.HasValue ? $"{e.Count.Value} {GetElementLabel(label, e.Count.Value)}" : label;
-                }).ToList(),
-                HeatNetworkAddress = addressByStreetOrTownModel?.Fulladdress ?? "Not provided",
-                Coordinates = latlong,
-                NetworkType = NetworkElementHelper.GetNetworkTypeLabelForNetworkType((Api.Client.Model.HeatNetworkType?)networkType, hasOwnEc),
-                Phase = phase ?? string.Empty
-            };
+            model.Address = addressByStreetOrTownModel?.Fulladdress ?? "Not provided";
+            model.Coordinates = latlong;
+            model.Phase = phase ?? string.Empty;
+            model.NetworkType = heatNetworkData!.HeatNetworkType.ToString();
             
-            var networkElementGroups = GetNetworkElementGroup(elements);
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementsOverViewModel);
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, networkElementGroups);
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey, model);
-            if ((Api.Client.Model.HeatNetworkType?)networkType == Api.Client.Model.HeatNetworkType.District)
-            {
-                return RedirectToAction("Substations", "NetworkElements");
-            }
-            return RedirectToAction("NetworkElementsOverView", "NetworkElements");
-        }
-
-        [HttpGet]
-        public IActionResult Substations()
-        {
-            this.ShowBackButton("SelectNetworkElements", "NetworkElements");
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            ViewBag.HnId = hnId?.ToUpper();
-            ViewBag.HnName = hnName;
-            var model = _sessionHelper.GetFromSession<SubstationsViewModel>(HttpContext, SessionKeys.SubstationViewModelKey);
-            if (model != null)
-            {
-                return View(model);
-            }
-            model = new SubstationsViewModel();
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Substations(SubstationsViewModel model)
+        private string SummaryBackAction(string networkBuildStatus, NetworkElementViewModel networkElementsList, EnergyCentreSupplyViewModel supplyToNewBuilding)
         {
-            this.ShowBackButton("SelectNetworkElements", "NetworkElements");
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            ViewBag.HnId = hnId?.ToUpper();
-            ViewBag.HnName = hnName;
-
-            if (model.HasDistrictSubstation == false)
+            var backAction = string.Empty;
+            if (networkBuildStatus == NetworkBuildStatus.New.ToString())
             {
-                model.NumberOfSubstations = null;
-                ModelState.Remove(nameof(model.NumberOfSubstations));
+                backAction = "NetworkEnergyCentreName";
             }
-            else if (model.HasDistrictSubstation == true && (model.NumberOfSubstations == null))
-            {
-                ModelState.AddModelError("NumberOfSubstations", "Enter the number of substations");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.SubstationViewModelKey, model);
-            return RedirectToAction("DistributionNetworks");
-        }
-
-
-        [HttpGet]
-        public IActionResult DistributionNetworks()
-        {
-            this.ShowBackButton("Substations", "NetworkElements");
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            ViewBag.HnId = hnId?.ToUpper();
-            ViewBag.HnName = hnName;
-            var model = _sessionHelper.GetFromSession<DistributionNetworksViewModel>(HttpContext, SessionKeys.DistributionNetworksViewModelKey);
-            if (model != null)
-            {
-                return View(model);
-            }
-            model = new DistributionNetworksViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DistributionNetworks(DistributionNetworksViewModel model)
-        {
-            this.ShowBackButton("Substations", "NetworkElements");
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            ViewBag.HnId = hnId?.ToUpper();
-            ViewBag.HnName = hnName;
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.DistributionNetworksViewModelKey, model);
-
-
-            var elementsGroup = _sessionHelper.GetFromSession<List<NetworkElementGroup>>(HttpContext, SessionKeys.SelectedElementsSessionKey);
-            var elements = GetElementGroup(elementsGroup!);
-            var substation = _sessionHelper.GetFromSession<SubstationsViewModel>(HttpContext, SessionKeys.SubstationViewModelKey);
-            if (substation?.NumberOfSubstations > 0)
-            {
-                // Delete any existing substation element to avoid duplication in case user goes back and changes the number of substations
-                elements?.RemoveAll(e => e.ElementDisplayType == HeatNetworkElementType.Substation);
-                var substationElement = new ElementGroup
-                {
-                    Count = substation?.NumberOfSubstations,
-                    ElementDisplayType = HeatNetworkElementType.Substation
-                };
-                elements?.Add(substationElement);
-            }
-            if (model?.NumberOfDistributionNetworks > 0)
-            {
-                // Delete any existing distribution network element to avoid duplication in case user goes back and changes the number of distribution networks
-                elements?.RemoveAll(e => e.ElementDisplayType == HeatNetworkElementType.DistrictDistribution);
-                var distributionNetworkElement = new ElementGroup
-                {
-                    Count = model?.NumberOfDistributionNetworks,
-                    ElementDisplayType = HeatNetworkElementType.DistrictDistribution
-                };
-                elements?.Add(distributionNetworkElement);
-            }
-            var networkElementOverview = _sessionHelper.GetFromSession<NetworkElementsOverViewModel>(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey);
-            networkElementOverview!.Elements = elements!.Select(e =>
-            {                
-                var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType().FirstOrDefault(x => x.Id == e.ElementDisplayType);
-                var label = elementOption != null ? elementOption.Label : e.ElementDisplayType.ToString();
-                label = label.ToSentenceCase();
-
-                //return e.Count.HasValue ? $"{e.Count.Value} {label}(s)" : label;
-                return e.Count.HasValue? $"{e.Count.Value} {GetElementLabel(label, e.Count.Value)}" : label;
-            }).ToList();
-
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey, networkElementOverview);
-            _sessionHelper.SaveToSession(HttpContext, SessionKeys.SelectedElementsSessionKey, elements);
-
-            return RedirectToAction("NetworkElementsOverView");
-        }
-
-        [HttpGet]
-        public IActionResult NetworkElementsOverView()
-        {
-            var substationModel = _sessionHelper.GetFromSession<SubstationsViewModel>(HttpContext, SessionKeys.SubstationViewModelKey);
-            if (substationModel != null)
-                this.ShowBackButton("DistributionNetworks", "NetworkElements");
             else
-                this.ShowBackButton("SelectNetworkElements", "NetworkElements");
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-            ViewBag.HnId = hnId?.ToUpper();
-            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            ViewBag.HnName = hnName;
-            var model = _sessionHelper.GetFromSession<NetworkElementsOverViewModel>(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey);
-            return View("NetworkElementsOverView", model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NetworkElementsOverViewAsync()
-        {
-            await SaveNetworkElements();
-            ClearNetworkElementSpecificSession();
-            return RedirectToAction("NetworkDetails", "HeatNetwork");
-        }
-
-        private async Task SaveNetworkElements()
-        {
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
-
-            var elements = _sessionHelper.GetFromSession<List<NetworkElementGroup>>(HttpContext, SessionKeys.SelectedElementsSessionKey);
-
-            var request = new NetworkElements2
             {
-                ElementsGroup = elements?.Select(e => new ElementGroup(elementDisplayType: e.ElementDisplayType, count: e.Count)).ToList(),
-                NetworkElementStatus = NetworkDetailsStatus.Complete,
-                CreatedAt = DateTime.UtcNow,
-                CreatedBy = userId,
-                ElementSoaStatus = NetworkDetailsStatus.ReadyToStart
-            };
-
-            if (request.ElementsGroup != null)
-            {
-                request.ElementsGroup = request.ElementsGroup.Select((element, index) =>
-                {                    
-                    element.ElementType = NetworkElementHelper.GetNetworkElementIdByType(element.ElementDisplayType.ToString()!);
-                    return element;
-                }).ToList();
-            }
-
-            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
-            var networkType = heatNetworkData?.HeatNetworkType;
-            bool hasOwnEc = heatNetworkData?.HasOwnEnergyCentre ?? false;
-
-            if ((Api.Client.Model.HeatNetworkType?)networkType == Api.Client.Model.HeatNetworkType.Communal && hasOwnEc)
-            {
-                request.ElementsGroup!.Add(new ElementGroup
+                var ecInExistingNetworkElement = networkElementsList?.ElementOptions.FirstOrDefault(x => x.Id == HeatNetworkElementType.EnergyCentre)?.ExistingCount;
+                if (ecInExistingNetworkElement.HasValue && ecInExistingNetworkElement.Value > 0)
                 {
-                    ElementDisplayType = HeatNetworkElementType.EnergyCentre,
-                    ElementType = NetworkElementHelper.GetNetworkElementIdByType(HeatNetworkElementType.EnergyCentre.ToString()!),
-                    Count = 1
-                });
-                request.ElementsGroup = request.ElementsGroup.OrderByDescending(e => e.ElementDisplayType == HeatNetworkElementType.EnergyCentre).ToList();
-            }
-            else if ((Api.Client.Model.HeatNetworkType?)networkType == Api.Client.Model.HeatNetworkType.District && hasOwnEc)
-            {
-                var isEnergyCentreAdded = request.ElementsGroup!.Any(e => e.ElementDisplayType == HeatNetworkElementType.EnergyCentre);
-                if (isEnergyCentreAdded)
-                {                    
-                    var energyCentreElement = request.ElementsGroup!.First(e => e.ElementDisplayType == HeatNetworkElementType.EnergyCentre);
-                    energyCentreElement.Count = (energyCentreElement.Count ?? 0) + 1;
+                    var ecSupplyToNewBuildCheck = supplyToNewBuilding ?? new EnergyCentreSupplyViewModel();
+                    if (ecSupplyToNewBuildCheck.IsExistingEcSupply == "yes")
+                    {
+                        backAction = "EnergyCentresSupply";
+                    }
+                    else
+                    {
+                        backAction = "EnergyCentreSupplyCheck";
+                    }
                 }
                 else
                 {
-                    request.ElementsGroup!.Add(new ElementGroup
-                    {
-                        ElementDisplayType = HeatNetworkElementType.EnergyCentre,
-                        ElementType = NetworkElementHelper.GetNetworkElementIdByType(HeatNetworkElementType.EnergyCentre.ToString()!),
-                        Count = 1
-                    });
-                    request.ElementsGroup = request.ElementsGroup.OrderByDescending(e => e.ElementDisplayType == HeatNetworkElementType.EnergyCentre).ToList();
+                    backAction = "NetworkEnergyCentreName";
                 }
             }
-            await _heatNetworkService.UpdateNetworkElements(hnId!, request);
+            return backAction;
         }
 
         private void ClearNetworkElementSpecificSession()
         {
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SelectedElementsSessionKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsOverViewModelSessionKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SubstationViewModelKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DistributionNetworksViewModelKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
-        }
-
-        private List<NetworkElementGroup> GetNetworkElementGroup(List<ElementGroup> elements)
-        {
-            var neGroups = new List<NetworkElementGroup>();
-            foreach (var element in elements)
-            {
-                var neGroup = new NetworkElementGroup
-                {
-                    ElementDisplayType = (HeatNetworkElementType)element.ElementDisplayType,
-                    Count = element.Count
-                };
-                neGroups.Add(neGroup);
-            }
-            return neGroups;
-        }
-
-        private List<ElementGroup> GetElementGroup(List<NetworkElementGroup> neGroups)
-        {
-            var elements = new List<ElementGroup>();
-            foreach (var neGroup in neGroups)
-            {
-                var element = new ElementGroup
-                {
-                    ElementDisplayType = (HeatNetworkElementType)neGroup.ElementDisplayType,
-                    Count = neGroup.Count
-                };
-                elements.Add(element);
-            }
-            return elements;
-        }
-
-        private static string GetElementLabel(string label, int count)
-        {
-            return label switch
-            {
-                "Communal substation (within the communal building)" =>
-                    count == 1
-                        ? "Communal substation (within the communal building)"
-                        : "Communal substations (within the communal building)",
-
-                "Communal distribution network" =>
-                    count == 1
-                        ? "Communal distribution network"
-                        : "Communal distribution networks",
-
-                "Consumer connection" =>
-                    count == 1
-                        ? "Consumer connection"
-                        : "Consumer connections",
-
-                _ => count == 1 ? label : $"{label}s"
-            };
-        }
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);            
+        }        
     }
 }

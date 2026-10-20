@@ -24,6 +24,7 @@ Name | Type | Description | Notes
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **Phase** | **string** |  | [optional] 
 **HeatNetworkType** | **NullableOfHeatNetworkType** |  | [optional] 
+**EnergyCentreType** | **NullableOfEnergyCentreType** |  | [optional] 
 **HasOwnEnergyCentre** | **bool** |  | [optional] 
 **HeatNetworkConnections** | [**HeatNetworkConnections**](HeatNetworkConnections.md) |  | [optional] 
 **NetworkElements** | [**NetworkElementsResponse**](NetworkElementsResponse.md) |  | [optional] 

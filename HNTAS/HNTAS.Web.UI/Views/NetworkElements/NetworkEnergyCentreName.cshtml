@@ -1,0 +1,73 @@
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.NetworkElements
+@model NetworkEcNameViewModel
+
+@{
+    ViewData["Title"] = "Provide a name for each energy centre";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <form class="form" asp-action="NetworkEnergyCentreName" method="post">
+
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+            <h1 class="govuk-heading-l">Provide a name for each energy centre</h1>
+
+            <p class="govuk-hint">Enter the reference for each energy centre.</p>
+
+            @if (ViewBag.NetworkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString() && Model.ExistingEcNameOptions.Count > 0)
+                {
+                    <h2 class="govuk-heading-m">Existing energy centres</h2>
+
+            @for(int i = 0; i < Model.ExistingEcNameOptions.Count; i++)
+            {
+                var item = Model.ExistingEcNameOptions[i];
+                var hasExistingCountError = ViewData.ModelState[$"existingecnameoptions[{i}].ecname"]?.Errors.Count > 0;
+                <input type="hidden" name="@($"ExistingEcNameOptions[{i}].Label")" value="@item.Label" />
+                <input type="hidden" name="@($"ExistingEcNameOptions[{i}].IsMainEc")" value="@item.IsMainEc.ToString().ToLowerInvariant()" />
+                <div class="govuk-form-group @(hasExistingCountError ? "govuk-form-group--error" : "")">
+                    <label class="govuk-label" for="@($"existingecnameoptions[{i}].ecname")">
+                        @item.Label
+                    </label>
+                    @if (hasExistingCountError)
+                    {
+                        <span class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[$"existingecnameoptions[{i}].ecname"]?.Errors.FirstOrDefault()?.ErrorMessage
+                        </span>
+                    }
+                    <input class="govuk-input govuk-input--width-20 @(hasExistingCountError ? "govuk-input--error" : "")" id="@($"existingecnameoptions[{i}].ecname")" name="@($"existingecnameoptions[{i}].ecname")" type="text" spellcheck="false" value="@item.EcName">
+                </div>
+            } 
+                }
+                              
+  
+            <h2 class="govuk-heading-m">New energy centres</h2>
+
+            @for (int i = 0; i < Model.NewEcNameOptions.Count; i++)
+            {
+                var item = Model.NewEcNameOptions[i];
+                var hasNewCountError = ViewData.ModelState[$"newecnameoptions[{i}].ecname"]?.Errors.Count > 0;
+                <input type="hidden" name="@($"NewEcNameOptions[{i}].Label")" value="@item.Label" />
+                <input type="hidden" name="@($"NewEcNameOptions[{i}].IsMainEc")" value="@item.IsMainEc.ToString().ToLowerInvariant()" />
+                <div class="govuk-form-group @(hasNewCountError ? "govuk-form-group--error" : "")">
+                    <label class="govuk-label" for="@($"newecnameoptions[{i}].ecname")">
+                        @item.Label
+                    </label>
+                    @if (hasNewCountError)
+                    {
+                        <span class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[$"newecnameoptions[{i}].ecname"]?.Errors.FirstOrDefault()?.ErrorMessage
+                        </span>
+                    }
+                    <input class="govuk-input govuk-input--width-20 @(hasNewCountError ? "govuk-input--error" : "")" id="@($"newecnameoptions[{i}].ecname")" name="@($"newecnameoptions[{i}].ecname")" type="text" spellcheck="false" value="@item.EcName">
+                </div>
+            }
+
+            <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
+                Continue
+            </button>
+        </form>
+
+    </div>
+</div>

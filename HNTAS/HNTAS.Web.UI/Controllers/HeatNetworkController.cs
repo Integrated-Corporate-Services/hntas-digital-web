@@ -92,6 +92,7 @@ namespace HNTAS.Web.UI.Controllers
             var coordinates = response?.EcDetails;
             var latlong = coordinates != null ? $"{coordinates.Latitude},{coordinates.Longitude}" : null;
             var networkType = NetworkElementHelper.GetNetworkTypeLabel((Api.Client.Model.HeatNetworkType?)response!.HeatNetworkType);
+            var networkConnections = response?.HeatNetworkConnections;
             var model = new HNDetailsViewModel
             {
                 Name = response?.Name,
@@ -110,6 +111,21 @@ namespace HNTAS.Web.UI.Controllers
                 Coordinates = latlong,
                 NetworkType = networkType
             };
+
+            var buildType = response.NetworkBuildStatus;
+            
+            model.NetworkConnections.ExistingCommunalBuildings = networkConnections?.NoOfExistingCommunalBuilding;
+            model.NetworkConnections.ExistingHousesOrMaisonettes = networkConnections?.NoOfExistingHousesOrMaisonettes;
+            model.NetworkConnections.ExistingNonDomesticBuildings = networkConnections?.NoOfExistingNonDomesticBuildings;
+            model.NetworkConnections.ExistingMultiTenantedNonDomestic = networkConnections?.NoOfExistingMultiTenantedNonDomestic;
+            model.NetworkConnections.ExistingOtherDistrictNetworks = networkConnections?.NoOfExistingOtherDistrictNetworks;
+            model.NetworkConnections.NewCommunalBuildings = networkConnections?.NoOfNewCommunalBuilding;
+            model.NetworkConnections.NewHousesOrMaisonettes = networkConnections?.NoOfNewHousesOrMaisonettes;
+            model.NetworkConnections.NewNonDomesticBuildings = networkConnections?.NoOfNewNonDomesticBuildings;
+            model.NetworkConnections.NewMultiTenantedNonDomestic = networkConnections?.NoOfNewMultiTenantedNonDomestic;
+            model.NetworkConnections.NewOtherDistrictNetworks = networkConnections?.NoOfNewOtherDistrictNetworks;
+            model.EnergyCentreType = response?.EnergyCentreType?.ToString() ?? string.Empty;
+            model.NetworkBuildStatus = response?.NetworkBuildStatus?.ToString();
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, model.Name);
@@ -136,7 +152,7 @@ namespace HNTAS.Web.UI.Controllers
                 }
                 else if (option.Id == NetworkDetailsType.NetworkElements)
                 {
-                    NetworkElementHelper.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkElements?.NetworkElementStatus, null, false);
+                    NetworkElementHelper.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkElements?.NetworkElementStatus, null);
                 }                
             }
 
@@ -171,11 +187,16 @@ namespace HNTAS.Web.UI.Controllers
                 soaController = "ElementSoa";
                 soaAction = "UnderstandingSoa";
             }
-                
+
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
+            var networkStatus = heatNetworkData?.NetworkElements?.NetworkElementStatus;
+            var networkElementAction = networkStatus == NetworkDetailsStatus.Complete ? "NetworkElementsOverView" : "NetworkElementsList";
+
             switch (networkDetailId)
             {
                 case NetworkDetailsType.NetworkElements:
-                    return RedirectToAction("SelectNetworkElements", "NetworkElements");
+                    return RedirectToAction(networkElementAction, "NetworkElements");
                 case NetworkDetailsType.Soa:
                     return RedirectToAction(soaAction, soaController);
                 default:
@@ -191,6 +212,9 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SubstationViewModelKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DistributionNetworksViewModelKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);            
         }
 
         private void ClearSoaAssessorSpecificSession()

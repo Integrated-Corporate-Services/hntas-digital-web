@@ -38,14 +38,16 @@ namespace HNTAS.Api.Client.Model
         /// <param name="soaStages">soaStages</param>
         /// <param name="soaMilestones">soaMilestones</param>
         /// <param name="elementType">elementType</param>
+        /// <param name="buildType">buildType</param>
         [JsonConstructor]
-        public ElementGroup(Option<HeatNetworkElementType?> elementDisplayType = default, Option<int?> count = default, Option<List<SoaStages>?> soaStages = default, Option<List<SoaMilestone>?> soaMilestones = default, Option<ElementTypeInShort?> elementType = default)
+        public ElementGroup(Option<HeatNetworkElementType?> elementDisplayType = default, Option<int?> count = default, Option<List<SoaStages>?> soaStages = default, Option<List<SoaMilestone>?> soaMilestones = default, Option<ElementTypeInShort?> elementType = default, Option<NetworkBuildStatus?> buildType = default)
         {
             ElementDisplayTypeOption = elementDisplayType;
             CountOption = count;
             SoaStagesOption = soaStages;
             SoaMilestonesOption = soaMilestones;
             ElementTypeOption = elementType;
+            BuildTypeOption = buildType;
             OnCreated();
         }
 
@@ -76,6 +78,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("elementType")]
         public ElementTypeInShort? ElementType { get { return this.ElementTypeOption; } set { this.ElementTypeOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of BuildType
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NetworkBuildStatus?> BuildTypeOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets BuildType
+        /// </summary>
+        [JsonPropertyName("buildType")]
+        public NetworkBuildStatus? BuildType { get { return this.BuildTypeOption; } set { this.BuildTypeOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Count
@@ -129,6 +144,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  SoaStages: ").Append(SoaStages).Append("\n");
             sb.Append("  SoaMilestones: ").Append(SoaMilestones).Append("\n");
             sb.Append("  ElementType: ").Append(ElementType).Append("\n");
+            sb.Append("  BuildType: ").Append(BuildType).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -171,6 +187,7 @@ namespace HNTAS.Api.Client.Model
             Option<List<SoaStages>?> soaStages = default;
             Option<List<SoaMilestone>?> soaMilestones = default;
             Option<ElementTypeInShort?> elementType = default;
+            Option<NetworkBuildStatus?> buildType = default;
 
             while (utf8JsonReader.Read())
             {
@@ -206,6 +223,11 @@ namespace HNTAS.Api.Client.Model
                             if (elementTypeRawValue != null)
                                 elementType = new Option<ElementTypeInShort?>(ElementTypeInShortValueConverter.FromStringOrDefault(elementTypeRawValue));
                             break;
+                        case "buildType":
+                            string? buildTypeRawValue = utf8JsonReader.GetString();
+                            if (buildTypeRawValue != null)
+                                buildType = new Option<NetworkBuildStatus?>(NetworkBuildStatusValueConverter.FromStringOrDefault(buildTypeRawValue));
+                            break;
                         default:
                             break;
                     }
@@ -218,7 +240,10 @@ namespace HNTAS.Api.Client.Model
             if (elementType.IsSet && elementType.Value == null)
                 throw new ArgumentNullException(nameof(elementType), "Property is not nullable for class ElementGroup.");
 
-            return new ElementGroup(elementDisplayType, count, soaStages, soaMilestones, elementType);
+            if (buildType.IsSet && buildType.Value == null)
+                throw new ArgumentNullException(nameof(buildType), "Property is not nullable for class ElementGroup.");
+
+            return new ElementGroup(elementDisplayType, count, soaStages, soaMilestones, elementType, buildType);
         }
 
         /// <summary>
@@ -276,6 +301,11 @@ namespace HNTAS.Api.Client.Model
             {
                 var elementTypeRawValue = ElementTypeInShortValueConverter.ToJsonValue(elementGroup.ElementType!.Value);
                 writer.WriteString("elementType", elementTypeRawValue);
+            }
+            if (elementGroup.BuildTypeOption.IsSet)
+            {
+                var buildTypeRawValue = NetworkBuildStatusValueConverter.ToJsonValue(elementGroup.BuildType!.Value);
+                writer.WriteString("buildType", buildTypeRawValue);
             }
         }
     }

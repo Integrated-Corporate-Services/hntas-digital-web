@@ -398,6 +398,9 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SearchAddressByPostcodeModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
         }
     }
 }

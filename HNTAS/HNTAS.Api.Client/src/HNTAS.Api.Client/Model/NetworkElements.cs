@@ -37,17 +37,19 @@ namespace HNTAS.Api.Client.Model
         /// <param name="elementSoaStatus">elementSoaStatus</param>
         /// <param name="elements">elements</param>
         /// <param name="elementsGroup">elementsGroup</param>
+        /// <param name="isExistingEnergyCentreSupplyNewBuildings">isExistingEnergyCentreSupplyNewBuildings</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="createdBy">createdBy</param>
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public NetworkElements(Option<NetworkDetailsStatus?> networkElementStatus = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<List<Element>?> elements = default, Option<List<ElementGroup>?> elementsGroup = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public NetworkElements(Option<NetworkDetailsStatus?> networkElementStatus = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<List<Element>?> elements = default, Option<List<ElementGroup>?> elementsGroup = default, Option<bool?> isExistingEnergyCentreSupplyNewBuildings = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             NetworkElementStatusOption = networkElementStatus;
             ElementSoaStatusOption = elementSoaStatus;
             ElementsOption = elements;
             ElementsGroupOption = elementsGroup;
+            IsExistingEnergyCentreSupplyNewBuildingsOption = isExistingEnergyCentreSupplyNewBuildings;
             CreatedAtOption = createdAt;
             CreatedByOption = createdBy;
             UpdatedAtOption = updatedAt;
@@ -108,6 +110,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("elementsGroup")]
         public List<ElementGroup>? ElementsGroup { get { return this.ElementsGroupOption; } set { this.ElementsGroupOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of IsExistingEnergyCentreSupplyNewBuildings
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<bool?> IsExistingEnergyCentreSupplyNewBuildingsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets IsExistingEnergyCentreSupplyNewBuildings
+        /// </summary>
+        [JsonPropertyName("isExistingEnergyCentreSupplyNewBuildings")]
+        public bool? IsExistingEnergyCentreSupplyNewBuildings { get { return this.IsExistingEnergyCentreSupplyNewBuildingsOption; } set { this.IsExistingEnergyCentreSupplyNewBuildingsOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of CreatedAt
@@ -173,6 +188,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  ElementSoaStatus: ").Append(ElementSoaStatus).Append("\n");
             sb.Append("  Elements: ").Append(Elements).Append("\n");
             sb.Append("  ElementsGroup: ").Append(ElementsGroup).Append("\n");
+            sb.Append("  IsExistingEnergyCentreSupplyNewBuildings: ").Append(IsExistingEnergyCentreSupplyNewBuildings).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
@@ -228,6 +244,7 @@ namespace HNTAS.Api.Client.Model
             Option<NetworkDetailsStatus?> elementSoaStatus = default;
             Option<List<Element>?> elements = default;
             Option<List<ElementGroup>?> elementsGroup = default;
+            Option<bool?> isExistingEnergyCentreSupplyNewBuildings = default;
             Option<DateTimeOffset?> createdAt = default;
             Option<string?> createdBy = default;
             Option<DateTimeOffset?> updatedAt = default;
@@ -264,6 +281,9 @@ namespace HNTAS.Api.Client.Model
                         case "elementsGroup":
                             elementsGroup = new Option<List<ElementGroup>?>(JsonSerializer.Deserialize<List<ElementGroup>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
+                        case "isExistingEnergyCentreSupplyNewBuildings":
+                            isExistingEnergyCentreSupplyNewBuildings = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
                         case "createdAt":
                             createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -297,7 +317,7 @@ namespace HNTAS.Api.Client.Model
             if (createdBy.IsSet && createdBy.Value == null)
                 throw new ArgumentNullException(nameof(createdBy), "Property is not nullable for class NetworkElements.");
 
-            return new NetworkElements(networkElementStatus, elementSoaStatus, elements, elementsGroup, createdAt, createdBy, updatedAt, updatedBy);
+            return new NetworkElements(networkElementStatus, elementSoaStatus, elements, elementsGroup, isExistingEnergyCentreSupplyNewBuildings, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
@@ -353,6 +373,12 @@ namespace HNTAS.Api.Client.Model
                 writer.WritePropertyName("elementsGroup");
                 JsonSerializer.Serialize(writer, networkElements.ElementsGroup, jsonSerializerOptions);
             }
+            if (networkElements.IsExistingEnergyCentreSupplyNewBuildingsOption.IsSet)
+                if (networkElements.IsExistingEnergyCentreSupplyNewBuildingsOption.Value != null)
+                    writer.WriteBoolean("isExistingEnergyCentreSupplyNewBuildings", networkElements.IsExistingEnergyCentreSupplyNewBuildingsOption.Value!.Value);
+                else
+                    writer.WriteNull("isExistingEnergyCentreSupplyNewBuildings");
+
             if (networkElements.CreatedAtOption.IsSet)
                 writer.WriteString("createdAt", networkElements.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
 
