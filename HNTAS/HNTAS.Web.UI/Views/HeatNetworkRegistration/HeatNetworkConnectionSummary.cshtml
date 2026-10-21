@@ -105,7 +105,9 @@
 
                                     @if ((Model.Connections.NewOtherDistrictNetworks ?? 0) > 0)
                                     {
-                                        @if (Model.Connections.NewOtherDistrictNetworks == 1 && Model.EnergyCentreOption == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString())
+                                        @if (Model.Connections.NewOtherDistrictNetworks == 1 &&  
+                                        (Model.EnergyCentreOption == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString() ||
+                                            Model.EnergyCentreOption == NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString()))
                                         {
                                             <li>@Model.Connections.NewOtherDistrictNetworks separate supplying district heat network</li>
                                         }

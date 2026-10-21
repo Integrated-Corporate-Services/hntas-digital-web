@@ -307,6 +307,12 @@ namespace HNTAS.Web.UI.Controllers
                         ModelState.AddModelError(nameof(model.NewCommunalBuildings), "You indicated multiple buildings. Enter a minimum of 2 connections.");
                     }
                 }
+
+                if(supplyTypeModel?.EnergyCentreOption == NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString())
+                {
+                    //default to NewOtherDistrictNetworks to 1
+                    model.NewOtherDistrictNetworks = 1;
+                }
             }
 
             // 3. Handle model validation failure
