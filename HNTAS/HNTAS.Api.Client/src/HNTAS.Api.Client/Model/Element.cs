@@ -39,10 +39,15 @@ namespace HNTAS.Api.Client.Model
         /// <param name="elementName">elementName</param>
         /// <param name="isMainEnergyCentre">isMainEnergyCentre</param>
         /// <param name="isSupplyNewBuildings">isSupplyNewBuildings</param>
+        /// <param name="energyCentreStatus">energyCentreStatus</param>
+        /// <param name="combinedHeatAndPowerSystems">combinedHeatAndPowerSystems</param>
+        /// <param name="heatPumpSystems">heatPumpSystems</param>
+        /// <param name="heatRecoverySources">heatRecoverySources</param>
+        /// <param name="boilerPlants">boilerPlants</param>
         /// <param name="elementType">elementType</param>
         /// <param name="buildType">buildType</param>
         [JsonConstructor]
-        public Element(Option<string?> elementId = default, Option<string?> networkElementInstanceName = default, Option<List<Object>?> soaMilestones = default, Option<string?> elementName = default, Option<bool?> isMainEnergyCentre = default, Option<bool?> isSupplyNewBuildings = default, Option<ElementTypeInShort?> elementType = default, Option<NetworkBuildStatus?> buildType = default)
+        public Element(Option<string?> elementId = default, Option<string?> networkElementInstanceName = default, Option<List<Object>?> soaMilestones = default, Option<string?> elementName = default, Option<bool?> isMainEnergyCentre = default, Option<bool?> isSupplyNewBuildings = default, Option<NullableOfNetworkDetailsStatus?> energyCentreStatus = default, Option<List<CombinedHeatAndPowerSystem>?> combinedHeatAndPowerSystems = default, Option<List<HeatPumpSystem>?> heatPumpSystems = default, Option<List<HeatRecoverySource>?> heatRecoverySources = default, Option<List<BoilerPlant>?> boilerPlants = default, Option<ElementTypeInShort?> elementType = default, Option<NetworkBuildStatus?> buildType = default)
         {
             ElementIdOption = elementId;
             NetworkElementInstanceNameOption = networkElementInstanceName;
@@ -50,12 +55,30 @@ namespace HNTAS.Api.Client.Model
             ElementNameOption = elementName;
             IsMainEnergyCentreOption = isMainEnergyCentre;
             IsSupplyNewBuildingsOption = isSupplyNewBuildings;
+            EnergyCentreStatusOption = energyCentreStatus;
+            CombinedHeatAndPowerSystemsOption = combinedHeatAndPowerSystems;
+            HeatPumpSystemsOption = heatPumpSystems;
+            HeatRecoverySourcesOption = heatRecoverySources;
+            BoilerPlantsOption = boilerPlants;
             ElementTypeOption = elementType;
             BuildTypeOption = buildType;
             OnCreated();
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Used to track the state of EnergyCentreStatus
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NullableOfNetworkDetailsStatus?> EnergyCentreStatusOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets EnergyCentreStatus
+        /// </summary>
+        [JsonPropertyName("energyCentreStatus")]
+        public NullableOfNetworkDetailsStatus? EnergyCentreStatus { get { return this.EnergyCentreStatusOption; } set { this.EnergyCentreStatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ElementType
@@ -162,6 +185,58 @@ namespace HNTAS.Api.Client.Model
         public bool? IsSupplyNewBuildings { get { return this.IsSupplyNewBuildingsOption; } set { this.IsSupplyNewBuildingsOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of CombinedHeatAndPowerSystems
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<CombinedHeatAndPowerSystem>?> CombinedHeatAndPowerSystemsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets CombinedHeatAndPowerSystems
+        /// </summary>
+        [JsonPropertyName("combinedHeatAndPowerSystems")]
+        public List<CombinedHeatAndPowerSystem>? CombinedHeatAndPowerSystems { get { return this.CombinedHeatAndPowerSystemsOption; } set { this.CombinedHeatAndPowerSystemsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of HeatPumpSystems
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<HeatPumpSystem>?> HeatPumpSystemsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HeatPumpSystems
+        /// </summary>
+        [JsonPropertyName("heatPumpSystems")]
+        public List<HeatPumpSystem>? HeatPumpSystems { get { return this.HeatPumpSystemsOption; } set { this.HeatPumpSystemsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of HeatRecoverySources
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<HeatRecoverySource>?> HeatRecoverySourcesOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HeatRecoverySources
+        /// </summary>
+        [JsonPropertyName("heatRecoverySources")]
+        public List<HeatRecoverySource>? HeatRecoverySources { get { return this.HeatRecoverySourcesOption; } set { this.HeatRecoverySourcesOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of BoilerPlants
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<BoilerPlant>?> BoilerPlantsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets BoilerPlants
+        /// </summary>
+        [JsonPropertyName("boilerPlants")]
+        public List<BoilerPlant>? BoilerPlants { get { return this.BoilerPlantsOption; } set { this.BoilerPlantsOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -175,6 +250,11 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  ElementName: ").Append(ElementName).Append("\n");
             sb.Append("  IsMainEnergyCentre: ").Append(IsMainEnergyCentre).Append("\n");
             sb.Append("  IsSupplyNewBuildings: ").Append(IsSupplyNewBuildings).Append("\n");
+            sb.Append("  EnergyCentreStatus: ").Append(EnergyCentreStatus).Append("\n");
+            sb.Append("  CombinedHeatAndPowerSystems: ").Append(CombinedHeatAndPowerSystems).Append("\n");
+            sb.Append("  HeatPumpSystems: ").Append(HeatPumpSystems).Append("\n");
+            sb.Append("  HeatRecoverySources: ").Append(HeatRecoverySources).Append("\n");
+            sb.Append("  BoilerPlants: ").Append(BoilerPlants).Append("\n");
             sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("  BuildType: ").Append(BuildType).Append("\n");
             sb.Append("}\n");
@@ -220,6 +300,11 @@ namespace HNTAS.Api.Client.Model
             Option<string?> elementName = default;
             Option<bool?> isMainEnergyCentre = default;
             Option<bool?> isSupplyNewBuildings = default;
+            Option<NullableOfNetworkDetailsStatus?> energyCentreStatus = default;
+            Option<List<CombinedHeatAndPowerSystem>?> combinedHeatAndPowerSystems = default;
+            Option<List<HeatPumpSystem>?> heatPumpSystems = default;
+            Option<List<HeatRecoverySource>?> heatRecoverySources = default;
+            Option<List<BoilerPlant>?> boilerPlants = default;
             Option<ElementTypeInShort?> elementType = default;
             Option<NetworkBuildStatus?> buildType = default;
 
@@ -256,6 +341,23 @@ namespace HNTAS.Api.Client.Model
                         case "isSupplyNewBuildings":
                             isSupplyNewBuildings = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
                             break;
+                        case "energyCentreStatus":
+                            string? energyCentreStatusRawValue = utf8JsonReader.GetString();
+                            if (energyCentreStatusRawValue != null)
+                                energyCentreStatus = new Option<NullableOfNetworkDetailsStatus?>(NullableOfNetworkDetailsStatusValueConverter.FromStringOrDefault(energyCentreStatusRawValue));
+                            break;
+                        case "combinedHeatAndPowerSystems":
+                            combinedHeatAndPowerSystems = new Option<List<CombinedHeatAndPowerSystem>?>(JsonSerializer.Deserialize<List<CombinedHeatAndPowerSystem>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "heatPumpSystems":
+                            heatPumpSystems = new Option<List<HeatPumpSystem>?>(JsonSerializer.Deserialize<List<HeatPumpSystem>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "heatRecoverySources":
+                            heatRecoverySources = new Option<List<HeatRecoverySource>?>(JsonSerializer.Deserialize<List<HeatRecoverySource>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "boilerPlants":
+                            boilerPlants = new Option<List<BoilerPlant>?>(JsonSerializer.Deserialize<List<BoilerPlant>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         case "elementType":
                             string? elementTypeRawValue = utf8JsonReader.GetString();
                             if (elementTypeRawValue != null)
@@ -278,7 +380,7 @@ namespace HNTAS.Api.Client.Model
             if (buildType.IsSet && buildType.Value == null)
                 throw new ArgumentNullException(nameof(buildType), "Property is not nullable for class Element.");
 
-            return new Element(elementId, networkElementInstanceName, soaMilestones, elementName, isMainEnergyCentre, isSupplyNewBuildings, elementType, buildType);
+            return new Element(elementId, networkElementInstanceName, soaMilestones, elementName, isMainEnergyCentre, isSupplyNewBuildings, energyCentreStatus, combinedHeatAndPowerSystems, heatPumpSystems, heatRecoverySources, boilerPlants, elementType, buildType);
         }
 
         /// <summary>
@@ -343,6 +445,46 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("isSupplyNewBuildings");
 
+            if (element.EnergyCentreStatusOption.IsSet)
+                if (element.EnergyCentreStatusOption!.Value != null)
+                {
+                    var energyCentreStatusRawValue = NullableOfNetworkDetailsStatusValueConverter.ToJsonValue(element.EnergyCentreStatusOption.Value!.Value);
+                    writer.WriteString("energyCentreStatus", energyCentreStatusRawValue);
+                }
+                else
+                    writer.WriteNull("energyCentreStatus");
+            if (element.CombinedHeatAndPowerSystemsOption.IsSet)
+                if (element.CombinedHeatAndPowerSystemsOption.Value != null)
+                {
+                    writer.WritePropertyName("combinedHeatAndPowerSystems");
+                    JsonSerializer.Serialize(writer, element.CombinedHeatAndPowerSystems, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("combinedHeatAndPowerSystems");
+            if (element.HeatPumpSystemsOption.IsSet)
+                if (element.HeatPumpSystemsOption.Value != null)
+                {
+                    writer.WritePropertyName("heatPumpSystems");
+                    JsonSerializer.Serialize(writer, element.HeatPumpSystems, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("heatPumpSystems");
+            if (element.HeatRecoverySourcesOption.IsSet)
+                if (element.HeatRecoverySourcesOption.Value != null)
+                {
+                    writer.WritePropertyName("heatRecoverySources");
+                    JsonSerializer.Serialize(writer, element.HeatRecoverySources, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("heatRecoverySources");
+            if (element.BoilerPlantsOption.IsSet)
+                if (element.BoilerPlantsOption.Value != null)
+                {
+                    writer.WritePropertyName("boilerPlants");
+                    JsonSerializer.Serialize(writer, element.BoilerPlants, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("boilerPlants");
             if (element.ElementTypeOption.IsSet)
             {
                 var elementTypeRawValue = ElementTypeInShortValueConverter.ToJsonValue(element.ElementType!.Value);

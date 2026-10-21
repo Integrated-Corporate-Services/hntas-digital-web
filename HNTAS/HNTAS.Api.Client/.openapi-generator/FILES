@@ -10,8 +10,10 @@ docs/apis/AssessorApi.md
 docs/apis/AssignedAssessorApi.md
 docs/apis/AuditApi.md
 docs/apis/CarbonCalculatorApi.md
+docs/apis/ChpOperationalModesApi.md
 docs/apis/CountriesAndTerritoriesApi.md
 docs/apis/FeedbackApi.md
+docs/apis/FuelTypesApi.md
 docs/apis/HeatNetworksApi.md
 docs/apis/ImportApi.md
 docs/apis/InvitationsApi.md
@@ -39,13 +41,16 @@ docs/models/AuditLogRequest.md
 docs/models/AuditLogResponse.md
 docs/models/Background.md
 docs/models/BoilerInput.md
+docs/models/BoilerPlant.md
 docs/models/CCKpiValueRequest.md
+docs/models/CHPOperationalMode.md
 docs/models/CarbonCalculatorConfigRequest.md
 docs/models/CarbonCalculatorConfigResponse.md
 docs/models/CarbonCalculatorRequest.md
 docs/models/CarbonCalculatorResponse.md
 docs/models/CarbonInputUiDisplay.md
 docs/models/ChpInput.md
+docs/models/CombinedHeatAndPowerSystem.md
 docs/models/ConfigDefault.md
 docs/models/ConnectionType.md
 docs/models/ContributorRole.md
@@ -67,6 +72,7 @@ docs/models/EnergyCentreDetails.md
 docs/models/EnumItemResponse.md
 docs/models/ExistingNetworkRequest.md
 docs/models/ExistingNetworkResponse.md
+docs/models/FuelType.md
 docs/models/HeatNetwork.md
 docs/models/HeatNetworkConnections.md
 docs/models/HeatNetworkDashboardResponse.md
@@ -81,6 +87,8 @@ docs/models/HeatNetworkResponse.md
 docs/models/HeatNetworkType.md
 docs/models/HeatNetworkUserResponse.md
 docs/models/HeatPumpInput.md
+docs/models/HeatPumpSystem.md
+docs/models/HeatRecoverySource.md
 docs/models/HnRoleMapping.md
 docs/models/ImportResult.md
 docs/models/InitialUserRegistrationRequest.md
@@ -125,6 +133,7 @@ docs/models/NullableOfEnergyCentreType.md
 docs/models/NullableOfHeatNetworkType.md
 docs/models/NullableOfMilestone.md
 docs/models/NullableOfNetworkBuildStatus.md
+docs/models/NullableOfNetworkDetailsStatus.md
 docs/models/NullableOfPreferredContactType.md
 docs/models/NullableOfSoaStage.md
 docs/models/NullableOfUserRole.md
@@ -185,8 +194,10 @@ src/HNTAS.Api.Client/Api/AssessorApi.cs
 src/HNTAS.Api.Client/Api/AssignedAssessorApi.cs
 src/HNTAS.Api.Client/Api/AuditApi.cs
 src/HNTAS.Api.Client/Api/CarbonCalculatorApi.cs
+src/HNTAS.Api.Client/Api/ChpOperationalModesApi.cs
 src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
 src/HNTAS.Api.Client/Api/FeedbackApi.cs
+src/HNTAS.Api.Client/Api/FuelTypesApi.cs
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
 src/HNTAS.Api.Client/Api/ImportApi.cs
@@ -238,13 +249,16 @@ src/HNTAS.Api.Client/Model/AuditLogRequest.cs
 src/HNTAS.Api.Client/Model/AuditLogResponse.cs
 src/HNTAS.Api.Client/Model/Background.cs
 src/HNTAS.Api.Client/Model/BoilerInput.cs
+src/HNTAS.Api.Client/Model/BoilerPlant.cs
 src/HNTAS.Api.Client/Model/CCKpiValueRequest.cs
+src/HNTAS.Api.Client/Model/CHPOperationalMode.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorConfigRequest.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorConfigResponse.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorRequest.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorResponse.cs
 src/HNTAS.Api.Client/Model/CarbonInputUiDisplay.cs
 src/HNTAS.Api.Client/Model/ChpInput.cs
+src/HNTAS.Api.Client/Model/CombinedHeatAndPowerSystem.cs
 src/HNTAS.Api.Client/Model/ConfigDefault.cs
 src/HNTAS.Api.Client/Model/ConnectionType.cs
 src/HNTAS.Api.Client/Model/ContributorRole.cs
@@ -266,6 +280,7 @@ src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
 src/HNTAS.Api.Client/Model/ExistingNetworkRequest.cs
 src/HNTAS.Api.Client/Model/ExistingNetworkResponse.cs
+src/HNTAS.Api.Client/Model/FuelType.cs
 src/HNTAS.Api.Client/Model/HeatNetwork.cs
 src/HNTAS.Api.Client/Model/HeatNetworkConnections.cs
 src/HNTAS.Api.Client/Model/HeatNetworkDashboardResponse.cs
@@ -280,6 +295,8 @@ src/HNTAS.Api.Client/Model/HeatNetworkResponse.cs
 src/HNTAS.Api.Client/Model/HeatNetworkType.cs
 src/HNTAS.Api.Client/Model/HeatNetworkUserResponse.cs
 src/HNTAS.Api.Client/Model/HeatPumpInput.cs
+src/HNTAS.Api.Client/Model/HeatPumpSystem.cs
+src/HNTAS.Api.Client/Model/HeatRecoverySource.cs
 src/HNTAS.Api.Client/Model/HnRoleMapping.cs
 src/HNTAS.Api.Client/Model/ImportResult.cs
 src/HNTAS.Api.Client/Model/InitialUserRegistrationRequest.cs
@@ -324,6 +341,7 @@ src/HNTAS.Api.Client/Model/NullableOfEnergyCentreType.cs
 src/HNTAS.Api.Client/Model/NullableOfHeatNetworkType.cs
 src/HNTAS.Api.Client/Model/NullableOfMilestone.cs
 src/HNTAS.Api.Client/Model/NullableOfNetworkBuildStatus.cs
+src/HNTAS.Api.Client/Model/NullableOfNetworkDetailsStatus.cs
 src/HNTAS.Api.Client/Model/NullableOfPreferredContactType.cs
 src/HNTAS.Api.Client/Model/NullableOfSoaStage.cs
 src/HNTAS.Api.Client/Model/NullableOfUserRole.cs

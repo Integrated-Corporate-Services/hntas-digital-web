@@ -157,7 +157,14 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new PagedResultOfUserNetworkDetailsResponseJsonConverter(),
         new UserNetworkDetailsResponseJsonConverter(),
         new PagedResultOfManagedUserResponseJsonConverter(),
-        new InvitationJsonConverter()
+        new InvitationJsonConverter(),
+        new FuelTypeJsonConverter(),
+        new CHPOperationalModeJsonConverter(),
+        new BoilerInputJsonConverter(),
+        new CombinedHeatAndPowerSystemJsonConverter(),
+        new HeatPumpInputJsonConverter(),
+        new HeatRecoverySourceJsonConverter(),
+
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();
@@ -287,6 +294,20 @@ builder.Services.AddHttpClient<IFeedbackApi, FeedbackApi>(client =>
     client.BaseAddress = new Uri(coreApiBaseUrl);
 });
 
+builder.Services.AddSingleton<FuelTypesApiEvents>();
+builder.Services.AddHttpClient<IFuelTypesApi, FuelTypesApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddSingleton<ChpOperationalModesApiEvents>();
+builder.Services.AddHttpClient<IChpOperationalModesApi, ChpOperationalModesApi>(client =>
+{
+    client.BaseAddress = new Uri(coreApiBaseUrl);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 builder.Services.AddScoped<ISessionHelper, SessionHelper>();
 
 builder.Services.AddScoped<IWorkflowManager, WorkflowManager>();
@@ -319,6 +340,7 @@ builder.Services.AddScoped<INotificationHistoryService, NotificationHistoryServi
 builder.Services.AddScoped<IAssignedAssessorService, AssignedAssessorService>();
 builder.Services.AddScoped<IArmsDashboardService, ArmsDashboardService>();
 builder.Services.AddScoped<IImportExistingNetworksService, ImportExistingNetworksService>();
+builder.Services.AddScoped<IEnergyCentrePlantDataService, EnergyCentrePlantDataService>();
 builder.Services.AddSingleton<CertifierEmailGeneratorService>();
 
 builder.Services.AddSingleton<IAmazonS3>(sp =>

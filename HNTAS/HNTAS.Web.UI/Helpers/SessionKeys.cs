@@ -131,5 +131,7 @@
 
         public const string IsCommualNetworkKey = "IsCommualNetworkKey";
         public const string HasOwnEnergyCentreKey = "HasOwnedEnergyCentreKey";
+
+        public const string EcPlantOptionsViewModelSessionKey = "EcPlantOptionsViewModelSessionKey";
     }
 }

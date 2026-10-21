@@ -10,6 +10,11 @@ Name | Type | Description | Notes
 **ElementName** | **string** |  | [optional] 
 **IsMainEnergyCentre** | **bool** |  | [optional] 
 **IsSupplyNewBuildings** | **bool** |  | [optional] 
+**EnergyCentreStatus** | **NullableOfNetworkDetailsStatus** |  | [optional] 
+**CombinedHeatAndPowerSystems** | [**List&lt;CombinedHeatAndPowerSystem&gt;**](CombinedHeatAndPowerSystem.md) |  | [optional] 
+**HeatPumpSystems** | [**List&lt;HeatPumpSystem&gt;**](HeatPumpSystem.md) |  | [optional] 
+**HeatRecoverySources** | [**List&lt;HeatRecoverySource&gt;**](HeatRecoverySource.md) |  | [optional] 
+**BoilerPlants** | [**List&lt;BoilerPlant&gt;**](BoilerPlant.md) |  | [optional] 
 **ElementType** | **ElementTypeInShort** |  | [optional] 
 **BuildType** | **NetworkBuildStatus** |  | [optional] 
 

@@ -1,0 +1,58 @@
+﻿@using HNTAS.Web.UI.Models.EcPlantData
+@model EcPlantOptionsViewModel
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <form class="form" asp-action="EcPlantOptions" method="post">
+
+            <span class="govuk-caption-l">HN2000154 abc, </span>
+            <h1 class="govuk-heading-l">Tell us about your energy centre plant</h1>
+            <p class="govuk-body">Provide the number of energy centre elements within the plant. Enter 0 if none apply.</p>
+
+            <h2 class="govuk-heading-m">ex1</h2>
+
+            <div class="govuk-form-group">
+                <label class="govuk-label">
+                    Number of combined heat and power systems
+                </label>
+                <input class="govuk-input govuk-input--width-3" id="@Model.NumberOfChp" asp-for="@Model.NumberOfChp" type="number">
+            </div>
+  
+            <div class="govuk-form-group">
+                <label class="govuk-label">
+                    Number of heat pump systems
+                </label>
+
+                <input class="govuk-input govuk-input--width-3" id="@Model.NumberOfHeatPump" asp-for="@Model.NumberOfHeatPump" type="number">
+            </div>
+
+  
+            <div class="govuk-form-group">
+                <label class="govuk-label">
+                    Number of high grade heat recovery sources
+                </label>
+                <div class="govuk-hint">
+                    Waste and natural sources that do not require a heat pump
+                </div>
+
+                <input class="govuk-input govuk-input--width-3" id="@Model.NumberOfHighHeatRecoverySources" asp-for="@Model.NumberOfHighHeatRecoverySources" type="number">
+
+            </div>
+
+            <div class="govuk-form-group">
+                <label class="govuk-label">
+                    Number of boiler plants
+                </label>
+                <input class="govuk-input govuk-input--width-3" id="@Model.NumberOfBoilerPlants" asp-for="@Model.NumberOfBoilerPlants" type="number">
+
+            </div>
+
+            <button type="submit" class="govuk-button">
+                Continue
+            </button>
+
+        </form>
+
+    </div>
+</div>

@@ -61,13 +61,16 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new AuditLogResponseJsonConverter());
             _jsonOptions.Converters.Add(new BackgroundJsonConverter());
             _jsonOptions.Converters.Add(new BoilerInputJsonConverter());
+            _jsonOptions.Converters.Add(new BoilerPlantJsonConverter());
             _jsonOptions.Converters.Add(new CCKpiValueRequestJsonConverter());
+            _jsonOptions.Converters.Add(new CHPOperationalModeJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorConfigRequestJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorConfigResponseJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorRequestJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorResponseJsonConverter());
             _jsonOptions.Converters.Add(new CarbonInputUiDisplayJsonConverter());
             _jsonOptions.Converters.Add(new ChpInputJsonConverter());
+            _jsonOptions.Converters.Add(new CombinedHeatAndPowerSystemJsonConverter());
             _jsonOptions.Converters.Add(new ConfigDefaultJsonConverter());
             _jsonOptions.Converters.Add(new ConnectionTypeJsonConverter());
             _jsonOptions.Converters.Add(new ConnectionTypeNullableJsonConverter());
@@ -92,6 +95,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
             _jsonOptions.Converters.Add(new ExistingNetworkRequestJsonConverter());
             _jsonOptions.Converters.Add(new ExistingNetworkResponseJsonConverter());
+            _jsonOptions.Converters.Add(new FuelTypeJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkConnectionsJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkDashboardResponseJsonConverter());
@@ -108,6 +112,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new HeatNetworkTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new HeatNetworkUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatPumpInputJsonConverter());
+            _jsonOptions.Converters.Add(new HeatPumpSystemJsonConverter());
+            _jsonOptions.Converters.Add(new HeatRecoverySourceJsonConverter());
             _jsonOptions.Converters.Add(new HnRoleMappingJsonConverter());
             _jsonOptions.Converters.Add(new ImportResultJsonConverter());
             _jsonOptions.Converters.Add(new InitialUserRegistrationRequestJsonConverter());
@@ -160,6 +166,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NullableOfMilestoneNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfNetworkBuildStatusJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfNetworkBuildStatusNullableJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfNetworkDetailsStatusJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfNetworkDetailsStatusNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfPreferredContactTypeJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfPreferredContactTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfSoaStageJsonConverter());
@@ -230,8 +238,10 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<AssignedAssessorApiEvents>();
             _services.AddSingleton<AuditApiEvents>();
             _services.AddSingleton<CarbonCalculatorApiEvents>();
+            _services.AddSingleton<ChpOperationalModesApiEvents>();
             _services.AddSingleton<CountriesAndTerritoriesApiEvents>();
             _services.AddSingleton<FeedbackApiEvents>();
+            _services.AddSingleton<FuelTypesApiEvents>();
             _services.AddSingleton<HeatNetworksApiEvents>();
             _services.AddSingleton<ImportApiEvents>();
             _services.AddSingleton<InvitationsApiEvents>();
@@ -265,8 +275,10 @@ namespace HNTAS.Api.Client.Client
             builders.Add(_services.AddHttpClient<IAssignedAssessorApi, AssignedAssessorApi>(client));
             builders.Add(_services.AddHttpClient<IAuditApi, AuditApi>(client));
             builders.Add(_services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client));
+            builders.Add(_services.AddHttpClient<IChpOperationalModesApi, ChpOperationalModesApi>(client));
             builders.Add(_services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client));
             builders.Add(_services.AddHttpClient<IFeedbackApi, FeedbackApi>(client));
+            builders.Add(_services.AddHttpClient<IFuelTypesApi, FuelTypesApi>(client));
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
             builders.Add(_services.AddHttpClient<IImportApi, ImportApi>(client));
             builders.Add(_services.AddHttpClient<IInvitationsApi, InvitationsApi>(client));

@@ -8,8 +8,18 @@ namespace HNTAS.Web.UI.Helpers
 {
     public static class NetworkElementHelper
     {
-        public static List<NetworkDetailsOption> GetDefaultNetworkDetailsOptions()
+        public static List<NetworkDetailsOption> GetDefaultNetworkDetailsOptions(bool ecPlantData)
         {
+            if (ecPlantData)
+            {
+                return new List<NetworkDetailsOption>
+                {
+
+                    new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.ReadyToStart, IsEnabled = true },
+                    new() { Id = NetworkDetailsType.EnergyCentrePlantData, Label = "Energy centre plant data", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                    new() { Id = NetworkDetailsType.Soa, Label = "Statement of Applicability", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                };
+            }
             return new List<NetworkDetailsOption>
             {
 
@@ -189,7 +199,7 @@ namespace HNTAS.Web.UI.Helpers
                 {
                     new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy centres", Hint = "The energy centre is a plant room that contains heat generation equipment and/or equipment connecting to an energy source. It may be in the building or located nearby" },
                     new() { Id = HeatNetworkElementType.DistrictDistribution, Label = "District distribution networks", Hint = "The district distribution network connects the energy centre to the buildings it serves."},
-                    new() { Id = HeatNetworkElementType.Substation, Label = "Substations", Hint = "For example, a communal distribution network pressure break" },
+                    new() { Id = HeatNetworkElementType.Substation, Label = "Substations", Hint = "The substation is the point where the heat network connects to the building. It contains heat exchangers and metering equipment." },
                     new() { Id = HeatNetworkElementType.NonDomesticConsumerConnection, Label = "Non-domestic consumer connections", Hint = "The connection between a district network and a single consumer heat system"},
                 };
             }
@@ -198,7 +208,7 @@ namespace HNTAS.Web.UI.Helpers
                 return new List<NetworkElementOption>
                 {
                     new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy centres", Hint = "The energy centre is a plant room that contains heat generation equipment and/or equipment connecting to an energy source. It may be in the building or located nearby" },
-                    new() { Id = HeatNetworkElementType.Substation, Label = "Substations", Hint = "The substation is the point where the heat network connects to the building. It contains heat exchangers and metering equipment." },
+                    new() { Id = HeatNetworkElementType.Substation, Label = "Substations", Hint = "For example, a communal distribution network pressure break" },
                     new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal distribution networks", Hint = "The communal distribution network supplies dwellings or units within one communal building."},
                     new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer connections", Hint = "The connection between a communal distribution network and a single consumer heat system" },
                 };
