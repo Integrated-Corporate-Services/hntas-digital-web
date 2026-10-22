@@ -66,7 +66,7 @@ namespace HNTAS.Web.UI.Controllers
                 var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
                 // verify here if they can take up this role or not
                 var invitee = await _userService.GetUserByEmailIdAsync(model.EmailId);
-                var eligibleForNetworkManager = (invitee == null) || (invitee != null && !invitee.ContributingOrganisations!.Contains(orgId!));
+                var eligibleForNetworkManager = (invitee == null) || !invitee.ContributingOrganisations!.Contains(orgId!);
                 if (eligibleForNetworkManager)
                 {
                     var invitationId = await _invitationService.AddInvitedUserAsync(
