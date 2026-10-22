@@ -109,7 +109,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             // Handles "BOTH" or any unhandled value
-            return RedirectToAction("HeatNetworkEcNewNetwork");
+            return RedirectToAction("HeatNetworkEcNewAndExistingNetwork");
         }
 
         [HttpGet]
@@ -131,12 +131,16 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
                 .Replace("Controller", string.Empty);
 
+            ViewBag.PostMethod = "SaveEcNewNetwork";
+
             return View("HeatNetworkEcNewNetwork", model);
         }
 
+       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SaveECNewNetwork(NetworkSupplyTypeModel model)
+        public IActionResult SaveEcNewNetwork(NetworkSupplyTypeModel model)
         {
             ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
                 .Replace("Controller", string.Empty);
@@ -144,7 +148,7 @@ namespace HNTAS.Web.UI.Controllers
             if (!ModelState.IsValid)
             {
                 this.ShowBackButton("HeatNetworkStatus", "HeatNetworkRegistration");
-                return View("HeatNetworkEcNewNetwork", model);
+                return View( "HeatNetworkEcNewNetwork", model);
             }
 
             var energyCentreOption = model?.EnergyCentreOption;
@@ -210,6 +214,28 @@ namespace HNTAS.Web.UI.Controllers
         }
 
 
+        public IActionResult HeatNetworkEcNewAndExistingNetwork()
+        {
+            this.ShowBackButton("HeatNetworkStatus", "HeatNetworkRegistration");
+            var model = _sessionHelper.GetFromSession<NetworkSupplyTypeModel>(
+                HttpContext,
+                SessionKeys.NetworkSupplyTypeModelKey
+            ) ?? new NetworkSupplyTypeModel();
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
+                .Replace("Controller", string.Empty);
+
+            ViewBag.PostMethod = "SaveEcNewAndExistingNetwork";
+
+            return View("HeatNetworkEcNewNetwork", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveEcNewAndExistingNetwork(NetworkSupplyTypeModel model)
+        {
+            return SaveEcNewNetwork(model);
+        }
+
         [HttpGet]
         public IActionResult HeatNetworkConnections()
         {
@@ -224,6 +250,12 @@ namespace HNTAS.Web.UI.Controllers
                 HttpContext,
                 SessionKeys.NetworkStatusModelKey
             );
+
+            if(statusModel?.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString())
+            {
+                //override back button
+                this.ShowBackButton("HeatNetworkEcNewAndExistingNetwork", "HeatNetworkRegistration");
+            }
 
             var supplyTypeModel = _sessionHelper.GetFromSession<NetworkSupplyTypeModel>(
                 HttpContext,
@@ -288,31 +320,28 @@ namespace HNTAS.Web.UI.Controllers
 
             var supplyTypeModel = _sessionHelper.GetFromSession<NetworkSupplyTypeModel>(HttpContext,SessionKeys.NetworkSupplyTypeModelKey);
 
-            if (statusModel?.BuildStatus == NullableOfNetworkBuildStatus.New.ToString())
+            if (supplyTypeModel?.EnergyCentreOption == NullableOfEnergyCentreType.SuppliesMultipleBuildings.ToString()
+                || supplyTypeModel?.EnergyCentreOption == NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString())
             {
-                if (supplyTypeModel?.EnergyCentreOption == NullableOfEnergyCentreType.SuppliesMultipleBuildings.ToString()
-                    || supplyTypeModel?.EnergyCentreOption == NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString())
-                {
-                    // Calculate total sum of connections across all fields (handling potential nulls safely)
-                    var sumOfConnections = (model.NewCommunalBuildings ?? 0) +
-                                           (model.NewHousesOrMaisonettes ?? 0) +
-                                           (model.NewNonDomesticBuildings ?? 0) +
-                                           (model.NewMultiTenantedNonDomestic ?? 0) +
-                                           (model.NewOtherDistrictNetworks ?? 0);
+                // Calculate total sum of connections across all fields (handling potential nulls safely)
+                var sumOfConnections = (model.NewCommunalBuildings ?? 0) +
+                                        (model.NewHousesOrMaisonettes ?? 0) +
+                                        (model.NewNonDomesticBuildings ?? 0) +
+                                        (model.NewMultiTenantedNonDomestic ?? 0) +
+                                        (model.NewOtherDistrictNetworks ?? 0);
 
-                    // Rule 2.a: Total connections less than 2
-                    // Rule 2.b: Exactly 1 communal building and all other connections are 0 (which also results in sum = 1 < 2)
-                    if (sumOfConnections < 2)
-                    {
-                        ModelState.AddModelError(nameof(model.NewCommunalBuildings), "You indicated multiple buildings. Enter a minimum of 2 connections.");
-                    }
-                }
-
-                if(supplyTypeModel?.EnergyCentreOption == NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString())
+                // Rule 2.a: Total connections less than 2
+                // Rule 2.b: Exactly 1 communal building and all other connections are 0 (which also results in sum = 1 < 2)
+                if (sumOfConnections < 2)
                 {
-                    //default to NewOtherDistrictNetworks to 1
-                    model.NewOtherDistrictNetworks = 1;
+                    ModelState.AddModelError(nameof(model.NewCommunalBuildings), "You indicated multiple buildings. Enter a minimum of 2 connections.");
                 }
+            }
+
+            if(supplyTypeModel?.EnergyCentreOption == NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString())
+            {
+                //default to NewOtherDistrictNetworks to 1
+                model.NewOtherDistrictNetworks = 1;
             }
 
             // 3. Handle model validation failure
@@ -402,8 +431,15 @@ namespace HNTAS.Web.UI.Controllers
             // Save to session (saves 0, 1, or whatever valid number the user posted)
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.CommunalBuildingResponsibilityModelKey, model);
 
+            var supplyTypeModel = _sessionHelper.GetFromSession<NetworkSupplyTypeModel>(HttpContext, SessionKeys.NetworkSupplyTypeModelKey);
+
             // Skip this step if there are no new district networks to report
             if (connectionsModel == null || (connectionsModel.NewOtherDistrictNetworks ?? 0) < 1)
+            {
+                return RedirectToAction("HeatNetworkConnectionSummary");
+            }
+
+            if(supplyTypeModel?.EnergyCentreOption == NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString())
             {
                 return RedirectToAction("HeatNetworkConnectionSummary");
             }
@@ -439,7 +475,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var viewModel = existingModel ?? new DistrictNetworksResponsibilityViewModel();
 
-            viewModel.MaxAllowedDistrictNetworks = connectionsModel.NewOtherDistrictNetworks ?? 0;
+            viewModel.MaxAllowedDistrictNetworks = connectionsModel?.NewOtherDistrictNetworks ?? 0;
 
             return View("DistrictNetworksResponsibility", viewModel);
         }
@@ -927,7 +963,12 @@ namespace HNTAS.Web.UI.Controllers
                 HeatNetworkAddressModel = heatNetworkLocationModel?.HNAddressByStreet ?? null,
                 HeatNetworkPhaseModel = heatNetworkPhaseModel,
                 PathwayModel = _sessionHelper.GetFromSession<PathwayModel>(HttpContext, SessionKeys.PathwayModelKey) ?? new PathwayModel() { Pathway = "1" },
-                ConfirmedDeclaration = false
+                ConfirmedDeclaration = false,
+                NewCommunalBuildingResponsibility = communalBuildingResponsibilityViewModel?.ResponsibleCommunalNetworks ?? 0,
+                NewDistrictBuildingResponsibility = districtNetworksResponsibilityViewModel?.ResponsibleDistrictNetworks ?? 0,
+                CurrentState = networkStatusModel.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString() ? "New and existing" : networkStatusModel.BuildStatus == NullableOfNetworkBuildStatus.New.ToString() ? "New build" : "Both existing and new build",
+                EnergyCentreOptionText = EnergyCentreOptionsHelper.GetOptions("EnergyCentreOption").FirstOrDefault(option => option.OptValue == networkSupplyTypeModel.EnergyCentreOption)?.OptText ?? string.Empty,
+                EnergyCentreOptionValue = networkSupplyTypeModel.EnergyCentreOption ?? string.Empty
             };
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
@@ -935,10 +976,9 @@ namespace HNTAS.Web.UI.Controllers
 
             _sessionHelper.SaveToSession<CheckYourAnswersHeatNetworkModel>(HttpContext, SessionKeys.CheckYourAnswersHeatNetworkModelKey, model);
 
-            ViewBag.AddressPostCodeLable = 
+            ViewBag.AddressOf = 
                networkSupplyTypeModel?.EnergyCentreOption == NullableOfEnergyCentreType.SuppliesMultipleBuildings.ToString() ? "Main energy centre" :
                networkSupplyTypeModel?.EnergyCentreOption == NullableOfEnergyCentreType.SuppliesOneCommunalBuildingOnly.ToString() ? "Energy centre" : "Heat network";
-            ViewBag.AddressPostCodeLable += " address and postcode";
 
             return View("HeatNetworkRegistration/CheckYourAnswers", model);
         }
