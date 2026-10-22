@@ -23,19 +23,28 @@
                         Value = Model.DoesHnHaveMoreThan6Dwellings,
                         ChangeLink = Url.Action("HeatNetworkDwellingsCheck", controllerName, new { hnid = ViewBag.HnId }),
                         ChangeLinkText = "Change"
-                    },                    
+                    },     
+                    new ReviewItem
+                    {
+                        Key = "Current state of this network",
+                        Value = Model.CurrentState,
+                        ChangeLink = Url.Action("HeatNetworkStatus", controllerName),
+                        ChangeLinkText = "Change"
+                    },
+                    new ReviewItem
+                    {
+                        Key = "Does the heat network have a main energy centre",
+                        Value = Model.EnergyCentreOptionText,
+                        ChangeLink = Model.NetworkStatusModel.BuildStatus == NullableOfNetworkBuildStatus.New.ToString() 
+                                        ? Url.Action("HeatNetworkEcNewNetwork", controllerName) 
+                                        : Url.Action("HeatNetworkEcNewAndExistingNetwork", controllerName),
+                        ChangeLinkText = "Change"
+                    },
                     new ReviewItem
                     {
                         Key = "Network type",
                         Value = Model.HeatNetworkType,
                         ChangeLink = Url.Action("HeatNetworkEcNewNetwork", controllerName),
-                        ChangeLinkText = "Change"
-                    },
-                    new ReviewItem
-                    {
-                        Key = "Coordinates",
-                        Value = Model.ECDetailsModel.LatitudeLongitude,
-                        ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("ECCoordinates", controllerName),
                         ChangeLinkText = "Change"
                     },
                     new ReviewItem
@@ -54,9 +63,16 @@
                     },
                     new ReviewItem
                     {
-                        Key = ViewBag.AddressPostCodeLable,
+                        Key = ViewBag.AddressOf + " address and postcode",
                         Value = Model.HeatNetworkAddressModel?.Fulladdress ?? "Not provided",
                         ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("DoesHNHaveAPostcode", controllerName),
+                        ChangeLinkText = "Change"
+                    },
+                     new ReviewItem
+                    {
+                        Key = ViewBag.AddressOf + " grid coordinates",
+                        Value = string.IsNullOrWhiteSpace(Model.ECDetailsModel.LatitudeLongitude) ? "Not provided" : Model.ECDetailsModel.LatitudeLongitude,
+                        ChangeLink = ViewBag.RegistrationSource == RegistrationSource.OFGEM ? null : Url.Action("ECCoordinates", controllerName),
                         ChangeLinkText = "Change"
                     },
                     new ReviewItem
@@ -96,11 +112,18 @@
 
         if (connectionLines.Any())
         {
-            viewModel.Sections[0].Items.Insert(2, new ReviewItem
+
+            var changeLink = Model.EnergyCentreOptionValue == 
+            NullableOfEnergyCentreType.SuppliesOneCommunalBuildingOnly.ToString()
+            || Model.EnergyCentreOptionValue == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString()
+                ? Model.NetworkStatusModel.BuildStatus == NullableOfNetworkBuildStatus.New.ToString() ? Url.Action("HeatNetworkEcNewNetwork", controllerName) : Url.Action("HeatNetworkEcNewAndExistingNetwork", controllerName)
+                : Url.Action("HeatNetworkConnections", controllerName);
+
+            viewModel.Sections[0].Items.Insert(3, new ReviewItem
             {
                 Key = "Connections",
                 Value = string.Join("<br />", connectionLines),
-                ChangeLink = Url.Action("HeatNetworkConnections", controllerName),
+                ChangeLink = changeLink,
                 ChangeLinkText = "Change"
             });
         }
@@ -116,6 +139,27 @@
         ErrorMessage = hasDeclarationErrors ? ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors[0].ErrorMessage : null,
         Value = Model.ConfirmedDeclaration
     };
+}
+
+@if (Model.NewCommunalBuildingResponsibility > 0){
+    viewModel.Sections[0].Items.Insert(4, new ReviewItem
+    {
+        Key = "New communal building networks responsibility",
+        Value = Model.NewCommunalBuildingResponsibility.ToString(),
+        ChangeLink = Url.Action("CommunalBuildingResponsibility", controllerName),
+        ChangeLinkText = "Change"
+    });
+}
+
+@if (Model.NewDistrictBuildingResponsibility > 0)
+{
+    viewModel.Sections[0].Items.Insert(5, new ReviewItem
+    {
+        Key = "New connected district networks responsibility",
+        Value = Model.NewDistrictBuildingResponsibility.ToString(),
+        ChangeLink = Url.Action("DistrictNetworksResponsibility", controllerName),
+        ChangeLinkText = "Change"
+    });
 }
 
 
