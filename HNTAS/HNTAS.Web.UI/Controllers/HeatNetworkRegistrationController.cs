@@ -475,7 +475,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var viewModel = existingModel ?? new DistrictNetworksResponsibilityViewModel();
 
-            viewModel.MaxAllowedDistrictNetworks = connectionsModel.NewOtherDistrictNetworks ?? 0;
+            viewModel.MaxAllowedDistrictNetworks = connectionsModel?.NewOtherDistrictNetworks ?? 0;
 
             return View("DistrictNetworksResponsibility", viewModel);
         }
