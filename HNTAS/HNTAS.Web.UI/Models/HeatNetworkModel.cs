@@ -65,6 +65,11 @@ namespace HNTAS.Web.UI.Models
         public string? HeatNetworkType { get; set; }
         public string? HasOwnEnergyCenter { get; set; }
         public string? ECSuppliesOneCommunalBuilding { get; set; }
+        public string CurrentState { get; set; } = null!;
+        public string EnergyCentreOptionText { get; set; } = null!;
+        public string EnergyCentreOptionValue { get; set; } = null!;
+        public int NewCommunalBuildingResponsibility { get; set; }
+        public int NewDistrictBuildingResponsibility { get; set; }
         public HeatNetworkConnectionsViewModel? HeatNetworkConnectionsModel { get; set; }
         public NetworkStatusModel? NetworkStatusModel { get; set; }
         public NetworkConnectionsViewModel? NetworkConnectionsModel { get; set; }
