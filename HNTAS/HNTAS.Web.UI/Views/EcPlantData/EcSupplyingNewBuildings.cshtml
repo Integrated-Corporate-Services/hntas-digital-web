@@ -6,6 +6,29 @@
 @{
     ViewData["Title"] = "Heat network details";
 }
+<style>
+    .govuk-button--as-link {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: #1d70b8;
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
+        text-decoration: underline;
+    }
+
+        .govuk-button--as-link:hover {
+            color: #003078;
+        }
+
+        .govuk-button--as-link:focus {
+            outline: 3px solid #ffdd00;
+            background-color: #ffdd00;
+            color: #0b0c0c;
+        }
+</style>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <span class="govuk-caption-l">@ViewBag.HNId @ViewBag.HNName</span>
@@ -40,7 +63,7 @@
                         <form asp-action="SelectEcPlantOptions" method="post" style="display:inline;">
                             <input type="hidden" name="elementId" value="@element.ElementId" />
                             <input type="hidden" name="elementName" value="@element.ElementName" />
-                            <button type="submit" class="govuk-link govuk-task-list__link" aria-describedby="@element.ElementId" style="background:none;border:0;padding:0;cursor:pointer;">
+                            <button type="submit" class="govuk-link govuk-task-list__link govuk-button--as-link" aria-describedby="@element.ElementId" style="background:none;border:0;padding:0;cursor:pointer;">
                                 @element.ElementName - @element.ElementId
                             </button>
                         </form>

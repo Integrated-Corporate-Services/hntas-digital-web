@@ -46,8 +46,8 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SelectEcPlantOptions([FromForm] string elementId, [FromForm] string elementName)
         {
-            TempData["EcPlantElementId"] = elementId;
-            TempData["EcPlantElementName"] = elementName;
+            TempData["EcElementId"] = elementId;
+            TempData["EcElementName"] = elementName;
 
             return RedirectToAction(nameof(EcPlantOptions));
         }
@@ -59,8 +59,8 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
 
-            ViewBag.SelectedElementId = TempData.Peek("EcPlantElementId")?.ToString();
-            ViewBag.SelectedElementName = TempData.Peek("EcPlantElementName")?.ToString();
+            ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
+            ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
             var model = _sessionHelper.GetFromSession<EcPlantOptionsViewModel>(HttpContext, SessionKeys.EcPlantOptionsViewModelSessionKey);
 
