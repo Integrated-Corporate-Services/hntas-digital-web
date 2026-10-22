@@ -42,12 +42,25 @@ namespace HNTAS.Web.UI.Controllers
             return View(ecElements);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SelectEcPlantOptions([FromForm] string elementId, [FromForm] string elementName)
+        {
+            TempData["EcPlantElementId"] = elementId;
+            TempData["EcPlantElementName"] = elementName;
+
+            return RedirectToAction(nameof(EcPlantOptions));
+        }
+
         [HttpGet]
-        public async Task<IActionResult> EcPlantOptions([FromQuery] string elementId, [FromQuery] string elementName)
+        public async Task<IActionResult> EcPlantOptions()
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+
+            ViewBag.SelectedElementId = TempData.Peek("EcPlantElementId")?.ToString();
+            ViewBag.SelectedElementName = TempData.Peek("EcPlantElementName")?.ToString();
 
             var model = _sessionHelper.GetFromSession<EcPlantOptionsViewModel>(HttpContext, SessionKeys.EcPlantOptionsViewModelSessionKey);
 
