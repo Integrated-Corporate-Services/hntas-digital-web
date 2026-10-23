@@ -1,0 +1,74 @@
+﻿@using HNTAS.Web.UI.Models.EcPlantData
+@model BoilerPlantInformationViewModel
+@{
+    ViewData["Title"] = "Provide the boiler plant information";
+    var boilerPlantInformationListCount = Model.BoilerPlantInformationList?.Count ?? 0;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <form class="form" asp-action="BoilerPlantInformation" method="post" novalidate>
+            <span class="govuk-caption-l">@ViewBag.HnId , @ViewBag.HnName</span>
+            <h1 class="govuk-heading-l">Provide the boiler plant information</h1>
+
+            @for (int i = 0; i < boilerPlantInformationListCount; i++)
+            {
+                var hasNumberOfMaximumHeatOutputError = ViewData.ModelState[$"boilerplantinformationlist[{i}].maximumheatoutput"]?.Errors.Count > 0;
+                var hasFuelOrHeatSourceError = ViewData.ModelState[$"boilerplantinformationlist[{i}].fuelorheatsourcevalue"]?.Errors.Count > 0;
+
+                var boilerPlantInfo = Model.BoilerPlantInformationList[i];
+                <div class="govuk-!-margin-top-6">
+                    <h2 class="govuk-heading-m">Boiler plant @(i + 1)</h2>
+                    <div class="govuk-grid-row hntas-fields-row">
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" asp-for="BoilerPlantInformationList[i].MaximumHeatOutput">
+                                    Maximum heat output (kWth)
+                                </label>
+                                @if (hasNumberOfMaximumHeatOutputError)
+                                {
+                                    <p id="maximumheatoutput-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span>
+                                        @Html.ValidationMessageFor(m => m.BoilerPlantInformationList[i].MaximumHeatOutput)
+                                    </p>
+                                }
+                                <input class="govuk-input govuk-input--width-5 @(hasNumberOfMaximumHeatOutputError ? "govuk-input--error" : "")" id="@($"boilerplantinformationlist[{i}].maximumheatoutput")" asp-for="BoilerPlantInformationList[i].MaximumHeatOutput" type="number">
+                            </div>
+                        </div>
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" asp-for="BoilerPlantInformationList[i].FuelOrHeatSourceValue">
+                                    Fuel or heat source
+                                </label>
+                                @if (hasFuelOrHeatSourceError)
+                                {
+                                    <p id="fuelorheatsource-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span>
+                                        @Html.ValidationMessageFor(m => m.BoilerPlantInformationList[i].FuelOrHeatSourceValue)
+                                    </p>
+                                }
+                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"boilerplantinformationlist[{i}].fuelorheatsourcevalue")" asp-for="BoilerPlantInformationList[i].FuelOrHeatSourceValue">
+                                    <option value="" selected="">Select a source</option>
+                                    @foreach (var fuelType in ViewBag.FuelTypes)
+                                    {
+                                        <option value="@fuelType.FuelId">@fuelType.Type</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (boilerPlantInformationListCount > 1 && i < boilerPlantInformationListCount - 1)
+                {
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                }
+            }
+
+            <div class="govuk-!-margin-top-6">
+                <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

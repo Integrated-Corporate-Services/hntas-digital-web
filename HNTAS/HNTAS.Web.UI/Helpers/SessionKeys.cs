@@ -135,5 +135,7 @@
         public const string EcPlantOptionsViewModelSessionKey = "EcPlantOptionsViewModelSessionKey";
         public const string ChpInformationViewModelSessionKey = "ChpInformationViewModelSessionKey";
         public const string HeatPumpInformationViewModelSessionKey = "HeatPumpInformationViewModelSessionKey";
+        public const string HighHeatRecoveryInformationViewModelSessionKey = "HighHeatRecoveryInformationViewModelSessionKey";
+        public const string BoilerPlantInformationViewModelSessionKey = "BoilerPlantInformationViewModelSessionKey";
     }
 }

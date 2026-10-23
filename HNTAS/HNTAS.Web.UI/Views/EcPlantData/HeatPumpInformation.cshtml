@@ -20,7 +20,7 @@
                 <div class="govuk-!-margin-top-6">
                     <h2 class="govuk-heading-m">Heat pump system @(i + 1)</h2>
                     <div class="govuk-grid-row hntas-fields-row">
-                        <div class="govuk-grid-column-one-quarter">
+                        <div class="govuk-grid-column-one-half">
                             <div class="govuk-form-group">
                                 <label class="govuk-label" asp-for="HeatPumpInformationList[i].MaximumHeatOutput">
                                     Maximum heat output (kWth)
@@ -32,10 +32,10 @@
                                         @Html.ValidationMessageFor(m => m.HeatPumpInformationList[i].MaximumHeatOutput)
                                     </p>
                                 }
-                                <input class="govuk-input govuk-input--width-5 @(hasNumberOfMaximumHeatOutputError ? "govuk-input--error" : "")" id="@($"heatinformationlist[{i}].maximumheatoutput")" asp-for="HeatPumpInformationList[i].MaximumHeatOutput" type="number">
+                                <input class="govuk-input govuk-input--width-5 @(hasNumberOfMaximumHeatOutputError ? "govuk-input--error" : "")" id="@($"heatpumpinformationlist[{i}].maximumheatoutput")" asp-for="HeatPumpInformationList[i].MaximumHeatOutput" type="number">
                             </div>
                         </div>
-                        <div class="govuk-grid-column-one-quarter">
+                        <div class="govuk-grid-column-one-half">
                             <div class="govuk-form-group">
                                 <label class="govuk-label" asp-for="HeatPumpInformationList[i].FuelOrHeatSourceValue">
                                     Fuel or heat source
@@ -47,9 +47,9 @@
                                         @Html.ValidationMessageFor(m => m.HeatPumpInformationList[i].FuelOrHeatSourceValue)
                                     </p>
                                 }
-                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"heatinformationlist[{i}].fuelorheatsourcevalue")" asp-for="HeatPumpInformationList[i].FuelOrHeatSourceValue">
+                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"heatpumpinformationlist[{i}].fuelorheatsourcevalue")" asp-for="HeatPumpInformationList[i].FuelOrHeatSourceValue">
                                     <option value="" selected="">Select a source</option>
-                                    @foreach (var fuelType in Model.FuelTypes!)
+                                    @foreach (var fuelType in ViewBag.FuelTypes)
                                     {
                                         <option value="@fuelType.FuelId">@fuelType.Type</option>
                                     }

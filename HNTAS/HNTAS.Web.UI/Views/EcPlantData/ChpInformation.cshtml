@@ -67,7 +67,7 @@
                                 }
                                 <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"chpinformationlist[{i}].fuelorheatsourcevalue")" asp-for="ChpInformationList[i].FuelOrHeatSourceValue">
                                     <option value="" selected="">Select a source</option>
-                                    @foreach (var fuelType in Model.FuelTypes!)
+                                    @foreach (var fuelType in ViewBag.FuelTypes!)
                                     {
                                         <option value="@fuelType.FuelId">@fuelType.Type</option>
                                     }
@@ -89,7 +89,7 @@
                                 }
                                 <select class="govuk-select @(hasOperationalModeError ? "govuk-select--error" : "")" id="@($"chpinformationlist[{i}].operationalmodevalue")" asp-for="ChpInformationList[i].OperationalModeValue">
                                     <option value="" selected="">Select a mode</option>
-                                    @foreach (var operationalMode in Model.OperationalModes!)
+                                    @foreach (var operationalMode in ViewBag.OperationalModes)
                                     {
                                         <option value="@operationalMode.Ident">@operationalMode.OperationalMode</option>
                                     }

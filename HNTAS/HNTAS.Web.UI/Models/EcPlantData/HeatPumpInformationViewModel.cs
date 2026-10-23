@@ -4,8 +4,7 @@ namespace HNTAS.Web.UI.Models.EcPlantData
 {
     public class HeatPumpInformationViewModel
     {
-        public List<HeatPumpInformation> HeatPumpInformationList { get; set; } = new List<HeatPumpInformation>();
-        public List<FuelType>? FuelTypes { get; set; } = new List<FuelType>();
+        public List<HeatPumpInformation> HeatPumpInformationList { get; set; } = new List<HeatPumpInformation>();        
     }
 
     public class HeatPumpInformation : HeatAndFuelBaseViewModel
