@@ -500,6 +500,32 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EcPlantSummary(EcPlantSummaryViewModel model)
+        {
+            var lastAction = ActionList().LastOrDefault();
+            this.ShowBackButton(lastAction!, "EcPlantData");
+            var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
+            var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
+            ViewBag.HnId = hnId?.ToUpper();
+            ViewBag.HnName = hnName;
+            ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
+            ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
+
+            var chpInformationModel = _sessionHelper.GetFromSession<ChpInformationViewModel>(HttpContext, SessionKeys.ChpInformationViewModelSessionKey);
+            var heatPumpInformationModel = _sessionHelper.GetFromSession<HeatPumpInformationViewModel>(HttpContext, SessionKeys.HeatPumpInformationViewModelSessionKey);
+            var highHeatRecoveryInformationModel = _sessionHelper.GetFromSession<HighHeatRecoveryInformationViewModel>(HttpContext, SessionKeys.HighHeatRecoveryInformationViewModelSessionKey);
+            var boilerPlantInformationModel = _sessionHelper.GetFromSession<BoilerPlantInformationViewModel>(HttpContext, SessionKeys.BoilerPlantInformationViewModelSessionKey);
+
+
+            // Here you would typically save the summary data to the database or perform any final actions needed.
+            // Clear session data after submission
+            ClearPlantDataSpecificSession();
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcPlantOptionsViewModelSessionKey);
+            return RedirectToAction("EcSupplyingNewBuildings", "EcPlantData");
+        }
+
         private List<string> ActionList()
         {
             var actonList = new List<string>();
