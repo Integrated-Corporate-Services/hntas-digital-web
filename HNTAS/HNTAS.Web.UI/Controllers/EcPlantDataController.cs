@@ -76,7 +76,6 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> EcPlantOptions()
         {
-            ClearPlantDataSpecificSession();
             this.ShowBackButton("EcSupplyingNewBuildings", "EcPlantData");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -124,6 +123,11 @@ namespace HNTAS.Web.UI.Controllers
                 return View(model);
             }
 
+            var savedModel = _sessionHelper.GetFromSession<EcPlantOptionsViewModel>(HttpContext, SessionKeys.EcPlantOptionsViewModelSessionKey);
+            if (savedModel != null && (savedModel.NumberOfChp != model.NumberOfChp || savedModel.NumberOfHeatPump != model.NumberOfHeatPump || savedModel.NumberOfHighHeatRecoverySources != model.NumberOfHighHeatRecoverySources || savedModel.NumberOfBoilerPlants != model.NumberOfBoilerPlants))
+            {
+                ClearPlantDataSpecificSession();
+            }
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.EcPlantOptionsViewModelSessionKey, model);
             var nextAction = ActionList().FirstOrDefault();
             return RedirectToAction(nextAction);
@@ -591,6 +595,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> EcPlantOverview()
         {
+            this.ShowBackButton("EcSupplyingNewBuildings", "EcPlantData");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
