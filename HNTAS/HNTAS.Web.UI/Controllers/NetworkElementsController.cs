@@ -407,15 +407,6 @@ namespace HNTAS.Web.UI.Controllers
                 var elementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!);
                 if (option.ExistingCount.HasValue && option.ExistingCount.Value > 0)
                 {
-                    //var elementGroup = new ElementGroup
-                    //{
-                    //    BuildType = NetworkBuildStatus.Existing,
-                    //    Count = option.ExistingCount.Value,
-                    //    ElementDisplayType = option.Id,
-                    //    ElementType = elementType
-                    //};
-                    //elementGroupList.Add(elementGroup);
-
                     for (int cnt = 0; cnt < option.ExistingCount.Value; cnt++)
                     {
                         var el = new Element
@@ -423,8 +414,6 @@ namespace HNTAS.Web.UI.Controllers
                             BuildType = NetworkBuildStatus.Existing,
                             ElementType = elementType,
                             ElementId = (instanceCounter).ToString("D5"),
-                            NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(option.Id) + " - " + instanceCounter,
-                            
                         };
                         elementList.Add(el);
                         instanceCounter++;
@@ -446,9 +435,7 @@ namespace HNTAS.Web.UI.Controllers
                         {
                             BuildType = NetworkBuildStatus.New,
                             ElementType = elementType,
-                            ElementId = (instanceCounter).ToString("D5"),
-                            NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(option.Id) + " - " + instanceCounter,
-                            
+                            ElementId = (instanceCounter).ToString("D5"),                                                     
                         };
                         elementList.Add(el);
                         instanceCounter++;

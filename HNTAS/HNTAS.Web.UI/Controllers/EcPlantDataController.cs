@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HNTAS.Web.UI.Controllers
 {
-    [Authorize(Policy = SecurityConstants.Policies.CanAddNetworkElements)]
+    [Authorize(Policy = SecurityConstants.Policies.CanAddEnergyCentrePlantData)]
     public class EcPlantDataController : Controller
     {
         private readonly ILogger<EcPlantDataController> _logger;

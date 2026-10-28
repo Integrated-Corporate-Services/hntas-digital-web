@@ -4519,7 +4519,6 @@ components:
         - ""
         buildType: null
         isSupplyNewBuildings: true
-        networkElementInstanceName: networkElementInstanceName
         elementType: null
         isMainEnergyCentre: true
         energyCentrePlantData:
@@ -4551,9 +4550,6 @@ components:
         elementName: elementName
       properties:
         elementId:
-          nullable: true
-          type: string
-        networkElementInstanceName:
           nullable: true
           type: string
         soaMilestones:
@@ -5343,7 +5339,6 @@ components:
               - ""
               buildType: null
               isSupplyNewBuildings: true
-              networkElementInstanceName: networkElementInstanceName
               elementType: null
               isMainEnergyCentre: true
               energyCentrePlantData:
@@ -5379,7 +5374,6 @@ components:
               - ""
               buildType: null
               isSupplyNewBuildings: true
-              networkElementInstanceName: networkElementInstanceName
               elementType: null
               isMainEnergyCentre: true
               energyCentrePlantData:
@@ -5778,7 +5772,6 @@ components:
               - ""
               buildType: null
               isSupplyNewBuildings: true
-              networkElementInstanceName: networkElementInstanceName
               elementType: null
               isMainEnergyCentre: true
               energyCentrePlantData:
@@ -5814,7 +5807,6 @@ components:
               - ""
               buildType: null
               isSupplyNewBuildings: true
-              networkElementInstanceName: networkElementInstanceName
               elementType: null
               isMainEnergyCentre: true
               energyCentrePlantData:
@@ -6222,7 +6214,6 @@ components:
             - ""
             buildType: null
             isSupplyNewBuildings: true
-            networkElementInstanceName: networkElementInstanceName
             elementType: null
             isMainEnergyCentre: true
             energyCentrePlantData:
@@ -6258,7 +6249,6 @@ components:
             - ""
             buildType: null
             isSupplyNewBuildings: true
-            networkElementInstanceName: networkElementInstanceName
             elementType: null
             isMainEnergyCentre: true
             energyCentrePlantData:
@@ -7125,7 +7115,6 @@ components:
             - ""
             buildType: null
             isSupplyNewBuildings: true
-            networkElementInstanceName: networkElementInstanceName
             elementType: null
             isMainEnergyCentre: true
             energyCentrePlantData:
@@ -7161,7 +7150,6 @@ components:
             - ""
             buildType: null
             isSupplyNewBuildings: true
-            networkElementInstanceName: networkElementInstanceName
             elementType: null
             isMainEnergyCentre: true
             energyCentrePlantData:
@@ -8648,7 +8636,6 @@ components:
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          networkElementInstanceName: networkElementInstanceName
           elementType: null
           isMainEnergyCentre: true
           energyCentrePlantData:
@@ -8684,7 +8671,6 @@ components:
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          networkElementInstanceName: networkElementInstanceName
           elementType: null
           isMainEnergyCentre: true
           energyCentrePlantData:
@@ -8945,7 +8931,6 @@ components:
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          networkElementInstanceName: networkElementInstanceName
           elementType: null
           isMainEnergyCentre: true
           energyCentrePlantData:
@@ -8981,7 +8966,6 @@ components:
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          networkElementInstanceName: networkElementInstanceName
           elementType: null
           isMainEnergyCentre: true
           energyCentrePlantData:
@@ -9241,7 +9225,6 @@ components:
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          networkElementInstanceName: networkElementInstanceName
           elementType: null
           isMainEnergyCentre: true
           energyCentrePlantData:
@@ -9277,7 +9260,6 @@ components:
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          networkElementInstanceName: networkElementInstanceName
           elementType: null
           isMainEnergyCentre: true
           energyCentrePlantData:

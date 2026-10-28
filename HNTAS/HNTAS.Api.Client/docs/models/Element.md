@@ -5,7 +5,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ElementId** | **string** |  | [optional] 
-**NetworkElementInstanceName** | **string** |  | [optional] 
 **SoaMilestones** | **List&lt;Object&gt;** |  | [optional] 
 **ElementName** | **string** |  | [optional] 
 **IsMainEnergyCentre** | **bool** |  | [optional] 
