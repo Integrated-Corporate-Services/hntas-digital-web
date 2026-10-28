@@ -6,5 +6,6 @@ namespace HNTAS.Web.UI.Services.Core
     {
         Task<List<FuelType>?> GetFuelTypes();
         Task<List<CHPOperationalMode>?> GetChpOperationalModes();
+        Task<List<HeatRecovery>?> GetHeatRecoverySources();
     }
 }

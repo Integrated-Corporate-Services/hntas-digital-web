@@ -14,7 +14,7 @@
             @for (int i = 0; i < boilerPlantInformationListCount; i++)
             {
                 var hasNumberOfMaximumHeatOutputError = ViewData.ModelState[$"boilerplantinformationlist[{i}].maximumheatoutput"]?.Errors.Count > 0;
-                var hasFuelOrHeatSourceError = ViewData.ModelState[$"boilerplantinformationlist[{i}].fuelorheatsourcevalue"]?.Errors.Count > 0;
+                var hasFuelOrHeatSourceError = ViewData.ModelState[$"boilerplantinformationlist[{i}].fuelorheatsource"]?.Errors.Count > 0;
 
                 var boilerPlantInfo = Model.BoilerPlantInformationList[i];
                 <div class="govuk-!-margin-top-6">
@@ -37,17 +37,17 @@
                         </div>
                         <div class="govuk-grid-column-one-half">
                             <div class="govuk-form-group">
-                                <label class="govuk-label" asp-for="BoilerPlantInformationList[i].FuelOrHeatSourceValue">
+                                <label class="govuk-label" asp-for="BoilerPlantInformationList[i].FuelOrHeatSource">
                                     Fuel or heat source
                                 </label>
                                 @if (hasFuelOrHeatSourceError)
                                 {
                                     <p id="fuelorheatsource-error" class="govuk-error-message">
                                         <span class="govuk-visually-hidden">Error:</span>
-                                        @Html.ValidationMessageFor(m => m.BoilerPlantInformationList[i].FuelOrHeatSourceValue)
+                                        @Html.ValidationMessageFor(m => m.BoilerPlantInformationList[i].FuelOrHeatSource)
                                     </p>
                                 }
-                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"boilerplantinformationlist[{i}].fuelorheatsourcevalue")" asp-for="BoilerPlantInformationList[i].FuelOrHeatSourceValue">
+                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"boilerplantinformationlist[{i}].fuelorheatsource")" asp-for="BoilerPlantInformationList[i].FuelOrHeatSource">
                                     <option value="" selected="">Select a source</option>
                                     @foreach (var fuelType in ViewBag.FuelTypes)
                                     {

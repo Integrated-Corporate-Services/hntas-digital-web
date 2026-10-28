@@ -36,7 +36,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="maximumHeatOutput">maximumHeatOutput</param>
         /// <param name="fuelOrHeatSource">fuelOrHeatSource</param>
         [JsonConstructor]
-        public HeatRecoverySource(Option<int?> maximumHeatOutput = default, Option<int?> fuelOrHeatSource = default)
+        public HeatRecoverySource(Option<int?> maximumHeatOutput = default, Option<string?> fuelOrHeatSource = default)
         {
             MaximumHeatOutputOption = maximumHeatOutput;
             FuelOrHeatSourceOption = fuelOrHeatSource;
@@ -63,13 +63,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<int?> FuelOrHeatSourceOption { get; private set; }
+        public Option<string?> FuelOrHeatSourceOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets FuelOrHeatSource
         /// </summary>
         [JsonPropertyName("fuelOrHeatSource")]
-        public int? FuelOrHeatSource { get { return this.FuelOrHeatSourceOption; } set { this.FuelOrHeatSourceOption = new(value); } }
+        public string? FuelOrHeatSource { get { return this.FuelOrHeatSourceOption; } set { this.FuelOrHeatSourceOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -119,7 +119,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<int?> maximumHeatOutput = default;
-            Option<int?> fuelOrHeatSource = default;
+            Option<string?> fuelOrHeatSource = default;
 
             while (utf8JsonReader.Read())
             {
@@ -140,7 +140,7 @@ namespace HNTAS.Api.Client.Model
                             maximumHeatOutput = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
                         case "fuelOrHeatSource":
-                            fuelOrHeatSource = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            fuelOrHeatSource = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         default:
                             break;
@@ -183,7 +183,7 @@ namespace HNTAS.Api.Client.Model
 
             if (heatRecoverySource.FuelOrHeatSourceOption.IsSet)
                 if (heatRecoverySource.FuelOrHeatSourceOption.Value != null)
-                    writer.WriteNumber("fuelOrHeatSource", heatRecoverySource.FuelOrHeatSourceOption.Value!.Value);
+                    writer.WriteString("fuelOrHeatSource", heatRecoverySource.FuelOrHeatSource);
                 else
                     writer.WriteNull("fuelOrHeatSource");
         }

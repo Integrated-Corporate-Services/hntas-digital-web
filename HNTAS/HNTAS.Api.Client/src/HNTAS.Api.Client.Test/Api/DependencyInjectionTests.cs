@@ -106,6 +106,9 @@ namespace HNTAS.Api.Client.Test.Api
             var heatNetworksApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
 
+            var heatRecoverySourcesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatRecoverySourcesApi>();
+            Assert.True(heatRecoverySourcesApi.HttpClient.BaseAddress != null);
+
             var importApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IImportApi>();
             Assert.True(importApi.HttpClient.BaseAddress != null);
 
@@ -172,6 +175,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var heatNetworksApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
+            var heatRecoverySourcesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatRecoverySourcesApi>();
+            Assert.True(heatRecoverySourcesApi.HttpClient.BaseAddress != null);
 
             var importApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IImportApi>();
             Assert.True(importApi.HttpClient.BaseAddress != null);
@@ -240,6 +246,9 @@ namespace HNTAS.Api.Client.Test.Api
             var heatNetworksApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
             
+            var heatRecoverySourcesApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatRecoverySourcesApi>();
+            Assert.True(heatRecoverySourcesApi.HttpClient.BaseAddress != null);
+            
             var importApi = _hostUsingAddWithAClient.Services.GetRequiredService<IImportApi>();
             Assert.True(importApi.HttpClient.BaseAddress != null);
             
@@ -306,6 +315,9 @@ namespace HNTAS.Api.Client.Test.Api
 
             var heatNetworksApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
+            var heatRecoverySourcesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatRecoverySourcesApi>();
+            Assert.True(heatRecoverySourcesApi.HttpClient.BaseAddress != null);
 
             var importApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IImportApi>();
             Assert.True(importApi.HttpClient.BaseAddress != null);

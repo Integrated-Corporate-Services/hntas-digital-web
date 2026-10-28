@@ -14,7 +14,7 @@
             @for (int i = 0; i < highHeatRecoveryInformationListCount; i++)
             {
                 var hasNumberOfMaximumHeatOutputError = ViewData.ModelState[$"highheatrecoveryinformationlist[{i}].maximumheatoutput"]?.Errors.Count > 0;
-                var hasFuelOrHeatSourceError = ViewData.ModelState[$"highheatrecoveryinformationlist[{i}].fuelorheatsourcevalue"]?.Errors.Count > 0;
+                var hasFuelOrHeatSourceError = ViewData.ModelState[$"highheatrecoveryinformationlist[{i}].fuelorheatsource"]?.Errors.Count > 0;
 
                 var highHeatRecoveryInfo = Model.HighHeatRecoveryInformationList[i];
                 <div class="govuk-!-margin-top-6">
@@ -37,21 +37,21 @@
                         </div>
                         <div class="govuk-grid-column-one-half">
                             <div class="govuk-form-group">
-                                <label class="govuk-label" asp-for="HighHeatRecoveryInformationList[i].FuelOrHeatSourceValue">
+                                <label class="govuk-label" asp-for="HighHeatRecoveryInformationList[i].FuelOrHeatSource">
                                     Fuel or heat source
                                 </label>
                                 @if (hasFuelOrHeatSourceError)
                                 {
                                     <p id="fuelorheatsource-error" class="govuk-error-message">
                                         <span class="govuk-visually-hidden">Error:</span>
-                                        @Html.ValidationMessageFor(m => m.HighHeatRecoveryInformationList[i].FuelOrHeatSourceValue)
+                                        @Html.ValidationMessageFor(m => m.HighHeatRecoveryInformationList[i].FuelOrHeatSource)
                                     </p>
                                 }
-                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"highheatrecoveryinformationlist[{i}].fuelorheatsourcevalue")" asp-for="HighHeatRecoveryInformationList[i].FuelOrHeatSourceValue">
+                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"highheatrecoveryinformationlist[{i}].fuelorheatsource")" asp-for="HighHeatRecoveryInformationList[i].FuelOrHeatSource">
                                     <option value="" selected="">Select a source</option>
-                                    @foreach (var fuelType in ViewBag.FuelTypes)
+                                    @foreach (var heatRecoverySource in ViewBag.HeatRecoverySources)
                                     {
-                                        <option value="@fuelType.FuelId">@fuelType.Type</option>
+                                        <option value="@heatRecoverySource.Ident">@heatRecoverySource.HeatRecoverySource</option>
                                     }
                                 </select>
                             </div>

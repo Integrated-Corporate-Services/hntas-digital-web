@@ -5,7 +5,9 @@
         public List<HighHeatRecoveryInformation> HighHeatRecoveryInformationList { get; set; } = new List<HighHeatRecoveryInformation>();
     }
 
-    public class HighHeatRecoveryInformation : HeatAndFuelBaseViewModel
+    public class HighHeatRecoveryInformation
     {
+        public int? MaximumHeatOutput { get; set; }
+        public string? FuelOrHeatSource { get; set; }
     }
 }

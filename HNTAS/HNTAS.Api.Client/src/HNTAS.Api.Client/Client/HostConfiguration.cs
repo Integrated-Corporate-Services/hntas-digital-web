@@ -81,6 +81,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new DesignConstructionLogJsonConverter());
             _jsonOptions.Converters.Add(new DesignConstructionLogResponseJsonConverter());
             _jsonOptions.Converters.Add(new ECDetailsJsonConverter());
+            _jsonOptions.Converters.Add(new EcPlantDataRequestJsonConverter());
             _jsonOptions.Converters.Add(new ElementJsonConverter());
             _jsonOptions.Converters.Add(new ElementGroupJsonConverter());
             _jsonOptions.Converters.Add(new ElementGroupDtoJsonConverter());
@@ -92,6 +93,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ElementTypeInShortNullableJsonConverter());
             _jsonOptions.Converters.Add(new EnergyJsonConverter());
             _jsonOptions.Converters.Add(new EnergyCentreDetailsJsonConverter());
+            _jsonOptions.Converters.Add(new EnergyCentrePlantDataJsonConverter());
             _jsonOptions.Converters.Add(new EnumItemResponseJsonConverter());
             _jsonOptions.Converters.Add(new ExistingNetworkRequestJsonConverter());
             _jsonOptions.Converters.Add(new ExistingNetworkResponseJsonConverter());
@@ -113,6 +115,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new HeatNetworkUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new HeatPumpInputJsonConverter());
             _jsonOptions.Converters.Add(new HeatPumpSystemJsonConverter());
+            _jsonOptions.Converters.Add(new HeatRecoveryJsonConverter());
             _jsonOptions.Converters.Add(new HeatRecoverySourceJsonConverter());
             _jsonOptions.Converters.Add(new HnRoleMappingJsonConverter());
             _jsonOptions.Converters.Add(new ImportResultJsonConverter());
@@ -243,6 +246,7 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<FeedbackApiEvents>();
             _services.AddSingleton<FuelTypesApiEvents>();
             _services.AddSingleton<HeatNetworksApiEvents>();
+            _services.AddSingleton<HeatRecoverySourcesApiEvents>();
             _services.AddSingleton<ImportApiEvents>();
             _services.AddSingleton<InvitationsApiEvents>();
             _services.AddSingleton<NotificationHistoryApiEvents>();
@@ -280,6 +284,7 @@ namespace HNTAS.Api.Client.Client
             builders.Add(_services.AddHttpClient<IFeedbackApi, FeedbackApi>(client));
             builders.Add(_services.AddHttpClient<IFuelTypesApi, FuelTypesApi>(client));
             builders.Add(_services.AddHttpClient<IHeatNetworksApi, HeatNetworksApi>(client));
+            builders.Add(_services.AddHttpClient<IHeatRecoverySourcesApi, HeatRecoverySourcesApi>(client));
             builders.Add(_services.AddHttpClient<IImportApi, ImportApi>(client));
             builders.Add(_services.AddHttpClient<IInvitationsApi, InvitationsApi>(client));
             builders.Add(_services.AddHttpClient<INotificationHistoryApi, NotificationHistoryApi>(client));

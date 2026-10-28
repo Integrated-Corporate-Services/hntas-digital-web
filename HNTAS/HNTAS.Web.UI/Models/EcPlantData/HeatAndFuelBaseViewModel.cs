@@ -5,7 +5,7 @@ namespace HNTAS.Web.UI.Models.EcPlantData
     public class HeatAndFuelBaseViewModel
     {
         public int? MaximumHeatOutput { get; set; }
-        public int? FuelOrHeatSourceValue { get; set; }        
+        public int? FuelOrHeatSource { get; set; }        
         
     }
 }

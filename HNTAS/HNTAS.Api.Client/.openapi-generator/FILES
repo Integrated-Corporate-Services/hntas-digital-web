@@ -15,6 +15,7 @@ docs/apis/CountriesAndTerritoriesApi.md
 docs/apis/FeedbackApi.md
 docs/apis/FuelTypesApi.md
 docs/apis/HeatNetworksApi.md
+docs/apis/HeatRecoverySourcesApi.md
 docs/apis/ImportApi.md
 docs/apis/InvitationsApi.md
 docs/apis/NotificationHistoryApi.md
@@ -59,6 +60,7 @@ docs/models/CreateFeedbackRequest.md
 docs/models/DesignConstructionLog.md
 docs/models/DesignConstructionLogResponse.md
 docs/models/ECDetails.md
+docs/models/EcPlantDataRequest.md
 docs/models/Element.md
 docs/models/ElementGroup.md
 docs/models/ElementGroupDto.md
@@ -69,6 +71,7 @@ docs/models/ElementSoaStatusUpdateRequestForExistingNetwork.md
 docs/models/ElementTypeInShort.md
 docs/models/Energy.md
 docs/models/EnergyCentreDetails.md
+docs/models/EnergyCentrePlantData.md
 docs/models/EnumItemResponse.md
 docs/models/ExistingNetworkRequest.md
 docs/models/ExistingNetworkResponse.md
@@ -88,6 +91,7 @@ docs/models/HeatNetworkType.md
 docs/models/HeatNetworkUserResponse.md
 docs/models/HeatPumpInput.md
 docs/models/HeatPumpSystem.md
+docs/models/HeatRecovery.md
 docs/models/HeatRecoverySource.md
 docs/models/HnRoleMapping.md
 docs/models/ImportResult.md
@@ -199,6 +203,7 @@ src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
 src/HNTAS.Api.Client/Api/FeedbackApi.cs
 src/HNTAS.Api.Client/Api/FuelTypesApi.cs
 src/HNTAS.Api.Client/Api/HeatNetworksApi.cs
+src/HNTAS.Api.Client/Api/HeatRecoverySourcesApi.cs
 src/HNTAS.Api.Client/Api/IApi.cs
 src/HNTAS.Api.Client/Api/ImportApi.cs
 src/HNTAS.Api.Client/Api/InvitationsApi.cs
@@ -267,6 +272,7 @@ src/HNTAS.Api.Client/Model/CreateFeedbackRequest.cs
 src/HNTAS.Api.Client/Model/DesignConstructionLog.cs
 src/HNTAS.Api.Client/Model/DesignConstructionLogResponse.cs
 src/HNTAS.Api.Client/Model/ECDetails.cs
+src/HNTAS.Api.Client/Model/EcPlantDataRequest.cs
 src/HNTAS.Api.Client/Model/Element.cs
 src/HNTAS.Api.Client/Model/ElementGroup.cs
 src/HNTAS.Api.Client/Model/ElementGroupDto.cs
@@ -277,6 +283,7 @@ src/HNTAS.Api.Client/Model/ElementSoaStatusUpdateRequestForExistingNetwork.cs
 src/HNTAS.Api.Client/Model/ElementTypeInShort.cs
 src/HNTAS.Api.Client/Model/Energy.cs
 src/HNTAS.Api.Client/Model/EnergyCentreDetails.cs
+src/HNTAS.Api.Client/Model/EnergyCentrePlantData.cs
 src/HNTAS.Api.Client/Model/EnumItemResponse.cs
 src/HNTAS.Api.Client/Model/ExistingNetworkRequest.cs
 src/HNTAS.Api.Client/Model/ExistingNetworkResponse.cs
@@ -296,6 +303,7 @@ src/HNTAS.Api.Client/Model/HeatNetworkType.cs
 src/HNTAS.Api.Client/Model/HeatNetworkUserResponse.cs
 src/HNTAS.Api.Client/Model/HeatPumpInput.cs
 src/HNTAS.Api.Client/Model/HeatPumpSystem.cs
+src/HNTAS.Api.Client/Model/HeatRecovery.cs
 src/HNTAS.Api.Client/Model/HeatRecoverySource.cs
 src/HNTAS.Api.Client/Model/HnRoleMapping.cs
 src/HNTAS.Api.Client/Model/ImportResult.cs

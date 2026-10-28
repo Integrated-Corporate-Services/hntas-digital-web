@@ -18,6 +18,7 @@ tags:
 - name: Feedback
 - name: FuelTypes
 - name: HeatNetworks
+- name: HeatRecoverySources
 - name: Invitations
 - name: NotificationHistory
 - name: Organisations
@@ -1279,6 +1280,60 @@ paths:
       - Bearer: []
       tags:
       - HeatNetworks
+  /api/HeatNetworks/energy-centre-plant-data:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EcPlantDataRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/EcPlantDataRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - HeatNetworks
   /external/heat-networks:
     get:
       responses:
@@ -1391,6 +1446,33 @@ paths:
           description: Bad Request
       tags:
       - HeatNetworks
+  /api/HeatRecoverySources:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatRecovery"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatRecovery"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatRecovery"
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - HeatRecoverySources
   /api/Invitations/{id}:
     get:
       parameters:
@@ -3841,8 +3923,8 @@ components:
       type: object
     BoilerPlant:
       example:
-        maximumHeatOutput: 2
-        fuelOrHeatSource: 6
+        maximumHeatOutput: 1
+        fuelOrHeatSource: 2
       properties:
         maximumHeatOutput:
           format: int32
@@ -4389,43 +4471,84 @@ components:
           nullable: true
           type: number
       type: object
+    EcPlantDataRequest:
+      example:
+        elementId: elementId
+        hnId: hnId
+        energyCentrePlantData:
+          heatRecoverySources:
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: fuelOrHeatSource
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: fuelOrHeatSource
+          energyCentreStatus: null
+          boilerPlants:
+          - maximumHeatOutput: 1
+            fuelOrHeatSource: 2
+          - maximumHeatOutput: 1
+            fuelOrHeatSource: 2
+          heatPumpSystems:
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: 3
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: 3
+          combinedHeatAndPowerSystems:
+          - operationalMode: operationalMode
+            maximumHeatOutput: 8
+            fuelOrHeatSource: 9
+            maximumElectricOutput: 6
+          - operationalMode: operationalMode
+            maximumHeatOutput: 8
+            fuelOrHeatSource: 9
+            maximumElectricOutput: 6
+      properties:
+        hnId:
+          nullable: true
+          type: string
+        elementId:
+          nullable: true
+          type: string
+        energyCentrePlantData:
+          $ref: "#/components/schemas/EnergyCentrePlantData"
+      type: object
     Element:
       example:
         elementId: elementId
-        heatRecoverySources:
-        - maximumHeatOutput: 6
-          fuelOrHeatSource: 1
-        - maximumHeatOutput: 6
-          fuelOrHeatSource: 1
-        boilerPlants:
-        - maximumHeatOutput: 2
-          fuelOrHeatSource: 6
-        - maximumHeatOutput: 2
-          fuelOrHeatSource: 6
-        heatPumpSystems:
-        - maximumHeatOutput: 6
-          fuelOrHeatSource: 3
-        - maximumHeatOutput: 6
-          fuelOrHeatSource: 3
-        isMainEnergyCentre: true
-        elementName: elementName
         soaMilestones:
         - ""
         - ""
         buildType: null
         isSupplyNewBuildings: true
-        energyCentreStatus: null
         networkElementInstanceName: networkElementInstanceName
         elementType: null
-        combinedHeatAndPowerSystems:
-        - operationalMode: operationalMode
-          maximumHeatOutput: 8
-          fuelOrHeatSource: 9
-          maximumElectricOutput: 6
-        - operationalMode: operationalMode
-          maximumHeatOutput: 8
-          fuelOrHeatSource: 9
-          maximumElectricOutput: 6
+        isMainEnergyCentre: true
+        energyCentrePlantData:
+          heatRecoverySources:
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: fuelOrHeatSource
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: fuelOrHeatSource
+          energyCentreStatus: null
+          boilerPlants:
+          - maximumHeatOutput: 1
+            fuelOrHeatSource: 2
+          - maximumHeatOutput: 1
+            fuelOrHeatSource: 2
+          heatPumpSystems:
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: 3
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: 3
+          combinedHeatAndPowerSystems:
+          - operationalMode: operationalMode
+            maximumHeatOutput: 8
+            fuelOrHeatSource: 9
+            maximumElectricOutput: 6
+          - operationalMode: operationalMode
+            maximumHeatOutput: 8
+            fuelOrHeatSource: 9
+            maximumElectricOutput: 6
+        elementName: elementName
       properties:
         elementId:
           nullable: true
@@ -4446,28 +4569,8 @@ components:
         isSupplyNewBuildings:
           nullable: true
           type: boolean
-        energyCentreStatus:
-          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
-        combinedHeatAndPowerSystems:
-          items:
-            $ref: "#/components/schemas/CombinedHeatAndPowerSystem"
-          nullable: true
-          type: array
-        heatPumpSystems:
-          items:
-            $ref: "#/components/schemas/HeatPumpSystem"
-          nullable: true
-          type: array
-        heatRecoverySources:
-          items:
-            $ref: "#/components/schemas/HeatRecoverySource"
-          nullable: true
-          type: array
-        boilerPlants:
-          items:
-            $ref: "#/components/schemas/BoilerPlant"
-          nullable: true
-          type: array
+        energyCentrePlantData:
+          $ref: "#/components/schemas/EnergyCentrePlantData"
         elementType:
           $ref: "#/components/schemas/ElementTypeInShort"
         buildType:
@@ -5040,6 +5143,58 @@ components:
         address:
           $ref: "#/components/schemas/Address"
       type: object
+    EnergyCentrePlantData:
+      example:
+        heatRecoverySources:
+        - maximumHeatOutput: 6
+          fuelOrHeatSource: fuelOrHeatSource
+        - maximumHeatOutput: 6
+          fuelOrHeatSource: fuelOrHeatSource
+        energyCentreStatus: null
+        boilerPlants:
+        - maximumHeatOutput: 1
+          fuelOrHeatSource: 2
+        - maximumHeatOutput: 1
+          fuelOrHeatSource: 2
+        heatPumpSystems:
+        - maximumHeatOutput: 6
+          fuelOrHeatSource: 3
+        - maximumHeatOutput: 6
+          fuelOrHeatSource: 3
+        combinedHeatAndPowerSystems:
+        - operationalMode: operationalMode
+          maximumHeatOutput: 8
+          fuelOrHeatSource: 9
+          maximumElectricOutput: 6
+        - operationalMode: operationalMode
+          maximumHeatOutput: 8
+          fuelOrHeatSource: 9
+          maximumElectricOutput: 6
+      nullable: true
+      properties:
+        energyCentreStatus:
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
+        combinedHeatAndPowerSystems:
+          items:
+            $ref: "#/components/schemas/CombinedHeatAndPowerSystem"
+          nullable: true
+          type: array
+        heatPumpSystems:
+          items:
+            $ref: "#/components/schemas/HeatPumpSystem"
+          nullable: true
+          type: array
+        heatRecoverySources:
+          items:
+            $ref: "#/components/schemas/HeatRecoverySource"
+          nullable: true
+          type: array
+        boilerPlants:
+          items:
+            $ref: "#/components/schemas/BoilerPlant"
+          nullable: true
+          type: array
+      type: object
     EnumItemResponse:
       example:
         name: name
@@ -5183,75 +5338,77 @@ components:
             createdBy: createdBy
             elements:
             - elementId: elementId
-              heatRecoverySources:
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 1
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 1
-              boilerPlants:
-              - maximumHeatOutput: 2
-                fuelOrHeatSource: 6
-              - maximumHeatOutput: 2
-                fuelOrHeatSource: 6
-              heatPumpSystems:
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 3
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 3
-              isMainEnergyCentre: true
-              elementName: elementName
               soaMilestones:
               - ""
               - ""
               buildType: null
               isSupplyNewBuildings: true
-              energyCentreStatus: null
               networkElementInstanceName: networkElementInstanceName
               elementType: null
-              combinedHeatAndPowerSystems:
-              - operationalMode: operationalMode
-                maximumHeatOutput: 8
-                fuelOrHeatSource: 9
-                maximumElectricOutput: 6
-              - operationalMode: operationalMode
-                maximumHeatOutput: 8
-                fuelOrHeatSource: 9
-                maximumElectricOutput: 6
+              isMainEnergyCentre: true
+              energyCentrePlantData:
+                heatRecoverySources:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                energyCentreStatus: null
+                boilerPlants:
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                heatPumpSystems:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                combinedHeatAndPowerSystems:
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+              elementName: elementName
             - elementId: elementId
-              heatRecoverySources:
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 1
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 1
-              boilerPlants:
-              - maximumHeatOutput: 2
-                fuelOrHeatSource: 6
-              - maximumHeatOutput: 2
-                fuelOrHeatSource: 6
-              heatPumpSystems:
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 3
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 3
-              isMainEnergyCentre: true
-              elementName: elementName
               soaMilestones:
               - ""
               - ""
               buildType: null
               isSupplyNewBuildings: true
-              energyCentreStatus: null
               networkElementInstanceName: networkElementInstanceName
               elementType: null
-              combinedHeatAndPowerSystems:
-              - operationalMode: operationalMode
-                maximumHeatOutput: 8
-                fuelOrHeatSource: 9
-                maximumElectricOutput: 6
-              - operationalMode: operationalMode
-                maximumHeatOutput: 8
-                fuelOrHeatSource: 9
-                maximumElectricOutput: 6
+              isMainEnergyCentre: true
+              energyCentrePlantData:
+                heatRecoverySources:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                energyCentreStatus: null
+                boilerPlants:
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                heatPumpSystems:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                combinedHeatAndPowerSystems:
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+              elementName: elementName
             elementsGroup:
             - soaMilestones:
               - soaStatuses:
@@ -5616,75 +5773,77 @@ components:
             createdBy: createdBy
             elements:
             - elementId: elementId
-              heatRecoverySources:
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 1
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 1
-              boilerPlants:
-              - maximumHeatOutput: 2
-                fuelOrHeatSource: 6
-              - maximumHeatOutput: 2
-                fuelOrHeatSource: 6
-              heatPumpSystems:
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 3
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 3
-              isMainEnergyCentre: true
-              elementName: elementName
               soaMilestones:
               - ""
               - ""
               buildType: null
               isSupplyNewBuildings: true
-              energyCentreStatus: null
               networkElementInstanceName: networkElementInstanceName
               elementType: null
-              combinedHeatAndPowerSystems:
-              - operationalMode: operationalMode
-                maximumHeatOutput: 8
-                fuelOrHeatSource: 9
-                maximumElectricOutput: 6
-              - operationalMode: operationalMode
-                maximumHeatOutput: 8
-                fuelOrHeatSource: 9
-                maximumElectricOutput: 6
+              isMainEnergyCentre: true
+              energyCentrePlantData:
+                heatRecoverySources:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                energyCentreStatus: null
+                boilerPlants:
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                heatPumpSystems:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                combinedHeatAndPowerSystems:
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+              elementName: elementName
             - elementId: elementId
-              heatRecoverySources:
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 1
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 1
-              boilerPlants:
-              - maximumHeatOutput: 2
-                fuelOrHeatSource: 6
-              - maximumHeatOutput: 2
-                fuelOrHeatSource: 6
-              heatPumpSystems:
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 3
-              - maximumHeatOutput: 6
-                fuelOrHeatSource: 3
-              isMainEnergyCentre: true
-              elementName: elementName
               soaMilestones:
               - ""
               - ""
               buildType: null
               isSupplyNewBuildings: true
-              energyCentreStatus: null
               networkElementInstanceName: networkElementInstanceName
               elementType: null
-              combinedHeatAndPowerSystems:
-              - operationalMode: operationalMode
-                maximumHeatOutput: 8
-                fuelOrHeatSource: 9
-                maximumElectricOutput: 6
-              - operationalMode: operationalMode
-                maximumHeatOutput: 8
-                fuelOrHeatSource: 9
-                maximumElectricOutput: 6
+              isMainEnergyCentre: true
+              energyCentrePlantData:
+                heatRecoverySources:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                energyCentreStatus: null
+                boilerPlants:
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                heatPumpSystems:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                combinedHeatAndPowerSystems:
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+              elementName: elementName
             elementsGroup:
             - soaMilestones:
               - soaStatuses:
@@ -6058,75 +6217,77 @@ components:
           createdBy: createdBy
           elements:
           - elementId: elementId
-            heatRecoverySources:
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 1
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 1
-            boilerPlants:
-            - maximumHeatOutput: 2
-              fuelOrHeatSource: 6
-            - maximumHeatOutput: 2
-              fuelOrHeatSource: 6
-            heatPumpSystems:
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 3
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 3
-            isMainEnergyCentre: true
-            elementName: elementName
             soaMilestones:
             - ""
             - ""
             buildType: null
             isSupplyNewBuildings: true
-            energyCentreStatus: null
             networkElementInstanceName: networkElementInstanceName
             elementType: null
-            combinedHeatAndPowerSystems:
-            - operationalMode: operationalMode
-              maximumHeatOutput: 8
-              fuelOrHeatSource: 9
-              maximumElectricOutput: 6
-            - operationalMode: operationalMode
-              maximumHeatOutput: 8
-              fuelOrHeatSource: 9
-              maximumElectricOutput: 6
+            isMainEnergyCentre: true
+            energyCentrePlantData:
+              heatRecoverySources:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              energyCentreStatus: null
+              boilerPlants:
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              heatPumpSystems:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              combinedHeatAndPowerSystems:
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+            elementName: elementName
           - elementId: elementId
-            heatRecoverySources:
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 1
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 1
-            boilerPlants:
-            - maximumHeatOutput: 2
-              fuelOrHeatSource: 6
-            - maximumHeatOutput: 2
-              fuelOrHeatSource: 6
-            heatPumpSystems:
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 3
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 3
-            isMainEnergyCentre: true
-            elementName: elementName
             soaMilestones:
             - ""
             - ""
             buildType: null
             isSupplyNewBuildings: true
-            energyCentreStatus: null
             networkElementInstanceName: networkElementInstanceName
             elementType: null
-            combinedHeatAndPowerSystems:
-            - operationalMode: operationalMode
-              maximumHeatOutput: 8
-              fuelOrHeatSource: 9
-              maximumElectricOutput: 6
-            - operationalMode: operationalMode
-              maximumHeatOutput: 8
-              fuelOrHeatSource: 9
-              maximumElectricOutput: 6
+            isMainEnergyCentre: true
+            energyCentrePlantData:
+              heatRecoverySources:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              energyCentreStatus: null
+              boilerPlants:
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              heatPumpSystems:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              combinedHeatAndPowerSystems:
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+            elementName: elementName
           elementsGroup:
           - soaMilestones:
             - soaStatuses:
@@ -6959,75 +7120,77 @@ components:
           createdBy: createdBy
           elements:
           - elementId: elementId
-            heatRecoverySources:
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 1
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 1
-            boilerPlants:
-            - maximumHeatOutput: 2
-              fuelOrHeatSource: 6
-            - maximumHeatOutput: 2
-              fuelOrHeatSource: 6
-            heatPumpSystems:
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 3
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 3
-            isMainEnergyCentre: true
-            elementName: elementName
             soaMilestones:
             - ""
             - ""
             buildType: null
             isSupplyNewBuildings: true
-            energyCentreStatus: null
             networkElementInstanceName: networkElementInstanceName
             elementType: null
-            combinedHeatAndPowerSystems:
-            - operationalMode: operationalMode
-              maximumHeatOutput: 8
-              fuelOrHeatSource: 9
-              maximumElectricOutput: 6
-            - operationalMode: operationalMode
-              maximumHeatOutput: 8
-              fuelOrHeatSource: 9
-              maximumElectricOutput: 6
+            isMainEnergyCentre: true
+            energyCentrePlantData:
+              heatRecoverySources:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              energyCentreStatus: null
+              boilerPlants:
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              heatPumpSystems:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              combinedHeatAndPowerSystems:
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+            elementName: elementName
           - elementId: elementId
-            heatRecoverySources:
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 1
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 1
-            boilerPlants:
-            - maximumHeatOutput: 2
-              fuelOrHeatSource: 6
-            - maximumHeatOutput: 2
-              fuelOrHeatSource: 6
-            heatPumpSystems:
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 3
-            - maximumHeatOutput: 6
-              fuelOrHeatSource: 3
-            isMainEnergyCentre: true
-            elementName: elementName
             soaMilestones:
             - ""
             - ""
             buildType: null
             isSupplyNewBuildings: true
-            energyCentreStatus: null
             networkElementInstanceName: networkElementInstanceName
             elementType: null
-            combinedHeatAndPowerSystems:
-            - operationalMode: operationalMode
-              maximumHeatOutput: 8
-              fuelOrHeatSource: 9
-              maximumElectricOutput: 6
-            - operationalMode: operationalMode
-              maximumHeatOutput: 8
-              fuelOrHeatSource: 9
-              maximumElectricOutput: 6
+            isMainEnergyCentre: true
+            energyCentrePlantData:
+              heatRecoverySources:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              energyCentreStatus: null
+              boilerPlants:
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              heatPumpSystems:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              combinedHeatAndPowerSystems:
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+            elementName: elementName
           elementsGroup:
           - soaMilestones:
             - soaStatuses:
@@ -7480,19 +7643,36 @@ components:
           nullable: true
           type: integer
       type: object
+    HeatRecovery:
+      example:
+        ident: ident
+        heatRecoverySource: heatRecoverySource
+        heatRecoveryId: 0
+        id: id
+      properties:
+        id:
+          nullable: true
+          type: string
+        heatRecoveryId:
+          format: int32
+          type: integer
+        ident:
+          type: string
+        heatRecoverySource:
+          type: string
+      type: object
     HeatRecoverySource:
       example:
         maximumHeatOutput: 6
-        fuelOrHeatSource: 1
+        fuelOrHeatSource: fuelOrHeatSource
       properties:
         maximumHeatOutput:
           format: int32
           nullable: true
           type: integer
         fuelOrHeatSource:
-          format: int32
           nullable: true
-          type: integer
+          type: string
       type: object
     HnRoleMapping:
       example:
@@ -8463,75 +8643,77 @@ components:
         createdBy: createdBy
         elements:
         - elementId: elementId
-          heatRecoverySources:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          boilerPlants:
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          heatPumpSystems:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          isMainEnergyCentre: true
-          elementName: elementName
           soaMilestones:
           - ""
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          energyCentreStatus: null
           networkElementInstanceName: networkElementInstanceName
           elementType: null
-          combinedHeatAndPowerSystems:
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         - elementId: elementId
-          heatRecoverySources:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          boilerPlants:
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          heatPumpSystems:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          isMainEnergyCentre: true
-          elementName: elementName
           soaMilestones:
           - ""
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          energyCentreStatus: null
           networkElementInstanceName: networkElementInstanceName
           elementType: null
-          combinedHeatAndPowerSystems:
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         elementsGroup:
         - soaMilestones:
           - soaStatuses:
@@ -8758,75 +8940,77 @@ components:
         createdBy: createdBy
         elements:
         - elementId: elementId
-          heatRecoverySources:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          boilerPlants:
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          heatPumpSystems:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          isMainEnergyCentre: true
-          elementName: elementName
           soaMilestones:
           - ""
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          energyCentreStatus: null
           networkElementInstanceName: networkElementInstanceName
           elementType: null
-          combinedHeatAndPowerSystems:
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         - elementId: elementId
-          heatRecoverySources:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          boilerPlants:
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          heatPumpSystems:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          isMainEnergyCentre: true
-          elementName: elementName
           soaMilestones:
           - ""
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          energyCentreStatus: null
           networkElementInstanceName: networkElementInstanceName
           elementType: null
-          combinedHeatAndPowerSystems:
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         elementsGroup:
         - soaMilestones:
           - soaStatuses:
@@ -9052,75 +9236,77 @@ components:
         createdBy: createdBy
         elements:
         - elementId: elementId
-          heatRecoverySources:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          boilerPlants:
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          heatPumpSystems:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          isMainEnergyCentre: true
-          elementName: elementName
           soaMilestones:
           - ""
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          energyCentreStatus: null
           networkElementInstanceName: networkElementInstanceName
           elementType: null
-          combinedHeatAndPowerSystems:
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         - elementId: elementId
-          heatRecoverySources:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 1
-          boilerPlants:
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          - maximumHeatOutput: 2
-            fuelOrHeatSource: 6
-          heatPumpSystems:
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          - maximumHeatOutput: 6
-            fuelOrHeatSource: 3
-          isMainEnergyCentre: true
-          elementName: elementName
           soaMilestones:
           - ""
           - ""
           buildType: null
           isSupplyNewBuildings: true
-          energyCentreStatus: null
           networkElementInstanceName: networkElementInstanceName
           elementType: null
-          combinedHeatAndPowerSystems:
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
-          - operationalMode: operationalMode
-            maximumHeatOutput: 8
-            fuelOrHeatSource: 9
-            maximumElectricOutput: 6
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         elementsGroup:
         - soaMilestones:
           - soaStatuses:

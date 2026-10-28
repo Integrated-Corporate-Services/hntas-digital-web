@@ -424,7 +424,7 @@ namespace HNTAS.Web.UI.Controllers
                             ElementType = elementType,
                             ElementId = (instanceCounter).ToString("D5"),
                             NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(option.Id) + " - " + instanceCounter,
-                            EnergyCentreStatus = (elementType == ElementTypeInShort.EC) ? NullableOfNetworkDetailsStatus.Incomplete : null
+                            
                         };
                         elementList.Add(el);
                         instanceCounter++;
@@ -448,7 +448,7 @@ namespace HNTAS.Web.UI.Controllers
                             ElementType = elementType,
                             ElementId = (instanceCounter).ToString("D5"),
                             NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(option.Id) + " - " + instanceCounter,
-                            EnergyCentreStatus = (elementType == ElementTypeInShort.EC) ? NullableOfNetworkDetailsStatus.Incomplete : null
+                            
                         };
                         elementList.Add(el);
                         instanceCounter++;

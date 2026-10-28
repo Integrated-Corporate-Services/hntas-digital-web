@@ -38,24 +38,29 @@
         <ul class="govuk-task-list">
             @foreach (var element in Model)
             {
-                var statusClass = "";
-                switch (element.EnergyCentreStatus.ToString())
+                var statusClass = "govuk-tag--blue";
+                if (element.EnergyCentrePlantData != null)
                 {
-                    case StatusConstants.ReadyToStart:
-                        statusClass = "govuk-tag--light-blue";
-                        break;
-                    case StatusConstants.CannotStartYet:
-                    case StatusConstants.InProgress:
-                    case StatusConstants.Incomplete:
-                        statusClass = "govuk-tag--blue";
-                        break;
-                    case StatusConstants.Completed:
-                        statusClass = "govuk-tag--green";
-                        break;
-                    default:
-                        statusClass = "govuk-tag--grey";
-                        break;
+                    switch (element.EnergyCentrePlantData!.EnergyCentreStatus.ToString())
+                    {
+                        case StatusConstants.ReadyToStart:
+                            statusClass = "govuk-tag--light-blue";
+                            break;
+                        case StatusConstants.CannotStartYet:
+                        case StatusConstants.InProgress:
+                        case StatusConstants.Incomplete:
+                            statusClass = "govuk-tag--blue";
+                            break;
+                        case StatusConstants.Complete:
+                            statusClass = "govuk-tag--green";
+                            break;
+                        default:
+                            statusClass = "govuk-tag--grey";
+                            break;
+                    }
                 }
+                
+                
 
                 <li class="govuk-task-list__item govuk-task-list__item--with-link">
                     <div class="govuk-task-list__name-and-hint">                        
@@ -69,7 +74,7 @@
                     </div>
                     <div class="govuk-task-list__status" id="@element.ElementId">
                         <span class="govuk-tag @statusClass">
-                            @element.EnergyCentreStatus
+                            @(element.EnergyCentrePlantData != null ? element.EnergyCentrePlantData!.EnergyCentreStatus : "Incomplete")
                         </span>
                     </div>
                 </li>

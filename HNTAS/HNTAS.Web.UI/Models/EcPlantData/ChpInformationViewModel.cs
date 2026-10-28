@@ -5,11 +5,12 @@ namespace HNTAS.Web.UI.Models.EcPlantData
 {
     public class ChpInformationViewModel
     {
-        public List<ChpInformation> ChpInformationList { get; set; } = new List<ChpInformation>();        
+        public List<ChpInformation> ChpInformationList { get; set; } = new List<ChpInformation>();
+        
     }
     public class ChpInformation : HeatAndFuelBaseViewModel
     {
         public int? MaximumElectricOutput { get; set; }
-        public string? OperationalModeValue { get; set; }        
+        public string? OperationalMode { get; set; }        
     }
 }

@@ -15,8 +15,8 @@
                 {
                 var hasNumberOfMaximumHeatOutputError = ViewData.ModelState[$"chpinformationlist[{i}].maximumheatoutput"]?.Errors.Count > 0;
                 var hasNumberOfMaximumElectricOutputError = ViewData.ModelState[$"chpinformationlist[{i}].maximumelectricoutput"]?.Errors.Count > 0;
-                var hasFuelOrHeatSourceError = ViewData.ModelState[$"chpinformationlist[{i}].fuelorheatsourcevalue"]?.Errors.Count > 0;
-                var hasOperationalModeError = ViewData.ModelState[$"chpinformationlist[{i}].operationalmodevalue"]?.Errors.Count > 0;
+                var hasFuelOrHeatSourceError = ViewData.ModelState[$"chpinformationlist[{i}].fuelorheatsource"]?.Errors.Count > 0;
+                var hasOperationalModeError = ViewData.ModelState[$"chpinformationlist[{i}].operationalmode"]?.Errors.Count > 0;
 
                 var chpInfo = Model.ChpInformationList[i];
                 <div class="govuk-!-margin-top-6">
@@ -55,17 +55,17 @@
 
                         <div class="govuk-grid-column-one-quarter">
                             <div class="govuk-form-group">
-                                <label class="govuk-label" asp-for="ChpInformationList[i].FuelOrHeatSourceValue">
+                                <label class="govuk-label" asp-for="ChpInformationList[i].FuelOrHeatSource">
                                     Fuel or heat source
                                 </label>
                                 @if (hasFuelOrHeatSourceError)
                                 {
                                     <p id="fuelorheatsource-error" class="govuk-error-message">
                                         <span class="govuk-visually-hidden">Error:</span>
-                                        @Html.ValidationMessageFor(m => m.ChpInformationList[i].FuelOrHeatSourceValue)
+                                        @Html.ValidationMessageFor(m => m.ChpInformationList[i].FuelOrHeatSource)
                                     </p>
                                 }
-                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"chpinformationlist[{i}].fuelorheatsourcevalue")" asp-for="ChpInformationList[i].FuelOrHeatSourceValue">
+                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"chpinformationlist[{i}].fuelorheatsource")" asp-for="ChpInformationList[i].FuelOrHeatSource">
                                     <option value="" selected="">Select a source</option>
                                     @foreach (var fuelType in ViewBag.FuelTypes!)
                                     {
@@ -77,17 +77,17 @@
 
                         <div class="govuk-grid-column-one-quarter">
                             <div class="govuk-form-group">
-                                <label class="govuk-label" asp-for="ChpInformationList[i].OperationalModeValue">
+                                <label class="govuk-label" asp-for="ChpInformationList[i].OperationalMode">
                                     Operational mode
                                 </label>
                                 @if (hasOperationalModeError)
                                 {
                                     <p id="operationalmode-error" class="govuk-error-message">
                                         <span class="govuk-visually-hidden">Error:</span>
-                                        @Html.ValidationMessageFor(m => m.ChpInformationList[i].OperationalModeValue)
+                                        @Html.ValidationMessageFor(m => m.ChpInformationList[i].OperationalMode)
                                     </p>
                                 }
-                                <select class="govuk-select @(hasOperationalModeError ? "govuk-select--error" : "")" id="@($"chpinformationlist[{i}].operationalmodevalue")" asp-for="ChpInformationList[i].OperationalModeValue">
+                                <select class="govuk-select @(hasOperationalModeError ? "govuk-select--error" : "")" id="@($"chpinformationlist[{i}].operationalmode")" asp-for="ChpInformationList[i].OperationalMode">
                                     <option value="" selected="">Select a mode</option>
                                     @foreach (var operationalMode in ViewBag.OperationalModes)
                                     {
