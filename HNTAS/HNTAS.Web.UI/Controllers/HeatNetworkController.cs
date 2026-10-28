@@ -140,9 +140,16 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
+            var energyCentreType = heatNetworkData?.EnergyCentreType;
+            var networkElements = heatNetworkData?.NetworkElements;
+
+            var networkWithEc = networkElements != null ? networkElements.Elements?.Any(e => e.ElementType == ElementTypeInShort.EC) ?? false : false;
+
+            var isEcPlantDataApplicable = energyCentreType == NullableOfEnergyCentreType.SuppliesMultipleBuildings || energyCentreType == NullableOfEnergyCentreType.SuppliesOneCommunalBuildingOnly || networkWithEc;
+
             this.ShowBackButton("AddNetworkDetails", "HeatNetwork", new { hnId });
 
-            var networkDetailsTypeList = NetworkElementHelper.GetDefaultNetworkDetailsOptions();            
+            var networkDetailsTypeList = NetworkElementHelper.GetDefaultNetworkDetailsOptions(isEcPlantDataApplicable);            
 
             foreach (var option in networkDetailsTypeList)
             {
@@ -150,10 +157,15 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     NetworkElementHelper.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.ElementSoaStatus, heatNetworkData?.NetworkElements?.NetworkElementStatus);
                 }
+                else if (option.Id == NetworkDetailsType.EnergyCentrePlantData)
+                {
+                    NetworkElementHelper.UpdateOptionStatus(option, heatNetworkData?.NetworkElements?.EcPlantDataStatus, heatNetworkData?.NetworkElements?.NetworkElementStatus);
+                }
                 else if (option.Id == NetworkDetailsType.NetworkElements)
                 {
-                    NetworkElementHelper.UpdateOptionStatus<NetworkDetailsStatus, NetworkDetailsStatus>(option, heatNetworkData?.NetworkElements?.NetworkElementStatus, null);
-                }                
+                    NetworkElementHelper.UpdateOptionStatus<NullableOfNetworkDetailsStatus, NullableOfNetworkDetailsStatus>(option, heatNetworkData?.NetworkElements?.NetworkElementStatus, null);
+                }
+                
             }
 
             var model = new NetworkDetailsViewModel()
@@ -191,7 +203,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var networkStatus = heatNetworkData?.NetworkElements?.NetworkElementStatus;
-            var networkElementAction = networkStatus == NetworkDetailsStatus.Complete ? "NetworkElementsOverView" : "NetworkElementsList";
+            var networkElementAction = networkStatus == NullableOfNetworkDetailsStatus.Complete ? "NetworkElementsOverView" : "NetworkElementsList";
 
             switch (networkDetailId)
             {
@@ -199,6 +211,8 @@ namespace HNTAS.Web.UI.Controllers
                     return RedirectToAction(networkElementAction, "NetworkElements");
                 case NetworkDetailsType.Soa:
                     return RedirectToAction(soaAction, soaController);
+                case NetworkDetailsType.EnergyCentrePlantData:
+                    return RedirectToAction("EcSupplyingNewBuildings", "EcPlantData");
                 default:
                     return BadRequest();
             }

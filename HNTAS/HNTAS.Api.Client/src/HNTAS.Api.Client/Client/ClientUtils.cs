@@ -137,6 +137,8 @@ namespace HNTAS.Api.Client.Client
                 return NullableOfMilestoneValueConverter.ToJsonValue(nullableOfMilestone);
             if (obj is NullableOfNetworkBuildStatus nullableOfNetworkBuildStatus)
                 return NullableOfNetworkBuildStatusValueConverter.ToJsonValue(nullableOfNetworkBuildStatus);
+            if (obj is NullableOfNetworkDetailsStatus nullableOfNetworkDetailsStatus)
+                return NullableOfNetworkDetailsStatusValueConverter.ToJsonValue(nullableOfNetworkDetailsStatus);
             if (obj is NullableOfPreferredContactType nullableOfPreferredContactType)
                 return NullableOfPreferredContactTypeValueConverter.ToJsonValue(nullableOfPreferredContactType);
             if (obj is NullableOfSoaStage nullableOfSoaStage)
