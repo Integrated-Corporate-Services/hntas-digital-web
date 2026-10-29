@@ -22,6 +22,7 @@ Name | Type | Description | Notes
 **ContributingOrganisations** | **List&lt;string&gt;** |  | [optional] 
 **ActiveContributingOrgId** | **string** |  | [optional] 
 **InvitedRoles** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | [optional] 
+**WorkingOrgName** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

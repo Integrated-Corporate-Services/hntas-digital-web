@@ -1,0 +1,53 @@
+﻿@using HNTAS.Web.UI.Models.NetworkLeads
+
+@model InviteLeadViewModel
+
+@{
+    ViewData["Title"] = "Enter the email address of the person you want to invite – Certify your heat networks";
+    var hasError = ViewData.ModelState[nameof(Model.EmailAddress)]?.Errors.Count > 0;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form asp-action="SaveLeadEmail" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading govuk-heading-l">
+                            Enter the email address of the person you want to invite
+                        </h1>
+                    </legend>
+
+                    <div class="govuk-form-group">
+                        <p></p>
+                        <label class="govuk-label" for="email-address-input">
+                            Email address
+                        </label>
+
+                        @if (hasError)
+                        {
+                            <p id="email-address-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.EmailAddress)]?.Errors[0].ErrorMessage
+                            </p>
+                        }
+
+                        <input class="govuk-input @(hasError ? "govuk-input--error" : "")"
+                               id="email-address-input"
+                               name="EmailAddress"
+                               type="email"
+                               spellcheck="false"
+                               autocomplete="email"
+                               value="@Model.EmailAddress"
+                               aria-describedby="@(hasError ? "email-address-error" : null)" />
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
+
+    </div>
+</div>
