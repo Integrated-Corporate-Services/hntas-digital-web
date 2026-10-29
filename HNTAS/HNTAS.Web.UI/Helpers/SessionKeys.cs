@@ -100,6 +100,8 @@
         public const string TraceAssessmentRoutingSessionKey = "TraceAssessmentRoutingSessionKey";
         public const string AssessorDetailsSessionKey = "AssessorDetailsSessionKey";
         public const string NewLeadDetailsViewModelSessionKey = "NewLeadDetailsViewModelSessionKey";
+        public const string NewLeadInviteEmailViewModelSessionKey = "NewLeadInviteEmailViewModelSessionKey";
+
         public const string AssessorElementSelectionOverviewModelSessionKey = "AssessorElementSelectionOverviewModelSessionKey";
         public const string SoaStageOfAssessorOnboarding = "SoaStageOfAssessorOnboarding";
         public const string SoaStageTitleOfAssessorOnboarding = "SoaStageTitleOfAssessorOnboarding";
@@ -131,5 +133,7 @@
 
         public const string IsCommualNetworkKey = "IsCommualNetworkKey";
         public const string HasOwnEnergyCentreKey = "HasOwnedEnergyCentreKey";
+
+        public static string SameOrganisationViewModelSessionKey = "SameOrganisationViewModelSessionKey";
     }
 }

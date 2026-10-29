@@ -4,13 +4,15 @@
 
 @{
     ViewData["Title"] = "Invite a network manager";
+
     bool hasFirstNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.FirstName)) && ViewData.ModelState[nameof(Model.FirstName)].Errors.Any();
     bool hasLastNameErrors = ViewData.ModelState.ContainsKey(nameof(Model.LastName)) && ViewData.ModelState[nameof(Model.LastName)].Errors.Any();
-    bool hasEmailErrors = ViewData.ModelState.ContainsKey(nameof(Model.EmailId)) && ViewData.ModelState[nameof(Model.EmailId)].Errors.Any();
+    bool hasJobTitleErrors = ViewData.ModelState.ContainsKey(nameof(Model.JobTitle)) && ViewData.ModelState[nameof(Model.JobTitle)].Errors.Any();
     bool hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
+    
     var firstNameInputComponentData = new GovUkInputModel
     {
-        Id = nameof(Model.FirstName),
+        Id = nameof(Model.FirstName).ToLower(),
         Name = nameof(Model.FirstName),
         Label = "First name",
         HasError = hasFirstNameErrors,
@@ -20,7 +22,7 @@
     };
     var lastNameInputComponentData = new GovUkInputModel
     {
-        Id = nameof(Model.LastName),
+        Id = nameof(Model.LastName).ToLower(),
         Name = nameof(Model.LastName),
         Label = "Last name",
         HasError = hasLastNameErrors,
@@ -28,19 +30,19 @@
         ErrorMessage = hasLastNameErrors ? ViewData.ModelState[nameof(Model.LastName)].Errors[0].ErrorMessage : null,
         Value = Model.LastName
     };
-    var emailInputComponentData = new GovUkInputModel
+    var jobTitleInputComponentData = new GovUkInputModel
     {
-        Id = nameof(Model.EmailId),
-        Name = nameof(Model.EmailId),
-        Label = "Email",
-        HasError = hasEmailErrors,
+        Id = nameof(Model.JobTitle).ToLower(),
+        Name = nameof(Model.JobTitle),
+        Label = "Job title",
+        HasError = hasJobTitleErrors,
         AdditionalClasses = "govuk-input--width-20",
-        ErrorMessage = hasEmailErrors ? ViewData.ModelState[nameof(Model.EmailId)].Errors[0].ErrorMessage : null,
-        Value = Model.EmailId
+        ErrorMessage = hasJobTitleErrors ? ViewData.ModelState[nameof(Model.JobTitle)].Errors[0].ErrorMessage : null,
+        Value = Model.JobTitle
     };
     var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
     {
-        Id = nameof(Model.ConfirmedDeclaration),
+        Id = nameof(Model.ConfirmedDeclaration).ToLower(),
         Name = nameof(Model.ConfirmedDeclaration),
         Label = "I understand that by adding this person, I am giving them permission to add heat networks for this organisation.",
         HasError = hasDeclarationErrors,
@@ -69,7 +71,7 @@
                 @await Html.PartialAsync("Components/_GovUkInput", lastNameInputComponentData)
 
                 <!-- Email Add -->
-                @await Html.PartialAsync("Components/_GovUkInput", emailInputComponentData)
+                @await Html.PartialAsync("Components/_GovUkInput", jobTitleInputComponentData)
 
                 <!-- Declaration -->
                 @await Html.PartialAsync("Components/_ConfirmDeclaration", confirmDeclarationComponentData)
