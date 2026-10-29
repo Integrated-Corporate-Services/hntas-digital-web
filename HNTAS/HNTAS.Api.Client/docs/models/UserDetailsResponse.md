@@ -17,6 +17,7 @@ Name | Type | Description | Notes
 **MobileNumber** | **string** |  | [optional] 
 **Status** | **UserStatus** |  | [optional] 
 **Roles** | [**List&lt;UserRole&gt;**](UserRole.md) |  | [optional] 
+**HnRoleMappings** | [**List&lt;HnRoleMappingsUserResult&gt;**](HnRoleMappingsUserResult.md) |  | [optional] 
 **Organisation** | [**OrganisationResponse**](OrganisationResponse.md) |  | [optional] 
 **HeatNetworks** | [**List&lt;HeatNetworkUserResponse&gt;**](HeatNetworkUserResponse.md) |  | [optional] 
 **ContributingOrganisations** | **List&lt;string&gt;** |  | [optional] 

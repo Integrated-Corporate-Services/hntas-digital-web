@@ -118,6 +118,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new HeatRecoveryJsonConverter());
             _jsonOptions.Converters.Add(new HeatRecoverySourceJsonConverter());
             _jsonOptions.Converters.Add(new HnRoleMappingJsonConverter());
+            _jsonOptions.Converters.Add(new HnRoleMappingsUserResultJsonConverter());
             _jsonOptions.Converters.Add(new ImportResultJsonConverter());
             _jsonOptions.Converters.Add(new InitialUserRegistrationRequestJsonConverter());
             _jsonOptions.Converters.Add(new InvitationJsonConverter());
