@@ -77,7 +77,7 @@
             }
         }
 
-        @if ((userIsRP || userIsActingRP) && Model.HasHntasNetworks)
+        @if (ViewBag.IsAssessorFeatureEnabled && (userIsRP || userIsActingRP) && Model.HasHntasNetworks)
         {
             <div class="dashboard-grid__item">
                 <div class="dashboard-card">

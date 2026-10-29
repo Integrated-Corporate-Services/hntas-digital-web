@@ -85,7 +85,11 @@
                                             </th>
                                             <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Status</th>
                                             <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Updated</th>
-                                            <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Assessor</th>
+                                            @if(ViewBag.IsAssessorFeatureEnabled)
+                                            {
+                                                <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Assessor</th>
+                                            }
+                                            
                                         </tr>
                                     </thead>
                                     <tbody class="govuk-table__body">
@@ -168,6 +172,8 @@
                                                 <td class="govuk-table__cell govuk-!-width-one-quarter">
                                                     @element.SoaStatusUpdatedAt?.ToString("dd MMM yyyy")
                                                 </td>
+                                            @if (ViewBag.IsAssessorFeatureEnabled)
+                                            {
                                                 <td class="govuk-table__cell govuk-!-width-one-quarter">
                                                     @if (assessorNameWithAssessmentList.Any())
                                                     {
@@ -182,13 +188,10 @@
                                                             Not yet assigned
                                                         </span>
                                                     }
-
-                                                    @* <span class="@assessorClass">
-                                                    @assessorName
-                                                </span> *@
-                                                    @* <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, selectedAssessor = fullNameWithEmail, selectedAssessorFirstName = element.AssessorFirstName, selectedAssessorLastName = element.AssessorLastName, selectedAssessorEmail = element.AssessorEmailId })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a> *@
                                                     <a class="govuk-link govuk-!-display-block govuk-!-margin-top-2" href="@Url.Action("PrepareAssessorOnboarding", "ElementSoa", new { stage = stage.StageId, stageTitle = stage.Title, elementType = element.ElementType, })">Assign assessor<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span></a>
                                                 </td>
+                                            }
+                                            
                                             </tr>
                                         }
                                     </tbody>

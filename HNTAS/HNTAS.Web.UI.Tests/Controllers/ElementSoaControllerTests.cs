@@ -1,5 +1,4 @@
 ﻿using Amazon.Runtime.Internal.Util;
-using Castle.Core.Configuration;
 using DocumentFormat.OpenXml.EMMA;
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
@@ -12,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -29,6 +29,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<IHeatNetworkService> _heatNetworksApiMock;
         private readonly Mock<IAssessorApi> _assessorApiMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
+        private readonly Mock<IConfiguration> _configurationMock;
 
         private readonly ElementSoaController _controller;
 
@@ -39,13 +40,14 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _heatNetworksApiMock = new Mock<IHeatNetworkService>();
             _assessorApiMock = new Mock<IAssessorApi>();
             _sessionHelperMock = new Mock<ISessionHelper>();
+            _configurationMock = new Mock<IConfiguration>();
             _controller = CreateController();
         }
 
         private ElementSoaController CreateController()
         {
             var controller = new ElementSoaController(
-                _sessionHelperMock.Object, _soaServiceMock.Object, _loggerMock.Object, _heatNetworksApiMock.Object, _assessorApiMock.Object);
+                _sessionHelperMock.Object, _soaServiceMock.Object, _loggerMock.Object, _heatNetworksApiMock.Object, _assessorApiMock.Object, _configurationMock.Object);
 
             controller.ControllerContext = new ControllerContext
             {
@@ -89,6 +91,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         [Fact]
         public async Task SoaStages_Get_ReturnView()
         {
+            _configurationMock.Setup(c => c.GetSection("AssessorFeature:Enabled").Value).Returns("true");
             var urlHelperMock = SetUpBackLink("UnderstandingSoa", "ElementSoa");
             _controller.Url = urlHelperMock.Object;
 

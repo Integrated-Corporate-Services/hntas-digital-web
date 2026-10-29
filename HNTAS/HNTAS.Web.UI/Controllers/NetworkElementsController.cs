@@ -30,9 +30,6 @@ namespace HNTAS.Web.UI.Controllers
         public async Task<IActionResult> NetworkElementsListAsync()
         {
             this.ShowBackButton("NetworkDetails", "HeatNetwork");
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
 
@@ -99,7 +96,19 @@ namespace HNTAS.Web.UI.Controllers
             {
                 return View(model);
             }
+
+            var savedNetworkElements = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
+            var hasNetworkElementsChanged = HasNetworkElementsChanged(savedNetworkElements, model);
+
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey, model);
+
+            if (hasNetworkElementsChanged)
+            {
+                _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NetworkEcNameViewModelSessionKey);
+                _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyCheckViewModelSessionKey);
+                _sessionHelper.ClearFromSession(HttpContext, SessionKeys.EcSupplyViewModelSessionKey);
+            }
+
             return RedirectToAction("NetworkEnergyCentreName");
         }
 
@@ -604,6 +613,35 @@ namespace HNTAS.Web.UI.Controllers
                 }
             }
             return backAction;
+        }
+
+        private static bool HasNetworkElementsChanged(NetworkElementViewModel? savedNetworkElements, NetworkElementViewModel model)
+        {
+            if (savedNetworkElements?.ElementOptions == null || model.ElementOptions == null)
+            {
+                return false;
+            }
+
+            if (savedNetworkElements.ElementOptions.Count != model.ElementOptions.Count)
+            {
+                return true;
+            }
+
+            foreach (var currentOption in model.ElementOptions)
+            {
+                var savedOption = savedNetworkElements.ElementOptions.FirstOrDefault(x => x.Id == currentOption.Id);
+                if (savedOption == null)
+                {
+                    return true;
+                }
+
+                if (savedOption.ExistingCount != currentOption.ExistingCount || savedOption.NewCount != currentOption.NewCount)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void ClearNetworkElementSpecificSession()

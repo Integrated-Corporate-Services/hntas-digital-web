@@ -49,13 +49,15 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 .Returns((DeclationOfImpartialityModel?)null);
 
             // 2. Mock UserService endpoints called in Task.WhenAll
-            mockUserService.Setup(u => u.GetUserById(userId)).ReturnsAsync(new UserResponse
+            mockUserService.Setup(u => u.GetUserDetails(userId)).ReturnsAsync(new UserDetailsResponse
             {
                 Id = userId,
                 Roles = new List<UserRole> { UserRole.ResponsibleParty },
-                HnRoleMappings = new List<HnRoleMapping>
+                InvitedRoles = new List<ContributorRole> { ContributorRole.ResponsibleParty },
+
+                HnRoleMappings = new List<HnRoleMappingsUserResult>
                 {
-                    new HnRoleMapping { HnId = "hn-1", Role = ContributorRole.ResponsibleParty }
+                    new HnRoleMappingsUserResult { HeatNetwork = new HeatNetworkUserResponse{HnId = "hn-1", Name = "Network 1"}, Role = ContributorRole.ResponsibleParty.ToString() }
                 }
             });
 

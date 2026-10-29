@@ -20,18 +20,21 @@ namespace HNTAS.Web.UI.Controllers
         private readonly IHeatNetworkService _heatNetworkService;
         private readonly IAssessorApi _assessorApi;
         private readonly ILogger<ElementSoaController> _logger;
+        private readonly IConfiguration _configuration;
 
         public ElementSoaController(ISessionHelper sessionHelper,
             ISoaService soaProjectService,
             ILogger<ElementSoaController> logger,
             IHeatNetworkService heatNetworkService,
-            IAssessorApi assessorApi)
+            IAssessorApi assessorApi,
+            IConfiguration configuration)
         {
             _sessionHelper = sessionHelper;
             _soaProjectService = soaProjectService;
             _logger = logger;
             _heatNetworkService = heatNetworkService;
             _assessorApi = assessorApi;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -50,7 +53,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> SoaStages()
         {
-            //this.ShowBackButton("UnderstandingSoa", "ElementSoa");
+            ViewBag.IsAssessorFeatureEnabled = _configuration.GetValue<bool>("AssessorFeature:Enabled");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
