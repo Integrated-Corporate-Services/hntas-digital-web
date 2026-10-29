@@ -50,9 +50,10 @@ namespace HNTAS.Api.Client.Model
         /// <param name="createdAt">createdAt</param>
         /// <param name="contributingOrganisations">contributingOrganisations</param>
         /// <param name="activeContributingOrgId">activeContributingOrgId</param>
+        /// <param name="workingOrgName">workingOrgName</param>
         /// <param name="notificationStats">notificationStats</param>
         [JsonConstructor]
-        public User(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> orgId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> jobTitle = default, Option<string?> emailId = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<List<UserRole>?> roles = default, Option<List<HnRoleMapping>?> hnRoleMappings = default, Option<UserStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<List<string>?> contributingOrganisations = default, Option<string?> activeContributingOrgId = default, Option<NotificationStats?> notificationStats = default)
+        public User(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> orgId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> jobTitle = default, Option<string?> emailId = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<List<UserRole>?> roles = default, Option<List<HnRoleMapping>?> hnRoleMappings = default, Option<UserStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<List<string>?> contributingOrganisations = default, Option<string?> activeContributingOrgId = default, Option<string?> workingOrgName = default, Option<NotificationStats?> notificationStats = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
@@ -71,6 +72,7 @@ namespace HNTAS.Api.Client.Model
             CreatedAtOption = createdAt;
             ContributingOrganisationsOption = contributingOrganisations;
             ActiveContributingOrgIdOption = activeContributingOrgId;
+            WorkingOrgNameOption = workingOrgName;
             NotificationStatsOption = notificationStats;
             OnCreated();
         }
@@ -299,6 +301,19 @@ namespace HNTAS.Api.Client.Model
         public string? ActiveContributingOrgId { get { return this.ActiveContributingOrgIdOption; } set { this.ActiveContributingOrgIdOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of WorkingOrgName
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> WorkingOrgNameOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets WorkingOrgName
+        /// </summary>
+        [JsonPropertyName("workingOrgName")]
+        public string? WorkingOrgName { get { return this.WorkingOrgNameOption; } set { this.WorkingOrgNameOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of NotificationStats
         /// </summary>
         [JsonIgnore]
@@ -336,6 +351,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  ContributingOrganisations: ").Append(ContributingOrganisations).Append("\n");
             sb.Append("  ActiveContributingOrgId: ").Append(ActiveContributingOrgId).Append("\n");
+            sb.Append("  WorkingOrgName: ").Append(WorkingOrgName).Append("\n");
             sb.Append("  NotificationStats: ").Append(NotificationStats).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -396,6 +412,7 @@ namespace HNTAS.Api.Client.Model
             Option<DateTimeOffset?> createdAt = default;
             Option<List<string>?> contributingOrganisations = default;
             Option<string?> activeContributingOrgId = default;
+            Option<string?> workingOrgName = default;
             Option<NotificationStats?> notificationStats = default;
 
             while (utf8JsonReader.Read())
@@ -468,6 +485,9 @@ namespace HNTAS.Api.Client.Model
                         case "activeContributingOrgId":
                             activeContributingOrgId = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "workingOrgName":
+                            workingOrgName = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         case "notificationStats":
                             notificationStats = new Option<NotificationStats?>(JsonSerializer.Deserialize<NotificationStats>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -495,7 +515,7 @@ namespace HNTAS.Api.Client.Model
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class User.");
 
-            return new User(id, oneLoginId, orgId, firstName, lastName, jobTitle, emailId, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, roles, hnRoleMappings, status, createdAt, contributingOrganisations, activeContributingOrgId, notificationStats);
+            return new User(id, oneLoginId, orgId, firstName, lastName, jobTitle, emailId, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, roles, hnRoleMappings, status, createdAt, contributingOrganisations, activeContributingOrgId, workingOrgName, notificationStats);
         }
 
         /// <summary>
@@ -627,6 +647,12 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("activeContributingOrgId", user.ActiveContributingOrgId);
                 else
                     writer.WriteNull("activeContributingOrgId");
+
+            if (user.WorkingOrgNameOption.IsSet)
+                if (user.WorkingOrgNameOption.Value != null)
+                    writer.WriteString("workingOrgName", user.WorkingOrgName);
+                else
+                    writer.WriteNull("workingOrgName");
 
             if (user.NotificationStatsOption.IsSet)
                 if (user.NotificationStatsOption.Value != null)

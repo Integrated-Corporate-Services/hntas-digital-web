@@ -41,15 +41,17 @@ namespace HNTAS.Api.Client.Model
         /// <param name="invitedAt">invitedAt</param>
         /// <param name="status">status</param>
         /// <param name="id">id</param>
+        /// <param name="jobTitle">jobTitle</param>
         /// <param name="permissions">permissions</param>
         /// <param name="invitedHnId">invitedHnId</param>
         /// <param name="invitedOrgId">invitedOrgId</param>
+        /// <param name="invitedOrgName">invitedOrgName</param>
         /// <param name="acceptedAt">acceptedAt</param>
         /// <param name="rejectedAt">rejectedAt</param>
         /// <param name="replacedUserId">replacedUserId</param>
         /// <param name="rolesToReplace">rolesToReplace</param>
         [JsonConstructor]
-        public Invitation(string inviterUserId, string firstName, string lastName, string invitedEmail, List<ContributorRole> invitedRoles, DateTimeOffset invitedAt, InvitationStatus status, Option<string?> id = default, Option<List<string>?> permissions = default, Option<string?> invitedHnId = default, Option<string?> invitedOrgId = default, Option<DateTimeOffset?> acceptedAt = default, Option<DateTimeOffset?> rejectedAt = default, Option<string?> replacedUserId = default, Option<List<ContributorRole>?> rolesToReplace = default)
+        public Invitation(string inviterUserId, string firstName, string lastName, string invitedEmail, List<ContributorRole> invitedRoles, DateTimeOffset invitedAt, InvitationStatus status, Option<string?> id = default, Option<string?> jobTitle = default, Option<List<string>?> permissions = default, Option<string?> invitedHnId = default, Option<string?> invitedOrgId = default, Option<string?> invitedOrgName = default, Option<DateTimeOffset?> acceptedAt = default, Option<DateTimeOffset?> rejectedAt = default, Option<string?> replacedUserId = default, Option<List<ContributorRole>?> rolesToReplace = default)
         {
             InviterUserId = inviterUserId;
             FirstName = firstName;
@@ -59,9 +61,11 @@ namespace HNTAS.Api.Client.Model
             InvitedAt = invitedAt;
             Status = status;
             IdOption = id;
+            JobTitleOption = jobTitle;
             PermissionsOption = permissions;
             InvitedHnIdOption = invitedHnId;
             InvitedOrgIdOption = invitedOrgId;
+            InvitedOrgNameOption = invitedOrgName;
             AcceptedAtOption = acceptedAt;
             RejectedAtOption = rejectedAt;
             ReplacedUserIdOption = replacedUserId;
@@ -127,6 +131,19 @@ namespace HNTAS.Api.Client.Model
         public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of JobTitle
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> JobTitleOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets JobTitle
+        /// </summary>
+        [JsonPropertyName("jobTitle")]
+        public string? JobTitle { get { return this.JobTitleOption; } set { this.JobTitleOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of Permissions
         /// </summary>
         [JsonIgnore]
@@ -164,6 +181,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("invitedOrgId")]
         public string? InvitedOrgId { get { return this.InvitedOrgIdOption; } set { this.InvitedOrgIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of InvitedOrgName
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> InvitedOrgNameOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets InvitedOrgName
+        /// </summary>
+        [JsonPropertyName("invitedOrgName")]
+        public string? InvitedOrgName { get { return this.InvitedOrgNameOption; } set { this.InvitedOrgNameOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of AcceptedAt
@@ -233,9 +263,11 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  InvitedAt: ").Append(InvitedAt).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
             sb.Append("  Permissions: ").Append(Permissions).Append("\n");
             sb.Append("  InvitedHnId: ").Append(InvitedHnId).Append("\n");
             sb.Append("  InvitedOrgId: ").Append(InvitedOrgId).Append("\n");
+            sb.Append("  InvitedOrgName: ").Append(InvitedOrgName).Append("\n");
             sb.Append("  AcceptedAt: ").Append(AcceptedAt).Append("\n");
             sb.Append("  RejectedAt: ").Append(RejectedAt).Append("\n");
             sb.Append("  ReplacedUserId: ").Append(ReplacedUserId).Append("\n");
@@ -300,9 +332,11 @@ namespace HNTAS.Api.Client.Model
             Option<DateTimeOffset?> invitedAt = default;
             Option<InvitationStatus?> status = default;
             Option<string?> id = default;
+            Option<string?> jobTitle = default;
             Option<List<string>?> permissions = default;
             Option<string?> invitedHnId = default;
             Option<string?> invitedOrgId = default;
+            Option<string?> invitedOrgName = default;
             Option<DateTimeOffset?> acceptedAt = default;
             Option<DateTimeOffset?> rejectedAt = default;
             Option<string?> replacedUserId = default;
@@ -349,6 +383,9 @@ namespace HNTAS.Api.Client.Model
                         case "id":
                             id = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "jobTitle":
+                            jobTitle = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         case "permissions":
                             permissions = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -357,6 +394,9 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "invitedOrgId":
                             invitedOrgId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "invitedOrgName":
+                            invitedOrgName = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "acceptedAt":
                             acceptedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
@@ -418,7 +458,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class Invitation.");
 
-            return new Invitation(inviterUserId.Value!, firstName.Value!, lastName.Value!, invitedEmail.Value!, invitedRoles.Value!, invitedAt.Value!.Value!, status.Value!.Value!, id, permissions, invitedHnId, invitedOrgId, acceptedAt, rejectedAt, replacedUserId, rolesToReplace);
+            return new Invitation(inviterUserId.Value!, firstName.Value!, lastName.Value!, invitedEmail.Value!, invitedRoles.Value!, invitedAt.Value!.Value!, status.Value!.Value!, id, jobTitle, permissions, invitedHnId, invitedOrgId, invitedOrgName, acceptedAt, rejectedAt, replacedUserId, rolesToReplace);
         }
 
         /// <summary>
@@ -481,6 +521,12 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("id");
 
+            if (invitation.JobTitleOption.IsSet)
+                if (invitation.JobTitleOption.Value != null)
+                    writer.WriteString("jobTitle", invitation.JobTitle);
+                else
+                    writer.WriteNull("jobTitle");
+
             if (invitation.PermissionsOption.IsSet)
                 if (invitation.PermissionsOption.Value != null)
                 {
@@ -500,6 +546,12 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("invitedOrgId", invitation.InvitedOrgId);
                 else
                     writer.WriteNull("invitedOrgId");
+
+            if (invitation.InvitedOrgNameOption.IsSet)
+                if (invitation.InvitedOrgNameOption.Value != null)
+                    writer.WriteString("invitedOrgName", invitation.InvitedOrgName);
+                else
+                    writer.WriteNull("invitedOrgName");
 
             if (invitation.AcceptedAtOption.IsSet)
                 if (invitation.AcceptedAtOption.Value != null)

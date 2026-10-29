@@ -3332,6 +3332,7 @@ components:
         firstName: firstName
         lastName: lastName
         hnId: hnId
+        invitedOrgName: invitedOrgName
         emailAddress: emailAddress
         contributorRoles:
         - DesignatedDutyHolder
@@ -3339,6 +3340,7 @@ components:
         rolesToReplace:
         - null
         - null
+        jobTitle: jobTitle
         orgId: orgId
         status: Invited
         replacedUserId: replacedUserId
@@ -3353,6 +3355,9 @@ components:
           nullable: true
           type: string
         orgId:
+          nullable: true
+          type: string
+        invitedOrgName:
           nullable: true
           type: string
         contributorRoles:
@@ -3370,6 +3375,9 @@ components:
             $ref: "#/components/schemas/ContributorRole"
           nullable: true
           type: array
+        jobTitle:
+          nullable: true
+          type: string
       required:
       - emailAddress
       - firstName
@@ -4312,13 +4320,7 @@ components:
         ident: ident
         id: id
       properties:
-        emailAddress:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        hnId:
+        id:
           nullable: true
           type: string
         chpId:
@@ -7760,10 +7762,12 @@ components:
     Invitation:
       example:
         lastName: lastName
+        invitedOrgName: invitedOrgName
         inviterUserId: inviterUserId
         invitedRoles:
         - DesignatedDutyHolder
         - DesignatedDutyHolder
+        jobTitle: jobTitle
         invitedHnId: invitedHnId
         invitedEmail: invitedEmail
         firstName: firstName
@@ -7790,6 +7794,9 @@ components:
           type: string
         lastName:
           type: string
+        jobTitle:
+          nullable: true
+          type: string
         permissions:
           items:
             type: string
@@ -7801,6 +7808,9 @@ components:
           nullable: true
           type: string
         invitedOrgId:
+          nullable: true
+          type: string
+        invitedOrgName:
           nullable: true
           type: string
         invitedRoles:
@@ -10916,6 +10926,7 @@ components:
           lastVisitedAt: 2000-01-23T04:56:07.000+00:00
         id: id
         activeContributingOrgId: activeContributingOrgId
+        workingOrgName: workingOrgName
         status: Active
       properties:
         id:
@@ -10967,6 +10978,9 @@ components:
           nullable: true
           type: array
         activeContributingOrgId:
+          nullable: true
+          type: string
+        workingOrgName:
           nullable: true
           type: string
         notificationStats:
@@ -11034,6 +11048,7 @@ components:
           orgId: orgId
         id: id
         activeContributingOrgId: activeContributingOrgId
+        workingOrgName: workingOrgName
         status: Active
       properties:
         id:
@@ -11092,6 +11107,9 @@ components:
             $ref: "#/components/schemas/ContributorRole"
           nullable: true
           type: array
+        workingOrgName:
+          nullable: true
+          type: string
       type: object
     UserNetworkDetailsResponse:
       example:

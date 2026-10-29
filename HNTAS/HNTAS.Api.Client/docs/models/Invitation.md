@@ -12,9 +12,11 @@ Name | Type | Description | Notes
 **InvitedAt** | **DateTimeOffset** |  | 
 **Status** | **InvitationStatus** |  | 
 **Id** | **string** |  | [optional] 
+**JobTitle** | **string** |  | [optional] 
 **Permissions** | **List&lt;string&gt;** |  | [optional] 
 **InvitedHnId** | **string** |  | [optional] 
 **InvitedOrgId** | **string** |  | [optional] 
+**InvitedOrgName** | **string** |  | [optional] 
 **AcceptedAt** | **DateTimeOffset** |  | [optional] 
 **RejectedAt** | **DateTimeOffset** |  | [optional] 
 **ReplacedUserId** | **string** |  | [optional] 
