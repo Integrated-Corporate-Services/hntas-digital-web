@@ -1,0 +1,86 @@
+﻿@using HNTAS.Api.Client.Model
+@using HNTAS.Web.UI.Models.Common
+@model List<Element>
+
+@{
+    ViewData["Title"] = "List of energy centres supplying new buildings";
+}
+<style>
+    .govuk-button--as-link {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: #1d70b8;
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
+        text-decoration: underline;
+    }
+
+        .govuk-button--as-link:hover {
+            color: #003078;
+        }
+
+        .govuk-button--as-link:focus {
+            outline: 3px solid #ffdd00;
+            background-color: #ffdd00;
+            color: #0b0c0c;
+        }
+</style>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-l">@ViewBag.HNId @ViewBag.HNName</span>
+        <h1 class="govuk-heading-l">
+            List of energy centres supplying new buildings
+        </h1>
+
+        <ul class="govuk-task-list">
+            @foreach (var element in Model)
+            {
+                var statusClass = "govuk-tag--blue";
+                if (element.EnergyCentrePlantData != null)
+                {
+                    switch (element.EnergyCentrePlantData!.EnergyCentreStatus.ToString())
+                    {
+                        case StatusConstants.ReadyToStart:
+                            statusClass = "govuk-tag--light-blue";
+                            break;
+                        case StatusConstants.CannotStartYet:
+                        case StatusConstants.InProgress:
+                        case StatusConstants.Incomplete:
+                            statusClass = "govuk-tag--blue";
+                            break;
+                        case StatusConstants.Complete:
+                            statusClass = "govuk-tag--green";
+                            break;
+                        default:
+                            statusClass = "govuk-tag--grey";
+                            break;
+                    }
+                }
+                
+                
+
+                <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                    <div class="govuk-task-list__name-and-hint">                        
+                        <form asp-action="SelectEcPlantOptions" method="post" style="display:inline;">
+                            <input type="hidden" name="elementId" value="@element.ElementId" />
+                            <input type="hidden" name="elementName" value="@element.ElementName" />
+                            <button type="submit" class="govuk-link govuk-task-list__link govuk-button--as-link" aria-describedby="@element.ElementId" style="background:none;border:0;padding:0;cursor:pointer;">
+                                @element.ElementName - @element.ElementId
+                            </button>
+                        </form>
+                    </div>
+                    <div class="govuk-task-list__status" id="@element.ElementId">
+                        <span class="govuk-tag @statusClass">
+                            @(element.EnergyCentrePlantData != null ? element.EnergyCentrePlantData!.EnergyCentreStatus : "Incomplete")
+                        </span>
+                    </div>
+                </li>
+            }
+
+        </ul>
+    </div>
+
+</div>

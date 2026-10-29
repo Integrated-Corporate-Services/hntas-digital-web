@@ -4,8 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**NetworkElementStatus** | **NetworkDetailsStatus** |  | [optional] 
-**ElementSoaStatus** | **NetworkDetailsStatus** |  | [optional] 
+**NetworkElementStatus** | **NullableOfNetworkDetailsStatus** |  | [optional] 
+**EcPlantDataStatus** | **NullableOfNetworkDetailsStatus** |  | [optional] 
+**ElementSoaStatus** | **NullableOfNetworkDetailsStatus** |  | [optional] 
 **Elements** | [**List&lt;Element&gt;**](Element.md) |  | [optional] 
 **ElementsGroup** | [**List&lt;ElementGroup&gt;**](ElementGroup.md) |  | [optional] 
 **IsExistingEnergyCentreSupplyNewBuildings** | **bool** |  | [optional] 

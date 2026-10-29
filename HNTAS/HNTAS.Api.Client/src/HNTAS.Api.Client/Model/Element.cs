@@ -34,22 +34,22 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="Element" /> class.
         /// </summary>
         /// <param name="elementId">elementId</param>
-        /// <param name="networkElementInstanceName">networkElementInstanceName</param>
         /// <param name="soaMilestones">soaMilestones</param>
         /// <param name="elementName">elementName</param>
         /// <param name="isMainEnergyCentre">isMainEnergyCentre</param>
         /// <param name="isSupplyNewBuildings">isSupplyNewBuildings</param>
+        /// <param name="energyCentrePlantData">energyCentrePlantData</param>
         /// <param name="elementType">elementType</param>
         /// <param name="buildType">buildType</param>
         [JsonConstructor]
-        public Element(Option<string?> elementId = default, Option<string?> networkElementInstanceName = default, Option<List<Object>?> soaMilestones = default, Option<string?> elementName = default, Option<bool?> isMainEnergyCentre = default, Option<bool?> isSupplyNewBuildings = default, Option<ElementTypeInShort?> elementType = default, Option<NetworkBuildStatus?> buildType = default)
+        public Element(Option<string?> elementId = default, Option<List<Object>?> soaMilestones = default, Option<string?> elementName = default, Option<bool?> isMainEnergyCentre = default, Option<bool?> isSupplyNewBuildings = default, Option<EnergyCentrePlantData?> energyCentrePlantData = default, Option<ElementTypeInShort?> elementType = default, Option<NetworkBuildStatus?> buildType = default)
         {
             ElementIdOption = elementId;
-            NetworkElementInstanceNameOption = networkElementInstanceName;
             SoaMilestonesOption = soaMilestones;
             ElementNameOption = elementName;
             IsMainEnergyCentreOption = isMainEnergyCentre;
             IsSupplyNewBuildingsOption = isSupplyNewBuildings;
+            EnergyCentrePlantDataOption = energyCentrePlantData;
             ElementTypeOption = elementType;
             BuildTypeOption = buildType;
             OnCreated();
@@ -95,19 +95,6 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("elementId")]
         public string? ElementId { get { return this.ElementIdOption; } set { this.ElementIdOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of NetworkElementInstanceName
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> NetworkElementInstanceNameOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets NetworkElementInstanceName
-        /// </summary>
-        [JsonPropertyName("networkElementInstanceName")]
-        public string? NetworkElementInstanceName { get { return this.NetworkElementInstanceNameOption; } set { this.NetworkElementInstanceNameOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of SoaMilestones
@@ -162,6 +149,19 @@ namespace HNTAS.Api.Client.Model
         public bool? IsSupplyNewBuildings { get { return this.IsSupplyNewBuildingsOption; } set { this.IsSupplyNewBuildingsOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of EnergyCentrePlantData
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<EnergyCentrePlantData?> EnergyCentrePlantDataOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets EnergyCentrePlantData
+        /// </summary>
+        [JsonPropertyName("energyCentrePlantData")]
+        public EnergyCentrePlantData? EnergyCentrePlantData { get { return this.EnergyCentrePlantDataOption; } set { this.EnergyCentrePlantDataOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -170,11 +170,11 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class Element {\n");
             sb.Append("  ElementId: ").Append(ElementId).Append("\n");
-            sb.Append("  NetworkElementInstanceName: ").Append(NetworkElementInstanceName).Append("\n");
             sb.Append("  SoaMilestones: ").Append(SoaMilestones).Append("\n");
             sb.Append("  ElementName: ").Append(ElementName).Append("\n");
             sb.Append("  IsMainEnergyCentre: ").Append(IsMainEnergyCentre).Append("\n");
             sb.Append("  IsSupplyNewBuildings: ").Append(IsSupplyNewBuildings).Append("\n");
+            sb.Append("  EnergyCentrePlantData: ").Append(EnergyCentrePlantData).Append("\n");
             sb.Append("  ElementType: ").Append(ElementType).Append("\n");
             sb.Append("  BuildType: ").Append(BuildType).Append("\n");
             sb.Append("}\n");
@@ -215,11 +215,11 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> elementId = default;
-            Option<string?> networkElementInstanceName = default;
             Option<List<Object>?> soaMilestones = default;
             Option<string?> elementName = default;
             Option<bool?> isMainEnergyCentre = default;
             Option<bool?> isSupplyNewBuildings = default;
+            Option<EnergyCentrePlantData?> energyCentrePlantData = default;
             Option<ElementTypeInShort?> elementType = default;
             Option<NetworkBuildStatus?> buildType = default;
 
@@ -241,9 +241,6 @@ namespace HNTAS.Api.Client.Model
                         case "elementId":
                             elementId = new Option<string?>(utf8JsonReader.GetString());
                             break;
-                        case "networkElementInstanceName":
-                            networkElementInstanceName = new Option<string?>(utf8JsonReader.GetString());
-                            break;
                         case "soaMilestones":
                             soaMilestones = new Option<List<Object>?>(JsonSerializer.Deserialize<List<Object>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -255,6 +252,9 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "isSupplyNewBuildings":
                             isSupplyNewBuildings = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                            break;
+                        case "energyCentrePlantData":
+                            energyCentrePlantData = new Option<EnergyCentrePlantData?>(JsonSerializer.Deserialize<EnergyCentrePlantData>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "elementType":
                             string? elementTypeRawValue = utf8JsonReader.GetString();
@@ -278,7 +278,7 @@ namespace HNTAS.Api.Client.Model
             if (buildType.IsSet && buildType.Value == null)
                 throw new ArgumentNullException(nameof(buildType), "Property is not nullable for class Element.");
 
-            return new Element(elementId, networkElementInstanceName, soaMilestones, elementName, isMainEnergyCentre, isSupplyNewBuildings, elementType, buildType);
+            return new Element(elementId, soaMilestones, elementName, isMainEnergyCentre, isSupplyNewBuildings, energyCentrePlantData, elementType, buildType);
         }
 
         /// <summary>
@@ -311,12 +311,6 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("elementId");
 
-            if (element.NetworkElementInstanceNameOption.IsSet)
-                if (element.NetworkElementInstanceNameOption.Value != null)
-                    writer.WriteString("networkElementInstanceName", element.NetworkElementInstanceName);
-                else
-                    writer.WriteNull("networkElementInstanceName");
-
             if (element.SoaMilestonesOption.IsSet)
                 if (element.SoaMilestonesOption.Value != null)
                 {
@@ -343,6 +337,14 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("isSupplyNewBuildings");
 
+            if (element.EnergyCentrePlantDataOption.IsSet)
+                if (element.EnergyCentrePlantDataOption.Value != null)
+                {
+                    writer.WritePropertyName("energyCentrePlantData");
+                    JsonSerializer.Serialize(writer, element.EnergyCentrePlantData, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("energyCentrePlantData");
             if (element.ElementTypeOption.IsSet)
             {
                 var elementTypeRawValue = ElementTypeInShortValueConverter.ToJsonValue(element.ElementType!.Value);
