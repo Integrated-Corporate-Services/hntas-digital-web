@@ -201,7 +201,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, NullableOfNetworkDetailsStatus nullableOfNetworkDetailsStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(nullableOfNetworkDetailsStatus.ToString());
+            writer.WriteStringValue(NullableOfNetworkDetailsStatusValueConverter.ToJsonValue(nullableOfNetworkDetailsStatus).ToString());
         }
     }
 
@@ -232,14 +232,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the NullableOfNetworkDetailsStatus to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="nullableOfNetworkDetailsStatus"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, NullableOfNetworkDetailsStatus? nullableOfNetworkDetailsStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(nullableOfNetworkDetailsStatus?.ToString() ?? "null");
+            writer.WriteStringValue(nullableOfNetworkDetailsStatus.HasValue ? NullableOfNetworkDetailsStatusValueConverter.ToJsonValue(nullableOfNetworkDetailsStatus.Value).ToString() : "null");
         }
     }
 }

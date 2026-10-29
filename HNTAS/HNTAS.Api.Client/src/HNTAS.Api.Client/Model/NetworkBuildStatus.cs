@@ -145,7 +145,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, NetworkBuildStatus networkBuildStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(networkBuildStatus.ToString());
+            writer.WriteStringValue(NetworkBuildStatusValueConverter.ToJsonValue(networkBuildStatus).ToString());
         }
     }
 
@@ -176,14 +176,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the NetworkBuildStatus to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="networkBuildStatus"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, NetworkBuildStatus? networkBuildStatus, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(networkBuildStatus?.ToString() ?? "null");
+            writer.WriteStringValue(networkBuildStatus.HasValue ? NetworkBuildStatusValueConverter.ToJsonValue(networkBuildStatus.Value).ToString() : "null");
         }
     }
 }
