@@ -159,7 +159,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, NullableOfEnergyCentreType nullableOfEnergyCentreType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(NullableOfEnergyCentreTypeValueConverter.ToJsonValue(nullableOfEnergyCentreType).ToString());
+            writer.WriteStringValue(nullableOfEnergyCentreType.ToString());
         }
     }
 
@@ -190,14 +190,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the NullableOfEnergyCentreType to the json writer
+        /// Writes the DateTime to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="nullableOfEnergyCentreType"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, NullableOfEnergyCentreType? nullableOfEnergyCentreType, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(nullableOfEnergyCentreType.HasValue ? NullableOfEnergyCentreTypeValueConverter.ToJsonValue(nullableOfEnergyCentreType.Value).ToString() : "null");
+            writer.WriteStringValue(nullableOfEnergyCentreType?.ToString() ?? "null");
         }
     }
 }
