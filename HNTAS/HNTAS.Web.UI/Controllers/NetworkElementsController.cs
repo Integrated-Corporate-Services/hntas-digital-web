@@ -404,25 +404,16 @@ namespace HNTAS.Web.UI.Controllers
             var instanceCounter = 1;
             foreach (var option in networkElementsList!.ElementOptions)
             {
+                var elementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!);
                 if (option.ExistingCount.HasValue && option.ExistingCount.Value > 0)
                 {
-                    var elementGroup = new ElementGroup
-                    {
-                        BuildType = NetworkBuildStatus.Existing,
-                        Count = option.ExistingCount.Value,
-                        ElementDisplayType = option.Id,
-                        ElementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!)
-                    };
-                    elementGroupList.Add(elementGroup);
-
                     for (int cnt = 0; cnt < option.ExistingCount.Value; cnt++)
                     {
                         var el = new Element
                         {
                             BuildType = NetworkBuildStatus.Existing,
-                            ElementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!),
+                            ElementType = elementType,
                             ElementId = (instanceCounter).ToString("D5"),
-                            NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(option.Id) + " - " + instanceCounter,                            
                         };
                         elementList.Add(el);
                         instanceCounter++;
@@ -435,7 +426,7 @@ namespace HNTAS.Web.UI.Controllers
                         BuildType = NetworkBuildStatus.New,
                         Count = option.NewCount.Value,
                         ElementDisplayType = option.Id,
-                        ElementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!)
+                        ElementType = elementType
                     };
                     elementGroupList.Add(elementGroup);
                     for (int cnt = 0; cnt < option.NewCount.Value; cnt++)
@@ -443,9 +434,8 @@ namespace HNTAS.Web.UI.Controllers
                         var el = new Element
                         {
                             BuildType = NetworkBuildStatus.New,
-                            ElementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!),
-                            ElementId = (instanceCounter).ToString("D5"),
-                            NetworkElementInstanceName = NetworkElementHelper.GetNetworkElementLabelByElementType(option.Id) + " - " + instanceCounter,
+                            ElementType = elementType,
+                            ElementId = (instanceCounter).ToString("D5"),                                                     
                         };
                         elementList.Add(el);
                         instanceCounter++;
@@ -482,10 +472,11 @@ namespace HNTAS.Web.UI.Controllers
                 ElementsGroup = elementGroupList,
                 Elements = elementList,
                 IsExistingEnergyCentreSupplyNewBuildings = supplyToNewBuilding != null && supplyToNewBuilding!.IsExistingEcSupply == "yes",
-                NetworkElementStatus = NetworkDetailsStatus.Complete,
+                NetworkElementStatus = NullableOfNetworkDetailsStatus.Complete,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId,
-                ElementSoaStatus = NetworkDetailsStatus.ReadyToStart
+                ElementSoaStatus = NullableOfNetworkDetailsStatus.ReadyToStart,
+                EcPlantDataStatus = NullableOfNetworkDetailsStatus.ReadyToStart
             };
 
             await _heatNetworkService.UpdateNetworkElements(hnId!, request);

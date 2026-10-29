@@ -8,8 +8,18 @@ namespace HNTAS.Web.UI.Helpers
 {
     public static class NetworkElementHelper
     {
-        public static List<NetworkDetailsOption> GetDefaultNetworkDetailsOptions()
+        public static List<NetworkDetailsOption> GetDefaultNetworkDetailsOptions(bool ecPlantData)
         {
+            if (ecPlantData)
+            {
+                return new List<NetworkDetailsOption>
+                {
+
+                    new() { Id = NetworkDetailsType.NetworkElements, Label = "Network elements", Hint = "", UiStatus = StatusConstants.ReadyToStart, IsEnabled = true },
+                    new() { Id = NetworkDetailsType.EnergyCentrePlantData, Label = "Energy centre plant data", Hint = "", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                    new() { Id = NetworkDetailsType.Soa, Label = "Statement of Applicability", UiStatus = StatusConstants.CannotStartYet, IsEnabled = false },
+                };
+            }
             return new List<NetworkDetailsOption>
             {
 
