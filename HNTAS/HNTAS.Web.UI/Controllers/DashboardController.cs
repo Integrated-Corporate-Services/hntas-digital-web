@@ -276,7 +276,8 @@ namespace HNTAS.Web.UI.Controllers
                 PreferredContactType = user.PreferredContactType == NullableOfPreferredContactType.PreferNotToSay ? PreferredContactType.PreferNotToSay : (user.PreferredContactType == NullableOfPreferredContactType.Mobile ? PreferredContactType.Mobile : PreferredContactType.Landline),
                 ContactNumberExtension = user.ContactNumberExtension,
                 LandlineNumber = user.LandlineNumber,
-                MobileNumber = user.MobileNumber
+                MobileNumber = user.MobileNumber,
+                WorkingOrganisationName =user.WorkingOrgName
             };
             var userModel = new UserModel
             {

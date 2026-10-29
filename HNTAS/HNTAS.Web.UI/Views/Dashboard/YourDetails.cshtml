@@ -76,6 +76,18 @@
                     @Model.JobTitle
                 </dd>
             </div>
+
+            @if(!string.IsNullOrEmpty(Model.WorkingOrganisationName))
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Working organisation
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.WorkingOrganisationName
+                    </dd>
+                </div>
+            }
         </dl>
         <a class="govuk-button" data-module="govuk-button" href="@Url.Action("ContactDetails", "UserDetails")">
             Edit your details
