@@ -1,0 +1,81 @@
+﻿@using HNTAS.Web.UI.Models.NetworkLeads
+
+@model NewLeadAlreadyExistsViewModel
+
+@{
+    ViewData["Title"] = "Profile found in the system – Certify your heat networks";
+    var hasError = ViewData.ModelState[nameof(Model.IsCorrectPerson)]?.Errors.Count > 0;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form asp-action="SaveNewLeadAlreadyExists" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <span class="govuk-caption-l">@Model.OrganisationName</span>
+
+            <h1 class="govuk-heading-l">Profile found in the system</h1>
+
+            <p class="govuk-body">
+                We found a profile that matches the email address entered. Check the details below before continuing.
+            </p>
+
+            <h2 class="govuk-heading-m">Their contact details</h2>
+
+            @* GOV.UK Summary List Component *@
+            <dl class="govuk-summary-list govuk-!-margin-bottom-6">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">First name</dt>
+                    <dd class="govuk-summary-list__value">@Model.FirstName</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Last name</dt>
+                    <dd class="govuk-summary-list__value">@Model.LastName</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Email address</dt>
+                    <dd class="govuk-summary-list__value">@Model.EmailAddress</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Job title</dt>
+                    <dd class="govuk-summary-list__value">@Model.JobTitle</dd>
+                </div>
+            </dl>
+
+            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="@(hasError ? "is-correct-person-error" : null)">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h2 class="govuk-fieldset__heading">
+                            Is this the person you want to invite?
+                        </h2>
+                    </legend>
+
+                    @if (hasError)
+                    {
+                        <p id="is-correct-person-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.IsCorrectPerson)]?.Errors[0].ErrorMessage
+                        </p>
+                    }
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="is-correct-person-yes" name="IsCorrectPerson" type="radio" value="true" @(Model.IsCorrectPerson == true ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="is-correct-person-yes">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="is-correct-person-no" name="IsCorrectPerson" type="radio" value="false" @(Model.IsCorrectPerson == false ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="is-correct-person-no">
+                                No, I need to enter a different email address
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
+
+    </div>
+</div>

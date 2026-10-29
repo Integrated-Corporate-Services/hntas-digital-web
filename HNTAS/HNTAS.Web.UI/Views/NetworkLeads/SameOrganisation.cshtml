@@ -1,0 +1,77 @@
+﻿@using HNTAS.Web.UI.Models.NetworkLeads
+@model SameOrganisationViewModel
+
+@{
+    ViewData["Title"] = "Do you and the network manager work for the same organisation? – Certify your heat networks";
+    var hasRadioError = ViewData.ModelState[nameof(Model.WorksForSameOrganisation)]?.Errors.Count > 0;
+    var hasOrgError = ViewData.ModelState[nameof(Model.OrganisationName)]?.Errors.Count > 0;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form asp-action="SaveSameOrganisation" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div class="govuk-form-group @(hasRadioError ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="@(hasRadioError ? "same-org-error" : null)">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            Do you and the network manager work for the same organisation?
+                        </h1>
+                    </legend>
+
+                    @if (hasRadioError)
+                    {
+                        <p id="same-org-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.WorksForSameOrganisation)]?.Errors[0].ErrorMessage
+                        </p>
+                    }
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        @* Yes Option *@
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="works-for-same-organisation-yes" name="WorksForSameOrganisation" type="radio" value="true" @(Model.WorksForSameOrganisation == true ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="works-for-same-organisation-yes">
+                                Yes
+                            </label>
+                        </div>
+
+                        @* No Option with Conditional Reveal *@
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="works-for-same-organisation-no" name="WorksForSameOrganisation" type="radio" value="false" data-aria-controls="conditional-organisation-name" @(Model.WorksForSameOrganisation == false ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="works-for-same-organisation-no">
+                                No
+                            </label>
+                        </div>
+
+                        <div class="govuk-radios__conditional @(Model.WorksForSameOrganisation == false ? "" : "govuk-radios__conditional--hidden")" id="conditional-organisation-name">
+                            <div class="govuk-form-group @(hasOrgError ? "govuk-form-group--error" : "")">
+                                <label class="govuk-label" for="organisation-name-input">
+                                    Provide their organisation name
+                                </label>
+
+                                @if (hasOrgError)
+                                {
+                                    <p id="organisation-name-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.OrganisationName)]?.Errors[0].ErrorMessage
+                                    </p>
+                                }
+
+                                <input class="govuk-input @(hasOrgError ? "govuk-input--error" : "")"
+                                       id="organisation-name-input"
+                                       name="OrganisationName"
+                                       type="text"
+                                       value="@Model.OrganisationName"
+                                       aria-describedby="@(hasOrgError ? "organisation-name-error" : null)" />
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
+
+    </div>
+</div>
