@@ -1164,27 +1164,26 @@ namespace HNTAS.Web.UI.Controllers
 
             string notificationMessage = string.Empty;
 
-            var communalCount = heatnetwork.NoOfResponsibleCommunalBuilding ?? 0;
-            var districtCount = heatnetwork.NoOfResponsibleDistrictNetwork ?? 0;
+            var communalResCount = heatnetwork.NoOfResponsibleCommunalBuilding ?? 0;
+            var districtResCount = heatnetwork.NoOfResponsibleDistrictNetwork ?? 0;
 
-            if (communalCount > 0 && districtCount > 0)
-            {
-                notificationMessage = $"You told us your network has {communalCount} new communal buildings and {districtCount} other new district networks. You need to register these separately. We added these to your heat network list for you to complete.";
-            }
-            else if (communalCount > 0)
-            {
-                notificationMessage = $"You told us your network has {communalCount} new communal buildings. You need to register these separately. We added these to your heat network list for you to complete.";
-            }
-            else if (districtCount > 0)
-            {
-                notificationMessage = $"You told us you have {districtCount} other new district networks. You need to register these separately. We added these to your heat network list for you to complete.";
-            }
-            else if (heatnetwork.NetworkBuildStatus == NullableOfNetworkBuildStatus.Existing ||
-                     heatnetwork.NetworkBuildStatus == NullableOfNetworkBuildStatus.NewAndExisting)
+            if (heatnetwork.NetworkBuildStatus == NullableOfNetworkBuildStatus.NewAndExisting)
             {
                 notificationMessage = "You told us you have existing network connections. Those parts of the network already supplying customers must also be registered separately with <a href=\"https://www.ofgem.gov.uk/energy-regulation/low-carbon/heat-networks\" class=\"govuk-link\" target=\"_blank\">Ofgem</a>.";
             }
-
+            else if (communalResCount > 0 && districtResCount > 0)
+            {
+                notificationMessage = $"You told us your network has {communalResCount} new communal buildings and {districtResCount} other new district networks. You need to register these separately. We added these to your heat network list for you to complete.";
+            }
+            else if (communalResCount > 0)
+            {
+                notificationMessage = $"You told us your network has {communalResCount} new communal buildings. You need to register these separately. We added these to your heat network list for you to complete.";
+            }
+            else if (districtResCount > 0)
+            {
+                notificationMessage = $"You told us you have {districtResCount} other new district networks. You need to register these separately. We added these to your heat network list for you to complete.";
+            }
+          
             ViewBag.NotificationMessage = notificationMessage;
             var model = _sessionHelper.GetFromSession<HeatNetworkSuccessRedirection>(HttpContext, SessionKeys.HeatNetworkSuccessRedirectionSessionKey) ?? new HeatNetworkSuccessRedirection();
             return View("HeatNetworkRegistration/HeatNetworkSuccessRedirection", model);

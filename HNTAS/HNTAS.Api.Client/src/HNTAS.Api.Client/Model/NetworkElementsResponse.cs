@@ -35,6 +35,7 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="networkElementStatus">networkElementStatus</param>
         /// <param name="elementSoaStatus">elementSoaStatus</param>
+        /// <param name="ecPlantDataStatus">ecPlantDataStatus</param>
         /// <param name="elementsGroup">elementsGroup</param>
         /// <param name="elements">elements</param>
         /// <param name="isExistingEnergyCentreSupplyNewBuildings">isExistingEnergyCentreSupplyNewBuildings</param>
@@ -43,10 +44,11 @@ namespace HNTAS.Api.Client.Model
         /// <param name="updatedAt">updatedAt</param>
         /// <param name="updatedBy">updatedBy</param>
         [JsonConstructor]
-        public NetworkElementsResponse(Option<NetworkDetailsStatus?> networkElementStatus = default, Option<NetworkDetailsStatus?> elementSoaStatus = default, Option<List<ElementGroup>?> elementsGroup = default, Option<List<Element>?> elements = default, Option<bool?> isExistingEnergyCentreSupplyNewBuildings = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
+        public NetworkElementsResponse(Option<NullableOfNetworkDetailsStatus?> networkElementStatus = default, Option<NullableOfNetworkDetailsStatus?> elementSoaStatus = default, Option<NullableOfNetworkDetailsStatus?> ecPlantDataStatus = default, Option<List<ElementGroup>?> elementsGroup = default, Option<List<Element>?> elements = default, Option<bool?> isExistingEnergyCentreSupplyNewBuildings = default, Option<DateTimeOffset?> createdAt = default, Option<string?> createdBy = default, Option<DateTimeOffset?> updatedAt = default, Option<string?> updatedBy = default)
         {
             NetworkElementStatusOption = networkElementStatus;
             ElementSoaStatusOption = elementSoaStatus;
+            EcPlantDataStatusOption = ecPlantDataStatus;
             ElementsGroupOption = elementsGroup;
             ElementsOption = elements;
             IsExistingEnergyCentreSupplyNewBuildingsOption = isExistingEnergyCentreSupplyNewBuildings;
@@ -64,26 +66,39 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<NetworkDetailsStatus?> NetworkElementStatusOption { get; private set; }
+        public Option<NullableOfNetworkDetailsStatus?> NetworkElementStatusOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets NetworkElementStatus
         /// </summary>
         [JsonPropertyName("networkElementStatus")]
-        public NetworkDetailsStatus? NetworkElementStatus { get { return this.NetworkElementStatusOption; } set { this.NetworkElementStatusOption = new(value); } }
+        public NullableOfNetworkDetailsStatus? NetworkElementStatus { get { return this.NetworkElementStatusOption; } set { this.NetworkElementStatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ElementSoaStatus
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<NetworkDetailsStatus?> ElementSoaStatusOption { get; private set; }
+        public Option<NullableOfNetworkDetailsStatus?> ElementSoaStatusOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets ElementSoaStatus
         /// </summary>
         [JsonPropertyName("elementSoaStatus")]
-        public NetworkDetailsStatus? ElementSoaStatus { get { return this.ElementSoaStatusOption; } set { this.ElementSoaStatusOption = new(value); } }
+        public NullableOfNetworkDetailsStatus? ElementSoaStatus { get { return this.ElementSoaStatusOption; } set { this.ElementSoaStatusOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of EcPlantDataStatus
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NullableOfNetworkDetailsStatus?> EcPlantDataStatusOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets EcPlantDataStatus
+        /// </summary>
+        [JsonPropertyName("ecPlantDataStatus")]
+        public NullableOfNetworkDetailsStatus? EcPlantDataStatus { get { return this.EcPlantDataStatusOption; } set { this.EcPlantDataStatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of ElementsGroup
@@ -186,6 +201,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class NetworkElementsResponse {\n");
             sb.Append("  NetworkElementStatus: ").Append(NetworkElementStatus).Append("\n");
             sb.Append("  ElementSoaStatus: ").Append(ElementSoaStatus).Append("\n");
+            sb.Append("  EcPlantDataStatus: ").Append(EcPlantDataStatus).Append("\n");
             sb.Append("  ElementsGroup: ").Append(ElementsGroup).Append("\n");
             sb.Append("  Elements: ").Append(Elements).Append("\n");
             sb.Append("  IsExistingEnergyCentreSupplyNewBuildings: ").Append(IsExistingEnergyCentreSupplyNewBuildings).Append("\n");
@@ -240,8 +256,9 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<NetworkDetailsStatus?> networkElementStatus = default;
-            Option<NetworkDetailsStatus?> elementSoaStatus = default;
+            Option<NullableOfNetworkDetailsStatus?> networkElementStatus = default;
+            Option<NullableOfNetworkDetailsStatus?> elementSoaStatus = default;
+            Option<NullableOfNetworkDetailsStatus?> ecPlantDataStatus = default;
             Option<List<ElementGroup>?> elementsGroup = default;
             Option<List<Element>?> elements = default;
             Option<bool?> isExistingEnergyCentreSupplyNewBuildings = default;
@@ -268,12 +285,17 @@ namespace HNTAS.Api.Client.Model
                         case "networkElementStatus":
                             string? networkElementStatusRawValue = utf8JsonReader.GetString();
                             if (networkElementStatusRawValue != null)
-                                networkElementStatus = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(networkElementStatusRawValue));
+                                networkElementStatus = new Option<NullableOfNetworkDetailsStatus?>(NullableOfNetworkDetailsStatusValueConverter.FromStringOrDefault(networkElementStatusRawValue));
                             break;
                         case "elementSoaStatus":
                             string? elementSoaStatusRawValue = utf8JsonReader.GetString();
                             if (elementSoaStatusRawValue != null)
-                                elementSoaStatus = new Option<NetworkDetailsStatus?>(NetworkDetailsStatusValueConverter.FromStringOrDefault(elementSoaStatusRawValue));
+                                elementSoaStatus = new Option<NullableOfNetworkDetailsStatus?>(NullableOfNetworkDetailsStatusValueConverter.FromStringOrDefault(elementSoaStatusRawValue));
+                            break;
+                        case "ecPlantDataStatus":
+                            string? ecPlantDataStatusRawValue = utf8JsonReader.GetString();
+                            if (ecPlantDataStatusRawValue != null)
+                                ecPlantDataStatus = new Option<NullableOfNetworkDetailsStatus?>(NullableOfNetworkDetailsStatusValueConverter.FromStringOrDefault(ecPlantDataStatusRawValue));
                             break;
                         case "elementsGroup":
                             elementsGroup = new Option<List<ElementGroup>?>(JsonSerializer.Deserialize<List<ElementGroup>>(ref utf8JsonReader, jsonSerializerOptions)!);
@@ -302,12 +324,6 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            if (networkElementStatus.IsSet && networkElementStatus.Value == null)
-                throw new ArgumentNullException(nameof(networkElementStatus), "Property is not nullable for class NetworkElementsResponse.");
-
-            if (elementSoaStatus.IsSet && elementSoaStatus.Value == null)
-                throw new ArgumentNullException(nameof(elementSoaStatus), "Property is not nullable for class NetworkElementsResponse.");
-
             if (elementsGroup.IsSet && elementsGroup.Value == null)
                 throw new ArgumentNullException(nameof(elementsGroup), "Property is not nullable for class NetworkElementsResponse.");
 
@@ -320,7 +336,7 @@ namespace HNTAS.Api.Client.Model
             if (createdAt.IsSet && createdAt.Value == null)
                 throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class NetworkElementsResponse.");
 
-            return new NetworkElementsResponse(networkElementStatus, elementSoaStatus, elementsGroup, elements, isExistingEnergyCentreSupplyNewBuildings, createdAt, createdBy, updatedAt, updatedBy);
+            return new NetworkElementsResponse(networkElementStatus, elementSoaStatus, ecPlantDataStatus, elementsGroup, elements, isExistingEnergyCentreSupplyNewBuildings, createdAt, createdBy, updatedAt, updatedBy);
         }
 
         /// <summary>
@@ -354,15 +370,29 @@ namespace HNTAS.Api.Client.Model
                 throw new ArgumentNullException(nameof(networkElementsResponse.Elements), "Property is required for class NetworkElementsResponse.");
 
             if (networkElementsResponse.NetworkElementStatusOption.IsSet)
-            {
-                var networkElementStatusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkElementsResponse.NetworkElementStatus!.Value);
-                writer.WriteString("networkElementStatus", networkElementStatusRawValue);
-            }
+                if (networkElementsResponse.NetworkElementStatusOption!.Value != null)
+                {
+                    var networkElementStatusRawValue = NullableOfNetworkDetailsStatusValueConverter.ToJsonValue(networkElementsResponse.NetworkElementStatusOption.Value!.Value);
+                    writer.WriteString("networkElementStatus", networkElementStatusRawValue);
+                }
+                else
+                    writer.WriteNull("networkElementStatus");
             if (networkElementsResponse.ElementSoaStatusOption.IsSet)
-            {
-                var elementSoaStatusRawValue = NetworkDetailsStatusValueConverter.ToJsonValue(networkElementsResponse.ElementSoaStatus!.Value);
-                writer.WriteString("elementSoaStatus", elementSoaStatusRawValue);
-            }
+                if (networkElementsResponse.ElementSoaStatusOption!.Value != null)
+                {
+                    var elementSoaStatusRawValue = NullableOfNetworkDetailsStatusValueConverter.ToJsonValue(networkElementsResponse.ElementSoaStatusOption.Value!.Value);
+                    writer.WriteString("elementSoaStatus", elementSoaStatusRawValue);
+                }
+                else
+                    writer.WriteNull("elementSoaStatus");
+            if (networkElementsResponse.EcPlantDataStatusOption.IsSet)
+                if (networkElementsResponse.EcPlantDataStatusOption!.Value != null)
+                {
+                    var ecPlantDataStatusRawValue = NullableOfNetworkDetailsStatusValueConverter.ToJsonValue(networkElementsResponse.EcPlantDataStatusOption.Value!.Value);
+                    writer.WriteString("ecPlantDataStatus", ecPlantDataStatusRawValue);
+                }
+                else
+                    writer.WriteNull("ecPlantDataStatus");
             if (networkElementsResponse.ElementsGroupOption.IsSet)
             {
                 writer.WritePropertyName("elementsGroup");

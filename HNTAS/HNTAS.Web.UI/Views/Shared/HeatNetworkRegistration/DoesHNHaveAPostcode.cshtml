@@ -10,17 +10,28 @@
         {
             <span class="govuk-caption-xl">@ViewBag.HnId</span>
         }
-    @* Error summary *@
-        <span class="govuk-caption-l">Add a heat network</span>
     <form method="post" novalidate>
         @Html.AntiForgeryToken()
             <div class="govuk-form-group @(ViewData.ModelState[nameof(Model.Postcode)]?.Errors?.Count > 0 || ViewData.ModelState[nameof(Model.HasPostcode)]?.Errors?.Count > 0 ? "govuk-form-group--error" : "")">
             <fieldset class="govuk-fieldset" aria-describedby="has-postcode-hint">
+
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 class="govuk-heading-l">Does your @ViewBag.addressFor have an address and postcode?</h1>
+                    <span class="govuk-caption-l">Add a heat network</span>
+                    <h1 class="govuk-fieldset__heading">
+                        Does your @ViewBag.addressFor have an address and postcode?
+                    </h1>
                 </legend>
 
-                <div id="has-postcode-hint" class="govuk-hint">Select 'Yes' only if you have a full address and postcode for the energy centre</div>
+                @if (@ViewBag.addressFor?.ToString().ToLower() == "heat network")
+                {
+                    <p class="govuk-body">
+                        As your heat network does not have an energy centre, provide the address of your main building or substation
+                    </p>
+                }
+
+                <div id="heat-network-hint" class="govuk-hint">
+                        Select 'Yes' only if you have a full address and postcode for the @ViewBag.addressFor
+                </div>
 
                 @if (ViewData.ModelState[nameof(Model.HasPostcode)]?.Errors?.Count > 0)
                 {
