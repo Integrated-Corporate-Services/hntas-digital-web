@@ -188,6 +188,20 @@ namespace HNTAS.Web.UI.Helpers
             };
         }
 
+        public static HeatNetworkElementType GetNetworkElementDisplayTypeByElementId(ElementTypeInShort? elementId)
+        {
+            return elementId switch
+            {
+                ElementTypeInShort.EC => HeatNetworkElementType.EnergyCentre,
+                ElementTypeInShort.SS => HeatNetworkElementType.Substation,
+                ElementTypeInShort.DDN => HeatNetworkElementType.DistrictDistribution,
+                ElementTypeInShort.CC => HeatNetworkElementType.ConsumerConnection,
+                ElementTypeInShort.CDN => HeatNetworkElementType.CommunalDistribution,
+                ElementTypeInShort.NDCC => HeatNetworkElementType.NonDomesticConsumerConnection,
+                _ => throw new ArgumentOutOfRangeException(nameof(elementId), $"Not expected heat network element ID value: {elementId}")
+            };
+        }
+
 
         // new changes
 

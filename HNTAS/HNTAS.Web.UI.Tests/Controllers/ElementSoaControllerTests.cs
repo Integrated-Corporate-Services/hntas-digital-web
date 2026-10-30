@@ -236,7 +236,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
                 });
 
-            var result = await _controller.SoaUpdateStatus(paramStage, paramElementTypeInShort, paramElementType) as ViewResult;
+            var result = await _controller.SoaUpdateStatus(paramStage.ToString(), paramElementTypeInShort.ToString()) as ViewResult;
             Assert.NotNull(result);
         }
 

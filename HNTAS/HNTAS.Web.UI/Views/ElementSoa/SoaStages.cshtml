@@ -30,6 +30,31 @@
     </nav>
 }
 
+<style>
+    .govuk-button--as-link {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: #1d70b8;
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
+        text-decoration: underline;
+    }
+
+        .govuk-button--as-link:hover {
+            color: #003078;
+        }
+
+        .govuk-button--as-link:focus {            
+            background-color: #fd0 !important;
+            box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+            outline: 3px solid transparent;
+            text-decoration: none;
+        }
+
+</style>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
@@ -108,13 +133,7 @@
                                                 assessorNameWithAssessmentList.Add(
                                                     $"{assessorDetail.FirstName} {assessorDetail.LastName} ({assessorDetail.Assessment})"
                                                 );
-                                            }
-                                            //var assessorName = element.AssessorEmailId != null ? element.AssessorFirstName + " " + element.AssessorLastName + " (" + element.Assessment + ")" : "Not yet assigned";
-                                            //var assessorClass = element.AssessorEmailId != null ? "" : "govuk-tag govuk-tag--blue";
-                                            @* var fullNameWithEmail = "";
-                                        if (element.AssessorFirstName != null && element.AssessorLastName != null && element.AssessorEmailId != null)
-                                            fullNameWithEmail = element.AssessorFirstName + " " + element.AssessorLastName + " (" + element.AssessorEmailId + ")";
-                                                 *@
+                                            }                                            
                                             <tr class="govuk-table__row">
                                                 <th scope="row" class="govuk-table__header govuk-!-width-one-quarter">@element.Name</th>
 
@@ -160,11 +179,17 @@
                                                                 </div>
                                                             }
                                                         }
-                                                        <a class="govuk-link"
-                                                           href="@Url.Action("SoaUpdateStatus", "ElementSoa", new { stage = stage.StageId, elementType = element.ElementType, elementDisplayType = element.ElementDisplayType })"
-                                                           onclick="event.stopPropagation();">
-                                                            Update status<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span>
-                                                        </a>
+                                                        <form method="post" action="@Url.Action("SoaUpdateStatusContext", "ElementSoa")">
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="hidden" name="stage" value="@stage.StageId.ToString()" />
+                                                            <input type="hidden" name="elementType" value="@element.ElementType.ToString()" />
+                                                            <button type="submit"
+                                                                    class="govuk-link govuk-button--as-link"
+                                                                    style="background:none;border:none;padding:0;cursor:pointer;text-align:left;"
+                                                                    onclick="event.stopPropagation();">
+                                                                Update status<span class="govuk-visually-hidden"> for @element.Name @stage.Title</span>
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </td>
 

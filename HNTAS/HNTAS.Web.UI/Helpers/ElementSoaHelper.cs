@@ -77,25 +77,28 @@ namespace HNTAS.Web.UI.Helpers
             };
         }        
 
-        public static string GetSoaElementContent(HeatNetworkElementType? elementType)
+        public static string GetSoaElementContent(ElementTypeInShort? elementType)
         {
             return elementType switch
             {
-                HeatNetworkElementType.EnergyCentre => (
+                ElementTypeInShort.EC => (
                     "What is the status of the statement of applicability for the Energy Centre?"
                 ),
-                HeatNetworkElementType.ConsumerConnection => (
+                ElementTypeInShort.CC => (
                     "What is the status of the statement of applicability for the Consumer Connection?"
                 ),
-                HeatNetworkElementType.DistrictDistribution => (
+                ElementTypeInShort.DDN => (
                     "What is the status of the statement of applicability for the District Distribution Network?"
                 ),
-                HeatNetworkElementType.Substation => (
+                ElementTypeInShort.SS => (
                     "What is the status of the statement of applicability for the Substation?"
                 ),
-                HeatNetworkElementType.CommunalDistribution => (
+                ElementTypeInShort.CDN => (
                     "What is the status of the statement of applicability for the Communal Distribution Network?"
-                ),                
+                ),
+                ElementTypeInShort.NDCC => (
+                    "What is the status of the statement of applicability for the Non-Domestic Customer Connection?"
+                ),
                 _ => (string.Empty)
             };
         }
