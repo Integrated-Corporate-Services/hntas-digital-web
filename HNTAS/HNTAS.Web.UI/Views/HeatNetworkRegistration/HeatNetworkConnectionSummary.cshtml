@@ -54,8 +54,18 @@
                                     }
                                     @if ((Model.Connections.ExistingOtherDistrictNetworks ?? 0) > 0)
                                     {
-                                        <li>@Model.Connections.ExistingOtherDistrictNetworks existing other district heat networks</li>
+                                        @if (Model.Connections.ExistingOtherDistrictNetworks == 1 &&
+                                       (Model.EnergyCentreOption == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString() ||
+                                           Model.EnergyCentreOption == NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString()))
+                                        {
+                                            <li>@Model.Connections.ExistingOtherDistrictNetworks separate supplying district heat network</li>
+                                        }
+                                        else
+                                        {
+                                            <li>@Model.Connections.ExistingOtherDistrictNetworks existing other district heat networks</li>
+                                        }
                                     }
+
                                 </ul>
                             </dd>
                         </div>
@@ -88,7 +98,16 @@
                                 <ul class="govuk-list govuk-list--bullet">
                                     @if ((Model.Connections.NewCommunalBuildings ?? 0) > 0)
                                     {
-                                        <li>@Model.Connections.NewCommunalBuildings new communal buildings</li>
+                                        if (Model.Connections.NewCommunalBuildings == 1 && Model.NetworkStatus?.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString()
+                                        && (Model.EnergyCentreOption == NullableOfEnergyCentreType.SuppliesOneCommunalBuildingOnly.ToString()
+                                            || Model.EnergyCentreOption == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString()))
+                                        {
+                                            <li>@Model.Connections.NewCommunalBuildings new communal building (partially existing)</li>
+                                        }
+                                        else
+                                        {
+                                            <li>@Model.Connections.NewCommunalBuildings new communal buildings</li>
+                                        }   
                                     }
                                     @if ((Model.Connections.NewHousesOrMaisonettes ?? 0) > 0)
                                     {
@@ -109,7 +128,11 @@
                                         (Model.EnergyCentreOption == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString() ||
                                             Model.EnergyCentreOption == NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString()))
                                         {
-                                            <li>@Model.Connections.NewOtherDistrictNetworks separate supplying district heat network</li>
+                                            var appendText = Model.NetworkStatus.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString() && Model.EnergyCentreOption == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString()
+                                            ? "(partially existing)" : string.Empty;
+                                            <li>
+                                                @Model.Connections.NewOtherDistrictNetworks separate supplying district heat network @appendText
+                                            </li>
                                         }
                                         else
                                         {
