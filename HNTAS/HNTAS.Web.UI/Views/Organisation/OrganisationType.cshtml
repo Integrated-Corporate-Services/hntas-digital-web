@@ -32,7 +32,11 @@
                         }
                         @foreach (var item in Model.OrganisationTypes)
                         {
-                            var itemId = $"SelectedOrganisationType_{itemsRendered}".ToLowerInvariant();
+                            var itemId = $"selectedorganisationtype".ToLowerInvariant();
+                            if (itemsRendered > 0)
+                            {
+                                itemId = $"selectedorganisationtype_{itemsRendered}".ToLowerInvariant();
+                            }
                             string hintId = "";
 
                             switch (item.Value)
