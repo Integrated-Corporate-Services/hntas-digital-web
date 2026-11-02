@@ -51,7 +51,10 @@
                         @for (int i = 0; i < Model.SoaStatusOptions.Count; i++)
                         {
                             var item = Model.SoaStatusOptions[i];
-                            var checkboxId = $"SelectedSoaStatusOptions_{item.Id.ToString()}";
+                            var checkboxId = $"selectedsoastatusoptions";
+                            if(i > 0){
+                                 checkboxId = $"selectedsoastatusoptions_{item.Id.ToString()}";
+                            }
                             var conditionalId = $"conditional-{item.Id.ToString().ToLowerInvariant()}";
                             var isChecked = Model.SelectedSoaStatusOptions.Contains(item.Id);
                             <div class="govuk-checkboxes__item">
