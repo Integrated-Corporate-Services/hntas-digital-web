@@ -54,7 +54,7 @@
                         Connections
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        @if (Model.NetworkBuildStatus != null && Model.NetworkBuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString())
+                        @if (Model.NetworkBuildStatus != null && Model.NetworkBuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString() && Model.EnergyCentreType != NullableOfEnergyCentreType.SuppliesOneCommunalBuildingOnly.ToString() && Model.EnergyCentreType != NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString())
                         {
                             <h3 class="govuk-heading-s">Existing connections</h3>
                             <ul class="govuk-list govuk-list--bullet">
@@ -85,7 +85,14 @@
                         <ul class="govuk-list govuk-list--bullet">
                             @if ((Model.NetworkConnections.NewCommunalBuildings ?? 0) > 0)
                             {
-                                <li>@Model.NetworkConnections.NewCommunalBuildings new communal buildings</li>
+                                if (Model.EnergyCentreType == NullableOfEnergyCentreType.SuppliesOneCommunalBuildingOnly.ToString() || Model.EnergyCentreType == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString())
+                                {
+                                    <li>@Model.NetworkConnections.NewCommunalBuildings new communal building (partially existing)</li>
+                                }
+                                else
+                                {
+                                    <li>@Model.NetworkConnections.NewCommunalBuildings new communal buildings</li>
+                                }
                             }
                             @if ((Model.NetworkConnections.NewHousesOrMaisonettes ?? 0) > 0)
                             {
@@ -109,7 +116,14 @@
                                     Model.EnergyCentreType == NullableOfEnergyCentreType.SeparateDistrictNetworkMultipleBuildings.ToString()))
 
                                 {
-                                    <li>@Model.NetworkConnections.NewOtherDistrictNetworks separate supplying district heat network</li>
+                                    if (Model.EnergyCentreType == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString())
+                                    {
+                                        <li>@Model.NetworkConnections.NewOtherDistrictNetworks separate supplying district heat network (partially existing)</li>
+                                    }
+                                    else
+                                    {
+                                        <li>@Model.NetworkConnections.NewOtherDistrictNetworks separate supplying district heat network</li>
+                                    }
                                 }
 
                                 else

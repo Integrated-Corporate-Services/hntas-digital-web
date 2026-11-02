@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models.NotificationHistory;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -12,16 +13,17 @@ namespace HNTAS.Web.UI.Controllers
         private const int DefaultPageNumber = 1;
         private const int DefaultPageSize = 6;
         private const string DefaultSortBy = "timestamp";
+        private readonly ISessionHelper _sessionHelper;
 
-        public NotificationController(INotificationHistoryService notificationHistoryService, ILogger<NotificationController> logger)
+        public NotificationController(INotificationHistoryService notificationHistoryService, ILogger<NotificationController> logger, ISessionHelper sessionHelper)
         {
             _notificationHistoryService = notificationHistoryService;
             _logger = logger;
+            _sessionHelper = sessionHelper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(
-            string userId,
+        public async Task<IActionResult> Index(            
             string? sortBy = DefaultSortBy,
             string? sortOrder = "desc",
             int page = DefaultPageNumber,
@@ -29,6 +31,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             try
             {
+                var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
                 // Validate and sanitize inputs
                 if (page < 1) page = DefaultPageNumber;
 
@@ -76,7 +79,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving notification history for user: {userId}", SanitizeForLogging(userId));
+                _logger.LogError(ex, "Error retrieving notification history for user: {userId}", SanitizeForLogging(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey)));
                 TempData["ErrorMessage"] = "An error occurred while retrieving the notification history.";
 
                 // Return empty result

@@ -46,6 +46,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="mobileNumber">mobileNumber</param>
         /// <param name="status">status</param>
         /// <param name="roles">roles</param>
+        /// <param name="hnRoleMappings">hnRoleMappings</param>
         /// <param name="organisation">organisation</param>
         /// <param name="heatNetworks">heatNetworks</param>
         /// <param name="contributingOrganisations">contributingOrganisations</param>
@@ -53,7 +54,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="invitedRoles">invitedRoles</param>
         /// <param name="workingOrgName">workingOrgName</param>
         [JsonConstructor]
-        public UserDetailsResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, Option<UserStatus?> status = default, Option<List<UserRole>?> roles = default, Option<OrganisationResponse?> organisation = default, Option<List<HeatNetworkUserResponse>?> heatNetworks = default, Option<List<string>?> contributingOrganisations = default, Option<string?> activeContributingOrgId = default, Option<List<ContributorRole>?> invitedRoles = default, Option<string?> workingOrgName = default)
+        public UserDetailsResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> contactNumberExtension = default, Option<string?> mobileNumber = default, Option<UserStatus?> status = default, Option<List<UserRole>?> roles = default, Option<List<HnRoleMappingsUserResult>?> hnRoleMappings = default, Option<OrganisationResponse?> organisation = default, Option<List<HeatNetworkUserResponse>?> heatNetworks = default, Option<List<string>?> contributingOrganisations = default, Option<string?> activeContributingOrgId = default, Option<List<ContributorRole>?> invitedRoles = default, Option<string?> workingOrgName = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
@@ -68,6 +69,7 @@ namespace HNTAS.Api.Client.Model
             MobileNumberOption = mobileNumber;
             StatusOption = status;
             RolesOption = roles;
+            HnRoleMappingsOption = hnRoleMappings;
             OrganisationOption = organisation;
             HeatNetworksOption = heatNetworks;
             ContributingOrganisationsOption = contributingOrganisations;
@@ -249,6 +251,19 @@ namespace HNTAS.Api.Client.Model
         public List<UserRole>? Roles { get { return this.RolesOption; } set { this.RolesOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of HnRoleMappings
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<HnRoleMappingsUserResult>?> HnRoleMappingsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets HnRoleMappings
+        /// </summary>
+        [JsonPropertyName("hnRoleMappings")]
+        public List<HnRoleMappingsUserResult>? HnRoleMappings { get { return this.HnRoleMappingsOption; } set { this.HnRoleMappingsOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of Organisation
         /// </summary>
         [JsonIgnore]
@@ -347,6 +362,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  MobileNumber: ").Append(MobileNumber).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  Roles: ").Append(Roles).Append("\n");
+            sb.Append("  HnRoleMappings: ").Append(HnRoleMappings).Append("\n");
             sb.Append("  Organisation: ").Append(Organisation).Append("\n");
             sb.Append("  HeatNetworks: ").Append(HeatNetworks).Append("\n");
             sb.Append("  ContributingOrganisations: ").Append(ContributingOrganisations).Append("\n");
@@ -403,6 +419,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> mobileNumber = default;
             Option<UserStatus?> status = default;
             Option<List<UserRole>?> roles = default;
+            Option<List<HnRoleMappingsUserResult>?> hnRoleMappings = default;
             Option<OrganisationResponse?> organisation = default;
             Option<List<HeatNetworkUserResponse>?> heatNetworks = default;
             Option<List<string>?> contributingOrganisations = default;
@@ -468,6 +485,9 @@ namespace HNTAS.Api.Client.Model
                         case "roles":
                             roles = new Option<List<UserRole>?>(JsonSerializer.Deserialize<List<UserRole>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
+                        case "hnRoleMappings":
+                            hnRoleMappings = new Option<List<HnRoleMappingsUserResult>?>(JsonSerializer.Deserialize<List<HnRoleMappingsUserResult>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
                         case "organisation":
                             organisation = new Option<OrganisationResponse?>(JsonSerializer.Deserialize<OrganisationResponse>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -504,7 +524,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class UserDetailsResponse.");
 
-            return new UserDetailsResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, contactNumberExtension, mobileNumber, status, roles, organisation, heatNetworks, contributingOrganisations, activeContributingOrgId, invitedRoles, workingOrgName);
+            return new UserDetailsResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, contactNumberExtension, mobileNumber, status, roles, hnRoleMappings, organisation, heatNetworks, contributingOrganisations, activeContributingOrgId, invitedRoles, workingOrgName);
         }
 
         /// <summary>
@@ -612,6 +632,14 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("roles");
+            if (userDetailsResponse.HnRoleMappingsOption.IsSet)
+                if (userDetailsResponse.HnRoleMappingsOption.Value != null)
+                {
+                    writer.WritePropertyName("hnRoleMappings");
+                    JsonSerializer.Serialize(writer, userDetailsResponse.HnRoleMappings, jsonSerializerOptions);
+                }
+                else
+                    writer.WriteNull("hnRoleMappings");
             if (userDetailsResponse.OrganisationOption.IsSet)
                 if (userDetailsResponse.OrganisationOption.Value != null)
                 {

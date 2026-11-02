@@ -73,6 +73,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             // Arrange
             _configurationMock.Setup(c => c.GetSection("ExistingNetworks:EnableFeature").Value).Returns("true");
+            _configurationMock.Setup(c => c.GetSection("AssessorFeature:Enabled").Value).Returns("true");
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<string>(
                     It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
@@ -95,6 +96,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             // Arrange
             _configurationMock.Setup(c => c.GetSection("ExistingNetworks:EnableFeature").Value).Returns("true");
+            _configurationMock.Setup(c => c.GetSection("AssessorFeature:Enabled").Value).Returns("true");
             var userId = "user-without-org";
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<string>(
