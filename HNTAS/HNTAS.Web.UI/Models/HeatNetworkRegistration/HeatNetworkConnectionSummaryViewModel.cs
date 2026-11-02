@@ -6,6 +6,7 @@ namespace HNTAS.Web.UI.Models.HeatNetworkRegistration
     {
         public NetworkConnectionsViewModel Connections { get; set; } = new();
         public CommunalBuildingResponsibilityViewModel? Responsibility { get; set; }
+        public NetworkStatusModel? NetworkStatus { get; set; }
 
         public string EnergyCentreOption { get; set; } = string.Empty;
 

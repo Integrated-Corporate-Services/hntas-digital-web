@@ -342,6 +342,11 @@ namespace HNTAS.Web.UI.Controllers
             {
                 //default to NewOtherDistrictNetworks to 1
                 model.NewOtherDistrictNetworks = 1;
+
+                if(statusModel?.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString())
+                {
+                    model.ExistingOtherDistrictNetworks = 1;
+                }
             }
 
             // 3. Handle model validation failure
@@ -572,11 +577,14 @@ namespace HNTAS.Web.UI.Controllers
                 SessionKeys.CommunalBuildingResponsibilityModelKey
             );
 
+            var statusModel = _sessionHelper.GetFromSession<NetworkStatusModel>(HttpContext, SessionKeys.NetworkStatusModelKey);
+
             var viewModel = new HeatNetworkConnectionSummaryViewModel
             {
                 Connections = connectionsModel ?? new NetworkConnectionsViewModel(),
                 EnergyCentreOption = energyCentreModel?.EnergyCentreOption ?? string.Empty,
-                Responsibility = responsibilityModel
+                Responsibility = responsibilityModel,
+                NetworkStatus = statusModel
             };
 
             return View("HeatNetworkConnectionSummary", viewModel);
