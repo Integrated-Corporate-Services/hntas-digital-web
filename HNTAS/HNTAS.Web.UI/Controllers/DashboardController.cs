@@ -59,7 +59,7 @@ namespace HNTAS.Web.UI.Controllers
             var isExistingNetworksFeatureEnabled = bool.TryParse( _configuration["ExistingNetworks:EnableFeature"], out var featureEnabled) && featureEnabled;
 
             ViewBag.IsExistingNetworksFeatureEnabled = isExistingNetworksFeatureEnabled;
-
+            ViewBag.IsAssessorFeatureEnabled = _configuration.GetValue<bool>("AssessorFeature:Enabled");
             UserDetailsResponse user;
 
             try

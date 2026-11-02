@@ -94,6 +94,7 @@ docs/models/HeatPumpSystem.md
 docs/models/HeatRecovery.md
 docs/models/HeatRecoverySource.md
 docs/models/HnRoleMapping.md
+docs/models/HnRoleMappingsUserResult.md
 docs/models/ImportResult.md
 docs/models/InitialUserRegistrationRequest.md
 docs/models/Invitation.md
@@ -306,6 +307,7 @@ src/HNTAS.Api.Client/Model/HeatPumpSystem.cs
 src/HNTAS.Api.Client/Model/HeatRecovery.cs
 src/HNTAS.Api.Client/Model/HeatRecoverySource.cs
 src/HNTAS.Api.Client/Model/HnRoleMapping.cs
+src/HNTAS.Api.Client/Model/HnRoleMappingsUserResult.cs
 src/HNTAS.Api.Client/Model/ImportResult.cs
 src/HNTAS.Api.Client/Model/InitialUserRegistrationRequest.cs
 src/HNTAS.Api.Client/Model/Invitation.cs

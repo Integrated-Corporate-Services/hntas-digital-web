@@ -1,5 +1,6 @@
 ﻿using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Controllers;
+using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<INotificationHistoryService> _mockNotificationHistoryService;
         private readonly Mock<ILogger<NotificationController>> _loggerMock;
         private readonly NotificationController _controller;
+        private readonly Mock<ISessionHelper> _sessionHelper = new();
 
         public NotificationControllerTests()
         {
@@ -31,7 +33,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private NotificationController CreateController()
         {
             var controller = new NotificationController(
-                _mockNotificationHistoryService.Object, _loggerMock.Object
+                _mockNotificationHistoryService.Object, _loggerMock.Object, _sessionHelper.Object
                 );
             controller.ControllerContext = new ControllerContext
             {
@@ -47,6 +49,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             // Arrange
             var userId = "testUser";
+            _sessionHelper.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), It.IsAny<string>())).Returns(userId);
             var notificationHistoryResponse = new NotificationHistoryResponse
             {
                 Items = new List<NotificationHistoryData>
@@ -58,7 +61,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _mockNotificationHistoryService.Setup(service => service.GetNotificationHistory(It.IsAny<NotificationHistoryRequest>()))
                 .ReturnsAsync(notificationHistoryResponse);
             // Act
-            var result = await _controller.Index(userId);
+            var result = await _controller.Index();
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<NotificationHistoryResponse>(viewResult.Model);
@@ -70,6 +73,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             // Arrange
             var userId = "testUser";
+            _sessionHelper.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), It.IsAny<string>())).Returns(userId);
             var notificationHistoryResponse = new NotificationHistoryResponse
             {
                 Items = new List<NotificationHistoryData>
@@ -81,7 +85,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _mockNotificationHistoryService.Setup(service => service.GetNotificationHistory(It.IsAny<NotificationHistoryRequest>()))
                 .Throws(new Exception("Test exception"));
             // Act
-            var result = await _controller.Index(userId);
+            var result = await _controller.Index();
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<NotificationHistoryResponse>(viewResult.Model);

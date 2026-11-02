@@ -137,7 +137,7 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
             // Set element-specific ViewBag properties
-            var content = ElementSoaHelper.GetSoaElementContent(elementDisplayType);
+            var content = ElementSoaHelper.GetSoaElementContent(elementType);
             ViewBag.Heading = content;
             var selectedNetworkElement = heatNetworkData?.NetworkElements?.ElementsGroup?.Where(e => e.ElementType == elementType).FirstOrDefault();
 
@@ -193,7 +193,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
             // Set element-specific ViewBag properties
-            var content = ElementSoaHelper.GetSoaElementContent(model.ElementDisplayType);
+            var content = ElementSoaHelper.GetSoaElementContent(model.ElementType);
             ViewBag.Heading = content;
 
             var totalCountFromElement = model.ElementCount ?? 0;

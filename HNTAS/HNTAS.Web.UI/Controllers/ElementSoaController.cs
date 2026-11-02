@@ -20,18 +20,21 @@ namespace HNTAS.Web.UI.Controllers
         private readonly IHeatNetworkService _heatNetworkService;
         private readonly IAssessorApi _assessorApi;
         private readonly ILogger<ElementSoaController> _logger;
+        private readonly IConfiguration _configuration;
 
         public ElementSoaController(ISessionHelper sessionHelper,
             ISoaService soaProjectService,
             ILogger<ElementSoaController> logger,
             IHeatNetworkService heatNetworkService,
-            IAssessorApi assessorApi)
+            IAssessorApi assessorApi,
+            IConfiguration configuration)
         {
             _sessionHelper = sessionHelper;
             _soaProjectService = soaProjectService;
             _logger = logger;
             _heatNetworkService = heatNetworkService;
             _assessorApi = assessorApi;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -50,7 +53,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> SoaStages()
         {
-            //this.ShowBackButton("UnderstandingSoa", "ElementSoa");
+            ViewBag.IsAssessorFeatureEnabled = _configuration.GetValue<bool>("AssessorFeature:Enabled");
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
@@ -120,13 +123,33 @@ namespace HNTAS.Web.UI.Controllers
             return View("SoaStages", model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> SoaUpdateStatus([FromQuery] SoaStage stage, [FromQuery] ElementTypeInShort elementType, [FromQuery] HeatNetworkElementType elementDisplayType)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SoaUpdateStatusContext(string stage, string elementType)
         {
-            var tempDataKey = $"Soa_{elementType}_{stage}";
+            TempData["SoaUpdateStatusStage"] = stage;
+            TempData["SoaUpdateStatusElementType"] = elementType;
+            return RedirectToAction(nameof(SoaUpdateStatus));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SoaUpdateStatus()
+        {
+            var stage = TempData["SoaUpdateStatusStage"] as string;
+            var elementType = TempData["SoaUpdateStatusElementType"] as string;
+
+            if (string.IsNullOrEmpty(stage) || string.IsNullOrEmpty(elementType))
+            {
+                return RedirectToAction("SoaStages");
+            }
+
+            var selectedStage = (SoaStage)Enum.Parse(typeof(SoaStage), stage);
+            var selectedElementType = (ElementTypeInShort)Enum.Parse(typeof(ElementTypeInShort), elementType);
+
+            var tempDataKey = $"Soa_{selectedElementType}_{selectedStage}";
             string soaPhase = TempData[$"{tempDataKey}_Phase"] as string;
             string elementName = TempData[$"{tempDataKey}_Element"] as string;
-            var currentStageIndex = ElementSoaHelper.GetStageIndex(stage);
+            var currentStageIndex = ElementSoaHelper.GetStageIndex(selectedStage);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey, currentStageIndex);
             var targetFragment = string.Concat("stage-", currentStageIndex);
             this.ShowBackButton("SoaStages", "ElementSoa", targetFragment);
@@ -138,21 +161,21 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
             // Set element-specific ViewBag properties
-            var content = ElementSoaHelper.GetSoaElementContent(elementDisplayType);
+            var content = ElementSoaHelper.GetSoaElementContent(selectedElementType);
             ViewBag.Heading = content;
-            var selectedNetworkElement = heatNetworkData?.NetworkElements?.ElementsGroup?.Where(e => e.ElementType == elementType).FirstOrDefault();
+            var selectedNetworkElement = heatNetworkData?.NetworkElements?.ElementsGroup?.Where(e => e.ElementType == selectedElementType).FirstOrDefault();
 
             var model = new ElementSoaUpdateStatusViewModel();
-            model.SoaStage = stage;
-            model.ElementType = elementType;
+            model.SoaStage = selectedStage;
+            model.ElementType = selectedElementType;
             model.ElementName = elementName;
             model.SoaPhase = soaPhase;
-            model.ElementDisplayType = elementDisplayType;
+            model.ElementDisplayType = NetworkElementHelper.GetNetworkElementDisplayTypeByElementId(selectedElementType);
             model.ElementCount = selectedNetworkElement?.Count;
             model.SoaStatusOptions = ElementSoaHelper.GetSoaStatuses();
 
             var soaStatusesForStage = selectedNetworkElement?.SoaStages?
-                .Where(s => s.StageId.HasValue && (SoaStage)s.StageId.Value == stage)
+                .Where(s => s.StageId.HasValue && (SoaStage)s.StageId.Value == selectedStage)
                 .SelectMany(s => s.SoaStatuses!)
                 .ToList();
 
@@ -181,6 +204,7 @@ namespace HNTAS.Web.UI.Controllers
 
             return View(model);
         }
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -194,7 +218,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
             // Set element-specific ViewBag properties
-            var content = ElementSoaHelper.GetSoaElementContent(model.ElementDisplayType);
+            var content = ElementSoaHelper.GetSoaElementContent(model.ElementType);
             ViewBag.Heading = content;
 
             var totalCountFromElement = model.ElementCount ?? 0;
@@ -1068,7 +1092,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ElementSoaStatusUpdateModelSessionKey);
-        }
+        }        
 
         private void ClearSoaAssessorSpecificSession()
         {
