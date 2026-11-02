@@ -171,6 +171,9 @@ namespace HNTAS.Web.UI.Tests.Controllers
         [InlineData(SoaStage.Stage6, ElementTypeInShort.DDN, HeatNetworkElementType.DistrictDistribution)]
         public async Task SoaUpdateStatus_Get_ReturnView(SoaStage paramStage, ElementTypeInShort paramElementTypeInShort, HeatNetworkElementType paramElementType)
         {
+            // setup TempData values for stage and elementType
+            _controller.TempData["SoaUpdateStatusStage"] = paramStage.ToString();
+            _controller.TempData["SoaUpdateStatusElementType"] = paramElementTypeInShort.ToString();
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<int>(
                     It.IsAny<HttpContext>(), SessionKeys.CurrentStageIndexSessionKey))
@@ -236,7 +239,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
                 });
 
-            var result = await _controller.SoaUpdateStatus(paramStage.ToString(), paramElementTypeInShort.ToString()) as ViewResult;
+            var result = await _controller.SoaUpdateStatus() as ViewResult;
             Assert.NotNull(result);
         }
 

@@ -133,10 +133,10 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SoaUpdateStatus([FromQuery] string? stage, [FromQuery] string? elementType)
+        public async Task<IActionResult> SoaUpdateStatus()
         {
-            stage ??= TempData["SoaUpdateStatusStage"] as string;
-            elementType ??= TempData["SoaUpdateStatusElementType"] as string;
+            var stage = TempData["SoaUpdateStatusStage"] as string;
+            var elementType = TempData["SoaUpdateStatusElementType"] as string;
 
             if (string.IsNullOrEmpty(stage) || string.IsNullOrEmpty(elementType))
             {
