@@ -550,7 +550,9 @@ namespace HNTAS.Web.UI.Controllers
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
             var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
             var response = await _userService.GetUserHeatNetworks(userId);
-            var respectiveNetworks = response?.Where(w => w.OrgId == orgId).ToList();
+
+            //filter ddh role only so, it won't list the user contibution networks
+            var respectiveNetworks = response?.Where(w => w.OrgId == orgId && w.Role == UserRole.DesignatedDutyHolder.ToString()).ToList();
             var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(respectiveNetworks!);
 
             if (heatNetworks == null)
