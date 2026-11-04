@@ -131,7 +131,7 @@ namespace HNTAS.Web.UI.Services.Core
 
                 if (response.IsOk)
                 {
-                    return response.Ok()?.ActiveContributingOrgId;
+                    return response.Ok()?.OrgId;
                 }
 
                 throw new Exception($"Failed to create user with status code: {response.StatusCode}");
