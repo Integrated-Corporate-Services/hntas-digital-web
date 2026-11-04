@@ -1749,6 +1749,67 @@ paths:
           description: Not Found
       tags:
       - Invitations
+  /api/Invitations/organisations/{organisationId}/contributors:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: organisationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: pageNumber
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 20
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sortBy
+        required: false
+        schema:
+          default: name
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortDirection
+        required: false
+        schema:
+          default: asc
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/PagedResultOfContributorResult"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResultOfContributorResult"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PagedResultOfContributorResult"
+          description: OK
+      security:
+      - Bearer: []
+      tags:
+      - Invitations
   /api/NotificationHistory/notification-history:
     get:
       requestBody:
@@ -3074,7 +3135,14 @@ paths:
       parameters:
       - explode: true
         in: query
-        name: userId
+        name: invitationId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: OrganisationId
         required: false
         schema:
           type: string
@@ -4369,6 +4437,26 @@ components:
       - CommercialConnection
       - OtherDistrictNetwork
       type: string
+    ContributorResult:
+      example:
+        organisationId: organisationId
+        name: name
+        userId: userId
+        email: email
+        workingOrgName: workingOrgName
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        organisationId:
+          type: string
+        workingOrgName:
+          nullable: true
+          type: string
+      type: object
     ContributorRole:
       enum:
       - DesignatedDutyHolder
@@ -7869,6 +7957,7 @@ components:
     InvitedUserResponse:
       example:
         lastName: lastName
+        invitedOrgName: invitedOrgName
         inviterUserId: inviterUserId
         roles:
         - DesignatedDutyHolder
@@ -7901,6 +7990,9 @@ components:
           nullable: true
           type: string
         invitedOrgId:
+          nullable: true
+          type: string
+        invitedOrgName:
           nullable: true
           type: string
         roles:
@@ -9943,6 +10035,47 @@ components:
         orgAddress:
           $ref: "#/components/schemas/Address"
       type: object
+    PagedResultOfContributorResult:
+      example:
+        pageNumber: 0
+        hasNextPage: true
+        totalPages: 5
+        pageSize: 6
+        hasPreviousPage: true
+        totalCount: 1
+        items:
+        - organisationId: organisationId
+          name: name
+          userId: userId
+          email: email
+          workingOrgName: workingOrgName
+        - organisationId: organisationId
+          name: name
+          userId: userId
+          email: email
+          workingOrgName: workingOrgName
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/ContributorResult"
+          type: array
+        pageNumber:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalCount:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        hasPreviousPage:
+          type: boolean
+        hasNextPage:
+          type: boolean
+      type: object
     PagedResultOfManagedUserResponse:
       example:
         pageNumber: 0
@@ -11159,6 +11292,7 @@ components:
         firstName: firstName
         id: id
         activeContributingOrgId: activeContributingOrgId
+        workingOrgName: workingOrgName
         status: Active
       properties:
         id:
@@ -11191,6 +11325,9 @@ components:
           nullable: true
           type: string
         orgId:
+          nullable: true
+          type: string
+        workingOrgName:
           nullable: true
           type: string
         roles:

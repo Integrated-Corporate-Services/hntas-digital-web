@@ -170,7 +170,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new HeatPumpSystemJsonConverter(),
         new HeatRecoverySourceJsonConverter(),
         new BoilerPlantJsonConverter(),
-
+        new PagedResultOfContributorResultJsonConverter(),
+        new ContributorResultJsonConverter()
     }
 });
 builder.Services.AddSingleton<JsonSerializerOptionsProvider>();

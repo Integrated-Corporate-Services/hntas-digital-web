@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **FullName** | **string** |  | [optional] 
 **InvitedHnId** | **string** |  | [optional] 
 **InvitedOrgId** | **string** |  | [optional] 
+**InvitedOrgName** | **string** |  | [optional] 
 **Roles** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | [optional] 
 **Status** | **InvitationStatus** |  | [optional] 
 **InvitedAt** | **DateTimeOffset** |  | [optional] 
