@@ -170,6 +170,7 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ContributorsHeatNetworkPhaseViewModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SameOrganisationViewModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ExistingContributorsListViewModelSessionKey);
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.CheckYourAnswersContributorsModelSessionKey);
 
             var whoDoYouWantToAdd = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey) ?? "Duty holders and contributors";
 
@@ -552,7 +553,7 @@ namespace HNTAS.Web.UI.Controllers
             var response = await _userService.GetUserHeatNetworks(userId);
 
             //filter ddh role only so, it won't list the user contibution networks
-            var respectiveNetworks = response?.Where(w => w.OrgId == orgId && w.Role == UserRole.DesignatedDutyHolder.ToString()).ToList();
+            var respectiveNetworks = response?.Where(w => w.OrgId == orgId && w.Role != UserRole.Contributor.ToString()).ToList();
             var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(respectiveNetworks!);
 
             if (heatNetworks == null)
