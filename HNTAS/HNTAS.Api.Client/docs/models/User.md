@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 **ContributingOrganisations** | **List&lt;string&gt;** |  | [optional] 
 **ActiveContributingOrgId** | **string** |  | [optional] 
 **WorkingOrgName** | **string** |  | [optional] 
-**NotificationStats** | [**NotificationStats**](NotificationStats.md) |  | [optional] 
+**NotificationStats** | [**List&lt;NotificationStats&gt;**](NotificationStats.md) |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 
