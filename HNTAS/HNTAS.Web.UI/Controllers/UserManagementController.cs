@@ -196,7 +196,7 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             // 1. Fetch user, contributor roles, and paginated networks concurrently
-            var userTask = _userService.GetUserById(userId);
+            var userTask = _userService.GetUserDetails(userId);
             var rolesTask = _userService.GetContributorRolesAsync();
             var paginatedResponseTask = _heatNetworkService.GetHeatNetworkByUserIdPaginatedAsync(
                 userId: userId,
@@ -219,7 +219,7 @@ namespace HNTAS.Web.UI.Controllers
                 return View(new HeatNetworksViewModel());
             }
 
-            var hnRoleMappings = user.HnRoleMappings ?? new List<HnRoleMapping>();
+            var hnRoleMappings = user.HnRoleMappings ?? new List<HnRoleMappingsUserResult>();
 
             ViewBag.UserRole = user.Roles?.FirstOrDefault().ToString();
             ViewBag.HasDeclaredImpartiality = _sessionHelper.GetFromSession<DeclationOfImpartialityModel>(
@@ -232,9 +232,10 @@ namespace HNTAS.Web.UI.Controllers
 
             // 3. Clean synchronous mapping
             var heatNetworks = paginatedResponse?.Items?.Select(network =>
-            {
+            {                              
+                
                 var matchingRoleEnum = hnRoleMappings
-                    .FirstOrDefault(x => x.HnId == network.HnId)?.Role.ToString();
+                    .FirstOrDefault(x => x.HeatNetwork.HnId.Equals(network.HnId, StringComparison.OrdinalIgnoreCase))?.Role.ToString();
 
                 var roleDescription = !string.IsNullOrEmpty(matchingRoleEnum) && rolesDictionary.TryGetValue(matchingRoleEnum, out var desc)
                     ? desc
@@ -254,7 +255,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 HeatNetworks = heatNetworks,
                 IsResponsiblePerson = user.Roles?.Contains(UserRole.ResponsibleParty) ?? false,
-                IsHntasCoordinator = user.Roles?.Contains(UserRole.NetworkManager) ?? false,
+                IsHntasCoordinator = user.InvitedRoles?.Contains(ContributorRole.NetworkManager) ?? false,
 
                 // Pagination metadata for Razor View
                 PageNumber = paginatedResponse?.PageNumber ?? pageNumber,

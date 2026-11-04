@@ -162,7 +162,7 @@
                                 </li>
 
                                 <li class="govuk-service-navigation__item @(currentAction == "Index" && currentController == "Notification" ? "govuk-service-navigation__item--active" : "")">
-                                    <a class="govuk-service-navigation__link" href="@Url.Action("Index", "Notification", new { userId = userId })"
+                                    <a class="govuk-service-navigation__link" href="@Url.Action("Index", "Notification")"
                                        @(currentAction == "Index" && currentController == "Notification" ? "aria-current=page" : "")>
                                         <strong>Notifications</strong>
                                         @if (unreadNotifications > 0)
