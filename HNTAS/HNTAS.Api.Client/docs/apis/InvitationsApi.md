@@ -9,6 +9,7 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiInvitationsIdGet**](InvitationsApi.md#apiinvitationsidget) | **GET** /api/Invitations/{id} |  |
 | [**ApiInvitationsInvitationIdRejectPost**](InvitationsApi.md#apiinvitationsinvitationidrejectpost) | **POST** /api/Invitations/{invitationId}/Reject |  |
 | [**ApiInvitationsInvitationIdSendEmailPost**](InvitationsApi.md#apiinvitationsinvitationidsendemailpost) | **POST** /api/Invitations/{invitationId}/send-email |  |
+| [**ApiInvitationsOrganisationsOrganisationIdContributorsGet**](InvitationsApi.md#apiinvitationsorganisationsorganisationidcontributorsget) | **GET** /api/Invitations/organisations/{organisationId}/contributors |  |
 | [**ApiInvitationsUserInvitationsGet**](InvitationsApi.md#apiinvitationsuserinvitationsget) | **GET** /api/Invitations/user-invitations |  |
 
 <a id="apiinvitationsacceptinvitationpatch"></a>
@@ -193,6 +194,44 @@ void (empty response body)
 | **204** | No Content |  -  |
 | **404** | Not Found |  -  |
 | **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiinvitationsorganisationsorganisationidcontributorsget"></a>
+# **ApiInvitationsOrganisationsOrganisationIdContributorsGet**
+> PagedResultOfContributorResult ApiInvitationsOrganisationsOrganisationIdContributorsGet (string organisationId, int pageNumber = null, int pageSize = null, string sortBy = null, string sortDirection = null)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **organisationId** | **string** |  |  |
+| **pageNumber** | **int** |  | [optional] [default to 1] |
+| **pageSize** | **int** |  | [optional] [default to 20] |
+| **sortBy** | **string** |  | [optional] [default to &quot;name&quot;] |
+| **sortDirection** | **string** |  | [optional] [default to &quot;asc&quot;] |
+
+### Return type
+
+[**PagedResultOfContributorResult**](PagedResultOfContributorResult.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

@@ -161,6 +161,37 @@ namespace HNTAS.Api.Client.Api
         /// 
         /// </remarks>
         /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="organisationId"></param>
+        /// <param name="pageNumber"> (optional, default to 1)</param>
+        /// <param name="pageSize"> (optional, default to 20)</param>
+        /// <param name="sortBy"> (optional, default to &quot;name&quot;)</param>
+        /// <param name="sortDirection"> (optional, default to &quot;asc&quot;)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse"/>&gt;</returns>
+        Task<IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse> ApiInvitationsOrganisationsOrganisationIdContributorsGetAsync(string organisationId, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="organisationId"></param>
+        /// <param name="pageNumber"> (optional, default to 1)</param>
+        /// <param name="pageSize"> (optional, default to 20)</param>
+        /// <param name="sortBy"> (optional, default to &quot;name&quot;)</param>
+        /// <param name="sortDirection"> (optional, default to &quot;asc&quot;)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse"/>?&gt;</returns>
+        Task<IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse?> ApiInvitationsOrganisationsOrganisationIdContributorsGetOrDefaultAsync(string organisationId, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
         /// <param name="invitedEmail"> (optional)</param>
         /// <param name="invitedOrgId"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
@@ -319,6 +350,18 @@ namespace HNTAS.Api.Client.Api
     }
 
     /// <summary>
+    /// The <see cref="IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse"/>
+    /// </summary>
+    public interface IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<HNTAS.Api.Client.Model.PagedResultOfContributorResult?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+    }
+
+    /// <summary>
     /// The <see cref="IApiInvitationsUserInvitationsGetApiResponse"/>
     /// </summary>
     public interface IApiInvitationsUserInvitationsGetApiResponse : HNTAS.Api.Client.Client.IApiResponse, IOk<List<Invitation>?>, INotFound<HNTAS.Api.Client.Model.ProblemDetails?>
@@ -439,6 +482,26 @@ namespace HNTAS.Api.Client.Api
         internal void ExecuteOnErrorApiInvitationsInvitationIdSendEmailPost(Exception exception)
         {
             OnErrorApiInvitationsInvitationIdSendEmailPost?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnApiInvitationsOrganisationsOrganisationIdContributorsGet;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorApiInvitationsOrganisationsOrganisationIdContributorsGet;
+
+        internal void ExecuteOnApiInvitationsOrganisationsOrganisationIdContributorsGet(InvitationsApi.ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse apiResponse)
+        {
+            OnApiInvitationsOrganisationsOrganisationIdContributorsGet?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorApiInvitationsOrganisationsOrganisationIdContributorsGet(Exception exception)
+        {
+            OnErrorApiInvitationsOrganisationsOrganisationIdContributorsGet?.Invoke(this, new ExceptionEventArgs(exception));
         }
 
         /// <summary>
@@ -2100,6 +2163,309 @@ namespace HNTAS.Api.Client.Api
             /// </summary>
             /// <returns></returns>
             public bool IsInternalServerError => 500 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatApiInvitationsOrganisationsOrganisationIdContributorsGet(ref string organisationId, ref Option<int> pageNumber, ref Option<int> pageSize, ref Option<string> sortBy, ref Option<string> sortDirection);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="organisationId"></param>
+        /// <param name="sortBy"></param>
+        /// <param name="sortDirection"></param>
+        /// <returns></returns>
+        private void ValidateApiInvitationsOrganisationsOrganisationIdContributorsGet(string organisationId, Option<string> sortBy, Option<string> sortDirection)
+        {
+            if (organisationId == null)
+                throw new ArgumentNullException(nameof(organisationId));
+
+            if (sortBy.IsSet && sortBy.Value == null)
+                throw new ArgumentNullException(nameof(sortBy));
+
+            if (sortDirection.IsSet && sortDirection.Value == null)
+                throw new ArgumentNullException(nameof(sortDirection));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="organisationId"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="sortBy"></param>
+        /// <param name="sortDirection"></param>
+        private void AfterApiInvitationsOrganisationsOrganisationIdContributorsGetDefaultImplementation(IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse apiResponseLocalVar, string organisationId, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection)
+        {
+            bool suppressDefaultLog = false;
+            AfterApiInvitationsOrganisationsOrganisationIdContributorsGet(ref suppressDefaultLog, apiResponseLocalVar, organisationId, pageNumber, pageSize, sortBy, sortDirection);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="organisationId"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="sortBy"></param>
+        /// <param name="sortDirection"></param>
+        partial void AfterApiInvitationsOrganisationsOrganisationIdContributorsGet(ref bool suppressDefaultLog, IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse apiResponseLocalVar, string organisationId, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="organisationId"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="sortBy"></param>
+        /// <param name="sortDirection"></param>
+        private void OnErrorApiInvitationsOrganisationsOrganisationIdContributorsGetDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string organisationId, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorApiInvitationsOrganisationsOrganisationIdContributorsGet(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, organisationId, pageNumber, pageSize, sortBy, sortDirection);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="organisationId"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="sortBy"></param>
+        /// <param name="sortDirection"></param>
+        partial void OnErrorApiInvitationsOrganisationsOrganisationIdContributorsGet(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string organisationId, Option<int> pageNumber, Option<int> pageSize, Option<string> sortBy, Option<string> sortDirection);
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="organisationId"></param>
+        /// <param name="pageNumber"> (optional, default to 1)</param>
+        /// <param name="pageSize"> (optional, default to 20)</param>
+        /// <param name="sortBy"> (optional, default to &quot;name&quot;)</param>
+        /// <param name="sortDirection"> (optional, default to &quot;asc&quot;)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse"/>&gt;</returns>
+        public async Task<IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse?> ApiInvitationsOrganisationsOrganisationIdContributorsGetOrDefaultAsync(string organisationId, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ApiInvitationsOrganisationsOrganisationIdContributorsGetAsync(organisationId, pageNumber, pageSize, sortBy, sortDirection, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="organisationId"></param>
+        /// <param name="pageNumber"> (optional, default to 1)</param>
+        /// <param name="pageSize"> (optional, default to 20)</param>
+        /// <param name="sortBy"> (optional, default to &quot;name&quot;)</param>
+        /// <param name="sortDirection"> (optional, default to &quot;asc&quot;)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse"/>&gt;</returns>
+        public async Task<IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse> ApiInvitationsOrganisationsOrganisationIdContributorsGetAsync(string organisationId, Option<int> pageNumber = default, Option<int> pageSize = default, Option<string> sortBy = default, Option<string> sortDirection = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateApiInvitationsOrganisationsOrganisationIdContributorsGet(organisationId, sortBy, sortDirection);
+
+                FormatApiInvitationsOrganisationsOrganisationIdContributorsGet(ref organisationId, ref pageNumber, ref pageSize, ref sortBy, ref sortDirection);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/api/Invitations/organisations/{organisationId}/contributors"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath, "/api/Invitations/organisations/{organisationId}/contributors");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BorganisationId%7D", Uri.EscapeDataString(organisationId.ToString()));
+
+                    System.Collections.Specialized.NameValueCollection parseQueryStringLocalVar = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    if (pageNumber.IsSet)
+                        parseQueryStringLocalVar["pageNumber"] = ClientUtils.ParameterToString(pageNumber.Value);
+
+                    if (pageSize.IsSet)
+                        parseQueryStringLocalVar["pageSize"] = ClientUtils.ParameterToString(pageSize.Value);
+
+                    if (sortBy.IsSet)
+                        parseQueryStringLocalVar["sortBy"] = ClientUtils.ParameterToString(sortBy.Value);
+
+                    if (sortDirection.IsSet)
+                        parseQueryStringLocalVar["sortDirection"] = ClientUtils.ParameterToString(sortDirection.Value);
+
+                    uriBuilderLocalVar.Query = parseQueryStringLocalVar.ToString();
+
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar1 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar1);
+
+                    bearerTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar, "");
+
+                    string[] acceptLocalVars = new string[] {
+                        "text/plain",
+                        "application/json",
+                        "text/json"
+                    };
+
+                    string? acceptLocalVar = ClientUtils.SelectHeaderAccept(acceptLocalVars);
+
+                    if (acceptLocalVar != null)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptLocalVar));
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        ILogger<ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse>();
+                        ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse apiResponseLocalVar;
+
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/api/Invitations/organisations/{organisationId}/contributors", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
+
+                        AfterApiInvitationsOrganisationsOrganisationIdContributorsGetDefaultImplementation(apiResponseLocalVar, organisationId, pageNumber, pageSize, sortBy, sortDirection);
+
+                        Events.ExecuteOnApiInvitationsOrganisationsOrganisationIdContributorsGet(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorApiInvitationsOrganisationsOrganisationIdContributorsGetDefaultImplementation(e, "/api/Invitations/organisations/{organisationId}/contributors", uriBuilderLocalVar.Path, organisationId, pageNumber, pageSize, sortBy, sortDirection);
+                Events.ExecuteOnErrorApiInvitationsOrganisationsOrganisationIdContributorsGet(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse"/>
+        /// </summary>
+        public partial class ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse : HNTAS.Api.Client.Client.ApiResponse, IApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse(ILogger<ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse(ILogger<ApiInvitationsOrganisationsOrganisationIdContributorsGetApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public HNTAS.Api.Client.Model.PagedResultOfContributorResult? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<HNTAS.Api.Client.Model.PagedResultOfContributorResult>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out HNTAS.Api.Client.Model.PagedResultOfContributorResult? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {

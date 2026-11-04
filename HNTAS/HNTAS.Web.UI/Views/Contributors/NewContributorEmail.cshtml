@@ -1,0 +1,54 @@
+﻿@using HNTAS.Web.UI.Models.Contributors
+@model NewContributorEmail
+
+@{
+    ViewData["Title"] = "Enter the email address of the person you want to invite – Certify your heat networks";
+    var hasEmailError = ViewData.ModelState[nameof(Model.EmailAddress)]?.Errors.Count > 0;
+    var modelType = ViewData.Model?.GetType();
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form asp-action="SaveNewContributorEmail" method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <span class="govuk-caption-l">Your network team</span>
+
+            <div class="govuk-form-group @(hasEmailError ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            Enter the email address of the person you want to invite
+                        </h1>
+                    </legend>
+
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="email-address-input">
+                            Email address
+                        </label>
+
+                        @if (hasEmailError)
+                        {
+                            <p id="email-address-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.EmailAddress)]?.Errors[0].ErrorMessage
+                            </p>
+                        }
+
+                        <input class="govuk-input @(hasEmailError ? "govuk-input--error" : "")"
+                               id="emailaddress"
+                               name="EmailAddress"
+                               type="email"
+                               spellcheck="false"
+                               autocomplete="email"
+                               value="@Model.EmailAddress"
+                               aria-describedby="@(hasEmailError ? "email-address-error" : null)" />
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
+
+    </div>
+</div>

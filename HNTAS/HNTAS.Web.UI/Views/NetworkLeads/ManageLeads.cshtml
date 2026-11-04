@@ -42,6 +42,7 @@
                         <tr class="govuk-table__row">
                             <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
                             <th scope="col" class="govuk-table__header" aria-sort="none">Email</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Organisation name</th>
                             <th scope="col" class="govuk-table__header" aria-sort="none">Status</th>                            
                         </tr>
                     </thead>
@@ -50,7 +51,8 @@
                     {
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell">@networkLead.Name</td>
-                            <td class="govuk-table__cell">@networkLead.EmailAddress</td>        
+                            <td class="govuk-table__cell">@networkLead.EmailAddress</td>
+                            <td class="govuk-table__cell">@networkLead.OrganisationName</td>
                             <td class="govuk-table__cell">
                                 <strong class="govuk-tag @GovUkTagHelper.GetTagClass(networkLead.Status)">@networkLead.Status</strong>
                             </td>

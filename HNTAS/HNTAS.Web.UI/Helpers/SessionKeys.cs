@@ -141,5 +141,7 @@
         public const string BoilerPlantInformationViewModelSessionKey = "BoilerPlantInformationViewModelSessionKey";
 
         public static string SameOrganisationViewModelSessionKey = "SameOrganisationViewModelSessionKey";
+
+        public static string NewContributorEmailViewModelSessionKey = "NewContributorEmailViewModelSessionKey";
     }
 }
