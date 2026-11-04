@@ -73,6 +73,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
 
+        <span class="govuk-caption-l">@ViewBag.OrganisationName</span>
         <h1 class="govuk-heading-l">Heat networks</h1>
         
         @if (Model.IsResponsiblePerson || Model.IsHntasCoordinator)
@@ -87,11 +88,11 @@
             <table class="govuk-table">
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
-                        <th scope="col" class="govuk-table__header" aria-sort="@GetAriaSort("OrganisationName")">
+                      @*   <th scope="col" class="govuk-table__header" aria-sort="@GetAriaSort("OrganisationName")">
                             <a class="govuk-link govuk-link--no-visited-state" href="@GetSortUrl("OrganisationName")">
                                 Organisation @GetSortIcon("OrganisationName")
                             </a>
-                        </th>
+                        </th> *@
                         <th scope="col" class="govuk-table__header" aria-sort="@GetAriaSort("Name")">
                             <a class="govuk-link govuk-link--no-visited-state" href="@GetSortUrl("Name")">
                                 Heat network @GetSortIcon("Name")
@@ -116,7 +117,7 @@
                         @foreach (var heatNetwork in Model.HeatNetworks)
                         {
                             <tr class="govuk-table__row">
-                                <td class="govuk-table__cell">@heatNetwork.OrganisationName</td>
+                               @*  <td class="govuk-table__cell">@heatNetwork.OrganisationName</td> *@
                                 <td class="govuk-table__cell">
                                     @heatNetwork.HnId<br />
                                     @heatNetwork.Name<br />

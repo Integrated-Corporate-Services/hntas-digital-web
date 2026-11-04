@@ -41,13 +41,14 @@ namespace HNTAS.Api.Client.Model
         /// <param name="fullName">fullName</param>
         /// <param name="invitedHnId">invitedHnId</param>
         /// <param name="invitedOrgId">invitedOrgId</param>
+        /// <param name="invitedOrgName">invitedOrgName</param>
         /// <param name="roles">roles</param>
         /// <param name="status">status</param>
         /// <param name="invitedAt">invitedAt</param>
         /// <param name="acceptedAt">acceptedAt</param>
         /// <param name="rejectedAt">rejectedAt</param>
         [JsonConstructor]
-        public InvitedUserResponse(Option<string?> id = default, Option<string?> inviterUserId = default, Option<string?> email = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> invitedHnId = default, Option<string?> invitedOrgId = default, Option<List<ContributorRole>?> roles = default, Option<InvitationStatus?> status = default, Option<DateTimeOffset?> invitedAt = default, Option<DateTimeOffset?> acceptedAt = default, Option<DateTimeOffset?> rejectedAt = default)
+        public InvitedUserResponse(Option<string?> id = default, Option<string?> inviterUserId = default, Option<string?> email = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> invitedHnId = default, Option<string?> invitedOrgId = default, Option<string?> invitedOrgName = default, Option<List<ContributorRole>?> roles = default, Option<InvitationStatus?> status = default, Option<DateTimeOffset?> invitedAt = default, Option<DateTimeOffset?> acceptedAt = default, Option<DateTimeOffset?> rejectedAt = default)
         {
             IdOption = id;
             InviterUserIdOption = inviterUserId;
@@ -57,6 +58,7 @@ namespace HNTAS.Api.Client.Model
             FullNameOption = fullName;
             InvitedHnIdOption = invitedHnId;
             InvitedOrgIdOption = invitedOrgId;
+            InvitedOrgNameOption = invitedOrgName;
             RolesOption = roles;
             StatusOption = status;
             InvitedAtOption = invitedAt;
@@ -185,6 +187,19 @@ namespace HNTAS.Api.Client.Model
         public string? InvitedOrgId { get { return this.InvitedOrgIdOption; } set { this.InvitedOrgIdOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of InvitedOrgName
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> InvitedOrgNameOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets InvitedOrgName
+        /// </summary>
+        [JsonPropertyName("invitedOrgName")]
+        public string? InvitedOrgName { get { return this.InvitedOrgNameOption; } set { this.InvitedOrgNameOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of Roles
         /// </summary>
         [JsonIgnore]
@@ -252,6 +267,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  FullName: ").Append(FullName).Append("\n");
             sb.Append("  InvitedHnId: ").Append(InvitedHnId).Append("\n");
             sb.Append("  InvitedOrgId: ").Append(InvitedOrgId).Append("\n");
+            sb.Append("  InvitedOrgName: ").Append(InvitedOrgName).Append("\n");
             sb.Append("  Roles: ").Append(Roles).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  InvitedAt: ").Append(InvitedAt).Append("\n");
@@ -317,6 +333,7 @@ namespace HNTAS.Api.Client.Model
             Option<string?> fullName = default;
             Option<string?> invitedHnId = default;
             Option<string?> invitedOrgId = default;
+            Option<string?> invitedOrgName = default;
             Option<List<ContributorRole>?> roles = default;
             Option<InvitationStatus?> status = default;
             Option<DateTimeOffset?> invitedAt = default;
@@ -361,6 +378,9 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "invitedOrgId":
                             invitedOrgId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "invitedOrgName":
+                            invitedOrgName = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "roles":
                             roles = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions)!);
@@ -409,7 +429,7 @@ namespace HNTAS.Api.Client.Model
             if (invitedAt.IsSet && invitedAt.Value == null)
                 throw new ArgumentNullException(nameof(invitedAt), "Property is not nullable for class InvitedUserResponse.");
 
-            return new InvitedUserResponse(id, inviterUserId, email, firstName, lastName, fullName, invitedHnId, invitedOrgId, roles, status, invitedAt, acceptedAt, rejectedAt);
+            return new InvitedUserResponse(id, inviterUserId, email, firstName, lastName, fullName, invitedHnId, invitedOrgId, invitedOrgName, roles, status, invitedAt, acceptedAt, rejectedAt);
         }
 
         /// <summary>
@@ -486,6 +506,12 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("invitedOrgId", invitedUserResponse.InvitedOrgId);
                 else
                     writer.WriteNull("invitedOrgId");
+
+            if (invitedUserResponse.InvitedOrgNameOption.IsSet)
+                if (invitedUserResponse.InvitedOrgNameOption.Value != null)
+                    writer.WriteString("invitedOrgName", invitedUserResponse.InvitedOrgName);
+                else
+                    writer.WriteNull("invitedOrgName");
 
             if (invitedUserResponse.RolesOption.IsSet)
             {

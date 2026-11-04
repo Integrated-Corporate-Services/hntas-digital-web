@@ -10,5 +10,13 @@ namespace HNTAS.Web.UI.Services.Core
         Task<string?> AcceptInvitationAsync(InvitedUserRequest invitationRequest);
         Task RejectInvitationAsync(string invitationId);
         Task<List<Invitation>?> GetInvitationsByEmailAndOrg(string invitedEmail, string invitedOrgId);
+
+        Task<PagedResultOfContributorResult> GetOrganisationGroupedDdhAndContributor(
+         string organisationId,
+         int pageNumber = 1,
+         int pageSize = 20,
+         string sortBy = "name",
+         string sortDirection = "asc",
+         CancellationToken cancellationToken = default);
     }
 }

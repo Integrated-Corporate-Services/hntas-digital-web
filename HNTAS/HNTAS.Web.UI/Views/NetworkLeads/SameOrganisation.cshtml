@@ -30,7 +30,7 @@
                     <div class="govuk-radios" data-module="govuk-radios">
                         @* Yes Option *@
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="works-for-same-organisation-yes" name="WorksForSameOrganisation" type="radio" value="true" @(Model.WorksForSameOrganisation == true ? "checked" : "")>
+                            <input class="govuk-radios__input" id="worksforsameorganisation" name="WorksForSameOrganisation" type="radio" value="true" @(Model.WorksForSameOrganisation == true ? "checked" : "")>
                             <label class="govuk-label govuk-radios__label" for="works-for-same-organisation-yes">
                                 Yes
                             </label>
@@ -38,7 +38,7 @@
 
                         @* No Option with Conditional Reveal *@
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="works-for-same-organisation-no" name="WorksForSameOrganisation" type="radio" value="false" data-aria-controls="conditional-organisation-name" @(Model.WorksForSameOrganisation == false ? "checked" : "")>
+                            <input class="govuk-radios__input" id="worksforsameorganisation-2" name="WorksForSameOrganisation" type="radio" value="false" data-aria-controls="conditional-organisation-name" @(Model.WorksForSameOrganisation == false ? "checked" : "")>
                             <label class="govuk-label govuk-radios__label" for="works-for-same-organisation-no">
                                 No
                             </label>
