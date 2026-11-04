@@ -162,20 +162,21 @@
 
             @if (Model.HasHntasNetworks)
             {
-                <div class="dashboard-grid__item">
-                    <div class="dashboard-card">
-                        <h3 class="dashboard-card__title govuk-heading-s">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="KpiDashboard">
-                                KPI Dashboard
-                            </a>
-                        </h3>
-                        <p class="govuk-body-s">
-                            View KPI assessments, performance thresholds, and data integrity checks for registered heat networks.
-                        </p>
-                    </div>
-                </div>
 
-                <environment names="local,dev">
+            <environment names="local,dev">
+                    <div class="dashboard-grid__item">
+                        <div class="dashboard-card">
+                            <h3 class="dashboard-card__title govuk-heading-s">
+                                <a class="govuk-link govuk-link--no-visited-state" asp-action="Index" asp-controller="KpiDashboard">
+                                    KPI Dashboard
+                                </a>
+                            </h3>
+                            <p class="govuk-body-s">
+                                View KPI assessments, performance thresholds, and data integrity checks for registered heat networks.
+                            </p>
+                        </div>
+                    </div>
+
                     <div class="dashboard-grid__item">
                         <div class="dashboard-card">
                             <h3 class="dashboard-card__title govuk-heading-s">
@@ -212,7 +213,7 @@
                 <div class="dashboard-grid__item">
                     <div class="dashboard-card">
                         <h3 class="dashboard-card__title govuk-heading-s">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageContributors" asp-controller="Contributors">Duty holders and contributors</a>
+                        <a class="govuk-link govuk-link--no-visited-state" asp-action="ManageContributors" asp-controller="Contributors">Contributors</a>
                         </h3>
                         <p class="govuk-body-s">Personnel providing expertise at a per network level only</p>
                     </div>

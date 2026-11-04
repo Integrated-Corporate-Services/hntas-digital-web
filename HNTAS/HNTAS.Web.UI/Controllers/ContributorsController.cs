@@ -41,6 +41,8 @@ namespace HNTAS.Web.UI.Controllers
             var contributorsList = new List<ContributorItemDto>();
             int totalCount = 0;
 
+            ViewBag.WhoDoYouWantToAdd = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey) ?? "Duty holders and contributors";
+
             if (!string.IsNullOrEmpty(orgId))
             {
                 // Call your service method to retrieve paginated contributors
@@ -160,7 +162,7 @@ namespace HNTAS.Web.UI.Controllers
         {
 
             //clear session data for new lead invitation
-            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey);
+            //_sessionHelper.ClearFromSession(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NewContributorEmailViewModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NewContributorRoleViewModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.NewContributorDetailsViewModelSessionKey);
@@ -169,7 +171,13 @@ namespace HNTAS.Web.UI.Controllers
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.SameOrganisationViewModelSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ExistingContributorsListViewModelSessionKey);
 
-            return RedirectToAction(nameof(NewContributorRole));
+            var whoDoYouWantToAdd = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.WhoDoYouWantToAddSessionKey) ?? "Duty holders and contributors";
+
+            if (whoDoYouWantToAdd == "Duty holders and contributors")
+            {
+                return RedirectToAction(nameof(NewContributorRole));
+            }
+            return RedirectToAction(nameof(AddContributor));
         }
 
         [HttpGet]

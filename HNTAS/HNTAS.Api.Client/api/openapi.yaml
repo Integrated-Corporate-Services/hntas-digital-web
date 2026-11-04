@@ -7625,6 +7625,7 @@ components:
         ecDetails:
           latitude: 1.4658129805029452
           longitude: 5.962133916683182
+        role: role
         address:
           country: country
           town: town
@@ -7638,6 +7639,8 @@ components:
         hnId:
           type: string
         name:
+          type: string
+        role:
           type: string
         ecDetails:
           $ref: "#/components/schemas/ECDetails"
@@ -7767,6 +7770,30 @@ components:
           type: string
         role:
           $ref: "#/components/schemas/ContributorRole"
+      type: object
+    HnRoleMappingsUserResult:
+      example:
+        role: role
+        heatNetwork:
+          hnId: hnId
+          ecDetails:
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
+          role: role
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          name: name
+          orgId: orgId
+      properties:
+        heatNetwork:
+          $ref: "#/components/schemas/HeatNetworkUserResponse"
+        role:
+          type: string
       type: object
     ImportResult:
       example:
@@ -11122,6 +11149,39 @@ components:
     UserDetailsResponse:
       example:
         lastName: lastName
+        hnRoleMappings:
+        - role: role
+          heatNetwork:
+            hnId: hnId
+            ecDetails:
+              latitude: 1.4658129805029452
+              longitude: 5.962133916683182
+            role: role
+            address:
+              country: country
+              town: town
+              county: county
+              postcode: postcode
+              addressLine1: addressLine1
+              addressLine2: addressLine2
+            name: name
+            orgId: orgId
+        - role: role
+          heatNetwork:
+            hnId: hnId
+            ecDetails:
+              latitude: 1.4658129805029452
+              longitude: 5.962133916683182
+            role: role
+            address:
+              country: country
+              town: town
+              county: county
+              postcode: postcode
+              addressLine1: addressLine1
+              addressLine2: addressLine2
+            name: name
+            orgId: orgId
         invitedRoles:
         - DesignatedDutyHolder
         - DesignatedDutyHolder
@@ -11157,6 +11217,7 @@ components:
           ecDetails:
             latitude: 1.4658129805029452
             longitude: 5.962133916683182
+          role: role
           address:
             country: country
             town: town
@@ -11170,6 +11231,7 @@ components:
           ecDetails:
             latitude: 1.4658129805029452
             longitude: 5.962133916683182
+          role: role
           address:
             country: country
             town: town
@@ -11218,6 +11280,11 @@ components:
         roles:
           items:
             $ref: "#/components/schemas/UserRole"
+          nullable: true
+          type: array
+        hnRoleMappings:
+          items:
+            $ref: "#/components/schemas/HnRoleMappingsUserResult"
           nullable: true
           type: array
         organisation:

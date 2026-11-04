@@ -64,7 +64,7 @@
                 <a class="govuk-breadcrumbs__link" href="@Url.Action("UserAccount", "Dashboard")">Dashboard</a>
             </li>
             <li class="govuk-breadcrumbs__list-item" aria-current="page">
-                Duty holders and contributors
+                @ViewBag.WhoDoYouWantToAdd
             </li>
         </ol>
     </nav>
@@ -74,7 +74,7 @@
     <div class="govuk-grid-column-full">
 
         <span class="govuk-caption-l">@ViewBag.OrganisationName</span>
-        <h1 class="govuk-heading-l">Duty holders and contributors</h1>
+        <h1 class="govuk-heading-l">@ViewBag.WhoDoYouWantToAdd</h1>
 
         <div class="govuk-!-margin-bottom-6">
             <a asp-action="Start" class="govuk-button" data-module="govuk-button">
