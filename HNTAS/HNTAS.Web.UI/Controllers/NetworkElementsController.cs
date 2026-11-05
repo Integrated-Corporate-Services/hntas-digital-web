@@ -524,7 +524,16 @@ namespace HNTAS.Web.UI.Controllers
             var networkElements = heatNetworkData?.NetworkElements;
             
             var newElementGroups = networkElements?.ElementsGroup?.Where(x => x.BuildType == NetworkBuildStatus.New).ToList();
-            var existingElementGroups  = networkElements?.ElementsGroup?.Where(x => x.BuildType == NetworkBuildStatus.Existing).ToList();
+            var existingElementGroups  = networkElements?.Elements?.Where(x => x.BuildType == NetworkBuildStatus.Existing).ToList();
+            var existingElementGroupsList = new List<ElementGroup>();
+            // group existingElementGroups data according to existingElementGroupsList
+            var existingElementGroupsGrouped = existingElementGroups?.GroupBy(x => x.ElementType).Select(g => new ElementGroup
+            {
+                BuildType = NetworkBuildStatus.Existing,
+                Count = g.Count(),
+                ElementDisplayType = NetworkElementHelper.GetNetworkElementDisplayTypeByElementId(g.First().ElementType),
+                ElementType = g.First().ElementType
+            }).ToList();
 
             foreach (var newElementGroup in newElementGroups!)
             {
@@ -535,7 +544,7 @@ namespace HNTAS.Web.UI.Controllers
                 model.NewNetworkElements.Add($"{newElementGroup.Count} new {label?.ToLower()}");
             }
 
-            foreach (var existingElementGroup in existingElementGroups!)
+            foreach (var existingElementGroup in existingElementGroupsGrouped!)
             {
                 var elementOption = NetworkElementHelper.GetNetworkElementOptionsForNetworkType((Api.Client.Model.HeatNetworkType?)heatNetworkData?.HeatNetworkType).FirstOrDefault(x => x.Id == existingElementGroup.ElementDisplayType);
                 var label = elementOption != null ? elementOption.Label : existingElementGroup.ElementDisplayType.ToString();
