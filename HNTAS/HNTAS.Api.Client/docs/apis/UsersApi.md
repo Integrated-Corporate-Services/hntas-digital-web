@@ -59,7 +59,7 @@ This endpoint does not need any parameter.
 
 <a id="apiusersddhandcontributorspaginatedget"></a>
 # **ApiUsersDdhAndContributorsPaginatedGet**
-> PagedResultOfManagedUserResponse ApiUsersDdhAndContributorsPaginatedGet (string userId = null, int pageNumber = null, int pageSize = null, string sortBy = null, string sortDirection = null)
+> PagedResultOfManagedUserResponse ApiUsersDdhAndContributorsPaginatedGet (string invitationId = null, string organisationId = null, int pageNumber = null, int pageSize = null, string sortBy = null, string sortDirection = null)
 
 
 
@@ -68,7 +68,8 @@ This endpoint does not need any parameter.
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **userId** | **string** |  | [optional]  |
+| **invitationId** | **string** |  | [optional]  |
+| **organisationId** | **string** |  | [optional]  |
 | **pageNumber** | **int** |  | [optional] [default to 1] |
 | **pageSize** | **int** |  | [optional] [default to 10] |
 | **sortBy** | **string** |  | [optional] [default to &quot;firstName&quot;] |

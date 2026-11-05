@@ -131,7 +131,7 @@ namespace HNTAS.Web.UI.Services.Core
 
                 if (response.IsOk)
                 {
-                    return response.Ok()?.ActiveContributingOrgId;
+                    return response.Ok()?.OrgId;
                 }
 
                 throw new Exception($"Failed to create user with status code: {response.StatusCode}");
@@ -309,21 +309,21 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
-        public async Task<PagedResultOfManagedUserResponse> GetDdhAndContributorsPaginated(string userId, int pageNumber = 1,
+        public async Task<PagedResultOfManagedUserResponse> GetDdhAndContributorsPaginated(string invitaionId, string orgId, int pageNumber = 1,
             int pageSize = 1,
             string sortBy = "firstName",
             string sortDirection = "asc",
             CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("Getting managed users for user ID: {UserId}", userId);
-            if (string.IsNullOrWhiteSpace(userId))
+            _logger.LogInformation("Getting managed users for user ID: {UserId}", invitaionId);
+            if (string.IsNullOrWhiteSpace(invitaionId))
             {
                 _logger.LogError("User ID is null or empty");
-                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty");
+                throw new ArgumentNullException(nameof(invitaionId), "User ID cannot be null or empty");
             }
             try
             {
-                var response = await _usersApi.ApiUsersDdhAndContributorsPaginatedGetAsync(userId, pageNumber, pageSize, sortBy, sortDirection, cancellationToken);
+                var response = await _usersApi.ApiUsersDdhAndContributorsPaginatedGetAsync(invitaionId, orgId, pageNumber, pageSize, sortBy, sortDirection, cancellationToken);
                 if (response.IsOk)
                 {
                     var pagedResult = response.Ok();
@@ -333,7 +333,7 @@ namespace HNTAS.Web.UI.Services.Core
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting managed users for user ID: {UserId}", userId);
+                _logger.LogError(ex, "Error getting managed users for user ID: {UserId}", invitaionId);
                 throw;
             }
         }

@@ -74,6 +74,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new ConfigDefaultJsonConverter());
             _jsonOptions.Converters.Add(new ConnectionTypeJsonConverter());
             _jsonOptions.Converters.Add(new ConnectionTypeNullableJsonConverter());
+            _jsonOptions.Converters.Add(new ContributorResultJsonConverter());
             _jsonOptions.Converters.Add(new ContributorRoleJsonConverter());
             _jsonOptions.Converters.Add(new ContributorRoleNullableJsonConverter());
             _jsonOptions.Converters.Add(new CountryAndTerritoryJsonConverter());
@@ -187,6 +188,7 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new OrganisationResponseJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationTypeJsonConverter());
             _jsonOptions.Converters.Add(new OrganisationTypeNullableJsonConverter());
+            _jsonOptions.Converters.Add(new PagedResultOfContributorResultJsonConverter());
             _jsonOptions.Converters.Add(new PagedResultOfManagedUserResponseJsonConverter());
             _jsonOptions.Converters.Add(new PagedResultOfUserNetworkDetailsResponseJsonConverter());
             _jsonOptions.Converters.Add(new ProblemDetailsJsonConverter());

@@ -38,6 +38,8 @@ namespace HNTAS.Web.UI.Models.NetworkLeads
 
         public bool InviteForFirstTime { get; set; }
 
+        public string? WorkingOrgName { get; set; }
+
         [MustBeTrue(ErrorMessage = "Confirm you are authorised to give this person a permission to add heat networks for this organisation")]
         public bool ConfirmedDeclaration { get; set; }
     }

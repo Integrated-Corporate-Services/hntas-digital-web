@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **UserId** | **string** |  | [optional] 
+**OrgId** | **string** |  | [optional] 
 **SortBy** | **string** |  | [optional] 
 **SortDirection** | **string** |  | [optional] 
 **Page** | **int** |  | [optional] 

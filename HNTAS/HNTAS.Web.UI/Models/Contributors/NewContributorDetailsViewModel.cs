@@ -6,7 +6,8 @@ namespace HNTAS.Web.UI.Models.Contributors
     {
         private string _firstName;
         private string _lastName;
-        private string _emailAddress;
+
+        private string _jobTitle;
 
         [Required(ErrorMessage = "Enter the new contributor's first name")]
         [RegularExpression(@"^[a-zA-Z\-]+$", ErrorMessage = "Enter a valid first name using letters, numbers or common punctuation only")]
@@ -26,12 +27,18 @@ namespace HNTAS.Web.UI.Models.Contributors
             set => _lastName = value?.Trim();
         }
 
-        [Required(ErrorMessage = "Enter the new contributor's email address")]
-        [RegularExpression(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
-        public string EmailAddress
+
+        [Required(ErrorMessage = "Enter the new contributor's job title")]
+        public string JobTitle
         {
-            get => _emailAddress;
-            set => _emailAddress = value?.Trim();
+            get => _jobTitle;
+            set => _jobTitle = value?.Trim();
         }
+
+        public string? EmailAddress { get; set; }
+
+        public bool InviteForFirstTime { get; set; }
+
+        public string? WorkingOrgName { get; set; }
     }
 }

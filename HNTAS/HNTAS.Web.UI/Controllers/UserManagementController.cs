@@ -185,9 +185,10 @@ namespace HNTAS.Web.UI.Controllers
             [FromQuery] string sortDirection = "asc")
         {
             ClearNetworkDetailsSession();
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
 
             var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-
+            ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             if (string.IsNullOrEmpty(userId))
             {
                 _logger.LogError("User ID not found in session.");

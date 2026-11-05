@@ -32,6 +32,7 @@ namespace HNTAS.Web.UI.Controllers
             try
             {
                 var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
+                var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
                 // Validate and sanitize inputs
                 if (page < 1) page = DefaultPageNumber;
 
@@ -43,6 +44,7 @@ namespace HNTAS.Web.UI.Controllers
                 var notificationHistoryRequest = new NotificationHistoryRequest
                 {
                     UserId = userId,
+                    OrgId = orgId,
                     SortBy = sortBy,
                     SortDirection = sortOrder,
                     Page = page,
