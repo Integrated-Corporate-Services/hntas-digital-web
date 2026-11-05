@@ -35,14 +35,16 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="hnId">hnId</param>
         /// <param name="name">name</param>
+        /// <param name="role">role</param>
         /// <param name="ecDetails">ecDetails</param>
         /// <param name="address">address</param>
         /// <param name="orgId">orgId</param>
         [JsonConstructor]
-        public HeatNetworkUserResponse(Option<string?> hnId = default, Option<string?> name = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> orgId = default)
+        public HeatNetworkUserResponse(Option<string?> hnId = default, Option<string?> name = default, Option<string?> role = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> orgId = default)
         {
             HnIdOption = hnId;
             NameOption = name;
+            RoleOption = role;
             EcDetailsOption = ecDetails;
             AddressOption = address;
             OrgIdOption = orgId;
@@ -76,6 +78,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("name")]
         public string? Name { get { return this.NameOption; } set { this.NameOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Role
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> RoleOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Role
+        /// </summary>
+        [JsonPropertyName("role")]
+        public string? Role { get { return this.RoleOption; } set { this.RoleOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of EcDetails
@@ -126,6 +141,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class HeatNetworkUserResponse {\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  Role: ").Append(Role).Append("\n");
             sb.Append("  EcDetails: ").Append(EcDetails).Append("\n");
             sb.Append("  Address: ").Append(Address).Append("\n");
             sb.Append("  OrgId: ").Append(OrgId).Append("\n");
@@ -168,6 +184,7 @@ namespace HNTAS.Api.Client.Model
 
             Option<string?> hnId = default;
             Option<string?> name = default;
+            Option<string?> role = default;
             Option<ECDetails?> ecDetails = default;
             Option<RegisteredAddress?> address = default;
             Option<string?> orgId = default;
@@ -193,6 +210,9 @@ namespace HNTAS.Api.Client.Model
                         case "name":
                             name = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "role":
+                            role = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         case "ecDetails":
                             ecDetails = new Option<ECDetails?>(JsonSerializer.Deserialize<ECDetails>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -214,7 +234,10 @@ namespace HNTAS.Api.Client.Model
             if (name.IsSet && name.Value == null)
                 throw new ArgumentNullException(nameof(name), "Property is not nullable for class HeatNetworkUserResponse.");
 
-            return new HeatNetworkUserResponse(hnId, name, ecDetails, address, orgId);
+            if (role.IsSet && role.Value == null)
+                throw new ArgumentNullException(nameof(role), "Property is not nullable for class HeatNetworkUserResponse.");
+
+            return new HeatNetworkUserResponse(hnId, name, role, ecDetails, address, orgId);
         }
 
         /// <summary>
@@ -247,11 +270,17 @@ namespace HNTAS.Api.Client.Model
             if (heatNetworkUserResponse.NameOption.IsSet && heatNetworkUserResponse.Name == null)
                 throw new ArgumentNullException(nameof(heatNetworkUserResponse.Name), "Property is required for class HeatNetworkUserResponse.");
 
+            if (heatNetworkUserResponse.RoleOption.IsSet && heatNetworkUserResponse.Role == null)
+                throw new ArgumentNullException(nameof(heatNetworkUserResponse.Role), "Property is required for class HeatNetworkUserResponse.");
+
             if (heatNetworkUserResponse.HnIdOption.IsSet)
                 writer.WriteString("hnId", heatNetworkUserResponse.HnId);
 
             if (heatNetworkUserResponse.NameOption.IsSet)
                 writer.WriteString("name", heatNetworkUserResponse.Name);
+
+            if (heatNetworkUserResponse.RoleOption.IsSet)
+                writer.WriteString("role", heatNetworkUserResponse.Role);
 
             if (heatNetworkUserResponse.EcDetailsOption.IsSet)
                 if (heatNetworkUserResponse.EcDetailsOption.Value != null)

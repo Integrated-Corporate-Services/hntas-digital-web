@@ -10,6 +10,8 @@ namespace HNTAS.Web.UI.Models.NetworkLeads
         public string EmailAddress { get; set; } = string.Empty;
         public string JobTitle { get; set; } = string.Empty;
 
+        public string WorkingOrgName { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Select whether this is the person you want to invite")]
         public bool? IsCorrectPerson { get; set; }
     }

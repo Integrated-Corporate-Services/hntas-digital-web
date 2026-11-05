@@ -53,7 +53,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="workingOrgName">workingOrgName</param>
         /// <param name="notificationStats">notificationStats</param>
         [JsonConstructor]
-        public User(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> orgId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> jobTitle = default, Option<string?> emailId = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<List<UserRole>?> roles = default, Option<List<HnRoleMapping>?> hnRoleMappings = default, Option<UserStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<List<string>?> contributingOrganisations = default, Option<string?> activeContributingOrgId = default, Option<string?> workingOrgName = default, Option<NotificationStats?> notificationStats = default)
+        public User(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> orgId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> jobTitle = default, Option<string?> emailId = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<List<UserRole>?> roles = default, Option<List<HnRoleMapping>?> hnRoleMappings = default, Option<UserStatus?> status = default, Option<DateTimeOffset?> createdAt = default, Option<List<string>?> contributingOrganisations = default, Option<string?> activeContributingOrgId = default, Option<string?> workingOrgName = default, Option<List<NotificationStats>?> notificationStats = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
@@ -318,13 +318,13 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<NotificationStats?> NotificationStatsOption { get; private set; }
+        public Option<List<NotificationStats>?> NotificationStatsOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets NotificationStats
         /// </summary>
         [JsonPropertyName("notificationStats")]
-        public NotificationStats? NotificationStats { get { return this.NotificationStatsOption; } set { this.NotificationStatsOption = new(value); } }
+        public List<NotificationStats>? NotificationStats { get { return this.NotificationStatsOption; } set { this.NotificationStatsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -413,7 +413,7 @@ namespace HNTAS.Api.Client.Model
             Option<List<string>?> contributingOrganisations = default;
             Option<string?> activeContributingOrgId = default;
             Option<string?> workingOrgName = default;
-            Option<NotificationStats?> notificationStats = default;
+            Option<List<NotificationStats>?> notificationStats = default;
 
             while (utf8JsonReader.Read())
             {
@@ -489,7 +489,7 @@ namespace HNTAS.Api.Client.Model
                             workingOrgName = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "notificationStats":
-                            notificationStats = new Option<NotificationStats?>(JsonSerializer.Deserialize<NotificationStats>(ref utf8JsonReader, jsonSerializerOptions));
+                            notificationStats = new Option<List<NotificationStats>?>(JsonSerializer.Deserialize<List<NotificationStats>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;

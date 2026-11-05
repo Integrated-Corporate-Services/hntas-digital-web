@@ -69,6 +69,47 @@ namespace HNTAS.Web.UI.Tests.Controllers
         }
 
         [Fact]
+        public async Task Index_UsesSessionUserAndOrganisationIds_ForEachRequest()
+        {
+            // Arrange
+            var userId = "testUser";
+            var firstOrgId = "org-1";
+            var secondOrgId = "org-2";
+
+            _sessionHelper
+                .Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
+                .Returns(userId);
+            _sessionHelper
+                .SetupSequence(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.OrganisationId))
+                .Returns(firstOrgId)
+                .Returns(secondOrgId);
+
+            var notificationHistoryResponse = new NotificationHistoryResponse
+            {
+                Items = new List<NotificationHistoryData>()
+            };
+
+            _mockNotificationHistoryService
+                .Setup(service => service.GetNotificationHistory(It.IsAny<NotificationHistoryRequest>()))
+                .ReturnsAsync(notificationHistoryResponse);
+
+            // Act
+            await _controller.Index();
+            await _controller.Index();
+
+            // Assert
+            _mockNotificationHistoryService.Verify(service => service.GetNotificationHistory(
+                It.Is<NotificationHistoryRequest>(request => request.UserId == userId && request.OrgId == firstOrgId)),
+                Times.Once);
+
+            _mockNotificationHistoryService.Verify(service => service.GetNotificationHistory(
+                It.Is<NotificationHistoryRequest>(request => request.UserId == userId && request.OrgId == secondOrgId)),
+                Times.Once);
+
+            _mockNotificationHistoryService.Verify(service => service.GetNotificationHistory(It.IsAny<NotificationHistoryRequest>()), Times.Exactly(2));
+        }
+
+        [Fact]
         public async Task Index_Exception_ReturnsViewResult_EmpbyNotificationHistory()
         {
             // Arrange

@@ -106,7 +106,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             controller.ModelState.AddModelError("EmailAddress", "Invalid");
             var model = new InviteLeadViewModel { EmailAddress = "invalid" };
 
-            var result = Assert.IsType<ViewResult>(await controller.SaveLeadEmailAsync(model));
+            var result = Assert.IsType<ViewResult>(await controller.SaveLeadEmail(model));
 
             Assert.Equal(nameof(NetworkLeadsController.InviteLeadByEmail), result.ViewName);
             Assert.Same(model, result.Model);
@@ -120,7 +120,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var model = new InviteLeadViewModel { EmailAddress = "new@example.com" };
             _userService.Setup(x => x.GetUserByEmailIdAsync(model.EmailAddress)).ReturnsAsync((UserResponse?)null);
 
-            var result = Assert.IsType<RedirectToActionResult>(await controller.SaveLeadEmailAsync(model));
+            var result = Assert.IsType<RedirectToActionResult>(await controller.SaveLeadEmail(model));
 
             Assert.Equal(nameof(NetworkLeadsController.NewLeadDetails), result.ActionName);
             _sessionHelper.Verify(x => x.SaveToSession(It.IsAny<HttpContext>(), SessionKeys.NewLeadInviteEmailViewModelSessionKey, model), Times.Once);
@@ -136,7 +136,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 Roles = new List<UserRole> { UserRole.ResponsibleParty }
             });
 
-            var result = Assert.IsType<ViewResult>(await controller.SaveLeadEmailAsync(model));
+            var result = Assert.IsType<ViewResult>(await controller.SaveLeadEmail(model));
 
             Assert.Equal(nameof(NetworkLeadsController.InviteLeadByEmail), result.ViewName);
             Assert.Equal("This user cannot be added as a Network Manager", controller.ModelState["EmailAddress"]!.Errors[0].ErrorMessage);
@@ -154,9 +154,9 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 ContributingOrganisations = new List<string> { "org-id" }
             });
 
-            var result = Assert.IsType<ViewResult>(await controller.SaveLeadEmailAsync(model));
+            var result = Assert.IsType<ViewResult>(await controller.SaveLeadEmail(model));
 
-            Assert.Equal("This user is already a Network Manager for this organisation", controller.ModelState["EmailAddress"]!.Errors[0].ErrorMessage);
+            Assert.Equal("This user cannot be added as a Network Manager", controller.ModelState["EmailAddress"]!.Errors[0].ErrorMessage);
             Assert.Same(model, result.Model);
         }
 
@@ -165,7 +165,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             var controller = CreateController();
 
-            var result = Assert.IsType<RedirectToActionResult>(await controller.NewLeadAlreadyExistsAsync());
+            var result = Assert.IsType<RedirectToActionResult>(await controller.NewLeadAlreadyExists());
 
             Assert.Equal(nameof(NetworkLeadsController.ManageLeads), result.ActionName);
             Assert.NotNull(controller.TempData["ErrorMessage"]);
@@ -183,7 +183,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 FirstName = "Jane", LastName = "Doe", JobTitle = "Manager"
             });
 
-            var result = Assert.IsType<RedirectToActionResult>(await controller.SaveNewLeadAlreadyExistsAsync(model));
+            var result = Assert.IsType<RedirectToActionResult>(await controller.SaveNewLeadAlreadyExists(model));
 
             Assert.Equal(nameof(NetworkLeadsController.CheckYourAnswers), result.ActionName);
             _sessionHelper.Verify(x => x.SaveToSession(It.IsAny<HttpContext>(), SessionKeys.NewLeadDetailsViewModelSessionKey,
@@ -208,7 +208,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var controller = CreateController();
             var model = new SameOrganisationViewModel { WorksForSameOrganisation = false };
 
-            var result = Assert.IsType<ViewResult>(await controller.SaveSameOrganisationAsync(model));
+            var result = Assert.IsType<ViewResult>(await controller.SaveSameOrganisation(model));
 
             Assert.Equal(nameof(NetworkLeadsController.SameOrganisation), result.ViewName);
             Assert.Equal("Enter the organisation name", controller.ModelState[nameof(model.OrganisationName)]!.Errors[0].ErrorMessage);
@@ -220,7 +220,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var controller = CreateController();
             var model = new SameOrganisationViewModel { WorksForSameOrganisation = true, OrganisationName = "Ignored" };
 
-            var result = Assert.IsType<RedirectToActionResult>(await controller.SaveSameOrganisationAsync(model));
+            var result = Assert.IsType<RedirectToActionResult>(await controller.SaveSameOrganisation(model));
 
             Assert.Equal(nameof(NetworkLeadsController.CheckYourAnswers), result.ActionName);
             Assert.Null(model.OrganisationName);

@@ -68,40 +68,42 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task ManageContributors_Get_ReturnsViewResultWithContributorsList()
         {
             // Arrange
-            var userId = "UserModelId";
+            var orgId = "OrgId";
+            var orgName = "Test Organisation";
 
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<string>(
-                    It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
-                .Returns(userId);
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.OrganisationId))
+                .Returns(orgId);
 
             _sessionHelperMock
                 .Setup(x => x.GetFromSession<string>(
-                    It.IsAny<HttpContext>(), SessionKeys.WhoDoYouWantToAddSessionKey))
-                .Returns("Duty holders and contributors");
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.OrganisationName))
+                .Returns(orgName);
 
-            _userServiceMock
-                .Setup(u => u.GetDdhAndContributorsPaginated(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())) // Adjust boolean parameter if required by interface
-                .ReturnsAsync(new PagedResultOfManagedUserResponse(new List<ManagedUserResponse>
+            _invitationServiceMock
+                .Setup(x => x.GetOrganisationGroupedDdhAndContributor(
+                    orgId,
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()))
+                .ReturnsAsync(new PagedResultOfContributorResult
                 {
-            new ManagedUserResponse
-            {
-                Id = "1",
-                Name = "Test User",
-                Roles = new List<string> { "Contributor" },
-                Status = "Active",
-                HeatNetworks = new List<HeatNetworkInfo>
+                    Items = new List<ContributorResult>
                     {
-                        new HeatNetworkInfo { HnId = "HN1", Name = "Heat Network 1" }
-                    }
-                }
-            }));
-
-            _userServiceMock
-                .Setup(u => u.GetUserRolesAsync())
-                .ReturnsAsync(new List<EnumItemResponse> // Replace 'RoleResponse' with your actual Role DTO/class type
-                {
-                    new EnumItemResponse { Name = "Contributor", Description = "Contributor Description" }
+                        new ContributorResult
+                        {
+                            UserId = "1",
+                            Name = "Test User",
+                            Email = "test@example.com",
+                            WorkingOrgName = "Test Organisation"
+                        }
+                    },
+                    TotalCount = 1,
+                    TotalPages = 1
                 });
 
             // Act
@@ -109,15 +111,29 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<List<DDHAndContributorsListModel>>(viewResult.Model);
 
-            Assert.Single(model);
-            Assert.Equal("Test User", model[0].Name);
-            Assert.Equal("HN1", model[0].HeatNetworkId);
-            Assert.Equal("Contributor Description", model[0].Role);
-            Assert.Equal("govuk-tag--green", model[0].Status.CssClass);
+            var model = Assert.IsType<ManageContributorsViewModel>(
+                viewResult.Model);
 
-            _sessionHelperMock.Verify(x => x.ClearAllContributoFlowRelatedSessionData(It.IsAny<HttpContext>()), Times.Once);
+            Assert.Single(model.Contributors);
+
+            var contributor = model.Contributors.First();
+
+            Assert.Equal("1", contributor.Id);
+            Assert.Equal("Test User", contributor.Name);
+            Assert.Equal("test@example.com", contributor.Email);
+            Assert.Equal("Test Organisation", contributor.OrganisationName);
+
+            Assert.Equal(1, model.TotalCount);
+            Assert.Equal(1, model.PageNumber);
+            Assert.Equal(20, model.PageSize);
+            Assert.Equal("name", model.SortBy);
+            Assert.Equal("asc", model.SortDirection);
+
+            Assert.Equal("Test Organisation", _controller.ViewBag.OrganisationName);
+
+            _invitationServiceMock.Verify(
+                x => x.GetOrganisationGroupedDdhAndContributor(orgId, 1, 20, "name", "asc"), Times.Once);
         }
 
         [Fact]
@@ -204,7 +220,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var result = _controller.AddContributor(model);
             // Assert
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("NewContributorDetails", redirectToActionResult.ActionName);
+             Assert.Equal("NewContributorEmail", redirectToActionResult.ActionName);
         }
 
         [Fact]
@@ -382,11 +398,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var result = await _controller.NewContributorDetails(model);
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-
-            Assert.Equal(model, viewResult.Model);
-            Assert.False(_controller.ModelState.IsValid);
-            Assert.Contains(nameof(model.EmailAddress), _controller.ModelState.Keys);
+             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+             Assert.Equal("NewContributorHeatNetwork", redirectResult.ActionName);
 
             _userServiceMock.Verify(x => x.IsActiveUserAsync(It.IsAny<string>()), Times.Never);
         }
@@ -461,16 +474,13 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var result = await _controller.NewContributorDetails(model);
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
+             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+             Assert.Equal("NewContributorHeatNetwork", redirectResult.ActionName);
 
-            Assert.Equal(model, viewResult.Model);
-            Assert.False(_controller.ModelState.IsValid);
-
-            _sessionHelperMock.Verify(x => x.SaveToSession(
-                It.IsAny<HttpContext>(),
-                It.IsAny<string>(),
-                It.IsAny<NewContributorDetailsViewModel>()),
-                Times.Never);
+             _sessionHelperMock.Verify(x => x.SaveToSession(
+                 It.IsAny<HttpContext>(),
+                 SessionKeys.NewContributorDetailsViewModelSessionKey,
+                 model), Times.Once);
         }
 
         [Fact]

@@ -19,14 +19,21 @@
                     {
                         Key = "First name",
                         Value = Model.FirstName,
-                        ChangeLink = null,
+                        ChangeLink = Model.InviteForFirstTime ? Url.Action("NewContributorDetails", "Contributors") : null,
                         ChangeLinkText = "Change"
                     },
                     new ReviewItem
                     {
                         Key = "Last name",
                         Value = Model.LastName,
-                        ChangeLink = null,
+                        ChangeLink = Model.InviteForFirstTime ? Url.Action("NewContributorDetails", "Contributors") : null,
+                        ChangeLinkText = "Change"
+                    },
+                    new ReviewItem
+                    {
+                        Key = "Job title",
+                        Value = Model.JobTitle,
+                        ChangeLink = Model.InviteForFirstTime ? Url.Action("NewContributorDetails", "Contributors") : null,
                         ChangeLinkText = "Change"
                     },
                     new ReviewItem
@@ -68,6 +75,42 @@
             }
         }
     };
+
+    if (Model.InviteForFirstTime == true)
+    {
+        if (Model.WorkForSameOrganisation == false)
+        {
+            viewModel.Sections[0].Items.AddRange(
+                new ReviewItem
+                        {
+                            Key = "Work for same organisation",
+                            Value = Model.WorkForSameOrganisation == true ? "Yes" : "No",
+                            ChangeLink = Url.Action("SameOrganisation"),
+                            ChangeLinkText = "Change"
+                        },
+                new ReviewItem
+                        {
+                            Key = "Their organisation name",
+                            Value = Model.WorkingOrganisationName,
+                            ChangeLink = Url.Action("SameOrganisation"),
+                            ChangeLinkText = "Change"
+                        });
+        }
+        else if (Model.WorkForSameOrganisation == true)
+        {
+            viewModel.Sections[0].Items.AddRange(
+
+                new ReviewItem
+                        {
+                            Key = "Work for same organisation",
+                            Value = Model.WorkForSameOrganisation == true ? "Yes" : "No",
+                            ChangeLink = Url.Action("SameOrganisation"),
+                            ChangeLinkText = "Change"
+                        }
+            );
+        }
+    }
+
     var hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
     var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
     {

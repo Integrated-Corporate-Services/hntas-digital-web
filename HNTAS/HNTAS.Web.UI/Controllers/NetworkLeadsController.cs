@@ -36,6 +36,7 @@ namespace HNTAS.Web.UI.Controllers
                 Name = networkLead.FullName,
                 EmailAddress = networkLead.Email,
                 Status = networkLead.Status.ToString(),
+                OrganisationName = networkLead.InvitedOrgName ?? ViewBag.OrganisationName,
                 IsCurrentUser = false
             }).ToList();
             var model = new ManageLeadsModel { NetworkLeads = networkLeadsToDisplay };
@@ -67,11 +68,13 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SaveLeadEmailAsync(InviteLeadViewModel model)
+        public async Task<IActionResult> SaveLeadEmail(InviteLeadViewModel model)
         {
+            this.ShowBackButton(nameof(ManageLeads));
+
             if (!ModelState.IsValid)
             {
-                this.ShowBackButton(nameof(ManageLeads));
+                
                 return View(nameof(InviteLeadByEmail), model);
             }
 
@@ -85,10 +88,11 @@ namespace HNTAS.Web.UI.Controllers
                 ModelState.AddModelError("EmailAddress", "This user cannot be added as a Network Manager");
                 return View(nameof(InviteLeadByEmail), model);
             }
-            else if (existingUser != null && existingUser.Roles.Contains(UserRole.NetworkManager) && existingUser.ContributingOrganisations!.Contains(orgId!))
+            else if (existingUser != null && existingUser.ContributingOrganisations?.Contains(orgId!) == true)
             {
-                //check if the user is already a network lead for this organisation
-                ModelState.AddModelError("EmailAddress", "This user is already a Network Manager for this organisation");
+                ModelState.AddModelError(
+                    "EmailAddress","This user cannot be added as a Network Manager");
+
                 return View(nameof(InviteLeadByEmail), model);
             }
             else if (existingUser != null)
@@ -105,7 +109,7 @@ namespace HNTAS.Web.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> NewLeadAlreadyExistsAsync()
+        public async Task<IActionResult> NewLeadAlreadyExists()
         {
             // Retrieve existing profile match details from session/database lookup
             var emailModel = _sessionHelper.GetFromSession<InviteLeadViewModel>(HttpContext, SessionKeys.NewLeadInviteEmailViewModelSessionKey);
@@ -126,7 +130,8 @@ namespace HNTAS.Web.UI.Controllers
                 FirstName = existingUser?.FirstName,
                 LastName = existingUser?.LastName,
                 EmailAddress = existingUser?.EmailId,
-                JobTitle = existingUser?.JobTitle
+                JobTitle = existingUser?.JobTitle,
+                WorkingOrgName = existingUser.WorkingOrgName
             };
 
             this.ShowBackButton(nameof(InviteLeadByEmail));
@@ -136,7 +141,7 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SaveNewLeadAlreadyExistsAsync(NewLeadAlreadyExistsViewModel model)
+        public async Task<IActionResult> SaveNewLeadAlreadyExists(NewLeadAlreadyExistsViewModel model)
         {
             // Repopulate metadata for redisplay if validation fails
             model.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
@@ -150,9 +155,10 @@ namespace HNTAS.Web.UI.Controllers
                 model.LastName = existingUser?.LastName;
                 model.EmailAddress = existingUser?.EmailId;
                 model.JobTitle = existingUser?.JobTitle;
+                model.WorkingOrgName = existingUser.WorkingOrgName;
 
                 this.ShowBackButton(nameof(InviteLeadByEmail));
-                return View(nameof(NewLeadAlreadyExistsAsync), model);
+                return View(nameof(NewLeadAlreadyExists), model);
             }
 
             if (model.IsCorrectPerson == true)
@@ -166,6 +172,7 @@ namespace HNTAS.Web.UI.Controllers
                     FirstName = existingUser?.FirstName,
                     LastName = existingUser?.LastName,
                     JobTitle = existingUser?.JobTitle,
+                    WorkingOrgName = existingUser?.WorkingOrgName,
                     InviteForFirstTime = false
                 };
 
@@ -185,6 +192,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult NewLeadDetails()
         {
+            this.ShowBackButton(nameof(InviteLeadByEmail));
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
             var model = _sessionHelper.GetFromSession<NewLeadDetailsViewModel>(HttpContext, SessionKeys.NewLeadDetailsViewModelSessionKey) ?? new NewLeadDetailsViewModel();
             return View(model);
@@ -194,7 +202,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewLeadDetails(NewLeadDetailsViewModel model)
         {
-            this.ShowBackButton(nameof(ManageLeads) );
+            this.ShowBackButton(nameof(InviteLeadByEmail) );
 
             if (!ModelState.IsValid)
             {
@@ -224,19 +232,20 @@ namespace HNTAS.Web.UI.Controllers
                 HttpContext,
                 SessionKeys.SameOrganisationViewModelSessionKey) ?? new SameOrganisationViewModel();
 
-            this.ShowBackButton(nameof(NewLeadAlreadyExistsAsync));
+            var newleadDetails = _sessionHelper.GetFromSession<NewLeadDetailsViewModel>(HttpContext, SessionKeys.NewLeadDetailsViewModelSessionKey);
+
+            var backAction = newleadDetails.InviteForFirstTime ? nameof(NewLeadDetails) : nameof(NewLeadAlreadyExists);
+
+            this.ShowBackButton(backAction);
 
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SaveSameOrganisationAsync(SameOrganisationViewModel model)
+        public async Task<IActionResult> SaveSameOrganisation(SameOrganisationViewModel model)
         {
-            ModelState.Clear();
-
-            if (model.WorksForSameOrganisation == false &&
-                string.IsNullOrWhiteSpace(model.OrganisationName))
+            if (model.WorksForSameOrganisation == false && string.IsNullOrWhiteSpace(model.OrganisationName))
             {
                 ModelState.AddModelError(
                     nameof(model.OrganisationName),
@@ -245,7 +254,12 @@ namespace HNTAS.Web.UI.Controllers
 
             if (!ModelState.IsValid)
             {
-                this.ShowBackButton(nameof(NewLeadAlreadyExistsAsync));
+                var newleadDetails = _sessionHelper.GetFromSession<NewLeadDetailsViewModel>(HttpContext, SessionKeys.NewLeadDetailsViewModelSessionKey);
+
+                var backAction = newleadDetails?.InviteForFirstTime == true ? nameof(NewLeadDetails) : nameof(NewLeadAlreadyExists);
+
+                this.ShowBackButton(backAction);
+
                 return View(nameof(SameOrganisation), model);
             }
 
@@ -266,14 +280,14 @@ namespace HNTAS.Web.UI.Controllers
                   HttpContext,
                   SessionKeys.NewLeadDetailsViewModelSessionKey);
 
-            if (leadDetails?.InviteForFirstTime == true)
-            {
-                this.ShowBackButton(nameof(SameOrganisation));
-            }
-            else
-            {
-                this.ShowBackButton("NewLeadAlreadyExists");
-            }
+            //if (leadDetails?.InviteForFirstTime == true)
+            //{
+            //    this.ShowBackButton(nameof(SameOrganisation));
+            //}
+            //else
+            //{
+            //    this.ShowBackButton("NewLeadAlreadyExists");
+            //}
 
             return View(CreateCYAModel());
         }
@@ -290,8 +304,8 @@ namespace HNTAS.Web.UI.Controllers
                 HttpContext,
                 SessionKeys.NewLeadDetailsViewModelSessionKey);
 
-                this.ShowBackButton(leadDetails?.InviteForFirstTime == true 
-                    ? nameof(SameOrganisation) : "NewLeadAlreadyExists");
+                //this.ShowBackButton(leadDetails?.InviteForFirstTime == true 
+                //    ? nameof(SameOrganisation) : "NewLeadAlreadyExists");
 
                 return View(model);
             }
@@ -327,9 +341,9 @@ namespace HNTAS.Web.UI.Controllers
                             contributorRoles: new List<ContributorRole> { ContributorRole.NetworkManager },
                             status: InvitationStatus.Invited,
                             jobTitle: leadDetails.JobTitle,
-                            invitedOrgName: model.WorkingOrganisationName
+                            invitedOrgName: leadDetails.InviteForFirstTime ? model.WorkingOrganisationName : leadDetails.WorkingOrgName
                         )
-                    );
+                    ); ;
 
                 if (string.IsNullOrWhiteSpace(invitationId))
                 {
