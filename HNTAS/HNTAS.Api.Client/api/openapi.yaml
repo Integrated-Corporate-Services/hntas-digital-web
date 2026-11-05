@@ -9627,8 +9627,12 @@ components:
         sortBy: sortBy
         page: 0
         userId: userId
+        orgId: orgId
       properties:
         userId:
+          nullable: true
+          type: string
+        orgId:
           nullable: true
           type: string
         sortBy:
@@ -9709,8 +9713,11 @@ components:
       example:
         notificationHistoryCount: 0
         lastVisitedAt: 2000-01-23T04:56:07.000+00:00
-      nullable: true
+        notificationOrgId: notificationOrgId
       properties:
+        notificationOrgId:
+          nullable: true
+          type: string
         notificationHistoryCount:
           format: int32
           type: integer
@@ -10945,8 +10952,12 @@ components:
         firstName: firstName
         createdAt: 2000-01-23T04:56:07.000+00:00
         notificationStats:
-          notificationHistoryCount: 0
+        - notificationHistoryCount: 0
           lastVisitedAt: 2000-01-23T04:56:07.000+00:00
+          notificationOrgId: notificationOrgId
+        - notificationHistoryCount: 0
+          lastVisitedAt: 2000-01-23T04:56:07.000+00:00
+          notificationOrgId: notificationOrgId
         id: id
         activeContributingOrgId: activeContributingOrgId
         workingOrgName: workingOrgName
@@ -11007,7 +11018,10 @@ components:
           nullable: true
           type: string
         notificationStats:
-          $ref: "#/components/schemas/NotificationStats"
+          items:
+            $ref: "#/components/schemas/NotificationStats"
+          nullable: true
+          type: array
       type: object
     UserDetailsResponse:
       example:
