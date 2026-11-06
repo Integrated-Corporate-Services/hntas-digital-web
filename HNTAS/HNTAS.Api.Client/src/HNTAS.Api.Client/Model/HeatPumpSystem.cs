@@ -34,12 +34,12 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="HeatPumpSystem" /> class.
         /// </summary>
         /// <param name="maximumHeatOutput">maximumHeatOutput</param>
-        /// <param name="fuelOrHeatSource">fuelOrHeatSource</param>
+        /// <param name="fuel">fuel</param>
         [JsonConstructor]
-        public HeatPumpSystem(Option<int?> maximumHeatOutput = default, Option<int?> fuelOrHeatSource = default)
+        public HeatPumpSystem(Option<int?> maximumHeatOutput = default, Option<int?> fuel = default)
         {
             MaximumHeatOutputOption = maximumHeatOutput;
-            FuelOrHeatSourceOption = fuelOrHeatSource;
+            FuelOption = fuel;
             OnCreated();
         }
 
@@ -59,17 +59,17 @@ namespace HNTAS.Api.Client.Model
         public int? MaximumHeatOutput { get { return this.MaximumHeatOutputOption; } set { this.MaximumHeatOutputOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of FuelOrHeatSource
+        /// Used to track the state of Fuel
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<int?> FuelOrHeatSourceOption { get; private set; }
+        public Option<int?> FuelOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets FuelOrHeatSource
+        /// Gets or Sets Fuel
         /// </summary>
-        [JsonPropertyName("fuelOrHeatSource")]
-        public int? FuelOrHeatSource { get { return this.FuelOrHeatSourceOption; } set { this.FuelOrHeatSourceOption = new(value); } }
+        [JsonPropertyName("fuel")]
+        public int? Fuel { get { return this.FuelOption; } set { this.FuelOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -80,7 +80,7 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class HeatPumpSystem {\n");
             sb.Append("  MaximumHeatOutput: ").Append(MaximumHeatOutput).Append("\n");
-            sb.Append("  FuelOrHeatSource: ").Append(FuelOrHeatSource).Append("\n");
+            sb.Append("  Fuel: ").Append(Fuel).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -119,7 +119,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<int?> maximumHeatOutput = default;
-            Option<int?> fuelOrHeatSource = default;
+            Option<int?> fuel = default;
 
             while (utf8JsonReader.Read())
             {
@@ -139,8 +139,8 @@ namespace HNTAS.Api.Client.Model
                         case "maximumHeatOutput":
                             maximumHeatOutput = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
-                        case "fuelOrHeatSource":
-                            fuelOrHeatSource = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                        case "fuel":
+                            fuel = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
                         default:
                             break;
@@ -148,7 +148,7 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            return new HeatPumpSystem(maximumHeatOutput, fuelOrHeatSource);
+            return new HeatPumpSystem(maximumHeatOutput, fuel);
         }
 
         /// <summary>
@@ -181,11 +181,11 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("maximumHeatOutput");
 
-            if (heatPumpSystem.FuelOrHeatSourceOption.IsSet)
-                if (heatPumpSystem.FuelOrHeatSourceOption.Value != null)
-                    writer.WriteNumber("fuelOrHeatSource", heatPumpSystem.FuelOrHeatSourceOption.Value!.Value);
+            if (heatPumpSystem.FuelOption.IsSet)
+                if (heatPumpSystem.FuelOption.Value != null)
+                    writer.WriteNumber("fuel", heatPumpSystem.FuelOption.Value!.Value);
                 else
-                    writer.WriteNull("fuelOrHeatSource");
+                    writer.WriteNull("fuel");
         }
     }
 }
