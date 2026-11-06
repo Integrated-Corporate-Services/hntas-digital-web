@@ -9,18 +9,18 @@ namespace HNTAS.Web.UI.Models.Address
     {
         // Initialize all values with a default value to avoid CS8618
         [Required(ErrorMessage = "Enter the street address")]
-        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Street address must not include < or >")]
+        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Enter a street address that does not include < or >")]
         public string? StreetAddress { get; set; }
 
         [Required(ErrorMessage = "Enter the town or city")]
-        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Town or city must not include < or >")]
+        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Enter a town or city that does not include < or >")]
         public string? TownOrCity { get; set; }
 
         //[Required(ErrorMessage = "Enter the postcode")]
         //[RegularExpression(@"^[^<>]*$", ErrorMessage = "Postal Code must not include < or >")]
         public string? Postalcode { get; set; }
 
-        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Country must not include < or >")]
+        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Enter a country that does not include < or >")]
         public string? Country { get; set; }
 
         public string Fulladdress { get; set; } = string.Empty;

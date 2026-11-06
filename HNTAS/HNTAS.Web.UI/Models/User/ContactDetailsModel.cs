@@ -12,7 +12,7 @@ namespace HNTAS.Web.UI.Models.User
         private string? _mobileNumber;
 
         [Required(ErrorMessage = "Enter your first name")]
-        [RegularExpression(@"^[a-zA-Z0-9\s\.\,\:\'\&\-]+$", ErrorMessage = "Enter a valid first name using letters, numbers or common punctuation only")]
+        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Enter a first name that does not include < or >")]
         [MaxLength(50, ErrorMessage = "First name cannot exceed 50 characters")]
         public string? FirstName
         {
@@ -21,7 +21,7 @@ namespace HNTAS.Web.UI.Models.User
         }
 
         [Required(ErrorMessage = "Enter your last name")]
-        [RegularExpression(@"^[a-zA-Z0-9\s\.\,\:\'\&\-]+$", ErrorMessage = "Enter a valid last name using letters, numbers or common punctuation only")]
+        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Enter a last name that does not include < or >")]
         [MaxLength(50, ErrorMessage = "Last name cannot exceed 50 characters")]
         public string? LastName
         {
