@@ -26,7 +26,7 @@ namespace HNTAS.Web.UI.Models
             set => _heatNetworkName = value?.Trim();
         }
 
-        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Additional description must not include < or >")]
+        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Enter an additional description that does not include < or >")]
         public string? AdditionalDescription
         {
             get => _additionalDescription;
