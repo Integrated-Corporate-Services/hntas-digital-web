@@ -135,6 +135,7 @@ docs/models/NotificationHistoryData.md
 docs/models/NotificationHistoryRequest.md
 docs/models/NotificationHistoryResponse.md
 docs/models/NotificationStats.md
+docs/models/NullableOfContributorRole.md
 docs/models/NullableOfEnergyCentreType.md
 docs/models/NullableOfHeatNetworkType.md
 docs/models/NullableOfMilestone.md
@@ -350,6 +351,7 @@ src/HNTAS.Api.Client/Model/NotificationHistoryData.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryRequest.cs
 src/HNTAS.Api.Client/Model/NotificationHistoryResponse.cs
 src/HNTAS.Api.Client/Model/NotificationStats.cs
+src/HNTAS.Api.Client/Model/NullableOfContributorRole.cs
 src/HNTAS.Api.Client/Model/NullableOfEnergyCentreType.cs
 src/HNTAS.Api.Client/Model/NullableOfHeatNetworkType.cs
 src/HNTAS.Api.Client/Model/NullableOfMilestone.cs
