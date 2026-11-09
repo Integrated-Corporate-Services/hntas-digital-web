@@ -1,0 +1,146 @@
+﻿@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Models.EcPlantData
+@model EcPlantSummaryViewModel
+@{
+    ViewData["Title"] = "Heat network element summary";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+        <h1 class="govuk-heading-l">Energy centre plant data summary</h1>
+        <div class="govuk-hint">
+            You have told us you have the following energy centre plant information:
+        </div>        
+            @if (Model.ChpInformationSummaryList != null && Model.ChpInformationSummaryList.Count > 0)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">
+                            CHP information
+                        </h2>                        
+                    </div>
+
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            @for (var i = 0; i < Model.ChpInformationSummaryList.Count; i++)
+                            {
+                                var item = Model.ChpInformationSummaryList[i];
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Combined heat and power systems @(i + 1)
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul>
+                                            <li>@item.MaximumHeatOutput</li>
+                                            <li>@item.MaximumElectricOutput</li>
+                                            <li>@item.FuelOrHeatSourceValue</li>
+                                            <li>@item.OperationalModeValue</li>
+
+                                        </ul>
+                                    </dd>
+                                </div>
+                            }
+                        </dl>
+                    </div>
+
+                   
+                </div>
+            }
+
+            @if (Model.HeatPumpInformationSummaryList != null && Model.HeatPumpInformationSummaryList.Count > 0)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">
+                            Heat Pump information
+                        </h2>                        
+                    </div>
+
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            @for (var i = 0; i < Model.HeatPumpInformationSummaryList.Count; i++)
+                            {
+                                var item = Model.HeatPumpInformationSummaryList[i];
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Heat Pump systems @(i + 1)
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul>
+                                            <li>@item.MaximumHeatOutput</li>
+                                            <li>@item.FuelOrHeatSourceValue</li>
+                                        </ul>
+                                    </dd>
+                                </div>
+                            }
+                        </dl>
+                    </div>
+                </div>
+            }
+
+            @if (Model.HighHeatRecoveryInformationSummaryList != null && Model.HighHeatRecoveryInformationSummaryList.Count > 0)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">
+                            High Heat Recovery information
+                        </h2>                        
+                    </div>
+
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            @for (var i = 0; i < Model.HighHeatRecoveryInformationSummaryList.Count; i++)
+                            {
+                                var item = Model.HighHeatRecoveryInformationSummaryList[i];
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        High Heat Recovery systems @(i + 1)
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul>
+                                            <li>@item.MaximumHeatOutput</li>
+                                            <li>@item.FuelOrHeatSourceValue</li>
+                                        </ul>
+                                    </dd>
+                                </div>
+                            }
+                        </dl>
+                    </div>
+                </div>
+            }
+
+            @if (Model.BoilerPlantInformationSummaryList != null && Model.BoilerPlantInformationSummaryList.Count > 0)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">
+                            Boiler Plant information
+                        </h2>                        
+                    </div>
+
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            @for (var i = 0; i < Model.BoilerPlantInformationSummaryList.Count; i++)
+                            {
+                                var item = Model.BoilerPlantInformationSummaryList[i];
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Boiler Plant systems @(i + 1)
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul>
+                                            <li>@item.MaximumHeatOutput</li>
+                                            <li>@item.FuelOrHeatSourceValue</li>
+                                        </ul>
+                                    </dd>
+                                </div>
+                            }
+                        </dl>
+                    </div>
+                </div>
+                }
+    </div>
+</div>
+
+

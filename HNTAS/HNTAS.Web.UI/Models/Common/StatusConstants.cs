@@ -8,5 +8,6 @@
         public const string InProgress = "In Progress";
         public const string ReadyToStart = "Ready to start";
         public const string Incomplete = "Incomplete";
+        public const string Complete = "Complete";
     }
 }

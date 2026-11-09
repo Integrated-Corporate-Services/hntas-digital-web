@@ -1,0 +1,74 @@
+﻿@using HNTAS.Web.UI.Models.EcPlantData
+@model HighHeatRecoveryInformationViewModel
+@{
+    ViewData["Title"] = "Provide the number of high grade heat recovery sources";
+    var highHeatRecoveryInformationListCount = Model.HighHeatRecoveryInformationList?.Count ?? 0;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <form class="form" asp-action="HighHeatRecoveryInformation" method="post" novalidate>
+            <span class="govuk-caption-l">@ViewBag.HnId , @ViewBag.HnName</span>
+            <h1 class="govuk-heading-l">Provide the number of high grade heat recovery sources</h1>
+
+            @for (int i = 0; i < highHeatRecoveryInformationListCount; i++)
+            {
+                var hasNumberOfMaximumHeatOutputError = ViewData.ModelState[$"highheatrecoveryinformationlist[{i}].maximumheatoutput"]?.Errors.Count > 0;
+                var hasFuelOrHeatSourceError = ViewData.ModelState[$"highheatrecoveryinformationlist[{i}].fuelorheatsource"]?.Errors.Count > 0;
+
+                var highHeatRecoveryInfo = Model.HighHeatRecoveryInformationList[i];
+                <div class="govuk-!-margin-top-6">
+                    <h2 class="govuk-heading-m">Heat recovery source @(i + 1)</h2>
+                    <div class="govuk-grid-row hntas-fields-row">
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" asp-for="HighHeatRecoveryInformationList[i].MaximumHeatOutput">
+                                    Maximum heat output (kWth)
+                                </label>
+                                @if (hasNumberOfMaximumHeatOutputError)
+                                {
+                                    <p id="maximumheatoutput-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span>
+                                        @Html.ValidationMessageFor(m => m.HighHeatRecoveryInformationList[i].MaximumHeatOutput)
+                                    </p>
+                                }
+                                <input class="govuk-input govuk-input--width-5 @(hasNumberOfMaximumHeatOutputError ? "govuk-input--error" : "")" id="@($"highheatrecoveryinformationlist[{i}].maximumheatoutput")" asp-for="HighHeatRecoveryInformationList[i].MaximumHeatOutput" type="number">
+                            </div>
+                        </div>
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" asp-for="HighHeatRecoveryInformationList[i].FuelOrHeatSource">
+                                    Fuel or heat source
+                                </label>
+                                @if (hasFuelOrHeatSourceError)
+                                {
+                                    <p id="fuelorheatsource-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span>
+                                        @Html.ValidationMessageFor(m => m.HighHeatRecoveryInformationList[i].FuelOrHeatSource)
+                                    </p>
+                                }
+                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"highheatrecoveryinformationlist[{i}].fuelorheatsource")" asp-for="HighHeatRecoveryInformationList[i].FuelOrHeatSource">
+                                    <option value="" selected="">Select a source</option>
+                                    @foreach (var heatRecoverySource in ViewBag.HeatRecoverySources)
+                                    {
+                                        <option value="@heatRecoverySource.Ident">@heatRecoverySource.HeatRecoverySource</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (highHeatRecoveryInformationListCount > 1 && i < highHeatRecoveryInformationListCount - 1)
+                {
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                }
+            }
+
+            <div class="govuk-!-margin-top-6">
+                <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

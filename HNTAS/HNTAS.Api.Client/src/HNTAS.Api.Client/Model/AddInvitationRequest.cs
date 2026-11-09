@@ -39,11 +39,13 @@ namespace HNTAS.Api.Client.Model
         /// <param name="status">status</param>
         /// <param name="hnId">hnId</param>
         /// <param name="orgId">orgId</param>
+        /// <param name="invitedOrgName">invitedOrgName</param>
         /// <param name="contributorRoles">contributorRoles</param>
         /// <param name="replacedUserId">replacedUserId</param>
         /// <param name="rolesToReplace">rolesToReplace</param>
+        /// <param name="jobTitle">jobTitle</param>
         [JsonConstructor]
-        public AddInvitationRequest(string emailAddress, string firstName, string lastName, InvitationStatus status, Option<string?> hnId = default, Option<string?> orgId = default, Option<List<ContributorRole>?> contributorRoles = default, Option<string?> replacedUserId = default, Option<List<ContributorRole>?> rolesToReplace = default)
+        public AddInvitationRequest(string emailAddress, string firstName, string lastName, InvitationStatus status, Option<string?> hnId = default, Option<string?> orgId = default, Option<string?> invitedOrgName = default, Option<List<ContributorRole>?> contributorRoles = default, Option<string?> replacedUserId = default, Option<List<ContributorRole>?> rolesToReplace = default, Option<string?> jobTitle = default)
         {
             EmailAddress = emailAddress;
             FirstName = firstName;
@@ -51,9 +53,11 @@ namespace HNTAS.Api.Client.Model
             Status = status;
             HnIdOption = hnId;
             OrgIdOption = orgId;
+            InvitedOrgNameOption = invitedOrgName;
             ContributorRolesOption = contributorRoles;
             ReplacedUserIdOption = replacedUserId;
             RolesToReplaceOption = rolesToReplace;
+            JobTitleOption = jobTitle;
             OnCreated();
         }
 
@@ -110,6 +114,19 @@ namespace HNTAS.Api.Client.Model
         public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of InvitedOrgName
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> InvitedOrgNameOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets InvitedOrgName
+        /// </summary>
+        [JsonPropertyName("invitedOrgName")]
+        public string? InvitedOrgName { get { return this.InvitedOrgNameOption; } set { this.InvitedOrgNameOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of ContributorRoles
         /// </summary>
         [JsonIgnore]
@@ -149,6 +166,19 @@ namespace HNTAS.Api.Client.Model
         public List<ContributorRole>? RolesToReplace { get { return this.RolesToReplaceOption; } set { this.RolesToReplaceOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of JobTitle
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> JobTitleOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets JobTitle
+        /// </summary>
+        [JsonPropertyName("jobTitle")]
+        public string? JobTitle { get { return this.JobTitleOption; } set { this.JobTitleOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -162,9 +192,11 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  HnId: ").Append(HnId).Append("\n");
             sb.Append("  OrgId: ").Append(OrgId).Append("\n");
+            sb.Append("  InvitedOrgName: ").Append(InvitedOrgName).Append("\n");
             sb.Append("  ContributorRoles: ").Append(ContributorRoles).Append("\n");
             sb.Append("  ReplacedUserId: ").Append(ReplacedUserId).Append("\n");
             sb.Append("  RolesToReplace: ").Append(RolesToReplace).Append("\n");
+            sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -208,9 +240,11 @@ namespace HNTAS.Api.Client.Model
             Option<InvitationStatus?> status = default;
             Option<string?> hnId = default;
             Option<string?> orgId = default;
+            Option<string?> invitedOrgName = default;
             Option<List<ContributorRole>?> contributorRoles = default;
             Option<string?> replacedUserId = default;
             Option<List<ContributorRole>?> rolesToReplace = default;
+            Option<string?> jobTitle = default;
 
             while (utf8JsonReader.Read())
             {
@@ -247,6 +281,9 @@ namespace HNTAS.Api.Client.Model
                         case "orgId":
                             orgId = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "invitedOrgName":
+                            invitedOrgName = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         case "contributorRoles":
                             contributorRoles = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
@@ -255,6 +292,9 @@ namespace HNTAS.Api.Client.Model
                             break;
                         case "rolesToReplace":
                             rolesToReplace = new Option<List<ContributorRole>?>(JsonSerializer.Deserialize<List<ContributorRole>>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "jobTitle":
+                            jobTitle = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         default:
                             break;
@@ -286,7 +326,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class AddInvitationRequest.");
 
-            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, status.Value!.Value!, hnId, orgId, contributorRoles, replacedUserId, rolesToReplace);
+            return new AddInvitationRequest(emailAddress.Value!, firstName.Value!, lastName.Value!, status.Value!.Value!, hnId, orgId, invitedOrgName, contributorRoles, replacedUserId, rolesToReplace, jobTitle);
         }
 
         /// <summary>
@@ -343,6 +383,12 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("orgId");
 
+            if (addInvitationRequest.InvitedOrgNameOption.IsSet)
+                if (addInvitationRequest.InvitedOrgNameOption.Value != null)
+                    writer.WriteString("invitedOrgName", addInvitationRequest.InvitedOrgName);
+                else
+                    writer.WriteNull("invitedOrgName");
+
             if (addInvitationRequest.ContributorRolesOption.IsSet)
                 if (addInvitationRequest.ContributorRolesOption.Value != null)
                 {
@@ -365,6 +411,11 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("rolesToReplace");
+            if (addInvitationRequest.JobTitleOption.IsSet)
+                if (addInvitationRequest.JobTitleOption.Value != null)
+                    writer.WriteString("jobTitle", addInvitationRequest.JobTitle);
+                else
+                    writer.WriteNull("jobTitle");
         }
     }
 }

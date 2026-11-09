@@ -80,7 +80,7 @@
         public const string EnergyCentreDetailsModelSessionKey = "EnergyCentreDetailsModelSessionKey";
         public const string SelectedElementsSessionKey = "SelectedElements";
 
-        public const string NetworkElementsViewModelSessionKey = "NetworkElementsViewModelSessionKey";
+        //public const string NetworkElementsViewModelSessionKey = "NetworkElementsViewModelSessionKey";
         public const string NetworkDetailsUploadSessionKey = "NetworkDetailsUploadSessionKey";
         public const string ElementSoaViewModelSessionKey = "ElementSoaViewModelSessionKey";
         public const string ElementSoaUploadViewModelSessionKey = "ElementSoaUploadViewModelSessionKey";
@@ -100,6 +100,8 @@
         public const string TraceAssessmentRoutingSessionKey = "TraceAssessmentRoutingSessionKey";
         public const string AssessorDetailsSessionKey = "AssessorDetailsSessionKey";
         public const string NewLeadDetailsViewModelSessionKey = "NewLeadDetailsViewModelSessionKey";
+        public const string NewLeadInviteEmailViewModelSessionKey = "NewLeadInviteEmailViewModelSessionKey";
+
         public const string AssessorElementSelectionOverviewModelSessionKey = "AssessorElementSelectionOverviewModelSessionKey";
         public const string SoaStageOfAssessorOnboarding = "SoaStageOfAssessorOnboarding";
         public const string SoaStageTitleOfAssessorOnboarding = "SoaStageTitleOfAssessorOnboarding";
@@ -116,6 +118,11 @@
 
         public const string HntasJwt = "HNTASJWTKey";
 
+        public const string NetworkElementsViewModelSessionKey = "NetworkElementsViewModelSessionKey";
+        public const string NetworkEcNameViewModelSessionKey = "NetworkEcNameViewModelSessionKey";
+        public const string EcSupplyCheckViewModelSessionKey = "EcSupplyCheckViewModelSessionKey";
+        public const string EcSupplyViewModelSessionKey = "EcSupplyViewModelSessionKey";
+        public const string NetworkBuildStatusSessionKey = "NetworkBuildStatusSessionKey";
         public const string NetworkSupplyTypeModelKey = "NetworkSupplyTypeModelKey";
 
         public const string NetworkConnectionsModelKey = "NetworkConnectionsKey";
@@ -123,5 +130,18 @@
         public const string CommunalBuildingResponsibilityModelKey = "CommunalBuildingResponsibilityKey";
 
         public const string DistrictNetworksResponsibilityModelKey = "DistrictNetworksResponsibilityKey";
+
+        public const string IsCommualNetworkKey = "IsCommualNetworkKey";
+        public const string HasOwnEnergyCentreKey = "HasOwnedEnergyCentreKey";
+
+        public const string EcPlantOptionsViewModelSessionKey = "EcPlantOptionsViewModelSessionKey";
+        public const string ChpInformationViewModelSessionKey = "ChpInformationViewModelSessionKey";
+        public const string HeatPumpInformationViewModelSessionKey = "HeatPumpInformationViewModelSessionKey";
+        public const string HighHeatRecoveryInformationViewModelSessionKey = "HighHeatRecoveryInformationViewModelSessionKey";
+        public const string BoilerPlantInformationViewModelSessionKey = "BoilerPlantInformationViewModelSessionKey";
+
+        public static string SameOrganisationViewModelSessionKey = "SameOrganisationViewModelSessionKey";
+
+        public static string NewContributorEmailViewModelSessionKey = "NewContributorEmailViewModelSessionKey";
     }
 }

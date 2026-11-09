@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **MobileNumber** | **string** |  | [optional] 
 **ContactNumberExtension** | **string** |  | [optional] 
 **OrgId** | **string** |  | [optional] 
+**WorkingOrgName** | **string** |  | [optional] 
 **Roles** | [**List&lt;UserRole&gt;**](UserRole.md) |  | [optional] 
 **Status** | **UserStatus** |  | [optional] 
 **HnRoleMappings** | [**List&lt;HnRoleMapping&gt;**](HnRoleMapping.md) |  | [optional] 

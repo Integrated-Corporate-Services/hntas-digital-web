@@ -59,7 +59,7 @@ namespace HNTAS.Web.UI.Controllers
             var isExistingNetworksFeatureEnabled = bool.TryParse( _configuration["ExistingNetworks:EnableFeature"], out var featureEnabled) && featureEnabled;
 
             ViewBag.IsExistingNetworksFeatureEnabled = isExistingNetworksFeatureEnabled;
-
+            ViewBag.IsAssessorFeatureEnabled = _configuration.GetValue<bool>("AssessorFeature:Enabled");
             UserDetailsResponse user;
 
             try
@@ -276,7 +276,8 @@ namespace HNTAS.Web.UI.Controllers
                 PreferredContactType = user.PreferredContactType == NullableOfPreferredContactType.PreferNotToSay ? PreferredContactType.PreferNotToSay : (user.PreferredContactType == NullableOfPreferredContactType.Mobile ? PreferredContactType.Mobile : PreferredContactType.Landline),
                 ContactNumberExtension = user.ContactNumberExtension,
                 LandlineNumber = user.LandlineNumber,
-                MobileNumber = user.MobileNumber
+                MobileNumber = user.MobileNumber,
+                WorkingOrganisationName =user.WorkingOrgName
             };
             var userModel = new UserModel
             {

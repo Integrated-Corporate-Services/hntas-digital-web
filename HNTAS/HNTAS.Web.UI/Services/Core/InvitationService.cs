@@ -167,5 +167,39 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
         }
+
+        public async Task<PagedResultOfContributorResult> GetOrganisationGroupedDdhAndContributor(
+         string organisationId,
+         int pageNumber = 1,
+         int pageSize = 20,
+         string sortBy = "name",
+         string sortDirection = "asc",
+         CancellationToken cancellationToken = default)
+        {
+            // Pass pagination and sorting parameters down to the generated API client call if supported,
+            // or pass them via query parameters depending on how your auto-generated client is configured.
+            var response = await _invitationsApi.ApiInvitationsOrganisationsOrganisationIdContributorsGetAsync(
+                organisationId,
+                pageNumber: pageNumber,
+                pageSize: pageSize,
+                sortBy: sortBy,
+                sortDirection: sortDirection,
+                cancellationToken: cancellationToken);
+
+            if (response.IsOk)
+            {
+                var pagedResult = response.Ok();
+                return pagedResult ?? new PagedResultOfContributorResult
+                {
+                    Items = new List<ContributorResult>(),
+                    TotalCount = 0,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+
+            _logger.LogError("An unexpected error occurred while fetching contributors for organisation ID: {OrganisationId}", organisationId);
+            throw new Exception($"Failed to retrieve contributors with status code: {response.StatusCode}");
+        }
     }
 }

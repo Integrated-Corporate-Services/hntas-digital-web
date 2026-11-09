@@ -199,7 +199,9 @@ public class HomeController : Controller
         }
         else
         {
-            ViewBag.NavigateUrl = Url.Action("WhatDoYouWantToDo");
+            ViewBag.NavigateUrl = User.Identity?.IsAuthenticated == true
+            ? Url.Action("Index", "Home")
+            : Url.Action("WhatDoYouWantToDo");
         }
 
         return View();

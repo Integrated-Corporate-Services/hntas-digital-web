@@ -19,5 +19,7 @@ namespace HNTAS.Web.UI.Models.User
             get => _jobTitle;
             set => _jobTitle = value?.Trim();
         }
+
+        public string? WorkingOrganisationName { get; set; }
     }
 }

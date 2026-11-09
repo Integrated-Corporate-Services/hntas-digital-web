@@ -5,6 +5,7 @@ All URIs are relative to *https://localhost:7117*
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
 | [**ApiHeatNetworksAddHeatNetworkPost**](HeatNetworksApi.md#apiheatnetworksaddheatnetworkpost) | **POST** /api/HeatNetworks/add-heat-network |  |
+| [**ApiHeatNetworksEnergyCentrePlantDataPut**](HeatNetworksApi.md#apiheatnetworksenergycentreplantdataput) | **PUT** /api/HeatNetworks/energy-centre-plant-data |  |
 | [**ApiHeatNetworksExistingNetworkByUserIdGet**](HeatNetworksApi.md#apiheatnetworksexistingnetworkbyuseridget) | **GET** /api/HeatNetworks/existing-network-by-userId |  |
 | [**ApiHeatNetworksGet**](HeatNetworksApi.md#apiheatnetworksget) | **GET** /api/HeatNetworks |  |
 | [**ApiHeatNetworksHeatNetworkByUserIdPaginatedGet**](HeatNetworksApi.md#apiheatnetworksheatnetworkbyuseridpaginatedget) | **GET** /api/HeatNetworks/heat-network-by-userId-paginated |  |
@@ -48,6 +49,43 @@ All URIs are relative to *https://localhost:7117*
 |-------------|-------------|------------------|
 | **201** | Created |  -  |
 | **400** | Bad Request |  -  |
+| **500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="apiheatnetworksenergycentreplantdataput"></a>
+# **ApiHeatNetworksEnergyCentrePlantDataPut**
+> HeatNetworkResponse ApiHeatNetworksEnergyCentrePlantDataPut (EcPlantDataRequest ecPlantDataRequest)
+
+
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **ecPlantDataRequest** | [**EcPlantDataRequest**](EcPlantDataRequest.md) |  |  |
+
+### Return type
+
+[**HeatNetworkResponse**](HeatNetworkResponse.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, application/*+json
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | Bad Request |  -  |
+| **404** | Not Found |  -  |
 | **500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)

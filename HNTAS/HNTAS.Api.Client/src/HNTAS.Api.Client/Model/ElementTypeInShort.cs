@@ -53,7 +53,12 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Enum CC for value: CC
         /// </summary>
-        CC = 5
+        CC = 5,
+
+        /// <summary>
+        /// Enum NDCC for value: NDCC
+        /// </summary>
+        NDCC = 6
     }
 
     /// <summary>
@@ -83,6 +88,9 @@ namespace HNTAS.Api.Client.Model
             if (value.Equals("CC"))
                 return ElementTypeInShort.CC;
 
+            if (value.Equals("NDCC"))
+                return ElementTypeInShort.NDCC;
+
             throw new NotImplementedException($"Could not convert value to type ElementTypeInShort: '{value}'");
         }
 
@@ -107,6 +115,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("CC"))
                 return ElementTypeInShort.CC;
+
+            if (value.Equals("NDCC"))
+                return ElementTypeInShort.NDCC;
 
             return null;
         }
@@ -133,6 +144,9 @@ namespace HNTAS.Api.Client.Model
 
             if (value == ElementTypeInShort.CC)
                 return "CC";
+
+            if (value == ElementTypeInShort.NDCC)
+                return "NDCC";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
@@ -173,7 +187,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, ElementTypeInShort elementTypeInShort, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(elementTypeInShort.ToString());
+            writer.WriteStringValue(ElementTypeInShortValueConverter.ToJsonValue(elementTypeInShort).ToString());
         }
     }
 
@@ -204,14 +218,14 @@ namespace HNTAS.Api.Client.Model
         }
 
         /// <summary>
-        /// Writes the DateTime to the json writer
+        /// Writes the ElementTypeInShort to the json writer
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="elementTypeInShort"></param>
         /// <param name="options"></param>
         public override void Write(Utf8JsonWriter writer, ElementTypeInShort? elementTypeInShort, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(elementTypeInShort?.ToString() ?? "null");
+            writer.WriteStringValue(elementTypeInShort.HasValue ? ElementTypeInShortValueConverter.ToJsonValue(elementTypeInShort.Value).ToString() : "null");
         }
     }
 }

@@ -21,7 +21,8 @@ Name | Type | Description | Notes
 **CreatedAt** | **DateTimeOffset** |  | [optional] 
 **ContributingOrganisations** | **List&lt;string&gt;** |  | [optional] 
 **ActiveContributingOrgId** | **string** |  | [optional] 
-**NotificationStats** | [**NotificationStats**](NotificationStats.md) |  | [optional] 
+**WorkingOrgName** | **string** |  | [optional] 
+**NotificationStats** | [**List&lt;NotificationStats&gt;**](NotificationStats.md) |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

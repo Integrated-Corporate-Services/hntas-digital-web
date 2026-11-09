@@ -10,9 +10,11 @@ Name | Type | Description | Notes
 **Status** | **InvitationStatus** |  | 
 **HnId** | **string** |  | [optional] 
 **OrgId** | **string** |  | [optional] 
+**InvitedOrgName** | **string** |  | [optional] 
 **ContributorRoles** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | [optional] 
 **ReplacedUserId** | **string** |  | [optional] 
 **RolesToReplace** | [**List&lt;ContributorRole&gt;**](ContributorRole.md) |  | [optional] 
+**JobTitle** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

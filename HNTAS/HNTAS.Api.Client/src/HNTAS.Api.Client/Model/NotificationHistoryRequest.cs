@@ -34,14 +34,16 @@ namespace HNTAS.Api.Client.Model
         /// Initializes a new instance of the <see cref="NotificationHistoryRequest" /> class.
         /// </summary>
         /// <param name="userId">userId</param>
+        /// <param name="orgId">orgId</param>
         /// <param name="sortBy">sortBy</param>
         /// <param name="sortDirection">sortDirection</param>
         /// <param name="page">page</param>
         /// <param name="pageSize">pageSize</param>
         [JsonConstructor]
-        public NotificationHistoryRequest(Option<string?> userId = default, Option<string?> sortBy = default, Option<string?> sortDirection = default, Option<int?> page = default, Option<int?> pageSize = default)
+        public NotificationHistoryRequest(Option<string?> userId = default, Option<string?> orgId = default, Option<string?> sortBy = default, Option<string?> sortDirection = default, Option<int?> page = default, Option<int?> pageSize = default)
         {
             UserIdOption = userId;
+            OrgIdOption = orgId;
             SortByOption = sortBy;
             SortDirectionOption = sortDirection;
             PageOption = page;
@@ -63,6 +65,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("userId")]
         public string? UserId { get { return this.UserIdOption; } set { this.UserIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of OrgId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> OrgIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets OrgId
+        /// </summary>
+        [JsonPropertyName("orgId")]
+        public string? OrgId { get { return this.OrgIdOption; } set { this.OrgIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of SortBy
@@ -125,6 +140,7 @@ namespace HNTAS.Api.Client.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class NotificationHistoryRequest {\n");
             sb.Append("  UserId: ").Append(UserId).Append("\n");
+            sb.Append("  OrgId: ").Append(OrgId).Append("\n");
             sb.Append("  SortBy: ").Append(SortBy).Append("\n");
             sb.Append("  SortDirection: ").Append(SortDirection).Append("\n");
             sb.Append("  Page: ").Append(Page).Append("\n");
@@ -167,6 +183,7 @@ namespace HNTAS.Api.Client.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> userId = default;
+            Option<string?> orgId = default;
             Option<string?> sortBy = default;
             Option<string?> sortDirection = default;
             Option<int?> page = default;
@@ -189,6 +206,9 @@ namespace HNTAS.Api.Client.Model
                     {
                         case "userId":
                             userId = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "orgId":
+                            orgId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "sortBy":
                             sortBy = new Option<string?>(utf8JsonReader.GetString());
@@ -214,7 +234,7 @@ namespace HNTAS.Api.Client.Model
             if (pageSize.IsSet && pageSize.Value == null)
                 throw new ArgumentNullException(nameof(pageSize), "Property is not nullable for class NotificationHistoryRequest.");
 
-            return new NotificationHistoryRequest(userId, sortBy, sortDirection, page, pageSize);
+            return new NotificationHistoryRequest(userId, orgId, sortBy, sortDirection, page, pageSize);
         }
 
         /// <summary>
@@ -246,6 +266,12 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("userId", notificationHistoryRequest.UserId);
                 else
                     writer.WriteNull("userId");
+
+            if (notificationHistoryRequest.OrgIdOption.IsSet)
+                if (notificationHistoryRequest.OrgIdOption.Value != null)
+                    writer.WriteString("orgId", notificationHistoryRequest.OrgId);
+                else
+                    writer.WriteNull("orgId");
 
             if (notificationHistoryRequest.SortByOption.IsSet)
                 if (notificationHistoryRequest.SortByOption.Value != null)

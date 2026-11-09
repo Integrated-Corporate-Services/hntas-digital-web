@@ -164,6 +164,26 @@ namespace HNTAS.Web.UI.Services.Core
                 throw;
             }
         }
+
+        public async Task<HeatNetworkResponse> UpdateEnergyCentrePlantData(EcPlantDataRequest request)
+        {
+            try
+            {
+                var response = await _heatNetworksApi.ApiHeatNetworksEnergyCentrePlantDataPutAsync(request);
+                if (response.IsOk)
+                {
+                    var updatedNetwork = response.Ok();
+                    _logger.LogInformation("Updated energy centre plant data for heat network ID: {HnId}", request.HnId);
+                    return updatedNetwork;
+                }
+                throw new Exception($"Failed to update energy centre plant data for heat network '{request.HnId}' with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating energy centre plant data for heat network ID: {HnId}", request.HnId);
+                throw;
+            }
+        }
         public async Task<List<HeatNetworkResponse>> GetAllHeatNetworks()
         {
             try

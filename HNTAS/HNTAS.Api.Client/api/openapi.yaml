@@ -12,10 +12,13 @@ tags:
 - name: AssignedAssessor
 - name: Audit
 - name: CarbonCalculator
+- name: ChpOperationalModes
 - name: CountriesAndTerritories
 - name: Import
 - name: Feedback
+- name: FuelTypes
 - name: HeatNetworks
+- name: HeatRecoverySources
 - name: Invitations
 - name: NotificationHistory
 - name: Organisations
@@ -703,6 +706,33 @@ paths:
       - Bearer: []
       tags:
       - CarbonCalculator
+  /api/ChpOperationalModes:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/CHPOperationalMode"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/CHPOperationalMode"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/CHPOperationalMode"
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - ChpOperationalModes
   /api/CountriesAndTerritories:
     get:
       responses:
@@ -790,6 +820,33 @@ paths:
           description: OK
       tags:
       - Feedback
+  /api/FuelTypes:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/FuelType"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/FuelType"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/FuelType"
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - FuelTypes
   /api/HeatNetworks:
     get:
       responses:
@@ -1223,6 +1280,60 @@ paths:
       - Bearer: []
       tags:
       - HeatNetworks
+  /api/HeatNetworks/energy-centre-plant-data:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EcPlantDataRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/EcPlantDataRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/HeatNetworkResponse"
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Bad Request
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - HeatNetworks
   /external/heat-networks:
     get:
       responses:
@@ -1335,6 +1446,33 @@ paths:
           description: Bad Request
       tags:
       - HeatNetworks
+  /api/HeatRecoverySources:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatRecovery"
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatRecovery"
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/HeatRecovery"
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - HeatRecoverySources
   /api/Invitations/{id}:
     get:
       parameters:
@@ -3194,6 +3332,7 @@ components:
         firstName: firstName
         lastName: lastName
         hnId: hnId
+        invitedOrgName: invitedOrgName
         emailAddress: emailAddress
         contributorRoles:
         - DesignatedDutyHolder
@@ -3201,6 +3340,7 @@ components:
         rolesToReplace:
         - null
         - null
+        jobTitle: jobTitle
         orgId: orgId
         status: Invited
         replacedUserId: replacedUserId
@@ -3215,6 +3355,9 @@ components:
           nullable: true
           type: string
         orgId:
+          nullable: true
+          type: string
+        invitedOrgName:
           nullable: true
           type: string
         contributorRoles:
@@ -3232,6 +3375,9 @@ components:
             $ref: "#/components/schemas/ContributorRole"
           nullable: true
           type: array
+        jobTitle:
+          nullable: true
+          type: string
       required:
       - emailAddress
       - firstName
@@ -3783,6 +3929,20 @@ components:
           nullable: true
           type: integer
       type: object
+    BoilerPlant:
+      example:
+        maximumHeatOutput: 1
+        fuelOrHeatSource: 2
+      properties:
+        maximumHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
+        fuelOrHeatSource:
+          format: int32
+          nullable: true
+          type: integer
+      type: object
     CarbonCalculatorConfigRequest:
       example:
         defaults:
@@ -4153,6 +4313,47 @@ components:
           nullable: true
           type: integer
       type: object
+    CHPOperationalMode:
+      example:
+        operationalMode: operationalMode
+        chpId: 0
+        ident: ident
+        id: id
+      properties:
+        id:
+          nullable: true
+          type: string
+        chpId:
+          format: int32
+          type: integer
+        ident:
+          type: string
+        operationalMode:
+          type: string
+      type: object
+    CombinedHeatAndPowerSystem:
+      example:
+        operationalMode: operationalMode
+        maximumHeatOutput: 8
+        fuelOrHeatSource: 9
+        maximumElectricOutput: 6
+      properties:
+        maximumElectricOutput:
+          format: int32
+          nullable: true
+          type: integer
+        operationalMode:
+          nullable: true
+          type: string
+        maximumHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
+        fuelOrHeatSource:
+          format: int32
+          nullable: true
+          type: integer
+      type: object
     ConfigDefault:
       example:
         value: ""
@@ -4265,8 +4466,8 @@ components:
       type: object
     ECDetails:
       example:
-        latitude: 0.8008281904610115
-        longitude: 6.027456183070403
+        latitude: 1.4658129805029452
+        longitude: 5.962133916683182
       nullable: true
       properties:
         latitude:
@@ -4278,77 +4479,115 @@ components:
           nullable: true
           type: number
       type: object
+    EcPlantDataRequest:
+      example:
+        elementId: elementId
+        hnId: hnId
+        energyCentrePlantData:
+          heatRecoverySources:
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: fuelOrHeatSource
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: fuelOrHeatSource
+          energyCentreStatus: null
+          boilerPlants:
+          - maximumHeatOutput: 1
+            fuelOrHeatSource: 2
+          - maximumHeatOutput: 1
+            fuelOrHeatSource: 2
+          heatPumpSystems:
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: 3
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: 3
+          combinedHeatAndPowerSystems:
+          - operationalMode: operationalMode
+            maximumHeatOutput: 8
+            fuelOrHeatSource: 9
+            maximumElectricOutput: 6
+          - operationalMode: operationalMode
+            maximumHeatOutput: 8
+            fuelOrHeatSource: 9
+            maximumElectricOutput: 6
+      properties:
+        hnId:
+          nullable: true
+          type: string
+        elementId:
+          nullable: true
+          type: string
+        energyCentrePlantData:
+          $ref: "#/components/schemas/EnergyCentrePlantData"
+      type: object
     Element:
       example:
         elementId: elementId
         soaMilestones:
-        - soaStatuses:
-          - soaStatus: null
-            count: 5
-          - soaStatus: null
-            count: 5
-          soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-          assessorUpdatedBy: assessorUpdatedBy
-          milestoneId: Milestone2
-          soaStatusUpdatedBy: soaStatusUpdatedBy
-          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-          assessors:
-          - firstName: firstName
-            lastName: lastName
-            assessment: assessment
-            email: email
-            status: null
-          - firstName: firstName
-            lastName: lastName
-            assessment: assessment
-            email: email
-            status: null
-        - soaStatuses:
-          - soaStatus: null
-            count: 5
-          - soaStatus: null
-            count: 5
-          soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-          assessorUpdatedBy: assessorUpdatedBy
-          milestoneId: Milestone2
-          soaStatusUpdatedBy: soaStatusUpdatedBy
-          assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-          assessors:
-          - firstName: firstName
-            lastName: lastName
-            assessment: assessment
-            email: email
-            status: null
-          - firstName: firstName
-            lastName: lastName
-            assessment: assessment
-            email: email
-            status: null
-        networkElementInstanceName: networkElementInstanceName
-        elementType: EC
+        - ""
+        - ""
+        buildType: null
+        isSupplyNewBuildings: true
+        elementType: null
+        isMainEnergyCentre: true
+        energyCentrePlantData:
+          heatRecoverySources:
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: fuelOrHeatSource
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: fuelOrHeatSource
+          energyCentreStatus: null
+          boilerPlants:
+          - maximumHeatOutput: 1
+            fuelOrHeatSource: 2
+          - maximumHeatOutput: 1
+            fuelOrHeatSource: 2
+          heatPumpSystems:
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: 3
+          - maximumHeatOutput: 6
+            fuelOrHeatSource: 3
+          combinedHeatAndPowerSystems:
+          - operationalMode: operationalMode
+            maximumHeatOutput: 8
+            fuelOrHeatSource: 9
+            maximumElectricOutput: 6
+          - operationalMode: operationalMode
+            maximumHeatOutput: 8
+            fuelOrHeatSource: 9
+            maximumElectricOutput: 6
+        elementName: elementName
       properties:
         elementId:
           nullable: true
           type: string
-        networkElementInstanceName:
-          nullable: true
-          type: string
         soaMilestones:
-          items:
-            $ref: "#/components/schemas/SoaMilestone"
+          items: {}
           nullable: true
           type: array
+        elementName:
+          nullable: true
+          type: string
+        isMainEnergyCentre:
+          nullable: true
+          type: boolean
+        isSupplyNewBuildings:
+          nullable: true
+          type: boolean
+        energyCentrePlantData:
+          $ref: "#/components/schemas/EnergyCentrePlantData"
         elementType:
           $ref: "#/components/schemas/ElementTypeInShort"
+        buildType:
+          $ref: "#/components/schemas/NetworkBuildStatus"
       type: object
     ElementGroup:
       example:
         soaMilestones:
         - soaStatuses:
           - soaStatus: null
-            count: 5
+            count: 9
           - soaStatus: null
-            count: 5
+            count: 9
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           milestoneId: Milestone2
@@ -4367,9 +4606,9 @@ components:
             status: null
         - soaStatuses:
           - soaStatus: null
-            count: 5
+            count: 9
           - soaStatus: null
-            count: 5
+            count: 9
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           milestoneId: Milestone2
@@ -4390,9 +4629,9 @@ components:
         soaStages:
         - soaStatuses:
           - soaStatus: null
-            count: 4
+            count: 9
           - soaStatus: null
-            count: 4
+            count: 9
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -4411,9 +4650,9 @@ components:
           stageId: Stage1
         - soaStatuses:
           - soaStatus: null
-            count: 4
+            count: 9
           - soaStatus: null
-            count: 4
+            count: 9
           soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
           assessorUpdatedBy: assessorUpdatedBy
           soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -4430,7 +4669,8 @@ components:
             email: email
             status: Active
           stageId: Stage1
-        count: 1
+        buildType: Existing
+        count: 5
         elementType: EC
       properties:
         elementDisplayType:
@@ -4451,6 +4691,8 @@ components:
           type: array
         elementType:
           $ref: "#/components/schemas/ElementTypeInShort"
+        buildType:
+          $ref: "#/components/schemas/NetworkBuildStatus"
       type: object
     ElementGroupDto:
       example:
@@ -4562,9 +4804,9 @@ components:
         hnId: hnId
         soaStatuses:
         - soaStatus: null
-          count: 4
+          count: 9
         - soaStatus: null
-          count: 4
+          count: 9
         elementDisplayName: elementDisplayName
         stage: Stage1
         soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -4606,9 +4848,9 @@ components:
         hnId: hnId
         soaStatuses:
         - soaStatus: null
-          count: 5
+          count: 9
         - soaStatus: null
-          count: 5
+          count: 9
         elementDisplayName: elementDisplayName
         milestone: Milestone2
         soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -4650,6 +4892,7 @@ components:
       - DDN
       - CDN
       - CC
+      - NDCC
       type: string
     Energy:
       example:
@@ -4904,6 +5147,58 @@ components:
         address:
           $ref: "#/components/schemas/Address"
       type: object
+    EnergyCentrePlantData:
+      example:
+        heatRecoverySources:
+        - maximumHeatOutput: 6
+          fuelOrHeatSource: fuelOrHeatSource
+        - maximumHeatOutput: 6
+          fuelOrHeatSource: fuelOrHeatSource
+        energyCentreStatus: null
+        boilerPlants:
+        - maximumHeatOutput: 1
+          fuelOrHeatSource: 2
+        - maximumHeatOutput: 1
+          fuelOrHeatSource: 2
+        heatPumpSystems:
+        - maximumHeatOutput: 6
+          fuelOrHeatSource: 3
+        - maximumHeatOutput: 6
+          fuelOrHeatSource: 3
+        combinedHeatAndPowerSystems:
+        - operationalMode: operationalMode
+          maximumHeatOutput: 8
+          fuelOrHeatSource: 9
+          maximumElectricOutput: 6
+        - operationalMode: operationalMode
+          maximumHeatOutput: 8
+          fuelOrHeatSource: 9
+          maximumElectricOutput: 6
+      nullable: true
+      properties:
+        energyCentreStatus:
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
+        combinedHeatAndPowerSystems:
+          items:
+            $ref: "#/components/schemas/CombinedHeatAndPowerSystem"
+          nullable: true
+          type: array
+        heatPumpSystems:
+          items:
+            $ref: "#/components/schemas/HeatPumpSystem"
+          nullable: true
+          type: array
+        heatRecoverySources:
+          items:
+            $ref: "#/components/schemas/HeatRecoverySource"
+          nullable: true
+          type: array
+        boilerPlants:
+          items:
+            $ref: "#/components/schemas/BoilerPlant"
+          nullable: true
+          type: array
+      type: object
     EnumItemResponse:
       example:
         name: name
@@ -4982,7 +5277,7 @@ components:
                   uploadedAt: 2000-01-23T04:56:07.000+00:00
                   uploadedBy: uploadedBy
                 name: name
-                count: 1
+                count: 5
                 locations:
                 - locations
                 - locations
@@ -5000,7 +5295,7 @@ components:
                   uploadedAt: 2000-01-23T04:56:07.000+00:00
                   uploadedBy: uploadedBy
                 name: name
-                count: 1
+                count: 5
                 locations:
                 - locations
                 - locations
@@ -5045,13 +5340,84 @@ components:
             networkElementStatus: InProgress
             updatedBy: updatedBy
             createdBy: createdBy
+            elements:
+            - elementId: elementId
+              soaMilestones:
+              - ""
+              - ""
+              buildType: null
+              isSupplyNewBuildings: true
+              elementType: null
+              isMainEnergyCentre: true
+              energyCentrePlantData:
+                heatRecoverySources:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                energyCentreStatus: null
+                boilerPlants:
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                heatPumpSystems:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                combinedHeatAndPowerSystems:
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+              elementName: elementName
+            - elementId: elementId
+              soaMilestones:
+              - ""
+              - ""
+              buildType: null
+              isSupplyNewBuildings: true
+              elementType: null
+              isMainEnergyCentre: true
+              energyCentrePlantData:
+                heatRecoverySources:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                energyCentreStatus: null
+                boilerPlants:
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                heatPumpSystems:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                combinedHeatAndPowerSystems:
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+              elementName: elementName
             elementsGroup:
             - soaMilestones:
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5070,9 +5436,9 @@ components:
                   status: null
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5093,9 +5459,9 @@ components:
               soaStages:
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5114,9 +5480,9 @@ components:
                 stageId: Stage1
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5133,14 +5499,15 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
-              count: 1
+              buildType: Existing
+              count: 5
               elementType: EC
             - soaMilestones:
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5159,9 +5526,9 @@ components:
                   status: null
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5182,9 +5549,9 @@ components:
               soaStages:
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5203,9 +5570,9 @@ components:
                 stageId: Stage1
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5222,8 +5589,11 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
-              count: 1
+              buildType: Existing
+              count: 5
               elementType: EC
+            ecPlantDataStatus: null
+            isExistingEnergyCentreSupplyNewBuildings: true
             updatedAt: 2000-01-23T04:56:07.000+00:00
           ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
           meteringAndMonitoringStrategy:
@@ -5239,12 +5609,13 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             createdBy: createdBy
-            status: null
+            status: InProgress
             updatedAt: 2000-01-23T04:56:07.000+00:00
           orgId: orgId
           createdAt: 2000-01-23T04:56:07.000+00:00
           ofgemUserEmailId: ofgemUserEmailId
           additionalDescription: additionalDescription
+          energyCentreType: SuppliesMultipleBuildings
           assessmentPlan:
             createdAt: 2000-01-23T04:56:07.000+00:00
             updatedBy: updatedBy
@@ -5257,8 +5628,8 @@ components:
           id: id
           phase: phase
           ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
           address:
             country: country
             town: town
@@ -5266,28 +5637,30 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
+          noOfResponsibleCommunalBuilding: 0
           heatNetworkConnections:
-            noOfExistingCommunalBuilding: 9
-            noOfExistingNonDomesticBuildings: 2
+            noOfExistingCommunalBuilding: 2
+            noOfExistingNonDomesticBuildings: 7
             noOfNewCommunalBuilding: 1
-            noOfNewHousesOrMaisonettes: 1
-            noOfNonDomesticConsumer: 2
+            noOfNewHousesOrMaisonettes: 6
+            noOfNonDomesticConsumer: 9
             isCommunalBuilding: true
             isOtherDistrictNetwork: true
-            noOfDomesticConsumer: 5
-            noOfExistingHousesOrMaisonettes: 3
+            noOfDomesticConsumer: 7
+            noOfExistingHousesOrMaisonettes: 4
             isDomesticConsumer: true
-            noOfExistingOtherDistrictNetworks: 7
+            noOfExistingOtherDistrictNetworks: 1
             isNonDomesticConsumer: true
-            noOfNewMultiTenantedNonDomestic: 6
-            noOfOtherDistrictNetwork: 7
-            noOfNewOtherDistrictNetworks: 7
-            noOfExistingMultiTenantedNonDomestic: 4
-            noOfCommunalBuilding: 5
-            noOfNewNonDomesticBuildings: 1
+            noOfNewMultiTenantedNonDomestic: 1
+            noOfOtherDistrictNetwork: 3
+            noOfNewOtherDistrictNetworks: 4
+            noOfExistingMultiTenantedNonDomestic: 1
+            noOfCommunalBuilding: 2
+            noOfNewNonDomesticBuildings: 7
           hasAddressAndPostcode: true
           hasOwnEnergyCentre: true
           hnId: hnId
+          networkBuildStatus: Existing
           createdBy: createdBy
           suppliesSixOrMoreUnits: true
           name: name
@@ -5302,6 +5675,7 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
+          noOfResponsibleDistrictNetwork: 6
           heatNetworkType: Unset
         - soa:
             createdAt: 2000-01-23T04:56:07.000+00:00
@@ -5336,7 +5710,7 @@ components:
                   uploadedAt: 2000-01-23T04:56:07.000+00:00
                   uploadedBy: uploadedBy
                 name: name
-                count: 1
+                count: 5
                 locations:
                 - locations
                 - locations
@@ -5354,7 +5728,7 @@ components:
                   uploadedAt: 2000-01-23T04:56:07.000+00:00
                   uploadedBy: uploadedBy
                 name: name
-                count: 1
+                count: 5
                 locations:
                 - locations
                 - locations
@@ -5399,13 +5773,84 @@ components:
             networkElementStatus: InProgress
             updatedBy: updatedBy
             createdBy: createdBy
+            elements:
+            - elementId: elementId
+              soaMilestones:
+              - ""
+              - ""
+              buildType: null
+              isSupplyNewBuildings: true
+              elementType: null
+              isMainEnergyCentre: true
+              energyCentrePlantData:
+                heatRecoverySources:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                energyCentreStatus: null
+                boilerPlants:
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                heatPumpSystems:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                combinedHeatAndPowerSystems:
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+              elementName: elementName
+            - elementId: elementId
+              soaMilestones:
+              - ""
+              - ""
+              buildType: null
+              isSupplyNewBuildings: true
+              elementType: null
+              isMainEnergyCentre: true
+              energyCentrePlantData:
+                heatRecoverySources:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: fuelOrHeatSource
+                energyCentreStatus: null
+                boilerPlants:
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                - maximumHeatOutput: 1
+                  fuelOrHeatSource: 2
+                heatPumpSystems:
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                - maximumHeatOutput: 6
+                  fuelOrHeatSource: 3
+                combinedHeatAndPowerSystems:
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+                - operationalMode: operationalMode
+                  maximumHeatOutput: 8
+                  fuelOrHeatSource: 9
+                  maximumElectricOutput: 6
+              elementName: elementName
             elementsGroup:
             - soaMilestones:
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5424,9 +5869,9 @@ components:
                   status: null
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5447,9 +5892,9 @@ components:
               soaStages:
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5468,9 +5913,9 @@ components:
                 stageId: Stage1
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5487,14 +5932,15 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
-              count: 1
+              buildType: Existing
+              count: 5
               elementType: EC
             - soaMilestones:
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5513,9 +5959,9 @@ components:
                   status: null
               - soaStatuses:
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 - soaStatus: null
-                  count: 5
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 milestoneId: Milestone2
@@ -5536,9 +5982,9 @@ components:
               soaStages:
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5557,9 +6003,9 @@ components:
                 stageId: Stage1
               - soaStatuses:
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 - soaStatus: null
-                  count: 4
+                  count: 9
                 soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
                 assessorUpdatedBy: assessorUpdatedBy
                 soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5576,8 +6022,11 @@ components:
                   email: email
                   status: Active
                 stageId: Stage1
-              count: 1
+              buildType: Existing
+              count: 5
               elementType: EC
+            ecPlantDataStatus: null
+            isExistingEnergyCentreSupplyNewBuildings: true
             updatedAt: 2000-01-23T04:56:07.000+00:00
           ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
           meteringAndMonitoringStrategy:
@@ -5593,12 +6042,13 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             createdBy: createdBy
-            status: null
+            status: InProgress
             updatedAt: 2000-01-23T04:56:07.000+00:00
           orgId: orgId
           createdAt: 2000-01-23T04:56:07.000+00:00
           ofgemUserEmailId: ofgemUserEmailId
           additionalDescription: additionalDescription
+          energyCentreType: SuppliesMultipleBuildings
           assessmentPlan:
             createdAt: 2000-01-23T04:56:07.000+00:00
             updatedBy: updatedBy
@@ -5611,8 +6061,8 @@ components:
           id: id
           phase: phase
           ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
           address:
             country: country
             town: town
@@ -5620,28 +6070,30 @@ components:
             postcode: postcode
             addressLine1: addressLine1
             addressLine2: addressLine2
+          noOfResponsibleCommunalBuilding: 0
           heatNetworkConnections:
-            noOfExistingCommunalBuilding: 9
-            noOfExistingNonDomesticBuildings: 2
+            noOfExistingCommunalBuilding: 2
+            noOfExistingNonDomesticBuildings: 7
             noOfNewCommunalBuilding: 1
-            noOfNewHousesOrMaisonettes: 1
-            noOfNonDomesticConsumer: 2
+            noOfNewHousesOrMaisonettes: 6
+            noOfNonDomesticConsumer: 9
             isCommunalBuilding: true
             isOtherDistrictNetwork: true
-            noOfDomesticConsumer: 5
-            noOfExistingHousesOrMaisonettes: 3
+            noOfDomesticConsumer: 7
+            noOfExistingHousesOrMaisonettes: 4
             isDomesticConsumer: true
-            noOfExistingOtherDistrictNetworks: 7
+            noOfExistingOtherDistrictNetworks: 1
             isNonDomesticConsumer: true
-            noOfNewMultiTenantedNonDomestic: 6
-            noOfOtherDistrictNetwork: 7
-            noOfNewOtherDistrictNetworks: 7
-            noOfExistingMultiTenantedNonDomestic: 4
-            noOfCommunalBuilding: 5
-            noOfNewNonDomesticBuildings: 1
+            noOfNewMultiTenantedNonDomestic: 1
+            noOfOtherDistrictNetwork: 3
+            noOfNewOtherDistrictNetworks: 4
+            noOfExistingMultiTenantedNonDomestic: 1
+            noOfCommunalBuilding: 2
+            noOfNewNonDomesticBuildings: 7
           hasAddressAndPostcode: true
           hasOwnEnergyCentre: true
           hnId: hnId
+          networkBuildStatus: Existing
           createdBy: createdBy
           suppliesSixOrMoreUnits: true
           name: name
@@ -5656,6 +6108,7 @@ components:
             createdBy: createdBy
             status: null
             updatedAt: 2000-01-23T04:56:07.000+00:00
+          noOfResponsibleDistrictNetwork: 6
           heatNetworkType: Unset
         userId: userId
       properties:
@@ -5677,6 +6130,21 @@ components:
           type: integer
         userId:
           nullable: true
+          type: string
+      type: object
+    FuelType:
+      example:
+        id: id
+        type: type
+        fuelId: 0
+      properties:
+        id:
+          nullable: true
+          type: string
+        fuelId:
+          format: int32
+          type: integer
+        type:
           type: string
       type: object
     HeatNetwork:
@@ -5750,103 +6218,81 @@ components:
           elements:
           - elementId: elementId
             soaMilestones:
-            - soaStatuses:
-              - soaStatus: null
-                count: 5
-              - soaStatus: null
-                count: 5
-              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessorUpdatedBy: assessorUpdatedBy
-              milestoneId: Milestone2
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessors:
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-            - soaStatuses:
-              - soaStatus: null
-                count: 5
-              - soaStatus: null
-                count: 5
-              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessorUpdatedBy: assessorUpdatedBy
-              milestoneId: Milestone2
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessors:
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-            networkElementInstanceName: networkElementInstanceName
-            elementType: EC
+            - ""
+            - ""
+            buildType: null
+            isSupplyNewBuildings: true
+            elementType: null
+            isMainEnergyCentre: true
+            energyCentrePlantData:
+              heatRecoverySources:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              energyCentreStatus: null
+              boilerPlants:
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              heatPumpSystems:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              combinedHeatAndPowerSystems:
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+            elementName: elementName
           - elementId: elementId
             soaMilestones:
-            - soaStatuses:
-              - soaStatus: null
-                count: 5
-              - soaStatus: null
-                count: 5
-              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessorUpdatedBy: assessorUpdatedBy
-              milestoneId: Milestone2
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessors:
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-            - soaStatuses:
-              - soaStatus: null
-                count: 5
-              - soaStatus: null
-                count: 5
-              soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessorUpdatedBy: assessorUpdatedBy
-              milestoneId: Milestone2
-              soaStatusUpdatedBy: soaStatusUpdatedBy
-              assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-              assessors:
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-              - firstName: firstName
-                lastName: lastName
-                assessment: assessment
-                email: email
-                status: null
-            networkElementInstanceName: networkElementInstanceName
-            elementType: EC
+            - ""
+            - ""
+            buildType: null
+            isSupplyNewBuildings: true
+            elementType: null
+            isMainEnergyCentre: true
+            energyCentrePlantData:
+              heatRecoverySources:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              energyCentreStatus: null
+              boilerPlants:
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              heatPumpSystems:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              combinedHeatAndPowerSystems:
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+            elementName: elementName
           elementsGroup:
           - soaMilestones:
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5865,9 +6311,9 @@ components:
                 status: null
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5888,9 +6334,9 @@ components:
             soaStages:
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5909,9 +6355,9 @@ components:
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5928,14 +6374,15 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
-            count: 1
+            buildType: Existing
+            count: 5
             elementType: EC
           - soaMilestones:
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5954,9 +6401,9 @@ components:
                 status: null
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -5977,9 +6424,9 @@ components:
             soaStages:
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -5998,9 +6445,9 @@ components:
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -6017,8 +6464,11 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
-            count: 1
+            buildType: Existing
+            count: 5
             elementType: EC
+          ecPlantDataStatus: null
+          isExistingEnergyCentreSupplyNewBuildings: true
           updatedAt: 2000-01-23T04:56:07.000+00:00
         ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
@@ -6034,7 +6484,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           createdBy: createdBy
-          status: null
+          status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         orgId: orgId
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -6053,8 +6503,8 @@ components:
         id: id
         phase: phase
         ecDetails:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
+          latitude: 1.4658129805029452
+          longitude: 5.962133916683182
         address:
           country: country
           town: town
@@ -6064,24 +6514,24 @@ components:
           addressLine2: addressLine2
         noOfResponsibleCommunalBuilding: 0
         heatNetworkConnections:
-          noOfExistingCommunalBuilding: 9
-          noOfExistingNonDomesticBuildings: 2
+          noOfExistingCommunalBuilding: 2
+          noOfExistingNonDomesticBuildings: 7
           noOfNewCommunalBuilding: 1
-          noOfNewHousesOrMaisonettes: 1
-          noOfNonDomesticConsumer: 2
+          noOfNewHousesOrMaisonettes: 6
+          noOfNonDomesticConsumer: 9
           isCommunalBuilding: true
           isOtherDistrictNetwork: true
-          noOfDomesticConsumer: 5
-          noOfExistingHousesOrMaisonettes: 3
+          noOfDomesticConsumer: 7
+          noOfExistingHousesOrMaisonettes: 4
           isDomesticConsumer: true
-          noOfExistingOtherDistrictNetworks: 7
+          noOfExistingOtherDistrictNetworks: 1
           isNonDomesticConsumer: true
-          noOfNewMultiTenantedNonDomestic: 6
-          noOfOtherDistrictNetwork: 7
-          noOfNewOtherDistrictNetworks: 7
-          noOfExistingMultiTenantedNonDomestic: 4
-          noOfCommunalBuilding: 5
-          noOfNewNonDomesticBuildings: 1
+          noOfNewMultiTenantedNonDomestic: 1
+          noOfOtherDistrictNetwork: 3
+          noOfNewOtherDistrictNetworks: 4
+          noOfExistingMultiTenantedNonDomestic: 1
+          noOfCommunalBuilding: 2
+          noOfNewNonDomesticBuildings: 7
         hasAddressAndPostcode: true
         hnId: hnId
         networkBuildStatus: Existing
@@ -6183,24 +6633,24 @@ components:
       type: object
     HeatNetworkConnections:
       example:
-        noOfExistingCommunalBuilding: 9
-        noOfExistingNonDomesticBuildings: 2
+        noOfExistingCommunalBuilding: 2
+        noOfExistingNonDomesticBuildings: 7
         noOfNewCommunalBuilding: 1
-        noOfNewHousesOrMaisonettes: 1
-        noOfNonDomesticConsumer: 2
+        noOfNewHousesOrMaisonettes: 6
+        noOfNonDomesticConsumer: 9
         isCommunalBuilding: true
         isOtherDistrictNetwork: true
-        noOfDomesticConsumer: 5
-        noOfExistingHousesOrMaisonettes: 3
+        noOfDomesticConsumer: 7
+        noOfExistingHousesOrMaisonettes: 4
         isDomesticConsumer: true
-        noOfExistingOtherDistrictNetworks: 7
+        noOfExistingOtherDistrictNetworks: 1
         isNonDomesticConsumer: true
-        noOfNewMultiTenantedNonDomestic: 6
-        noOfOtherDistrictNetwork: 7
-        noOfNewOtherDistrictNetworks: 7
-        noOfExistingMultiTenantedNonDomestic: 4
-        noOfCommunalBuilding: 5
-        noOfNewNonDomesticBuildings: 1
+        noOfNewMultiTenantedNonDomestic: 1
+        noOfOtherDistrictNetwork: 3
+        noOfNewOtherDistrictNetworks: 4
+        noOfExistingMultiTenantedNonDomestic: 1
+        noOfCommunalBuilding: 2
+        noOfNewNonDomesticBuildings: 7
       nullable: true
       properties:
         isCommunalBuilding:
@@ -6475,7 +6925,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         name: name
-        count: 1
+        count: 5
         locations:
         - locations
         - locations
@@ -6501,6 +6951,7 @@ components:
       - DistrictDistribution
       - CommunalDistribution
       - ConsumerConnection
+      - NonDomesticConsumerConnection
       type: string
     HeatNetworkExternalResponse:
       example:
@@ -6602,7 +7053,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: name
-              count: 1
+              count: 5
               locations:
               - locations
               - locations
@@ -6620,7 +7071,7 @@ components:
                 uploadedAt: 2000-01-23T04:56:07.000+00:00
                 uploadedBy: uploadedBy
               name: name
-              count: 1
+              count: 5
               locations:
               - locations
               - locations
@@ -6665,13 +7116,84 @@ components:
           networkElementStatus: InProgress
           updatedBy: updatedBy
           createdBy: createdBy
+          elements:
+          - elementId: elementId
+            soaMilestones:
+            - ""
+            - ""
+            buildType: null
+            isSupplyNewBuildings: true
+            elementType: null
+            isMainEnergyCentre: true
+            energyCentrePlantData:
+              heatRecoverySources:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              energyCentreStatus: null
+              boilerPlants:
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              heatPumpSystems:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              combinedHeatAndPowerSystems:
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+            elementName: elementName
+          - elementId: elementId
+            soaMilestones:
+            - ""
+            - ""
+            buildType: null
+            isSupplyNewBuildings: true
+            elementType: null
+            isMainEnergyCentre: true
+            energyCentrePlantData:
+              heatRecoverySources:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: fuelOrHeatSource
+              energyCentreStatus: null
+              boilerPlants:
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              - maximumHeatOutput: 1
+                fuelOrHeatSource: 2
+              heatPumpSystems:
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              - maximumHeatOutput: 6
+                fuelOrHeatSource: 3
+              combinedHeatAndPowerSystems:
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+              - operationalMode: operationalMode
+                maximumHeatOutput: 8
+                fuelOrHeatSource: 9
+                maximumElectricOutput: 6
+            elementName: elementName
           elementsGroup:
           - soaMilestones:
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -6690,9 +7212,9 @@ components:
                 status: null
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -6713,9 +7235,9 @@ components:
             soaStages:
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -6734,9 +7256,9 @@ components:
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -6753,14 +7275,15 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
-            count: 1
+            buildType: Existing
+            count: 5
             elementType: EC
           - soaMilestones:
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -6779,9 +7302,9 @@ components:
                 status: null
             - soaStatuses:
               - soaStatus: null
-                count: 5
+                count: 9
               - soaStatus: null
-                count: 5
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               milestoneId: Milestone2
@@ -6802,9 +7325,9 @@ components:
             soaStages:
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -6823,9 +7346,9 @@ components:
               stageId: Stage1
             - soaStatuses:
               - soaStatus: null
-                count: 4
+                count: 9
               - soaStatus: null
-                count: 4
+                count: 9
               soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
               assessorUpdatedBy: assessorUpdatedBy
               soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -6842,8 +7365,11 @@ components:
                 email: email
                 status: Active
               stageId: Stage1
-            count: 1
+            buildType: Existing
+            count: 5
             elementType: EC
+          ecPlantDataStatus: null
+          isExistingEnergyCentreSupplyNewBuildings: true
           updatedAt: 2000-01-23T04:56:07.000+00:00
         ofgemImportedDate: 2000-01-23T04:56:07.000+00:00
         meteringAndMonitoringStrategy:
@@ -6859,12 +7385,13 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           createdBy: createdBy
-          status: null
+          status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         orgId: orgId
         createdAt: 2000-01-23T04:56:07.000+00:00
         ofgemUserEmailId: ofgemUserEmailId
         additionalDescription: additionalDescription
+        energyCentreType: SuppliesMultipleBuildings
         assessmentPlan:
           createdAt: 2000-01-23T04:56:07.000+00:00
           updatedBy: updatedBy
@@ -6877,8 +7404,8 @@ components:
         id: id
         phase: phase
         ecDetails:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
+          latitude: 1.4658129805029452
+          longitude: 5.962133916683182
         address:
           country: country
           town: town
@@ -6886,28 +7413,30 @@ components:
           postcode: postcode
           addressLine1: addressLine1
           addressLine2: addressLine2
+        noOfResponsibleCommunalBuilding: 0
         heatNetworkConnections:
-          noOfExistingCommunalBuilding: 9
-          noOfExistingNonDomesticBuildings: 2
+          noOfExistingCommunalBuilding: 2
+          noOfExistingNonDomesticBuildings: 7
           noOfNewCommunalBuilding: 1
-          noOfNewHousesOrMaisonettes: 1
-          noOfNonDomesticConsumer: 2
+          noOfNewHousesOrMaisonettes: 6
+          noOfNonDomesticConsumer: 9
           isCommunalBuilding: true
           isOtherDistrictNetwork: true
-          noOfDomesticConsumer: 5
-          noOfExistingHousesOrMaisonettes: 3
+          noOfDomesticConsumer: 7
+          noOfExistingHousesOrMaisonettes: 4
           isDomesticConsumer: true
-          noOfExistingOtherDistrictNetworks: 7
+          noOfExistingOtherDistrictNetworks: 1
           isNonDomesticConsumer: true
-          noOfNewMultiTenantedNonDomestic: 6
-          noOfOtherDistrictNetwork: 7
-          noOfNewOtherDistrictNetworks: 7
-          noOfExistingMultiTenantedNonDomestic: 4
-          noOfCommunalBuilding: 5
-          noOfNewNonDomesticBuildings: 1
+          noOfNewMultiTenantedNonDomestic: 1
+          noOfOtherDistrictNetwork: 3
+          noOfNewOtherDistrictNetworks: 4
+          noOfExistingMultiTenantedNonDomestic: 1
+          noOfCommunalBuilding: 2
+          noOfNewNonDomesticBuildings: 7
         hasAddressAndPostcode: true
         hasOwnEnergyCentre: true
         hnId: hnId
+        networkBuildStatus: Existing
         createdBy: createdBy
         suppliesSixOrMoreUnits: true
         name: name
@@ -6922,6 +7451,7 @@ components:
           createdBy: createdBy
           status: null
           updatedAt: 2000-01-23T04:56:07.000+00:00
+        noOfResponsibleDistrictNetwork: 6
         heatNetworkType: Unset
       properties:
         id:
@@ -6935,6 +7465,16 @@ components:
           type: string
         suppliesSixOrMoreUnits:
           type: boolean
+        networkBuildStatus:
+          $ref: "#/components/schemas/NullableOfNetworkBuildStatus"
+        noOfResponsibleCommunalBuilding:
+          format: int32
+          nullable: true
+          type: integer
+        noOfResponsibleDistrictNetwork:
+          format: int32
+          nullable: true
+          type: integer
         hasAddressAndPostcode:
           type: boolean
         ecDetails:
@@ -6963,6 +7503,8 @@ components:
           type: string
         heatNetworkType:
           $ref: "#/components/schemas/NullableOfHeatNetworkType"
+        energyCentreType:
+          $ref: "#/components/schemas/NullableOfEnergyCentreType"
         hasOwnEnergyCentre:
           type: boolean
         heatNetworkConnections:
@@ -6993,8 +7535,8 @@ components:
       example:
         hnId: hnId
         ecDetails:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
+          latitude: 1.4658129805029452
+          longitude: 5.962133916683182
         address:
           country: country
           town: town
@@ -7083,6 +7625,51 @@ components:
           nullable: true
           type: integer
       type: object
+    HeatPumpSystem:
+      example:
+        maximumHeatOutput: 6
+        fuelOrHeatSource: 3
+      properties:
+        maximumHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
+        fuelOrHeatSource:
+          format: int32
+          nullable: true
+          type: integer
+      type: object
+    HeatRecovery:
+      example:
+        ident: ident
+        heatRecoverySource: heatRecoverySource
+        heatRecoveryId: 0
+        id: id
+      properties:
+        id:
+          nullable: true
+          type: string
+        heatRecoveryId:
+          format: int32
+          type: integer
+        ident:
+          type: string
+        heatRecoverySource:
+          type: string
+      type: object
+    HeatRecoverySource:
+      example:
+        maximumHeatOutput: 6
+        fuelOrHeatSource: fuelOrHeatSource
+      properties:
+        maximumHeatOutput:
+          format: int32
+          nullable: true
+          type: integer
+        fuelOrHeatSource:
+          nullable: true
+          type: string
+      type: object
     HnRoleMapping:
       example:
         hnId: hnId
@@ -7092,6 +7679,29 @@ components:
           type: string
         role:
           $ref: "#/components/schemas/ContributorRole"
+      type: object
+    HnRoleMappingsUserResult:
+      example:
+        role: role
+        heatNetwork:
+          hnId: hnId
+          ecDetails:
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
+          address:
+            country: country
+            town: town
+            county: county
+            postcode: postcode
+            addressLine1: addressLine1
+            addressLine2: addressLine2
+          name: name
+          orgId: orgId
+      properties:
+        heatNetwork:
+          $ref: "#/components/schemas/HeatNetworkUserResponse"
+        role:
+          type: string
       type: object
     ImportResult:
       example:
@@ -7175,10 +7785,12 @@ components:
     Invitation:
       example:
         lastName: lastName
+        invitedOrgName: invitedOrgName
         inviterUserId: inviterUserId
         invitedRoles:
         - DesignatedDutyHolder
         - DesignatedDutyHolder
+        jobTitle: jobTitle
         invitedHnId: invitedHnId
         invitedEmail: invitedEmail
         firstName: firstName
@@ -7205,6 +7817,9 @@ components:
           type: string
         lastName:
           type: string
+        jobTitle:
+          nullable: true
+          type: string
         permissions:
           items:
             type: string
@@ -7216,6 +7831,9 @@ components:
           nullable: true
           type: string
         invitedOrgId:
+          nullable: true
+          type: string
+        invitedOrgName:
           nullable: true
           type: string
         invitedRoles:
@@ -7356,7 +7974,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: name
-          count: 1
+          count: 5
           locations:
           - locations
           - locations
@@ -7374,7 +7992,7 @@ components:
             uploadedAt: 2000-01-23T04:56:07.000+00:00
             uploadedBy: uploadedBy
           name: name
-          count: 1
+          count: 5
           locations:
           - locations
           - locations
@@ -7918,7 +8536,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         createdBy: createdBy
-        status: null
+        status: InProgress
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
@@ -7955,7 +8573,7 @@ components:
           uploadedAt: 2000-01-23T04:56:07.000+00:00
           uploadedBy: uploadedBy
         createdBy: createdBy
-        status: null
+        status: InProgress
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
@@ -7986,6 +8604,12 @@ components:
       - Milestone3B
       - Milestone4
       - Milestone5
+      type: string
+    NetworkBuildStatus:
+      enum:
+      - Existing
+      - New
+      - NewAndExisting
       type: string
     NetworkDetailsStatus:
       enum:
@@ -8047,103 +8671,81 @@ components:
         elements:
         - elementId: elementId
           soaMilestones:
-          - soaStatuses:
-            - soaStatus: null
-              count: 5
-            - soaStatus: null
-              count: 5
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          - soaStatuses:
-            - soaStatus: null
-              count: 5
-            - soaStatus: null
-              count: 5
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          networkElementInstanceName: networkElementInstanceName
-          elementType: EC
+          - ""
+          - ""
+          buildType: null
+          isSupplyNewBuildings: true
+          elementType: null
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         - elementId: elementId
           soaMilestones:
-          - soaStatuses:
-            - soaStatus: null
-              count: 5
-            - soaStatus: null
-              count: 5
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          - soaStatuses:
-            - soaStatus: null
-              count: 5
-            - soaStatus: null
-              count: 5
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          networkElementInstanceName: networkElementInstanceName
-          elementType: EC
+          - ""
+          - ""
+          buildType: null
+          isSupplyNewBuildings: true
+          elementType: null
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         elementsGroup:
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8162,9 +8764,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8185,9 +8787,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8206,9 +8808,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8225,14 +8827,15 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          buildType: Existing
+          count: 5
           elementType: EC
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8251,9 +8854,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8274,9 +8877,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8295,9 +8898,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8314,15 +8917,20 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          buildType: Existing
+          count: 5
           elementType: EC
+        ecPlantDataStatus: null
+        isExistingEnergyCentreSupplyNewBuildings: true
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         networkElementStatus:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
+        ecPlantDataStatus:
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
         elementSoaStatus:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
         elements:
           items:
             $ref: "#/components/schemas/Element"
@@ -8332,6 +8940,9 @@ components:
           items:
             $ref: "#/components/schemas/ElementGroup"
           type: array
+        isExistingEnergyCentreSupplyNewBuildings:
+          nullable: true
+          type: boolean
         createdAt:
           format: date-time
           type: string
@@ -8355,103 +8966,81 @@ components:
         elements:
         - elementId: elementId
           soaMilestones:
-          - soaStatuses:
-            - soaStatus: null
-              count: 5
-            - soaStatus: null
-              count: 5
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          - soaStatuses:
-            - soaStatus: null
-              count: 5
-            - soaStatus: null
-              count: 5
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          networkElementInstanceName: networkElementInstanceName
-          elementType: EC
+          - ""
+          - ""
+          buildType: null
+          isSupplyNewBuildings: true
+          elementType: null
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         - elementId: elementId
           soaMilestones:
-          - soaStatuses:
-            - soaStatus: null
-              count: 5
-            - soaStatus: null
-              count: 5
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          - soaStatuses:
-            - soaStatus: null
-              count: 5
-            - soaStatus: null
-              count: 5
-            soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessorUpdatedBy: assessorUpdatedBy
-            milestoneId: Milestone2
-            soaStatusUpdatedBy: soaStatusUpdatedBy
-            assessorUpdatedAt: 2000-01-23T04:56:07.000+00:00
-            assessors:
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-            - firstName: firstName
-              lastName: lastName
-              assessment: assessment
-              email: email
-              status: null
-          networkElementInstanceName: networkElementInstanceName
-          elementType: EC
+          - ""
+          - ""
+          buildType: null
+          isSupplyNewBuildings: true
+          elementType: null
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         elementsGroup:
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8470,9 +9059,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8493,9 +9082,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8514,9 +9103,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8533,14 +9122,15 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          buildType: Existing
+          count: 5
           elementType: EC
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8559,9 +9149,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8582,9 +9172,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8603,9 +9193,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8622,14 +9212,19 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          buildType: Existing
+          count: 5
           elementType: EC
+        ecPlantDataStatus: null
+        isExistingEnergyCentreSupplyNewBuildings: true
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         networkElementStatus:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
+        ecPlantDataStatus:
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
         elementSoaStatus:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
         elements:
           items:
             $ref: "#/components/schemas/Element"
@@ -8639,6 +9234,9 @@ components:
           items:
             $ref: "#/components/schemas/ElementGroup"
           type: array
+        isExistingEnergyCentreSupplyNewBuildings:
+          nullable: true
+          type: boolean
         createdAt:
           format: date-time
           type: string
@@ -8659,13 +9257,84 @@ components:
         networkElementStatus: InProgress
         updatedBy: updatedBy
         createdBy: createdBy
+        elements:
+        - elementId: elementId
+          soaMilestones:
+          - ""
+          - ""
+          buildType: null
+          isSupplyNewBuildings: true
+          elementType: null
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
+        - elementId: elementId
+          soaMilestones:
+          - ""
+          - ""
+          buildType: null
+          isSupplyNewBuildings: true
+          elementType: null
+          isMainEnergyCentre: true
+          energyCentrePlantData:
+            heatRecoverySources:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: fuelOrHeatSource
+            energyCentreStatus: null
+            boilerPlants:
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            - maximumHeatOutput: 1
+              fuelOrHeatSource: 2
+            heatPumpSystems:
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            - maximumHeatOutput: 6
+              fuelOrHeatSource: 3
+            combinedHeatAndPowerSystems:
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+            - operationalMode: operationalMode
+              maximumHeatOutput: 8
+              fuelOrHeatSource: 9
+              maximumElectricOutput: 6
+          elementName: elementName
         elementsGroup:
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8684,9 +9353,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8707,9 +9376,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8728,9 +9397,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8747,14 +9416,15 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          buildType: Existing
+          count: 5
           elementType: EC
         - soaMilestones:
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8773,9 +9443,9 @@ components:
               status: null
           - soaStatuses:
             - soaStatus: null
-              count: 5
+              count: 9
             - soaStatus: null
-              count: 5
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             milestoneId: Milestone2
@@ -8796,9 +9466,9 @@ components:
           soaStages:
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8817,9 +9487,9 @@ components:
             stageId: Stage1
           - soaStatuses:
             - soaStatus: null
-              count: 4
+              count: 9
             - soaStatus: null
-              count: 4
+              count: 9
             soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
             assessorUpdatedBy: assessorUpdatedBy
             soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -8836,19 +9506,30 @@ components:
               email: email
               status: Active
             stageId: Stage1
-          count: 1
+          buildType: Existing
+          count: 5
           elementType: EC
+        ecPlantDataStatus: null
+        isExistingEnergyCentreSupplyNewBuildings: true
         updatedAt: 2000-01-23T04:56:07.000+00:00
       nullable: true
       properties:
         networkElementStatus:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
         elementSoaStatus:
-          $ref: "#/components/schemas/NetworkDetailsStatus"
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
+        ecPlantDataStatus:
+          $ref: "#/components/schemas/NullableOfNetworkDetailsStatus"
         elementsGroup:
           items:
             $ref: "#/components/schemas/ElementGroup"
           type: array
+        elements:
+          items:
+            $ref: "#/components/schemas/Element"
+          type: array
+        isExistingEnergyCentreSupplyNewBuildings:
+          type: boolean
         createdAt:
           format: date-time
           type: string
@@ -8946,8 +9627,12 @@ components:
         sortBy: sortBy
         page: 0
         userId: userId
+        orgId: orgId
       properties:
         userId:
+          nullable: true
+          type: string
+        orgId:
           nullable: true
           type: string
         sortBy:
@@ -9028,8 +9713,11 @@ components:
       example:
         notificationHistoryCount: 0
         lastVisitedAt: 2000-01-23T04:56:07.000+00:00
-      nullable: true
+        notificationOrgId: notificationOrgId
       properties:
+        notificationOrgId:
+          nullable: true
+          type: string
         notificationHistoryCount:
           format: int32
           type: integer
@@ -9069,6 +9757,18 @@ components:
       - Existing
       - New
       - NewAndExisting
+      - null
+      nullable: true
+      type: string
+    NullableOfNetworkDetailsStatus:
+      enum:
+      - InProgress
+      - Submitted
+      - Complete
+      - Archived
+      - ReadyToStart
+      - CannotStartYet
+      - Incomplete
       - null
       nullable: true
       type: string
@@ -9726,9 +10426,9 @@ components:
       example:
         soaStatuses:
         - soaStatus: null
-          count: 5
+          count: 9
         - soaStatus: null
-          count: 5
+          count: 9
         soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
         assessorUpdatedBy: assessorUpdatedBy
         milestoneId: Milestone2
@@ -9815,7 +10515,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: name
-            count: 1
+            count: 5
             locations:
             - locations
             - locations
@@ -9833,7 +10533,7 @@ components:
               uploadedAt: 2000-01-23T04:56:07.000+00:00
               uploadedBy: uploadedBy
             name: name
-            count: 1
+            count: 5
             locations:
             - locations
             - locations
@@ -9913,9 +10613,9 @@ components:
       example:
         soaStatuses:
         - soaStatus: null
-          count: 4
+          count: 9
         - soaStatus: null
-          count: 4
+          count: 9
         soaStatusUpdatedAt: 2000-01-23T04:56:07.000+00:00
         assessorUpdatedBy: assessorUpdatedBy
         soaStatusUpdatedBy: soaStatusUpdatedBy
@@ -9971,7 +10671,7 @@ components:
     SoaStatusWithCount:
       example:
         soaStatus: null
-        count: 4
+        count: 9
       properties:
         soaStatus:
           $ref: "#/components/schemas/SoaStatus"
@@ -9983,7 +10683,7 @@ components:
     SoaStatusWithCountExistingNetwork:
       example:
         soaStatus: null
-        count: 5
+        count: 9
       properties:
         soaStatus:
           $ref: "#/components/schemas/SoaStatus"
@@ -10252,10 +10952,15 @@ components:
         firstName: firstName
         createdAt: 2000-01-23T04:56:07.000+00:00
         notificationStats:
-          notificationHistoryCount: 0
+        - notificationHistoryCount: 0
           lastVisitedAt: 2000-01-23T04:56:07.000+00:00
+          notificationOrgId: notificationOrgId
+        - notificationHistoryCount: 0
+          lastVisitedAt: 2000-01-23T04:56:07.000+00:00
+          notificationOrgId: notificationOrgId
         id: id
         activeContributingOrgId: activeContributingOrgId
+        workingOrgName: workingOrgName
         status: Active
       properties:
         id:
@@ -10309,12 +11014,49 @@ components:
         activeContributingOrgId:
           nullable: true
           type: string
+        workingOrgName:
+          nullable: true
+          type: string
         notificationStats:
-          $ref: "#/components/schemas/NotificationStats"
+          items:
+            $ref: "#/components/schemas/NotificationStats"
+          nullable: true
+          type: array
       type: object
     UserDetailsResponse:
       example:
         lastName: lastName
+        hnRoleMappings:
+        - role: role
+          heatNetwork:
+            hnId: hnId
+            ecDetails:
+              latitude: 1.4658129805029452
+              longitude: 5.962133916683182
+            address:
+              country: country
+              town: town
+              county: county
+              postcode: postcode
+              addressLine1: addressLine1
+              addressLine2: addressLine2
+            name: name
+            orgId: orgId
+        - role: role
+          heatNetwork:
+            hnId: hnId
+            ecDetails:
+              latitude: 1.4658129805029452
+              longitude: 5.962133916683182
+            address:
+              country: country
+              town: town
+              county: county
+              postcode: postcode
+              addressLine1: addressLine1
+              addressLine2: addressLine2
+            name: name
+            orgId: orgId
         invitedRoles:
         - DesignatedDutyHolder
         - DesignatedDutyHolder
@@ -10348,8 +11090,8 @@ components:
         heatNetworks:
         - hnId: hnId
           ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
           address:
             country: country
             town: town
@@ -10361,8 +11103,8 @@ components:
           orgId: orgId
         - hnId: hnId
           ecDetails:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
           address:
             country: country
             town: town
@@ -10374,6 +11116,7 @@ components:
           orgId: orgId
         id: id
         activeContributingOrgId: activeContributingOrgId
+        workingOrgName: workingOrgName
         status: Active
       properties:
         id:
@@ -10412,6 +11155,11 @@ components:
             $ref: "#/components/schemas/UserRole"
           nullable: true
           type: array
+        hnRoleMappings:
+          items:
+            $ref: "#/components/schemas/HnRoleMappingsUserResult"
+          nullable: true
+          type: array
         organisation:
           $ref: "#/components/schemas/OrganisationResponse"
         heatNetworks:
@@ -10432,6 +11180,9 @@ components:
             $ref: "#/components/schemas/ContributorRole"
           nullable: true
           type: array
+        workingOrgName:
+          nullable: true
+          type: string
       type: object
     UserNetworkDetailsResponse:
       example:
