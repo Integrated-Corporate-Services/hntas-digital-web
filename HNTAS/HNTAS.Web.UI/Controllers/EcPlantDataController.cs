@@ -116,10 +116,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if ((model.NumberOfChp.GetValueOrDefault() + model.NumberOfHeatPump.GetValueOrDefault() + model.NumberOfHighHeatRecoverySources.GetValueOrDefault() + model.NumberOfBoilerPlants.GetValueOrDefault()) <= 0)
             {
-                ModelState.AddModelError(nameof(model.NumberOfChp), "Enter a whole number of 0 or more for number of combined heat and power systems");
-                ModelState.AddModelError(nameof(model.NumberOfHeatPump), "Enter a whole number of 0 or more for number of heat pump systems");
-                ModelState.AddModelError(nameof(model.NumberOfHighHeatRecoverySources), "Enter a whole number of 0 or more for number of heat recovered without heat pumps");
-                ModelState.AddModelError(nameof(model.NumberOfBoilerPlants), "Enter a whole number of 0 or more for number of boiler plants");
+                ModelState.AddModelError(nameof(model.NumberOfChp), "Provide at least one heat generator or heat source for your energy centre");
                 return View(model);
             }
 
@@ -197,27 +194,31 @@ namespace HNTAS.Web.UI.Controllers
             {
                 if (!chpInfo.MaximumHeatOutput.HasValue)
                 {
-                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].MaximumHeatOutput", $"Enter the maximum heat output for Combined heat and power system {model.ChpInformationList.IndexOf(chpInfo) + 1}");
+                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].MaximumHeatOutput", $"Enter the maximum heat output for combined heat and power unit {model.ChpInformationList.IndexOf(chpInfo) + 1}");
                 }
                 else if (chpInfo.MaximumHeatOutput < 0 || chpInfo.MaximumHeatOutput > 9999)
                 {
-                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].MaximumHeatOutput", $"Enter a whole number of 0 or more for the maximum heat output for Combined heat and power system {model.ChpInformationList.IndexOf(chpInfo) + 1}");
+                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].MaximumHeatOutput", $"Enter a whole number of 0 or more for the maximum heat output for combined heat and power unit {model.ChpInformationList.IndexOf(chpInfo) + 1}");
                 }
                 if (!chpInfo.MaximumElectricOutput.HasValue)
                 {
-                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].MaximumElectricOutput", $"Enter the maximum electric output for Combined heat and power system {model.ChpInformationList.IndexOf(chpInfo) + 1}");
+                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].MaximumElectricOutput", $"Enter the maximum electric output for combined heat and power unit {model.ChpInformationList.IndexOf(chpInfo) + 1}");
                 }
                 else if (chpInfo.MaximumElectricOutput < 0 || chpInfo.MaximumElectricOutput > 9999)
                 {
-                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].MaximumElectricOutput", $"Enter a whole number of 0 or more for the maximum electric output for Combined heat and power system {model.ChpInformationList.IndexOf(chpInfo) + 1}");
+                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].MaximumElectricOutput", $"Enter a whole number of 0 or more for the maximum electric output for combined heat and power unit {model.ChpInformationList.IndexOf(chpInfo) + 1}");
                 }
                 if (!chpInfo.FuelOrHeatSource.HasValue)
                 {
-                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].FuelOrHeatSource", $"Enter the fuel/heat source for Combined heat and power system {model.ChpInformationList.IndexOf(chpInfo) + 1}");
-                }
-                if (string.IsNullOrWhiteSpace(chpInfo.OperationalMode))
+                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].FuelOrHeatSource", $"Select a fuel for combined heat and power unit {model.ChpInformationList.IndexOf(chpInfo) + 1}");
+                }                
+                if (!chpInfo.PercentageOfElectricityExported.HasValue)
                 {
-                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].OperationalMode", $"Enter the operational mode for Combined heat and power system {model.ChpInformationList.IndexOf(chpInfo) + 1}");
+                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].PercentageOfElectricityExported", $"Enter the percentage of electricity exported for combined heat and power unit {model.ChpInformationList.IndexOf(chpInfo) + 1}");
+                }
+                else if (chpInfo.PercentageOfElectricityExported < 0 || chpInfo.PercentageOfElectricityExported > 9999)
+                {
+                    ModelState.AddModelError($"ChpInformationList[{model.ChpInformationList.IndexOf(chpInfo)}].PercentageOfElectricityExported", $"Enter a whole number of 0 or more for the percentage of electricity exported for combined heat and power unit {model.ChpInformationList.IndexOf(chpInfo) + 1}");
                 }
             }
             if (!ModelState.IsValid)
@@ -280,15 +281,15 @@ namespace HNTAS.Web.UI.Controllers
             {
                 if (!heatPumpInfo.MaximumHeatOutput.HasValue)
                 {
-                    ModelState.AddModelError($"HeatPumpInformationList[{model.HeatPumpInformationList.IndexOf(heatPumpInfo)}].MaximumHeatOutput", $"Enter the maximum heat output for Heat Pump system {model.HeatPumpInformationList.IndexOf(heatPumpInfo) + 1}");
+                    ModelState.AddModelError($"HeatPumpInformationList[{model.HeatPumpInformationList.IndexOf(heatPumpInfo)}].MaximumHeatOutput", $"Enter the maximum heat output for heat pump {model.HeatPumpInformationList.IndexOf(heatPumpInfo) + 1}");
                 }
                 else if (heatPumpInfo.MaximumHeatOutput < 0 || heatPumpInfo.MaximumHeatOutput > 9999)
                 {
-                    ModelState.AddModelError($"HeatPumpInformationList[{model.HeatPumpInformationList.IndexOf(heatPumpInfo)}].MaximumHeatOutput", $"Enter a whole number of 0 or more for the maximum heat output for Heat Pump system {model.HeatPumpInformationList.IndexOf(heatPumpInfo) + 1}");
+                    ModelState.AddModelError($"HeatPumpInformationList[{model.HeatPumpInformationList.IndexOf(heatPumpInfo)}].MaximumHeatOutput", $"Enter a whole number of 0 or more for the maximum heat output for heat pump {model.HeatPumpInformationList.IndexOf(heatPumpInfo) + 1}");
                 }
                 if (!heatPumpInfo.FuelOrHeatSource.HasValue)
                 {
-                    ModelState.AddModelError($"HeatPumpInformationList[{model.HeatPumpInformationList.IndexOf(heatPumpInfo)}].FuelOrHeatSource", $"Enter the fuel/heat source for Heat Pump system {model.HeatPumpInformationList.IndexOf(heatPumpInfo) + 1}");
+                    ModelState.AddModelError($"HeatPumpInformationList[{model.HeatPumpInformationList.IndexOf(heatPumpInfo)}].FuelOrHeatSource", $"Select a fuel for heat pump {model.HeatPumpInformationList.IndexOf(heatPumpInfo) + 1}");
                 }                
             }
             if (!ModelState.IsValid)
@@ -350,15 +351,15 @@ namespace HNTAS.Web.UI.Controllers
             {
                 if (!highHeatRecoveryInfo.MaximumHeatOutput.HasValue)
                 {
-                    ModelState.AddModelError($"HighHeatRecoveryInformationList[{model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo)}].MaximumHeatOutput", $"Enter the maximum heat output for High Heat Recovery system {model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo) + 1}");
+                    ModelState.AddModelError($"HighHeatRecoveryInformationList[{model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo)}].MaximumHeatOutput", $"Enter the maximum heat output for heat recovery source {model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo) + 1}");
                 }
                 else if (highHeatRecoveryInfo.MaximumHeatOutput < 0 || highHeatRecoveryInfo.MaximumHeatOutput > 9999)
                 {
-                    ModelState.AddModelError($"HighHeatRecoveryInformationList[{model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo)}].MaximumHeatOutput", $"Enter a whole number of 0 or more for the maximum heat output for High Heat Recovery system {model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo) + 1}");
+                    ModelState.AddModelError($"HighHeatRecoveryInformationList[{model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo)}].MaximumHeatOutput", $"Enter a whole number of 0 or more for the maximum heat output for heat recovery source {model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo) + 1}");
                 }
                 if (string.IsNullOrEmpty(highHeatRecoveryInfo.FuelOrHeatSource))
                 {
-                    ModelState.AddModelError($"HighHeatRecoveryInformationList[{model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo)}].FuelOrHeatSource", $"Enter the fuel/heat source for High Heat Recovery system {model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo) + 1}");
+                    ModelState.AddModelError($"HighHeatRecoveryInformationList[{model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo)}].FuelOrHeatSource", $"Select a heat source for heat recovery source {model.HighHeatRecoveryInformationList.IndexOf(highHeatRecoveryInfo) + 1}");
                 }
             }
             if (!ModelState.IsValid)
@@ -420,15 +421,15 @@ namespace HNTAS.Web.UI.Controllers
             {
                 if (!boilerPlantInfo.MaximumHeatOutput.HasValue)
                 {
-                    ModelState.AddModelError($"BoilerPlantInformationList[{model.BoilerPlantInformationList.IndexOf(boilerPlantInfo)}].MaximumHeatOutput", $"Enter the maximum heat output for Boiler Plant system {model.BoilerPlantInformationList.IndexOf(boilerPlantInfo) + 1}");
+                    ModelState.AddModelError($"BoilerPlantInformationList[{model.BoilerPlantInformationList.IndexOf(boilerPlantInfo)}].MaximumHeatOutput", $"Enter the maximum heat output for boiler {model.BoilerPlantInformationList.IndexOf(boilerPlantInfo) + 1}");
                 }
                 else if (boilerPlantInfo.MaximumHeatOutput < 0 || boilerPlantInfo.MaximumHeatOutput > 9999)
                 {
-                    ModelState.AddModelError($"BoilerPlantInformationList[{model.BoilerPlantInformationList.IndexOf(boilerPlantInfo)}].MaximumHeatOutput", $"Enter a whole number of 0 or more for the maximum heat output for Boiler Plant system {model.BoilerPlantInformationList.IndexOf(boilerPlantInfo) + 1}");
+                    ModelState.AddModelError($"BoilerPlantInformationList[{model.BoilerPlantInformationList.IndexOf(boilerPlantInfo)}].MaximumHeatOutput", $"Enter a whole number of 0 or more for the maximum heat output for boiler {model.BoilerPlantInformationList.IndexOf(boilerPlantInfo) + 1}");
                 }
                 if (!boilerPlantInfo.FuelOrHeatSource.HasValue)
                 {
-                    ModelState.AddModelError($"BoilerPlantInformationList[{model.BoilerPlantInformationList.IndexOf(boilerPlantInfo)}].FuelOrHeatSource", $"Enter the fuel/heat source for Boiler Plant system {model.BoilerPlantInformationList.IndexOf(boilerPlantInfo) + 1}");
+                    ModelState.AddModelError($"BoilerPlantInformationList[{model.BoilerPlantInformationList.IndexOf(boilerPlantInfo)}].FuelOrHeatSource", $"Select a fuel for boiler {model.BoilerPlantInformationList.IndexOf(boilerPlantInfo) + 1}");
                 }
             }
             if (!ModelState.IsValid)
@@ -474,8 +475,8 @@ namespace HNTAS.Web.UI.Controllers
                     {
                         MaximumHeatOutput = $"Maximum heat output (kWth) - {chpInfo.MaximumHeatOutput}",
                         MaximumElectricOutput = $"Maximum electric output (kWe) - {chpInfo.MaximumElectricOutput}",
-                        FuelOrHeatSourceValue = $"Fuel or heat source - {fuelTypes?.FirstOrDefault(f => f.FuelId == chpInfo.FuelOrHeatSource)?.Type}",
-                        OperationalModeValue = $"Operational mode - {operationalModes?.FirstOrDefault(o => o.Ident == chpInfo.OperationalMode)?.OperationalMode}"
+                        FuelOrHeatSourceValue = $"Fuel - {fuelTypes?.FirstOrDefault(f => f.FuelId == chpInfo.FuelOrHeatSource)?.Type}",
+                        PercentageOfElectricityExportedValue = $"Percentage of electricity exported - {chpInfo.PercentageOfElectricityExported}"
                     };
                     model.ChpInformationSummaryList.Add(chpSummary);
                 }
@@ -489,7 +490,7 @@ namespace HNTAS.Web.UI.Controllers
                     var heatPumpSummary = new HeatPumpInformationSummary
                     {
                         MaximumHeatOutput = $"Maximum heat output (kWth) - {heatPumpInfo.MaximumHeatOutput}",
-                        FuelOrHeatSourceValue = $"Fuel or heat source - {fuelTypes?.FirstOrDefault(f => f.FuelId == heatPumpInfo.FuelOrHeatSource)?.Type}"
+                        FuelOrHeatSourceValue = $"Fuel - {fuelTypes?.FirstOrDefault(f => f.FuelId == heatPumpInfo.FuelOrHeatSource)?.Type}"
                     };
                     model.HeatPumpInformationSummaryList.Add(heatPumpSummary);
                 }
@@ -503,7 +504,7 @@ namespace HNTAS.Web.UI.Controllers
                     var highHeatRecoverySummary = new HighHeatRecoveryInformationSummary
                     {
                         MaximumHeatOutput = $"Maximum heat output (kWth) - {highHeatRecoveryInfo.MaximumHeatOutput}",
-                        FuelOrHeatSourceValue = $"Fuel or heat source - {heatRecoverySources?.FirstOrDefault(f => f.Ident == highHeatRecoveryInfo.FuelOrHeatSource)?.HeatRecoverySource}"
+                        FuelOrHeatSourceValue = $"Heat source - {heatRecoverySources?.FirstOrDefault(f => f.Ident == highHeatRecoveryInfo.FuelOrHeatSource)?.HeatRecoverySource}"
                     };
                     model.HighHeatRecoveryInformationSummaryList.Add(highHeatRecoverySummary);
                 }
@@ -517,7 +518,7 @@ namespace HNTAS.Web.UI.Controllers
                     var boilerPlantSummary = new BoilerPlantInformationSummary
                     {
                         MaximumHeatOutput = $"Maximum heat output (kWth) - {boilerPlantInfo.MaximumHeatOutput}",
-                        FuelOrHeatSourceValue = $"Fuel or heat source - {fuelTypes?.FirstOrDefault(f => f.FuelId == boilerPlantInfo.FuelOrHeatSource)?.Type}"
+                        FuelOrHeatSourceValue = $"Fuel - {fuelTypes?.FirstOrDefault(f => f.FuelId == boilerPlantInfo.FuelOrHeatSource)?.Type}"
                     };
                     model.BoilerPlantInformationSummaryList.Add(boilerPlantSummary);
                 }
@@ -544,41 +545,63 @@ namespace HNTAS.Web.UI.Controllers
             var highHeatRecoveryInformationModel = _sessionHelper.GetFromSession<HighHeatRecoveryInformationViewModel>(HttpContext, SessionKeys.HighHeatRecoveryInformationViewModelSessionKey);
             var boilerPlantInformationModel = _sessionHelper.GetFromSession<BoilerPlantInformationViewModel>(HttpContext, SessionKeys.BoilerPlantInformationViewModelSessionKey);
 
+            var plantIdCounter = 1;
+            string NextPlantId() => (plantIdCounter++).ToString("D3");
+
             var request = new EcPlantDataRequest
             {
                 HnId = hnId?.ToUpper(),
-                ElementId = TempData.Peek("EcElementId")?.ToString(),                
-
+                ElementId = TempData.Peek("EcElementId")?.ToString(),
                 EnergyCentrePlantData = new EnergyCentrePlantData
                 {
                     CombinedHeatAndPowerSystems = chpInformationModel?.ChpInformationList?
-                        .Select(chp => new CombinedHeatAndPowerSystem
+                        .Select(chp =>
                         {
-                            MaximumHeatOutput = chp.MaximumHeatOutput,
-                            MaximumElectricOutput = chp.MaximumElectricOutput,
-                            FuelOrHeatSource = chp.FuelOrHeatSource,
-                            OperationalMode = chp.OperationalMode
+                            var plantId = NextPlantId();
+                            return new CombinedHeatAndPowerSystem
+                            {
+                                Id = plantId,
+                                MaximumHeatOutput = chp.MaximumHeatOutput,
+                                MaximumElectricOutput = chp.MaximumElectricOutput,
+                                FuelId = chp.FuelOrHeatSource,
+                                PercentageOfElectricityExported = chp.PercentageOfElectricityExported
+                            };
                         })
                         .ToList(),
                     HeatPumpSystems = heatPumpInformationModel?.HeatPumpInformationList?
-                        .Select(hp => new HeatPumpSystem
+                        .Select(hp =>
                         {
-                            MaximumHeatOutput = hp.MaximumHeatOutput,
-                            FuelOrHeatSource = hp.FuelOrHeatSource
+                            var plantId = NextPlantId();
+                            return new HeatPumpSystem
+                            {
+                                Id = plantId,
+                                MaximumHeatOutput = hp.MaximumHeatOutput,
+                                FuelId = hp.FuelOrHeatSource
+                            };
                         })
                         .ToList(),
                     HeatRecoverySources = highHeatRecoveryInformationModel?.HighHeatRecoveryInformationList?
-                        .Select(hr => new HeatRecoverySource
+                        .Select(hr =>
                         {
-                            MaximumHeatOutput = hr.MaximumHeatOutput,
-                            FuelOrHeatSource = hr.FuelOrHeatSource
+                            var plantId = NextPlantId();
+                            return new HeatRecoverySource
+                            {
+                                Id = plantId,
+                                MaximumHeatOutput = hr.MaximumHeatOutput,
+                                HeatSource = hr.FuelOrHeatSource
+                            };
                         })
                         .ToList(),
                     BoilerPlants = boilerPlantInformationModel?.BoilerPlantInformationList?
-                        .Select(bp => new BoilerPlant
+                        .Select(bp =>
                         {
-                            MaximumHeatOutput = bp.MaximumHeatOutput,
-                            FuelOrHeatSource = bp.FuelOrHeatSource
+                            var plantId = NextPlantId();
+                            return new BoilerPlant
+                            {
+                                Id = plantId,
+                                MaximumHeatOutput = bp.MaximumHeatOutput,
+                                FuelId = bp.FuelOrHeatSource
+                            };
                         })
                         .ToList()
                 }
@@ -622,8 +645,8 @@ namespace HNTAS.Web.UI.Controllers
                     {
                         MaximumHeatOutput = chp.MaximumHeatOutput,
                         MaximumElectricOutput = chp.MaximumElectricOutput,
-                        FuelOrHeatSource = chp.FuelOrHeatSource,
-                        OperationalMode = chp.OperationalMode
+                        FuelOrHeatSource = chp.FuelId,
+                        PercentageOfElectricityExported = chp.PercentageOfElectricityExported
                     })
                     .ToList() ?? new List<ChpInformation>()
             };
@@ -634,7 +657,7 @@ namespace HNTAS.Web.UI.Controllers
                     .Select(hp => new HeatPumpInformation
                     {
                         MaximumHeatOutput = hp.MaximumHeatOutput,
-                        FuelOrHeatSource = hp.FuelOrHeatSource
+                        FuelOrHeatSource = hp.FuelId
                     })
                     .ToList() ?? new List<HeatPumpInformation>()
             };
@@ -645,7 +668,7 @@ namespace HNTAS.Web.UI.Controllers
                     .Select(hr => new HighHeatRecoveryInformation
                     {
                         MaximumHeatOutput = hr.MaximumHeatOutput,
-                        FuelOrHeatSource = hr.FuelOrHeatSource
+                        FuelOrHeatSource = hr.HeatSource
                     })
                     .ToList() ?? new List<HighHeatRecoveryInformation>()
             };
@@ -656,7 +679,7 @@ namespace HNTAS.Web.UI.Controllers
                     .Select(bp => new BoilerPlantInformation
                     {
                         MaximumHeatOutput = bp.MaximumHeatOutput,
-                        FuelOrHeatSource = bp.FuelOrHeatSource
+                        FuelOrHeatSource = bp.FuelId
                     })
                     .ToList() ?? new List<BoilerPlantInformation>()
             };
@@ -671,8 +694,8 @@ namespace HNTAS.Web.UI.Controllers
                     {
                         MaximumHeatOutput = $"Maximum heat output (kWth) - {chpInfo.MaximumHeatOutput}",
                         MaximumElectricOutput = $"Maximum electric output (kWe) - {chpInfo.MaximumElectricOutput}",
-                        FuelOrHeatSourceValue = $"Fuel or heat source - {fuelTypes?.FirstOrDefault(f => f.FuelId == chpInfo.FuelOrHeatSource)?.Type}",
-                        OperationalModeValue = $"Operational mode - {operationalModes?.FirstOrDefault(o => o.Ident == chpInfo.OperationalMode)?.OperationalMode}"
+                        FuelOrHeatSourceValue = $"Fuel - {fuelTypes?.FirstOrDefault(f => f.FuelId == chpInfo.FuelOrHeatSource)?.Type}",
+                        PercentageOfElectricityExportedValue = $"Percentage of electricity exported - {chpInfo.PercentageOfElectricityExported}"
                     };
                     model.ChpInformationSummaryList.Add(chpSummary);
                 }
@@ -686,7 +709,7 @@ namespace HNTAS.Web.UI.Controllers
                     var heatPumpSummary = new HeatPumpInformationSummary
                     {
                         MaximumHeatOutput = $"Maximum heat output (kWth) - {heatPumpInfo.MaximumHeatOutput}",
-                        FuelOrHeatSourceValue = $"Fuel or heat source - {fuelTypes?.FirstOrDefault(f => f.FuelId == heatPumpInfo.FuelOrHeatSource)?.Type}"
+                        FuelOrHeatSourceValue = $"Fuel - {fuelTypes?.FirstOrDefault(f => f.FuelId == heatPumpInfo.FuelOrHeatSource)?.Type}"
                     };
                     model.HeatPumpInformationSummaryList.Add(heatPumpSummary);
                 }
@@ -700,7 +723,7 @@ namespace HNTAS.Web.UI.Controllers
                     var highHeatRecoverySummary = new HighHeatRecoveryInformationSummary
                     {
                         MaximumHeatOutput = $"Maximum heat output (kWth) - {highHeatRecoveryInfo.MaximumHeatOutput}",
-                        FuelOrHeatSourceValue = $"Fuel or heat source - {heatRecoverySources?.FirstOrDefault(f => f.Ident == highHeatRecoveryInfo.FuelOrHeatSource)?.HeatRecoverySource}"
+                        FuelOrHeatSourceValue = $"Heat source - {heatRecoverySources?.FirstOrDefault(f => f.Ident == highHeatRecoveryInfo.FuelOrHeatSource)?.HeatRecoverySource}"
                     };
                     model.HighHeatRecoveryInformationSummaryList.Add(highHeatRecoverySummary);
                 }
@@ -714,7 +737,7 @@ namespace HNTAS.Web.UI.Controllers
                     var boilerPlantSummary = new BoilerPlantInformationSummary
                     {
                         MaximumHeatOutput = $"Maximum heat output (kWth) - {boilerPlantInfo.MaximumHeatOutput}",
-                        FuelOrHeatSourceValue = $"Fuel or heat source - {fuelTypes?.FirstOrDefault(f => f.FuelId == boilerPlantInfo.FuelOrHeatSource)?.Type}"
+                        FuelOrHeatSourceValue = $"Fuel - {fuelTypes?.FirstOrDefault(f => f.FuelId == boilerPlantInfo.FuelOrHeatSource)?.Type}"
                     };
                     model.BoilerPlantInformationSummaryList.Add(boilerPlantSummary);
                 }

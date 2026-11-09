@@ -10,7 +10,12 @@
 
             <span class="govuk-caption-l">@ViewBag.HnId , @ViewBag.HnName</span>
             <h1 class="govuk-heading-l">Tell us about your energy centre plant</h1>
-            <p class="govuk-body">Provide the number of energy centre elements within the plant. Enter 0 if none apply.</p>
+            <p class="govuk-body">
+                Provide the number of energy centre generators and heat sources. At feasibility these can be best estimates. You'll be able to update these as your design develops.                
+            </p>
+            <p class="govuk-body">
+                By providing this plant data, the service can give you an estimate of the carbon intensity of heat (g/kWh) that the energy centre will produce. This data gives you an opportunity to adjust the design and improve carbon emissions in subsequent stages.
+            </p>
 
             <h2 class="govuk-heading-m">@ViewBag.SelectedElementName - @ViewBag.SelectedElementId</h2> 
             @{
@@ -18,6 +23,7 @@
                 var hasNumberOfHeatPumpError = ViewData.ModelState[$"NumberOfHeatPump"]?.Errors.Count > 0;
                 var hasNumberOfHighHeatRecoverySourcesError = ViewData.ModelState[$"NumberOfHighHeatRecoverySources"]?.Errors.Count > 0;
                 var hasNumberOfBoilerPlantsError = ViewData.ModelState[$"NumberOfBoilerPlants"]?.Errors.Count > 0;
+                var showErrorBorder = false;
             }
             <div class="govuk-form-group">
                 <label class="govuk-label" asp-for="@Model.NumberOfChp">
@@ -25,12 +31,19 @@
                 </label>
                 @if (hasNumberOfChpError)
                 {
-                     <p id="chp-numbers-error" class="govuk-error-message">    
-                        <span class="govuk-visually-hidden">Error:</span> 
-                        @Html.ValidationMessageFor(m => m.NumberOfChp)
-                    </p>
+                    var errorMsg = ViewData.ModelState[$"NumberOfChp"]?.Errors.FirstOrDefault()?.ErrorMessage;
+                    
+                    if (errorMsg != "Provide at least one heat generator or heat source for your energy centre")
+                    {
+                        <p id="chp-numbers-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span>
+                            @Html.ValidationMessageFor(m => m.NumberOfChp)
+                        </p>
+                        showErrorBorder = true;
+                    }                       
+                     
                 }
-                <input class="govuk-input govuk-input--width-3 @(hasNumberOfChpError ? "govuk-input--error" : "")" id="numberofchp" asp-for="@Model.NumberOfChp" type="number" min="0" max="9999">
+                <input class="govuk-input govuk-input--width-3 @(hasNumberOfChpError && showErrorBorder ? "govuk-input--error" : "")" id="numberofchp" asp-for="@Model.NumberOfChp" type="number" min="0" max="9999">
             </div>
   
             <div class="govuk-form-group">

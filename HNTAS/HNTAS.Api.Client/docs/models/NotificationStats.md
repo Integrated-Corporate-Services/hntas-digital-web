@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**NotificationOrgId** | **string** |  | [optional] 
+**ContributingOrgId** | **string** |  | [optional] 
 **NotificationHistoryCount** | **int** |  | [optional] 
 **LastVisitedAt** | **DateTimeOffset** |  | [optional] 
 
